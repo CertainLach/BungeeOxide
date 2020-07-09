@@ -82,10 +82,10 @@ pub trait MinecraftAsyncWriteExt: AsyncWrite + Unpin {
 			if value != 0 {
 				temp |= 0b10000000;
 			}
+			self.write_all(&[temp]).await?;
 			if value == 0 {
 				break;
 			}
-			self.write_all(&[temp]).await?;
 		}
 		Ok(())
 	}
@@ -100,10 +100,10 @@ pub trait MinecraftWriteExt: Write {
 			if value != 0 {
 				temp |= 0b10000000;
 			}
+			self.write_all(&[temp])?;
 			if value == 0 {
 				break;
 			}
-			self.write_all(&[temp])?;
 		}
 		Ok(())
 	}
