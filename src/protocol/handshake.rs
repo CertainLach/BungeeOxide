@@ -10,6 +10,9 @@ pub struct Handshake {
 	pub next_state: State,
 }
 impl Packet for Handshake {
+	const ID: i32 = 0;
+}
+impl PacketData for Handshake {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		Ok(Handshake {
 			protocol: buf.read_varint()?.ans,
@@ -17,5 +20,8 @@ impl Packet for Handshake {
 			port: buf.read_i16::<BigEndian>()?,
 			next_state: State::read(buf)?,
 		})
+	}
+	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
+		todo!()
 	}
 }

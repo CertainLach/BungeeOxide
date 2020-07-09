@@ -1,6 +1,5 @@
-use byteorder::{BigEndian, ReadBytesExt};
-use std::io::{Read, Result};
 use super::*;
+use byteorder::{BigEndian, ReadBytesExt};
 
 pub struct JoinGame {
 	pub entity_id: i32,
@@ -13,7 +12,10 @@ pub struct JoinGame {
 }
 
 impl Packet for JoinGame {
-	fn read<R: Read>(buf: &mut R) -> Result<Self> {
+	const ID: i32 = 0x26;
+}
+impl PacketData for JoinGame {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		let entity_id = buf.read_i32::<BigEndian>().unwrap();
 		let game_mode = buf.read_u8().unwrap();
 		let dimension = buf.read_i32::<BigEndian>().unwrap();
@@ -30,5 +32,8 @@ impl Packet for JoinGame {
 			level_type,
 			reduced_debug_info,
 		})
+	}
+	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
+		todo!()
 	}
 }

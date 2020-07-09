@@ -15,7 +15,7 @@ pub enum State {
 	Status,
 	Login,
 }
-impl Packet for State {
+impl PacketData for State {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		Ok(match buf.read_varint()?.ans {
 			0 => Self::Handshaking,
@@ -24,4 +24,7 @@ impl Packet for State {
 			_ => todo!(),
 		})
 	}
+	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
+        todo!()
+    }
 }

@@ -1,17 +1,14 @@
 mod ext;
 mod protocol;
 
-use byteorder::BigEndian;
-use byteorder::ReadBytesExt;
-use ext::{MinecraftReadExt, MinecraftWriteExt, Varint21};
+use ext::{MinecraftWriteExt, Varint21};
+use protocol::{handshake::Handshake, status::StatusRequest, Packet, PacketData, State};
 use std::{
 	io::{Cursor, Read},
 	ops::{Deref, DerefMut},
 };
 use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
-use protocol::{handshake::Handshake, State, status::StatusRequest, Packet};
-
 
 struct UserHandle {
 	stream: TcpStream,
@@ -54,7 +51,10 @@ impl UserHandle {
 			}
 		}
 	}
-	async fn write_packet(
+	async fn write_packet<T: Packet>(&mut self, packet: &impl Packet) -> io::Result<()> {
+		self.write_packet_fn(T::ID, |w| packet.write(w)).await
+	}
+	async fn write_packet_fn(
 		&mut self,
 		packet_id: i32,
 		data: impl FnOnce(&mut Cursor<Vec<u8>>) -> io::Result<()>,
@@ -96,7 +96,7 @@ impl UserHandle {
 			0 => {
 				let packet = StatusRequest::read(data)?;
 				println!("Request: {:?}", packet);
-				self.write_packet(0, |c| {
+				self.write_packet_fn(0, |c| {
 					c.write_string("{\"players\":{\"max\":3,\"online\":4}}")?;
 					Ok(())
 				})
