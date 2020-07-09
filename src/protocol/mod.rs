@@ -14,6 +14,7 @@ pub enum State {
 	Handshaking,
 	Status,
 	Login,
+	Play,
 }
 impl PacketData for State {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {

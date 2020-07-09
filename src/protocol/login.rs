@@ -1,6 +1,7 @@
 use super::*;
 use std::io::{Read, Result};
 
+#[derive(Debug)]
 pub struct LoginStart {
 	pub name: String,
 }
@@ -17,6 +18,7 @@ impl PacketData for LoginStart {
 	}
 }
 
+#[derive(Debug)]
 pub struct LoginSuccess {
 	pub uuid: String,
 	pub username: String,
@@ -32,5 +34,22 @@ impl PacketData for LoginSuccess {
 	}
 	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
 		todo!()
+	}
+}
+
+#[derive(Debug)]
+pub struct EncryptionResponse {
+	pub shared_secret: Vec<u8>,
+	pub verify_token: Vec<u8>,
+}
+
+impl Packet for EncryptionResponse {
+	fn read<R: Read>(buf: &mut R) -> Result<Self> {
+		let shared_secret = buf.read_bytes(128)?;
+		let verify_token = buf.read_bytes(128)?;
+		Ok(Self {
+			shared_secret,
+			verify_token,
+		})
 	}
 }
