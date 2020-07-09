@@ -14,7 +14,7 @@ pub struct IncomingPacketData<'t> {
 	pub data: Cursor<&'t [u8]>,
 }
 impl IncomingPacketData<'_> {
-	pub fn cast<T: Packet>(&mut self) -> io::Result<T> {
+	pub fn cast<T: Packet>(mut self) -> io::Result<T> {
 		if T::ID != self.id {
 			panic!("bad cast");
 		}
@@ -37,33 +37,81 @@ fn ensure_capacity(vec: &mut Vec<u8>, capacity: usize) {
 	}
 }
 
+/// Представляет собой обёртку над сжатыми/не сжатыми данными
+#[derive(Debug)]
+pub enum MaybeCompressed<'t> {
+	Compressed(usize, &'t [u8]),
+	Plain(IncomingPacketData<'t>),
+}
+impl<'t> MaybeCompressed<'t> {
+	pub fn unwrap(self) -> IncomingPacketData<'t> {
+		match self {
+			MaybeCompressed::Compressed(_, _) => todo!("unpack"),
+			MaybeCompressed::Plain(d) => d,
+		}
+	}
+	pub fn id(&self) -> i32 {
+		match self {
+			MaybeCompressed::Compressed(_, _) => todo!("unpack first byte"),
+			MaybeCompressed::Plain(d) => d.id,
+		}
+	}
+	pub fn cast<T: Packet>(self) -> io::Result<T> {
+		self.unwrap().cast()
+	}
+	pub async fn write<W: AsyncWrite + Unpin + Send>(
+		&self,
+		compression: Option<i32>,
+		buf: &mut W,
+	) -> io::Result<()> {
+		match self {
+			MaybeCompressed::Compressed(size, data) => {
+				assert!(
+					compression.is_some(),
+					"can't send compressed data over uncompressed wire"
+				);
+				let size_size = varint_size(*size as i32);
+				buf.write_varint(data.len() as i32 + size_size as i32)
+					.await?;
+				buf.write_varint(*size as i32).await?;
+				buf.write_all(&data).await?;
+			}
+			MaybeCompressed::Plain(data) => {
+				let id_len = varint_size(data.id);
+				if compression.is_some() {
+					buf.write_varint(data.data.get_ref().len() as i32 + id_len as i32 + 1)
+						.await?;
+					buf.write_varint(0).await?;
+				} else {
+					buf.write_varint(data.data.get_ref().len() as i32 + id_len as i32)
+						.await?;
+				}
+				buf.write_varint(data.id as i32).await?;
+				buf.write_all(data.data.get_ref()).await?;
+			}
+		}
+		Ok(())
+	}
+}
 #[async_trait]
 pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
-	// Can be replaced with read_bytes, but is renamed for clarity
-	async fn read_packet_buf<'t>(&mut self, buf: &'t mut Vec<u8>) -> io::Result<&'t [u8]> {
-		let total_length = self.read_varint().await?.ans;
-		println!("{}", total_length);
-		ensure_capacity(buf, total_length as usize);
-		let buf = &mut buf[..total_length as usize];
-		self.read_exact(buf).await?;
-		Ok(&*buf)
-	}
 	async fn read_packet<'t>(
 		&mut self,
 		compression: Option<i32>,
 		buf: &'t mut Vec<u8>,
-	) -> io::Result<IncomingPacketData<'t>> {
+	) -> io::Result<MaybeCompressed<'t>> {
 		let packet_length = if compression.is_some() {
 			let total_length = self.read_varint().await?.ans;
 			assert!(total_length >= 1);
 			let data_length = self.read_varint().await?;
+			let total_length = total_length - data_length.size as i32;
 			if data_length.ans != 0 {
-				panic!(
-					"compression not supported, got {} {}",
-					total_length, data_length.ans
-				);
+				ensure_capacity(buf, total_length as usize);
+				let buf = &mut buf[..total_length as usize];
+				self.read_exact(buf).await?;
+				return Ok(MaybeCompressed::Compressed(data_length.ans as usize, buf));
 			}
-			total_length - data_length.size as i32
+			total_length
 		} else {
 			let packet_length = self.read_varint().await?.ans;
 			assert!(packet_length >= 1);
@@ -81,10 +129,10 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 		let buf = &mut buf[0..packet_length as usize];
 		self.read_exact(buf).await?;
 		let buf = &*buf;
-		Ok(IncomingPacketData {
+		Ok(MaybeCompressed::Plain(IncomingPacketData {
 			id: packet_id,
 			data: std::io::Cursor::new(buf),
-		})
+		}))
 	}
 	async fn read_varint(&mut self) -> io::Result<Varint21> {
 		let mut buf = [0];
@@ -207,6 +255,18 @@ pub trait MinecraftAsyncWriteExt: AsyncWrite + Unpin {
 	}
 }
 impl<T> MinecraftAsyncWriteExt for T where T: AsyncWrite + Unpin {}
+
+pub fn varint_size(mut value: i32) -> usize {
+	let mut size = 0;
+	loop {
+		value >>= 7;
+		size += 1;
+		if value == 0 {
+			break;
+		}
+	}
+	size
+}
 
 pub trait MinecraftWriteExt: Write {
 	fn write_varint(&mut self, mut value: i32) -> io::Result<()> {

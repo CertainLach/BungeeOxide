@@ -36,10 +36,10 @@ async fn handle_socket_login(
 	let mut state = State::Handshaking;
 	loop {
 		let mut initial_buffer = Vec::new();
-		let mut data = stream.read_packet(None, &mut initial_buffer).await?;
-		match (state, data.id) {
+		let data = stream.read_packet(None, &mut initial_buffer).await?;
+		match (state, data.id()) {
 			(State::Handshaking, Handshake::ID) => {
-				let packet = Handshake::read(&mut data.data)?;
+				let packet = data.cast::<Handshake>()?;
 				println!("Handshake: {:?}", packet);
 				state = packet.next_state;
 			}
@@ -150,8 +150,8 @@ async fn open_server_connection(
 	// Packet handling loop
 	let state = State::Login;
 	loop {
-		let mut data = stream.read_packet(compression, &mut buf).await?;
-		match (state, data.id) {
+		let data = stream.read_packet(compression, &mut buf).await?;
+		match (state, data.id()) {
 			(State::Login, SetCompression::ID) => {
 				let set_compression = data.cast::<SetCompression>()?;
 				compression = Some(set_compression.threshold.0);
@@ -189,18 +189,21 @@ async fn communicate_user_server(streams: StreamPair) -> io::Result<TcpStream> {
 	let server = tokio::spawn(async move {
 		let mut buf = Vec::new();
 		loop {
-			let packet = server_read.read_packet_buf(&mut buf).await.unwrap();
+			let packet = server_read
+				.read_packet(compression, &mut buf)
+				.await
+				.unwrap();
 			println!("S => C {:?}", packet);
-			user_write.write_bytes_async(packet).await.unwrap();
+			packet.write(compression, &mut user_write).await.unwrap();
 		}
 		user_write
 	});
 	let user = tokio::spawn(async move {
 		let mut buf = Vec::new();
 		loop {
-			let packet = user_read.read_packet_buf(&mut buf).await.unwrap();
+			let packet = user_read.read_packet(compression, &mut buf).await.unwrap();
 			println!("C => S {:?}", packet);
-			server_write.write_bytes_async(packet).await.unwrap();
+			packet.write(compression, &mut server_write).await.unwrap();
 		}
 		user_read
 	});
