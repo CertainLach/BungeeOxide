@@ -14,7 +14,6 @@ use protocol::{handshake::Handshake, State, status::StatusRequest, login::LoginS
 struct UserHandle {
 	stream: TcpStream,
 	state: State,
-	keep_alive: Option<i16>,
 }
 impl Deref for UserHandle {
 	type Target = TcpStream;
