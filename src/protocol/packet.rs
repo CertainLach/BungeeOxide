@@ -31,6 +31,14 @@ impl Deref for VarInt {
 		&self.0
 	}
 }
+impl PacketData for u8 {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		buf.read_u8()
+	}
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_u8(*self)
+	}
+}
 impl From<i32> for VarInt {
 	fn from(v: i32) -> Self {
 		VarInt(v)
@@ -42,6 +50,24 @@ impl PacketData for VarInt {
 	}
 	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
 		buf.write_varint(self.0)
+	}
+}
+
+impl<T> PacketData for Vec<T>
+where
+	T: PacketData + Default + Clone,
+{
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		let len = buf.read_varint()?.ans;
+		let out = vec![T::default(); len as usize];
+		Ok(out)
+	}
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		VarInt(self.len() as i32).write(buf);
+		for v in self.iter() {
+			v.write(buf);
+		}
+		Ok(())
 	}
 }
 

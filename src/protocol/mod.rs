@@ -9,7 +9,9 @@ use tokio::io;
 
 pub use crate::ext::MinecraftReadExt;
 pub use crate::ext::MinecraftWriteExt;
+use derive_packetdata::PacketData;
 pub use packet::*;
+
 #[derive(Debug)]
 pub enum State {
 	Handshaking,
