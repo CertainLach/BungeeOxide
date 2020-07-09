@@ -1,18 +1,22 @@
-use std::io::{Read, Result};
-use protool::*;
+use super::*;
 
-struct StatusRequest;
+#[derive(Debug)]
+pub struct StatusRequest;
 
 impl Packet for StatusRequest {
-    fn read<R: Read>(buf: &mut R) -> Result<Self> {  }
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(StatusRequest)
+	}
 }
 
 struct StatusResponse {
-    response: String
+	response: String,
 }
 
 impl Packet for StatusResponse {
-    fn read<R: Read>(buf: &mut R) -> Result<Self> {
-        response = buf.read_string(32767).unwrap();
-    }
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(StatusResponse {
+			response: buf.read_string(32767)?,
+		})
+	}
 }

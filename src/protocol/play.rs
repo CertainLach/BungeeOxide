@@ -1,6 +1,6 @@
 use byteorder::{BigEndian, ReadBytesExt};
 use std::io::{Read, Result};
-use protool::*;
+use super::*;
 
 pub struct JoinGame {
 	pub entity_id: i32,

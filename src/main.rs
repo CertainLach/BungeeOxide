@@ -1,4 +1,5 @@
 mod ext;
+mod protocol;
 
 use byteorder::BigEndian;
 use byteorder::ReadBytesExt;
@@ -9,50 +10,8 @@ use std::{
 };
 use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
+use protocol::{handshake::Handshake, State, status::StatusRequest, Packet};
 
-trait Packet: Sized {
-	fn read<R: Read>(buf: &mut R) -> io::Result<Self>;
-}
-#[derive(Debug)]
-enum State {
-	Handshaking,
-	Status,
-	Login,
-}
-impl Packet for State {
-	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
-		Ok(match buf.read_varint()?.ans {
-			0 => Self::Handshaking,
-			1 => Self::Status,
-			2 => Self::Login,
-			_ => todo!(),
-		})
-	}
-}
-#[derive(Debug)]
-struct ServerHandshare {
-	protocol: i32,
-	address: String,
-	port: i16,
-	next_state: State,
-}
-impl Packet for ServerHandshare {
-	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
-		Ok(ServerHandshare {
-			protocol: buf.read_varint()?.ans,
-			address: buf.read_string(64)?,
-			port: buf.read_i16::<BigEndian>()?,
-			next_state: State::read(buf)?,
-		})
-	}
-}
-#[derive(Debug)]
-struct StatusRequest;
-impl Packet for StatusRequest {
-	fn read<R: Read>(_buf: &mut R) -> io::Result<Self> {
-		Ok(StatusRequest)
-	}
-}
 
 struct UserHandle {
 	stream: TcpStream,
@@ -124,7 +83,7 @@ impl UserHandle {
 	async fn handle_handshaking(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
 		match packet_id {
 			0 => {
-				let packet = ServerHandshare::read(data)?;
+				let packet = Handshake::read(data)?;
 				println!("Handshake: {:?}", packet);
 				self.state = packet.next_state;
 			}

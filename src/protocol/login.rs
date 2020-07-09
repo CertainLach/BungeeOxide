@@ -1,6 +1,5 @@
-
+use super::*;
 use std::io::{Read, Result};
-use protocol::*;
 
 pub struct LoginStart {
 	pub name: String,
