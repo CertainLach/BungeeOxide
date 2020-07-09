@@ -14,6 +14,7 @@ use protocol::{handshake::Handshake, State, status::StatusRequest, login::LoginS
 struct UserHandle {
 	stream: TcpStream,
 	state: State,
+	keep_alive: Option<i16>,
 }
 impl Deref for UserHandle {
 	type Target = TcpStream;
@@ -140,7 +141,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 		tokio::spawn(async move {
 			let mut handle = UserHandle {
 				stream,
-				state: State::Handshaking
+				state: State::Handshaking,
+				keep_alive: None,
 			};
 			if let Err(e) = handle.process().await {
 				println!("User error: {:?}", e);
