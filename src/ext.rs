@@ -1,6 +1,5 @@
-
 use async_trait::async_trait;
-use std::io::{Write, Read};
+use std::io::{Read, Write};
 use tokio::io::{self, AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 pub struct Varint21 {
@@ -40,6 +39,7 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin {
 		Ok(String::from_utf8_lossy(&bytes).to_string())
 	}
 }
+impl<T> MinecraftAsyncReadExt for T where T: AsyncRead + Unpin {}
 
 pub trait MinecraftReadExt: Read {
 	fn read_varint(&mut self) -> io::Result<Varint21> {
@@ -71,6 +71,7 @@ pub trait MinecraftReadExt: Read {
 		Ok(String::from_utf8_lossy(&bytes).to_string())
 	}
 }
+impl<T> MinecraftReadExt for T where T: Read {}
 
 #[async_trait]
 pub trait MinecraftAsyncWriteExt: AsyncWrite + Unpin {

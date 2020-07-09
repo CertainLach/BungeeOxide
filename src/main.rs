@@ -2,7 +2,7 @@ mod ext;
 
 use byteorder::BigEndian;
 use byteorder::ReadBytesExt;
-use ext::{MinecraftReadExt, MinecraftWriteExt};
+use ext::{MinecraftReadExt, MinecraftWriteExt, Varint21};
 use std::{
 	io::{Cursor, Read},
 	ops::{Deref, DerefMut},
@@ -21,7 +21,7 @@ enum State {
 }
 impl Packet for State {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
-		Ok(match buf.read_varint()?.0 {
+		Ok(match buf.read_varint()?.ans {
 			0 => Self::Handshaking,
 			1 => Self::Status,
 			2 => Self::Login,
@@ -39,8 +39,8 @@ struct ServerHandshare {
 impl Packet for ServerHandshare {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		Ok(ServerHandshare {
-			protocol: buf.read_varint()?.0,
-			address: buf.read_string()?,
+			protocol: buf.read_varint()?.ans,
+			address: buf.read_string(64)?,
 			port: buf.read_i16::<BigEndian>()?,
 			next_state: State::read(buf)?,
 		})
@@ -75,9 +75,12 @@ impl UserHandle {
 		use ext::MinecraftAsyncReadExt;
 		let mut buf = vec![0; 256];
 		loop {
-			let (packet_length, _) = self.read_varint().await?;
+			let packet_length = self.read_varint().await?.ans;
 			assert!(packet_length >= 1);
-			let (packet_id, packet_id_length) = self.read_varint().await?;
+			let Varint21 {
+				ans: packet_id,
+				size: packet_id_length,
+			} = self.read_varint().await?;
 			assert!(packet_id >= 0);
 			let packet_length = packet_length - packet_id_length as i32;
 			assert!(packet_length >= 0);
@@ -106,9 +109,6 @@ impl UserHandle {
 		{
 			use ext::MinecraftAsyncWriteExt;
 			self.write_varint(out.len() as i32).await?;
-
-			self.write_all(&[out.len() as u8 + 1, packet_id as u8])
-				.await?;
 			self.write_all(&out).await?;
 			Ok(())
 		}
