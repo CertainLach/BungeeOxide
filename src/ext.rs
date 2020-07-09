@@ -56,11 +56,14 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 		let packet_length = if compression.is_some() {
 			let total_length = self.read_varint().await?.ans;
 			assert!(total_length >= 1);
-			let data_length = self.read_varint().await?.ans;
-			if data_length != 0 {
-				panic!("compression not supported, got {} {}", total_length, data_length);
+			let data_length = self.read_varint().await?;
+			if data_length.ans != 0 {
+				panic!(
+					"compression not supported, got {} {}",
+					total_length, data_length.ans
+				);
 			}
-			total_length
+			total_length - data_length.size as i32
 		} else {
 			let packet_length = self.read_varint().await?.ans;
 			assert!(packet_length >= 1);
