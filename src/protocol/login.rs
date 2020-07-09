@@ -1,5 +1,4 @@
 use super::*;
-use std::io::{Read, Result};
 
 #[derive(Debug, PacketData)]
 pub struct LoginStart {

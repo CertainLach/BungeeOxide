@@ -22,6 +22,23 @@ impl PacketData for i16 {
 		buf.write_i16::<BigEndian>(*self)
 	}
 }
+impl PacketData for i32 {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		buf.read_i32::<BigEndian>()
+	}
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_i32::<BigEndian>(*self)
+	}
+}
+impl PacketData for bool {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(buf.read_u8()? == 1)
+	}
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_u8(if *self { 1 } else { 0 })?;
+		Ok(())
+	}
+}
 
 #[derive(Debug)]
 pub struct VarInt(i32);
