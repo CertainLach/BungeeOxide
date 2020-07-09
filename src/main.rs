@@ -75,6 +75,7 @@ impl UserHandle {
 			State::Handshaking => self.handle_handshaking(packet_id, data).await?,
 			State::Status => self.handle_status(packet_id, data).await?,
 			State::Login => self.handle_login(packet_id, data).await?,
+			State::Play => self.handle_play(packet_id, data).await?,
 			_ => todo!(),
 		};
 		Ok(())
@@ -118,9 +119,13 @@ impl UserHandle {
 					Ok(())
 				})
 				.await?;
+				self.state = State::Play;
 			}
 			_ => todo!(),
 		}
+		Ok(())
+	}
+	async fn handle_play(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
 		Ok(())
 	}
 }
