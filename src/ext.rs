@@ -1,11 +1,16 @@
+
 use async_trait::async_trait;
-use io::{AsyncReadExt, AsyncWrite, AsyncWriteExt};
-use std::io::{Read, Write};
-use tokio::io::{self, AsyncRead};
+use std::io::{Write, Read};
+use tokio::io::{self, AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+
+pub struct Varint21 {
+	pub ans: i32,
+	pub size: u8,
+}
 
 #[async_trait]
 pub trait MinecraftAsyncReadExt: AsyncRead + Unpin {
-	async fn read_varint(&mut self) -> io::Result<(i32, u8)> {
+	async fn read_varint(&mut self) -> io::Result<Varint21> {
 		let mut buf = [0];
 		let mut ans = 0;
 		let mut size = 0;
@@ -17,12 +22,27 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin {
 				break;
 			}
 		}
-		Ok((ans, size))
+		Ok(Varint21 { ans, size })
+	}
+
+	async fn read_bytes(&mut self, limit: i32) -> io::Result<Vec<u8>> {
+		let length = self.read_varint().await?.ans;
+		if length > limit {
+			panic!("Length exceeds limit"); // TODO don't panic
+		}
+		let mut buf = vec![0; length as usize];
+		self.read_exact(&mut buf).await?;
+		Ok(buf)
+	}
+
+	async fn read_string(&mut self, limit: i32) -> io::Result<String> {
+		let bytes = self.read_bytes(limit).await?;
+		Ok(String::from_utf8_lossy(&bytes).to_string())
 	}
 }
-impl<T> MinecraftAsyncReadExt for T where T: AsyncRead + Unpin {}
+
 pub trait MinecraftReadExt: Read {
-	fn read_varint(&mut self) -> io::Result<(i32, u8)> {
+	fn read_varint(&mut self) -> io::Result<Varint21> {
 		let mut buf = [0];
 		let mut ans = 0;
 		let mut size = 0;
@@ -34,19 +54,23 @@ pub trait MinecraftReadExt: Read {
 				break;
 			}
 		}
-		Ok((ans, size))
+		Ok(Varint21 { ans, size })
 	}
-	fn read_buf(&mut self) -> io::Result<Vec<u8>> {
-		let len = self.read_varint()?.0;
-		let mut buf = vec![0; len as usize];
-		self.read_exact(&mut buf)?;
+	fn read_bytes(&mut self, limit: i32) -> io::Result<Vec<u8>> {
+		let length = self.read_varint().unwrap().ans;
+		if length > limit {
+			panic!("Length exceeds limit"); // TODO don't panic
+		}
+		let mut buf = vec![0; length as usize];
+		self.read_exact(&mut buf).unwrap();
 		Ok(buf)
 	}
-	fn read_string(&mut self) -> io::Result<String> {
-		Ok(String::from_utf8(self.read_buf()?).unwrap())
+
+	fn read_string(&mut self, limit: i32) -> io::Result<String> {
+		let bytes = self.read_bytes(limit).unwrap();
+		Ok(String::from_utf8_lossy(&bytes).to_string())
 	}
 }
-impl<T> MinecraftReadExt for T where T: Read {}
 
 #[async_trait]
 pub trait MinecraftAsyncWriteExt: AsyncWrite + Unpin {
