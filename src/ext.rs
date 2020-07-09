@@ -118,3 +118,4 @@ pub trait MinecraftWriteExt: Write {
 	}
 }
 impl<T> MinecraftWriteExt for T where T: Write {}
+

@@ -1,16 +1,14 @@
 mod ext;
 mod protocol;
 
-use byteorder::BigEndian;
-use byteorder::ReadBytesExt;
-use ext::{MinecraftReadExt, MinecraftWriteExt, Varint21};
+use ext::{MinecraftWriteExt, Varint21};
 use std::{
 	io::{Cursor, Read},
 	ops::{Deref, DerefMut},
 };
 use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
-use protocol::{handshake::Handshake, State, status::StatusRequest, Packet};
+use protocol::{handshake::Handshake, State, status::StatusRequest, login::LoginStart, Packet};
 
 
 struct UserHandle {
@@ -76,6 +74,7 @@ impl UserHandle {
 		match self.state {
 			State::Handshaking => self.handle_handshaking(packet_id, data).await?,
 			State::Status => self.handle_status(packet_id, data).await?,
+			State::Login => self.handle_login(packet_id, data).await?,
 			_ => todo!(),
 		};
 		Ok(())
@@ -106,6 +105,24 @@ impl UserHandle {
 		}
 		Ok(())
 	}
+	async fn handle_login(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
+		match packet_id {
+			0 => {
+				let packet = LoginStart::read(data)?;
+				println!("Login: {:?}", packet);
+				let name = packet.name;
+				// TODO encryption request
+				self.write_packet(2, |c| {
+					c.write_string("a9213bf3-13a7-44e0-a456-db16b1c2b43f")?;
+					c.write_string(name.as_str())?;
+					Ok(())
+				})
+				.await?;
+			}
+			_ => todo!(),
+		}
+		Ok(())
+	}
 }
 
 #[tokio::main(core_threads = 4, max_threads = 8)]
@@ -118,7 +135,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 		tokio::spawn(async move {
 			let mut handle = UserHandle {
 				stream,
-				state: State::Handshaking,
+				state: State::Handshaking
 			};
 			if let Err(e) = handle.process().await {
 				println!("User error: {:?}", e);
