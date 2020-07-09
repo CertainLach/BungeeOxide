@@ -18,7 +18,13 @@ impl IncomingPacketData<'_> {
 		if T::ID != self.id {
 			panic!("bad cast");
 		}
-		T::read(&mut self.data)
+		let value = T::read(&mut self.data)?;
+		assert_eq!(
+			self.data.position() as usize,
+			self.data.get_ref().len(),
+			"while reading "
+		);
+		Ok(value)
 	}
 }
 
