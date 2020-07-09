@@ -10,7 +10,6 @@ use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use protocol::{handshake::Handshake, State, status::StatusRequest, login::LoginStart, Packet};
 
-
 struct UserHandle {
 	stream: TcpStream,
 	state: State,
@@ -141,7 +140,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 			let mut handle = UserHandle {
 				stream,
 				state: State::Handshaking,
-				keep_alive: None,
 			};
 			if let Err(e) = handle.process().await {
 				println!("User error: {:?}", e);
