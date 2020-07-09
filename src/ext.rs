@@ -1,6 +1,6 @@
 use async_trait::async_trait;
-use io::AsyncReadExt;
-use std::io::Read;
+use io::{AsyncReadExt, AsyncWrite, AsyncWriteExt};
+use std::io::{Read, Write};
 use tokio::io::{self, AsyncRead};
 
 #[async_trait]
@@ -47,3 +47,49 @@ pub trait MinecraftReadExt: Read {
 	}
 }
 impl<T> MinecraftReadExt for T where T: Read {}
+
+#[async_trait]
+pub trait MinecraftAsyncWriteExt: AsyncWrite + Unpin {
+	async fn write_varint(&mut self, mut value: i32) -> io::Result<()> {
+		loop {
+			let mut temp = value as u8 & 0b01111111;
+			value >>= 7;
+			if value != 0 {
+				temp |= 0b10000000;
+			}
+			if value == 0 {
+				break;
+			}
+			self.write_all(&[temp]).await?;
+		}
+		Ok(())
+	}
+}
+impl<T> MinecraftAsyncWriteExt for T where T: AsyncWrite + Unpin {}
+
+pub trait MinecraftWriteExt: Write {
+	fn write_varint(&mut self, mut value: i32) -> io::Result<()> {
+		loop {
+			let mut temp = value as u8 & 0b01111111;
+			value >>= 7;
+			if value != 0 {
+				temp |= 0b10000000;
+			}
+			if value == 0 {
+				break;
+			}
+			self.write_all(&[temp])?;
+		}
+		Ok(())
+	}
+	fn write_buf(&mut self, buf: &[u8]) -> io::Result<()> {
+		self.write_varint(buf.len() as i32)?;
+		self.write_all(&buf)?;
+		Ok(())
+	}
+	fn write_string(&mut self, str: &str) -> io::Result<()> {
+		self.write_buf(str.as_bytes())?;
+		Ok(())
+	}
+}
+impl<T> MinecraftWriteExt for T where T: Write {}

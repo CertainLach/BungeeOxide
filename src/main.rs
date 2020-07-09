@@ -1,10 +1,10 @@
 mod ext;
 
+use byteorder::BigEndian;
 use byteorder::ReadBytesExt;
-use byteorder::{BigEndian, ByteOrder};
-use ext::*;
+use ext::{MinecraftReadExt, MinecraftWriteExt};
 use std::{
-	io::{Cursor, Read, Write},
+	io::{Cursor, Read},
 	ops::{Deref, DerefMut},
 };
 use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
@@ -72,6 +72,7 @@ impl DerefMut for UserHandle {
 impl UserHandle {
 	// TODO: Return Err instead of panic on protocol error
 	async fn process(&mut self) -> io::Result<()> {
+		use ext::MinecraftAsyncReadExt;
 		let mut buf = vec![0; 256];
 		loop {
 			let (packet_length, _) = self.read_varint().await?;
@@ -96,12 +97,21 @@ impl UserHandle {
 		packet_id: i32,
 		data: impl FnOnce(&mut Cursor<Vec<u8>>) -> io::Result<()>,
 	) -> io::Result<()> {
-		let mut writer = Cursor::new(Vec::new());
-		data(&mut writer)?;
-		let out = writer.into_inner();
-		self.write_all(&[out.len() as u8 + 1, packet_id as u8]).await?;
-		self.write_all(&out).await?;
-		Ok(())
+		let out = {
+			let mut writer = Cursor::new(Vec::new());
+			writer.write_varint(packet_id)?;
+			data(&mut writer)?;
+			writer.into_inner()
+		};
+		{
+			use ext::MinecraftAsyncWriteExt;
+			self.write_varint(out.len() as i32).await?;
+
+			self.write_all(&[out.len() as u8 + 1, packet_id as u8])
+				.await?;
+			self.write_all(&out).await?;
+			Ok(())
+		}
 	}
 	async fn handle(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
 		match self.state {
@@ -128,7 +138,7 @@ impl UserHandle {
 				let packet = StatusRequest::read(data)?;
 				println!("Request: {:?}", packet);
 				self.write_packet(0, |c| {
-					Write::write_all(c, b"\x20{\"players\":{\"max\":3,\"online\":4}}")?;
+					c.write_string("{\"players\":{\"max\":3,\"online\":4}}")?;
 					Ok(())
 				})
 				.await?;
