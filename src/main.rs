@@ -230,8 +230,15 @@ async fn handle_stream(stream: TcpStream) -> Result<(), SocketError> {
 	let mut first_connection = true;
 	loop {
 		let (mut server, server_info) = open_server_connection(&logged_in).await?;
+
 		if first_connection {
-			println!("Sent success");
+			user.write_packet(
+				None,
+				&SetCompression {
+					threshold: THRESHOLD.into(),
+				},
+			)
+			.await?;
 			user.write_packet(
 				Some(THRESHOLD),
 				&LoginSuccess {
