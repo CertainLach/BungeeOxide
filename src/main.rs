@@ -117,7 +117,7 @@ impl UserHandle {
 				println!("Login: {:?}", packet);
 				let name = packet.name;
 				// TODO encryption request
-				self.write_packet(2, |c| {
+				self.write_packet_fn(2, |c| {
 					c.write_string("a9213bf3-13a7-44e0-a456-db16b1c2b43f")?;
 					c.write_string(name.as_str())?;
 					Ok(())

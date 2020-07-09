@@ -42,8 +42,10 @@ pub struct EncryptionResponse {
 	pub shared_secret: Vec<u8>,
 	pub verify_token: Vec<u8>,
 }
-
 impl Packet for EncryptionResponse {
+    const ID: i32 = 0x01;
+}
+impl PacketData for EncryptionResponse {
 	fn read<R: Read>(buf: &mut R) -> Result<Self> {
 		let shared_secret = buf.read_bytes(128)?;
 		let verify_token = buf.read_bytes(128)?;
@@ -52,4 +54,7 @@ impl Packet for EncryptionResponse {
 			verify_token,
 		})
 	}
+	fn write<W: std::io::Write>(&self, buf: &mut W) -> Result<()> {
+        todo!()
+    }
 }
