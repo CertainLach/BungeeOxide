@@ -4,7 +4,7 @@ use byteorder::ReadBytesExt;
 use byteorder::{BigEndian, ByteOrder};
 use ext::*;
 use std::{
-	io::Read,
+	io::{Cursor, Read},
 	ops::{Deref, DerefMut},
 };
 use tokio::io::{self, AsyncReadExt};
@@ -15,12 +15,14 @@ trait Packet: Sized {
 }
 #[derive(Debug)]
 enum State {
+	Handshaking,
 	Status,
 	Login,
 }
 impl Packet for State {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		Ok(match buf.read_varint()?.0 {
+			0 => Self::Handshaking,
 			1 => Self::Status,
 			2 => Self::Login,
 			_ => todo!(),
@@ -44,9 +46,17 @@ impl Packet for ServerHandshare {
 		})
 	}
 }
+#[derive(Debug)]
+struct StatusRequest;
+impl Packet for StatusRequest {
+    fn read<R: Read>(_buf: &mut R) -> io::Result<Self> {
+		Ok(StatusRequest)
+	}
+}
 
 struct UserHandle {
 	stream: TcpStream,
+	state: State,
 }
 impl Deref for UserHandle {
 	type Target = TcpStream;
@@ -77,10 +87,38 @@ impl UserHandle {
 				self.read_exact(buf).await?;
 				let buf = &*buf;
 				let mut cursor = std::io::Cursor::new(buf);
-				let packet = ServerHandshare::read(&mut cursor)?;
-				println!("Received packet: {:?}", packet);
+				self.handle(packet_id, &mut cursor).await?;
 			}
 		}
+	}
+	async fn handle(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
+		match self.state {
+			State::Handshaking => self.handle_handshaking(packet_id, data).await?,
+			State::Status => self.handle_status(packet_id, data).await?,
+			_ => todo!(),
+		};
+		Ok(())
+	}
+	async fn handle_handshaking(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
+		match packet_id {
+			0 => {
+				let packet = ServerHandshare::read(data)?;
+				println!("Handshake: {:?}", packet);
+				self.state = packet.next_state;
+			}
+			_ => todo!(),
+		}
+		Ok(())
+	}
+	async fn handle_status(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
+		match packet_id {
+			0 => {
+				let packet = StatusRequest::read(data)?;
+				println!("Request: {:?}", packet);
+			}
+			_ => todo!(),
+		}
+		Ok(())
 	}
 }
 
@@ -92,7 +130,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 		let (stream, _) = listener.accept().await?;
 		println!("Got connection: {:?}", stream);
 		tokio::spawn(async move {
-			let mut handle = UserHandle { stream };
+			let mut handle = UserHandle {
+				stream,
+				state: State::Handshaking,
+			};
 			if let Err(e) = handle.process().await {
 				println!("User error: {:?}", e);
 			};
