@@ -4,10 +4,10 @@ use byteorder::ReadBytesExt;
 use byteorder::{BigEndian, ByteOrder};
 use ext::*;
 use std::{
-	io::{Cursor, Read},
+	io::{Cursor, Read, Write},
 	ops::{Deref, DerefMut},
 };
-use tokio::io::{self, AsyncReadExt};
+use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 
 trait Packet: Sized {
@@ -49,7 +49,7 @@ impl Packet for ServerHandshare {
 #[derive(Debug)]
 struct StatusRequest;
 impl Packet for StatusRequest {
-    fn read<R: Read>(_buf: &mut R) -> io::Result<Self> {
+	fn read<R: Read>(_buf: &mut R) -> io::Result<Self> {
 		Ok(StatusRequest)
 	}
 }
@@ -91,6 +91,18 @@ impl UserHandle {
 			}
 		}
 	}
+	async fn write_packet(
+		&mut self,
+		packet_id: i32,
+		data: impl FnOnce(&mut Cursor<Vec<u8>>) -> io::Result<()>,
+	) -> io::Result<()> {
+		let mut writer = Cursor::new(Vec::new());
+		data(&mut writer)?;
+		let out = writer.into_inner();
+		self.write_all(&[out.len() as u8 + 1, packet_id as u8]).await?;
+		self.write_all(&out).await?;
+		Ok(())
+	}
 	async fn handle(&mut self, packet_id: i32, data: &mut impl Read) -> io::Result<()> {
 		match self.state {
 			State::Handshaking => self.handle_handshaking(packet_id, data).await?,
@@ -115,6 +127,11 @@ impl UserHandle {
 			0 => {
 				let packet = StatusRequest::read(data)?;
 				println!("Request: {:?}", packet);
+				self.write_packet(0, |c| {
+					Write::write_all(c, b"\x20{\"players\":{\"max\":3,\"online\":4}}")?;
+					Ok(())
+				})
+				.await?;
 			}
 			_ => todo!(),
 		}
