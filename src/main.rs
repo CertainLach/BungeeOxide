@@ -1,26 +1,49 @@
-use async_trait::async_trait;
-use std::ops::{Deref, DerefMut};
-use tokio::io::{self, AsyncRead, AsyncReadExt};
+mod ext;
+
+use byteorder::ReadBytesExt;
+use byteorder::{BigEndian, ByteOrder};
+use ext::*;
+use std::{
+	io::Read,
+	ops::{Deref, DerefMut},
+};
+use tokio::io::{self, AsyncReadExt};
 use tokio::net::{TcpListener, TcpStream};
 
-#[async_trait]
-trait MinecraftAsyncReadExt: AsyncRead + Unpin {
-	async fn read_varint(&mut self) -> io::Result<(i32, u8)> {
-		let mut buf = [0];
-		let mut ans = 0;
-		let mut size = 0;
-		for i in 0..=4 {
-			self.read_exact(&mut buf).await?;
-			size += 1;
-			ans |= ((buf[0] & 0b0111_1111) as i32) << (7 * i);
-			if buf[0] & 0b1000_0000 == 0 {
-				break;
-			}
-		}
-		Ok((ans, size))
+trait Packet: Sized {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self>;
+}
+#[derive(Debug)]
+enum State {
+	Status,
+	Login,
+}
+impl Packet for State {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(match buf.read_varint()?.0 {
+			1 => Self::Status,
+			2 => Self::Login,
+			_ => todo!(),
+		})
 	}
 }
-impl<T> MinecraftAsyncReadExt for T where T: AsyncRead + Unpin {}
+#[derive(Debug)]
+struct ServerHandshare {
+	protocol: i32,
+	address: String,
+	port: i16,
+	next_state: State,
+}
+impl Packet for ServerHandshare {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(ServerHandshare {
+			protocol: buf.read_varint()?.0,
+			address: buf.read_string()?,
+			port: buf.read_i16::<BigEndian>()?,
+			next_state: State::read(buf)?,
+		})
+	}
+}
 
 struct UserHandle {
 	stream: TcpStream,
@@ -53,7 +76,9 @@ impl UserHandle {
 				let buf = &mut buf[0..packet_length as usize];
 				self.read_exact(buf).await?;
 				let buf = &*buf;
-				println!("Received packet: {} {:?}", packet_id, buf);
+				let mut cursor = std::io::Cursor::new(buf);
+				let packet = ServerHandshare::read(&mut cursor)?;
+				println!("Received packet: {:?}", packet);
 			}
 		}
 	}
@@ -61,7 +86,7 @@ impl UserHandle {
 
 #[tokio::main(core_threads = 4, max_threads = 8)]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-	let mut listener = TcpListener::bind("127.0.0.1:25565").await?;
+	let mut listener = TcpListener::bind("127.0.0.1:25566").await?;
 
 	loop {
 		let (stream, _) = listener.accept().await?;
