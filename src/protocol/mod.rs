@@ -4,10 +4,11 @@ mod packet;
 pub mod play;
 pub mod status;
 
-use std::io::Read;
+use std::io::{Read, Write};
 use tokio::io;
 
 pub use crate::ext::MinecraftReadExt;
+pub use crate::ext::MinecraftWriteExt;
 pub use packet::*;
 #[derive(Debug)]
 pub enum State {
@@ -26,6 +27,6 @@ impl PacketData for State {
 		})
 	}
 	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
-        todo!()
-    }
+		todo!()
+	}
 }
