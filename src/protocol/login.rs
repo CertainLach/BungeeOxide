@@ -5,7 +5,23 @@ pub struct LoginStart {
 	pub name: String,
 }
 impl Packet for LoginStart {
-	const ID: i32 = 0;
+	const ID: i32 = 0x00;
+}
+
+#[derive(Debug, PacketData)]
+pub struct Disconnect {
+	pub reason: String,
+}
+impl Packet for Disconnect {
+	const ID: i32 = 0x00;
+}
+
+#[derive(Debug, PacketData)]
+pub struct SetCompression {
+	pub threshold: VarInt,
+}
+impl Packet for SetCompression {
+	const ID: i32 = 0x03;
 }
 
 #[derive(Debug, PacketData)]
@@ -14,7 +30,7 @@ pub struct LoginSuccess {
 	pub username: String,
 }
 impl Packet for LoginSuccess {
-	const ID: i32 = 2;
+	const ID: i32 = 0x02;
 }
 
 #[derive(PacketData)]

@@ -12,7 +12,7 @@ pub use crate::ext::MinecraftWriteExt;
 use derive_packetdata::PacketData;
 pub use packet::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum State {
 	Handshaking,
 	Status,
@@ -25,10 +25,17 @@ impl PacketData for State {
 			0 => Self::Handshaking,
 			1 => Self::Status,
 			2 => Self::Login,
-			_ => todo!(),
+			3 => Self::Play,
+			_ => unreachable!(),
 		})
 	}
 	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
-		todo!()
+		buf.write_varint(match self {
+			State::Handshaking => 0,
+			State::Status => 1,
+			State::Login => 2,
+			State::Play => 3,
+		})?;
+		Ok(())
 	}
 }

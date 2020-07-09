@@ -30,6 +30,14 @@ impl PacketData for i32 {
 		buf.write_i32::<BigEndian>(*self)
 	}
 }
+impl PacketData for i64 {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		buf.read_i64::<BigEndian>()
+	}
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_i64::<BigEndian>(*self)
+	}
+}
 impl PacketData for bool {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		Ok(buf.read_u8()? == 1)
@@ -41,7 +49,7 @@ impl PacketData for bool {
 }
 
 #[derive(Debug)]
-pub struct VarInt(i32);
+pub struct VarInt(pub i32);
 impl Deref for VarInt {
 	type Target = i32;
 	fn deref(&self) -> &Self::Target {
@@ -80,9 +88,9 @@ where
 		Ok(out)
 	}
 	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
-		VarInt(self.len() as i32).write(buf);
+		VarInt(self.len() as i32).write(buf)?;
 		for v in self.iter() {
-			v.write(buf);
+			v.write(buf)?;
 		}
 		Ok(())
 	}

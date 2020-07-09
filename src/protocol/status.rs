@@ -15,9 +15,25 @@ impl PacketData for StatusRequest {
 }
 
 #[derive(PacketData)]
-struct StatusResponse {
-	response: String,
+pub struct StatusResponse {
+	pub response: String,
 }
 impl Packet for StatusResponse {
 	const ID: i32 = 0;
+}
+
+#[derive(PacketData)]
+pub struct Ping {
+	pub payload: i64,
+}
+impl Packet for Ping {
+	const ID: i32 = 0x01;
+}
+
+#[derive(PacketData)]
+pub struct Pong {
+	pub payload: i64,
+}
+impl Packet for Pong {
+	const ID: i32 = 0x01;
 }

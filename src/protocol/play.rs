@@ -1,5 +1,4 @@
 use super::*;
-use byteorder::{BigEndian, ReadBytesExt};
 
 #[derive(PacketData)]
 pub struct JoinGame {
@@ -13,7 +12,7 @@ pub struct JoinGame {
 }
 
 impl Packet for JoinGame {
-	const ID: i32 = 0x26;
+	const ID: i32 = 0x23;
 }
 
 #[derive(Debug, PacketData)]
