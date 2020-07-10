@@ -5,13 +5,16 @@ use ext::*;
 use protocol::{
 	handshake::Handshake,
 	login::{Disconnect, LoginStart, LoginSuccess, SetCompression},
+	play::{ChatRequest, ChatResponse},
 	status::{Ping, Pong, StatusRequest, StatusResponse},
-	Packet, PacketData, State,
+	Packet, State,
 };
 use quick_error::quick_error;
 use tokio::io;
-use tokio::net::{TcpListener, TcpStream};
-
+use tokio::{
+	net::{TcpListener, TcpStream},
+	select,
+};
 const THRESHOLD: i32 = 256;
 
 struct LoggedInInfo {
@@ -122,8 +125,9 @@ quick_error! {
 /// Открывает соединение с сервером для заданного юзера, проверяет корректность возвращённых данных
 async fn open_server_connection(
 	info: &LoggedInInfo,
+	address: &str,
 ) -> Result<(TcpStream, ConnectedServerInfo), ServerConnectionError> {
-	let mut stream = TcpStream::connect("89.163.251.26:25738").await?;
+	let mut stream = TcpStream::connect(address).await?;
 	let mut buf = Vec::new();
 	println!("Opening");
 
@@ -132,7 +136,7 @@ async fn open_server_connection(
 		.write_packet(
 			compression,
 			&Handshake {
-				address: "mc.bullcraft.ru".to_owned(),
+				address: "test".to_owned(),
 				protocol: 340.into(),
 				port: 25565,
 				next_state: State::Login,
@@ -181,35 +185,64 @@ struct StreamPair {
 	server: TcpStream,
 }
 
+#[derive(PartialEq)]
+enum CommunicateResult {
+	None,
+	AnotherServer(String),
+}
+
 /// Проводит общение юзера с сервером, успешно выходит после завершения соединения с сервером, падает при падении клиента
-async fn communicate_user_server(streams: StreamPair) -> io::Result<TcpStream> {
+async fn communicate_user_server(
+	streams: StreamPair,
+) -> io::Result<(TcpStream, CommunicateResult)> {
 	let compression = Some(THRESHOLD);
 	let (mut server_read, mut server_write) = streams.server.into_split();
 	let (mut user_read, mut user_write) = streams.user.into_split();
-	let server = tokio::spawn(async move {
-		let mut buf = Vec::new();
-		loop {
-			let packet = server_read
-				.read_packet(compression, &mut buf)
-				.await
-				.unwrap();
-			println!("S => C {:?}", packet);
-			packet.write(compression, &mut user_write).await.unwrap();
-		}
-		user_write
-	});
-	let user = tokio::spawn(async move {
-		let mut buf = Vec::new();
-		loop {
-			let packet = user_read.read_packet(compression, &mut buf).await.unwrap();
-			println!("C => S {:?}", packet);
-			packet.write(compression, &mut server_write).await.unwrap();
-		}
-		user_read
-	});
-	let user_write = server.await?;
-	let user_read = user.await?;
-	Ok(user_read.reunite(user_write).unwrap())
+
+	let mut s_peek_buf = [0];
+	let mut u_peek_buf = [0];
+	let mut packet_buf = Vec::new();
+	let mut action = CommunicateResult::None;
+
+	while action == CommunicateResult::None {
+		// Если есть пакет от сервера - шлём пакет от сервера
+		// Есть от клиента - шлём от клиента
+		// Есть эвент - шлём эвент
+		let action = select! {
+			_ = server_read.peek(&mut s_peek_buf) => {
+				// println!("Server read");
+				let packet = server_read.read_packet(compression, &mut packet_buf).await?;
+				packet.write(compression, &mut user_write).await?;
+			}
+			_ = user_read.peek(&mut u_peek_buf) => {
+				// println!("Client read");
+				let packet = user_read.read_packet(compression, &mut packet_buf).await?;
+				match packet.cheap_id() {
+					Some(ChatRequest::ID) => {
+						let chat = packet.cast::<ChatRequest>()?;
+						println!("Got chat");
+						if chat.message == "/proxy-ping" {
+							user_write.write_packet(compression, &ChatResponse {
+								message: r#"{"text":"Pong"}"#.to_owned(),
+								position: 0,
+							}).await?;
+						}else if  chat.message.starts_with("/proxy-goto "){
+							action = CommunicateResult::AnotherServer((&chat.message["/proxy-goto ".len()..]).to_owned());
+						}else {
+							server_write.write_packet(compression, &chat).await?;
+						}
+					}
+					_ => {
+						packet.write(compression, &mut server_write).await?;
+					}
+				}
+			}
+		};
+	}
+
+	let _ = server_read.reunite(server_write).unwrap();
+
+	Ok((user_read.reunite(user_write).unwrap(), action))
 }
 
 quick_error! {
@@ -231,8 +264,9 @@ async fn handle_stream(stream: TcpStream) -> Result<(), SocketError> {
 	let (mut user, logged_in) = handle_socket_login(stream).await?;
 	println!("User logged in");
 	let mut first_connection = true;
+	let mut target = "89.163.251.26:25738".to_owned();
 	loop {
-		let (mut server, server_info) = open_server_connection(&logged_in).await?;
+		let (mut server, server_info) = open_server_connection(&logged_in, &target).await?;
 
 		if first_connection {
 			user.write_packet(
@@ -253,9 +287,14 @@ async fn handle_stream(stream: TcpStream) -> Result<(), SocketError> {
 			first_connection = false;
 		}
 		println!("Server connected");
-		user = communicate_user_server(StreamPair { user, server })
+		let (new_user, result) = communicate_user_server(StreamPair { user, server })
 			.await
 			.unwrap();
+		user = new_user;
+		match result {
+			CommunicateResult::None => unreachable!(),
+			CommunicateResult::AnotherServer(s) => target = s,
+		}
 	}
 }
 
