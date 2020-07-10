@@ -116,6 +116,10 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 				ensure_capacity(buf, total_length as usize);
 				let buf = &mut buf[..total_length as usize];
 				self.read_exact(buf).await?;
+				// Deflate, 32K window
+				assert_eq!(buf[0], 0x78);
+				// Level 6, no dict id
+				// assert_eq!(buf[1], 0x9C);
 				return Ok(MaybeCompressed::Compressed(data_length.ans as usize, buf));
 			}
 			total_length
