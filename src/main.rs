@@ -18,8 +18,16 @@ use tokio::{
 	net::{TcpListener, TcpStream},
 	select,
 };
+use rsa::{RSAPublicKey, RSAPrivateKey};
+use rand::rngs::OsRng;
+use lazy_static::lazy_static;
 
 const THRESHOLD: i32 = 256;
+
+lazy_static! {
+static ref PRIVATE_KEY: RSAPrivateKey = RSAPrivateKey::new(&mut OsRng, 1024).unwrap();
+static ref PUBLIC_KEY: RSAPublicKey = RSAPublicKey::from(&PRIVATE_KEY);
+}
 
 struct LoggedInInfo {
 	username: String,
@@ -43,7 +51,6 @@ async fn handle_socket_login(
 ) -> Result<(TcpStream, LoggedInInfo), SocketLoginError> {
 	let mut state = State::Handshaking;
 	let mut name = None::<String>;
-	let encryption_request = None::<EncryptionRequest>;
 	loop {
 		let mut initial_buffer = Vec::new();
 		let data = stream.read_packet(None, &mut initial_buffer).await?;
@@ -100,13 +107,15 @@ async fn handle_socket_login(
 			}
 			(State::Login, LoginStart::ID) => {
 				let req = data.cast::<LoginStart>()?;
+				println!("LoginStart {:?}", req);
 				name = Some(req.name);
 				let (hash, verify) = {
 					let mut rng = thread_rng();
-					(rng.gen::<u64>(), rng.gen::<[u8; 4]>())
+					(format!("{:x}", rng.gen::<u64>()), rng.gen::<[u8; 4]>().to_vec())
 				};
+				let request = EncryptionRequest { hash, verify };
 				stream
-					.write_packet(None, &EncryptionRequest { hash, verify })
+					.write_packet(None,  &request )
 					.await?;
 			}
 			(State::Login, EncryptionResponse::ID) => {
@@ -118,6 +127,7 @@ async fn handle_socket_login(
 					}
 					Some(k) => k,
 				};
+				println!("Encryption response {}", username);
 				break Ok((
 					stream,
 					LoggedInInfo {

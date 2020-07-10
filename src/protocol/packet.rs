@@ -56,17 +56,6 @@ impl PacketData for u64 {
 		buf.write_u64::<BigEndian>(*self)
 	}
 }
-impl PacketData for [u8;4] {
-	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
-		let mut arr = [0u8;4];
-		buf.read(&mut arr)?;
-		Ok(arr)
-	}
-
-	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
-		buf.write_all(self)
-	}
-}
 
 #[derive(Debug)]
 pub struct VarInt(pub i32);

@@ -44,8 +44,8 @@ impl Packet for EncryptionResponse {
 
 #[derive(PacketData)]
 pub struct EncryptionRequest {
-	pub hash: u64,
-	pub verify: [u8; 4],
+	pub hash: String,
+	pub verify: Vec<u8>,
 }
 impl Packet for EncryptionRequest {
 	const ID: i32 = 0x01;
