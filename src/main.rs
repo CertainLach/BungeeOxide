@@ -101,19 +101,15 @@ async fn handle_socket_login(
 			(State::Login, LoginStart::ID) => {
 				let req = data.cast::<LoginStart>()?;
 				name = Some(req.name);
-				let mut rng  = thread_rng();
-				let hash = rng.gen::<u64>();
-				let mut verify = [0u8; 4];
-				rng.fill(&mut verify);
-				drop(rng);
+				let (hash, verify) = {
+					let mut rng = thread_rng();
+					let hash = rng.gen::<u64>();
+					let mut verify = [0u8; 4];
+					rng.fill(&mut verify);
+					(hash, verify)
+				};
 				stream
-					.write_packet(
-						None,
-						&EncryptionRequest {
-							 hash,
-							verify,
-						},
-					)
+					.write_packet(None, &EncryptionRequest { hash, verify })
 					.await?;
 			}
 			(State::Login, EncryptionResponse::ID) => {
