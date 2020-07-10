@@ -4,17 +4,21 @@ mod protocol;
 use ext::*;
 use protocol::{
 	handshake::Handshake,
-	login::{Disconnect, LoginStart, LoginSuccess, SetCompression},
+	login::{
+		Disconnect, EncryptionRequest, EncryptionResponse, LoginStart, LoginSuccess, SetCompression,
+	},
 	play::{ChatRequest, ChatResponse},
 	status::{Ping, Pong, StatusRequest, StatusResponse},
 	Packet, State,
 };
 use quick_error::quick_error;
+use rand::{thread_rng, Rng};
 use tokio::io;
 use tokio::{
 	net::{TcpListener, TcpStream},
 	select,
 };
+
 const THRESHOLD: i32 = 256;
 
 struct LoggedInInfo {
@@ -30,6 +34,7 @@ quick_error! {
 			cause(err)
 		}
 		IncorrectStateIdCombo(state: State, id: i32) {}
+		IncorretLoginSequence(reason: String) {}
 	}
 }
 /// Проводит авторизацию юзера/выходит при ошибке/запросе статуса
@@ -37,6 +42,8 @@ async fn handle_socket_login(
 	mut stream: TcpStream,
 ) -> Result<(TcpStream, LoggedInInfo), SocketLoginError> {
 	let mut state = State::Handshaking;
+	let mut name = None::<String>;
+	let encryption_request = None::<EncryptionRequest>;
 	loop {
 		let mut initial_buffer = Vec::new();
 		let data = stream.read_packet(None, &mut initial_buffer).await?;
@@ -93,11 +100,35 @@ async fn handle_socket_login(
 			}
 			(State::Login, LoginStart::ID) => {
 				let req = data.cast::<LoginStart>()?;
-				// TODO: Encryption
+				name = Some(req.name);
+				let mut rng  = thread_rng();
+				let hash = rng.gen::<u64>();
+				let mut verify = [0u8; 4];
+				rng.fill(&mut verify);
+				drop(rng);
+				stream
+					.write_packet(
+						None,
+						&EncryptionRequest {
+							 hash,
+							verify,
+						},
+					)
+					.await?;
+			}
+			(State::Login, EncryptionResponse::ID) => {
+				let username = match name {
+					None => {
+						break Err(SocketLoginError::IncorretLoginSequence(
+							"Client did not send login".to_string(),
+						))
+					}
+					Some(k) => k,
+				};
 				break Ok((
 					stream,
 					LoggedInInfo {
-						username: req.name, //req.name
+						username,
 						uuid: "530fa97a-357f-3c19-94d3-0c5c65c18fe8".into(),
 					},
 				));

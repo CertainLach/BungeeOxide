@@ -41,3 +41,12 @@ pub struct EncryptionResponse {
 impl Packet for EncryptionResponse {
 	const ID: i32 = 0x01;
 }
+
+#[derive(PacketData)]
+pub struct EncryptionRequest {
+	pub hash: u64,
+	pub verify: [u8; 4],
+}
+impl Packet for EncryptionRequest {
+	const ID: i32 = 0x01;
+}

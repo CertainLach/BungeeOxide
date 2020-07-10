@@ -8,7 +8,7 @@ pub trait PacketData: Sized {
 }
 impl PacketData for String {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
-		Ok(buf.read_string(i32::MAX)?)
+		Ok(buf.read_string(std::i32::MAX)?)
 	}
 	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
 		buf.write_string(self)
@@ -45,6 +45,26 @@ impl PacketData for bool {
 	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
 		buf.write_u8(if *self { 1 } else { 0 })?;
 		Ok(())
+	}
+}
+impl PacketData for u64 {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		Ok(buf.read_i64::<BigEndian>()? as u64)
+	}
+
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_u64::<BigEndian>(*self)
+	}
+}
+impl PacketData for [u8;4] {
+	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+		let mut arr = [0u8;4];
+		buf.read(&mut arr)?;
+		Ok(arr)
+	}
+
+	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
+		buf.write_all(self)
 	}
 }
 
