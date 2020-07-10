@@ -103,10 +103,7 @@ async fn handle_socket_login(
 				name = Some(req.name);
 				let (hash, verify) = {
 					let mut rng = thread_rng();
-					let hash = rng.gen::<u64>();
-					let mut verify = [0u8; 4];
-					rng.fill(&mut verify);
-					(hash, verify)
+					(rng.gen::<u64>(), rng.gen::<[u8; 4]>())
 				};
 				stream
 					.write_packet(None, &EncryptionRequest { hash, verify })
