@@ -56,6 +56,13 @@ impl<'t> MaybeCompressed<'t> {
 			MaybeCompressed::Plain(d) => d.id,
 		}
 	}
+	/// ID for plain, cached unpacked id for compressed
+	pub fn cheap_id(&self) -> Option<i32> {
+		match self {
+			MaybeCompressed::Compressed(_, _) => None,
+			MaybeCompressed::Plain(d) => Some(d.id),
+		}
+	}
 	pub fn cast<T: Packet>(self) -> io::Result<T> {
 		self.unwrap().cast()
 	}
