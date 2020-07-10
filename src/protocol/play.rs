@@ -16,11 +16,19 @@ impl Packet for JoinGame {
 }
 
 #[derive(Debug, PacketData)]
-pub struct Chat {
-	message: String,
-	position: u8,
+pub struct ChatRequest {
+	pub message: String,
 }
-impl Packet for Chat {
+impl Packet for ChatRequest {
+	const ID: i32 = 0x02;
+}
+
+#[derive(Debug, PacketData)]
+pub struct ChatResponse {
+	pub message: String,
+	pub position: u8,
+}
+impl Packet for ChatResponse {
 	const ID: i32 = 0x0F;
 }
 
