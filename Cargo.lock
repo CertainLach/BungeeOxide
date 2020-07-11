@@ -68,9 +68,11 @@ dependencies = [
  "derive-packetdata",
  "futures",
  "lazy_static",
+ "num-bigint-dig",
  "quick-error",
  "rand",
  "rsa",
+ "rsa-der",
  "serde",
  "serde_json",
  "tokio",
@@ -697,6 +699,15 @@ dependencies = [
  "subtle",
  "thiserror",
  "zeroize",
+]
+
+[[package]]
+name = "rsa-der"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1170c86c683547fa781a0e39e6e281ebaedd4515be8a806022984f427ea3d44d"
+dependencies = [
+ "simple_asn1",
 ]
 
 [[package]]

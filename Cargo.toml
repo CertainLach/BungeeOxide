@@ -17,6 +17,10 @@ serde_json = "1.0.56"
 derive-packetdata = {path = "./derive-packetdata"}
 futures = "0.3.5"
 quick-error = "1.2.3"
+lazy_static = "1.4.0"
+
+# Online-mode
 rand = "0.7.3"
 rsa = "0.3.0"
-lazy_static = "1.4.0"
+rsa-der = "0.2.1"
+num-bigint-dig = "0.6.0"
