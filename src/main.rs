@@ -2,6 +2,7 @@ mod ext;
 mod protocol;
 
 use ext::*;
+use lazy_static::lazy_static;
 use protocol::{
 	handshake::Handshake,
 	login::{
@@ -12,21 +13,21 @@ use protocol::{
 	Packet, State,
 };
 use quick_error::quick_error;
+use rand::rngs::OsRng;
 use rand::{thread_rng, Rng};
+use rsa::{RSAPrivateKey, RSAPublicKey};
+use rsa_der::public_key_to_der;
 use tokio::io;
 use tokio::{
 	net::{TcpListener, TcpStream},
 	select,
 };
-use rsa::{RSAPublicKey, RSAPrivateKey};
-use rand::rngs::OsRng;
-use lazy_static::lazy_static;
 
 const THRESHOLD: i32 = 256;
 
 lazy_static! {
-static ref PRIVATE_KEY: RSAPrivateKey = RSAPrivateKey::new(&mut OsRng, 1024).unwrap();
-static ref PUBLIC_KEY: RSAPublicKey = RSAPublicKey::from(&PRIVATE_KEY);
+	static ref PRIVATE_KEY: RSAPrivateKey = RSAPrivateKey::new(&mut OsRng, 1024).unwrap();
+	static ref PUBLIC_KEY: RSAPublicKey = (&PRIVATE_KEY as &RSAPrivateKey).into();
 }
 
 struct LoggedInInfo {
@@ -106,28 +107,47 @@ async fn handle_socket_login(
 					.await?;
 			}
 			(State::Login, LoginStart::ID) => {
+				use num_bigint_dig::{BigInt, Sign::Plus};
+				use rsa::PublicKeyParts;
+
 				let req = data.cast::<LoginStart>()?;
-				println!("LoginStart {:?}", req);
 				name = Some(req.name);
-				let (hash, verify) = {
-					let mut rng = thread_rng();
-					(format!("{:x}", rng.gen::<u64>()), rng.gen::<[u8; 4]>().to_vec())
-				};
-				let request = EncryptionRequest { hash, verify };
+
+				let public = public_key_to_der(
+					&BigInt::from_biguint(Plus, PUBLIC_KEY.n().clone()).to_signed_bytes_be(),
+					&BigInt::from_biguint(Plus, PUBLIC_KEY.e().clone()).to_signed_bytes_be(),
+				);
+				let verify_token = [1, 2, 3, 4].into(); //thread_rng().gen::<[u8; 4]>().into();
 				stream
-					.write_packet(None,  &request )
+					.write_packet(
+						None,
+						&EncryptionRequest {
+							server_id: "".into(),
+							public,
+							verify_token,
+						},
+					)
 					.await?;
 			}
 			(State::Login, EncryptionResponse::ID) => {
 				let username = match name {
 					None => {
 						break Err(SocketLoginError::IncorretLoginSequence(
-							"Client did not send login".to_string(),
+							"Client did not send LoginStart".to_string(),
 						))
 					}
 					Some(k) => k,
 				};
-				println!("Encryption response {}", username);
+				let res = data.cast::<EncryptionResponse>()?;
+				let verify_token = PRIVATE_KEY
+					.decrypt(rsa::PaddingScheme::PKCS1v15Encrypt, &res.verify_token)
+					.unwrap();
+				let shared_secret = PRIVATE_KEY
+					.decrypt(rsa::PaddingScheme::PKCS1v15Encrypt, &res.shared_secret)
+					.unwrap();
+				assert_eq!(&verify_token, &[1, 2, 3, 4]);
+				println!("Verify token = {:?}", verify_token);
+				println!("Shared secret = {:?}", shared_secret);
 				break Ok((
 					stream,
 					LoggedInInfo {
