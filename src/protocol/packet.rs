@@ -93,7 +93,10 @@ where
 {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
 		let len = buf.read_varint()?.ans;
-		let out = vec![T::default(); len as usize];
+		let mut out = vec![T::default(); len as usize];
+		for v in out.iter_mut() {
+			*v = T::read(buf)?;
+		}
 		Ok(out)
 	}
 	fn write<W: Write>(&self, buf: &mut W) -> io::Result<()> {
