@@ -33,7 +33,7 @@ impl Packet for LoginSuccess {
 	const ID: i32 = 0x02;
 }
 
-#[derive(PacketData)]
+#[derive(Debug, PacketData)]
 pub struct EncryptionResponse {
 	pub shared_secret: Vec<u8>,
 	pub verify_token: Vec<u8>,
@@ -44,8 +44,9 @@ impl Packet for EncryptionResponse {
 
 #[derive(PacketData)]
 pub struct EncryptionRequest {
-	pub hash: String,
-	pub verify: Vec<u8>,
+	pub server_id: String,
+	pub public: Vec<u8>,
+	pub verify_token: Vec<u8>,
 }
 impl Packet for EncryptionRequest {
 	const ID: i32 = 0x01;
