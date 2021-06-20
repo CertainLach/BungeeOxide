@@ -1,30 +1,28 @@
 use crate::protocol::Packet;
 use async_trait::async_trait;
-use std::io::{Cursor, Read, Write};
+use compress::zlib::Decoder;
+use std::io::{BufReader, Cursor, Read, Write};
+use thiserror::Error;
 use tokio::io::{self, AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
 pub struct Varint21 {
 	pub ans: i32,
 	pub size: u8,
 }
-
-#[derive(Debug)]
-pub struct IncomingPacketData<'t> {
-	pub id: i32,
-	pub data: Cursor<&'t [u8]>,
-}
-impl IncomingPacketData<'_> {
-	pub fn cast<T: Packet>(mut self) -> io::Result<T> {
-		if T::ID != self.id {
-			panic!("bad cast");
+impl Varint21 {
+	fn read(mut read: impl Read) -> io::Result<Self> {
+		let mut buf = [0];
+		let mut ans = 0;
+		let mut size = 0;
+		for i in 0..=4 {
+			read.read_exact(&mut buf)?;
+			size += 1;
+			ans |= ((buf[0] & 0b0111_1111) as i32) << (7 * i);
+			if buf[0] & 0b1000_0000 == 0 {
+				break;
+			}
 		}
-		let value = T::read(&mut self.data)?;
-		assert_eq!(
-			self.data.position() as usize,
-			self.data.get_ref().len(),
-			"while reading "
-		);
-		Ok(value)
+		Ok(Self { ans, size })
 	}
 }
 
@@ -37,69 +35,166 @@ fn ensure_capacity(vec: &mut Vec<u8>, capacity: usize) {
 	}
 }
 
+#[derive(Error, Debug)]
+pub enum CompressedError {
+	#[error("miniz error #{0}")]
+	MinizError(i32),
+	#[error("user supplied bad packet")]
+	BadInputPacket,
+	#[error("io error")]
+	IoError(#[from] io::Error),
+}
+
 /// Представляет собой обёртку над сжатыми/не сжатыми данными
-#[derive(Debug)]
 pub enum MaybeCompressed<'t> {
-	Compressed(usize, &'t [u8]),
-	Plain(IncomingPacketData<'t>),
+	Decompressed {
+		packet_id: i32,
+		decompressed: Vec<u8>,
+		compressed: &'t [u8],
+	},
+	Compressed {
+		full_size: usize,
+		compressed: &'t [u8],
+	},
+	PartiallyDecompressed {
+		packet_id: i32,
+		full_size: usize,
+		decoder: compress::zlib::Decoder<Cursor<&'t [u8]>>,
+	},
+	Plain {
+		packet_id: i32,
+		data: &'t [u8],
+	},
 }
 impl<'t> MaybeCompressed<'t> {
-	pub fn unwrap(self) -> IncomingPacketData<'t> {
+	pub fn id(&mut self) -> Result<i32, CompressedError> {
 		match self {
-			MaybeCompressed::Compressed(_, _) => todo!("unpack"),
-			MaybeCompressed::Plain(d) => d,
+			MaybeCompressed::Decompressed { packet_id, .. }
+			| MaybeCompressed::Plain { packet_id, .. }
+			| MaybeCompressed::PartiallyDecompressed { packet_id, .. } => Ok(*packet_id),
+			MaybeCompressed::Compressed { .. } => {
+				self.partially_decompress()?;
+				self.id()
+			}
 		}
 	}
-	pub fn id(&self) -> i32 {
+	pub fn partially_decompress(&mut self) -> Result<(), CompressedError> {
 		match self {
-			MaybeCompressed::Compressed(_, _) => todo!("unpack first byte"),
-			MaybeCompressed::Plain(d) => d.id,
+			&mut MaybeCompressed::Compressed {
+				full_size,
+				compressed,
+			} => {
+				let cursor = Cursor::new(compressed);
+				let mut decoder = Decoder::new(cursor);
+				let packet_id = Varint21::read(&mut decoder)?;
+
+				*self = MaybeCompressed::PartiallyDecompressed {
+					packet_id: packet_id.ans,
+					decoder,
+					full_size: full_size - packet_id.size as usize,
+				};
+				todo!()
+			}
+			_ => Ok(()),
 		}
 	}
-	/// ID for plain, cached unpacked id for compressed
+	/// ID for partially uncompressed packets
 	pub fn cheap_id(&self) -> Option<i32> {
 		match self {
-			MaybeCompressed::Compressed(_, _) => None,
-			MaybeCompressed::Plain(d) => Some(d.id),
+			MaybeCompressed::Decompressed { packet_id, .. }
+			| MaybeCompressed::Plain { packet_id, .. }
+			| MaybeCompressed::PartiallyDecompressed { packet_id, .. } => Some(*packet_id),
+			_ => None,
 		}
 	}
-	pub fn cast<T: Packet>(self) -> io::Result<T> {
-		self.unwrap().cast()
+	pub fn decode<T: Packet>(self) -> io::Result<T> {
+		match self {
+			MaybeCompressed::Decompressed { decompressed, .. } => {
+				T::read(&mut Cursor::new(decompressed))
+			}
+			MaybeCompressed::Compressed { compressed, .. } => {
+				T::read(&mut BufReader::new(Decoder::new(Cursor::new(compressed))))
+			}
+			MaybeCompressed::PartiallyDecompressed { decoder, .. } => {
+				T::read(&mut BufReader::new(decoder))
+			}
+			MaybeCompressed::Plain { mut data, .. } => T::read(&mut data),
+		}
 	}
 	pub async fn write<W: AsyncWrite + Unpin + Send>(
-		&self,
-		compression: Option<i32>,
+		self,
+		compression_threshold: Option<i32>,
 		buf: &mut W,
 	) -> io::Result<()> {
 		match self {
-			MaybeCompressed::Compressed(size, data) => {
-				assert!(
-					compression.is_some(),
-					"can't send compressed data over uncompressed wire"
-				);
-				let size_size = varint_size(*size as i32);
-				buf.write_varint(data.len() as i32 + size_size as i32)
+			// Fast path is available
+			MaybeCompressed::Compressed {
+				full_size,
+				compressed,
+			} if compression_threshold
+				.map(|compression_threshold| compression_threshold as usize <= full_size)
+				.unwrap_or(false) =>
+			{
+				let size_size = varint_size(full_size as i32);
+				buf.write_varint(compressed.len() as i32 + size_size as i32)
 					.await?;
-				buf.write_varint(*size as i32).await?;
-				buf.write_all(&data).await?;
+				buf.write_varint(full_size as i32).await?;
+				buf.write_all(compressed).await?;
 			}
-			MaybeCompressed::Plain(data) => {
-				let id_len = varint_size(data.id);
-				if compression.is_some() {
-					buf.write_varint(data.data.get_ref().len() as i32 + id_len as i32 + 1)
+			MaybeCompressed::Decompressed {
+				decompressed,
+				compressed,
+				..
+			} if compression_threshold
+				.map(|compression_threshold| compression_threshold as usize <= decompressed.len())
+				.unwrap_or(false) =>
+			{
+				let size_size = varint_size(decompressed.len() as i32);
+				buf.write_varint(compressed.len() as i32 + size_size as i32)
+					.await?;
+				buf.write_varint(decompressed.len() as i32).await?;
+				buf.write_all(compressed).await?;
+			}
+			MaybeCompressed::PartiallyDecompressed {
+				full_size, decoder, ..
+			} if compression_threshold
+				.map(|compression_threshold| compression_threshold as usize <= full_size)
+				.unwrap_or(false) =>
+			{
+				let size_size = varint_size(full_size as i32);
+				let compressed = decoder.unwrap().into_inner();
+				buf.write_varint(compressed.len() as i32 + size_size as i32)
+					.await?;
+				buf.write_varint(full_size as i32).await?;
+				buf.write_all(compressed).await?;
+			}
+			MaybeCompressed::Plain { packet_id, data }
+				if compression_threshold
+					.map(|compression_threshold| {
+						compression_threshold as usize > data.len() + varint_size(packet_id)
+					})
+					.unwrap_or(true) =>
+			{
+				let id_len = varint_size(packet_id);
+				if compression_threshold.is_some() {
+					buf.write_varint(data.len() as i32 + id_len as i32 + 1)
 						.await?;
 					buf.write_varint(0).await?;
 				} else {
-					buf.write_varint(data.data.get_ref().len() as i32 + id_len as i32)
-						.await?;
+					buf.write_varint(data.len() as i32 + id_len as i32).await?;
 				}
-				buf.write_varint(data.id as i32).await?;
-				buf.write_all(data.data.get_ref()).await?;
+				buf.write_varint(packet_id as i32).await?;
+				buf.write_all(data).await?;
+			}
+			// Recompression needed
+			_ => {
+				todo!()
 			}
 		}
 		Ok(())
 	}
 }
+
 #[async_trait]
 pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 	async fn read_packet<'t>(
@@ -116,11 +211,10 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 				ensure_capacity(buf, total_length as usize);
 				let buf = &mut buf[..total_length as usize];
 				self.read_exact(buf).await?;
-				// Deflate, 32K window
-				assert_eq!(buf[0], 0x78);
-				// Level 6, no dict id
-				// assert_eq!(buf[1], 0x9C);
-				return Ok(MaybeCompressed::Compressed(data_length.ans as usize, buf));
+				return Ok(MaybeCompressed::Compressed {
+					full_size: data_length.ans as usize,
+					compressed: buf,
+				});
 			}
 			total_length
 		} else {
@@ -140,10 +234,11 @@ pub trait MinecraftAsyncReadExt: AsyncRead + Unpin + Send {
 		let buf = &mut buf[0..packet_length as usize];
 		self.read_exact(buf).await?;
 		let buf = &*buf;
-		Ok(MaybeCompressed::Plain(IncomingPacketData {
-			id: packet_id,
-			data: std::io::Cursor::new(buf),
-		}))
+
+		Ok(MaybeCompressed::Plain {
+			packet_id,
+			data: buf,
+		})
 	}
 	async fn read_varint(&mut self) -> io::Result<Varint21> {
 		let mut buf = [0];

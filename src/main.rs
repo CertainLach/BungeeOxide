@@ -4,7 +4,7 @@ pub mod plugins;
 mod protocol;
 
 use ext::*;
-use lazy_static::lazy_static;
+use log::warn;
 use plugin::{Plugin, TargetServer};
 use plugins::auth::{AuthError, AuthPlugin};
 use protocol::{
@@ -17,9 +17,6 @@ use protocol::{
 	Packet, State,
 };
 use quick_error::quick_error;
-use rand::rngs::OsRng;
-use rsa::{RSAPrivateKey, RSAPublicKey};
-use rsa_der::public_key_to_der;
 use thiserror::Error;
 use tokio::{io, net::lookup_host};
 use tokio::{
@@ -62,16 +59,20 @@ async fn handle_socket_login<A: AuthPlugin>(
 	let mut auth_data = None::<A::AuthData>;
 	loop {
 		let mut initial_buffer = Vec::new();
-		let data = stream.read_packet(None, &mut initial_buffer).await?;
-		match (state, data.id()) {
+		let mut data = stream.read_packet(None, &mut initial_buffer).await?;
+		match (
+			state,
+			data.id()
+				.expect("in handshake all packets are not compressed"),
+		) {
 			(State::Handshaking, Handshake::ID) => {
-				let packet = data.cast::<Handshake>()?;
+				let packet = data.decode::<Handshake>()?;
 				println!("Handshake: {:?}", packet);
 				state = packet.next_state;
 				protocol = Some(packet.protocol.0);
 			}
 			(State::Status, StatusResponse::ID) => {
-				let req = data.cast::<StatusRequest>()?;
+				let req = data.decode::<StatusRequest>()?;
 				println!("Request: {:?}", req);
 				stream
 					.write_packet(
@@ -105,7 +106,7 @@ async fn handle_socket_login<A: AuthPlugin>(
 					.await?;
 			}
 			(State::Status, Ping::ID) => {
-				let req = data.cast::<Ping>()?;
+				let req = data.decode::<Ping>()?;
 				stream
 					.write_packet(
 						None,
@@ -116,7 +117,7 @@ async fn handle_socket_login<A: AuthPlugin>(
 					.await?;
 			}
 			(State::Login, LoginStart::ID) => {
-				let req = data.cast::<LoginStart>()?;
+				let req = data.decode::<LoginStart>()?;
 
 				match auth_plugin.encryption_start(req.name.clone()) {
 					plugins::auth::EncryptionStartResult::BeginEncryption(request, data) => {
@@ -139,7 +140,7 @@ async fn handle_socket_login<A: AuthPlugin>(
 				let auth_data = auth_data
 					.take()
 					.ok_or(SocketLoginError::AuthPluginDidntRequestedEncryption)?;
-				let res = data.cast::<EncryptionResponse>()?;
+				let res = data.decode::<EncryptionResponse>()?;
 				let success = auth_plugin.encryption_response(auth_data, res).await?;
 				break Ok((
 					stream,
@@ -167,8 +168,8 @@ pub enum ServerConnectionError {
 	Disconnect(String),
 	#[error("server returned wrong name/uuid")]
 	BadLoginSuccess(LoginSuccess),
-	#[error("server sent bad compression threshold")]
-	BadCompressionThreshold(Option<i32>),
+	#[error("compression error: {0}")]
+	Compression(#[from] CompressedError),
 }
 
 /// Открывает соединение с сервером для заданного юзера, проверяет корректность возвращённых данных
@@ -203,27 +204,26 @@ async fn open_server_connection(
 	// Packet handling loop
 	let state = State::Login;
 	loop {
-		let data = stream.read_packet(compression, &mut buf).await?;
-		match (state, data.id()) {
+		let mut data = stream.read_packet(compression, &mut buf).await?;
+		match (state, data.id()?) {
 			(State::Login, SetCompression::ID) => {
-				let set_compression = data.cast::<SetCompression>()?;
+				let set_compression = data.decode::<SetCompression>()?;
 				compression = Some(set_compression.threshold.0);
 			}
 			(State::Login, Disconnect::ID) => {
-				let disconnect = data.cast::<Disconnect>()?;
+				let disconnect = data.decode::<Disconnect>()?;
 				break Err(ServerConnectionError::Disconnect(disconnect.reason));
 			}
 			(State::Login, LoginSuccess::ID) => {
-				let success = data.cast::<LoginSuccess>()?;
+				let success = data.decode::<LoginSuccess>()?;
 				println!("{:?}", success);
 				// if success.username != info.username || success.uuid != info.uuid {
 				// 	break Err(ServerConnectionError::BadLoginSuccess(success));
 				// }
-				if let Some(THRESHOLD) = compression {
-					break Ok((stream, ConnectedServerInfo));
-				} else {
-					break Err(ServerConnectionError::BadCompressionThreshold(compression));
+				if compression != Some(THRESHOLD) {
+					warn!("Compression settings differ between proxy and server, unnecessary recompressions may be required");
 				}
+				return Ok((stream, ConnectedServerInfo));
 			}
 			(State::Login, EncryptionRequest::ID) => {
 				break Err(ServerConnectionError::ServerIsInOnlineMode)
@@ -271,7 +271,7 @@ async fn communicate_user_server(
 				let packet = user_read.read_packet(compression, &mut packet_buf).await?;
 				match packet.cheap_id() {
 					Some(ChatRequest::ID) => {
-						let chat = packet.cast::<ChatRequest>()?;
+						let chat = packet.decode::<ChatRequest>()?;
 						println!("Got chat");
 						if chat.message == "/proxy-ping" {
 							user_write.write_packet(compression, &ChatResponse {
@@ -382,13 +382,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 		let (stream, _) = listener.accept().await?;
 		println!("Got connection: {:?}", stream);
 		tokio::spawn(async move {
-			if let Err(e) = handle_stream(
-				stream,
-				&DefaultPlugin,
-				&OfflineAuthPlugin,
-			)
-			.await
-			{
+			if let Err(e) = handle_stream(stream, &DefaultPlugin, &OfflineAuthPlugin).await {
 				println!("User error: {:?}", e);
 			};
 		});
