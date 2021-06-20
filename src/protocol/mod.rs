@@ -4,6 +4,7 @@ mod packet;
 pub mod play;
 pub mod status;
 
+use std::fmt::{self, Display};
 use std::io::{Read, Write};
 use tokio::io;
 
@@ -18,6 +19,20 @@ pub enum State {
 	Status,
 	Login,
 	Play,
+}
+impl Display for State {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				State::Handshaking => "HANDSHAKE",
+				State::Status => "STATUS",
+				State::Login => "LOGIN",
+				State::Play => "PLAY",
+			}
+		)
+	}
 }
 impl PacketData for State {
 	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
