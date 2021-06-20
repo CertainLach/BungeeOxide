@@ -1,8 +1,12 @@
 mod ext;
+mod plugin;
+pub mod plugins;
 mod protocol;
 
 use ext::*;
 use lazy_static::lazy_static;
+use plugin::{Plugin, TargetServer};
+use plugins::auth::{AuthError, AuthPlugin};
 use protocol::{
 	handshake::Handshake,
 	login::{
@@ -14,44 +18,48 @@ use protocol::{
 };
 use quick_error::quick_error;
 use rand::rngs::OsRng;
-use rand::{thread_rng, Rng};
 use rsa::{RSAPrivateKey, RSAPublicKey};
 use rsa_der::public_key_to_der;
-use tokio::io;
+use thiserror::Error;
+use tokio::{io, net::lookup_host};
 use tokio::{
 	net::{TcpListener, TcpStream},
 	select,
 };
 
+use crate::plugins::auth::{MojangAuthPlugin, OfflineAuthPlugin};
+
 const THRESHOLD: i32 = 256;
 
-lazy_static! {
-	static ref PRIVATE_KEY: RSAPrivateKey = RSAPrivateKey::new(&mut OsRng, 1024).unwrap();
-	static ref PUBLIC_KEY: RSAPublicKey = (&PRIVATE_KEY as &RSAPrivateKey).into();
-}
-
-struct LoggedInInfo {
+#[derive(Debug)]
+pub struct LoggedInInfo {
 	username: String,
 	uuid: String,
+	protocol: i32,
 }
-quick_error! {
-	#[derive(Debug)]
-	pub enum SocketLoginError {
-		Io(err: io::Error) {
-			from()
-			display("io error: {}", err)
-			cause(err)
-		}
-		IncorrectStateIdCombo(state: State, id: i32) {}
-		IncorretLoginSequence(reason: String) {}
-	}
+#[derive(Debug, Error)]
+pub enum SocketLoginError {
+	#[error("io error: {0}")]
+	Io(#[from] io::Error),
+	#[error("unknown packet {1} in {0}")]
+	IncorrectStateIdCombo(State, i32),
+	#[error("client didn't sent login start")]
+	MissingLoginStart,
+	#[error("auth plugin didn't requested encryption")]
+	AuthPluginDidntRequestedEncryption,
+	#[error("auth error: {0}")]
+	AuthError(#[from] AuthError),
 }
+
 /// Проводит авторизацию юзера/выходит при ошибке/запросе статуса
-async fn handle_socket_login(
+async fn handle_socket_login<A: AuthPlugin>(
 	mut stream: TcpStream,
+	plugin: &impl Plugin,
+	auth_plugin: &A,
 ) -> Result<(TcpStream, LoggedInInfo), SocketLoginError> {
 	let mut state = State::Handshaking;
-	let mut name = None::<String>;
+	let mut protocol = None::<i32>;
+	let mut auth_data = None::<A::AuthData>;
 	loop {
 		let mut initial_buffer = Vec::new();
 		let data = stream.read_packet(None, &mut initial_buffer).await?;
@@ -60,6 +68,7 @@ async fn handle_socket_login(
 				let packet = data.cast::<Handshake>()?;
 				println!("Handshake: {:?}", packet);
 				state = packet.next_state;
+				protocol = Some(packet.protocol.0);
 			}
 			(State::Status, StatusResponse::ID) => {
 				let req = data.cast::<StatusRequest>()?;
@@ -107,52 +116,37 @@ async fn handle_socket_login(
 					.await?;
 			}
 			(State::Login, LoginStart::ID) => {
-				use num_bigint_dig::{BigInt, Sign::Plus};
-				use rsa::PublicKeyParts;
-
 				let req = data.cast::<LoginStart>()?;
-				name = Some(req.name);
 
-				let public = public_key_to_der(
-					&BigInt::from_biguint(Plus, PUBLIC_KEY.n().clone()).to_signed_bytes_be(),
-					&BigInt::from_biguint(Plus, PUBLIC_KEY.e().clone()).to_signed_bytes_be(),
-				);
-				let verify_token = [1, 2, 3, 4].into(); //thread_rng().gen::<[u8; 4]>().into();
-				stream
-					.write_packet(
-						None,
-						&EncryptionRequest {
-							server_id: "".into(),
-							public,
-							verify_token,
-						},
-					)
-					.await?;
+				match auth_plugin.encryption_start(req.name.clone()) {
+					plugins::auth::EncryptionStartResult::BeginEncryption(request, data) => {
+						auth_data = Some(data);
+						stream.write_packet(None, &request).await?;
+					}
+					plugins::auth::EncryptionStartResult::Skip(d) => {
+						break Ok((
+							stream,
+							LoggedInInfo {
+								username: d.username,
+								uuid: d.uuid,
+								protocol: protocol.unwrap(),
+							},
+						));
+					}
+				}
 			}
 			(State::Login, EncryptionResponse::ID) => {
-				let username = match name {
-					None => {
-						break Err(SocketLoginError::IncorretLoginSequence(
-							"Client did not send LoginStart".to_string(),
-						))
-					}
-					Some(k) => k,
-				};
+				let auth_data = auth_data
+					.take()
+					.ok_or(SocketLoginError::AuthPluginDidntRequestedEncryption)?;
 				let res = data.cast::<EncryptionResponse>()?;
-				let verify_token = PRIVATE_KEY
-					.decrypt(rsa::PaddingScheme::PKCS1v15Encrypt, &res.verify_token)
-					.unwrap();
-				let shared_secret = PRIVATE_KEY
-					.decrypt(rsa::PaddingScheme::PKCS1v15Encrypt, &res.shared_secret)
-					.unwrap();
-				assert_eq!(&verify_token, &[1, 2, 3, 4]);
-				println!("Verify token = {:?}", verify_token);
-				println!("Shared secret = {:?}", shared_secret);
+				let success = auth_plugin.encryption_response(auth_data, res).await?;
 				break Ok((
 					stream,
 					LoggedInInfo {
-						username,
-						uuid: "530fa97a-357f-3c19-94d3-0c5c65c18fe8".into(),
+						username: success.username,
+						uuid: success.uuid,
+						protocol: protocol.unwrap(),
 					},
 				));
 			}
@@ -161,27 +155,28 @@ async fn handle_socket_login(
 	}
 }
 struct ConnectedServerInfo;
-quick_error! {
-	#[derive(Debug)]
-	pub enum ServerConnectionError {
-		Io(err: io::Error) {
-			from()
-			display("io error: {}", err)
-			cause(err)
-		}
-		IncorrectStateIdCombo(state: State, id: i32) {}
-		Disconnect(err: String) {}
-		BadLoginSuccess(res: LoginSuccess) {}
-		BadCompressionThreshold(threshold: Option<i32>) {}
-	}
+#[derive(Debug, Error)]
+pub enum ServerConnectionError {
+	#[error("io error: {0}")]
+	Io(#[from] io::Error),
+	#[error("proxied server is in online mode")]
+	ServerIsInOnlineMode,
+	#[error("unknown packet {1} in {0}")]
+	IncorrectStateIdCombo(State, i32),
+	#[error("server kicked user with reason: {0}")]
+	Disconnect(String),
+	#[error("server returned wrong name/uuid")]
+	BadLoginSuccess(LoginSuccess),
+	#[error("server sent bad compression threshold")]
+	BadCompressionThreshold(Option<i32>),
 }
 
 /// Открывает соединение с сервером для заданного юзера, проверяет корректность возвращённых данных
 async fn open_server_connection(
 	info: &LoggedInInfo,
-	address: &str,
+	target: TargetServer,
 ) -> Result<(TcpStream, ConnectedServerInfo), ServerConnectionError> {
-	let mut stream = TcpStream::connect(address).await?;
+	let mut stream = TcpStream::connect(&target.addr).await?;
 	let mut buf = Vec::new();
 	println!("Opening");
 
@@ -190,9 +185,9 @@ async fn open_server_connection(
 		.write_packet(
 			compression,
 			&Handshake {
-				address: "test".to_owned(),
-				protocol: 340.into(),
-				port: 25565,
+				address: target.handshake_address,
+				protocol: info.protocol.into(),
+				port: target.handshake_port,
 				next_state: State::Login,
 			},
 		)
@@ -221,14 +216,17 @@ async fn open_server_connection(
 			(State::Login, LoginSuccess::ID) => {
 				let success = data.cast::<LoginSuccess>()?;
 				println!("{:?}", success);
-				if success.username != info.username || success.uuid != info.uuid {
-					break Err(ServerConnectionError::BadLoginSuccess(success));
-				}
+				// if success.username != info.username || success.uuid != info.uuid {
+				// 	break Err(ServerConnectionError::BadLoginSuccess(success));
+				// }
 				if let Some(THRESHOLD) = compression {
 					break Ok((stream, ConnectedServerInfo));
 				} else {
 					break Err(ServerConnectionError::BadCompressionThreshold(compression));
 				}
+			}
+			(State::Login, EncryptionRequest::ID) => {
+				break Err(ServerConnectionError::ServerIsInOnlineMode)
 			}
 			(state, id) => break Err(ServerConnectionError::IncorrectStateIdCombo(state, id)),
 		};
@@ -242,7 +240,7 @@ struct StreamPair {
 #[derive(PartialEq)]
 enum CommunicateResult {
 	None,
-	AnotherServer(String),
+	AnotherServer(TargetServer),
 }
 
 /// Проводит общение юзера с сервером, успешно выходит после завершения соединения с сервером, падает при падении клиента
@@ -281,7 +279,11 @@ async fn communicate_user_server(
 								position: 0,
 							}).await?;
 						}else if  chat.message.starts_with("/proxy-goto "){
-							action = CommunicateResult::AnotherServer((&chat.message["/proxy-goto ".len()..]).to_owned());
+							action = CommunicateResult::AnotherServer(TargetServer {
+								addr: lookup_host(&chat.message["/proxy-goto ".len()..]).await?.next().unwrap(),
+								handshake_address: "test".into(),
+								handshake_port: 25565,
+							});
 						}else {
 							server_write.write_packet(compression, &chat).await?;
 						}
@@ -314,13 +316,22 @@ quick_error! {
 	}
 }
 
-async fn handle_stream(stream: TcpStream) -> Result<(), SocketError> {
-	let (mut user, logged_in) = handle_socket_login(stream).await?;
-	println!("User logged in");
+async fn handle_stream(
+	stream: TcpStream,
+	plugin: &impl Plugin,
+	auth_plugin: &impl AuthPlugin,
+) -> Result<(), SocketError> {
+	let (mut user, logged_in) = handle_socket_login(stream, plugin, auth_plugin).await?;
+	println!("User logged in: {:?}", logged_in);
 	let mut first_connection = true;
-	let mut target = "89.163.251.26:25738".to_owned();
+	let mut target = match plugin.get_initial_target() {
+		Some(target) => target,
+		None => {
+			unreachable!()
+		}
+	};
 	loop {
-		let (mut server, server_info) = open_server_connection(&logged_in, &target).await?;
+		let (mut server, server_info) = open_server_connection(&logged_in, target).await?;
 
 		if first_connection {
 			user.write_packet(
@@ -352,15 +363,32 @@ async fn handle_stream(stream: TcpStream) -> Result<(), SocketError> {
 	}
 }
 
-#[tokio::main(core_threads = 4, max_threads = 8)]
+struct DefaultPlugin;
+impl Plugin for DefaultPlugin {
+	fn get_initial_target(&self) -> Option<TargetServer> {
+		Some(TargetServer {
+			addr: "51.38.192.19:25565".parse().unwrap(),
+			handshake_address: "FunnyMC.ru".to_string(),
+			handshake_port: 25565,
+		})
+	}
+}
+
+#[tokio::main(worker_threads = 4)]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-	let mut listener = TcpListener::bind("127.0.0.1:25566").await?;
+	let listener = TcpListener::bind("127.0.0.1:25566").await?;
 
 	loop {
 		let (stream, _) = listener.accept().await?;
 		println!("Got connection: {:?}", stream);
 		tokio::spawn(async move {
-			if let Err(e) = handle_stream(stream).await {
+			if let Err(e) = handle_stream(
+				stream,
+				&DefaultPlugin,
+				&OfflineAuthPlugin,
+			)
+			.await
+			{
 				println!("User error: {:?}", e);
 			};
 		});

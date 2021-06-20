@@ -6,10 +6,10 @@ impl Packet for StatusRequest {
 	const ID: i32 = 0;
 }
 impl PacketData for StatusRequest {
-	fn read<R: Read>(buf: &mut R) -> io::Result<Self> {
+	fn read<R: Read>(_buf: &mut R) -> io::Result<Self> {
 		Ok(StatusRequest)
 	}
-	fn write<W: std::io::Write>(&self, buf: &mut W) -> io::Result<()> {
+	fn write<W: std::io::Write>(&self, _buf: &mut W) -> io::Result<()> {
 		todo!()
 	}
 }
