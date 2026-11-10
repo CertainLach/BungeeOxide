@@ -1,0 +1,23 @@
++ play::toClient::packet_update_attributes
++ play::toServer::packet_steer_vehicle
+~ play::toClient::packet [ArmsAdded]
+    +update_attributes
+~ play::toClient::packet_abilities [FieldsRetypedScalar]
+    ~flyingSpeed: field() => i8; -> field() => f32;
+    ~walkingSpeed: field() => i8; -> field() => f32;
+~ play::toClient::packet_attach_entity [FieldsAdded]
+    +leash: field() => bool;
+~ play::toClient::packet_open_window [FieldsAdded, FieldsRetypedScalar]
+    +entityId: field() => union(tag: ../inventoryType) { variant(v11, match: 11) => i32; default => void; };
+    ~inventoryType: field() => u8; -> virtual_field(, value: ./entityId/@tag) => u8;
+~ play::toClient::packet_statistics [FieldsRetypedScalar]
+    ~amount: field() => i8; -> field() => i32;
+~ play::toClient::packet_update_health [FieldsRetypedScalar]
+    ~health: field() => i16; -> field() => f32;
+~ play::toServer::packet [ArmsAdded]
+    +steer_vehicle
+~ play::toServer::packet_abilities [FieldsRetypedScalar]
+    ~flyingSpeed: field() => i8; -> field() => f32;
+    ~walkingSpeed: field() => i8; -> field() => f32;
+~ play::toServer::packet_entity_action [FieldsAdded]
+    +jumpBoost: field() => i32;

@@ -1,0 +1,282 @@
+[
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings",
+		"value": {
+			"0x00": "settings",
+			"0x01": "cookie_response",
+			"0x02": "custom_payload",
+			"0x03": "finish_configuration",
+			"0x04": "keep_alive",
+			"0x05": "pong",
+			"0x06": "resource_pack_receive",
+			"0x07": "select_known_packs",
+			"0x08": "custom_report_details",
+			"0x09": "server_links"
+		}
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings/0x08"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings/0x09"
+	},
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/custom_report_details",
+		"value": "packet_common_custom_report_details"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/custom_report_details"
+	},
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/server_links",
+		"value": "packet_common_server_links"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/server_links"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/food",
+		"value": [
+			"container",
+			[
+				{
+					"name": "nutrition",
+					"type": "varint"
+				},
+				{
+					"name": "saturationModifier",
+					"type": "f32"
+				},
+				{
+					"name": "canAlwaysEat",
+					"type": "bool"
+				},
+				{
+					"name": "secondsToEat",
+					"type": "f32"
+				},
+				{
+					"name": "usingConvertsTo",
+					"type": "Slot"
+				},
+				{
+					"name": "effects",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": [
+								"container",
+								[
+									{
+										"name": "effect",
+										"type": "varint"
+									},
+									{
+										"name": "probability",
+										"type": "f32"
+									}
+								]
+							]
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/food/1/5/type",
+		"value": [
+			"array",
+			{
+				"countType": "varint",
+				"type": [
+					"container",
+					[
+						{
+							"name": "effect",
+							"type": "ItemPotionEffect"
+						},
+						{
+							"name": "probability",
+							"type": "f32"
+						}
+					]
+				]
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/potion_contents",
+		"value": [
+			"container",
+			[
+				{
+					"name": "potionId",
+					"type": [
+						"option",
+						"varint"
+					]
+				},
+				{
+					"name": "customColor",
+					"type": [
+						"option",
+						"i32"
+					]
+				},
+				{
+					"name": "customEffects",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "ItemPotionEffect"
+						}
+					]
+				},
+				{
+					"name": "customName",
+					"type": [
+						"option",
+						"string"
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "remove",
+		"path": "/types/SlotComponent/1/1/type/1/fields/potion_contents/1/3"
+	},
+	{
+		"op": "test",
+		"path": "/types/InstrumentData",
+		"value": [
+			"container",
+			[
+				{
+					"name": "soundEvent",
+					"type": "ItemSoundHolder"
+				},
+				{
+					"name": "useDuration",
+					"type": "f32"
+				},
+				{
+					"name": "range",
+					"type": "f32"
+				},
+				{
+					"name": "description",
+					"type": "anonymousNbt"
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/InstrumentData",
+		"value": [
+			"container",
+			[
+				{
+					"name": "soundEvent",
+					"type": "ItemSoundHolder"
+				},
+				{
+					"name": "useDuration",
+					"type": "varint"
+				},
+				{
+					"name": "range",
+					"type": "f32"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/EntityMetadataPaintingVariant",
+		"value": [
+			"container",
+			[
+				{
+					"name": "width",
+					"type": "i32"
+				},
+				{
+					"name": "height",
+					"type": "i32"
+				},
+				{
+					"name": "assetId",
+					"type": "string"
+				},
+				{
+					"name": "title",
+					"type": [
+						"option",
+						"anonymousNbt"
+					]
+				},
+				{
+					"name": "author",
+					"type": [
+						"option",
+						"anonymousNbt"
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/EntityMetadataPaintingVariant",
+		"value": [
+			"container",
+			[
+				{
+					"name": "width",
+					"type": "varint"
+				},
+				{
+					"name": "height",
+					"type": "varint"
+				},
+				{
+					"name": "assetId",
+					"type": "string"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "content",
+			"1": "sender",
+			"2": "target"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "sender",
+			"1": "target",
+			"2": "content"
+		}
+	}
+]

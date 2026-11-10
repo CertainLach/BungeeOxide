@@ -1,0 +1,7 @@
+updated(slot, up: custom(flattening_slot_1_13_2), down: custom(flattening_slot_1_13_1));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_custom_payload, up: custom(flattening_trader_slots_1_13_2), down: custom(flattening_trader_slots_1_13_1));
+	};
+};

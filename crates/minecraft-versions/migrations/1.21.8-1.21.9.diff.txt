@@ -1,0 +1,103 @@
++ DebugStructureInfo
++ DebugSubscriptionDataType
++ DebugSubscriptionEvent
++ DebugSubscriptionUpdate
++ GameProfile
++ GameProfileProperty
++ GlobalPos
++ Node
++ PartialResolvableProfile
++ Path
++ PathDebugData
++ PlayerSkinPatch
++ ResolvableProfile
++ RespawnData
++ configuration::toClient::packet_code_of_conduct
++ configuration::toServer::packet_accept_code_of_conduct
++ game_profile_name_prop
++ lpVec3
++ play::toClient::ExplosionParticleEntry
++ play::toClient::ExplosionParticleInfo
++ play::toClient::packet_debug_block_value
++ play::toClient::packet_debug_chunk_value
++ play::toClient::packet_debug_entity_value
++ play::toClient::packet_debug_event
++ play::toClient::packet_game_test_highlight_pos
++ play::toServer::packet_debug_subscription_request
++ vec3i32
+- game_profile
+- play::toServer::packet_debug_sample_subscription
+- vec3i16
+= DataComponentMatchers (references changed)
+= ExactComponentMatcher (references changed)
+~ Particle [Renumbered, ArmsAdded, ArmsChanged]
+    ~effect
+    ~flash
+    ~instant_effect
+    +copper_fire_flame
+    ~dragon_breath
+    109 arms renumbered
+= Slot (references changed)
+~ SlotComponent [ArmsChanged]
+    ~entity_data
+    ~block_entity_data
+    ~lodestone_tracker
+    ~profile
+    ~bees
+~ configuration::toClient::packet [ArmsAdded]
+    +code_of_conduct
+~ configuration::toServer::packet [ArmsAdded]
+    +accept_code_of_conduct
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= play::toClient::RecipeDisplay (references changed)
+= play::toClient::SlotDisplay (references changed)
+~ play::toClient::SpawnInfo [FieldsRetypedNested]
+    ~death: nested change
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +debug_block_value
+    +debug_chunk_value
+    +debug_entity_value
+    +debug_event
+    +game_test_highlight_pos
+    108 arms renumbered
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_velocity [FieldsRetypedScalar]
+    ~velocity: field() => vec3i16; -> field() => lpVec3;
+~ play::toClient::packet_explosion [FieldsAdded, FieldsRemoved]
+    +center: field() => vec3f64;
+    +radius: field() => f32;
+    +blockCount: field() => i32;
+    +blockParticles: field() => array(Count: varint) => ExplosionParticleEntry;
+    -x: field() => f64;
+    -y: field() => f64;
+    -z: field() => f64;
+= play::toClient::packet_login (references changed)
+~ play::toClient::packet_move_minecart [FieldsRetypedNested]
+    ~steps: nested change
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~data: nested change
+~ play::toClient::packet_player_rotation [FieldsAdded]
+    +relativeYaw: field() => bool;
+    +relativePitch: field() => bool;
+= play::toClient::packet_recipe_book_add (references changed)
+= play::toClient::packet_respawn (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_spawn_entity [FieldsRetypedScalar, FieldsReordered]
+    fields reordered
+    ~velocity: field() => vec3i16; -> field() => lpVec3;
+~ play::toClient::packet_spawn_position [ShapeChanged]
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [ArmsAdded, ArmsRemoved]
+    +debug_subscription_request
+    -debug_sample_subscription

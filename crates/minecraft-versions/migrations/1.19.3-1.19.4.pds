@@ -1,0 +1,109 @@
+updated(slot, up: custom(caves_slot_up_1_19_4), down: custom(caves_slot_down_1_19_3));
+
+updated(particle, up: custom(caves_particle_up_1_19_4), down: custom(caves_particle_down_1_19_3));
+
+updated(command_node) {
+	updated(extraNodeData) {
+		updated(v2) {
+			updated(properties) {
+				added(minecraft_heightmap, down: custom(caves_heightmap_parser_down_1_19_3));
+				converted(minecraft_time, up: 0, down: custom(caves_time_parser_down_1_19_3));
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(bundle_delimiter, down: drop);
+			added(chunk_biomes, down: drop);
+			added(damage_event, down: custom(caves_damage_event_down_1_19_3));
+			added(hurt_animation, down: custom(caves_hurt_animation_down_1_19_3));
+			converted(entity_status, up: custom(caves_entity_status_up_1_19_4));
+			converted(animation, up: custom(caves_animation_up_1_19_4));
+			converted(position, up: custom(caves_position_up_1_19_4), down: custom(caves_position_down_1_19_3));
+			converted(block_change, up: custom(caves_block_change_up_1_19_4), down: custom(caves_block_change_down_1_19_3));
+			converted(tags, up: custom(caves_tags_up_1_19_4), down: custom(caves_tags_down_1_19_3));
+			converted(statistics, up: custom(caves_statistics_up_1_19_4), down: custom(caves_statistics_down_1_19_3));
+			updated(declare_recipes) {
+				updated(items) {
+					updated(data) {
+						added(minecraft_crafting_decorated_pot, down: drop);
+						added(minecraft_smithing_transform, down: drop);
+						added(minecraft_smithing_trim, down: drop);
+						updated(minecraft_crafting_shaped) {
+							added(showNotification, up: true);
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_login) {
+			converted(dimensionCodec, up: custom(caves_codec_up_1_19_4), down: custom(caves_codec_down_1_19_3));
+		};
+
+		updated(packet_respawn, up: custom(caves_respawn_up_1_19_4));
+
+		updated(packet_respawn) {
+			hooked(dimension, up: custom(caves_track_dimension_key), down: custom(caves_track_dimension_key));
+		};
+
+		updated(packet_set_passengers, up: custom(caves_set_passengers_up_1_19_4));
+
+		updated(packet_server_data) {
+			removed(icon, down: custom(caves_icon_down_1_19_3));
+			added(iconBytes, up: custom(caves_icon_up_1_19_4));
+			converted(motd, up: custom(caves_motd_up_1_19_4), down: custom(caves_motd_down_1_19_3));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(metadata, up: custom(caves_metadata_up_1_19_4), down: custom(caves_metadata_down_1_19_3));
+		};
+
+		updated(packet_map_chunk, up: custom(caves_map_chunk_up_1_19_4), down: custom(caves_map_chunk_down_1_19_3));
+
+		updated(packet_multi_block_change) {
+			converted(records, up: custom(caves_section_records_up_1_19_4), down: custom(caves_section_records_down_1_19_3));
+		};
+
+		updated(packet_spawn_entity, up: custom(caves_spawn_entity_up_1_19_4), down: custom(caves_spawn_entity_down_1_19_3));
+
+		updated(packet_world_particles, up: custom(caves_world_particles_up_1_19_4), down: custom(caves_world_particles_down_1_19_3));
+
+		updated(packet_world_event) {
+			converted(data, up: custom(caves_world_event_data_up_1_19_4), down: custom(caves_world_event_data_down_1_19_3));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(caves_block_action_id_up_1_19_4), down: custom(caves_block_action_id_down_1_19_3));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(caves_cooldown_item_up_1_19_4), down: custom(caves_cooldown_item_down_1_19_3));
+		};
+
+		updated(packet_sound_effect) {
+			converted(sound, up: custom(caves_sound_holder_up_1_19_4), down: custom(caves_sound_holder_down_1_19_3));
+		};
+
+		updated(packet_entity_sound_effect) {
+			converted(soundEvent, up: custom(caves_entity_sound_event_up_1_19_4), down: custom(caves_entity_sound_event_down_1_19_3));
+		};
+
+		updated(packet_initialize_world_border) {
+			converted(speed);
+		};
+
+		updated(packet_world_border_lerp_size) {
+			converted(speed);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet_update_structure_block) {
+			converted(seed);
+		};
+	};
+};

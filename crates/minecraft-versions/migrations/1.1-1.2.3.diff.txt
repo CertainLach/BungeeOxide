@@ -1,0 +1,40 @@
++ play::toClient::packet_entity_head_rotation
++ play::toClient::packet_tile_entity_data
+~ play::toClient::packet [ArmsAdded]
+    +entity_head_rotation
+    +tile_entity_data
+~ play::toClient::packet_login [FieldsRemoved, FieldsRetypedScalar]
+    -seed: field() => i64;
+    ~dimension: field() => i8; -> field() => i32;
+~ play::toClient::packet_map_chunk [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +groundUp: field() => bool;
+    +bitMap: field() => u16;
+    +addBitMap: field() => u16;
+    +compressedSize: virtual_field(, value: i32(./compressedChunkData/@size)) => i32;
+    +unused: field() => i32;
+    -y: field() => i16;
+    -sizeX: field() => u8;
+    -sizeY: field() => u8;
+    -sizeZ: field() => u8;
+    ~compressedChunkData: nested change
+~ play::toClient::packet_multi_block_change [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +dataLength: field() => i32;
+    +records: field() => array(count: ../recordCount) => container { field(ANON_1) => bitfield { field(x, signed: false, size: 4); field(z, signed: false, size: 4); }; field(y) => u8; field(ANON) => bitfield { field(blockId, signed: false, size: 12); field(metadata, signed: false, size: 4); }; };
+    -coordinates: field() => array(count: ../recordCount) => bitfield { field(x, signed: false, size: 4); field(z, signed: false, size: 4); field(y, signed: false, size: 8); };
+    -blockIds: field() => array(count: ../recordCount) => u8;
+    -metadata: field() => array(count: ../recordCount) => u8;
+    ~recordCount: virtual_field(, value: i16(./coordinates/@size)) => i16; -> virtual_field(, value: i16(./records/@size)) => i16;
+~ play::toClient::packet_respawn [FieldsRemoved, FieldsRetypedScalar]
+    -seed: field() => i64;
+    ~dimension: field() => i8; -> field() => i32;
+~ play::toClient::packet_spawn_entity_living [FieldsAdded]
+    +headPitch: field() => i8;
+= play::toServer::packet (references changed)
+~ play::toServer::packet_login [FieldsRemoved, FieldsRetypedScalar]
+    -seed: field() => i64;
+    ~dimension: field() => i8; -> field() => i32;
+~ play::toServer::packet_respawn [FieldsRemoved, FieldsRetypedScalar]
+    -seed: field() => i64;
+    ~dimension: field() => i8; -> field() => i32;
+~ play::toServer::packet_set_protocol [FieldsRenamed]
+    username renamed to usernameAndHost

@@ -1,0 +1,46 @@
+updated(slot, up: custom(nether_slot_up_1_16_2), down: custom(nether_slot_1_16_1));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(multi_block_change, up: custom(nether_multi_block_change_up_1_16_2), down: custom(nether_multi_block_change_1_16_1));
+			converted(statistics, up: custom(nether_statistics_up_1_16_2), down: custom(nether_statistics_1_16_1));
+			converted(held_item_slot, up: custom(nether_client_held_item_slot_up_1_16_2), down: custom(nether_client_held_item_slot_1_16_1));
+			converted(spawn_entity, up: custom(nether_spawn_entity_up_1_16_2), down: custom(nether_spawn_entity_1_16_1));
+		};
+
+		updated(packet_login, up: custom(nether_login_up_1_16_2), down: custom(nether_login_1_16_1));
+		updated(packet_respawn, up: custom(nether_respawn_up_1_16_2), down: custom(nether_respawn_1_16_1));
+
+		updated(packet_map_chunk, up: custom(nether_map_chunk_up_1_16_2), down: custom(nether_map_chunk_1_16_1));
+
+		updated(packet_unlock_recipes) {
+			added(blastFurnaceOpen, up: false);
+			added(filteringBlastFurnace, up: false);
+			added(smokerBookOpen, up: false);
+			added(filteringSmoker, up: false);
+		};
+
+		updated(packet_entity_metadata, up: custom(nether_entity_metadata_up_1_16_2), down: custom(nether_entity_metadata_1_16_1));
+		updated(packet_spawn_entity_living, up: custom(nether_spawn_entity_living_up_1_16_2), down: custom(nether_spawn_entity_living_1_16_1));
+		updated(packet_block_change, up: custom(nether_block_change_up_1_16_2), down: custom(nether_block_change_1_16_1));
+		updated(packet_acknowledge_player_digging, up: custom(nether_acknowledge_player_digging_up_1_16_2), down: custom(nether_acknowledge_player_digging_1_16_1));
+		updated(packet_world_particles, up: custom(nether_world_particles_up_1_16_2), down: custom(nether_world_particles_1_16_1));
+		updated(packet_world_event, up: custom(nether_world_event_up_1_16_2), down: custom(nether_world_event_1_16_1));
+		updated(packet_sound_effect, up: custom(nether_sound_effect_up_1_16_2), down: custom(nether_sound_effect_1_16_1));
+		updated(packet_entity_sound_effect, up: custom(nether_entity_sound_effect_up_1_16_2), down: custom(nether_entity_sound_effect_1_16_1));
+		updated(packet_set_cooldown, up: custom(nether_set_cooldown_up_1_16_2), down: custom(nether_set_cooldown_1_16_1));
+		updated(packet_tags, up: custom(nether_tags_up_1_16_2), down: custom(nether_tags_1_16_1));
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			removed(crafting_book_data, up: custom(nether_crafting_book_data_up_1_16_2));
+			added(displayed_recipe, down: custom(nether_displayed_recipe_1_16_1));
+			added(recipe_book, down: custom(nether_recipe_book_1_16_1));
+			converted(held_item_slot, up: custom(nether_server_held_item_slot_up_1_16_2), down: custom(nether_server_held_item_slot_1_16_1));
+		};
+
+		updated(packet_edit_book, up: custom(nether_edit_book_up_1_16_2), down: custom(nether_edit_book_1_16_1));
+	};
+};

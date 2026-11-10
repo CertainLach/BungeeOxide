@@ -1,0 +1,325 @@
+updated(EntityMetadataPaintingVariant) {
+	added(title, up: custom(tricky_painting_title_1_21_3));
+	added(author, up: custom(tricky_painting_author_1_21_3));
+};
+
+updated(Particle) {
+	added(block_crumble, down: custom(tricky_block_crumble_down_1_21_1));
+	added(trail, down: custom(tricky_trail_down_1_21_1));
+	converted(dust, up: custom(tricky_dust_1_21_3), down: custom(tricky_dust_down_1_21_1));
+	converted(dust_color_transition, up: custom(tricky_dust_transition_1_21_3), down: custom(tricky_dust_transition_down_1_21_1));
+	converted(block, up: custom(tricky_particle_block_1_21_3), down: custom(tricky_particle_block_down_1_21_1));
+	converted(block_marker, up: custom(tricky_particle_block_marker_1_21_3), down: custom(tricky_particle_block_marker_down_1_21_1));
+	converted(falling_dust, up: custom(tricky_particle_falling_dust_1_21_3), down: custom(tricky_particle_falling_dust_down_1_21_1));
+	converted(dust_pillar, up: custom(tricky_particle_dust_pillar_1_21_3), down: custom(tricky_particle_dust_pillar_down_1_21_1));
+};
+
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(tricky_item_id_1_21_3), down: custom(tricky_item_id_down_1_21_1));
+		converted(addedComponentCount, down: custom(tricky_added_components_down_1_21_1));
+		converted(removedComponentCount, down: custom(tricky_removed_components_down_1_21_1));
+	};
+};
+
+updated(SlotComponent) {
+	added(consumable, down: drop);
+	added(damage_resistant, down: custom(tricky_damage_resistant_down_1_21_1));
+	added(death_protection, down: drop);
+	added(enchantable, down: drop);
+	added(equippable, down: drop);
+	removed(fire_resistant, up: custom(tricky_fire_resistant_1_21_3));
+	added(glider, down: drop);
+	added(item_model, down: drop);
+	added(repairable, down: drop);
+	added(tooltip_style, down: drop);
+	added(use_cooldown, down: drop);
+	added(use_remainder, down: drop);
+	converted(enchantments, up: custom(tricky_enchantments_1_21_3));
+	converted(pot_decorations, up: custom(tricky_pot_decorations_1_21_3), down: custom(tricky_pot_decorations_down_1_21_1));
+	converted(instrument, up: custom(tricky_instrument_1_21_3), down: custom(tricky_instrument_down_1_21_1));
+	updated(potion_contents) {
+		added(customName, up: custom(tricky_potion_name_1_21_3));
+	};
+	updated(block_state) {
+		updated(items) {
+			renamed(property, to: name);
+		};
+	};
+	updated(food) {
+		removed(effects, down: custom(tricky_food_effects_down_1_21_1));
+		removed(secondsToEat, down: custom(tricky_food_seconds_down_1_21_1));
+		removed(usingConvertsTo, down: custom(tricky_food_remainder_down_1_21_1));
+	};
+	updated(attribute_modifiers) {
+		updated(attributes) {
+			updated(items) {
+				converted(typeId, up: custom(tricky_attribute_type_1_21_3), down: custom(tricky_attribute_type_down_1_21_1));
+			};
+		};
+	};
+	updated(tool) {
+		updated(rules) {
+			updated(items) {
+				converted(blocks, up: custom(tricky_tool_blocks_1_21_3), down: custom(tricky_tool_blocks_down_1_21_1));
+			};
+		};
+	};
+};
+
+updated(SlotComponentType) {
+	added(consumable, down: drop);
+	added(damage_resistant, down: fire_resistant);
+	added(death_protection, down: drop);
+	added(enchantable, down: drop);
+	added(equippable, down: drop);
+	removed(fire_resistant, up: damage_resistant);
+	added(glider, down: drop);
+	added(item_model, down: drop);
+	added(repairable, down: drop);
+	added(tooltip_style, down: drop);
+	added(use_cooldown, down: drop);
+	added(use_remainder, down: drop);
+};
+
+updated(ItemBlockPredicate) {
+	converted(blockSet, up: custom(tricky_predicate_blocks_1_21_3), down: custom(tricky_predicate_blocks_down_1_21_1));
+};
+
+updated(ItemSoundHolder, up: custom(tricky_sound_1_21_3), down: custom(tricky_sound_down_1_21_1));
+
+updated(chunkBlockEntity) {
+	converted(type, up: custom(tricky_block_entity_1_21_3), down: custom(tricky_block_entity_down_1_21_1));
+};
+
+updated(entityMetadataEntry) {
+	converted(key, up: custom(tricky_meta_key_1_21_3), down: custom(tricky_meta_key_down_1_21_1));
+	updated(value) {
+		converted(block_state, up: custom(tricky_meta_block_1_21_3), down: custom(tricky_meta_block_down_1_21_1));
+		converted(optional_block_state, up: custom(tricky_meta_optional_block_1_21_3), down: custom(tricky_meta_optional_block_down_1_21_1));
+		converted(int, up: custom(tricky_meta_int_1_21_3), down: custom(tricky_meta_int_down_1_21_1));
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(registry_data, up: custom(tricky_registry_data_1_21_3), down: custom(tricky_registry_data_down_1_21_1));
+			converted(finish_configuration, up: custom(tricky_finish_configuration_1_21_3));
+			converted(tags, up: custom(tricky_config_tags_1_21_3), down: custom(tricky_config_tags_down_1_21_1));
+			converted(feature_flags, up: custom(tricky_feature_flags_1_21_3), down: custom(tricky_feature_flags_down_1_21_1));
+		};
+	};
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet_success) {
+			removed(strictErrorHandling, down: custom(tricky_strict_errors_down_1_21_1));
+		};
+	};
+};
+
+updated(packet_common_settings) {
+	added(particleStatus, up: all);
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(PositionUpdateRelatives) {
+			added(dx, up: ./x);
+			added(dy, up: ./y);
+			added(dz, up: ./z);
+			added(yawDelta, up: false);
+		};
+
+		updated(SpawnInfo) {
+			added(seaLevel, up: 63);
+		};
+
+		updated(packet) {
+			converted(close_window);
+			added(move_minecart, down: custom(tricky_move_minecart_down_1_21_1));
+			added(player_rotation, down: custom(tricky_player_rotation_down_1_21_1));
+			added(recipe_book_add, down: custom(tricky_recipe_book_add_down_1_21_1));
+			added(recipe_book_remove, down: custom(tricky_recipe_book_remove_down_1_21_1));
+			added(recipe_book_settings, down: custom(tricky_recipe_book_settings_down_1_21_1));
+			added(set_cursor_item, down: custom(tricky_set_cursor_item_down_1_21_1));
+			added(set_player_inventory, down: custom(tricky_set_player_inventory_down_1_21_1));
+			added(sync_entity_position, down: custom(tricky_sync_position_down_1_21_1));
+			removed(unlock_recipes, up: drop);
+			converted(declare_recipes, up: custom(tricky_declare_recipes_1_21_3), down: custom(tricky_declare_recipes_down_1_21_1));
+			converted(tags, up: custom(tricky_play_tags_1_21_3), down: custom(tricky_play_tags_down_1_21_1));
+			converted(set_slot, up: custom(tricky_set_slot_1_21_3), down: custom(tricky_set_slot_down_1_21_1));
+			converted(window_items, up: custom(tricky_window_items_1_21_3), down: custom(tricky_window_items_down_1_21_1));
+			converted(entity_teleport, up: custom(tricky_teleport_1_21_3), down: custom(tricky_teleport_down_1_21_1));
+			converted(explosion, up: custom(tricky_explosion_1_21_3), down: custom(tricky_explosion_down_1_21_1));
+			converted(craft_recipe_response, up: drop, down: drop);
+			converted(entity_destroy, up: custom(tricky_destroy_1_21_3), down: custom(tricky_destroy_down_1_21_1));
+			converted(map_chunk, up: custom(tricky_map_chunk_1_21_3));
+			converted(bundle_delimiter, up: custom(tricky_bundle_1_21_3));
+			converted(position, down: custom(tricky_position_down_1_21_1));
+			converted(spawn_entity, down: custom(tricky_spawn_entity_down_1_21_1));
+		};
+
+		updated(packet_craft_progress_bar) {
+			converted(windowId);
+		};
+
+		updated(packet_entity_update_attributes) {
+			updated(properties) {
+				updated(items) {
+					updated(key) {
+						renamed(generic_burning_time, to: burning_time);
+						renamed(generic_explosion_knockback_resistance, to: explosion_knockback_resistance);
+						renamed(player_mining_efficiency, to: mining_efficiency);
+						renamed(generic_movement_efficiency, to: movement_efficiency);
+						renamed(generic_oxygen_bonus, to: oxygen_bonus);
+						renamed(player_sneaking_speed, to: sneaking_speed);
+						renamed(player_submerged_mining_speed, to: submerged_mining_speed);
+						renamed(player_sweeping_damage_ratio, to: sweeping_damage_ratio);
+						renamed(generic_water_movement_efficiency, to: water_movement_efficiency);
+						added(tempt_range, down: drop);
+					};
+				};
+			};
+		};
+
+		updated(packet_open_horse_window) {
+			converted(windowId);
+		};
+
+		updated(packet_player_info) {
+			updated(action) {
+				added(update_list_order, up: false);
+			};
+			updated(data) {
+				updated(items) {
+					added(listPriority, up: custom(tricky_list_priority_1_21_3));
+				};
+			};
+		};
+
+		updated(packet_position) {
+			added(dx, up: 0.0);
+			added(dy, up: 0.0);
+			added(dz, up: 0.0);
+		};
+
+		updated(packet_set_cooldown) {
+			added(cooldownGroup, up: custom(tricky_cooldown_group_1_21_3));
+			removed(itemID, down: custom(tricky_cooldown_item_down_1_21_1));
+		};
+
+		updated(packet_trade_list) {
+			converted(windowId);
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(tricky_trade_item_1_21_3), down: custom(tricky_trade_item_down_1_21_1));
+						converted(addedComponentCount, down: custom(tricky_trade_components_down_1_21_1));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(tricky_trade_item2_1_21_3), down: custom(tricky_trade_item2_down_1_21_1));
+							converted(addedComponentCount, down: custom(tricky_trade_components2_down_1_21_1));
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_update_time) {
+			added(tickDayTime, up: custom(tricky_tick_day_time_1_21_3));
+			converted(time, up: custom(tricky_day_time_1_21_3), down: custom(tricky_day_time_down_1_21_1));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(entityId, up: custom(tricky_meta_entity_1_21_3), down: custom(tricky_meta_entity_down_1_21_1));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(type, up: custom(tricky_entity_type_1_21_3));
+			converted(objectData, up: custom(tricky_object_data_1_21_3));
+		};
+
+		updated(packet_block_change) {
+			converted(type, up: custom(tricky_block_change_1_21_3), down: custom(tricky_block_change_down_1_21_1));
+		};
+
+		updated(packet_multi_block_change) {
+			converted(records, up: custom(tricky_multi_block_1_21_3), down: custom(tricky_multi_block_down_1_21_1));
+		};
+
+		updated(packet_map_chunk) {
+			converted(chunkData, down: custom(tricky_chunk_down_1_21_1));
+		};
+
+		updated(packet_respawn) {
+			converted(copyMetadata, up: custom(tricky_respawn_1_21_3));
+		};
+
+		updated(packet_unload_chunk, up: custom(tricky_unload_chunk_1_21_3));
+
+		updated(packet_tile_entity_data) {
+			converted(action, up: custom(tricky_tile_entity_1_21_3), down: custom(tricky_tile_entity_down_1_21_1));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(tricky_world_event_1_21_3), down: custom(tricky_world_event_down_1_21_1));
+		};
+
+		updated(packet_login) {
+			converted(entityId, up: custom(tricky_login_entity_1_21_3), down: custom(tricky_login_entity_down_1_21_1));
+		};
+
+		updated(packet_set_passengers, up: custom(tricky_passengers_1_21_3), down: custom(tricky_passengers_down_1_21_1));
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			converted(close_window);
+			added(player_input, down: custom(tricky_player_input_down_1_21_1));
+			added(select_bundle_item, down: drop);
+			removed(steer_vehicle, up: custom(tricky_steer_vehicle_1_21_3));
+			added(tick_end, down: custom(tricky_tick_end_down_1_21_1));
+			converted(displayed_recipe, up: custom(tricky_displayed_recipe_1_21_3), down: drop);
+			converted(flying, up: custom(tricky_flying_1_21_3), down: custom(tricky_flying_down_1_21_1));
+			converted(craft_recipe_request, up: custom(tricky_craft_recipe_request_1_21_3), down: drop);
+			converted(look, up: custom(tricky_look_1_21_3));
+			converted(position, up: custom(tricky_position_1_21_3));
+			converted(position_look, up: custom(tricky_position_look_1_21_3));
+		};
+
+		updated(packet_entity_action, up: custom(tricky_entity_action_1_21_3));
+
+		updated(packet_block_place) {
+			added(worldBorderHit, up: false);
+		};
+
+		updated(packet_enchant_item) {
+			converted(windowId);
+		};
+
+		updated(packet_look) {
+			added(flags);
+			removed(onGround, down: custom(tricky_look_ground_down_1_21_1));
+		};
+
+		updated(packet_position) {
+			added(flags);
+			removed(onGround, down: custom(tricky_position_ground_down_1_21_1));
+		};
+
+		updated(packet_position_look) {
+			added(flags);
+			removed(onGround, down: custom(tricky_position_look_ground_down_1_21_1));
+		};
+
+		updated(packet_window_click) {
+			converted(windowId);
+		};
+	};
+};

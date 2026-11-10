@@ -1,0 +1,5 @@
+[
+	{ "op": "test", "path": "/290/id", "value": 425 },
+	{ "op": "test", "path": "/290/name", "value": "banner" },
+	{ "op": "remove", "path": "/290" }
+]

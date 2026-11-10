@@ -1,0 +1,198 @@
+updated(slot, up: custom(flattening_slot_1_13), down: custom(flattening_slot_1_12_2));
+
+namespace(status) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(server_info, up: custom(flattening_server_info_1_13));
+		};
+	};
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet) {
+			added(login_plugin_request, down: custom(flattening_login_plugin_request_1_12_2));
+		};
+	};
+};
+
+namespace(login) {
+	namespace(toServer) {
+		updated(packet) {
+			added(login_plugin_response, down: drop);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(declare_commands, down: custom(flattening_declare_commands_1_12_2));
+			added(declare_recipes, down: drop);
+			added(face_player, down: custom(flattening_face_player_1_12_2));
+			added(nbt_query_response, down: drop);
+			added(stop_sound, down: custom(flattening_stop_sound_1_12_2));
+			added(tags, down: drop);
+			converted(login, up: custom(flattening_login_1_13), down: custom(flattening_login_1_12_2));
+			converted(respawn, up: custom(flattening_respawn_1_13), down: custom(flattening_respawn_1_12_2));
+			converted(map_chunk, up: custom(flattening_map_chunk_1_13), down: custom(flattening_map_chunk_1_12_2));
+			converted(unload_chunk, up: custom(flattening_unload_chunk_1_13), down: custom(flattening_unload_chunk_1_12_2));
+			converted(explosion, up: custom(flattening_explosion_1_13));
+			converted(block_change, up: custom(flattening_block_change_1_13), down: custom(flattening_block_change_1_12_2));
+			converted(multi_block_change, up: custom(flattening_multi_block_change_1_13), down: custom(flattening_multi_block_change_1_12_2));
+			converted(block_action, up: custom(flattening_block_action_1_13), down: custom(flattening_block_action_1_12_2));
+			converted(tile_entity_data, up: custom(flattening_tile_entity_data_1_13), down: custom(flattening_tile_entity_data_1_12_2));
+			converted(custom_payload, up: custom(flattening_custom_payload_1_13), down: custom(flattening_custom_payload_1_12_2));
+			converted(set_cooldown, up: custom(flattening_set_cooldown_1_13), down: custom(flattening_set_cooldown_1_12_2));
+			converted(statistics, up: custom(flattening_statistics_1_13), down: custom(flattening_statistics_1_12_2));
+			converted(tab_complete, up: custom(flattening_tab_complete_1_13), down: custom(flattening_tab_complete_1_12_2));
+			converted(entity_destroy, up: custom(flattening_entity_destroy_1_13), down: custom(flattening_entity_destroy_1_12_2));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(type, down: custom(flattening_object_type_1_12_2));
+			converted(objectData, up: custom(flattening_object_data_1_13), down: custom(flattening_object_data_1_12_2));
+		};
+
+		updated(packet_spawn_entity_living) {
+			converted(type, up: custom(flattening_mob_type_1_13), down: custom(flattening_mob_type_1_12_2));
+			converted(metadata, up: custom(flattening_mob_metadata_1_13), down: custom(flattening_mob_metadata_1_12_2));
+		};
+
+		updated(packet_named_entity_spawn) {
+			converted(metadata, up: custom(flattening_player_metadata_1_13), down: custom(flattening_player_metadata_1_12_2));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(metadata, up: custom(flattening_entity_metadata_1_13), down: custom(flattening_entity_metadata_1_12_2));
+		};
+
+		updated(packet_spawn_entity_painting) {
+			converted(title, up: custom(flattening_painting_1_13), down: custom(flattening_painting_1_12_2));
+		};
+
+		updated(packet_world_particles, up: custom(flattening_world_particles_1_13), down: custom(flattening_world_particles_1_12_2));
+
+		updated(packet_world_event) {
+			converted(data, up: custom(flattening_world_event_data_1_13), down: custom(flattening_world_event_data_1_12_2));
+		};
+
+		updated(packet_named_sound_effect) {
+			converted(soundName, up: custom(flattening_sound_name_1_13), down: custom(flattening_sound_name_1_12_2));
+		};
+
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(flattening_sound_id_1_13), down: custom(flattening_sound_id_1_12_2));
+		};
+
+		updated(packet_entity_effect) {
+			converted(hideParticles, up: custom(flattening_effect_flags_1_13), down: custom(flattening_effect_flags_1_12_2));
+		};
+
+		updated(packet_craft_progress_bar) {
+			converted(value, up: custom(flattening_window_property_1_13), down: custom(flattening_window_property_1_12_2));
+		};
+
+		updated(packet_game_state_change) {
+			updated(reason) {
+				added(puffer_fish_sting, down: drop);
+			};
+		};
+
+		updated(packet_map) {
+			updated(icons) {
+				updated(items, up: custom(flattening_map_icon_1_13), down: custom(flattening_map_icon_1_12_2));
+			};
+		};
+
+		updated(packet_teams) {
+			updated(mode) {
+				converted(v0, up: custom(flattening_team_create_1_13), down: custom(flattening_team_create_1_12_2));
+				converted(v2, up: custom(flattening_team_update_1_13), down: custom(flattening_team_update_1_12_2));
+				converted(v3, up: custom(flattening_team_join_1_13));
+				converted(v4, up: custom(flattening_team_leave_1_13));
+			};
+		};
+
+		updated(packet_scoreboard_objective) {
+			updated(action) {
+				converted(v0, up: custom(flattening_objective_create_1_13), down: custom(flattening_objective_create_1_12_2));
+				converted(v2, up: custom(flattening_objective_update_1_13), down: custom(flattening_objective_update_1_12_2));
+			};
+		};
+
+		updated(packet_scoreboard_score) {
+			converted(itemName, up: custom(flattening_score_name_1_13));
+		};
+
+		updated(packet_player_info) {
+			updated(data) {
+				updated(items) {
+					converted(uuid, down: custom(flattening_player_uuid_1_12_2));
+					updated(ANON) {
+						updated(add_player) {
+							converted(name, up: custom(flattening_player_name_1_13));
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_unlock_recipes) {
+			added(smeltingBookOpen, up: false);
+			added(filteringSmeltable, up: false);
+			converted(recipes1, up: custom(flattening_recipe_list_1_13), down: custom(flattening_recipe_list_1_12_2));
+			updated(recipes2) {
+				converted(v0, up: custom(flattening_recipe_init_1_13), down: custom(flattening_recipe_init_1_12_2));
+			};
+		};
+
+		updated(packet_position) {
+			converted(x, down: custom(flattening_teleported_1_12_2));
+		};
+
+		updated(packet_craft_recipe_response) {
+			converted(recipe, up: custom(flattening_ghost_recipe_1_13), down: custom(flattening_ghost_recipe_1_12_2));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			added(edit_book, down: custom(flattening_edit_book_1_12_2));
+			added(name_item, down: custom(flattening_name_item_1_12_2));
+			added(pick_item, down: custom(flattening_pick_item_1_12_2));
+			added(query_block_nbt, down: drop);
+			added(query_entity_nbt, down: drop);
+			added(select_trade, down: custom(flattening_select_trade_1_12_2));
+			added(set_beacon_effect, down: custom(flattening_set_beacon_effect_1_12_2));
+			added(update_command_block, down: custom(flattening_update_command_block_1_12_2));
+			added(update_command_block_minecart, down: custom(flattening_update_command_block_minecart_1_12_2));
+			added(update_structure_block, down: custom(flattening_update_structure_block_1_12_2));
+			converted(custom_payload, up: custom(flattening_server_custom_payload_1_13), down: custom(flattening_server_custom_payload_1_12_2));
+			converted(tab_complete, up: custom(flattening_server_tab_complete_1_13), down: custom(flattening_server_tab_complete_1_12_2));
+		};
+
+		updated(packet_position) {
+			converted(x, up: custom(flattening_moved_1_13));
+		};
+
+		updated(packet_position_look) {
+			converted(x, up: custom(flattening_moved_look_1_13));
+		};
+
+		updated(packet_vehicle_move) {
+			converted(x, up: custom(flattening_vehicle_moved_1_13));
+		};
+
+		updated(packet_craft_recipe_request) {
+			converted(recipe, up: custom(flattening_recipe_request_1_13), down: custom(flattening_recipe_request_1_12_2));
+		};
+
+		updated(packet_crafting_book_data) {
+			converted(v0, up: custom(flattening_recipe_seen_1_13), down: custom(flattening_recipe_seen_1_12_2));
+			converted(v1, up: custom(flattening_book_settings_1_13), down: custom(flattening_book_settings_1_12_2));
+		};
+	};
+};

@@ -1,0 +1,83 @@
+updated(entityMetadataItem, down: custom(prenetty_metadata_item_1_1));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(set_slot, down: custom(prenetty_set_slot_1_1));
+			converted(window_items, down: custom(prenetty_window_items_1_1));
+			converted(set_creative_slot, down: custom(prenetty_set_creative_slot_1_1));
+			added(entity_head_rotation, down: drop);
+			added(tile_entity_data, down: drop);
+			converted(map_chunk, up: custom(prenetty_map_chunk_1_2_3), down: custom(prenetty_map_chunk_1_1));
+			converted(multi_block_change, up: custom(prenetty_multi_block_change_1_2_3), down: custom(prenetty_multi_block_change_1_1));
+			converted(block_change, down: custom(prenetty_block_change_1_1));
+			converted(spawn_entity, down: custom(prenetty_spawn_entity_1_1));
+			converted(spawn_entity_living, down: custom(prenetty_spawn_entity_living_1_1));
+			converted(entity_equipment, down: custom(prenetty_entity_equipment_1_1));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_1));
+			converted(spawn_entity_item, down: custom(prenetty_spawn_entity_item_1_1));
+			converted(position, down: custom(prenetty_position_1_1));
+			converted(position_only, down: custom(prenetty_position_only_1_1));
+			converted(spawn_position, down: custom(prenetty_spawn_position_1_1));
+			converted(bed, down: custom(prenetty_bed_1_1));
+			converted(spawn_entity_painting, down: custom(prenetty_spawn_entity_painting_1_1));
+			converted(spawn_entity_experience_orb, down: custom(prenetty_spawn_entity_experience_orb_1_1));
+			converted(spawn_entity_weather, down: custom(prenetty_spawn_entity_weather_1_1));
+			converted(entity_teleport, down: custom(prenetty_entity_teleport_1_1));
+			converted(rel_entity_move, down: custom(prenetty_rel_entity_move_1_1));
+			converted(entity_move_look, down: custom(prenetty_entity_move_look_1_1));
+			converted(entity_look, down: custom(prenetty_entity_look_1_1));
+			converted(entity_destroy, down: custom(prenetty_entity_destroy_1_1));
+			converted(pre_chunk, down: custom(prenetty_pre_chunk_1_1));
+			converted(explosion, down: custom(prenetty_explosion_1_1));
+			converted(world_event, down: custom(prenetty_world_event_1_1));
+			converted(block_action, down: custom(prenetty_block_action_1_1));
+			converted(update_sign, down: custom(prenetty_update_sign_1_1));
+			converted(entity_metadata, down: custom(prenetty_entity_metadata_1_1));
+			converted(open_window, down: custom(prenetty_open_window_1_1));
+		};
+
+		updated(packet_login) {
+			converted(dimension, up: i32(./dimension), down: custom(prenetty_login_dimension_1_1));
+			removed(seed, down: 0);
+		};
+
+		updated(packet_respawn) {
+			converted(dimension, up: i32(./dimension), down: custom(prenetty_respawn_dimension_1_1));
+			removed(seed, down: 0);
+		};
+
+		updated(packet_spawn_entity_living) {
+			added(headPitch, up: ./yaw);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(set_creative_slot, down: custom(prenetty_set_creative_slot_server_1_1));
+			converted(window_click, down: custom(prenetty_window_click_1_1));
+			converted(block_place, up: custom(prenetty_place_1_2_3), down: custom(prenetty_block_place_1_1));
+			converted(position, up: custom(prenetty_position_1_2_3));
+			converted(position_look, up: custom(prenetty_position_look_1_2_3));
+			converted(look, up: custom(prenetty_look_1_2_3));
+			converted(flying, up: custom(prenetty_flying_1_2_3));
+			converted(block_dig, up: custom(prenetty_block_dig_1_2_3));
+			converted(update_sign, up: custom(prenetty_update_sign_server_1_2_3));
+		};
+
+		updated(packet_login) {
+			converted(dimension);
+			removed(seed, down: 0);
+		};
+
+		updated(packet_respawn) {
+			converted(dimension);
+			removed(seed, down: 0);
+		};
+
+		updated(packet_set_protocol) {
+			removed(username, down: custom(prenetty_username_1_1));
+			added(usernameAndHost, up: ./username);
+		};
+	};
+};

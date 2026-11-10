@@ -1,0 +1,291 @@
+@!classic_protocol [7]
+
+@specializer buffer
+def_native(buffer) {
+	variant(inline) {
+		type(Count);
+	};
+
+	variant(sized) {
+		argument(count);
+
+		virtual_field(size) => varint;
+	};
+};
+
+@scalar string def_native(classicString);
+
+@specializer container
+def_native(container) {
+	body {
+		item(field) {
+			type(Value);
+		};
+
+		item(virtual_field) {
+			argument(value);
+
+			type(Value);
+		};
+	};
+};
+
+@encoding be @scalar i16 def_native(i16);
+
+@encoding be @scalar i32 def_native(i32);
+
+@encoding be @scalar i8 def_native(i8);
+
+def(blockPosition) => container {
+	field(x) => u16;
+
+	field(y) => u16;
+
+	field(z) => u16;
+};
+
+def(level) => container {
+	virtual_field(volume, value: i32(./blocks/@size)) => i32;
+
+	field(blocks) => buffer(count: ../volume);
+};
+
+def(levelChunk) => container {
+	virtual_field(length, value: i16(./data/@size)) => i16;
+
+	field(data) => buffer(count: i32(../length));
+
+	field(padding) => buffer(count: 1024 - i32(../length));
+};
+
+def(position) => container {
+	field(x) => i16;
+
+	field(y) => i16;
+
+	field(z) => i16;
+};
+
+@specializer union
+def_native(union) {
+	body {
+		item(variant) {
+			argument(match);
+
+			type(Value) => void;
+		};
+
+		item(default) {
+			anonymous;
+
+			type(Value) => void;
+		};
+	};
+
+	variant(external) {
+		argument(tag);
+	};
+
+	variant(inline) {
+		type(Tag);
+	};
+};
+
+@encoding be @scalar u16 def_native(u16);
+
+@encoding be @scalar u8 def_native(u8);
+
+@encoding varint @scalar i32 def_native(varint);
+
+def_native(void) {
+	is_void;
+};
+
+namespace(play) {
+	namespace(toClient) {
+		def(packet) => union(Tag: u8) {
+			variant(identification, match: 0) => packet_identification;
+
+			variant(ping, match: 1);
+
+			variant(level_initialize, match: 2);
+
+			variant(level_data_chunk, match: 3) => packet_level_data_chunk;
+
+			variant(level_finalize, match: 4) => packet_level_finalize;
+
+			variant(set_block, match: 6) => packet_set_block;
+
+			variant(spawn_player, match: 7) => packet_spawn_player;
+
+			variant(teleport, match: 8) => packet_teleport;
+
+			variant(position_and_orientation_update, match: 9)
+			=> packet_position_and_orientation_update;
+
+			variant(position_update, match: 10) => packet_position_update;
+
+			variant(orientation_update, match: 11) => packet_orientation_update;
+
+			variant(despawn_player, match: 12) => packet_despawn_player;
+
+			variant(message, match: 13) => packet_message;
+
+			variant(disconnect, match: 14) => packet_disconnect;
+
+			variant(update_user_type, match: 15) => packet_update_user_type;
+
+			default;
+		};
+
+		def(packet_despawn_player) => container {
+			field(playerId) => u8;
+		};
+
+		def(packet_disconnect) => container {
+			field(reason) => classicString;
+		};
+
+		def(packet_identification) => container {
+			field(protocolVersion) => u8;
+
+			field(serverName) => classicString;
+
+			field(motd) => classicString;
+
+			field(userType) => u8;
+		};
+
+		def(packet_level_data_chunk) => container {
+			field(chunk) => levelChunk;
+
+			field(percent) => u8;
+		};
+
+		def(packet_level_finalize) => container {
+			field(sizeX) => u16;
+
+			field(sizeY) => u16;
+
+			field(sizeZ) => u16;
+		};
+
+		def(packet_message) => container {
+			field(playerId) => u8;
+
+			field(message) => classicString;
+		};
+
+		def(packet_orientation_update) => container {
+			field(playerId) => u8;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_position_and_orientation_update) => container {
+			field(playerId) => u8;
+
+			field(dX) => i8;
+
+			field(dY) => i8;
+
+			field(dZ) => i8;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_position_update) => container {
+			field(playerId) => u8;
+
+			field(dX) => i8;
+
+			field(dY) => i8;
+
+			field(dZ) => i8;
+		};
+
+		def(packet_set_block) => container {
+			field(location) => blockPosition;
+
+			field(blockType) => u8;
+		};
+
+		def(packet_spawn_player) => container {
+			field(playerId) => u8;
+
+			field(playerName) => classicString;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_teleport) => container {
+			field(playerId) => u8;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_update_user_type) => container {
+			field(userType) => u8;
+		};
+	};
+
+	namespace(toServer) {
+		def(packet) => union(Tag: u8) {
+			variant(identification, match: 0) => packet_identification;
+
+			variant(set_block, match: 5) => packet_set_block;
+
+			variant(position_and_orientation, match: 8) => packet_position_and_orientation;
+
+			variant(message, match: 13) => packet_message;
+
+			default;
+		};
+
+		def(packet_identification) => container {
+			field(protocolVersion) => u8;
+
+			field(username) => classicString;
+
+			field(verificationKey) => classicString;
+
+			field(unused) => u8;
+		};
+
+		def(packet_message) => container {
+			field(playerId) => u8;
+
+			field(message) => classicString;
+		};
+
+		def(packet_position_and_orientation) => container {
+			field(playerId) => u8;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_set_block) => container {
+			field(location) => blockPosition;
+
+			field(mode) => u8;
+
+			field(blockType) => u8;
+		};
+	};
+};

@@ -1,0 +1,6 @@
++ play::toClient::packet_abilities
++ play::toServer::packet_abilities
+~ play::toClient::packet [ArmsAdded]
+    +abilities
+~ play::toServer::packet [ArmsAdded]
+    +abilities

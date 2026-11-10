@@ -1,0 +1,218 @@
+updated(slot, up: custom(trails_slot_1_20_2_to_1_20_3), down: custom(trails_slot_1_20_3_to_1_20_2));
+
+updated(entityMetadata, up: custom(trails_metadata_1_20_2_to_1_20_3), down: custom(trails_metadata_1_20_3_to_1_20_2));
+
+updated(command_node) {
+	updated(extraNodeData) {
+		updated(v2) {
+			updated(properties) {
+				added(minecraft_style, down: minecraft_component);
+			};
+		};
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			added(add_resource_pack, down: custom(trails_config_add_resource_pack_1_20_3_to_1_20_2));
+			added(remove_resource_pack, down: drop);
+			removed(resource_pack_send, up: custom(trails_config_resource_pack_send_1_20_2_to_1_20_3));
+			updated(disconnect, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			converted(tags, up: custom(trails_config_tags_1_20_2_to_1_20_3), down: custom(trails_config_tags_1_20_3_to_1_20_2));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(resource_pack_receive, up: custom(trails_config_resource_pack_receive_1_20_2_to_1_20_3), down: custom(trails_config_resource_pack_receive_1_20_3_to_1_20_2));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(add_resource_pack, down: custom(trails_add_resource_pack_1_20_3_to_1_20_2));
+			added(remove_resource_pack, down: drop);
+			added(reset_score, down: custom(trails_reset_score_1_20_3_to_1_20_2));
+			removed(resource_pack_send, up: custom(trails_resource_pack_send_1_20_2_to_1_20_3));
+			added(set_ticking_state, down: drop);
+			added(step_tick, down: drop);
+			converted(scoreboard_score, up: custom(trails_scoreboard_score_1_20_2_to_1_20_3), down: custom(trails_scoreboard_score_1_20_3_to_1_20_2));
+			converted(explosion, up: custom(trails_explosion_1_20_2_to_1_20_3));
+			converted(login, up: custom(trails_login_1_20_2_to_1_20_3));
+			converted(respawn, up: custom(trails_respawn_1_20_2_to_1_20_3));
+			converted(open_window, up: custom(trails_open_window_1_20_2_to_1_20_3), down: custom(trails_open_window_1_20_3_to_1_20_2));
+			converted(world_particles, up: custom(trails_world_particles_1_20_2_to_1_20_3), down: custom(trails_world_particles_1_20_3_to_1_20_2));
+			converted(map_chunk, up: custom(trails_map_chunk_1_20_2_to_1_20_3), down: custom(trails_map_chunk_1_20_3_to_1_20_2));
+			converted(multi_block_change, up: custom(trails_multi_block_change_1_20_2_to_1_20_3), down: custom(trails_multi_block_change_1_20_3_to_1_20_2));
+			converted(block_change, up: custom(trails_block_change_1_20_2_to_1_20_3), down: custom(trails_block_change_1_20_3_to_1_20_2));
+			converted(block_action, up: custom(trails_block_action_1_20_2_to_1_20_3), down: custom(trails_block_action_1_20_3_to_1_20_2));
+			converted(world_event, up: custom(trails_world_event_1_20_2_to_1_20_3), down: custom(trails_world_event_1_20_3_to_1_20_2));
+			converted(spawn_entity, up: custom(trails_spawn_entity_1_20_2_to_1_20_3), down: custom(trails_spawn_entity_1_20_3_to_1_20_2));
+			converted(set_cooldown, up: custom(trails_set_cooldown_1_20_2_to_1_20_3), down: custom(trails_set_cooldown_1_20_3_to_1_20_2));
+			converted(sound_effect, up: custom(trails_sound_effect_1_20_2_to_1_20_3), down: custom(trails_sound_effect_1_20_3_to_1_20_2));
+			converted(entity_sound_effect, up: custom(trails_entity_sound_effect_1_20_2_to_1_20_3), down: custom(trails_entity_sound_effect_1_20_3_to_1_20_2));
+			converted(tags, up: custom(trails_tags_1_20_2_to_1_20_3), down: custom(trails_tags_1_20_3_to_1_20_2));
+			updated(action_bar, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(kick_disconnect, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(set_title_subtitle, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(set_title_text, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_advancements) {
+			updated(advancementMapping) {
+				updated(items) {
+					updated(value) {
+						updated(displayData) {
+							updated(value) {
+								updated(title, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+								updated(description, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+							};
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_boss_bar) {
+			updated(action) {
+				updated(v0) {
+					updated(title, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+				};
+				updated(v3, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			};
+		};
+
+		updated(packet_death_combat_event) {
+			updated(message, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_map) {
+			updated(icons) {
+				updated(value) {
+					updated(items) {
+						updated(displayName) {
+							updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_player_chat) {
+			updated(unsignedChatContent) {
+				updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			};
+			updated(networkName, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(networkTargetName) {
+				updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			};
+		};
+
+		updated(packet_player_info) {
+			updated(data) {
+				updated(items) {
+					updated(displayName) {
+						updated(true) {
+							updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_playerlist_header) {
+			updated(header, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(footer, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_profileless_chat) {
+			updated(message, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(name, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			updated(target) {
+				updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+			};
+		};
+
+		updated(packet_server_data) {
+			updated(motd, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_system_chat) {
+			updated(content, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_tab_complete) {
+			updated(matches) {
+				updated(items) {
+					updated(tooltip) {
+						updated(value, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+					};
+				};
+			};
+		};
+
+		updated(packet_teams) {
+			updated(mode) {
+				updated(v0) {
+					updated(name, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+					updated(prefix, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+					updated(suffix, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+				};
+				updated(v2) {
+					updated(name, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+					updated(prefix, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+					updated(suffix, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+				};
+			};
+		};
+
+		updated(packet_explosion) {
+			added(block_interaction_type);
+			added(large_explosion_particle);
+			added(small_explosion_particle);
+			added(sound);
+		};
+
+		updated(packet_face_player) {
+			updated(isEntity) {
+				updated(true) {
+					updated(entity_feet_eyes, up: custom(trails_feet_eyes_1_20_2_to_1_20_3), down: custom(trails_feet_eyes_1_20_3_to_1_20_2));
+				};
+			};
+		};
+
+		updated(packet_game_state_change) {
+			updated(reason) {
+				added(level_chunks_load_start, down: drop);
+			};
+		};
+
+		updated(packet_scoreboard_objective) {
+			updated(action) {
+				updated(v0) {
+					added(styling, up: custom(trails_objective_styling_1_20_2_to_1_20_3));
+					updated(displayText, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+				};
+				updated(v2) {
+					added(styling, up: custom(trails_objective_update_styling_1_20_2_to_1_20_3));
+					updated(displayText, up: custom(trails_text_1_20_2_to_1_20_3), down: custom(trails_text_1_20_3_to_1_20_2));
+				};
+			};
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(set_slot_state, down: drop);
+			converted(resource_pack_receive, up: custom(trails_resource_pack_receive_1_20_2_to_1_20_3), down: custom(trails_resource_pack_receive_1_20_3_to_1_20_2));
+		};
+
+		updated(packet_update_jigsaw_block) {
+			added(placement_priority, up: 0);
+			added(selection_priority, up: 0);
+		};
+	};
+};

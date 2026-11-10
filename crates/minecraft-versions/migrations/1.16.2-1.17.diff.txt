@@ -1,0 +1,106 @@
++ play::toClient::packet_action_bar
++ play::toClient::packet_clear_titles
++ play::toClient::packet_death_combat_event
++ play::toClient::packet_destroy_entity
++ play::toClient::packet_end_combat_event
++ play::toClient::packet_enter_combat_event
++ play::toClient::packet_initialize_world_border
++ play::toClient::packet_ping
++ play::toClient::packet_sculk_vibration_signal
++ play::toClient::packet_set_title_subtitle
++ play::toClient::packet_set_title_text
++ play::toClient::packet_set_title_time
++ play::toClient::packet_world_border_center
++ play::toClient::packet_world_border_lerp_size
++ play::toClient::packet_world_border_size
++ play::toClient::packet_world_border_warning_delay
++ play::toClient::packet_world_border_warning_reach
++ play::toServer::packet_pong
+- play::toClient::packet_combat_event
+- play::toClient::packet_entity
+- play::toClient::packet_entity_destroy
+- play::toClient::packet_title
+- play::toClient::packet_transaction
+- play::toClient::packet_world_border
+- play::toServer::packet_transaction
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v15
+    +v16
+    +v25
+    +v36
+    +v37
+    +v4
+    -v14
+    -v23
+    -v3
+    -v34
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +sculk_vibration_signal
+    +clear_titles
+    +initialize_world_border
+    +ping
+    +end_combat_event
+    +enter_combat_event
+    +death_combat_event
+    +destroy_entity
+    +action_bar
+    +world_border_center
+    +world_border_lerp_size
+    +world_border_size
+    +world_border_warning_delay
+    +world_border_warning_reach
+    +set_title_subtitle
+    +set_title_text
+    +set_title_time
+    -transaction
+    -entity
+    -combat_event
+    -entity_destroy
+    -world_border
+    -title
+    81 arms renumbered
+~ play::toClient::packet_declare_recipes [Other]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
+    ~properties: nested change
+~ play::toClient::packet_explosion [FieldsRetypedNested]
+    ~affectedBlockOffsets: nested change
+~ play::toClient::packet_login [FieldsRetypedScalar]
+    ~previousGameMode: field() => u8; -> field() => i8;
+~ play::toClient::packet_map [FieldsRemoved, FieldsRetypedNested]
+    -trackingPosition: field() => bool;
+    ~icons: nested change
+    ~columns: nested change
+~ play::toClient::packet_map_chunk [FieldsRemoved, FieldsRetypedNested]
+    -groundUp: virtual_field(, value: ./biomes/@tag) => bool;
+    ~bitMap: nested change
+    ~biomes: nested change
+~ play::toClient::packet_position [FieldsAdded]
+    +dismountVehicle: field() => bool;
+~ play::toClient::packet_resource_pack_send [FieldsAdded]
+    +forced: field() => bool;
+    +promptMessage: field() => option => string;
+~ play::toClient::packet_spawn_position [ShapeChanged]
+~ play::toClient::packet_tags [ShapeChanged]
+~ play::toClient::packet_update_light [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +skyLight: field() => array(Count: varint) => array(Count: varint) => u8;
+    +blockLight: field() => array(Count: varint) => array(Count: varint) => u8;
+    -data: field() => restBuffer;
+    ~skyLightMask: nested change
+    ~blockLightMask: nested change
+    ~emptySkyLightMask: nested change
+    ~emptyBlockLightMask: nested change
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +pong
+    -transaction
+    22 arms renumbered
+~ play::toServer::packet_settings [FieldsAdded]
+    +disableTextFiltering: field() => bool;
+~ play::toServer::packet_window_click [FieldsAdded, FieldsRemoved, FieldsRenamed]
+    item renamed to cursorItem
+    +changedSlots: field() => array(Count: varint) => container { field(location) => i16; field(item) => slot; };
+    -action: field() => i16;

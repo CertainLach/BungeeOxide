@@ -1,0 +1,13 @@
+{
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 100,
+		"exclude": ["nbt/gen", "minecraft-protocol/gen"]
+	},
+	"lint": {
+		"exclude": ["nbt/gen", "minecraft-protocol/gen"]
+	},
+	"imports": {
+		"@std/assert": "jsr:@std/assert@1"
+	}
+}

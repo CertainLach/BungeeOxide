@@ -1,0 +1,20 @@
++ play::toClient::packet_entity_destroy
+- play::toClient::packet_destroy_entity
+~ play::toClient::packet [ArmsAdded, ArmsRemoved]
+    +entity_destroy
+    -destroy_entity
+~ play::toClient::packet_set_slot [FieldsAdded]
+    +stateId: field() => varint;
+~ play::toClient::packet_window_items [FieldsAdded, FieldsRetypedNested]
+    +stateId: field() => varint;
+    +carriedItem: field() => slot;
+    ~items: nested change
+= play::toServer::packet (references changed)
+~ play::toServer::packet_edit_book [FieldsAdded, FieldsRemoved]
+    +pages: field() => array(Count: varint) => string;
+    +title: field() => option => string;
+    -new_book: field() => slot;
+    -signing: field() => bool;
+~ play::toServer::packet_window_click [FieldsAdded, FieldsRetypedScalar]
+    +stateId: field() => varint;
+    ~mode: field() => i8; -> field() => varint;

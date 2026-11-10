@@ -1,0 +1,37 @@
+updated(entityMetadataItem) {
+	added(v13, down: drop);
+};
+
+updated(slot, up: custom(legacy_up_slot_1_12), down: custom(legacy_down_slot_1_11));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(legacy_sound_id_1_12), down: custom(legacy_sound_id_down_1_11));
+		};
+
+		updated(packet) {
+			added(advancements, down: drop);
+			added(select_advancement_tab, down: drop);
+			added(unlock_recipes, down: drop);
+			converted(spawn_entity_living, down: custom(legacy_down_spawn_entity_living_1_11));
+			converted(entity_metadata, down: custom(legacy_down_entity_metadata_1_11));
+			converted(chat, down: custom(legacy_down_chat_1_11));
+			converted(title, down: custom(legacy_down_title_1_11));
+			converted(block_change, down: custom(legacy_down_block_change_1_11));
+			converted(multi_block_change, down: custom(legacy_down_multi_block_change_1_11));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(advancement_tab, down: drop);
+			added(crafting_book_data, down: drop);
+			added(prepare_crafting_grid, down: drop);
+		};
+
+		updated(packet_client_command) {
+			removed(open_inventory_achievement, up: drop);
+		};
+	};
+};

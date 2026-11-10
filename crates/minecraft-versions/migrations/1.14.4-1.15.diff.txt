@@ -1,0 +1,20 @@
+~ play::toClient::packet [Renumbered]
+    85 arms renumbered
+~ play::toClient::packet_game_state_change [FieldsRetypedNested]
+    ~reason: nested change
+~ play::toClient::packet_login [FieldsAdded]
+    +hashedSeed: field() => i64;
+    +enableRespawnScreen: field() => bool;
+~ play::toClient::packet_map_chunk [FieldsAdded, FieldsRetypedScalar]
+    +biomes: field() => union(tag: ../groundUp) { variant(false, match: false) => void; variant(true, match: true) => array(count: 1024) => i32; };
+    ~groundUp: field() => bool; -> virtual_field(, value: ./biomes/@tag) => bool;
+~ play::toClient::packet_named_entity_spawn [FieldsRemoved]
+    -metadata: field() => entityMetadata;
+~ play::toClient::packet_respawn [FieldsAdded]
+    +hashedSeed: field() => i64;
+~ play::toClient::packet_spawn_entity_living [FieldsRemoved]
+    -metadata: field() => entityMetadata;
+~ play::toClient::packet_world_particles [FieldsRetypedScalar]
+    ~x: field() => f32; -> field() => f64;
+    ~y: field() => f32; -> field() => f64;
+    ~z: field() => f32; -> field() => f64;

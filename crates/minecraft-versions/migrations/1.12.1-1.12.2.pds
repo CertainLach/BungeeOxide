@@ -1,0 +1,13 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(keep_alive, down: custom(legacy_down_keep_alive_1_12_1));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(keep_alive, up: custom(legacy_up_keep_alive_1_12_2));
+		};
+	};
+};

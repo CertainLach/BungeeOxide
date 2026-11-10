@@ -1,0 +1,15 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(acknowledge_player_digging, down: custom(village_digging_ack_1_14_3));
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					added(demand, up: 0);
+				};
+			};
+		};
+	};
+};

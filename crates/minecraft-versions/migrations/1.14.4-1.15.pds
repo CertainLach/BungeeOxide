@@ -1,0 +1,60 @@
+updated(slot, up: custom(village_slot_1_15), down: custom(village_slot_1_14_4));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(login, up: custom(village_login_1_15), down: custom(village_login_1_14_4));
+			converted(respawn, up: custom(village_respawn_1_15), down: custom(village_respawn_1_14_4));
+			converted(map_chunk, up: custom(village_map_chunk_1_15), down: custom(village_map_chunk_1_14_4));
+			converted(spawn_entity, up: custom(village_spawn_entity_1_15), down: custom(village_spawn_entity_1_14_4));
+			converted(spawn_entity_living, up: custom(village_spawn_entity_living_1_15), down: custom(village_spawn_entity_living_1_14_4));
+			converted(named_entity_spawn, up: custom(village_named_entity_spawn_1_15), down: custom(village_named_entity_spawn_1_14_4));
+			converted(entity_metadata, up: custom(village_entity_metadata_1_15), down: custom(village_entity_metadata_1_14_4));
+			converted(entity_destroy, up: custom(village_entity_destroy_1_15), down: custom(village_entity_destroy_1_14_4));
+			converted(game_state_change, down: custom(village_game_state_change_1_14_4));
+			converted(update_health, down: custom(village_update_health_1_14_4));
+			updated(statistics) {
+				updated(items, up: custom(village_statistic_1_15), down: custom(village_statistic_1_14_4));
+			};
+		};
+
+		updated(packet_world_particles, up: custom(village_world_particles_1_15), down: custom(village_world_particles_1_14_4));
+		updated(packet_tags, up: custom(village_tags_1_15), down: custom(village_tags_1_14_4));
+
+		updated(packet_block_change) {
+			converted(type, up: custom(village_block_change_1_15), down: custom(village_block_change_1_14_4));
+		};
+
+		updated(packet_multi_block_change) {
+			updated(records) {
+				updated(items) {
+					converted(blockId, up: custom(village_multi_block_change_1_15), down: custom(village_multi_block_change_1_14_4));
+				};
+			};
+		};
+
+		updated(packet_acknowledge_player_digging) {
+			converted(block, up: custom(village_digging_ack_1_15), down: custom(village_digging_ack_1_14_4));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(village_block_action_1_15), down: custom(village_block_action_1_14_4));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(village_world_event_1_15), down: custom(village_world_event_1_14_4));
+		};
+
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(village_sound_effect_1_15), down: custom(village_sound_effect_1_14_4));
+		};
+
+		updated(packet_entity_sound_effect) {
+			converted(soundId, up: custom(village_entity_sound_effect_1_15), down: custom(village_entity_sound_effect_1_14_4));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(village_set_cooldown_1_15), down: custom(village_set_cooldown_1_14_4));
+		};
+	};
+};

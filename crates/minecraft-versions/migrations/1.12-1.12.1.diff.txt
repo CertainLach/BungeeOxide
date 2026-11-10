@@ -1,0 +1,10 @@
++ play::toClient::packet_craft_recipe_response
++ play::toServer::packet_craft_recipe_request
+- play::toServer::packet_prepare_crafting_grid
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +craft_recipe_response
+    36 arms renumbered
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +craft_recipe_request
+    -prepare_crafting_grid
+    17 arms renumbered

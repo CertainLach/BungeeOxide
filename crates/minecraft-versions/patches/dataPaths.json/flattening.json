@@ -1,0 +1,15 @@
+[
+	{ "op": "test", "path": "/pc/1.13.1/protocol", "value": "pc/1.13.1" },
+	{ "op": "test", "path": "/pc/1.13.1/blocks", "value": "pc/1.13" },
+	{ "op": "replace", "path": "/pc/1.13.1/blocks", "value": "pc/1.13.2" },
+	{ "op": "test", "path": "/pc/1.13.1/blockCollisionShapes", "value": "pc/1.13" },
+	{ "op": "replace", "path": "/pc/1.13.1/blockCollisionShapes", "value": "pc/1.13.2" },
+	{ "op": "test", "path": "/pc/1.13.1/items", "value": "pc/1.13" },
+	{ "op": "replace", "path": "/pc/1.13.1/items", "value": "pc/1.13.2" },
+	{ "op": "test", "path": "/pc/1.13.1/recipes", "value": "pc/1.13" },
+	{ "op": "replace", "path": "/pc/1.13.1/recipes", "value": "pc/1.13.2" },
+	{ "op": "test", "path": "/pc/1.13/version", "value": "pc/1.13" },
+	{ "op": "add", "path": "/pc/1.13/sounds", "value": "pc/1.13.2" },
+	{ "op": "test", "path": "/pc/1.13.1/version", "value": "pc/1.13.1" },
+	{ "op": "add", "path": "/pc/1.13.1/sounds", "value": "pc/1.13.2" }
+]

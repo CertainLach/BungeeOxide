@@ -1,0 +1,21 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(open_sign_entity, down: drop);
+		};
+
+		updated(packet_update_attributes) {
+			updated(properties) {
+				updated(items) {
+					added(modifiers, up: []);
+				};
+			};
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(block_place, down: custom(prenetty_block_place_1_6_1));
+		};
+	};
+};

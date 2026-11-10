@@ -1,0 +1,3 @@
+= play::toServer::packet (references changed)
+~ play::toServer::packet_edit_book [FieldsAdded]
+    +hand: field() => varint;

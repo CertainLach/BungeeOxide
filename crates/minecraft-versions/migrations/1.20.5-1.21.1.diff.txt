@@ -1,0 +1,63 @@
++ JukeboxSongData
++ ServerLinkType
++ packet_common_custom_report_details
++ packet_common_server_links
++ play::toClient::ChatTypesHolder
++ vec2f
+~ EntityMetadataPaintingVariant [FieldsRemoved, FieldsRetypedScalar]
+    -title: field() => option => anonymousNbt;
+    -author: field() => option => anonymousNbt;
+    ~width: field() => i32; -> field() => varint;
+    ~height: field() => i32; -> field() => varint;
+= Particle (references changed)
+~ Slot [TagChanged]
+    tag union(Tag: i8); -> union(Tag: varint);
+~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
+    ~attribute_modifiers
+    ~food
+    ~potion_contents
+    +jukebox_playable
+    ~block_state
+    14 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded]
+    +jukebox_playable
+    14 arms renumbered
+~ configuration::toClient::packet [ArmsAdded]
+    +custom_report_details
+    +server_links
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= minecraft_smelting_format (references changed)
+~ play::toClient::packet [ArmsAdded]
+    +custom_report_details
+    +server_links
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
+    ~properties: nested change
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_player_chat [FieldsRetypedScalar]
+    ~type: field() => varint; -> field() => ChatTypesHolder;
+~ play::toClient::packet_profileless_chat [FieldsRetypedScalar]
+    ~type: field() => varint; -> field() => ChatTypesHolder;
+~ play::toClient::packet_set_projectile_power [FieldsAdded, FieldsRemoved]
+    +accelerationPower: field() => f64;
+    -power: field() => vec3f64;
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+~ play::toServer::packet_craft_recipe_request [FieldsRetypedScalar]
+    ~windowId: field() => i8; -> field() => ContainerID;
+~ play::toServer::packet_enchant_item [FieldsRetypedScalar]
+    ~windowId: field() => i8; -> field() => ContainerID;
+    ~enchantment: field() => i8; -> field() => varint;
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_use_item [FieldsAdded]
+    +rotation: field() => vec2f;
+= play::toServer::packet_window_click (references changed)

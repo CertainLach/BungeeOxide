@@ -1,0 +1,60 @@
+updated(slot, up: custom(caves_slot_1_18), down: custom(caves_slot_down_1_17_1));
+
+updated(particle, up: custom(caves_particle_1_18), down: custom(caves_particle_down_1_17_1));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(simulation_distance, down: drop);
+			converted(update_light, up: custom(caves_update_light_1_18));
+			converted(map_chunk, up: custom(caves_map_chunk_1_18), down: custom(caves_map_chunk_down_1_17_1));
+			converted(tags, up: custom(caves_tags_1_18), down: custom(caves_tags_down_1_17_1));
+			converted(statistics, up: custom(caves_statistics_1_18), down: custom(caves_statistics_down_1_17_1));
+		};
+
+		updated(packet_login) {
+			added(simulationDistance, up: custom(caves_simulation_distance_1_18));
+			hooked(dimension, down: custom(caves_track_dimension));
+		};
+
+		updated(packet_respawn, up: custom(caves_respawn_1_18));
+
+		updated(packet_respawn) {
+			hooked(dimension, down: custom(caves_track_dimension));
+		};
+
+		updated(packet_unload_chunk, up: custom(caves_unload_chunk_1_18));
+
+		updated(packet_multi_block_change) {
+			updated(chunkCoordinates) {
+				converted(y);
+			};
+		};
+
+		updated(packet_tile_entity_data) {
+			converted(action, up: custom(caves_tile_entity_action_1_18), down: custom(caves_tile_entity_action_down_1_17_1));
+			converted(nbtData, up: custom(caves_tile_entity_nbt_1_18), down: custom(caves_tile_entity_nbt_down_1_17_1));
+		};
+
+		updated(packet_world_particles, up: custom(caves_world_particles_1_18), down: custom(caves_world_particles_down_1_17_1));
+
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(caves_sound_1_18), down: custom(caves_sound_down_1_17_1));
+		};
+
+		updated(packet_entity_sound_effect) {
+			converted(soundId, up: custom(caves_entity_sound_1_18), down: custom(caves_entity_sound_down_1_17_1));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(caves_cooldown_item_1_18), down: custom(caves_cooldown_item_down_1_17_1));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet_settings) {
+			renamed(disableTextFiltering, to: enableTextFiltering);
+			added(enableServerListing, up: true);
+		};
+	};
+};

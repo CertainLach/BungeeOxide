@@ -1,0 +1,184 @@
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(tricky_item_id_1_21_1), down: custom(tricky_item_id_down_1_20_5));
+		converted(addedComponentCount, down: custom(tricky_added_components_down_1_20_5));
+		converted(removedComponentCount, down: custom(tricky_removed_components_down_1_20_5));
+	};
+};
+
+updated(SlotComponent) {
+	added(jukebox_playable, down: drop);
+	converted(pot_decorations, up: custom(tricky_pot_decorations_1_21_1), down: custom(tricky_pot_decorations_down_1_20_5));
+	updated(enchantments) {
+		updated(enchantments) {
+			updated(items) {
+				converted(id, up: custom(tricky_enchantment_1_21_1), down: custom(tricky_enchantment_down_1_20_5));
+			};
+		};
+	};
+	updated(stored_enchantments) {
+		updated(enchantments) {
+			updated(items) {
+				converted(id, up: custom(tricky_stored_enchantment_1_21_1), down: custom(tricky_stored_enchantment_down_1_20_5));
+			};
+		};
+	};
+	updated(attribute_modifiers) {
+		updated(attributes) {
+			updated(items) {
+				removed(uuid, down: custom(tricky_attribute_uuid_down_1_20_5));
+				converted(typeId, up: custom(tricky_attribute_type_1_21_1), down: custom(tricky_attribute_type_down_1_20_5));
+				converted(name, up: custom(tricky_attribute_name_1_21_1), down: custom(tricky_attribute_name_down_1_20_5));
+			};
+		};
+	};
+	updated(block_state) {
+		updated(items) {
+			renamed(name, to: property);
+		};
+	};
+	updated(food) {
+		added(usingConvertsTo, up: custom(tricky_food_remainder_1_21_1));
+	};
+	updated(potion_contents) {
+		removed(customName, down: custom(tricky_potion_name_down_1_20_5));
+	};
+};
+
+updated(SlotComponentType) {
+	added(jukebox_playable, down: drop);
+};
+
+updated(ItemSoundHolder, up: custom(tricky_sound_1_21_1), down: custom(tricky_sound_down_1_20_5));
+
+updated(entityMetadataEntry) {
+	updated(value) {
+		converted(painting_variant, up: custom(tricky_painting_1_21_1), down: custom(tricky_painting_down_1_20_5));
+		converted(wolf_variant, up: custom(trails_wolf_variant_1_20_5_to_1_21_1), down: custom(trails_wolf_variant_1_21_1_to_1_20_5));
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			added(custom_report_details, down: drop);
+			added(server_links, down: drop);
+			converted(registry_data, up: custom(tricky_registry_data_1_21_1), down: custom(tricky_registry_data_down_1_20_5));
+			converted(finish_configuration, up: custom(tricky_finish_configuration_1_21_1));
+			converted(feature_flags, up: custom(tricky_feature_flags_1_21_1), down: custom(tricky_feature_flags_down_1_20_5));
+			converted(tags, up: custom(tricky_config_tags_1_21_1), down: custom(tricky_config_tags_down_1_20_5));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(custom_report_details, down: drop);
+			added(server_links, down: drop);
+			converted(tags, up: custom(tricky_play_tags_1_21_1), down: custom(tricky_play_tags_down_1_20_5));
+			converted(profileless_chat, down: custom(tricky_profileless_chat_down_1_20_5));
+			converted(player_chat, down: custom(tricky_player_chat_down_1_20_5));
+			converted(entity_destroy, down: custom(tricky_entity_destroy_down_1_20_5));
+		};
+
+		updated(packet_entity_update_attributes) {
+			updated(properties) {
+				updated(items) {
+					updated(key) {
+						added(generic_burning_time, down: drop);
+						added(generic_explosion_knockback_resistance, down: drop);
+						added(generic_movement_efficiency, down: drop);
+						added(generic_oxygen_bonus, down: drop);
+						added(generic_water_movement_efficiency, down: drop);
+						added(player_mining_efficiency, down: drop);
+						added(player_sneaking_speed, down: drop);
+						added(player_submerged_mining_speed, down: drop);
+						added(player_sweeping_damage_ratio, down: drop);
+					};
+					updated(modifiers) {
+						updated(items) {
+							updated(uuid, up: custom(tricky_modifier_id_1_21_1), down: custom(tricky_modifier_uuid_down_1_20_5));
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_profileless_chat) {
+			updated(type, up: custom(tricky_chat_type_1_21_1));
+		};
+
+		updated(packet_player_chat) {
+			updated(type, up: custom(tricky_chat_type_1_21_1));
+		};
+
+		updated(packet_set_projectile_power) {
+			added(accelerationPower, up: custom(tricky_projectile_power_1_21_1));
+			removed(power, down: custom(tricky_projectile_power_down_1_20_5));
+		};
+
+		updated(packet_open_horse_window) {
+			converted(nbSlots, up: (./nbSlots - 1) / 3, down: ./nbSlots * 3 + 1);
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(tricky_world_event_1_21_1), down: custom(tricky_world_event_down_1_20_5));
+		};
+
+		updated(packet_spawn_entity, down: custom(tricky_spawn_entity_down_1_20_5));
+
+		updated(packet_entity_velocity, down: custom(tricky_entity_velocity_down_1_20_5));
+
+		updated(packet_game_state_change) {
+			converted(gameMode, down: custom(tricky_game_state_value_down_1_20_5));
+		};
+
+		updated(packet_open_window, up: custom(tricky_open_window_1_21_1), down: custom(tricky_open_window_down_1_20_5));
+
+		updated(packet_craft_progress_bar) {
+			converted(value, up: custom(tricky_window_property_1_21_1), down: custom(tricky_window_property_down_1_20_5));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(tricky_cooldown_item_1_21_1), down: custom(tricky_cooldown_item_down_1_20_5));
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(tricky_trade_item_1_21_1), down: custom(tricky_trade_item_down_1_20_5));
+						converted(addedComponentCount, down: custom(tricky_trade_components_down_1_20_5));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(tricky_trade_item2_1_21_1), down: custom(tricky_trade_item2_down_1_20_5));
+							converted(addedComponentCount, down: custom(tricky_trade_components2_down_1_20_5));
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet_craft_recipe_request) {
+			converted(windowId);
+		};
+
+		updated(packet_enchant_item) {
+			converted(enchantment);
+			converted(windowId);
+		};
+
+		updated(packet_use_item) {
+			added(rotation, up: custom(tricky_use_item_rotation_1_21_1));
+		};
+
+		updated(packet_look, up: custom(tricky_look_1_21_1));
+		updated(packet_position_look, up: custom(tricky_position_look_1_21_1));
+	};
+};

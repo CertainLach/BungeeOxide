@@ -1,0 +1,31 @@
++ play::toServer::packet_displayed_recipe
++ play::toServer::packet_recipe_book
+- play::toServer::packet_crafting_book_data
+~ play::toClient::packet [Renumbered]
+    45 arms renumbered
+~ play::toClient::packet_declare_recipes [Other]
+~ play::toClient::packet_login [FieldsAdded, FieldsRetypedScalar]
+    +isHardcore: field() => bool;
+    ~dimension: field() => string; -> field() => nbt;
+    ~maxPlayers: field() => u8; -> field() => varint;
+~ play::toClient::packet_map_chunk [FieldsRemoved, FieldsRetypedNested]
+    -ignoreOldData: field() => bool;
+    ~biomes: nested change
+~ play::toClient::packet_multi_block_change [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +chunkCoordinates: field() => bitfield { field(x, signed: true, size: 22); field(z, signed: true, size: 22); field(y, signed: false, size: 20); };
+    +notTrustEdges: field() => bool;
+    -chunkX: field() => i32;
+    -chunkZ: field() => i32;
+    ~records: nested change
+~ play::toClient::packet_respawn [FieldsRetypedScalar]
+    ~dimension: field() => string; -> field() => nbt;
+~ play::toClient::packet_unlock_recipes [FieldsAdded]
+    +blastFurnaceOpen: field() => bool;
+    +filteringBlastFurnace: field() => bool;
+    +smokerBookOpen: field() => bool;
+    +filteringSmoker: field() => bool;
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +recipe_book
+    +displayed_recipe
+    -crafting_book_data
+    16 arms renumbered

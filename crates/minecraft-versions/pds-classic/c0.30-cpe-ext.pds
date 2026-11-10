@@ -1,0 +1,1024 @@
+@!classic_protocol [7]
+
+@specializer array
+def_native(array) {
+	type(Value);
+
+	variant(inline) {
+		type(Count);
+	};
+
+	variant(sized) {
+		argument(count);
+
+		virtual_field(size) => varint;
+	};
+};
+
+@specializer bitfield
+def_native(bitfield) {
+	body {
+		item(field) {
+			argument(size);
+
+			argument(signed) => false;
+		};
+	};
+};
+
+@specializer bitflags
+def_native(bitflags) {
+	type(Value);
+
+	body {
+		item(flag);
+	};
+};
+
+def(block) => u16;
+
+def(blockPosition) => container {
+	field(x) => u16;
+
+	field(y) => u16;
+
+	field(z) => u16;
+};
+
+@encoding be @scalar bool def_native(bool);
+
+@specializer buffer
+def_native(buffer) {
+	variant(inline) {
+		type(Count);
+	};
+
+	variant(sized) {
+		argument(count);
+
+		virtual_field(size) => varint;
+	};
+};
+
+@scalar string def_native(classicString);
+
+@specializer container
+def_native(container) {
+	body {
+		item(field) {
+			type(Value);
+		};
+
+		item(virtual_field) {
+			argument(value);
+
+			type(Value);
+		};
+	};
+};
+
+@encoding be @scalar f32 def_native(f32);
+
+@encoding be @scalar i16 def_native(i16);
+
+@encoding be @scalar i32 def_native(i32);
+
+@encoding be @scalar i8 def_native(i8);
+
+def(levelChunk) => container {
+	virtual_field(length, value: i16(./data/@size)) => i16;
+
+	field(data) => buffer(count: i32(../length));
+
+	field(padding) => buffer(count: 1024 - i32(../length));
+};
+
+def(position) => container {
+	field(x) => i32;
+
+	field(y) => i32;
+
+	field(z) => i32;
+};
+
+def(texture) => u16;
+
+@encoding be @scalar u16 def_native(u16);
+
+@encoding be @scalar u8 def_native(u8);
+
+@specializer union
+def_native(union) {
+	body {
+		item(variant) {
+			argument(match);
+
+			type(Value) => void;
+		};
+
+		item(default) {
+			anonymous;
+
+			type(Value) => void;
+		};
+	};
+
+	variant(external) {
+		argument(tag);
+	};
+
+	variant(inline) {
+		type(Tag);
+	};
+};
+
+@encoding varint @scalar i32 def_native(varint);
+
+def(vec3f32) => container {
+	field(x) => f32;
+
+	field(y) => f32;
+
+	field(z) => f32;
+};
+
+def_native(void) {
+	is_void;
+};
+
+namespace(play) {
+	namespace(toClient) {
+		def(packet) => union(Tag: u8) {
+			variant(identification, match: 0) => packet_identification;
+
+			variant(ping, match: 1);
+
+			variant(level_initialize, match: 2) => packet_level_initialize;
+
+			variant(level_data_chunk, match: 3) => packet_level_data_chunk;
+
+			variant(level_finalize, match: 4) => packet_level_finalize;
+
+			variant(set_block, match: 6) => packet_set_block;
+
+			variant(spawn_player, match: 7) => packet_spawn_player;
+
+			variant(teleport, match: 8) => packet_teleport;
+
+			variant(position_and_orientation_update, match: 9)
+			=> packet_position_and_orientation_update;
+
+			variant(position_update, match: 10) => packet_position_update;
+
+			variant(orientation_update, match: 11) => packet_orientation_update;
+
+			variant(despawn_player, match: 12) => packet_despawn_player;
+
+			variant(message, match: 13) => packet_message;
+
+			variant(disconnect, match: 14) => packet_disconnect;
+
+			variant(update_user_type, match: 15) => packet_update_user_type;
+
+			variant(ext_info, match: 16) => packet_ext_info;
+
+			variant(ext_entry, match: 17) => packet_ext_entry;
+
+			variant(set_click_distance, match: 18) => packet_set_click_distance;
+
+			variant(custom_block_support_level, match: 19) => packet_custom_block_support_level;
+
+			variant(hold_this, match: 20) => packet_hold_this;
+
+			variant(set_text_hotkey, match: 21) => packet_set_text_hotkey;
+
+			variant(ext_add_player_name, match: 22) => packet_ext_add_player_name;
+
+			variant(ext_add_entity, match: 23) => packet_ext_add_entity;
+
+			variant(ext_remove_player_name, match: 24) => packet_ext_remove_player_name;
+
+			variant(env_set_color, match: 25) => packet_env_set_color;
+
+			variant(make_selection, match: 26) => packet_make_selection;
+
+			variant(remove_selection, match: 27) => packet_remove_selection;
+
+			variant(set_block_permission, match: 28) => packet_set_block_permission;
+
+			variant(change_model, match: 29) => packet_change_model;
+
+			variant(env_set_map_appearance, match: 30) => packet_env_set_map_appearance;
+
+			variant(env_set_weather_type, match: 31) => packet_env_set_weather_type;
+
+			variant(hack_control, match: 32) => packet_hack_control;
+
+			variant(ext_add_entity2, match: 33) => packet_ext_add_entity2;
+
+			variant(define_block, match: 35) => packet_define_block;
+
+			variant(remove_block_definition, match: 36) => packet_remove_block_definition;
+
+			variant(define_block_ext, match: 37) => packet_define_block_ext;
+
+			variant(bulk_block_update, match: 38) => packet_bulk_block_update;
+
+			variant(set_text_color, match: 39) => packet_set_text_color;
+
+			variant(set_map_env_url, match: 40) => packet_set_map_env_url;
+
+			variant(set_map_env_property, match: 41) => packet_set_map_env_property;
+
+			variant(set_entity_property, match: 42) => packet_set_entity_property;
+
+			variant(two_way_ping, match: 43) => packet_two_way_ping;
+
+			variant(set_inventory_order, match: 44) => packet_set_inventory_order;
+
+			variant(set_hotbar, match: 45) => packet_set_hotbar;
+
+			variant(set_spawnpoint, match: 46) => packet_set_spawnpoint;
+
+			variant(velocity_control, match: 47) => packet_velocity_control;
+
+			variant(define_effect, match: 48) => packet_define_effect;
+
+			variant(spawn_effect, match: 49) => packet_spawn_effect;
+
+			variant(define_model, match: 50) => packet_define_model;
+
+			variant(define_model_part, match: 51) => packet_define_model_part;
+
+			variant(remove_model, match: 52) => packet_remove_model;
+
+			variant(plugin_message, match: 53) => packet_plugin_message;
+
+			variant(ext_entity_teleport, match: 54) => packet_ext_entity_teleport;
+
+			variant(lighting_mode, match: 55) => packet_lighting_mode;
+
+			variant(cinematic_gui, match: 56) => packet_cinematic_gui;
+
+			variant(toggle_block_list, match: 59) => packet_toggle_block_list;
+
+			default;
+		};
+
+		def(packet_bulk_block_update) => container {
+			field(count) => u8;
+
+			field(indices) => array(count: 256) => i32;
+
+			field(blocks) => buffer(count: 256);
+
+			field(upperBits) => buffer(count: 64);
+		};
+
+		def(packet_change_model) => container {
+			field(entityId) => u8;
+
+			field(model) => classicString;
+		};
+
+		def(packet_cinematic_gui) => container {
+			field(hideCrosshair) => bool;
+
+			field(hideHand) => bool;
+
+			field(hideHotbar) => bool;
+
+			field(red) => u8;
+
+			field(green) => u8;
+
+			field(blue) => u8;
+
+			field(opacity) => u8;
+
+			field(barSize) => u16;
+		};
+
+		def(packet_custom_block_support_level) => container {
+			field(supportLevel) => u8;
+		};
+
+		def(packet_define_block) => container {
+			field(blockId) => block;
+
+			field(name) => classicString;
+
+			field(solidity) => u8;
+
+			field(movementSpeed) => u8;
+
+			field(topTexture) => texture;
+
+			field(sideTexture) => texture;
+
+			field(bottomTexture) => texture;
+
+			field(transmitsLight) => bool;
+
+			field(walkSound) => u8;
+
+			field(brightness) => u8;
+
+			field(shape) => u8;
+
+			field(blockDraw) => u8;
+
+			field(fogDensity) => u8;
+
+			field(fogRed) => u8;
+
+			field(fogGreen) => u8;
+
+			field(fogBlue) => u8;
+		};
+
+		def(packet_define_block_ext) => container {
+			field(blockId) => block;
+
+			field(name) => classicString;
+
+			field(solidity) => u8;
+
+			field(movementSpeed) => u8;
+
+			field(topTexture) => texture;
+
+			field(leftTexture) => texture;
+
+			field(rightTexture) => texture;
+
+			field(frontTexture) => texture;
+
+			field(backTexture) => texture;
+
+			field(bottomTexture) => texture;
+
+			field(transmitsLight) => bool;
+
+			field(walkSound) => u8;
+
+			field(brightness) => u8;
+
+			field(minX) => i8;
+
+			field(minY) => i8;
+
+			field(minZ) => i8;
+
+			field(maxX) => i8;
+
+			field(maxY) => i8;
+
+			field(maxZ) => i8;
+
+			field(blockDraw) => u8;
+
+			field(fogDensity) => u8;
+
+			field(fogRed) => u8;
+
+			field(fogGreen) => u8;
+
+			field(fogBlue) => u8;
+		};
+
+		def(packet_define_effect) => container {
+			field(effectId) => u8;
+
+			field(u1) => u8;
+
+			field(v1) => u8;
+
+			field(u2) => u8;
+
+			field(v2) => u8;
+
+			field(red) => u8;
+
+			field(green) => u8;
+
+			field(blue) => u8;
+
+			field(frameCount) => u8;
+
+			field(particleCount) => u8;
+
+			field(size) => u8;
+
+			field(sizeVariation) => i32;
+
+			field(spread) => u16;
+
+			field(speed) => i32;
+
+			field(gravity) => i32;
+
+			field(baseLifetime) => i32;
+
+			field(lifetimeVariation) => i32;
+
+			field(collideFlags)
+			=> bitflags {
+				flag(expireUponTouchingGround);
+
+				flag(collidesSolid);
+
+				flag(collidesLiquid);
+
+				flag(collidesLeaves);
+			}
+			=> u8;
+
+			field(fullBright) => bool;
+		};
+
+		def(packet_define_model) => container {
+			field(modelId) => u8;
+
+			field(name) => classicString;
+
+			field(flags)
+			=> bitflags {
+				flag(bobbing);
+
+				flag(pushes);
+
+				flag(usesHumanSkin);
+
+				flag(calcHumanAnims);
+			}
+			=> u8;
+
+			field(nameY) => f32;
+
+			field(eyeY) => f32;
+
+			field(collisionBounds) => vec3f32;
+
+			field(pickingBoundsMin) => vec3f32;
+
+			field(pickingBoundsMax) => vec3f32;
+
+			field(uScale) => u16;
+
+			field(vScale) => u16;
+
+			field(partsCount) => u8;
+		};
+
+		def(packet_define_model_part) => container {
+			field(modelId) => u8;
+
+			field(min) => vec3f32;
+
+			field(max) => vec3f32;
+
+			field(faces) => array(count: 6) => container {
+				field(u1) => u16;
+
+				field(v1) => u16;
+
+				field(u2) => u16;
+
+				field(v2) => u16;
+			};
+
+			field(rotationOrigin) => vec3f32;
+
+			field(rotation) => vec3f32;
+
+			field(animations) => array(count: 4) => container {
+				field(kind) => bitfield {
+					field(axis, size: 2);
+
+					field(type, size: 6);
+				};
+
+				field(a) => f32;
+
+				field(b) => f32;
+
+				field(c) => f32;
+
+				field(d) => f32;
+			};
+
+			field(flags)
+			=> bitflags {
+				flag(fullbright);
+
+				flag(firstPersonArm);
+			}
+			=> u8;
+		};
+
+		def(packet_despawn_player) => container {
+			field(playerId) => u8;
+		};
+
+		def(packet_disconnect) => container {
+			field(reason) => classicString;
+		};
+
+		def(packet_env_set_color) => container {
+			field(variable) => u8;
+
+			field(red) => i16;
+
+			field(green) => i16;
+
+			field(blue) => i16;
+		};
+
+		def(packet_env_set_map_appearance) => container {
+			field(textureUrl) => classicString;
+
+			field(sideBlock) => u8;
+
+			field(edgeBlock) => u8;
+
+			field(sideLevel) => i16;
+
+			field(cloudsLevel) => i16;
+
+			field(maxViewDistance) => i16;
+		};
+
+		def(packet_env_set_weather_type) => container {
+			field(weather) => u8;
+		};
+
+		def(packet_ext_add_entity) => container {
+			field(entityId) => u8;
+
+			field(inGameName) => classicString;
+
+			field(skinName) => classicString;
+		};
+
+		def(packet_ext_add_entity2) => container {
+			field(entityId) => u8;
+
+			field(inGameName) => classicString;
+
+			field(skinName) => classicString;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_ext_add_player_name) => container {
+			field(nameId) => i16;
+
+			field(playerName) => classicString;
+
+			field(listName) => classicString;
+
+			field(groupName) => classicString;
+
+			field(groupRank) => u8;
+		};
+
+		def(packet_ext_entity_teleport) => container {
+			field(entityId) => u8;
+
+			field(flags) => bitfield {
+				field(unused, size: 2);
+
+				field(interpolateOrientation, size: 1);
+
+				field(useOrientation, size: 1);
+
+				field(reserved, size: 1);
+
+				field(moveMode, size: 2);
+
+				field(usePosition, size: 1);
+			};
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_ext_entry) => container {
+			field(extName) => classicString;
+
+			field(version) => i32;
+		};
+
+		def(packet_ext_info) => container {
+			field(appName) => classicString;
+
+			field(extensionCount) => i16;
+		};
+
+		def(packet_ext_remove_player_name) => container {
+			field(nameId) => i16;
+		};
+
+		def(packet_hack_control) => container {
+			field(flying) => bool;
+
+			field(noClip) => bool;
+
+			field(speeding) => bool;
+
+			field(spawnControl) => bool;
+
+			field(thirdPersonView) => bool;
+
+			field(jumpHeight) => i16;
+		};
+
+		def(packet_hold_this) => container {
+			field(blockToHold) => block;
+
+			field(preventChange) => bool;
+		};
+
+		def(packet_identification) => container {
+			field(protocolVersion) => u8;
+
+			field(serverName) => classicString;
+
+			field(motd) => classicString;
+
+			field(userType) => u8;
+		};
+
+		def(packet_level_data_chunk) => container {
+			field(chunk) => levelChunk;
+
+			field(percent) => u8;
+		};
+
+		def(packet_level_finalize) => container {
+			field(sizeX) => u16;
+
+			field(sizeY) => u16;
+
+			field(sizeZ) => u16;
+		};
+
+		def(packet_level_initialize) => container {
+			field(volume) => i32;
+		};
+
+		def(packet_lighting_mode) => container {
+			field(mode) => u8;
+
+			field(locked) => bool;
+		};
+
+		def(packet_make_selection) => container {
+			field(selectionId) => u8;
+
+			field(label) => classicString;
+
+			field(start) => blockPosition;
+
+			field(end) => blockPosition;
+
+			field(red) => i16;
+
+			field(green) => i16;
+
+			field(blue) => i16;
+
+			field(opacity) => i16;
+		};
+
+		def(packet_message) => container {
+			field(playerId) => u8;
+
+			field(message) => classicString;
+		};
+
+		def(packet_orientation_update) => container {
+			field(playerId) => u8;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_plugin_message) => container {
+			field(channel) => u8;
+
+			field(data) => buffer(count: 64);
+		};
+
+		def(packet_position_and_orientation_update) => container {
+			field(playerId) => u8;
+
+			field(dX) => i8;
+
+			field(dY) => i8;
+
+			field(dZ) => i8;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_position_update) => container {
+			field(playerId) => u8;
+
+			field(dX) => i8;
+
+			field(dY) => i8;
+
+			field(dZ) => i8;
+		};
+
+		def(packet_remove_block_definition) => container {
+			field(blockId) => block;
+		};
+
+		def(packet_remove_model) => container {
+			field(modelId) => u8;
+		};
+
+		def(packet_remove_selection) => container {
+			field(selectionId) => u8;
+		};
+
+		def(packet_set_block) => container {
+			field(location) => blockPosition;
+
+			field(blockType) => block;
+		};
+
+		def(packet_set_block_permission) => container {
+			field(blockType) => block;
+
+			field(allowPlacement) => bool;
+
+			field(allowDeletion) => bool;
+		};
+
+		def(packet_set_click_distance) => container {
+			field(distance) => i16;
+		};
+
+		def(packet_set_entity_property) => container {
+			field(entityId) => u8;
+
+			field(property) => u8;
+
+			field(value) => i32;
+		};
+
+		def(packet_set_hotbar) => container {
+			field(blockId) => block;
+
+			field(hotbarIndex) => u8;
+		};
+
+		def(packet_set_inventory_order) => container {
+			field(blockId) => block;
+
+			field(order) => block;
+		};
+
+		def(packet_set_map_env_property) => container {
+			field(property) => u8;
+
+			field(value) => i32;
+		};
+
+		def(packet_set_map_env_url) => container {
+			field(textureUrl) => classicString;
+
+			field(textureUrlContinued) => classicString;
+		};
+
+		def(packet_set_spawnpoint) => container {
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_set_text_color) => container {
+			field(red) => u8;
+
+			field(green) => u8;
+
+			field(blue) => u8;
+
+			field(alpha) => u8;
+
+			field(code) => u8;
+		};
+
+		def(packet_set_text_hotkey) => container {
+			field(label) => classicString;
+
+			field(action) => classicString;
+
+			field(keyCode) => i32;
+
+			field(keyMods) => u8;
+		};
+
+		def(packet_spawn_effect) => container {
+			field(effectId) => u8;
+
+			field(x) => i32;
+
+			field(y) => i32;
+
+			field(z) => i32;
+
+			field(originX) => i32;
+
+			field(originY) => i32;
+
+			field(originZ) => i32;
+		};
+
+		def(packet_spawn_player) => container {
+			field(playerId) => u8;
+
+			field(playerName) => classicString;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_teleport) => container {
+			field(playerId) => u8;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_toggle_block_list) => container {
+			field(close) => bool;
+		};
+
+		def(packet_two_way_ping) => container {
+			field(serverToClient) => bool;
+
+			field(data) => u16;
+		};
+
+		def(packet_update_user_type) => container {
+			field(userType) => u8;
+		};
+
+		def(packet_velocity_control) => container {
+			field(x) => i32;
+
+			field(y) => i32;
+
+			field(z) => i32;
+
+			field(xMode) => u8;
+
+			field(yMode) => u8;
+
+			field(zMode) => u8;
+		};
+	};
+
+	namespace(toServer) {
+		def(packet) => union(Tag: u8) {
+			variant(identification, match: 0) => packet_identification;
+
+			variant(set_block, match: 5) => packet_set_block;
+
+			variant(position_and_orientation, match: 8) => packet_position_and_orientation;
+
+			variant(message, match: 13) => packet_message;
+
+			variant(ext_info, match: 16) => packet_ext_info;
+
+			variant(ext_entry, match: 17) => packet_ext_entry;
+
+			variant(custom_block_support_level, match: 19) => packet_custom_block_support_level;
+
+			variant(player_click, match: 34) => packet_player_click;
+
+			variant(two_way_ping, match: 43) => packet_two_way_ping;
+
+			variant(plugin_message, match: 53) => packet_plugin_message;
+
+			variant(notify_action, match: 57) => packet_notify_action;
+
+			variant(notify_position_action, match: 58) => packet_notify_position_action;
+
+			default;
+		};
+
+		def(packet_custom_block_support_level) => container {
+			field(supportLevel) => u8;
+		};
+
+		def(packet_ext_entry) => container {
+			field(extName) => classicString;
+
+			field(version) => i32;
+		};
+
+		def(packet_ext_info) => container {
+			field(appName) => classicString;
+
+			field(extensionCount) => i16;
+		};
+
+		def(packet_identification) => container {
+			field(protocolVersion) => u8;
+
+			field(username) => classicString;
+
+			field(verificationKey) => classicString;
+
+			field(unused) => u8;
+		};
+
+		def(packet_message) => container {
+			field(playerId) => u8;
+
+			field(message) => classicString;
+		};
+
+		def(packet_notify_action) => container {
+			field(action) => u16;
+
+			field(value) => u16;
+		};
+
+		def(packet_notify_position_action) => container {
+			field(action) => u16;
+
+			field(location) => blockPosition;
+		};
+
+		def(packet_player_click) => container {
+			field(button) => u8;
+
+			field(action) => u8;
+
+			field(yaw) => u16;
+
+			field(pitch) => u16;
+
+			field(targetEntityId) => u8;
+
+			field(targetBlock) => blockPosition;
+
+			field(targetBlockFace) => u8;
+		};
+
+		def(packet_plugin_message) => container {
+			field(channel) => u8;
+
+			field(data) => buffer(count: 64);
+		};
+
+		def(packet_position_and_orientation) => container {
+			field(playerId) => block;
+
+			field(position) => position;
+
+			field(yaw) => u8;
+
+			field(pitch) => u8;
+		};
+
+		def(packet_set_block) => container {
+			field(location) => blockPosition;
+
+			field(mode) => u8;
+
+			field(blockType) => block;
+		};
+
+		def(packet_two_way_ping) => container {
+			field(serverToClient) => bool;
+
+			field(data) => u16;
+		};
+	};
+};

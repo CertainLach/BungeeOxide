@@ -1,5 +1,12 @@
 [workspace]
+resolver = "2"
 members = [
 	"cmds/bungeeoxide",
-	"crates/derive-packetdata",
+	"crates/minecraft-natives",
+	"crates/minecraft-protocol",
+	"crates/minecraft-proxy",
+	"crates/minecraft-versions",
+	"crates/nbt",
+	"crates/pds-runtime",
 ]
+default-members = ["cmds/bungeeoxide"]

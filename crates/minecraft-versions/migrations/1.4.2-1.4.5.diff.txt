@@ -1,0 +1,9 @@
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsChanged]
+    ~v5
+= play::toClient::packet (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_map [FieldsRetypedNested]
+    ~data: nested change
+= play::toClient::packet_named_entity_spawn (references changed)
+= play::toClient::packet_spawn_entity_living (references changed)

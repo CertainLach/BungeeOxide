@@ -1,0 +1,228 @@
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(late_slot_item_up_26_1), down: custom(late_slot_item_down_1_21_11));
+		converted(addedComponentCount, up: custom(late_added_count_up_26_1), down: custom(late_added_count_down_1_21_11));
+		converted(removedComponentCount, down: custom(late_removed_count_down_1_21_11));
+	};
+};
+
+updated(HashedSlot) {
+	converted(itemId, up: custom(late_hashed_item_up_26_1), down: custom(late_hashed_item_down_1_21_11));
+};
+
+updated(UntrustedSlot, up: custom(late_untrusted_up_26_1), down: custom(late_untrusted_down_1_21_11));
+
+updated(ItemSoundHolder, up: custom(late_sound_up_26_1), down: custom(late_sound_down_1_21_11));
+
+updated(ItemBlockPredicate) {
+	converted(blockSet, up: custom(late_predicate_up_26_1), down: custom(late_predicate_down_1_21_11));
+	converted(components, up: custom(late_matchers_up_26_1), down: custom(late_matchers_down_1_21_11));
+};
+
+updated(Particle) {
+	added(pause_mob_growth, down: drop);
+	added(reset_mob_growth, down: drop);
+	converted(item, up: custom(late_particle_item_up_26_1), down: custom(late_particle_item_down_1_21_11));
+	converted(block, up: custom(late_particle_block_up_26_1), down: custom(late_particle_block_down_1_21_11));
+	converted(block_marker, up: custom(late_particle_marker_up_26_1), down: custom(late_particle_marker_down_1_21_11));
+	converted(falling_dust, up: custom(late_particle_dust_up_26_1), down: custom(late_particle_dust_down_1_21_11));
+	converted(dust_pillar, up: custom(late_particle_pillar_up_26_1), down: custom(late_particle_pillar_down_1_21_11));
+	converted(block_crumble, up: custom(late_particle_crumble_up_26_1), down: custom(late_particle_crumble_down_1_21_11));
+};
+
+updated(SlotComponent) {
+	added(additional_trade_cost, down: drop);
+	added(cat_sound_variant, down: drop);
+	added(chicken_sound_variant, down: drop);
+	added(cow_sound_variant, down: drop);
+	added(dye, down: drop);
+	added(pig_sound_variant, down: drop);
+	converted(cat_collar, up: custom(late_cat_collar_up_26_1), down: custom(late_cat_collar_down_1_21_11));
+	converted(sheep_color, up: custom(late_sheep_color_up_26_1), down: custom(late_sheep_color_down_1_21_11));
+	converted(shulker_color, up: custom(late_shulker_color_up_26_1), down: custom(late_shulker_color_down_1_21_11));
+	converted(base_color, up: custom(late_base_color_up_26_1), down: custom(late_base_color_down_1_21_11));
+	converted(wolf_collar, up: custom(late_wolf_collar_up_26_1), down: custom(late_wolf_collar_down_1_21_11));
+	converted(tropical_fish_base_color, up: custom(late_fish_base_up_26_1), down: custom(late_fish_base_down_1_21_11));
+	converted(tropical_fish_pattern_color, up: custom(late_fish_pattern_up_26_1), down: custom(late_fish_pattern_down_1_21_11));
+	converted(chicken_variant, up: custom(late_chicken_variant_up_26_1), down: custom(late_chicken_variant_down_1_21_11));
+	converted(zombie_nautilus_variant, up: custom(late_nautilus_variant_up_26_1), down: custom(late_nautilus_variant_down_1_21_11));
+	converted(use_remainder, up: custom(late_use_remainder_up_26_1), down: custom(late_use_remainder_down_1_21_11));
+	converted(charged_projectiles, up: custom(late_charged_up_26_1), down: custom(late_charged_down_1_21_11));
+	converted(bundle_contents, up: custom(late_bundle_up_26_1), down: custom(late_bundle_down_1_21_11));
+	converted(container, up: custom(late_container_up_26_1), down: custom(late_container_down_1_21_11));
+	converted(damage_type, up: custom(late_damage_type_up_26_1), down: custom(late_damage_type_down_1_21_11));
+	converted(jukebox_playable, up: custom(late_jukebox_up_26_1), down: custom(late_jukebox_down_1_21_11));
+	converted(instrument, up: custom(late_instrument_up_26_1), down: custom(late_instrument_down_1_21_11));
+	converted(provides_trim_material, up: custom(late_trim_material_up_26_1), down: custom(late_trim_material_down_1_21_11));
+	converted(provides_banner_patterns, up: custom(late_banner_patterns_up_26_1), down: custom(late_banner_patterns_down_1_21_11));
+	converted(damage_resistant, up: custom(late_damage_resistant_up_26_1), down: custom(late_damage_resistant_down_1_21_11));
+	updated(blocks_attacks) {
+		converted(bypassedBy, up: custom(late_bypassed_up_26_1), down: custom(late_bypassed_down_1_21_11));
+	};
+	updated(tool) {
+		updated(rules) {
+			updated(items) {
+				converted(blocks, up: custom(late_tool_up_26_1), down: custom(late_tool_down_1_21_11));
+			};
+		};
+	};
+	converted(repairable, up: custom(late_repairable_up_26_1), down: custom(late_repairable_down_1_21_11));
+	converted(pot_decorations, up: custom(late_pots_up_26_1), down: custom(late_pots_down_1_21_11));
+	updated(tooltip_display) {
+		converted(hiddenComponents, up: custom(late_hidden_up_26_1), down: custom(late_hidden_down_1_21_11));
+	};
+};
+
+updated(SlotComponentType) {
+	added(additional_trade_cost, down: drop);
+	added(cat_sound_variant, down: drop);
+	added(chicken_sound_variant, down: drop);
+	added(cow_sound_variant, down: drop);
+	added(dye, down: drop);
+	added(pig_sound_variant, down: drop);
+};
+
+updated(entityMetadataEntry) {
+	converted(key, up: custom(late_meta_key_up_26_1), down: custom(late_meta_key_down_1_21_11));
+	updated(value) {
+		added(cat_sound_variant, down: drop);
+		added(chicken_sound_variant, down: drop);
+		added(cow_sound_variant, down: drop);
+		added(pig_sound_variant, down: drop);
+		converted(block_state, up: custom(late_meta_state_up_26_1), down: custom(late_meta_state_down_1_21_11));
+		converted(optional_block_state, up: custom(late_meta_optional_state_up_26_1), down: custom(late_meta_optional_state_down_1_21_11));
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(registry_data, up: custom(late_registry_data_up_26_1), down: custom(late_registry_data_down_1_21_11));
+			converted(finish_configuration, up: custom(late_finish_configuration_up_26_1));
+			converted(tags, up: custom(late_config_tags_up_26_1), down: custom(late_config_tags_down_1_21_11));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(SlotDisplay) {
+			added(dyed_slot_demo, down: drop);
+			added(only_with_component, down: drop);
+			added(with_any_potion, down: drop);
+			converted(item, up: custom(late_display_item_up_26_1), down: custom(late_display_item_down_1_21_11));
+			converted(item_stack, up: custom(late_display_stack_up_26_1), down: custom(late_display_stack_down_1_21_11));
+		};
+
+		updated(packet) {
+			added(game_rule_values, down: drop);
+			added(low_disk_space_warning, down: drop);
+			converted(open_book, up: custom(late_open_book_up_26_1), down: custom(late_open_book_down_1_21_11));
+			converted(statistics, up: custom(late_statistics_up_26_1), down: custom(late_statistics_down_1_21_11));
+			converted(tags, up: custom(late_play_tags_up_26_1), down: custom(late_play_tags_down_1_21_11));
+		};
+
+		updated(packet_advancements) {
+			updated(advancementMapping) {
+				updated(items) {
+					updated(value) {
+						updated(displayData) {
+							updated(value) {
+								converted(icon, up: custom(late_icon_up_26_1), down: custom(late_icon_down_1_21_11));
+							};
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_update_time) {
+			added(clockUpdates, up: custom(late_update_time_up_26_1));
+			removed(tickDayTime, down: custom(late_tick_day_time_down_1_21_11));
+			removed(time, down: custom(late_day_time_down_1_21_11));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(entityId, up: custom(late_meta_entity_up_26_1), down: custom(late_meta_entity_down_1_21_11));
+		};
+
+		updated(packet_map_chunk) {
+			converted(chunkData, up: custom(late_chunk_up_26_1), down: custom(late_chunk_down_1_21_11));
+		};
+
+		updated(packet_block_change) {
+			converted(type, up: custom(late_block_change_up_26_1), down: custom(late_block_change_down_1_21_11));
+		};
+
+		updated(packet_multi_block_change) {
+			converted(records, up: custom(late_multi_block_up_26_1), down: custom(late_multi_block_down_1_21_11));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(late_block_action_up_26_1), down: custom(late_block_action_down_1_21_11));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(late_world_event_up_26_1), down: custom(late_world_event_down_1_21_11));
+		};
+
+		updated(packet_declare_recipes) {
+			updated(recipes) {
+				updated(items) {
+					converted(items, up: custom(late_recipe_items_up_26_1), down: custom(late_recipe_items_down_1_21_11));
+				};
+			};
+			updated(stoneCutterRecipes) {
+				updated(items) {
+					converted(input, up: custom(late_stonecutter_up_26_1), down: custom(late_stonecutter_down_1_21_11));
+				};
+			};
+		};
+
+		updated(packet_recipe_book_add) {
+			updated(entries) {
+				updated(items) {
+					updated(recipe) {
+						converted(craftingRequirements, up: custom(late_requirements_up_26_1), down: custom(late_requirements_down_1_21_11));
+					};
+				};
+			};
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(late_trade1_up_26_1), down: custom(late_trade1_down_1_21_11));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(late_trade2_up_26_1), down: custom(late_trade2_down_1_21_11));
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			added(attack, down: custom(late_attack_down_1_21_11));
+			added(set_game_rule, down: drop);
+			added(spectate_entity, down: custom(late_attack_down_1_21_11));
+			converted(arm_animation, up: custom(late_arm_animation_up_26_1), down: custom(late_arm_animation_down_1_21_11));
+			converted(use_entity, up: custom(late_use_entity_up_26_1), down: custom(late_use_entity_down_1_21_11));
+			converted(client_command, down: custom(late_client_command_down_1_21_11));
+		};
+
+		updated(packet_block_place) {
+			converted(hand, up: custom(late_block_place_hand_up_26_1), down: custom(late_block_place_hand_down_1_21_11));
+		};
+
+		updated(packet_use_item) {
+			converted(hand, up: custom(late_use_item_hand_up_26_1), down: custom(late_use_item_hand_down_1_21_11));
+		};
+	};
+};

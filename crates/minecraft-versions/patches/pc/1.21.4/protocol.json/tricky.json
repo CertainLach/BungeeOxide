@@ -1,0 +1,60 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "content",
+			"1": "sender",
+			"2": "target"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "sender",
+			"1": "target",
+			"2": "content"
+		}
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "i8"
+	}
+]

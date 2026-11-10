@@ -1,0 +1,7 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_login) {
+			converted(dimension);
+		};
+	};
+};

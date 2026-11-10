@@ -1,0 +1,30 @@
+updated(slot, down: custom(prenetty_slot_down_1_4_7));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(scoreboard_display_objective, down: drop);
+			added(scoreboard_objective, down: drop);
+			added(scoreboard_score, down: drop);
+			added(scoreboard_team, down: drop);
+			added(world_particles, down: drop);
+			converted(spawn_entity, up: custom(prenetty_spawn_entity_1_5_1), down: custom(prenetty_spawn_entity_1_4_7));
+			converted(block_change, down: custom(prenetty_block_change_1_4_7_down));
+			converted(multi_block_change, down: custom(prenetty_multi_block_change_1_4_7_down));
+			converted(map_chunk, down: custom(prenetty_map_chunk_1_4_7_down));
+			converted(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_4_7_down));
+			converted(world_event, down: custom(prenetty_world_event_1_4_7_down));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_4_7_down));
+		};
+
+		updated(packet_open_window) {
+			added(useProvidedTitle, up: false);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(window_click, down: custom(prenetty_window_click_1_4_7));
+		};
+	};
+};

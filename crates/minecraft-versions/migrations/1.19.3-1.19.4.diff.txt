@@ -1,0 +1,99 @@
++ packedChunkPos
++ play::toClient::packet_chunk_biomes
++ play::toClient::packet_damage_event
++ play::toClient::packet_hurt_animation
++ vec3f
++ vec3f64
++ vec4f
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+~ entityMetadata [Other]
+~ entityMetadataItem [ArmsAdded, ArmsRemoved]
+    +block_pos
+    +block_state
+    +boolean
+    +byte
+    +cat_variant
+    +component
+    +compound_tag
+    +direction
+    +float
+    +frog_variant
+    +int
+    +item_stack
+    +long
+    +optional_block_pos
+    +optional_block_state
+    +optional_component
+    +optional_global_pos
+    +optional_unsigned_int
+    +optional_uuid
+    +painting_variant
+    +particle
+    +pose
+    +quaternion
+    +rotations
+    +sniffer_state
+    +string
+    +vector3
+    +villager_data
+    -v0
+    -v1
+    -v10
+    -v11
+    -v12
+    -v13
+    -v14
+    -v15
+    -v16
+    -v17
+    -v18
+    -v19
+    -v2
+    -v20
+    -v21
+    -v22
+    -v23
+    -v3
+    -v4
+    -v5
+    -v6
+    -v7
+    -v8
+    -v9
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v33
+    +v42
+    +v43
+    +v95
+    -v30
+    -v39
+    -v40
+    -v92
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +bundle_delimiter
+    +chunk_biomes
+    +damage_event
+    +hurt_animation
+    107 arms renumbered
+= play::toClient::packet_declare_commands (references changed)
+~ play::toClient::packet_declare_recipes [Other]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_initialize_world_border [FieldsRetypedScalar]
+    ~speed: field() => varlong; -> field() => varint;
+~ play::toClient::packet_multi_block_change [FieldsRetypedNested]
+    ~records: nested change
+~ play::toClient::packet_position [FieldsRemoved]
+    -dismountVehicle: field() => bool;
+~ play::toClient::packet_server_data [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +iconBytes: field() => option => buffer(Count: varint);
+    -icon: field() => option => string;
+    ~motd: nested change
+~ play::toClient::packet_world_border_lerp_size [FieldsRetypedScalar]
+    ~speed: field() => varlong; -> field() => varint;
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered]
+    27 arms renumbered
+~ play::toServer::packet_update_structure_block [FieldsRetypedScalar]
+    ~seed: field() => varlong; -> field() => varint;

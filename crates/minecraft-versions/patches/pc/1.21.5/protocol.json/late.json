@@ -1,0 +1,153 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_hat"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_list_order"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_list_order"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_hat"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_update_structure_block/1/15/type",
+		"value": [
+			"mapper",
+			{
+				"type": "u8",
+				"mappings": {
+					"0": "ignore_entities",
+					"1": "show_air",
+					"2": "show_bounding_box",
+					"3": "strict"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toServer/types/packet_update_structure_block/1/15/type",
+		"value": "u8"
+	},
+	{
+		"op": "test",
+		"path": "/types/DataComponentMatchers/1/1/type/1/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/types/DataComponentMatchers/1/1/type/1/type",
+		"value": [
+			"container",
+			[
+				{
+					"name": "type",
+					"type": "varint"
+				},
+				{
+					"name": "predicate",
+					"type": "anonymousNbt"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/optional_global_pos",
+		"value": [
+			"option",
+			"string"
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/optional_global_pos",
+		"value": [
+			"option",
+			[
+				"container",
+				[
+					{
+						"name": "dimensionName",
+						"type": "string"
+					},
+					{
+						"name": "location",
+						"type": "position"
+					}
+				]
+			]
+		]
+	}
+]

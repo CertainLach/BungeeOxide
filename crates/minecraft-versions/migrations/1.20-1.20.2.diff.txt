@@ -1,0 +1,90 @@
++ anonOptionalNbt
++ anonymousNbt
++ configuration::toClient::packet
++ configuration::toClient::packet_custom_payload
++ configuration::toClient::packet_disconnect
++ configuration::toClient::packet_feature_flags
++ configuration::toClient::packet_finish_configuration
++ configuration::toClient::packet_keep_alive
++ configuration::toClient::packet_ping
++ configuration::toClient::packet_registry_data
++ configuration::toClient::packet_resource_pack_send
++ configuration::toClient::packet_tags
++ configuration::toServer::packet
++ configuration::toServer::packet_custom_payload
++ configuration::toServer::packet_finish_configuration
++ configuration::toServer::packet_keep_alive
++ configuration::toServer::packet_pong
++ configuration::toServer::packet_resource_pack_receive
++ configuration::toServer::packet_settings
++ login::toServer::packet_login_acknowledged
++ play::toClient::packet_chunk_batch_finished
++ play::toClient::packet_chunk_batch_start
++ play::toClient::packet_ping_response
++ play::toClient::packet_start_configuration
++ play::toServer::packet_chunk_batch_received
++ play::toServer::packet_configuration_acknowledged
++ play::toServer::packet_ping_request
+- nbt
+- optionalNbt
+- play::toClient::packet_feature_flags
+- play::toClient::packet_named_entity_spawn
+~ chunkBlockEntity [FieldsRetypedScalar]
+    ~nbtData: field() => optionalNbt; -> field() => anonOptionalNbt;
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsChanged]
+    ~compound_tag
+= ingredient (references changed)
+~ login::toServer::packet [ArmsAdded]
+    +login_acknowledged
+~ login::toServer::packet_login_start [FieldsRetypedNested]
+    ~playerUUID: nested change
+= minecraft_smelting_format (references changed)
+= particle (references changed)
+= particleData (references changed)
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +chunk_batch_finished
+    +chunk_batch_start
+    +ping_response
+    +start_configuration
+    -named_entity_spawn
+    -feature_flags
+    106 arms renumbered
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+= play::toClient::packet_declare_recipes (references changed)
+~ play::toClient::packet_entity_effect [FieldsRetypedNested]
+    ~factorCodec: nested change
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_game_state_change [FieldsRetypedNested]
+    ~reason: nested change
+~ play::toClient::packet_login [FieldsAdded, FieldsRemoved, FieldsReordered]
+    +doLimitedCrafting: field() => bool;
+    -dimensionCodec: field() => nbt;
+    fields reordered
+~ play::toClient::packet_map_chunk [FieldsRetypedScalar]
+    ~heightmaps: field() => nbt; -> field() => anonymousNbt;
+~ play::toClient::packet_nbt_query_response [FieldsRetypedScalar]
+    ~nbt: field() => optionalNbt; -> field() => anonOptionalNbt;
+~ play::toClient::packet_respawn [FieldsReordered]
+    fields reordered
+~ play::toClient::packet_scoreboard_display_objective [FieldsRetypedScalar]
+    ~position: field() => i8; -> field() => varint;
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_tile_entity_data [FieldsRetypedScalar]
+    ~nbtData: field() => optionalNbt; -> field() => anonOptionalNbt;
+= play::toClient::packet_trade_list (references changed)
+~ play::toClient::packet_unload_chunk [FieldsReordered]
+    fields reordered
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +chunk_batch_received
+    +configuration_acknowledged
+    +ping_request
+    44 arms renumbered
+= play::toServer::packet_set_creative_slot (references changed)
+= play::toServer::packet_window_click (references changed)
+~ slot [ArmsChanged]
+    ~true

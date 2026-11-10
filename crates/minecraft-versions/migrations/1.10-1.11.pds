@@ -1,0 +1,39 @@
+updated(slot, up: custom(legacy_up_slot_1_11), down: custom(legacy_down_slot_1_10));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(legacy_sound_id_1_11), down: custom(legacy_sound_id_down_1_10));
+		};
+
+		updated(packet) {
+			converted(spawn_entity, down: custom(legacy_down_spawn_entity_1_10));
+			converted(spawn_entity_living, down: custom(legacy_down_spawn_entity_living_1_10));
+			converted(entity_metadata, down: custom(legacy_down_entity_metadata_1_10));
+			converted(named_entity_spawn, down: custom(legacy_down_named_entity_spawn_1_10));
+			converted(world_particles, down: custom(legacy_down_world_particles_1_10));
+			converted(block_change, down: custom(legacy_down_block_change_1_10));
+			converted(multi_block_change, down: custom(legacy_down_multi_block_change_1_10));
+			converted(block_action, down: custom(legacy_down_block_action_1_10));
+			converted(open_window, down: custom(legacy_down_open_window_1_10));
+		};
+
+		updated(packet_collect) {
+			added(pickupItemCount, up: 1);
+		};
+
+		updated(packet_spawn_entity_living) {
+			converted(type);
+		};
+
+		updated(packet_title, up: custom(title_1_11), down: custom(title_1_10));
+	};
+
+	namespace(toServer) {
+		updated(packet_block_place) {
+			converted(cursorX, up: f32(./cursorX) / 16.0, down: i8(./cursorX * 16.0));
+			converted(cursorY, up: f32(./cursorY) / 16.0, down: i8(./cursorY * 16.0));
+			converted(cursorZ, up: f32(./cursorZ) / 16.0, down: i8(./cursorZ * 16.0));
+		};
+	};
+};

@@ -1,0 +1,180 @@
+[
+	{
+		"op": "test",
+		"path": "/types/entityMetadataItem/1/fields/22",
+		"value": [
+			"option",
+			"string"
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/entityMetadataItem/1/fields/22",
+		"value": [
+			"option",
+			[
+				"container",
+				[
+					{
+						"name": "dimension",
+						"type": "string"
+					},
+					{
+						"name": "position",
+						"type": "position"
+					}
+				]
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/particleData/1/fields/40",
+		"value": [
+			"container",
+			[
+				{
+					"name": "positionType",
+					"type": "string"
+				},
+				{
+					"name": "entityId",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "entityEyeHeight",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "destination",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:block": "position",
+								"minecraft:entity": "varint"
+							}
+						}
+					]
+				},
+				{
+					"name": "ticks",
+					"type": "varint"
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/particleData/1/fields/40",
+		"value": [
+			"container",
+			[
+				{
+					"name": "positionType",
+					"type": "string"
+				},
+				{
+					"name": "destination",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:block": "position",
+								"minecraft:entity": [
+									"container",
+									[
+										{
+											"name": "entityId",
+											"type": "varint"
+										},
+										{
+											"name": "entityEyeHeight",
+											"type": "f32"
+										}
+									]
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "ticks",
+					"type": "varint"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_multi_block_change/1/2/type",
+		"value": [
+			"array",
+			{
+				"countType": "varint",
+				"type": "varint"
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_multi_block_change/1/2/type",
+		"value": [
+			"array",
+			{
+				"countType": "varint",
+				"type": "varlong"
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_update_structure_block/1/14/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toServer/types/packet_update_structure_block/1/14/type",
+		"value": "varlong"
+	}
+]

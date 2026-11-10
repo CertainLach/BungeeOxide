@@ -1,0 +1,42 @@
++ chunkBlockEntity
++ play::toClient::packet_simulation_distance
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved, ArmsChanged]
+    +v14
+    ~v15
+    +v2
+    +v24
+    +v3
+    +v35
+    ~v36
+    -v16
+    -v25
+    -v37
+    -v4
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +simulation_distance
+    16 arms renumbered
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_login [FieldsAdded]
+    +simulationDistance: field() => varint;
+~ play::toClient::packet_map_chunk [FieldsAdded, FieldsRemoved, FieldsRenamed, FieldsRetypedNested]
+    bitMap renamed to skyLightMask
+    +trustEdges: field() => bool;
+    +blockLightMask: field() => array(Count: varint) => i64;
+    +emptySkyLightMask: field() => array(Count: varint) => i64;
+    +emptyBlockLightMask: field() => array(Count: varint) => i64;
+    +skyLight: field() => array(Count: varint) => array(Count: varint) => u8;
+    +blockLight: field() => array(Count: varint) => array(Count: varint) => u8;
+    -biomes: field() => array(Count: varint) => varint;
+    ~blockEntities: nested change
+~ play::toClient::packet_multi_block_change [FieldsRetypedNested]
+    ~chunkCoordinates: nested change
+~ play::toClient::packet_tile_entity_data [FieldsRetypedScalar]
+    ~action: field() => u8; -> field() => varint;
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+~ play::toServer::packet_settings [FieldsAdded, FieldsRenamed]
+    disableTextFiltering renamed to enableTextFiltering
+    +enableServerListing: field() => bool;

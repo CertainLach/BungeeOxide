@@ -1,0 +1,32 @@
+[
+	{
+		"op": "add",
+		"path": "/pc/1.20.3/sounds",
+		"value": "pc/1.20.4"
+	},
+	{
+		"op": "test",
+		"path": "/pc/1.20.5/sounds",
+		"value": "pc/1.20.4"
+	},
+	{
+		"op": "replace",
+		"path": "/pc/1.20.5/sounds",
+		"value": "pc/1.20.5"
+	},
+	{
+		"op": "test",
+		"path": "/pc/1.20.6/sounds",
+		"value": "pc/1.20.4"
+	},
+	{
+		"op": "replace",
+		"path": "/pc/1.20.6/sounds",
+		"value": "pc/1.20.5"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.20.2/tags",
+		"value": "pc/1.20.2"
+	}
+]

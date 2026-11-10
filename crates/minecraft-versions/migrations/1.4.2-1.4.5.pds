@@ -1,0 +1,11 @@
+updated(slot, down: custom(prenetty_slot_down_1_4_2));
+
+updated(entityMetadataItem, up: custom(prenetty_metadata_item_1_4_5), down: custom(prenetty_metadata_item_1_4_2_down));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_4_2_down));
+		};
+	};
+};

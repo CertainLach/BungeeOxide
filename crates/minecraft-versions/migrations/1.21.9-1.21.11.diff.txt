@@ -1,0 +1,55 @@
++ KineticWeaponCondition
+~ DataComponentMatchers [FieldsRetypedNested]
+    ~partialMatchers: nested change
+= ExactComponentMatcher (references changed)
+= HashedSlot (references changed)
+= ItemBlockPredicate (references changed)
+= Particle (references changed)
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded]
+    +attack_range
+    +piercing_weapon
+    +kinetic_weapon
+    +swing_animation
+    +use_effects
+    +minimum_attack_charge
+    +damage_type
+    +zombie_nautilus_variant
+    91 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded]
+    +attack_range
+    +piercing_weapon
+    +kinetic_weapon
+    +swing_animation
+    +use_effects
+    +minimum_attack_charge
+    +damage_type
+    +zombie_nautilus_variant
+    91 arms renumbered
+= UntrustedSlot (references changed)
+= UntrustedSlotComponent (references changed)
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= play::toClient::ExplosionParticleEntry (references changed)
+= play::toClient::ExplosionParticleInfo (references changed)
+= play::toClient::RecipeDisplay (references changed)
+= play::toClient::SlotDisplay (references changed)
+= play::toClient::packet (references changed)
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_explosion (references changed)
+= play::toClient::packet_recipe_book_add (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+= play::toServer::packet_set_creative_slot (references changed)
+= play::toServer::packet_window_click (references changed)

@@ -1,0 +1,3 @@
+= play::toClient::packet (references changed)
+~ play::toClient::packet_trade_list [FieldsAdded]
+    +canRestock: field() => bool;

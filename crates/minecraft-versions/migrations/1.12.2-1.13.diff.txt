@@ -1,0 +1,102 @@
++ command_node
++ ingredient
++ login::toClient::packet_login_plugin_request
++ login::toServer::packet_login_plugin_response
++ particle
++ particleData
++ play::toClient::packet_declare_commands
++ play::toClient::packet_declare_recipes
++ play::toClient::packet_face_player
++ play::toClient::packet_nbt_query_response
++ play::toClient::packet_stop_sound
++ play::toClient::packet_tags
++ play::toClient::tags
++ play::toServer::packet_edit_book
++ play::toServer::packet_name_item
++ play::toServer::packet_pick_item
++ play::toServer::packet_query_block_nbt
++ play::toServer::packet_query_entity_nbt
++ play::toServer::packet_select_trade
++ play::toServer::packet_set_beacon_effect
++ play::toServer::packet_update_command_block
++ play::toServer::packet_update_command_block_minecart
++ play::toServer::packet_update_structure_block
+~ entityMetadata [Other]
+~ entityMetadataItem [ArmsAdded, ArmsChanged]
+    ~v10
+    ~v11
+    ~v12
+    ~v13
+    +v14
+    +v15
+    ~v5
+    ~v6
+    ~v7
+    ~v8
+    ~v9
+~ login::toClient::packet [ArmsAdded]
+    +login_plugin_request
+~ login::toServer::packet [ArmsAdded]
+    +login_plugin_response
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +declare_commands
+    +nbt_query_response
+    +face_player
+    +stop_sound
+    +declare_recipes
+    +tags
+    66 arms renumbered
+= play::toClient::packet_advancements (references changed)
+~ play::toClient::packet_craft_recipe_response [FieldsRetypedScalar]
+    ~recipe: field() => varint; -> field() => string;
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_game_state_change [FieldsRetypedNested]
+    ~reason: nested change
+~ play::toClient::packet_map [FieldsRetypedNested]
+    ~icons: nested change
+= play::toClient::packet_named_entity_spawn (references changed)
+~ play::toClient::packet_scoreboard_objective [FieldsRetypedNested]
+    ~action: nested change
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_spawn_entity_living (references changed)
+~ play::toClient::packet_spawn_entity_painting [FieldsRetypedScalar]
+    ~title: field() => string; -> field() => varint;
+~ play::toClient::packet_statistics [Other]
+~ play::toClient::packet_tab_complete [ShapeChanged]
+~ play::toClient::packet_teams [FieldsRetypedNested]
+    ~mode: nested change
+~ play::toClient::packet_unlock_recipes [FieldsAdded, FieldsRetypedNested]
+    +smeltingBookOpen: field() => bool;
+    +filteringSmeltable: field() => bool;
+    ~recipes1: nested change
+    ~recipes2: nested change
+= play::toClient::packet_window_items (references changed)
+~ play::toClient::packet_world_particles [FieldsRetypedScalar, FieldsRetypedNested]
+    ~particleId: virtual_field(, value: ./data/@tag) => i32; -> field() => i32;
+    ~data: nested change
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +query_block_nbt
+    +edit_book
+    +query_entity_nbt
+    +pick_item
+    +name_item
+    +select_trade
+    +set_beacon_effect
+    +update_command_block
+    +update_command_block_minecart
+    +update_structure_block
+    29 arms renumbered
+~ play::toServer::packet_craft_recipe_request [FieldsRetypedScalar]
+    ~recipe: field() => varint; -> field() => string;
+~ play::toServer::packet_crafting_book_data [ArmsChanged]
+    ~v0
+    ~v1
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_tab_complete [FieldsAdded, FieldsRemoved]
+    +transactionId: field() => varint;
+    -assumeCommand: field() => bool;
+    -lookedAtBlock: field() => option => position;
+= play::toServer::packet_window_click (references changed)
+~ slot [ArmsChanged]
+    ~default

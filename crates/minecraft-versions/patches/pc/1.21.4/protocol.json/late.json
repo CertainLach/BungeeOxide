@@ -1,0 +1,22 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_hat"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_list_order"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_list_order"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_hat"
+	}
+]

@@ -1,0 +1,141 @@
++ ByteArray
++ bitflags
++ handshaking::toClient::packet
++ handshaking::toServer::packet
++ handshaking::toServer::packet_legacy_server_list_ping
++ handshaking::toServer::packet_set_protocol
++ login::toClient::packet
++ login::toClient::packet_disconnect
++ login::toClient::packet_encryption_begin
++ login::toClient::packet_success
++ login::toServer::packet
++ login::toServer::packet_encryption_begin
++ login::toServer::packet_login_start
++ nbt
++ option
++ pstring
++ restBuffer
++ status::toClient::packet
++ status::toClient::packet_ping
++ status::toClient::packet_server_info
++ status::toServer::packet
++ status::toServer::packet_ping
++ status::toServer::packet_ping_start
++ u32
++ u64
+- play::toClient::packet_encryption_begin
+- play::toClient::packet_flying
+- play::toClient::packet_look
+- play::toClient::packet_position_only
+- play::toClient::packet_set_creative_slot
+- play::toClient::packet_shared_key
+- play::toServer::packet_encryption_begin
+- play::toServer::packet_kick_disconnect
+- play::toServer::packet_legacy_server_list_ping
+- play::toServer::packet_login
+- play::toServer::packet_respawn
+- play::toServer::packet_set_protocol
+- string16
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsAdded]
+    +v7
+~ play::toClient::packet [Renumbered, ArmsRemoved, TagChanged]
+    tag union(Tag: u8); -> union(Tag: varint);
+    -flying
+    -position_only
+    -look
+    -set_creative_slot
+    -shared_key
+    -encryption_begin
+    63 arms renumbered
+~ play::toClient::packet_animation [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_bed [FieldsRemoved]
+    -action: field() => i8;
+~ play::toClient::packet_block_action [FieldsRetypedScalar]
+    ~blockId: field() => i16; -> field() => varint;
+~ play::toClient::packet_block_break_animation [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_block_change [FieldsRetypedScalar]
+    ~type: field() => i16; -> field() => varint;
+= play::toClient::packet_chat (references changed)
+= play::toClient::packet_custom_payload (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_explosion [FieldsRetypedScalar]
+    ~x: field() => f64; -> field() => f32;
+    ~y: field() => f64; -> field() => f32;
+    ~z: field() => f64; -> field() => f32;
+~ play::toClient::packet_game_state_change [FieldsRetypedScalar, FieldsRetypedNested]
+    ~reason: nested change
+    ~gameMode: field() => i8; -> field() => f32;
+~ play::toClient::packet_held_item_slot [Other]
+= play::toClient::packet_kick_disconnect (references changed)
+~ play::toClient::packet_login [FieldsRemoved, FieldsReordered]
+    -worldHeight: field() => u8;
+    fields reordered
+~ play::toClient::packet_map [FieldsRemoved, FieldsRetypedScalar]
+    -itemType: field() => i16;
+    ~itemDamage: field() => i16; -> field() => varint;
+~ play::toClient::packet_multi_block_change [FieldsRetypedNested]
+    ~records: nested change
+~ play::toClient::packet_named_entity_spawn [FieldsAdded, FieldsRetypedScalar]
+    +playerUUID: field() => string;
+    +data: field() => array(Count: varint) => container { field(name) => string; field(value) => string; field(signature) => string; };
+    ~entityId: field() => i32; -> field() => varint;
+= play::toClient::packet_named_sound_effect (references changed)
+~ play::toClient::packet_open_sign_entity [ShapeChanged]
+= play::toClient::packet_open_window (references changed)
+= play::toClient::packet_player_info (references changed)
+~ play::toClient::packet_position [FieldsRemoved]
+    -stance: field() => f64;
+~ play::toClient::packet_respawn [FieldsRemoved]
+    -worldHeight: field() => i16;
+= play::toClient::packet_scoreboard_display_objective (references changed)
+= play::toClient::packet_scoreboard_objective (references changed)
+= play::toClient::packet_scoreboard_score (references changed)
+= play::toClient::packet_scoreboard_team (references changed)
+~ play::toClient::packet_spawn_entity [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_spawn_entity_experience_orb [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_spawn_entity_living [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_spawn_entity_painting [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_spawn_entity_weather [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_statistics [ShapeChanged]
+~ play::toClient::packet_tab_complete [Other]
+= play::toClient::packet_update_attributes (references changed)
+= play::toClient::packet_update_sign (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsRemoved, TagChanged]
+    tag union(Tag: u8); -> union(Tag: varint);
+    -login
+    -set_protocol
+    -respawn
+    -encryption_begin
+    -legacy_server_list_ping
+    -kick_disconnect
+    23 arms renumbered
+= play::toServer::packet_chat (references changed)
+~ play::toServer::packet_client_command [Renumbered, ArmsAdded, ArmsRemoved]
+    +request_stats
+    +open_inventory_achievement
+    -initial_spawn
+    1 arms renumbered
+= play::toServer::packet_custom_payload (references changed)
+~ play::toServer::packet_entity_action [FieldsRetypedNested]
+    ~actionId: nested change
+~ play::toServer::packet_position [FieldsReordered]
+    fields reordered
+~ play::toServer::packet_position_look [FieldsReordered]
+    fields reordered
+~ play::toServer::packet_settings [FieldsAdded]
+    +chatColors: field() => bool;
+= play::toServer::packet_tab_complete (references changed)
+= play::toServer::packet_update_sign (references changed)
+~ play::toServer::packet_use_entity [FieldsRemoved, FieldsRetypedNested]
+    -user: field() => i32;
+    ~mouse: nested change
+~ string [Other]

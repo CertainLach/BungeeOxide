@@ -1,0 +1,13 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			updated(declare_recipes) {
+				updated(items, down: custom(village_recipe_1_14_1));
+			};
+		};
+
+		updated(packet_trade_list) {
+			added(canRestock, up: ./isRegularVillager);
+		};
+	};
+};

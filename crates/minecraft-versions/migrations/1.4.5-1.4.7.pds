@@ -1,0 +1,30 @@
+updated(slot, down: custom(prenetty_slot_down_1_4_5));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(held_item_slot, down: drop);
+			removed(spawn_entity_item, up: custom(prenetty_spawn_entity_item_1_4_7));
+			converted(spawn_entity, down: custom(prenetty_spawn_entity_1_4_5));
+			converted(entity_metadata, down: custom(prenetty_entity_metadata_1_4_5));
+			converted(entity_destroy, down: custom(prenetty_entity_destroy_1_4_5));
+			converted(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_4_5));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_4_5_down));
+		};
+
+		updated(packet_spawn_entity) {
+			added(pitch, up: 0);
+			added(yaw, up: 0);
+		};
+
+		updated(packet_map_chunk_bulk) {
+			added(skyLightSent, up: true);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(block_dig, down: custom(prenetty_block_dig_1_4_5));
+		};
+	};
+};

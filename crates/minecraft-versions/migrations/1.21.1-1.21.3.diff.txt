@@ -1,0 +1,163 @@
++ ItemConsumeEffect
++ play::toClient::RecipeDisplay
++ play::toClient::SlotDisplay
++ play::toClient::packet_move_minecart
++ play::toClient::packet_player_rotation
++ play::toClient::packet_recipe_book_add
++ play::toClient::packet_recipe_book_remove
++ play::toClient::packet_recipe_book_settings
++ play::toClient::packet_set_cursor_item
++ play::toClient::packet_set_player_inventory
++ play::toClient::packet_sync_entity_position
++ play::toServer::MovementFlags
++ play::toServer::packet_player_input
++ play::toServer::packet_select_bundle_item
++ play::toServer::packet_tick_end
+- minecraft_simple_recipe_format
+- minecraft_smelting_format
+- play::toClient::packet_unlock_recipes
+- play::toServer::packet_steer_vehicle
+~ ContainerID [Other]
+~ EntityMetadataPaintingVariant [FieldsAdded]
+    +title: field() => option => anonymousNbt;
+    +author: field() => option => anonymousNbt;
+~ InstrumentData [FieldsAdded, FieldsRetypedScalar]
+    +description: field() => anonymousNbt;
+    ~useDuration: field() => varint; -> field() => f32;
+~ Particle [Renumbered, ArmsAdded, ArmsChanged]
+    +block_crumble
+    ~dust
+    ~dust_color_transition
+    +trail
+    63 arms renumbered
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    ~food
+    +consumable
+    +use_remainder
+    +use_cooldown
+    +damage_resistant
+    +enchantable
+    +equippable
+    +repairable
+    +glider
+    +tooltip_style
+    +death_protection
+    ~potion_contents
+    ~block_state
+    +item_model
+    -fire_resistant
+    49 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded, ArmsRemoved]
+    +consumable
+    +use_remainder
+    +use_cooldown
+    +damage_resistant
+    +enchantable
+    +equippable
+    +repairable
+    +glider
+    +tooltip_style
+    +death_protection
+    +item_model
+    -fire_resistant
+    49 arms renumbered
+= configuration::toServer::packet (references changed)
+= entityMetadata (references changed)
+= entityMetadataEntry (references changed)
+= ingredient (references changed)
+= login::toClient::packet (references changed)
+~ login::toClient::packet_success [FieldsRemoved]
+    -strictErrorHandling: field() => bool;
+~ packet_common_settings [FieldsAdded]
+    +particleStatus: field() => union(Tag: varint) { variant(all, match: 0); variant(decreased, match: 1); variant(minimal, match: 2); default; };
+~ play::toClient::PositionUpdateRelatives [Other]
+~ play::toClient::SpawnInfo [FieldsAdded]
+    +seaLevel: field() => varint;
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +sync_entity_position
+    +move_minecart
+    +player_rotation
+    +recipe_book_add
+    +recipe_book_remove
+    +recipe_book_settings
+    +set_cursor_item
+    +set_player_inventory
+    -unlock_recipes
+    91 arms renumbered
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_close_window (references changed)
+= play::toClient::packet_craft_progress_bar (references changed)
+~ play::toClient::packet_craft_recipe_response [FieldsAdded, FieldsRemoved]
+    +recipeDisplay: field() => RecipeDisplay;
+    -recipe: field() => string;
+~ play::toClient::packet_declare_recipes [ShapeChanged]
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_teleport [FieldsAdded, FieldsRetypedScalar]
+    +dx: field() => f64;
+    +dy: field() => f64;
+    +dz: field() => f64;
+    +flags: field() => PositionUpdateRelatives;
+    ~yaw: field() => i8; -> field() => f32;
+    ~pitch: field() => i8; -> field() => f32;
+~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
+    ~properties: nested change
+~ play::toClient::packet_explosion [FieldsAdded, FieldsRemoved, FieldsRenamed]
+    small_explosion_particle renamed to explosionParticle
+    +playerKnockback: field() => option => vec3f64;
+    -radius: field() => f32;
+    -affectedBlockOffsets: field() => array(Count: varint) => container { field(x) => i8; field(y) => i8; field(z) => i8; };
+    -playerMotionX: field() => f32;
+    -playerMotionY: field() => f32;
+    -playerMotionZ: field() => f32;
+    -block_interaction_type: field() => varint;
+    -large_explosion_particle: field() => Particle;
+= play::toClient::packet_login (references changed)
+= play::toClient::packet_open_horse_window (references changed)
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~action: nested change
+    ~data: nested change
+~ play::toClient::packet_position [FieldsAdded, FieldsReordered]
+    +dx: field() => f64;
+    +dy: field() => f64;
+    +dz: field() => f64;
+    fields reordered
+= play::toClient::packet_respawn (references changed)
+~ play::toClient::packet_set_cooldown [FieldsAdded, FieldsRemoved]
+    +cooldownGroup: field() => string;
+    -itemID: field() => varint;
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_trade_list (references changed)
+~ play::toClient::packet_update_time [FieldsAdded]
+    +tickDayTime: field() => bool;
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +select_bundle_item
+    +tick_end
+    +player_input
+    -steer_vehicle
+    55 arms renumbered
+~ play::toServer::packet_block_place [FieldsAdded]
+    +worldBorderHit: field() => bool;
+= play::toServer::packet_close_window (references changed)
+~ play::toServer::packet_craft_recipe_request [FieldsAdded, FieldsRemoved]
+    +recipeId: field() => varint;
+    -recipe: field() => string;
+~ play::toServer::packet_displayed_recipe [Other]
+= play::toServer::packet_enchant_item (references changed)
+~ play::toServer::packet_flying [Other]
+~ play::toServer::packet_look [FieldsAdded, FieldsRemoved]
+    +flags: field() => MovementFlags;
+    -onGround: field() => bool;
+~ play::toServer::packet_position [FieldsAdded, FieldsRemoved]
+    +flags: field() => MovementFlags;
+    -onGround: field() => bool;
+~ play::toServer::packet_position_look [FieldsAdded, FieldsRemoved]
+    +flags: field() => MovementFlags;
+    -onGround: field() => bool;
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_set_slot_state [FieldsRetypedScalar]
+    ~window_id: field() => varint; -> field() => ContainerID;
+= play::toServer::packet_window_click (references changed)

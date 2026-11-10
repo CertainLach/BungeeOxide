@@ -1,0 +1,8 @@
+[package]
+name = "minecraft-natives"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nbt = { path = "../nbt" }
+pds-runtime = { path = "../pds-runtime" }

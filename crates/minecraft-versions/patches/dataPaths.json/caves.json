@@ -1,0 +1,27 @@
+[
+	{
+		"op": "test",
+		"path": "/pc/1.19.2/sounds",
+		"value": "pc/1.19.2"
+	},
+	{
+		"op": "replace",
+		"path": "/pc/1.19.2/sounds",
+		"value": "pc/1.19"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.19.3/sounds",
+		"value": "pc/1.19.3"
+	},
+	{
+		"op": "test",
+		"path": "/pc/1.19.4/sounds",
+		"value": "pc/1.19.2"
+	},
+	{
+		"op": "replace",
+		"path": "/pc/1.19.4/sounds",
+		"value": "pc/1.19.4"
+	}
+]

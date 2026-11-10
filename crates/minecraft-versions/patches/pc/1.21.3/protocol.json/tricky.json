@@ -1,0 +1,239 @@
+[
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings",
+		"value": {
+			"0x00": "settings",
+			"0x01": "cookie_response",
+			"0x02": "custom_payload",
+			"0x03": "finish_configuration",
+			"0x04": "keep_alive",
+			"0x05": "pong",
+			"0x06": "resource_pack_receive",
+			"0x07": "select_known_packs",
+			"0x08": "custom_report_details",
+			"0x09": "server_links"
+		}
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings/0x08"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/0/type/1/mappings/0x09"
+	},
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/custom_report_details",
+		"value": "packet_common_custom_report_details"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/custom_report_details"
+	},
+	{
+		"op": "test",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/server_links",
+		"value": "packet_common_server_links"
+	},
+	{
+		"op": "remove",
+		"path": "/configuration/toServer/types/packet/1/1/type/1/fields/server_links"
+	},
+	{
+		"op": "test",
+		"path": "/types/BannerPatternLayer/1/0",
+		"value": {
+			"name": "pattern",
+			"type": "ItemSoundHolder"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/types/BannerPatternLayer/1/0/type",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "patternId",
+				"otherwise": {
+					"name": "data",
+					"type": "BannerPattern"
+				}
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/custom_model_data",
+		"value": [
+			"container",
+			[
+				{
+					"name": "floats",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "f32"
+						}
+					]
+				},
+				{
+					"name": "flags",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "bool"
+						}
+					]
+				},
+				{
+					"name": "strings",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "string"
+						}
+					]
+				},
+				{
+					"name": "colors",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": "i32"
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/custom_model_data",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/EntityMetadataPaintingVariant",
+		"value": [
+			"container",
+			[
+				{
+					"name": "width",
+					"type": "i32"
+				},
+				{
+					"name": "height",
+					"type": "i32"
+				},
+				{
+					"name": "assetId",
+					"type": "string"
+				},
+				{
+					"name": "title",
+					"type": [
+						"option",
+						"anonymousNbt"
+					]
+				},
+				{
+					"name": "author",
+					"type": [
+						"option",
+						"anonymousNbt"
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/EntityMetadataPaintingVariant/1/0/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/types/EntityMetadataPaintingVariant/1/1/type",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "content",
+			"1": "sender",
+			"2": "target"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "sender",
+			"1": "target",
+			"2": "content"
+		}
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_explosion/1/3/type",
+		"value": [
+			"option",
+			"vec3f"
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_explosion/1/3/type",
+		"value": [
+			"option",
+			"vec3f64"
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "i8"
+	}
+]

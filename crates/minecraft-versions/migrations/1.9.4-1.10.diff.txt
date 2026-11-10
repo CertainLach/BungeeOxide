@@ -1,0 +1,9 @@
+= play::toClient::packet (references changed)
+~ play::toClient::packet_named_sound_effect [FieldsRetypedScalar]
+    ~pitch: field() => u8; -> field() => f32;
+~ play::toClient::packet_sound_effect [FieldsRetypedScalar]
+    ~pitch: field() => u8; -> field() => f32;
+~ play::toClient::packet_world_particles [FieldsRetypedNested]
+    ~data: nested change
+= play::toServer::packet (references changed)
+~ play::toServer::packet_resource_pack_receive [ShapeChanged]

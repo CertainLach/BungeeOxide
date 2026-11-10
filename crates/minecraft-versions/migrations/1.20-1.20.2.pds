@@ -1,0 +1,88 @@
+updated(slot, up: custom(trails_slot_1_20_to_1_20_2), down: custom(trails_slot_1_20_2_to_1_20));
+
+namespace(login) {
+	namespace(toServer) {
+		updated(packet) {
+			added(login_acknowledged, down: drop);
+		};
+
+		updated(packet_login_start) {
+			converted(playerUUID, up: custom(trails_login_uuid_1_20_to_1_20_2), down: custom(trails_login_uuid_1_20_2_to_1_20));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(chunk_batch_finished, down: custom(trails_chunk_batch_finished_1_20_2_to_1_20));
+			added(chunk_batch_start, down: drop);
+			removed(feature_flags, up: drop);
+			removed(named_entity_spawn, up: custom(trails_named_entity_spawn_1_20_to_1_20_2));
+			added(ping_response, down: drop);
+			added(start_configuration, down: custom(trails_start_configuration_1_20_2_to_1_20));
+			converted(login, up: custom(trails_login_1_20_to_1_20_2), down: custom(trails_login_1_20_2_to_1_20));
+			converted(entity_metadata, up: custom(trails_entity_metadata_1_20_to_1_20_2), down: custom(trails_entity_metadata_1_20_2_to_1_20));
+			converted(spawn_entity, up: custom(trails_spawn_entity_1_20_to_1_20_2), down: custom(trails_spawn_entity_1_20_2_to_1_20));
+			converted(map_chunk, up: custom(trails_map_chunk_1_20_to_1_20_2), down: custom(trails_map_chunk_1_20_2_to_1_20));
+			converted(multi_block_change, up: custom(trails_multi_block_change_1_20_to_1_20_2), down: custom(trails_multi_block_change_1_20_2_to_1_20));
+			converted(block_change, up: custom(trails_block_change_1_20_to_1_20_2), down: custom(trails_block_change_1_20_2_to_1_20));
+			converted(world_event, up: custom(trails_world_event_1_20_to_1_20_2), down: custom(trails_world_event_1_20_2_to_1_20));
+			converted(world_particles, up: custom(trails_world_particles_1_20_to_1_20_2), down: custom(trails_world_particles_1_20_2_to_1_20));
+			converted(sound_effect, up: custom(trails_sound_effect_1_20_to_1_20_2), down: custom(trails_sound_effect_1_20_2_to_1_20));
+			converted(entity_sound_effect, up: custom(trails_entity_sound_effect_1_20_to_1_20_2), down: custom(trails_entity_sound_effect_1_20_2_to_1_20));
+		};
+
+		updated(packet_advancements) {
+			updated(advancementMapping) {
+				updated(items) {
+					updated(value) {
+						removed(criteria, down: custom(trails_criteria_1_20_2_to_1_20));
+					};
+				};
+			};
+		};
+
+		updated(packet_game_state_change) {
+			updated(reason) {
+				added(limited_crafting, down: drop);
+			};
+		};
+
+		updated(packet_entity_effect) {
+			converted(effectId, up: custom(trails_entity_effect_id_1_20_to_1_20_2), down: custom(trails_entity_effect_id_1_20_2_to_1_20));
+			updated(factorCodec) {
+				updated(value, up: custom(trails_nbt_anonymous_1_20_to_1_20_2), down: custom(trails_nbt_named_1_20_2_to_1_20));
+			};
+		};
+
+		updated(packet_remove_entity_effect) {
+			converted(effectId, up: custom(trails_remove_effect_id_1_20_to_1_20_2), down: custom(trails_remove_effect_id_1_20_2_to_1_20));
+		};
+
+		updated(packet_scoreboard_display_objective) {
+			converted(position);
+		};
+
+		updated(packet_nbt_query_response) {
+			updated(nbt, up: custom(trails_optional_nbt_anonymous_1_20_to_1_20_2), down: custom(trails_optional_nbt_named_1_20_2_to_1_20));
+		};
+
+		updated(packet_tile_entity_data) {
+			updated(nbtData, up: custom(trails_optional_nbt_anonymous_1_20_to_1_20_2), down: custom(trails_optional_nbt_named_1_20_2_to_1_20));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(chunk_batch_received, down: drop);
+			added(configuration_acknowledged, down: drop);
+			added(ping_request, down: drop);
+		};
+
+		updated(packet_set_beacon_effect) {
+			converted(primary_effect, up: custom(trails_beacon_primary_1_20_to_1_20_2), down: custom(trails_beacon_primary_1_20_2_to_1_20));
+			converted(secondary_effect, up: custom(trails_beacon_secondary_1_20_to_1_20_2), down: custom(trails_beacon_secondary_1_20_2_to_1_20));
+		};
+	};
+};

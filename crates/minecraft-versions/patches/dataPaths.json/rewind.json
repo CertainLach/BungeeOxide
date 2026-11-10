@@ -1,0 +1,37 @@
+[
+	{
+		"op": "add",
+		"path": "/pc/1.8/sounds",
+		"value": "pc/1.8"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.9/sounds",
+		"value": "pc/1.9"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.9.2/sounds",
+		"value": "pc/1.9"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.10/sounds",
+		"value": "pc/1.10"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.11/sounds",
+		"value": "pc/1.11.2"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.12/sounds",
+		"value": "pc/1.12.2"
+	},
+	{
+		"op": "add",
+		"path": "/pc/1.12.1/sounds",
+		"value": "pc/1.12.2"
+	}
+]

@@ -1,0 +1,24 @@
++ play::toClient::packet_advancements
++ play::toClient::packet_select_advancement_tab
++ play::toClient::packet_unlock_recipes
++ play::toServer::packet_advancement_tab
++ play::toServer::packet_crafting_book_data
++ play::toServer::packet_prepare_crafting_grid
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsAdded]
+    +v13
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +unlock_recipes
+    +select_advancement_tab
+    +advancements
+    32 arms renumbered
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_named_entity_spawn (references changed)
+= play::toClient::packet_spawn_entity_living (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +prepare_crafting_grid
+    +crafting_book_data
+    +advancement_tab
+    29 arms renumbered
+~ play::toServer::packet_client_command [ArmsRemoved]
+    -open_inventory_achievement

@@ -1,0 +1,170 @@
+@scalar u8 @encoding be
+def_native(u8);
+
+@scalar i8 @encoding be
+def_native(i8);
+
+@scalar i16 @encoding be
+def_native(i16);
+
+@scalar i32 @encoding be
+def_native(i32);
+
+@scalar i64 @encoding be
+def_native(i64);
+
+@scalar f32 @encoding be
+def_native(f32);
+
+@scalar f64 @encoding be
+def_native(f64);
+
+def_native(string);
+
+def_native(void) {
+	is_void;
+};
+
+@specializer array
+def_native(array) {
+	type(Value);
+
+	variant(inline) {
+		type(Count);
+	};
+
+	variant(sized) {
+		argument(count);
+	};
+};
+
+@specializer terminated
+def_native(terminated) {
+	type(Value);
+
+	type(End);
+
+	argument(end) => End;
+
+	body;
+};
+
+@specializer container
+def_native(container) {
+	body {
+		item(field) {
+			type(Value);
+		};
+
+		item(virtual_field) {
+			argument(value);
+
+			type(Value);
+		};
+	};
+};
+
+@specializer union
+def_native(union) {
+	body {
+		item(variant) {
+			argument(match);
+
+			type(Value) => void;
+		};
+
+		item(default) {
+			anonymous;
+
+			type(Value) => void;
+		};
+	};
+
+	variant(external) {
+		argument(tag);
+	};
+
+	variant(inline) {
+		type(Tag);
+	};
+};
+
+def(Payload) {
+	argument(type);
+} => union(tag: ./$type) {
+	variant(end, match: 0);
+
+	variant(byte, match: 1) => i8;
+
+	variant(short, match: 2) => i16;
+
+	variant(int, match: 3) => i32;
+
+	variant(long, match: 4) => i64;
+
+	variant(float, match: 5) => f32;
+
+	variant(double, match: 6) => f64;
+
+	variant(byteArray, match: 7) => array(Count: i32) => i8;
+
+	variant(string, match: 8) => string;
+
+	variant(list, match: 9) => List;
+
+	variant(compound, match: 10) => Compound;
+
+	variant(intArray, match: 11) => array(Count: i32) => i32;
+
+	variant(longArray, match: 12) => array(Count: i32) => i64;
+};
+
+def(List) => container {
+	field(type) => u8;
+
+	field(items) => union(tag: ../type) {
+		variant(end, match: 0) => i32;
+
+		variant(byte, match: 1) => array(Count: i32) => i8;
+
+		variant(short, match: 2) => array(Count: i32) => i16;
+
+		variant(int, match: 3) => array(Count: i32) => i32;
+
+		variant(long, match: 4) => array(Count: i32) => i64;
+
+		variant(float, match: 5) => array(Count: i32) => f32;
+
+		variant(double, match: 6) => array(Count: i32) => f64;
+
+		variant(byteArray, match: 7) => array(Count: i32) => array(Count: i32) => i8;
+
+		variant(string, match: 8) => array(Count: i32) => string;
+
+		variant(list, match: 9) => array(Count: i32) => List;
+
+		variant(compound, match: 10) => array(Count: i32) => Compound;
+
+		variant(intArray, match: 11) => array(Count: i32) => array(Count: i32) => i32;
+
+		variant(longArray, match: 12) => array(Count: i32) => array(Count: i32) => i64;
+	};
+};
+
+def(Entry) => container {
+	field(type) => u8;
+
+	field(name) => string;
+
+	field(value) => Payload(type: ../type);
+};
+
+def(Compound) => terminated(end: u8(0)) => Entry;
+
+def(Tag) {
+	export;
+} => container {
+	field(type) => u8;
+
+	field(value) => Payload(type: ../type);
+};

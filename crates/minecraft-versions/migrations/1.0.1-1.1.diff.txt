@@ -1,0 +1,16 @@
++ play::toClient::packet_custom_payload
++ play::toServer::packet_custom_payload
+- play::toServer::packet_stance_update
+~ play::toClient::packet [ArmsAdded]
+    +custom_payload
+~ play::toClient::packet_login [FieldsAdded]
+    +levelType: field() => string;
+~ play::toClient::packet_respawn [FieldsAdded]
+    +levelType: field() => string;
+~ play::toServer::packet [ArmsAdded, ArmsRemoved]
+    +custom_payload
+    -stance_update
+~ play::toServer::packet_login [FieldsAdded]
+    +levelType: field() => string;
+~ play::toServer::packet_respawn [FieldsAdded]
+    +levelType: field() => string;

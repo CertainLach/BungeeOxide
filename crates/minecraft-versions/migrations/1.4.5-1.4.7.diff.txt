@@ -1,0 +1,10 @@
++ play::toClient::packet_held_item_slot
+- play::toClient::packet_spawn_entity_item
+~ play::toClient::packet [ArmsAdded, ArmsRemoved]
+    +held_item_slot
+    -spawn_entity_item
+~ play::toClient::packet_map_chunk_bulk [FieldsAdded]
+    +skyLightSent: field() => bool;
+~ play::toClient::packet_spawn_entity [FieldsAdded]
+    +pitch: field() => i8;
+    +yaw: field() => i8;

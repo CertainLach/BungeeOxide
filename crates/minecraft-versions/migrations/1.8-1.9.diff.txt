@@ -1,0 +1,118 @@
++ play::toClient::packet_boss_bar
++ play::toClient::packet_entity_update_attributes
++ play::toClient::packet_set_cooldown
++ play::toClient::packet_set_passengers
++ play::toClient::packet_sound_effect
++ play::toClient::packet_teams
++ play::toClient::packet_unload_chunk
++ play::toClient::packet_vehicle_move
++ play::toServer::packet_steer_boat
++ play::toServer::packet_teleport_confirm
++ play::toServer::packet_use_item
++ play::toServer::packet_vehicle_move
+- play::toClient::packet_map_chunk_bulk
+- play::toClient::packet_scoreboard_team
+- play::toClient::packet_set_compression
+- play::toClient::packet_update_attributes
+- play::toClient::packet_update_entity_nbt
+~ entityMetadata [Other]
+~ entityMetadataItem [ArmsAdded, ArmsChanged]
+    ~v1
+    +v10
+    +v11
+    +v12
+    ~v2
+    ~v3
+    ~v6
+    +v8
+    +v9
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +boss_bar
+    +set_cooldown
+    +unload_chunk
+    +vehicle_move
+    +set_passengers
+    +teams
+    +sound_effect
+    +entity_update_attributes
+    -update_attributes
+    -map_chunk_bulk
+    -scoreboard_team
+    -set_compression
+    -update_entity_nbt
+    68 arms renumbered
+~ play::toClient::packet_attach_entity [FieldsRemoved]
+    -leash: field() => bool;
+~ play::toClient::packet_entity_effect [FieldsRetypedScalar]
+    ~hideParticles: field() => bool; -> field() => i8;
+~ play::toClient::packet_entity_equipment [FieldsRetypedScalar]
+    ~slot: field() => i16; -> field() => varint;
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_move_look [FieldsRetypedScalar]
+    ~dX: field() => i8; -> field() => i16;
+    ~dY: field() => i8; -> field() => i16;
+    ~dZ: field() => i8; -> field() => i16;
+~ play::toClient::packet_entity_teleport [FieldsRetypedScalar]
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+~ play::toClient::packet_map [FieldsAdded]
+    +trackingPosition: field() => bool;
+~ play::toClient::packet_map_chunk [FieldsRetypedScalar]
+    ~bitMap: field() => u16; -> field() => varint;
+~ play::toClient::packet_named_entity_spawn [FieldsRemoved, FieldsRetypedScalar]
+    -currentItem: field() => i16;
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+~ play::toClient::packet_named_sound_effect [FieldsAdded]
+    +soundCategory: field() => varint;
+~ play::toClient::packet_position [FieldsAdded]
+    +teleportId: field() => varint;
+~ play::toClient::packet_rel_entity_move [FieldsRetypedScalar]
+    ~dX: field() => i8; -> field() => i16;
+    ~dY: field() => i8; -> field() => i16;
+    ~dZ: field() => i8; -> field() => i16;
+~ play::toClient::packet_spawn_entity [FieldsAdded, FieldsRetypedScalar, FieldsRetypedNested]
+    +objectUUID: field() => UUID;
+    +objectData: field() => i32;
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+    ~velocity: nested change
+~ play::toClient::packet_spawn_entity_experience_orb [FieldsRetypedScalar]
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+~ play::toClient::packet_spawn_entity_living [FieldsAdded, FieldsRetypedScalar]
+    +entityUUID: field() => UUID;
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+~ play::toClient::packet_spawn_entity_painting [FieldsAdded]
+    +entityUUID: field() => UUID;
+~ play::toClient::packet_spawn_entity_weather [FieldsRetypedScalar]
+    ~x: field() => i32; -> field() => f64;
+    ~y: field() => i32; -> field() => f64;
+    ~z: field() => i32; -> field() => f64;
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +teleport_confirm
+    +vehicle_move
+    +steer_boat
+    +use_item
+    26 arms renumbered
+~ play::toServer::packet_arm_animation [ShapeChanged]
+~ play::toServer::packet_block_place [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +hand: field() => varint;
+    -heldItem: field() => slot;
+    ~direction: field() => i8; -> field() => varint;
+~ play::toServer::packet_entity_action [FieldsRetypedNested]
+    ~actionId: nested change
+~ play::toServer::packet_settings [FieldsAdded, FieldsRetypedScalar]
+    +mainHand: field() => varint;
+    ~chatFlags: field() => i8; -> field() => varint;
+~ play::toServer::packet_tab_complete [FieldsAdded, FieldsRenamed]
+    block renamed to lookedAtBlock
+    +assumeCommand: field() => bool;
+~ play::toServer::packet_use_entity [FieldsRetypedNested]
+    ~mouse: nested change

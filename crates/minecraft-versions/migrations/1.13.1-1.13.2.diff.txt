@@ -1,0 +1,25 @@
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+= ingredient (references changed)
+= particle (references changed)
+= particleData (references changed)
+= play::toClient::packet (references changed)
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_named_entity_spawn (references changed)
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_spawn_entity_living (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+= play::toServer::packet_edit_book (references changed)
+= play::toServer::packet_set_creative_slot (references changed)
+= play::toServer::packet_window_click (references changed)
+~ slot [ArmsAdded, ArmsRemoved, TagChanged]
+    tag union(Tag: i16); -> union(Tag: bool);
+    +false
+    +true
+    -_1
+    -default

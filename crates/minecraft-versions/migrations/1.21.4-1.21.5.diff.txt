@@ -1,0 +1,160 @@
++ DataComponentMatchers
++ ExactComponentMatcher
++ HashedSlot
++ UntrustedSlot
++ UntrustedSlotComponent
++ play::toClient::packet_test_instance_block_status
++ play::toServer::packet_set_test_block
++ play::toServer::packet_test_instance_block_action
++ vec3i
+- EntityMetadataWolfVariant
+- play::toClient::packet_spawn_entity_experience_orb
+~ ArmorTrimMaterial [FieldsRemoved, FieldsRenamed]
+    assetName renamed to assetBase
+    -ingredientId: field() => varint;
+~ ArmorTrimPattern [FieldsRemoved]
+    -templateItemId: field() => varint;
+~ ItemBlockPredicate [FieldsAdded]
+    +components: field() => DataComponentMatchers;
+~ Particle [Renumbered, ArmsAdded]
+    +firefly
+    +tinted_leaves
+    77 arms renumbered
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    ~enchantments
+    ~can_place_on
+    ~can_break
+    ~attribute_modifiers
+    +tooltip_display
+    ~consumable
+    ~tool
+    +weapon
+    ~equippable
+    +blocks_attacks
+    ~stored_enchantments
+    ~dyed_color
+    ~unbreakable
+    +potion_duration_scale
+    ~trim
+    ~instrument
+    +provides_trim_material
+    ~jukebox_playable
+    +provides_banner_patterns
+    +break_sound
+    +villager_variant
+    +wolf_variant
+    +wolf_sound_variant
+    +wolf_collar
+    +fox_variant
+    +salmon_size
+    +parrot_variant
+    +tropical_fish_pattern
+    ~lore
+    +tropical_fish_base_color
+    +tropical_fish_pattern_color
+    +mooshroom_variant
+    +rabbit_variant
+    +pig_variant
+    +cow_variant
+    +chicken_variant
+    +frog_variant
+    +horse_variant
+    +painting_variant
+    +llama_variant
+    +axolotl_variant
+    +cat_variant
+    +cat_collar
+    +sheep_color
+    +shulker_color
+    -hide_additional_tooltip
+    -hide_tooltip
+    44 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded, ArmsRemoved]
+    +tooltip_display
+    +weapon
+    +blocks_attacks
+    +potion_duration_scale
+    +provides_trim_material
+    +provides_banner_patterns
+    +break_sound
+    +villager_variant
+    +wolf_variant
+    +wolf_sound_variant
+    +wolf_collar
+    +fox_variant
+    +salmon_size
+    +parrot_variant
+    +tropical_fish_pattern
+    +tropical_fish_base_color
+    +tropical_fish_pattern_color
+    +mooshroom_variant
+    +rabbit_variant
+    +pig_variant
+    +cow_variant
+    +chicken_variant
+    +frog_variant
+    +horse_variant
+    +painting_variant
+    +llama_variant
+    +axolotl_variant
+    +cat_variant
+    +cat_collar
+    +sheep_color
+    +shulker_color
+    -hide_additional_tooltip
+    -hide_tooltip
+    44 arms renumbered
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= play::toClient::RecipeDisplay (references changed)
+~ play::toClient::SlotDisplay [ArmsChanged]
+    ~smithing_trim
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +test_instance_block_status
+    -spawn_entity_experience_orb
+    117 arms renumbered
+~ play::toClient::packet_advancements [FieldsAdded]
+    +showAdvancements: field() => bool;
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_commands (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_initialize_world_border [FieldsRetypedScalar]
+    ~speed: field() => varint; -> field() => varlong;
+~ play::toClient::packet_map_chunk [FieldsRetypedNested]
+    ~heightmaps: nested change
+    ~chunkData: nested change
+~ play::toClient::packet_player_chat [FieldsAdded]
+    +globalIndex: field() => varint;
+= play::toClient::packet_recipe_book_add (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_teams [FieldsRetypedNested]
+    ~mode: nested change
+~ play::toClient::packet_trade_list [FieldsRetypedNested]
+    ~trades: nested change
+= play::toClient::packet_window_items (references changed)
+~ play::toClient::packet_world_border_lerp_size [FieldsRetypedScalar]
+    ~speed: field() => varint; -> field() => varlong;
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +set_test_block
+    +test_instance_block_action
+    5 arms renumbered
+~ play::toServer::packet_chat_command_signed [FieldsAdded]
+    +checksum: field() => u8;
+~ play::toServer::packet_chat_message [FieldsAdded]
+    +checksum: field() => u8;
+~ play::toServer::packet_set_creative_slot [FieldsRetypedScalar]
+    ~item: field() => Slot; -> field() => UntrustedSlot;
+~ play::toServer::packet_window_click [FieldsRetypedNested]
+    ~changedSlots: nested change
+    ~cursorItem: nested change

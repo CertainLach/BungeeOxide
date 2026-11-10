@@ -1,0 +1,59 @@
+namespace(login) {
+	namespace(toServer) {
+		updated(packet_login_start) {
+			added(playerUUID, up: custom(caves_absent_1_19_2));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(chat_suggestions, down: drop);
+			added(hide_message, down: drop);
+			added(message_header, down: drop);
+			converted(player_chat, up: custom(caves_player_chat_1_19_2), down: custom(caves_player_chat_down_1_19));
+		};
+
+		updated(packet_login) {
+			converted(dimensionCodec, up: custom(caves_codec_1_19_2), down: custom(caves_codec_down_1_19));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(metadata, down: custom(caves_metadata_down_1_19));
+		};
+
+		updated(packet_multi_block_change) {
+			renamed(notTrustEdges, to: suppressLightUpdates);
+		};
+
+		updated(packet_respawn) {
+			converted(gamemode);
+		};
+
+		updated(packet_server_data) {
+			added(enforcesSecureChat, up: false);
+		};
+
+		updated(packet_system_chat) {
+			added(isActionBar, up: custom(caves_action_bar_1_19_2));
+			removed(type, down: custom(caves_system_chat_type_down_1_19));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(message_acknowledgement, down: drop);
+		};
+
+		updated(packet_chat_command) {
+			added(lastRejectedMessage, up: custom(caves_absent_1_19_2));
+			added(previousMessages, up: []);
+		};
+
+		updated(packet_chat_message) {
+			added(lastRejectedMessage, up: custom(caves_absent_1_19_2));
+			added(previousMessages, up: []);
+		};
+	};
+};

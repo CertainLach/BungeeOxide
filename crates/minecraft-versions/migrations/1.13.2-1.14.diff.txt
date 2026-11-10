@@ -1,0 +1,88 @@
++ minecraft_smelting_format
++ optvarint
++ play::toClient::packet_entity_sound_effect
++ play::toClient::packet_open_book
++ play::toClient::packet_open_horse_window
++ play::toClient::packet_trade_list
++ play::toClient::packet_update_light
++ play::toClient::packet_update_view_distance
++ play::toClient::packet_update_view_position
++ play::toServer::packet_lock_difficulty
++ play::toServer::packet_set_difficulty
++ play::toServer::packet_update_jigsaw_block
++ tags
+- play::toClient::packet_bed
+- play::toClient::tags
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsAdded]
+    +v16
+    +v17
+    +v18
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v14
+    +v23
+    +v32
+    -v11
+    -v20
+    -v27
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +open_horse_window
+    +update_light
+    +trade_list
+    +open_book
+    +update_view_position
+    +update_view_distance
+    +entity_sound_effect
+    -bed
+    60 arms renumbered
+= play::toClient::packet_block_action (references changed)
+= play::toClient::packet_block_break_animation (references changed)
+= play::toClient::packet_block_change (references changed)
+= play::toClient::packet_chat (references changed)
+~ play::toClient::packet_declare_recipes [Other]
+~ play::toClient::packet_difficulty [ShapeChanged]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_login [FieldsAdded, FieldsRemoved]
+    +viewDistance: field() => varint;
+    -difficulty: field() => u8;
+~ play::toClient::packet_map [FieldsAdded]
+    +locked: field() => bool;
+~ play::toClient::packet_map_chunk [FieldsAdded]
+    +heightmaps: field() => nbt;
+= play::toClient::packet_named_entity_spawn (references changed)
+= play::toClient::packet_open_sign_entity (references changed)
+~ play::toClient::packet_open_window [FieldsRemoved, FieldsRetypedScalar]
+    -slotCount: field() => u8;
+    -entityId: field() => union(tag: ../inventoryType) { variant(EntityHorse, match: "EntityHorse") => i32; default => void; };
+    ~windowId: field() => u8; -> field() => varint;
+    ~inventoryType: field() => string; -> field() => varint;
+~ play::toClient::packet_respawn [FieldsRemoved]
+    -difficulty: field() => u8;
+= play::toClient::packet_scoreboard_display_objective (references changed)
+~ play::toClient::packet_spawn_entity [FieldsRetypedScalar]
+    ~type: field() => i8; -> field() => varint;
+= play::toClient::packet_spawn_entity_living (references changed)
+= play::toClient::packet_spawn_entity_painting (references changed)
+= play::toClient::packet_spawn_position (references changed)
+~ play::toClient::packet_tags [FieldsAdded]
+    +entityTags: field() => tags;
+= play::toClient::packet_tile_entity_data (references changed)
+= play::toClient::packet_world_event (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +set_difficulty
+    +lock_difficulty
+    +update_jigsaw_block
+    41 arms renumbered
+= play::toServer::packet_block_dig (references changed)
+~ play::toServer::packet_block_place [FieldsAdded, FieldsReordered]
+    +insideBlock: field() => bool;
+    fields reordered
+~ play::toServer::packet_crafting_book_data [ArmsChanged]
+    ~v1
+= play::toServer::packet_query_block_nbt (references changed)
+= play::toServer::packet_update_command_block (references changed)
+= play::toServer::packet_update_sign (references changed)
+= play::toServer::packet_update_structure_block (references changed)
+~ position [Other]

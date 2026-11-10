@@ -1,0 +1,20 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(destroy_entity, up: custom(nether_destroy_entity_1_17_1));
+			added(entity_destroy, down: custom(nether_entity_destroy_1_17));
+			converted(window_items, up: custom(nether_window_items_1_17_1), down: custom(nether_window_items_1_17));
+		};
+
+		updated(packet_set_slot, up: custom(nether_set_slot_1_17_1), down: custom(nether_set_slot_1_17));
+	};
+
+	namespace(toServer) {
+		updated(packet_edit_book, up: custom(nether_edit_book_1_17_1), down: custom(nether_edit_book_1_17));
+
+		updated(packet_window_click) {
+			converted(mode);
+			added(stateId, up: custom(nether_state_id_1_17_1));
+		};
+	};
+};

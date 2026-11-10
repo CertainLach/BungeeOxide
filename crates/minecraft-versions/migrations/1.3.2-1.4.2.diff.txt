@@ -1,0 +1,17 @@
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsChanged]
+    ~v5
+= play::toClient::packet (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_named_entity_spawn (references changed)
+~ play::toClient::packet_spawn_entity_item [FieldsRetypedNested]
+    ~item: nested change
+= play::toClient::packet_spawn_entity_living (references changed)
+~ play::toClient::packet_update_time [FieldsAdded]
+    +age: field() => i64;
+~ play::toClient::packet_world_event [FieldsAdded]
+    +global: field() => bool;
+= play::toServer::packet (references changed)
+~ play::toServer::packet_legacy_server_list_ping [ShapeChanged]
+~ play::toServer::packet_settings [FieldsAdded]
+    +showCape: field() => bool;

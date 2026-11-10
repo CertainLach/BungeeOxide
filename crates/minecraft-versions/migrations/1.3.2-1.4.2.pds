@@ -1,0 +1,57 @@
+updated(slot, down: custom(prenetty_slot_down_1_3_2));
+
+updated(entityMetadataItem, up: custom(prenetty_metadata_item_1_4_2), down: custom(prenetty_metadata_item_1_3_2));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(spawn_entity_item, up: custom(prenetty_spawn_entity_item_1_4_2), down: custom(prenetty_spawn_entity_item_1_3_2));
+			converted(world_event, down: custom(prenetty_world_event_1_3_2));
+			converted(block_change, down: custom(prenetty_block_change_1_3_2_down));
+			converted(multi_block_change, down: custom(prenetty_multi_block_change_1_3_2_down));
+			converted(map_chunk, down: custom(prenetty_map_chunk_1_3_2_down));
+			converted(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_3_2_down));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_3_2_down));
+			converted(spawn_entity_living, down: custom(prenetty_spawn_entity_living_1_3_2_down));
+			converted(spawn_entity, down: custom(prenetty_spawn_entity_1_3_2_down));
+			converted(entity_metadata, down: custom(prenetty_entity_metadata_1_3_2));
+			converted(animation, down: custom(prenetty_animation_1_3_2));
+			converted(bed, down: custom(prenetty_bed_1_3_2));
+			converted(collect, down: custom(prenetty_collect_1_3_2));
+			converted(named_sound_effect, up: custom(prenetty_sound_1_4_2), down: custom(prenetty_sound_1_3_2));
+			converted(entity_effect, down: custom(prenetty_entity_effect_1_3_2));
+			converted(remove_entity_effect, down: custom(prenetty_remove_entity_effect_1_3_2));
+		};
+
+		updated(packet_update_time) {
+			added(age, up: ./time);
+		};
+
+		updated(packet_world_event) {
+			added(global, up: false);
+		};
+
+		updated(packet_spawn_entity_painting) {
+			converted(direction, up: custom(prenetty_painting_up_1_4_2), down: custom(prenetty_painting_down_1_3_2));
+			converted(title, down: custom(prenetty_painting_title_1_3_2));
+		};
+
+		updated(packet_map) {
+			converted(data, up: custom(prenetty_map_up_1_4_2), down: custom(prenetty_map_down_1_3_2));
+		};
+
+		updated(packet_custom_payload) {
+			converted(data, up: custom(prenetty_custom_payload_up_1_4_2), down: custom(prenetty_custom_payload_down_1_3_2));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(legacy_server_list_ping, up: custom(prenetty_ping_up_1_4_2), down: custom(prenetty_ping_down_1_3_2));
+		};
+
+		updated(packet_settings) {
+			added(showCape, up: true);
+		};
+	};
+};

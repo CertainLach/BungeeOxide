@@ -1,0 +1,42 @@
++ play::toClient::packet_chat_suggestions
++ play::toClient::packet_hide_message
++ play::toClient::packet_message_header
++ play::toServer::packet_message_acknowledgement
++ previousMessages
+= login::toServer::packet (references changed)
+~ login::toServer::packet_login_start [FieldsAdded]
+    +playerUUID: field() => option => UUID;
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +chat_suggestions
+    +hide_message
+    +message_header
+    84 arms renumbered
+~ play::toClient::packet_multi_block_change [FieldsRenamed]
+    notTrustEdges renamed to suppressLightUpdates
+~ play::toClient::packet_player_chat [FieldsAdded, FieldsRenamed, FieldsReordered]
+    signedChatContent renamed to plainMessage
+    senderName renamed to networkName
+    senderTeam renamed to formattedMessage
+    +previousSignature: field() => option => buffer(Count: varint);
+    +previousMessages: field() => previousMessages;
+    +filterTypeMask: field() => union(Tag: varint) { variant(v2, match: 2) => array(Count: varint) => i64; default => void; };
+    +networkTargetName: field() => option => string;
+    fields reordered
+~ play::toClient::packet_respawn [FieldsRetypedScalar]
+    ~gamemode: field() => u8; -> field() => i8;
+~ play::toClient::packet_server_data [FieldsAdded]
+    +enforcesSecureChat: field() => bool;
+~ play::toClient::packet_system_chat [FieldsAdded, FieldsRemoved]
+    +isActionBar: field() => bool;
+    -type: field() => varint;
+~ play::toClient::packet_trade_list [FieldsRetypedNested]
+    ~trades: nested change
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +message_acknowledgement
+    47 arms renumbered
+~ play::toServer::packet_chat_command [FieldsAdded]
+    +previousMessages: field() => previousMessages;
+    +lastRejectedMessage: field() => option => container { field(sender) => UUID; field(signature) => buffer(Count: varint); };
+~ play::toServer::packet_chat_message [FieldsAdded]
+    +previousMessages: field() => previousMessages;
+    +lastRejectedMessage: field() => option => container { field(sender) => UUID; field(signature) => buffer(Count: varint); };

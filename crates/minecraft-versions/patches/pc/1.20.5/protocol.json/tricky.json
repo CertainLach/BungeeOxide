@@ -1,0 +1,144 @@
+[
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/food",
+		"value": [
+			"container",
+			[
+				{
+					"name": "nutrition",
+					"type": "varint"
+				},
+				{
+					"name": "saturationModifier",
+					"type": "f32"
+				},
+				{
+					"name": "canAlwaysEat",
+					"type": "bool"
+				},
+				{
+					"name": "secondsToEat",
+					"type": "f32"
+				},
+				{
+					"name": "usingConvertsTo",
+					"type": "Slot"
+				},
+				{
+					"name": "effects",
+					"type": [
+						"array",
+						{
+							"countType": "varint",
+							"type": [
+								"container",
+								[
+									{
+										"name": "effect",
+										"type": "varint"
+									},
+									{
+										"name": "probability",
+										"type": "f32"
+									}
+								]
+							]
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "remove",
+		"path": "/types/SlotComponent/1/1/type/1/fields/food/1/4"
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/food/1/4/type",
+		"value": [
+			"array",
+			{
+				"countType": "varint",
+				"type": [
+					"container",
+					[
+						{
+							"name": "effect",
+							"type": "ItemPotionEffect"
+						},
+						{
+							"name": "probability",
+							"type": "f32"
+						}
+					]
+				]
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/InstrumentData",
+		"value": [
+			"container",
+			[
+				{
+					"name": "soundEvent",
+					"type": "ItemSoundHolder"
+				},
+				{
+					"name": "useDuration",
+					"type": "f32"
+				},
+				{
+					"name": "range",
+					"type": "f32"
+				},
+				{
+					"name": "description",
+					"type": "anonymousNbt"
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/InstrumentData",
+		"value": [
+			"container",
+			[
+				{
+					"name": "soundEvent",
+					"type": "ItemSoundHolder"
+				},
+				{
+					"name": "useDuration",
+					"type": "varint"
+				},
+				{
+					"name": "range",
+					"type": "f32"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "content",
+			"1": "sender",
+			"2": "target"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/ChatTypeParameterType/1/mappings",
+		"value": {
+			"0": "sender",
+			"1": "target",
+			"2": "content"
+		}
+	}
+]

@@ -1,0 +1,192 @@
++ ArmorTrimMaterial
++ ArmorTrimPattern
++ BannerPattern
++ BannerPatternLayer
++ ContainerID
++ EntityMetadataPaintingVariant
++ EntityMetadataWolfVariant
++ IDSet
++ InstrumentData
++ ItemBlockPredicate
++ ItemBlockProperty
++ ItemBookPage
++ ItemEffectDetail
++ ItemFireworkExplosion
++ ItemPotionEffect
++ ItemWrittenBookPage
++ Slot
++ SlotComponent
++ SlotComponentType
++ configuration::toClient::packet_reset_chat
++ entityMetadataEntry
++ packet_common_add_resource_pack
++ packet_common_cookie_request
++ packet_common_cookie_response
++ packet_common_remove_resource_pack
++ packet_common_select_known_packs
++ packet_common_settings
++ packet_common_store_cookie
++ packet_common_transfer
++ play::toClient::ChatType
++ play::toClient::ChatTypeParameterType
++ play::toClient::ChatTypes
++ play::toClient::PositionUpdateRelatives
++ play::toClient::SpawnInfo
++ play::toClient::packet_debug_sample
++ play::toClient::packet_set_projectile_power
++ play::toServer::packet_chat_command_signed
++ play::toServer::packet_debug_sample_subscription
+- configuration::toClient::packet_add_resource_pack
+- configuration::toClient::packet_remove_resource_pack
+- configuration::toServer::packet_settings
+- entityMetadataItem
+- particleData
+- play::toClient::packet_add_resource_pack
+- play::toClient::packet_remove_resource_pack
+- play::toServer::packet_settings
+- slot
+~ Particle [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    +trial_spawner_detected_player
+    +trial_spawner_detected_player_ominous
+    +vault_connection
+    +dust_pillar
+    +ominous_spawning
+    +raid_omen
+    +trial_omen
+    ~entity_effect
+    +small_gust
+    +gust_emitter_large
+    +gust_emitter_small
+    +infested
+    ~item
+    +item_cobweb
+    -ambient_entity_effect
+    -trial_spawner_detection
+    -gust_emitter
+    -gust_dust
+    97 arms renumbered
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+~ configuration::toClient::packet [Renumbered, ArmsAdded, ArmsChanged]
+    +cookie_request
+    +reset_chat
+    ~remove_resource_pack
+    ~add_resource_pack
+    +store_cookie
+    +transfer
+    +select_known_packs
+    10 arms renumbered
+~ configuration::toClient::packet_registry_data [ShapeChanged]
+~ configuration::toServer::packet [Renumbered, ArmsAdded, ArmsChanged]
+    ~settings
+    +cookie_response
+    +select_known_packs
+    5 arms renumbered
+~ entityMetadata [Other]
+~ ingredient [Other]
+~ login::toClient::packet [ArmsAdded]
+    +cookie_request
+~ login::toClient::packet_encryption_begin [FieldsAdded]
+    +shouldAuthenticate: field() => bool;
+~ login::toClient::packet_success [FieldsAdded]
+    +strictErrorHandling: field() => bool;
+~ login::toServer::packet [ArmsAdded]
+    +cookie_response
+~ minecraft_smelting_format [FieldsRetypedScalar]
+    ~result: field() => slot; -> field() => Slot;
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsChanged]
+    +cookie_request
+    +debug_sample
+    ~remove_resource_pack
+    ~add_resource_pack
+    +store_cookie
+    +transfer
+    +set_projectile_power
+    95 arms renumbered
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+~ play::toClient::packet_chunk_biomes [Other]
+~ play::toClient::packet_close_window [Other]
+~ play::toClient::packet_craft_progress_bar [FieldsRetypedScalar]
+    ~windowId: field() => u8; -> field() => ContainerID;
+~ play::toClient::packet_craft_recipe_response [FieldsRetypedScalar]
+    ~windowId: field() => i8; -> field() => ContainerID;
+= play::toClient::packet_declare_commands (references changed)
+~ play::toClient::packet_declare_recipes [Other]
+~ play::toClient::packet_entity_effect [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +flags: field() => u8;
+    -hideParticles: field() => i8;
+    -factorCodec: field() => option => anonymousNbt;
+    ~amplifier: field() => i8; -> field() => varint;
+~ play::toClient::packet_entity_equipment [FieldsRetypedNested]
+    ~equipments: nested change
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_sound_effect [FieldsAdded, FieldsRemoved]
+    +sound: field() => ItemSoundHolder;
+    -soundEvent: field() => union(Tag: varint) { variant(v0, match: 0) => container { field(resource) => string; field(range) => option => f32; }; default => void; };
+~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
+    ~properties: nested change
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_login [FieldsAdded, FieldsRemoved, FieldsRenamed]
+    isDebug renamed to enforcesSecureChat
+    +worldState: field() => SpawnInfo;
+    -worldType: field() => string;
+    -worldName: field() => string;
+    -hashedSeed: field() => i64;
+    -gameMode: field() => u8;
+    -previousGameMode: field() => i8;
+    -isFlat: field() => bool;
+    -death: field() => option => container { field(dimensionName) => string; field(location) => position; };
+    -portalCooldown: field() => varint;
+~ play::toClient::packet_open_horse_window [FieldsRetypedScalar]
+    ~windowId: field() => u8; -> field() => ContainerID;
+~ play::toClient::packet_position [FieldsRetypedScalar]
+    ~flags: field() => i8; -> field() => PositionUpdateRelatives;
+~ play::toClient::packet_respawn [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +worldState: field() => SpawnInfo;
+    -dimension: field() => string;
+    -worldName: field() => string;
+    -hashedSeed: field() => i64;
+    -gamemode: field() => i8;
+    -previousGamemode: field() => u8;
+    -isDebug: field() => bool;
+    -isFlat: field() => bool;
+    -death: field() => option => container { field(dimensionName) => string; field(location) => position; };
+    -portalCooldown: field() => varint;
+    ~copyMetadata: field() => bool; -> field() => u8;
+~ play::toClient::packet_server_data [FieldsRemoved, FieldsRetypedNested]
+    -enforcesSecureChat: field() => bool;
+    ~iconBytes: nested change
+~ play::toClient::packet_set_slot [FieldsRetypedScalar]
+    ~windowId: field() => i8; -> field() => ContainerID;
+    ~item: field() => slot; -> field() => Slot;
+~ play::toClient::packet_trade_list [FieldsRetypedScalar, FieldsRetypedNested]
+    ~windowId: field() => varint; -> field() => ContainerID;
+    ~trades: nested change
+~ play::toClient::packet_window_items [FieldsRetypedScalar, FieldsRetypedNested]
+    ~windowId: field() => u8; -> field() => ContainerID;
+    ~items: nested change
+    ~carriedItem: field() => slot; -> field() => Slot;
+~ play::toClient::packet_world_particles [FieldsAdded, FieldsRemoved, FieldsRenamed]
+    particleData renamed to velocityOffset
+    particles renamed to amount
+    +particle: field() => Particle;
+    -particleId: field() => varint;
+    -data: field() => particleData(compareTo: ../particleId);
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsChanged]
+    +chat_command_signed
+    ~settings
+    +cookie_response
+    +debug_sample_subscription
+    50 arms renumbered
+~ play::toServer::packet_chat_command [ShapeChanged]
+~ play::toServer::packet_chat_session_update [FieldsRetypedNested]
+    ~publicKey: nested change
+    ~signature: nested change
+~ play::toServer::packet_close_window [Other]
+~ play::toServer::packet_set_creative_slot [FieldsRetypedScalar]
+    ~item: field() => slot; -> field() => Slot;
+~ play::toServer::packet_window_click [FieldsRetypedScalar, FieldsRetypedNested]
+    ~windowId: field() => u8; -> field() => ContainerID;
+    ~changedSlots: nested change
+    ~cursorItem: field() => slot; -> field() => Slot;

@@ -1,0 +1,13 @@
++ play::toClient::packet_scoreboard_display_objective
++ play::toClient::packet_scoreboard_objective
++ play::toClient::packet_scoreboard_score
++ play::toClient::packet_scoreboard_team
++ play::toClient::packet_world_particles
+~ play::toClient::packet [ArmsAdded]
+    +world_particles
+    +scoreboard_objective
+    +scoreboard_score
+    +scoreboard_display_objective
+    +scoreboard_team
+~ play::toClient::packet_open_window [FieldsAdded]
+    +useProvidedTitle: field() => bool;

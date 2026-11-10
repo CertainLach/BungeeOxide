@@ -1,0 +1,30 @@
+updated(entityMetadata, up: custom(metadata_1_10), down: custom(metadata_1_9_4));
+
+updated(slot, up: custom(legacy_up_slot_1_10), down: custom(legacy_down_slot_1_9_4));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(spawn_entity_living, down: custom(legacy_down_spawn_entity_living_1_9_4));
+			converted(entity_metadata, down: custom(legacy_down_entity_metadata_1_9_4));
+			converted(world_particles, down: custom(legacy_down_world_particles_1_9_4));
+			converted(block_change, down: custom(legacy_down_block_change_1_9_4));
+			converted(multi_block_change, down: custom(legacy_down_multi_block_change_1_9_4));
+		};
+
+		updated(packet_named_sound_effect) {
+			converted(pitch, up: f32(./pitch) / 63.0, down: u8(./pitch * 63.0));
+		};
+
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(legacy_sound_id_1_10), down: custom(legacy_sound_id_down_1_9_4));
+			converted(pitch, up: f32(./pitch) / 63.0, down: u8(./pitch * 63.0));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(resource_pack_receive, up: custom(resource_pack_receive_1_10), down: custom(resource_pack_receive_1_9_4));
+		};
+	};
+};

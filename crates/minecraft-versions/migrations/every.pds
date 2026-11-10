@@ -1,0 +1,258 @@
+updated(slot) {
+	updated(true) {
+		hooked(nbtData, down: custom(localize_nbt));
+	};
+	updated(default) {
+		hooked(nbtData, down: custom(localize_nbt));
+	};
+};
+
+updated(Slot) {
+	updated(default) {
+		updated(components) {
+			updated(items) {
+				hooked(custom_name, down: custom(localize));
+				hooked(item_name, down: custom(localize));
+				hooked(lore, down: custom(localize));
+			};
+		};
+	};
+};
+
+updated(entityMetadata) {
+	updated(items) {
+		updated(value) {
+			hooked(v4, down: custom(localize));
+			hooked(v5, down: custom(localize));
+			hooked(component, down: custom(localize));
+			hooked(optional_component, down: custom(localize));
+		};
+	};
+};
+
+namespace(status) {
+	namespace(toClient) {
+		updated(packet) {
+			hooked(server_info, down: custom(localize_status));
+		};
+	};
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet) {
+			hooked(disconnect, down: custom(localize));
+		};
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			hooked(disconnect, down: custom(localize));
+			hooked(show_dialog, down: custom(localize));
+			updated(add_resource_pack) {
+				hooked(promptMessage, down: custom(localize));
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			hooked(kick_disconnect, down: custom(localize));
+			hooked(action_bar, down: custom(localize));
+			hooked(set_title_text, down: custom(localize));
+			hooked(set_title_subtitle, down: custom(localize));
+
+			updated(show_dialog) {
+				hooked(data, down: custom(localize));
+			};
+
+			updated(chat) {
+				hooked(message, down: custom(localize));
+			};
+
+			updated(system_chat) {
+				hooked(content, down: custom(localize));
+			};
+
+			updated(player_chat) {
+				hooked(unsignedChatContent, down: custom(localize));
+				hooked(senderName, down: custom(localize));
+				hooked(senderTeam, down: custom(localize));
+				hooked(networkName, down: custom(localize));
+				hooked(networkTargetName, down: custom(localize));
+			};
+
+			updated(profileless_chat) {
+				hooked(message, down: custom(localize));
+				hooked(name, down: custom(localize));
+				hooked(target, down: custom(localize));
+			};
+
+			updated(chat_preview) {
+				hooked(message, down: custom(localize));
+			};
+
+			updated(title) {
+				hooked(v0, down: custom(localize));
+				hooked(v1, down: custom(localize));
+				hooked(v2, down: custom(localize));
+			};
+
+			updated(combat_event) {
+				updated(v2) {
+					hooked(message, down: custom(localize));
+				};
+			};
+
+			updated(death_combat_event) {
+				hooked(message, down: custom(localize));
+			};
+
+			updated(playerlist_header) {
+				hooked(header, down: custom(localize));
+				hooked(footer, down: custom(localize));
+			};
+
+			updated(player_info) {
+				updated(data) {
+					updated(items) {
+						updated(ANON) {
+							updated(add_player) {
+								hooked(displayName, down: custom(localize));
+							};
+							hooked(update_display_name, down: custom(localize));
+						};
+						updated(displayName) {
+							hooked(true, down: custom(localize));
+						};
+					};
+				};
+			};
+
+			updated(boss_bar) {
+				updated(action) {
+					updated(v0) {
+						hooked(title, down: custom(localize));
+					};
+					hooked(v3, down: custom(localize));
+				};
+			};
+
+			updated(scoreboard_objective) {
+				updated(action) {
+					updated(v0) {
+						hooked(displayText, down: custom(localize));
+						updated(styling) {
+							hooked(v2, down: custom(localize));
+						};
+					};
+					updated(v2) {
+						hooked(displayText, down: custom(localize));
+						updated(styling) {
+							hooked(v2, down: custom(localize));
+						};
+					};
+				};
+			};
+
+			updated(scoreboard_score) {
+				hooked(display_name, down: custom(localize));
+				updated(styling) {
+					hooked(v2, down: custom(localize));
+				};
+			};
+
+			updated(teams) {
+				updated(mode) {
+					updated(v0) {
+						hooked(name, down: custom(localize));
+						hooked(prefix, down: custom(localize));
+						hooked(suffix, down: custom(localize));
+					};
+					updated(v2) {
+						hooked(name, down: custom(localize));
+						hooked(prefix, down: custom(localize));
+						hooked(suffix, down: custom(localize));
+					};
+					updated(add) {
+						hooked(name, down: custom(localize));
+						hooked(prefix, down: custom(localize));
+						hooked(suffix, down: custom(localize));
+					};
+					updated(change) {
+						hooked(name, down: custom(localize));
+						hooked(prefix, down: custom(localize));
+						hooked(suffix, down: custom(localize));
+					};
+				};
+			};
+
+			updated(open_window) {
+				hooked(windowTitle, down: custom(localize));
+			};
+
+			updated(update_sign) {
+				hooked(text1, down: custom(localize));
+				hooked(text2, down: custom(localize));
+				hooked(text3, down: custom(localize));
+				hooked(text4, down: custom(localize));
+			};
+
+			updated(tile_entity_data) {
+				hooked(nbtData, down: custom(localize_nbt));
+			};
+
+			updated(advancements) {
+				updated(advancementMapping) {
+					updated(items) {
+						updated(value) {
+							updated(displayData) {
+								updated(value) {
+									hooked(title, down: custom(localize));
+									hooked(description, down: custom(localize));
+								};
+							};
+						};
+					};
+				};
+			};
+
+			updated(map) {
+				updated(icons) {
+					updated(items) {
+						hooked(displayName, down: custom(localize));
+					};
+					updated(value) {
+						updated(items) {
+							hooked(displayName, down: custom(localize));
+						};
+					};
+				};
+			};
+
+			updated(tab_complete) {
+				updated(matches) {
+					updated(items) {
+						hooked(tooltip, down: custom(localize));
+					};
+				};
+			};
+
+			updated(server_data) {
+				hooked(motd, down: custom(localize));
+			};
+
+			updated(resource_pack_send) {
+				hooked(promptMessage, down: custom(localize));
+			};
+
+			updated(add_resource_pack) {
+				hooked(promptMessage, down: custom(localize));
+			};
+		};
+	};
+};

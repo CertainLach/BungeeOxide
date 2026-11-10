@@ -1,0 +1,93 @@
+updated(slot, up: custom(nether_slot_1_16), down: custom(nether_slot_1_15_2));
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(disconnect, up: custom(nether_login_disconnect_1_16), down: custom(nether_login_disconnect_1_15_2));
+		};
+
+		updated(packet_success) {
+			updated(uuid, up: custom(nether_uuid_1_16), down: custom(nether_uuid_1_15_2));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(spawn_entity_weather, up: custom(nether_spawn_entity_weather_1_16));
+			converted(entity_equipment, up: custom(nether_entity_equipment_1_16), down: custom(nether_entity_equipment_1_15_2));
+			converted(entity_destroy, up: custom(nether_entity_destroy_1_16), down: custom(nether_entity_destroy_1_15_2));
+			converted(statistics, up: custom(nether_statistics_1_16), down: custom(nether_statistics_1_15_2));
+			converted(spawn_entity, up: custom(nether_spawn_entity_1_16), down: custom(nether_spawn_entity_1_15_2));
+			converted(respawn, up: custom(nether_respawn_1_16), down: custom(nether_respawn_1_15_2));
+			converted(kick_disconnect, up: custom(nether_kick_disconnect_1_16), down: custom(nether_kick_disconnect_1_15_2));
+			updated(declare_recipes) {
+				updated(items) {
+					updated(data) {
+						added(minecraft_smithing, down: drop);
+					};
+				};
+			};
+		};
+
+		updated(packet_chat, up: custom(nether_chat_1_16), down: custom(nether_chat_1_15_2));
+		updated(packet_title, up: self, down: custom(nether_title_1_15_2));
+		updated(packet_playerlist_header, up: self, down: custom(nether_playerlist_header_1_15_2));
+		updated(packet_boss_bar, up: self, down: custom(nether_boss_bar_1_15_2));
+		updated(packet_combat_event, up: self, down: custom(nether_combat_event_1_15_2));
+		updated(packet_scoreboard_objective, up: self, down: custom(nether_scoreboard_objective_1_15_2));
+		updated(packet_teams, up: self, down: custom(nether_teams_1_15_2));
+		updated(packet_player_info, up: self, down: custom(nether_player_info_1_15_2));
+		updated(packet_map, up: self, down: custom(nether_map_1_15_2));
+		updated(packet_declare_commands, up: self, down: custom(nether_declare_commands_1_15_2));
+
+		updated(packet_login, up: custom(nether_login_1_16), down: custom(nether_login_1_15_2));
+		updated(packet_map_chunk, up: custom(nether_map_chunk_1_16), down: custom(nether_map_chunk_1_15_2));
+
+		updated(packet_update_light) {
+			added(trustEdges, up: true);
+		};
+
+		updated(packet_world_particles, up: custom(nether_world_particles_1_16), down: custom(nether_world_particles_1_15_2));
+		updated(packet_entity_metadata, up: custom(nether_entity_metadata_1_16), down: custom(nether_entity_metadata_1_15_2));
+		updated(packet_spawn_entity_living, up: custom(nether_spawn_entity_living_1_16), down: custom(nether_spawn_entity_living_1_15_2));
+		updated(packet_named_entity_spawn, up: custom(nether_named_entity_spawn_1_16), down: custom(nether_named_entity_spawn_1_15_2));
+		updated(packet_block_change, up: custom(nether_block_change_1_16), down: custom(nether_block_change_1_15_2));
+		updated(packet_multi_block_change, up: custom(nether_multi_block_change_1_16), down: custom(nether_multi_block_change_1_15_2));
+		updated(packet_acknowledge_player_digging, up: custom(nether_acknowledge_player_digging_1_16), down: custom(nether_acknowledge_player_digging_1_15_2));
+		updated(packet_block_action, up: custom(nether_block_action_1_16), down: custom(nether_block_action_1_15_2));
+		updated(packet_world_event, up: custom(nether_world_event_1_16), down: custom(nether_world_event_1_15_2));
+		updated(packet_sound_effect, up: custom(nether_sound_effect_1_16), down: custom(nether_sound_effect_1_15_2));
+		updated(packet_entity_sound_effect, up: custom(nether_entity_sound_effect_1_16), down: custom(nether_entity_sound_effect_1_15_2));
+		updated(packet_set_cooldown, up: custom(nether_set_cooldown_1_16), down: custom(nether_set_cooldown_1_15_2));
+		updated(packet_tags, up: custom(nether_tags_1_16), down: custom(nether_tags_1_15_2));
+		updated(packet_open_window, up: custom(nether_open_window_1_16), down: custom(nether_open_window_1_15_2));
+		updated(packet_craft_progress_bar, up: custom(nether_craft_progress_bar_1_16), down: custom(nether_craft_progress_bar_1_15_2));
+		updated(packet_entity_update_attributes, up: custom(nether_entity_update_attributes_1_16), down: custom(nether_entity_update_attributes_1_15_2));
+		updated(packet_tile_entity_data, up: custom(nether_tile_entity_data_1_16), down: custom(nether_tile_entity_data_1_15_2));
+		updated(packet_abilities, up: custom(nether_abilities_1_16), down: self);
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(generate_structure, down: drop);
+			updated(abilities, up: custom(nether_abilities_flags_1_16), down: custom(nether_abilities_1_15_2));
+		};
+
+		updated(packet_update_jigsaw_block) {
+			removed(attachmentType, down: ./target);
+			removed(targetPool, down: ./pool);
+			added(name, up: ./attachmentType);
+			added(target, up: ./attachmentType);
+			added(pool, up: ./targetPool);
+			added(jointType, up: "rollable");
+		};
+
+		updated(packet_use_entity) {
+			added(sneaking, up: custom(nether_sneaking_1_16));
+		};
+
+		updated(packet_entity_action, up: custom(nether_entity_action_1_16), down: self);
+	};
+};

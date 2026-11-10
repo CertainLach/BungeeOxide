@@ -1,0 +1,35 @@
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v31
+    +v40
+    +v41
+    +v93
+    -v33
+    -v42
+    -v43
+    -v95
+= play::toClient::packet (references changed)
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+~ play::toClient::packet_death_combat_event [FieldsRemoved]
+    -entityId: field() => i32;
+~ play::toClient::packet_declare_recipes [Other]
+~ play::toClient::packet_end_combat_event [ShapeChanged]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_login [FieldsAdded]
+    +portalCooldown: field() => varint;
+~ play::toClient::packet_map_chunk [FieldsRemoved]
+    -trustEdges: field() => bool;
+~ play::toClient::packet_multi_block_change [FieldsRemoved]
+    -suppressLightUpdates: field() => bool;
+~ play::toClient::packet_open_sign_entity [ShapeChanged]
+~ play::toClient::packet_respawn [FieldsAdded]
+    +portalCooldown: field() => varint;
+~ play::toClient::packet_update_light [FieldsRemoved]
+    -trustEdges: field() => bool;
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+~ play::toServer::packet_update_sign [FieldsAdded]
+    +isFrontText: field() => bool;

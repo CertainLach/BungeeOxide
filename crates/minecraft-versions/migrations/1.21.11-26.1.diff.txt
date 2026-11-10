@@ -1,0 +1,110 @@
++ DamageTypeData
++ DyeColor
++ GameRule
++ ItemStackTemplate
++ play::toClient::packet_game_rule_values
++ play::toClient::packet_low_disk_space_warning
++ play::toServer::packet_attack
++ play::toServer::packet_set_game_rule
++ play::toServer::packet_spectate_entity
+= DataComponentMatchers (references changed)
+= ExactComponentMatcher (references changed)
+= HashedSlot (references changed)
+~ Particle [Renumbered, ArmsAdded, ArmsChanged]
+    ~item
+    +pause_mob_growth
+    +reset_mob_growth
+    65 arms renumbered
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
+    +cat_sound_variant
+    ~cat_collar
+    ~sheep_color
+    ~shulker_color
+    ~use_remainder
+    ~damage_resistant
+    ~blocks_attacks
+    +additional_trade_cost
+    +dye
+    ~charged_projectiles
+    ~bundle_contents
+    ~instrument
+    ~provides_trim_material
+    ~jukebox_playable
+    ~provides_banner_patterns
+    ~base_color
+    ~container
+    ~damage_type
+    ~wolf_collar
+    ~tropical_fish_base_color
+    ~tropical_fish_pattern_color
+    +pig_sound_variant
+    +cow_sound_variant
+    ~chicken_variant
+    +chicken_sound_variant
+    ~zombie_nautilus_variant
+    63 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded]
+    +cat_sound_variant
+    +additional_trade_cost
+    +dye
+    +pig_sound_variant
+    +cow_sound_variant
+    +chicken_sound_variant
+    63 arms renumbered
+= UntrustedSlot (references changed)
+= UntrustedSlotComponent (references changed)
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= play::toClient::ExplosionParticleEntry (references changed)
+= play::toClient::ExplosionParticleInfo (references changed)
+= play::toClient::RecipeDisplay (references changed)
+~ play::toClient::SlotDisplay [Renumbered, ArmsAdded, ArmsChanged]
+    +with_any_potion
+    +only_with_component
+    ~item_stack
+    +dyed_slot_demo
+    6 arms renumbered
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +game_rule_values
+    +low_disk_space_warning
+    100 arms renumbered
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_open_book [ShapeChanged]
+= play::toClient::packet_recipe_book_add (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_trade_list (references changed)
+~ play::toClient::packet_update_time [FieldsAdded, FieldsRemoved]
+    +clockUpdates: field() => array(Count: varint) => container { field(id) => varint; field(totalTicks) => varlong; field(partialTick) => f32; field(rate) => f32; };
+    -time: field() => i64;
+    -tickDayTime: field() => bool;
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +attack
+    +set_game_rule
+    +spectate_entity
+    65 arms renumbered
+~ play::toServer::packet_arm_animation [ShapeChanged]
+~ play::toServer::packet_block_place [FieldsRetypedNested]
+    ~hand: nested change
+~ play::toServer::packet_client_command [ArmsAdded]
+    +request_gamerule_values
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_use_entity [FieldsAdded, FieldsRemoved]
+    +hand: field() => union(Tag: varint) { variant(main_hand, match: 0); variant(off_hand, match: 1); default; };
+    +location: field() => lpVec3;
+    -mouse: field() => union(Tag: varint) { variant(v0, match: 0) => varint; variant(v2, match: 2) => container { field(x) => f32; field(y) => f32; field(z) => f32; field(hand) => varint; }; default; };
+~ play::toServer::packet_use_item [FieldsRetypedNested]
+    ~hand: nested change
+= play::toServer::packet_window_click (references changed)

@@ -1,0 +1,422 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_hat"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/6",
+		"value": "update_list_order"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_list_order"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/0/type/1/flags/7",
+		"value": "update_hat"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_initialize_world_border/1/4/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_world_border_lerp_size/1/2/type",
+		"value": "varlong"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/0/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/1/type",
+		"value": "vec3f64"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/2/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "f32"
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_move_minecart/1/1/type/1/type/1/3/type",
+		"value": "i8"
+	},
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_update_structure_block/1/15/type",
+		"value": [
+			"mapper",
+			{
+				"type": "u8",
+				"mappings": {
+					"0": "ignore_entities",
+					"1": "show_air",
+					"2": "show_bounding_box",
+					"3": "strict"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toServer/types/packet_update_structure_block/1/15/type",
+		"value": "u8"
+	},
+	{
+		"op": "test",
+		"path": "/types/DataComponentMatchers/1/1/type/1/type",
+		"value": "varint"
+	},
+	{
+		"op": "replace",
+		"path": "/types/DataComponentMatchers/1/1/type/1/type",
+		"value": [
+			"container",
+			[
+				{
+					"name": "isPredicateType",
+					"type": "bool"
+				},
+				{
+					"name": "type",
+					"type": "varint"
+				},
+				{
+					"name": "predicate",
+					"type": "anonymousNbt"
+				}
+			]
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/bees/1/0/type/1/type/1/0/name",
+		"value": "nbtData"
+	},
+	{
+		"op": "add",
+		"path": "/types/SlotComponent/1/1/type/1/fields/bees/1/0/type/1/type/1/0",
+		"value": {
+			"name": "type",
+			"type": "varint"
+		}
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/damage_type",
+		"value": [
+			"container",
+			[
+				{
+					"name": "hasHolder",
+					"type": "bool"
+				},
+				{
+					"name": "damageType",
+					"type": [
+						"switch",
+						{
+							"compareTo": "hasHolder",
+							"fields": {
+								"true": [
+									"registryEntryHolder",
+									{
+										"baseName": "damageTypeId",
+										"otherwise": {
+											"name": "data",
+											"type": "DamageTypeData"
+										}
+									}
+								],
+								"false": "string"
+							}
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/damage_type",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/jukebox_playable",
+		"value": [
+			"container",
+			[
+				{
+					"name": "hasHolder",
+					"type": "bool"
+				},
+				{
+					"name": "song",
+					"type": [
+						"switch",
+						{
+							"compareTo": "hasHolder",
+							"fields": {
+								"true": [
+									"registryEntryHolder",
+									{
+										"baseName": "songId",
+										"otherwise": {
+											"name": "data",
+											"type": "JukeboxSongData"
+										}
+									}
+								],
+								"false": "string"
+							}
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/jukebox_playable",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "songId",
+				"otherwise": {
+					"name": "data",
+					"type": "JukeboxSongData"
+				}
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/instrument",
+		"value": [
+			"container",
+			[
+				{
+					"name": "hasHolder",
+					"type": "bool"
+				},
+				{
+					"name": "data",
+					"type": [
+						"switch",
+						{
+							"compareTo": "hasHolder",
+							"fields": {
+								"true": [
+									"registryEntryHolder",
+									{
+										"baseName": "instrumentId",
+										"otherwise": {
+											"name": "data",
+											"type": "InstrumentData"
+										}
+									}
+								],
+								"false": "string"
+							}
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/instrument",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "instrumentId",
+				"otherwise": {
+					"name": "data",
+					"type": "InstrumentData"
+				}
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/provides_trim_material",
+		"value": [
+			"container",
+			[
+				{
+					"name": "hasHolder",
+					"type": "bool"
+				},
+				{
+					"name": "material",
+					"type": [
+						"switch",
+						{
+							"compareTo": "hasHolder",
+							"fields": {
+								"true": [
+									"registryEntryHolder",
+									{
+										"baseName": "materialId",
+										"otherwise": {
+											"name": "data",
+											"type": "ArmorTrimMaterial"
+										}
+									}
+								],
+								"false": "string"
+							}
+						}
+					]
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/provides_trim_material",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "materialId",
+				"otherwise": {
+					"name": "data",
+					"type": "ArmorTrimMaterial"
+				}
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/provides_banner_patterns",
+		"value": "string"
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/provides_banner_patterns",
+		"value": "IDSet"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/damage_resistant",
+		"value": "string"
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/damage_resistant",
+		"value": "IDSet"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/chicken~1variant",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "variantId",
+				"otherwise": {
+					"name": "variantData",
+					"type": "string"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/chicken~1variant",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/chicken~1sound_variant",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "variantId",
+				"otherwise": {
+					"name": "variantData",
+					"type": "string"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/chicken~1sound_variant",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/zombie_nautilus~1variant",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "variantId",
+				"otherwise": {
+					"name": "variantData",
+					"type": "string"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/zombie_nautilus~1variant",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/SlotComponent/1/1/type/1/fields/blocks_attacks/1/4/type",
+		"value": [
+			"option",
+			"string"
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/SlotComponent/1/1/type/1/fields/blocks_attacks/1/4/type",
+		"value": [
+			"option",
+			"IDSet"
+		]
+	}
+]

@@ -1,0 +1,5 @@
+= play::toClient::packet (references changed)
+~ play::toClient::packet_entity_effect [FieldsRetypedScalar]
+    ~effectId: field() => i8; -> field() => varint;
+~ play::toClient::packet_remove_entity_effect [FieldsRetypedScalar]
+    ~effectId: field() => i8; -> field() => varint;

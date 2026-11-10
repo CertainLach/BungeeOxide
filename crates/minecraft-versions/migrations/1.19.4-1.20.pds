@@ -1,0 +1,71 @@
+updated(slot, up: custom(trails_slot_1_19_4_to_1_20), down: custom(trails_slot_1_20_to_1_19_4));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(entity_metadata, up: custom(trails_entity_metadata_1_19_4_to_1_20), down: custom(trails_entity_metadata_1_20_to_1_19_4));
+			updated(declare_recipes) {
+				updated(items) {
+					updated(data) {
+						removed(minecraft_smithing, up: drop);
+					};
+				};
+			};
+			converted(end_combat_event, up: custom(trails_end_combat_event_1_19_4_to_1_20), down: custom(trails_end_combat_event_1_20_to_1_19_4));
+			converted(open_sign_entity, up: custom(trails_open_sign_entity_1_19_4_to_1_20), down: custom(trails_open_sign_entity_1_20_to_1_19_4));
+			converted(map_chunk, up: custom(trails_map_chunk_1_19_4_to_1_20), down: custom(trails_map_chunk_1_20_to_1_19_4));
+			converted(multi_block_change, up: custom(trails_multi_block_change_1_19_4_to_1_20), down: custom(trails_multi_block_change_1_20_to_1_19_4));
+			converted(block_change, up: custom(trails_block_change_1_19_4_to_1_20), down: custom(trails_block_change_1_20_to_1_19_4));
+			converted(block_action, up: custom(trails_block_action_1_19_4_to_1_20), down: custom(trails_block_action_1_20_to_1_19_4));
+			converted(tile_entity_data, up: custom(trails_tile_entity_data_1_19_4_to_1_20), down: custom(trails_tile_entity_data_1_20_to_1_19_4));
+			converted(world_event, up: custom(trails_world_event_1_19_4_to_1_20), down: custom(trails_world_event_1_20_to_1_19_4));
+			converted(world_particles, up: custom(trails_world_particles_1_19_4_to_1_20), down: custom(trails_world_particles_1_20_to_1_19_4));
+			converted(spawn_entity, up: custom(trails_spawn_entity_1_19_4_to_1_20), down: custom(trails_spawn_entity_1_20_to_1_19_4));
+			converted(set_cooldown, up: custom(trails_set_cooldown_1_19_4_to_1_20), down: custom(trails_set_cooldown_1_20_to_1_19_4));
+			converted(sound_effect, up: custom(trails_sound_effect_1_19_4_to_1_20), down: custom(trails_sound_effect_1_20_to_1_19_4));
+			converted(entity_sound_effect, up: custom(trails_entity_sound_effect_1_19_4_to_1_20), down: custom(trails_entity_sound_effect_1_20_to_1_19_4));
+			converted(tags, up: custom(trails_tags_1_19_4_to_1_20), down: custom(trails_tags_1_20_to_1_19_4));
+			converted(feature_flags, up: custom(trails_feature_flags_1_19_4_to_1_20), down: custom(trails_feature_flags_1_20_to_1_19_4));
+		};
+
+		updated(packet_advancements) {
+			updated(advancementMapping) {
+				updated(items) {
+					updated(value) {
+						added(sendsTelemtryData, up: false);
+					};
+				};
+			};
+		};
+
+		updated(packet_death_combat_event) {
+			removed(entityId, down: -1);
+		};
+
+		updated(packet_login) {
+			added(portalCooldown, up: 0);
+			updated(dimensionCodec, up: custom(trails_codec_1_19_4_to_1_20), down: custom(trails_codec_1_20_to_1_19_4));
+			hooked(dimensionCodec, up: custom(caves_track_codec), down: custom(caves_track_codec));
+			hooked(worldType, up: custom(caves_track_dimension_key), down: custom(caves_track_dimension_key));
+		};
+
+		updated(packet_respawn) {
+			added(portalCooldown, up: 0);
+			hooked(dimension, up: custom(caves_track_dimension_key), down: custom(caves_track_dimension_key));
+		};
+
+		updated(packet_update_light) {
+			removed(trustEdges, down: true);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(update_sign, down: custom(trails_update_sign_1_20_to_1_19_4));
+		};
+
+		updated(packet_update_sign) {
+			added(isFrontText, up: custom(trails_sign_front_1_19_4_to_1_20));
+		};
+	};
+};

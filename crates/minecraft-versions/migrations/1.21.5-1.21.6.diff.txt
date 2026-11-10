@@ -1,0 +1,80 @@
++ configuration::toClient::packet_show_dialog
++ packet_common_clear_dialog
++ packet_common_custom_click_action
++ play::toClient::RecipeBookSetting
++ play::toClient::packet_show_dialog
++ play::toClient::packet_tracked_waypoint
++ play::toServer::packet_change_gamemode
+= DataComponentMatchers (references changed)
+= ExactComponentMatcher (references changed)
+= Particle (references changed)
+= Slot (references changed)
+~ SlotComponent [ArmsChanged]
+    ~attribute_modifiers
+    ~equippable
+~ command_node [FieldsRetypedNested]
+    ~flags: nested change
+    ~extraNodeData: nested change
+~ configuration::toClient::packet [ArmsAdded]
+    +clear_dialog
+    +show_dialog
+~ configuration::toServer::packet [ArmsAdded, ArmsRemoved]
+    +custom_click_action
+    -custom_report_details
+    -server_links
+= entityMetadata (references changed)
+= entityMetadataEntry (references changed)
+= ingredient (references changed)
+= play::toClient::RecipeDisplay (references changed)
+= play::toClient::SlotDisplay (references changed)
+~ play::toClient::packet [ArmsAdded]
+    +tracked_waypoint
+    +clear_dialog
+    +show_dialog
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_commands (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+~ play::toClient::packet_difficulty [FieldsRetypedNested]
+    ~difficulty: nested change
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_entity_sound_effect (references changed)
+~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
+    ~properties: nested change
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_map_chunk [FieldsRetypedNested]
+    ~heightmaps: nested change
+= play::toClient::packet_recipe_book_add (references changed)
+~ play::toClient::packet_recipe_book_settings [FieldsAdded, FieldsRemoved]
+    +crafting: field() => RecipeBookSetting;
+    +furnace: field() => RecipeBookSetting;
+    +blast: field() => RecipeBookSetting;
+    +smoker: field() => RecipeBookSetting;
+    -craftingGuiOpen: field() => bool;
+    -craftingFilteringCraftable: field() => bool;
+    -smeltingGuiOpen: field() => bool;
+    -smeltingFilteringCraftable: field() => bool;
+    -blastGuiOpen: field() => bool;
+    -blastFilteringCraftable: field() => bool;
+    -smokerGuiOpen: field() => bool;
+    -smokerFilteringCraftable: field() => bool;
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_sound_effect (references changed)
+~ play::toClient::packet_teams [FieldsRetypedNested]
+    ~mode: nested change
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +change_gamemode
+    +custom_click_action
+    59 arms renumbered
+~ play::toServer::packet_entity_action [FieldsRetypedNested]
+    ~actionId: nested change
+~ play::toServer::packet_set_difficulty [TagChanged]
+    tag union(Tag: u8); -> union(Tag: varint);
+~ soundSource [ArmsAdded]
+    +ui

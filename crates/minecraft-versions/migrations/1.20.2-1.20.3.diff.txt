@@ -1,0 +1,109 @@
++ Particle
++ configuration::toClient::packet_add_resource_pack
++ configuration::toClient::packet_remove_resource_pack
++ play::toClient::packet_add_resource_pack
++ play::toClient::packet_remove_resource_pack
++ play::toClient::packet_reset_score
++ play::toClient::packet_set_ticking_state
++ play::toClient::packet_step_tick
++ play::toServer::packet_set_slot_state
+- configuration::toClient::packet_resource_pack_send
+- particle
+- play::toClient::packet_resource_pack_send
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+~ configuration::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +remove_resource_pack
+    +add_resource_pack
+    -resource_pack_send
+    2 arms renumbered
+~ configuration::toClient::packet_disconnect [Other]
+= configuration::toServer::packet (references changed)
+~ configuration::toServer::packet_resource_pack_receive [ShapeChanged]
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsChanged]
+    ~component
+    ~optional_component
+    ~particle
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v27
+    +v33
+    +v42
+    +v43
+    +v96
+    -v25
+    -v31
+    -v40
+    -v41
+    -v93
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +reset_score
+    +remove_resource_pack
+    +add_resource_pack
+    +set_ticking_state
+    +step_tick
+    -resource_pack_send
+    46 arms renumbered
+~ play::toClient::packet_action_bar [Other]
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+~ play::toClient::packet_boss_bar [FieldsRetypedNested]
+    ~action: nested change
+~ play::toClient::packet_death_combat_event [FieldsRetypedScalar]
+    ~message: field() => string; -> field() => anonymousNbt;
+= play::toClient::packet_declare_commands (references changed)
+~ play::toClient::packet_declare_recipes [Other]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_explosion [FieldsAdded]
+    +block_interaction_type: field() => varint;
+    +small_explosion_particle: field() => Particle;
+    +large_explosion_particle: field() => Particle;
+    +sound: field() => ItemSoundHolder;
+~ play::toClient::packet_face_player [FieldsRetypedNested]
+    ~isEntity: nested change
+~ play::toClient::packet_game_state_change [FieldsRetypedNested]
+    ~reason: nested change
+~ play::toClient::packet_kick_disconnect [Other]
+~ play::toClient::packet_map [FieldsRetypedNested]
+    ~icons: nested change
+~ play::toClient::packet_open_window [FieldsRetypedScalar]
+    ~windowTitle: field() => string; -> field() => anonymousNbt;
+~ play::toClient::packet_player_chat [FieldsRetypedScalar, FieldsRetypedNested]
+    ~unsignedChatContent: nested change
+    ~networkName: field() => string; -> field() => anonymousNbt;
+    ~networkTargetName: nested change
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~data: nested change
+~ play::toClient::packet_playerlist_header [FieldsRetypedScalar]
+    ~header: field() => string; -> field() => anonymousNbt;
+    ~footer: field() => string; -> field() => anonymousNbt;
+~ play::toClient::packet_profileless_chat [FieldsRetypedScalar, FieldsRetypedNested]
+    ~message: field() => string; -> field() => anonymousNbt;
+    ~name: field() => string; -> field() => anonymousNbt;
+    ~target: nested change
+~ play::toClient::packet_scoreboard_objective [FieldsRetypedNested]
+    ~action: nested change
+~ play::toClient::packet_scoreboard_score [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +display_name: field() => option => anonymousNbt;
+    +number_format: virtual_field(, value: ./styling/@tag) => option => varint;
+    +styling: field() => union(tag: ../number_format) { variant(v1, match: 1) => anonymousNbt; variant(v2, match: 2) => anonymousNbt; default => void; };
+    -action: virtual_field(, value: ./value/@tag) => varint;
+    ~value: nested change
+~ play::toClient::packet_server_data [FieldsRetypedScalar]
+    ~motd: field() => string; -> field() => anonymousNbt;
+~ play::toClient::packet_set_title_subtitle [Other]
+~ play::toClient::packet_set_title_text [Other]
+~ play::toClient::packet_system_chat [FieldsRetypedScalar]
+    ~content: field() => string; -> field() => anonymousNbt;
+~ play::toClient::packet_tab_complete [FieldsRetypedNested]
+    ~matches: nested change
+~ play::toClient::packet_teams [FieldsRetypedNested]
+    ~mode: nested change
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +set_slot_state
+    39 arms renumbered
+~ play::toServer::packet_resource_pack_receive [ShapeChanged]
+~ play::toServer::packet_update_jigsaw_block [FieldsAdded]
+    +selection_priority: field() => varint;
+    +placement_priority: field() => varint;

@@ -1,0 +1,92 @@
++ play::toClient::packet_chat_preview
++ play::toClient::packet_player_chat
++ play::toClient::packet_server_data
++ play::toClient::packet_should_display_chat_preview
++ play::toClient::packet_system_chat
++ play::toServer::packet_chat_command
++ play::toServer::packet_chat_message
++ play::toServer::packet_chat_preview
+- play::toClient::packet_chat
+- play::toClient::packet_sculk_vibration_signal
+- play::toClient::packet_spawn_entity_living
+- play::toClient::packet_spawn_entity_painting
+- play::toServer::packet_chat
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsAdded]
+    +v19
+    +v20
+    +v21
+    +v22
+= login::toClient::packet (references changed)
+~ login::toClient::packet_success [FieldsAdded]
+    +properties: field() => array(Count: varint) => container { field(name) => string; field(value) => string; field(signature) => option => string; };
+= login::toServer::packet (references changed)
+~ login::toServer::packet_encryption_begin [FieldsAdded, FieldsRemoved]
+    +crypto: field() => union(Tag: bool) { variant(false, match: false) => container { field(salt) => i64; field(messageSignature) => buffer(Count: varint); }; variant(true, match: true) => buffer(Count: varint); };
+    -verifyToken: field() => buffer(Count: varint);
+~ login::toServer::packet_login_start [ShapeChanged]
+~ particle [FieldsRetypedNested]
+    ~data: nested change
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v25
+    +v30
+    +v39
+    +v40
+    +v92
+    -v24
+    -v35
+    -v36
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +chat_preview
+    +player_chat
+    +server_data
+    +should_display_chat_preview
+    +system_chat
+    -spawn_entity_living
+    -spawn_entity_painting
+    -sculk_vibration_signal
+    -chat
+    79 arms renumbered
+~ play::toClient::packet_acknowledge_player_digging [ShapeChanged]
+= play::toClient::packet_declare_commands (references changed)
+~ play::toClient::packet_entity_effect [FieldsAdded]
+    +factorCodec: field() => option => nbt;
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_sound_effect [FieldsAdded]
+    +seed: field() => i64;
+~ play::toClient::packet_login [FieldsAdded, FieldsRemoved]
+    +worldType: field() => string;
+    +death: field() => option => container { field(dimensionName) => string; field(location) => position; };
+    -dimension: field() => nbt;
+~ play::toClient::packet_named_sound_effect [FieldsAdded]
+    +seed: field() => i64;
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~data: nested change
+~ play::toClient::packet_respawn [FieldsAdded, FieldsRetypedScalar]
+    +death: field() => option => container { field(dimensionName) => string; field(location) => position; };
+    ~dimension: field() => nbt; -> field() => string;
+~ play::toClient::packet_sound_effect [FieldsAdded]
+    +seed: field() => i64;
+~ play::toClient::packet_spawn_entity [FieldsAdded, FieldsRetypedScalar]
+    +headPitch: field() => i8;
+    ~objectData: field() => i32; -> field() => varint;
+~ play::toClient::packet_trade_list [FieldsRetypedNested]
+    ~trades: nested change
+~ play::toClient::packet_world_particles [FieldsRetypedScalar]
+    ~particleId: field() => i32; -> field() => varint;
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +chat_command
+    +chat_message
+    +chat_preview
+    -chat
+    44 arms renumbered
+~ play::toServer::packet_block_dig [FieldsAdded]
+    +sequence: field() => varint;
+~ play::toServer::packet_block_place [FieldsAdded]
+    +sequence: field() => varint;
+~ play::toServer::packet_set_beacon_effect [FieldsRetypedNested]
+    ~primary_effect: nested change
+    ~secondary_effect: nested change
+~ play::toServer::packet_use_item [ShapeChanged]

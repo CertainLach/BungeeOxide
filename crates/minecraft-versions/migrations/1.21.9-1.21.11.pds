@@ -1,0 +1,153 @@
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(late_slot_item_up_1_21_11), down: custom(late_slot_item_down_1_21_9));
+		converted(addedComponentCount, down: custom(late_added_count_down_1_21_9));
+		converted(removedComponentCount, down: custom(late_removed_count_down_1_21_9));
+	};
+};
+
+updated(HashedSlot) {
+	converted(itemId, up: custom(late_hashed_item_up_1_21_11), down: custom(late_hashed_item_down_1_21_9));
+};
+
+updated(UntrustedSlot, up: custom(late_untrusted_up_1_21_11), down: custom(late_untrusted_down_1_21_9));
+
+updated(ItemSoundHolder, up: custom(late_sound_up_1_21_11), down: custom(late_sound_down_1_21_9));
+
+updated(ItemBlockPredicate) {
+	converted(components, up: custom(late_matchers_up_1_21_11), down: custom(late_matchers_down_1_21_9));
+};
+
+updated(SlotComponent) {
+	added(attack_range, down: drop);
+	added(damage_type, down: drop);
+	added(kinetic_weapon, down: drop);
+	added(minimum_attack_charge, down: drop);
+	added(piercing_weapon, down: drop);
+	added(swing_animation, down: drop);
+	added(use_effects, down: drop);
+	added(zombie_nautilus_variant, down: drop);
+	updated(equippable) {
+		converted(allowedEntities, up: custom(late_equip_entities_up_1_21_11), down: custom(late_equip_entities_down_1_21_9));
+	};
+	converted(repairable, up: custom(late_repairable_up_1_21_11), down: custom(late_repairable_down_1_21_9));
+	converted(pot_decorations, up: custom(late_pots_up_1_21_11), down: custom(late_pots_down_1_21_9));
+	updated(tooltip_display) {
+		converted(hiddenComponents, up: custom(late_hidden_up_1_21_11), down: custom(late_hidden_down_1_21_9));
+	};
+};
+
+updated(SlotComponentType) {
+	added(attack_range, down: drop);
+	added(damage_type, down: drop);
+	added(kinetic_weapon, down: drop);
+	added(minimum_attack_charge, down: drop);
+	added(piercing_weapon, down: drop);
+	added(swing_animation, down: drop);
+	added(use_effects, down: drop);
+	added(zombie_nautilus_variant, down: drop);
+};
+
+updated(entityMetadataEntry) {
+	converted(key, up: custom(late_meta_key_up_1_21_11), down: custom(late_meta_key_down_1_21_9));
+	updated(value) {
+		added(humanoid_arm, down: custom(late_meta_arm_down_1_21_9));
+		added(zombie_nautilus_variant, down: drop);
+		converted(int, up: custom(late_meta_int_up_1_21_11));
+		converted(long, down: custom(late_meta_long_down_1_21_9));
+		converted(byte, up: custom(late_meta_byte_up_1_21_11));
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(registry_data, up: custom(late_registry_data_up_1_21_11), down: custom(late_registry_data_down_1_21_9));
+			converted(finish_configuration, up: custom(late_finish_configuration_up_1_21_11));
+			converted(tags, up: custom(late_config_tags_up_1_21_11), down: custom(late_config_tags_down_1_21_9));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(SlotDisplay) {
+			converted(item, up: custom(late_display_item_up_1_21_11), down: custom(late_display_item_down_1_21_9));
+		};
+
+		updated(packet) {
+			converted(statistics, up: custom(late_statistics_up_1_21_11), down: custom(late_statistics_down_1_21_9));
+			converted(tags, up: custom(late_play_tags_up_1_21_11), down: custom(late_play_tags_down_1_21_9));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(type, up: custom(late_spawn_type_up_1_21_11), down: custom(late_spawn_type_down_1_21_9));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(entityId, up: custom(late_meta_entity_up_1_21_11), down: custom(late_meta_entity_down_1_21_9));
+		};
+
+		updated(packet_update_time) {
+			converted(age, up: custom(late_game_time_up_1_21_11), down: custom(late_game_time_down_1_21_9));
+		};
+
+		updated(packet_initialize_world_border) {
+			converted(speed, up: custom(late_border_speed_up_1_21_11), down: custom(late_border_speed_down_1_21_9));
+		};
+
+		updated(packet_world_border_lerp_size) {
+			converted(speed, up: custom(late_lerp_speed_up_1_21_11), down: custom(late_lerp_speed_down_1_21_9));
+		};
+
+		updated(packet_declare_recipes) {
+			updated(recipes) {
+				updated(items) {
+					converted(items, up: custom(late_recipe_items_up_1_21_11), down: custom(late_recipe_items_down_1_21_9));
+				};
+			};
+			updated(stoneCutterRecipes) {
+				updated(items) {
+					converted(input, up: custom(late_stonecutter_up_1_21_11), down: custom(late_stonecutter_down_1_21_9));
+				};
+			};
+		};
+
+		updated(packet_recipe_book_add) {
+			updated(entries) {
+				updated(items) {
+					updated(recipe) {
+						converted(craftingRequirements, up: custom(late_requirements_up_1_21_11), down: custom(late_requirements_down_1_21_9));
+					};
+				};
+			};
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(late_trade1_up_1_21_11), down: custom(late_trade1_down_1_21_9));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(late_trade2_up_1_21_11), down: custom(late_trade2_down_1_21_9));
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			converted(tick_end, down: custom(late_tick_end_down_1_21_9));
+		};
+
+		updated(packet_block_dig) {
+			converted(status, down: custom(late_dig_status_down_1_21_9));
+		};
+	};
+};

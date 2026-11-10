@@ -1,0 +1,40 @@
+[
+	{
+		"op": "test",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/painting_variant",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "variantId",
+				"otherwise": {
+					"name": "variantData",
+					"type": "EntityMetadataPaintingVariant"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/painting_variant",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/wolf_variant",
+		"value": [
+			"registryEntryHolder",
+			{
+				"baseName": "variantId",
+				"otherwise": {
+					"name": "variantData",
+					"type": "EntityMetadataWolfVariant"
+				}
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/entityMetadataEntry/1/2/type/1/fields/wolf_variant",
+		"value": "varint"
+	}
+]

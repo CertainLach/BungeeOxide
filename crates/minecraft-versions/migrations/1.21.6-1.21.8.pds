@@ -1,0 +1,81 @@
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(late_slot_item_up_1_21_8), down: custom(late_slot_item_down_1_21_6));
+	};
+};
+
+updated(HashedSlot) {
+	converted(itemId, up: custom(late_hashed_item_up_1_21_8), down: custom(late_hashed_item_down_1_21_6));
+};
+
+updated(UntrustedSlot, up: custom(late_untrusted_up_1_21_8), down: custom(late_untrusted_down_1_21_6));
+
+updated(ItemSoundHolder, up: custom(late_sound_up_1_21_8), down: custom(late_sound_down_1_21_6));
+
+updated(ItemBlockPredicate) {
+	converted(components, up: custom(late_matchers_up_1_21_8), down: custom(late_matchers_down_1_21_6));
+};
+
+updated(SlotComponent) {
+	converted(repairable, up: custom(late_repairable_up_1_21_8), down: custom(late_repairable_down_1_21_6));
+	converted(pot_decorations, up: custom(late_pots_up_1_21_8), down: custom(late_pots_down_1_21_6));
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(tags, up: custom(late_config_tags_up_1_21_8), down: custom(late_config_tags_down_1_21_6));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(SlotDisplay) {
+			converted(item, up: custom(late_display_item_up_1_21_8), down: custom(late_display_item_down_1_21_6));
+		};
+
+		updated(packet) {
+			converted(statistics, up: custom(late_statistics_up_1_21_8), down: custom(late_statistics_down_1_21_6));
+			converted(tags, up: custom(late_play_tags_up_1_21_8), down: custom(late_play_tags_down_1_21_6));
+		};
+
+		updated(packet_declare_recipes) {
+			updated(recipes) {
+				updated(items) {
+					converted(items, up: custom(late_recipe_items_up_1_21_8), down: custom(late_recipe_items_down_1_21_6));
+				};
+			};
+			updated(stoneCutterRecipes) {
+				updated(items) {
+					converted(input, up: custom(late_stonecutter_up_1_21_8), down: custom(late_stonecutter_down_1_21_6));
+				};
+			};
+		};
+
+		updated(packet_recipe_book_add) {
+			updated(entries) {
+				updated(items) {
+					updated(recipe) {
+						converted(craftingRequirements, up: custom(late_requirements_up_1_21_8), down: custom(late_requirements_down_1_21_6));
+					};
+				};
+			};
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(late_trade1_up_1_21_8), down: custom(late_trade1_down_1_21_6));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(late_trade2_up_1_21_8), down: custom(late_trade2_down_1_21_6));
+						};
+					};
+				};
+			};
+		};
+	};
+};

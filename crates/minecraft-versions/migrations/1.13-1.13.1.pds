@@ -1,0 +1,93 @@
+updated(slot, up: custom(flattening_item_ids_1_13_1), down: custom(flattening_item_ids_1_13));
+
+updated(particleData, up: custom(flattening_particle_data_1_13_1), down: custom(flattening_particle_data_1_13));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(map_chunk, up: custom(flattening_chunk_states_1_13_1), down: custom(flattening_chunk_states_1_13));
+			converted(statistics, up: custom(flattening_statistic_ids_1_13_1), down: custom(flattening_statistic_ids_1_13));
+			converted(entity_destroy, up: custom(flattening_forget_entities_1_13_1), down: custom(flattening_forget_entities_1_13));
+			converted(respawn, up: custom(flattening_dimension_change_1_13_1), down: custom(flattening_dimension_change_1_13));
+		};
+
+		updated(packet_declare_commands, down: custom(flattening_declare_commands_1_13));
+
+		updated(packet_open_window) {
+			converted(windowTitle, down: custom(flattening_window_title_1_13));
+		};
+		updated(packet_block_change) {
+			converted(type, up: custom(flattening_block_change_state_1_13_1), down: custom(flattening_block_change_state_1_13));
+		};
+
+		updated(packet_multi_block_change) {
+			updated(records) {
+				updated(items) {
+					converted(blockId, up: custom(flattening_record_state_1_13_1), down: custom(flattening_record_state_1_13));
+				};
+			};
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(flattening_block_action_id_1_13_1), down: custom(flattening_block_action_id_1_13));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(flattening_event_data_1_13_1), down: custom(flattening_event_data_1_13));
+			converted(location, down: custom(flattening_event_location_1_13));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(objectData, up: custom(flattening_spawn_object_data_1_13_1), down: custom(flattening_spawn_object_data_1_13));
+		};
+
+		updated(packet_spawn_entity_living) {
+			converted(metadata, up: custom(flattening_spawn_mob_metadata_1_13_1), down: custom(flattening_spawn_mob_metadata_1_13));
+		};
+
+		updated(packet_named_entity_spawn) {
+			converted(metadata, up: custom(flattening_spawn_player_metadata_1_13_1), down: custom(flattening_spawn_player_metadata_1_13));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(metadata, up: custom(flattening_update_metadata_1_13_1), down: custom(flattening_update_metadata_1_13));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(flattening_cooldown_item_1_13_1), down: custom(flattening_cooldown_item_1_13));
+		};
+
+		updated(packet_tags, up: custom(flattening_tag_ids_1_13_1), down: custom(flattening_tag_ids_1_13));
+
+		updated(packet_custom_payload, up: custom(flattening_trader_ids_1_13_1), down: custom(flattening_trader_ids_1_13));
+
+		updated(packet_boss_bar) {
+			updated(action) {
+				updated(v0) {
+					converted(flags, up: custom(flattening_boss_bar_flags_1_13_1), down: custom(flattening_boss_bar_flags_1_13));
+				};
+				converted(v5, up: custom(flattening_boss_bar_update_1_13_1), down: custom(flattening_boss_bar_update_1_13));
+			};
+		};
+
+		updated(packet_tab_complete) {
+			converted(start, up: ./start + 1, down: ./start - 1);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			converted(edit_book, down: custom(flattening_edit_book_hand_1_13));
+		};
+
+		updated(packet_edit_book) {
+			added(hand, up: 0);
+		};
+
+		updated(packet_tab_complete) {
+			converted(text, up: custom(flattening_command_slash_1_13_1), down: custom(flattening_command_slash_1_13));
+		};
+	};
+};

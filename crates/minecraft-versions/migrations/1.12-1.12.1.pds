@@ -1,0 +1,14 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(craft_recipe_response, down: drop);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(craft_recipe_request, down: drop);
+			removed(prepare_crafting_grid, up: drop);
+		};
+	};
+};

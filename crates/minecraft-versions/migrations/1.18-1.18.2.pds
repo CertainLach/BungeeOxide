@@ -1,0 +1,24 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(tags, up: custom(caves_tags_1_18_2));
+		};
+
+		updated(packet_entity_effect) {
+			converted(effectId);
+		};
+
+		updated(packet_remove_entity_effect) {
+			converted(effectId);
+		};
+
+		updated(packet_login) {
+			converted(dimensionCodec, up: custom(caves_codec_1_18_2), down: custom(caves_codec_down_1_18));
+			converted(dimension, up: custom(caves_login_dimension_1_18_2), down: custom(caves_login_dimension_down_1_18));
+		};
+
+		updated(packet_respawn) {
+			converted(dimension, up: custom(caves_respawn_dimension_1_18_2), down: custom(caves_respawn_dimension_down_1_18));
+		};
+	};
+};

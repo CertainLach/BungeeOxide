@@ -1,0 +1,103 @@
++ ItemSoundEvent
++ ItemSoundHolder
++ chat_session
++ game_profile
++ minecraft_simple_recipe_format
++ play::toClient::packet_feature_flags
++ play::toClient::packet_player_remove
++ play::toClient::packet_profileless_chat
++ play::toServer::packet_chat_session_update
++ registryEntryHolder
++ registryEntryHolderSet
++ soundSource
+- play::toClient::packet_chat_preview
+- play::toClient::packet_message_header
+- play::toClient::packet_named_sound_effect
+- play::toClient::packet_should_display_chat_preview
+- play::toServer::packet_chat_preview
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+= entityMetadata (references changed)
+~ entityMetadataItem [ArmsAdded, ArmsChanged]
+    ~v10
+    ~v11
+    ~v12
+    ~v13
+    ~v14
+    ~v15
+    ~v16
+    ~v17
+    ~v18
+    ~v2
+    ~v21
+    ~v22
+    +v23
+    ~v3
+    ~v5
+    ~v6
+    ~v7
+    ~v8
+    ~v9
+= login::toServer::packet (references changed)
+~ login::toServer::packet_encryption_begin [FieldsAdded, FieldsRemoved]
+    +verifyToken: field() => buffer(Count: varint);
+    -crypto: field() => union(Tag: bool) { variant(false, match: false) => container { field(salt) => i64; field(messageSignature) => buffer(Count: varint); }; variant(true, match: true) => buffer(Count: varint); };
+~ login::toServer::packet_login_start [FieldsRemoved]
+    -signature: field() => option => container { field(timestamp) => i64; field(publicKey) => buffer(Count: varint); field(signature) => buffer(Count: varint); };
+~ minecraft_smelting_format [FieldsAdded]
+    +category: field() => varint;
+~ play::toClient::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +profileless_chat
+    +player_remove
+    +feature_flags
+    -chat_preview
+    -named_sound_effect
+    -message_header
+    -should_display_chat_preview
+    92 arms renumbered
+= play::toClient::packet_declare_commands (references changed)
+~ play::toClient::packet_declare_recipes [Other]
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_sound_effect [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +soundEvent: field() => union(Tag: varint) { variant(v0, match: 0) => container { field(resource) => string; field(range) => option => f32; }; default => void; };
+    -soundId: field() => varint;
+    ~soundCategory: field() => varint; -> field() => soundSource;
+~ play::toClient::packet_explosion [FieldsRetypedScalar]
+    ~x: field() => f32; -> field() => f64;
+    ~y: field() => f32; -> field() => f64;
+    ~z: field() => f32; -> field() => f64;
+~ play::toClient::packet_hide_message [ShapeChanged]
+~ play::toClient::packet_player_chat [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +index: field() => varint;
+    -previousSignature: field() => option => buffer(Count: varint);
+    -formattedMessage: field() => option => string;
+    ~signature: nested change
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~action: nested change
+    ~data: nested change
+~ play::toClient::packet_server_data [FieldsRemoved]
+    -previewsChat: field() => bool;
+~ play::toClient::packet_sound_effect [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
+    +sound: field() => ItemSoundHolder;
+    -soundId: field() => varint;
+    ~soundCategory: field() => varint; -> field() => soundSource;
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +chat_session_update
+    -chat_preview
+    26 arms renumbered
+~ play::toServer::packet_chat_command [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +messageCount: field() => varint;
+    +acknowledged: field() => buffer(count: 3);
+    -signedPreview: field() => bool;
+    -previousMessages: field() => previousMessages;
+    -lastRejectedMessage: field() => option => container { field(sender) => UUID; field(signature) => buffer(Count: varint); };
+    ~argumentSignatures: nested change
+~ play::toServer::packet_chat_message [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +offset: field() => varint;
+    +acknowledged: field() => buffer(count: 3);
+    -signedPreview: field() => bool;
+    -previousMessages: field() => previousMessages;
+    -lastRejectedMessage: field() => option => container { field(sender) => UUID; field(signature) => buffer(Count: varint); };
+    ~signature: nested change
+~ play::toServer::packet_message_acknowledgement [ShapeChanged]
+~ previousMessages [Other]

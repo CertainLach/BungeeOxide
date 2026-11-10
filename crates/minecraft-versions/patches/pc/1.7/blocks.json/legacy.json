@@ -1,0 +1,13 @@
+[
+	{ "op": "test", "path": "/165/name", "value": "slime" },
+	{ "op": "test", "path": "/166/name", "value": "barrier" },
+	{ "op": "test", "path": "/167/name", "value": "iron_trapdoor" },
+	{ "op": "test", "path": "/168/name", "value": "prismarine" },
+	{ "op": "test", "path": "/169/name", "value": "sea_lantern" },
+	{ "op": "test", "path": "/170/id", "value": 170 },
+	{ "op": "remove", "path": "/169" },
+	{ "op": "remove", "path": "/168" },
+	{ "op": "remove", "path": "/167" },
+	{ "op": "remove", "path": "/166" },
+	{ "op": "remove", "path": "/165" }
+]

@@ -1,0 +1,139 @@
+updated(slot, up: custom(caves_slot_1_19), down: custom(caves_slot_down_1_18_2));
+
+updated(particle, up: custom(caves_particle_1_19), down: custom(caves_particle_down_1_18_2));
+
+updated(command_node) {
+	updated(extraNodeData) {
+		updated(v2) {
+			removed(parser, down: custom(caves_parser_down_1_18_2));
+			converted(properties, up: custom(caves_parser_properties_1_19), down: custom(caves_parser_properties_down_1_18_2));
+		};
+	};
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet_success) {
+			added(properties, up: []);
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(login_start, up: custom(caves_login_start_1_19), down: custom(caves_login_start_down_1_18_2));
+		};
+
+		updated(packet_encryption_begin) {
+			added(crypto, up: custom(caves_encryption_crypto_1_19));
+			removed(verifyToken, down: custom(caves_encryption_verify_token_down_1_18_2));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(chat, up: custom(caves_chat_1_19));
+			added(chat_preview, down: drop);
+			added(player_chat, down: custom(caves_player_chat_down_1_18_2));
+			removed(sculk_vibration_signal, up: drop);
+			added(server_data, down: drop);
+			added(should_display_chat_preview, down: drop);
+			removed(spawn_entity_living, up: custom(caves_spawn_entity_living_1_19));
+			removed(spawn_entity_painting, up: custom(caves_spawn_entity_painting_1_19));
+			added(system_chat, down: custom(caves_system_chat_down_1_18_2));
+			converted(spawn_entity, up: custom(caves_spawn_entity_1_19), down: custom(caves_spawn_entity_down_1_18_2));
+			converted(acknowledge_player_digging, up: custom(caves_digging_ack_1_19), down: drop);
+			converted(block_change, up: custom(caves_block_change_1_19), down: custom(caves_block_change_down_1_18_2));
+			converted(multi_block_change, up: custom(caves_multi_block_change_1_19), down: custom(caves_multi_block_change_down_1_18_2));
+			converted(update_time, up: custom(caves_update_time_1_19));
+			converted(keep_alive, up: custom(caves_keep_alive_1_19));
+			converted(entity_destroy, up: custom(caves_entity_destroy_1_19));
+			converted(entity_metadata, down: custom(caves_entity_metadata_down_1_18_2));
+			converted(tags, up: custom(caves_tags_1_19), down: custom(caves_tags_down_1_18_2));
+			converted(statistics, up: custom(caves_statistics_1_19), down: custom(caves_statistics_down_1_18_2));
+		};
+
+		updated(packet_login) {
+			converted(dimensionCodec, up: custom(caves_codec_1_19), down: custom(caves_codec_down_1_18_2));
+			removed(dimension, down: custom(caves_login_dimension_down_1_18_2));
+			added(worldType, up: custom(caves_world_type_1_19));
+			added(death, up: custom(caves_absent_1_19));
+		};
+
+		updated(packet_respawn) {
+			added(death, up: custom(caves_absent_1_19));
+			converted(dimension, up: custom(caves_respawn_dimension_1_19), down: custom(caves_respawn_dimension_down_1_18_2));
+		};
+
+		updated(packet_map_chunk, up: custom(caves_map_chunk_1_19), down: custom(caves_map_chunk_down_1_18_2));
+
+		updated(packet_entity_metadata) {
+			converted(metadata, up: custom(caves_metadata_1_19));
+		};
+
+		updated(packet_entity_effect) {
+			added(factorCodec, up: custom(caves_absent_1_19));
+		};
+
+		updated(packet_entity_sound_effect) {
+			added(seed, up: custom(caves_seed_1_19));
+			converted(soundId, up: custom(caves_entity_sound_1_19), down: custom(caves_entity_sound_down_1_18_2));
+		};
+
+		updated(packet_sound_effect) {
+			added(seed, up: custom(caves_seed_1_19));
+			converted(soundId, up: custom(caves_sound_1_19), down: custom(caves_sound_down_1_18_2));
+		};
+
+		updated(packet_named_sound_effect) {
+			added(seed, up: custom(caves_seed_1_19));
+		};
+
+		updated(packet_player_info, up: custom(caves_player_info_1_19), down: custom(caves_player_info_down_1_18_2));
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					converted(inputItem2, up: custom(caves_trade_second_input_1_19), down: custom(caves_trade_second_input_down_1_18_2));
+				};
+			};
+		};
+
+		updated(packet_world_particles, up: custom(caves_world_particles_1_19), down: custom(caves_world_particles_down_1_18_2));
+
+		updated(packet_world_event) {
+			converted(data, up: custom(caves_world_event_data_1_19), down: custom(caves_world_event_data_down_1_18_2));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(caves_block_action_id_1_19), down: custom(caves_block_action_id_down_1_18_2));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(caves_cooldown_item_1_19), down: custom(caves_cooldown_item_down_1_18_2));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			removed(chat, up: custom(caves_chat_input_1_19));
+			added(chat_command, down: custom(caves_chat_command_down_1_18_2));
+			added(chat_message, down: custom(caves_chat_message_down_1_18_2));
+			added(chat_preview, down: drop);
+			converted(use_item, up: custom(caves_use_item_1_19), down: custom(caves_use_item_down_1_18_2));
+			converted(block_dig, down: custom(caves_block_dig_down_1_18_2));
+			converted(block_place, down: custom(caves_block_place_down_1_18_2));
+		};
+
+		updated(packet_block_dig) {
+			added(sequence, up: custom(caves_sequence_1_19));
+		};
+
+		updated(packet_block_place) {
+			added(sequence, up: custom(caves_sequence_1_19));
+		};
+
+		updated(packet_set_beacon_effect, up: custom(caves_beacon_1_19), down: custom(caves_beacon_down_1_18_2));
+	};
+};

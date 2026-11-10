@@ -1,0 +1,104 @@
+updated(slot, up: custom(village_slot_1_14), down: custom(village_slot_1_13_2));
+updated(command_node, up: custom(village_command_node_1_14), down: custom(village_command_node_1_13_2));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(bed, up: custom(village_bed_1_14));
+			converted(animation, up: custom(village_animation_1_14));
+			converted(login, up: custom(village_login_1_14), down: custom(village_login_1_13_2));
+			converted(respawn, up: custom(village_respawn_1_14), down: custom(village_respawn_1_13_2));
+			converted(position, up: custom(village_position_1_14), down: custom(village_teleport_1_13_2));
+			converted(entity_equipment, down: custom(village_entity_equipment_1_13_2));
+			converted(entity_status, down: custom(village_entity_status_1_13_2));
+			converted(entity_teleport, down: custom(village_entity_teleport_1_13_2));
+			converted(rel_entity_move, down: custom(village_rel_entity_move_1_13_2));
+			converted(entity_move_look, down: custom(village_entity_move_look_1_13_2));
+			converted(map_chunk, up: custom(village_map_chunk_1_14), down: custom(village_map_chunk_1_13_2));
+			converted(unload_chunk, down: custom(village_unload_chunk_1_13_2));
+			converted(open_window, up: custom(village_open_window_1_14), down: custom(village_open_window_1_13_2));
+			converted(custom_payload, up: custom(village_custom_payload_1_14));
+			converted(spawn_entity, up: custom(village_spawn_entity_1_14), down: custom(village_spawn_entity_1_13_2));
+			converted(spawn_entity_living, up: custom(village_spawn_entity_living_1_14), down: custom(village_spawn_entity_living_1_13_2));
+			converted(named_entity_spawn, up: custom(village_named_entity_spawn_1_14), down: custom(village_named_entity_spawn_1_13_2));
+			converted(entity_metadata, up: custom(village_entity_metadata_1_14), down: custom(village_entity_metadata_1_13_2));
+			converted(entity_destroy, up: custom(village_entity_destroy_1_14), down: custom(village_entity_destroy_1_13_2));
+			added(entity_sound_effect, down: custom(village_entity_sound_effect_1_13_2));
+			added(open_book, down: custom(village_open_book_1_13_2));
+			added(open_horse_window, down: custom(village_open_horse_window_1_13_2));
+			added(trade_list, down: custom(village_trade_list_1_13_2));
+			added(update_light, down: custom(village_update_light_1_13_2));
+			added(update_view_distance, down: drop);
+			added(update_view_position, down: drop);
+			updated(declare_recipes) {
+				updated(items, up: custom(village_recipe_1_14), down: custom(village_recipe_1_13_2));
+			};
+			updated(statistics) {
+				updated(items, up: custom(village_statistic_1_14), down: custom(village_statistic_1_13_2));
+			};
+		};
+
+		updated(packet_difficulty, up: custom(village_difficulty_1_14), down: custom(village_difficulty_1_13_2));
+		updated(packet_tags, up: custom(village_tags_1_14), down: custom(village_tags_1_13_2));
+		updated(packet_world_particles, up: custom(village_world_particles_1_14), down: custom(village_world_particles_1_13_2));
+		updated(packet_explosion, up: custom(village_explosion_1_14), down: custom(village_explosion_1_13_2));
+
+		updated(packet_map) {
+			added(locked, up: false);
+		};
+
+		updated(packet_block_change) {
+			converted(type, up: custom(village_block_change_1_14), down: custom(village_block_change_1_13_2));
+		};
+
+		updated(packet_multi_block_change) {
+			updated(records) {
+				updated(items) {
+					converted(blockId, up: custom(village_multi_block_change_1_14), down: custom(village_multi_block_change_1_13_2));
+				};
+			};
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(village_block_action_1_14), down: custom(village_block_action_1_13_2));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(village_world_event_1_14), down: custom(village_world_event_1_13_2));
+		};
+
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(village_sound_effect_1_14), down: custom(village_sound_effect_1_13_2));
+		};
+
+		updated(packet_set_cooldown) {
+			converted(itemID, up: custom(village_set_cooldown_1_14), down: custom(village_set_cooldown_1_13_2));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(lock_difficulty, down: drop);
+			added(set_difficulty, down: drop);
+			added(update_jigsaw_block, down: drop);
+			converted(select_trade, down: custom(village_select_trade_1_13_2));
+		};
+
+		updated(packet_position, up: custom(village_player_position_1_14), down: custom(village_position_1_13_2));
+		updated(packet_position_look, up: custom(village_player_position_look_1_14), down: custom(village_position_look_1_13_2));
+		updated(packet_vehicle_move, down: custom(village_vehicle_move_1_13_2));
+
+		updated(packet_block_place) {
+			added(insideBlock, up: false);
+		};
+
+		updated(packet_crafting_book_data) {
+			updated(v1) {
+				added(blastingBookOpen, up: false);
+				added(blastingFilter, up: false);
+				added(smokingBookOpen, up: false);
+				added(smokingFilter, up: false);
+			};
+		};
+	};
+};

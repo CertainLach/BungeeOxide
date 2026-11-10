@@ -1,0 +1,947 @@
+[
+	{
+		"op": "test",
+		"path": "/blocks/18:8",
+		"value": "minecraft:oak_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:8",
+		"value": "minecraft:oak_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:9",
+		"value": "minecraft:spruce_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:9",
+		"value": "minecraft:spruce_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:10",
+		"value": "minecraft:birch_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:10",
+		"value": "minecraft:birch_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:11",
+		"value": "minecraft:jungle_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:11",
+		"value": "minecraft:jungle_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:12",
+		"value": "minecraft:oak_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:12",
+		"value": "minecraft:oak_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:13",
+		"value": "minecraft:spruce_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:13",
+		"value": "minecraft:spruce_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:14",
+		"value": "minecraft:birch_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:14",
+		"value": "minecraft:birch_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/18:15",
+		"value": "minecraft:jungle_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/18:15",
+		"value": "minecraft:jungle_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:0",
+		"value": "minecraft:oak_stairs[half=bottom,shape=outer_right,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:0",
+		"value": "minecraft:oak_stairs[facing=east,half=bottom,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:1",
+		"value": "minecraft:oak_stairs[half=bottom,shape=outer_right,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:1",
+		"value": "minecraft:oak_stairs[facing=west,half=bottom,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:2",
+		"value": "minecraft:oak_stairs[half=bottom,shape=outer_right,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:2",
+		"value": "minecraft:oak_stairs[facing=south,half=bottom,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:3",
+		"value": "minecraft:oak_stairs[half=bottom,shape=outer_right,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:3",
+		"value": "minecraft:oak_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:4",
+		"value": "minecraft:oak_stairs[half=top,shape=outer_right,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:4",
+		"value": "minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:5",
+		"value": "minecraft:oak_stairs[half=top,shape=outer_right,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:5",
+		"value": "minecraft:oak_stairs[facing=west,half=top,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:6",
+		"value": "minecraft:oak_stairs[half=top,shape=outer_right,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:6",
+		"value": "minecraft:oak_stairs[facing=south,half=top,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/53:7",
+		"value": "minecraft:oak_stairs[half=top,shape=outer_right,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/53:7",
+		"value": "minecraft:oak_stairs[facing=north,half=top,shape=straight,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:0",
+		"value": "minecraft:lever[powered=false,facing=north,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:0",
+		"value": "minecraft:lever[face=ceiling,facing=west,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:5",
+		"value": "minecraft:lever[powered=false,facing=east,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:5",
+		"value": "minecraft:lever[face=floor,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:6",
+		"value": "minecraft:lever[powered=false,facing=north,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:6",
+		"value": "minecraft:lever[face=floor,facing=west,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:7",
+		"value": "minecraft:lever[powered=false,facing=east,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:7",
+		"value": "minecraft:lever[face=ceiling,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:8",
+		"value": "minecraft:lever[powered=true,facing=north,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:8",
+		"value": "minecraft:lever[face=ceiling,facing=west,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:13",
+		"value": "minecraft:lever[powered=true,facing=east,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:13",
+		"value": "minecraft:lever[face=floor,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:14",
+		"value": "minecraft:lever[powered=true,facing=north,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:14",
+		"value": "minecraft:lever[face=floor,facing=west,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/69:15",
+		"value": "minecraft:lever[powered=true,facing=east,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/69:15",
+		"value": "minecraft:lever[face=ceiling,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/77:0",
+		"value": "minecraft:stone_button[powered=false,facing=east,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/77:0",
+		"value": "minecraft:stone_button[face=ceiling,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/77:5",
+		"value": "minecraft:stone_button[powered=false,facing=east,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/77:5",
+		"value": "minecraft:stone_button[face=floor,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/77:8",
+		"value": "minecraft:stone_button[powered=true,facing=south,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/77:8",
+		"value": "minecraft:stone_button[face=ceiling,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/77:13",
+		"value": "minecraft:stone_button[powered=true,facing=south,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/77:13",
+		"value": "minecraft:stone_button[face=floor,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:4",
+		"value": "minecraft:oak_trapdoor[half=bottom,facing=north,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:4",
+		"value": "minecraft:oak_trapdoor[facing=north,half=bottom,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:5",
+		"value": "minecraft:oak_trapdoor[half=bottom,facing=south,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:5",
+		"value": "minecraft:oak_trapdoor[facing=south,half=bottom,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:6",
+		"value": "minecraft:oak_trapdoor[half=bottom,facing=west,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:6",
+		"value": "minecraft:oak_trapdoor[facing=west,half=bottom,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:7",
+		"value": "minecraft:oak_trapdoor[half=bottom,facing=east,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:7",
+		"value": "minecraft:oak_trapdoor[facing=east,half=bottom,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:12",
+		"value": "minecraft:oak_trapdoor[half=top,facing=north,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:12",
+		"value": "minecraft:oak_trapdoor[facing=north,half=top,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:13",
+		"value": "minecraft:oak_trapdoor[half=top,facing=south,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:13",
+		"value": "minecraft:oak_trapdoor[facing=south,half=top,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:14",
+		"value": "minecraft:oak_trapdoor[half=top,facing=west,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:14",
+		"value": "minecraft:oak_trapdoor[facing=west,half=top,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/96:15",
+		"value": "minecraft:oak_trapdoor[half=top,facing=east,open=true,powered=true]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/96:15",
+		"value": "minecraft:oak_trapdoor[facing=east,half=top,open=true,powered=false,waterlogged=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:3",
+		"value": "minecraft:tripwire[attached=false,disarmed=false,east=false,north=false,powered=true,south=false,west=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:6",
+		"value": "minecraft:tripwire[attached=true,disarmed=false,east=false,north=false,powered=false,south=false,west=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:7",
+		"value": "minecraft:tripwire[attached=true,disarmed=false,east=false,north=false,powered=true,south=false,west=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:10",
+		"value": "minecraft:tripwire[attached=false,disarmed=true,east=false,north=false,powered=false,south=false,west=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:11",
+		"value": "minecraft:tripwire[attached=false,disarmed=true,east=false,north=false,powered=true,south=false,west=false]"
+	},
+	{
+		"op": "add",
+		"path": "/blocks/132:14",
+		"value": "minecraft:tripwire[attached=true,disarmed=true,east=false,north=false,powered=false,south=false,west=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/139:0",
+		"value": "minecraft:cobblestone_wall[east=false,south=false,north=false,west=false,up=false]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/139:0",
+		"value": "minecraft:cobblestone_wall[east=false,north=false,south=false,up=true,waterlogged=false,west=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/139:1",
+		"value": "minecraft:mossy_cobblestone_wall[east=false,south=false,north=false,west=false,up=false]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/139:1",
+		"value": "minecraft:mossy_cobblestone_wall[east=false,north=false,south=false,up=true,waterlogged=false,west=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:1",
+		"value": "minecraft:potted_poppy"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:1",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:2",
+		"value": "minecraft:potted_dandelion"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:2",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:3",
+		"value": "minecraft:potted_oak_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:3",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:4",
+		"value": "minecraft:potted_spruce_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:4",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:5",
+		"value": "minecraft:potted_birch_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:5",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:6",
+		"value": "minecraft:potted_jungle_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:6",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:7",
+		"value": "minecraft:potted_red_mushroom"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:7",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:8",
+		"value": "minecraft:potted_brown_mushroom"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:8",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:9",
+		"value": "minecraft:potted_cactus"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:9",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:10",
+		"value": "minecraft:potted_dead_bush"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:10",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:11",
+		"value": "minecraft:potted_fern"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:11",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:12",
+		"value": "minecraft:potted_acacia_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:12",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:13",
+		"value": "minecraft:potted_dark_oak_sapling"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:13",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:14",
+		"value": "minecraft:potted_blue_orchid"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:14",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/140:15",
+		"value": "minecraft:potted_allium"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/140:15",
+		"value": "minecraft:flower_pot"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/143:0",
+		"value": "minecraft:oak_button[powered=false,facing=east,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/143:0",
+		"value": "minecraft:oak_button[face=ceiling,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/143:5",
+		"value": "minecraft:oak_button[powered=false,facing=east,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/143:5",
+		"value": "minecraft:oak_button[face=floor,facing=north,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/143:8",
+		"value": "minecraft:oak_button[powered=true,facing=south,face=ceiling]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/143:8",
+		"value": "minecraft:oak_button[face=ceiling,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/143:13",
+		"value": "minecraft:oak_button[powered=true,facing=south,face=floor]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/143:13",
+		"value": "minecraft:oak_button[face=floor,facing=north,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/144:1",
+		"value": "minecraft:skeleton_skull[rotation=4]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/144:1",
+		"value": "minecraft:skeleton_skull[rotation=0]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/144:8",
+		"value": "minecraft:skeleton_skull[rotation=8]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/144:8",
+		"value": "minecraft:skeleton_skull[rotation=0]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/144:9",
+		"value": "minecraft:skeleton_skull[rotation=12]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/144:9",
+		"value": "minecraft:skeleton_skull[rotation=0]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:8",
+		"value": "minecraft:comparator[mode=compare,powered=false,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:8",
+		"value": "minecraft:comparator[facing=south,mode=compare,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:9",
+		"value": "minecraft:comparator[mode=compare,powered=false,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:9",
+		"value": "minecraft:comparator[facing=west,mode=compare,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:10",
+		"value": "minecraft:comparator[mode=compare,powered=false,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:10",
+		"value": "minecraft:comparator[facing=north,mode=compare,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:11",
+		"value": "minecraft:comparator[mode=compare,powered=false,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:11",
+		"value": "minecraft:comparator[facing=east,mode=compare,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:12",
+		"value": "minecraft:comparator[mode=subtract,powered=false,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:12",
+		"value": "minecraft:comparator[facing=south,mode=subtract,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:13",
+		"value": "minecraft:comparator[mode=subtract,powered=false,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:13",
+		"value": "minecraft:comparator[facing=west,mode=subtract,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:14",
+		"value": "minecraft:comparator[mode=subtract,powered=false,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:14",
+		"value": "minecraft:comparator[facing=north,mode=subtract,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/149:15",
+		"value": "minecraft:comparator[mode=subtract,powered=false,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/149:15",
+		"value": "minecraft:comparator[facing=east,mode=subtract,powered=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:0",
+		"value": "minecraft:comparator[mode=compare,powered=true,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:0",
+		"value": "minecraft:comparator[facing=south,mode=compare,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:1",
+		"value": "minecraft:comparator[mode=compare,powered=true,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:1",
+		"value": "minecraft:comparator[facing=west,mode=compare,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:2",
+		"value": "minecraft:comparator[mode=compare,powered=true,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:2",
+		"value": "minecraft:comparator[facing=north,mode=compare,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:3",
+		"value": "minecraft:comparator[mode=compare,powered=true,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:3",
+		"value": "minecraft:comparator[facing=east,mode=compare,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:4",
+		"value": "minecraft:comparator[mode=subtract,powered=true,facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:4",
+		"value": "minecraft:comparator[facing=south,mode=subtract,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:5",
+		"value": "minecraft:comparator[mode=subtract,powered=true,facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:5",
+		"value": "minecraft:comparator[facing=west,mode=subtract,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:6",
+		"value": "minecraft:comparator[mode=subtract,powered=true,facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:6",
+		"value": "minecraft:comparator[facing=north,mode=subtract,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/150:7",
+		"value": "minecraft:comparator[mode=subtract,powered=true,facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/150:7",
+		"value": "minecraft:comparator[facing=east,mode=subtract,powered=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/161:8",
+		"value": "minecraft:acacia_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/161:8",
+		"value": "minecraft:acacia_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/161:9",
+		"value": "minecraft:dark_oak_leaves[persistent=false,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/161:9",
+		"value": "minecraft:dark_oak_leaves[distance=2,persistent=false]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/161:12",
+		"value": "minecraft:acacia_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/161:12",
+		"value": "minecraft:acacia_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/161:13",
+		"value": "minecraft:dark_oak_leaves[persistent=true,distance=1]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/161:13",
+		"value": "minecraft:dark_oak_leaves[distance=2,persistent=true]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/175:8",
+		"value": "minecraft:sunflower[half=upper]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/175:8",
+		"value": "minecraft:peony[half=upper]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/175:9",
+		"value": "minecraft:lilac[half=upper]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/175:9",
+		"value": "minecraft:peony[half=upper]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/175:10",
+		"value": "minecraft:tall_grass[half=upper]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/175:10",
+		"value": "minecraft:peony[half=upper]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/175:11",
+		"value": "minecraft:large_fern[half=upper]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/175:11",
+		"value": "minecraft:peony[half=upper]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:0",
+		"value": "minecraft:purple_shulker_box[facing=down]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:0",
+		"value": "minecraft:shulker_box[facing=down]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:1",
+		"value": "minecraft:purple_shulker_box[facing=up]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:1",
+		"value": "minecraft:shulker_box[facing=up]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:2",
+		"value": "minecraft:purple_shulker_box[facing=north]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:2",
+		"value": "minecraft:shulker_box[facing=north]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:3",
+		"value": "minecraft:purple_shulker_box[facing=south]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:3",
+		"value": "minecraft:shulker_box[facing=south]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:4",
+		"value": "minecraft:purple_shulker_box[facing=west]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:4",
+		"value": "minecraft:shulker_box[facing=west]"
+	},
+	{
+		"op": "test",
+		"path": "/blocks/229:5",
+		"value": "minecraft:purple_shulker_box[facing=east]"
+	},
+	{
+		"op": "replace",
+		"path": "/blocks/229:5",
+		"value": "minecraft:shulker_box[facing=east]"
+	},
+	{
+		"op": "add",
+		"path": "/items/44:2",
+		"value": "minecraft:petrified_oak_slab"
+	},
+	{
+		"op": "test",
+		"path": "/items/229:0",
+		"value": "minecraft:purple_shulker_box"
+	},
+	{
+		"op": "replace",
+		"path": "/items/229:0",
+		"value": "minecraft:shulker_box"
+	}
+]

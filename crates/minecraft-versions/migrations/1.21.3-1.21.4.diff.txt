@@ -1,0 +1,51 @@
++ play::toServer::packet_pick_item_from_block
++ play::toServer::packet_pick_item_from_entity
++ play::toServer::packet_player_loaded
+- play::toServer::packet_pick_item
+~ EntityMetadataPaintingVariant [FieldsRetypedScalar]
+    ~width: field() => varint; -> field() => i32;
+    ~height: field() => varint; -> field() => i32;
+~ Particle [Renumbered, ArmsAdded, ArmsChanged]
+    +pale_oak_leaves
+    ~trail
+    77 arms renumbered
+= Slot (references changed)
+~ SlotComponent [ArmsChanged]
+    ~custom_model_data
+~ configuration::toServer::packet [ArmsAdded]
+    +custom_report_details
+    +server_links
+= entityMetadata (references changed)
+= entityMetadataEntry (references changed)
+= ingredient (references changed)
+= play::toClient::RecipeDisplay (references changed)
+= play::toClient::SlotDisplay (references changed)
+= play::toClient::packet (references changed)
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+= play::toClient::packet_explosion (references changed)
+~ play::toClient::packet_held_item_slot [Other]
+~ play::toClient::packet_player_info [FieldsRetypedNested]
+    ~action: nested change
+    ~data: nested change
+= play::toClient::packet_recipe_book_add (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+~ play::toClient::packet_world_particles [FieldsAdded]
+    +alwaysShow: field() => bool;
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +pick_item_from_block
+    +pick_item_from_entity
+    +player_loaded
+    -pick_item
+    25 arms renumbered
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_vehicle_move [FieldsAdded]
+    +onGround: field() => bool;
+= play::toServer::packet_window_click (references changed)

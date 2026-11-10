@@ -1,0 +1,59 @@
+updated(slot, down: custom(prenetty_slot_down_1_5_2));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(update_attributes, down: drop);
+			converted(chat, up: custom(prenetty_chat_1_6_1), down: custom(prenetty_chat_1_5_2));
+			converted(entity_metadata, up: custom(prenetty_entity_metadata_1_6_1), down: custom(prenetty_entity_metadata_1_5_2));
+			converted(spawn_entity_living, up: custom(prenetty_spawn_entity_living_1_6_1), down: custom(prenetty_spawn_entity_living_1_5_2));
+			converted(named_entity_spawn, up: custom(prenetty_named_entity_spawn_1_6_1), down: custom(prenetty_named_entity_spawn_1_5_2));
+			converted(spawn_entity, up: custom(prenetty_spawn_entity_1_6_1), down: custom(prenetty_spawn_entity_1_5_2));
+			converted(login, up: custom(prenetty_login_1_6_1), down: custom(prenetty_login_1_5_2));
+			converted(attach_entity, up: custom(prenetty_attach_entity_1_6_1), down: custom(prenetty_attach_entity_1_5_2));
+			converted(custom_payload, up: custom(prenetty_custom_payload_1_6_1), down: custom(prenetty_custom_payload_1_5_2));
+			converted(block_change, down: custom(prenetty_block_change_1_5_2_down));
+			converted(multi_block_change, down: custom(prenetty_multi_block_change_1_5_2_down));
+			converted(map_chunk, down: custom(prenetty_map_chunk_1_5_2_down));
+			converted(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_5_2_down));
+			converted(world_event, down: custom(prenetty_world_event_1_5_2_down));
+			converted(named_sound_effect, up: custom(prenetty_sound_1_6_1), down: custom(prenetty_sound_1_5_2));
+			converted(entity_effect, down: custom(prenetty_entity_effect_1_5_2));
+			converted(remove_entity_effect, down: custom(prenetty_remove_entity_effect_1_5_2));
+		};
+
+		updated(packet_abilities) {
+			converted(flyingSpeed, up: f32(./flyingSpeed) / 255.0, down: i8(./flyingSpeed * 255.0));
+			converted(walkingSpeed, up: f32(./walkingSpeed) / 255.0, down: i8(./walkingSpeed * 255.0));
+		};
+
+		updated(packet_open_window) {
+			added(entityId, up: (default: ./inventoryType));
+			removed(inventoryType, down: u8(./entityId));
+		};
+
+		updated(packet_statistics) {
+			converted(amount);
+		};
+
+		updated(packet_update_health) {
+			converted(health, up: f32(./health), down: custom(prenetty_health_1_5_2));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(steer_vehicle, down: custom(prenetty_steer_vehicle_1_5_2));
+			converted(entity_action, down: custom(prenetty_entity_action_1_5_2));
+		};
+
+		updated(packet_abilities) {
+			converted(flyingSpeed, up: f32(./flyingSpeed) / 255.0, down: i8(./flyingSpeed * 255.0));
+			converted(walkingSpeed, up: f32(./walkingSpeed) / 255.0, down: i8(./walkingSpeed * 255.0));
+		};
+
+		updated(packet_entity_action) {
+			added(jumpBoost, up: 0);
+		};
+	};
+};

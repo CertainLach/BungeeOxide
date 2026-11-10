@@ -1,0 +1,16 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_sound_effect) {
+			converted(soundId, up: custom(legacy_sound_id_1_9_4), down: custom(legacy_sound_id_down_1_9_2));
+		};
+
+		updated(packet) {
+			removed(update_sign, up: custom(update_sign_1_9_4));
+			converted(tile_entity_data, down: custom(legacy_down_tile_entity_data_1_9_2));
+		};
+
+		updated(packet_map_chunk) {
+			added(blockEntities, up: []);
+		};
+	};
+};

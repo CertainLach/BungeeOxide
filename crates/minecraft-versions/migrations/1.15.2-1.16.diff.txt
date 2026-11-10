@@ -1,0 +1,54 @@
++ play::toServer::packet_generate_structure
++ topBitSetTerminatedArray
+- play::toClient::packet_spawn_entity_weather
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+= login::toClient::packet (references changed)
+~ login::toClient::packet_success [FieldsRetypedScalar]
+    ~uuid: field() => string; -> field() => UUID;
+= particle (references changed)
+~ particleData [ArmsAdded, ArmsRemoved]
+    +v34
+    -v32
+~ play::toClient::packet [Renumbered, ArmsRemoved]
+    -spawn_entity_weather
+    79 arms renumbered
+~ play::toClient::packet_chat [FieldsAdded]
+    +sender: field() => UUID;
+~ play::toClient::packet_declare_recipes [Other]
+~ play::toClient::packet_entity_equipment [FieldsAdded, FieldsRemoved]
+    +equipments: field() => topBitSetTerminatedArray => container { field(slot) => i8; field(item) => slot; };
+    -slot: field() => varint;
+    -item: field() => slot;
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_login [FieldsAdded, FieldsRenamed, FieldsRetypedScalar]
+    levelType renamed to worldName
+    +previousGameMode: field() => u8;
+    +worldNames: field() => array(Count: varint) => string;
+    +dimensionCodec: field() => nbt;
+    +isDebug: field() => bool;
+    +isFlat: field() => bool;
+    ~dimension: field() => i32; -> field() => string;
+~ play::toClient::packet_map_chunk [FieldsAdded]
+    +ignoreOldData: field() => bool;
+~ play::toClient::packet_respawn [FieldsAdded, FieldsRenamed, FieldsRetypedScalar]
+    levelType renamed to worldName
+    +previousGamemode: field() => u8;
+    +isDebug: field() => bool;
+    +isFlat: field() => bool;
+    +copyMetadata: field() => bool;
+    ~dimension: field() => i32; -> field() => string;
+~ play::toClient::packet_update_light [FieldsAdded]
+    +trustEdges: field() => bool;
+= play::toClient::packet_world_particles (references changed)
+~ play::toServer::packet [Renumbered, ArmsAdded]
+    +generate_structure
+    31 arms renumbered
+~ play::toServer::packet_abilities [ShapeChanged]
+~ play::toServer::packet_update_jigsaw_block [FieldsAdded, FieldsRenamed]
+    attachmentType renamed to name
+    targetPool renamed to target
+    +pool: field() => string;
+    +jointType: field() => string;
+~ play::toServer::packet_use_entity [FieldsAdded]
+    +sneaking: field() => bool;

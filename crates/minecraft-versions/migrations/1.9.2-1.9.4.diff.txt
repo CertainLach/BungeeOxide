@@ -1,0 +1,6 @@
+- play::toClient::packet_update_sign
+~ play::toClient::packet [Renumbered, ArmsRemoved]
+    -update_sign
+    6 arms renumbered
+~ play::toClient::packet_map_chunk [FieldsAdded]
+    +blockEntities: field() => array(Count: varint) => nbt;

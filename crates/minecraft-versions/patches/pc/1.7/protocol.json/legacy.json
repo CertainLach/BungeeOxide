@@ -1,0 +1,62 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_multi_block_change/1/4/type/1/type/1",
+		"value": [
+			{
+				"anon": true,
+				"type": [
+					"bitfield",
+					[
+						{ "name": "metadata", "size": 4, "signed": false },
+						{ "name": "blockId", "size": 12, "signed": false }
+					]
+				]
+			},
+			{ "name": "y", "type": "u8" },
+			{
+				"anon": true,
+				"type": [
+					"bitfield",
+					[
+						{ "name": "z", "size": 4, "signed": false },
+						{ "name": "x", "size": 4, "signed": false }
+					]
+				]
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_multi_block_change/1/4/type/1/type/1",
+		"value": [
+			{ "name": "horizontalPos", "type": "u8" },
+			{ "name": "y", "type": "u8" },
+			{ "name": "blockId", "type": "u16" }
+		]
+	},
+	{ "op": "test", "path": "/play/toServer/types/packet_position/1/1/name", "value": "stance" },
+	{ "op": "test", "path": "/play/toServer/types/packet_position/1/2/name", "value": "y" },
+	{ "op": "replace", "path": "/play/toServer/types/packet_position/1/1/name", "value": "y" },
+	{ "op": "replace", "path": "/play/toServer/types/packet_position/1/2/name", "value": "stance" },
+	{ "op": "test", "path": "/play/toServer/types/packet_position_look/1/1/name", "value": "stance" },
+	{ "op": "test", "path": "/play/toServer/types/packet_position_look/1/2/name", "value": "y" },
+	{ "op": "replace", "path": "/play/toServer/types/packet_position_look/1/1/name", "value": "y" },
+	{ "op": "replace", "path": "/play/toServer/types/packet_position_look/1/2/name", "value": "stance" },
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_entity_action/1/1/type/1/mappings",
+		"value": {
+			"1": "start_sneaking",
+			"2": "stop_sneaking",
+			"3": "stop_sleeping",
+			"4": "start_sprinting",
+			"5": "stop_sprinting",
+			"6": "start_riding_jump",
+			"7": "stop_riding_jump",
+			"8": "open_inventory"
+		}
+	},
+	{ "op": "replace", "path": "/play/toServer/types/packet_entity_action/1/1/type/1/mappings/7", "value": "open_inventory" },
+	{ "op": "remove", "path": "/play/toServer/types/packet_entity_action/1/1/type/1/mappings/8" }
+]

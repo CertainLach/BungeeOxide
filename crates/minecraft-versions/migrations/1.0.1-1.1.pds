@@ -1,0 +1,42 @@
+updated(entityMetadataItem, down: custom(prenetty_metadata_item_1_0_1));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(set_slot, down: custom(prenetty_set_slot_1_0_1));
+			converted(window_items, down: custom(prenetty_window_items_1_0_1));
+			converted(set_creative_slot, down: custom(prenetty_set_creative_slot_1_0_1));
+			added(custom_payload, down: drop);
+			converted(entity_equipment, down: custom(prenetty_entity_equipment_1_0_1));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_0_1));
+			converted(spawn_entity_item, down: custom(prenetty_spawn_entity_item_1_0_1));
+			converted(kick_disconnect, down: custom(prenetty_kick_1_0_1));
+		};
+
+		updated(packet_login) {
+			added(levelType, up: "default");
+		};
+
+		updated(packet_respawn) {
+			added(levelType, up: "default");
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(set_creative_slot, down: custom(prenetty_set_creative_slot_server_1_0_1));
+			converted(window_click, down: custom(prenetty_window_click_1_0_1));
+			converted(block_place, down: custom(prenetty_block_place_1_0_1));
+			added(custom_payload, down: drop);
+			removed(stance_update, up: drop);
+		};
+
+		updated(packet_login) {
+			added(levelType, up: "default");
+		};
+
+		updated(packet_respawn) {
+			added(levelType, up: "default");
+		};
+	};
+};

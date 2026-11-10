@@ -1,0 +1,67 @@
+updated(entityMetadataItem, down: custom(prenetty_metadata_item_1_2_5));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(set_slot, up: custom(prenetty_set_slot_1_3_2), down: custom(prenetty_set_slot_1_2_5));
+			converted(window_items, up: custom(prenetty_window_items_1_3_2), down: custom(prenetty_window_items_1_2_5));
+			converted(set_creative_slot, up: custom(prenetty_set_creative_slot_1_3_2), down: custom(prenetty_set_creative_slot_1_2_5));
+			added(block_break_animation, down: drop);
+			added(encryption_begin, down: drop);
+			removed(handshake, up: drop);
+			added(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_2_5));
+			added(named_sound_effect, down: drop);
+			removed(pre_chunk, up: custom(prenetty_pre_chunk_1_3_2));
+			added(shared_key, down: drop);
+			added(tab_complete, down: drop);
+			converted(entity_destroy, up: custom(prenetty_entity_destroy_1_3_2), down: custom(prenetty_entity_destroy_1_2_5));
+			converted(abilities, up: custom(prenetty_abilities_1_3_2), down: custom(prenetty_abilities_1_2_5));
+			converted(block_action, up: custom(prenetty_block_action_1_3_2), down: custom(prenetty_block_action_1_2_5));
+			converted(block_change, up: custom(prenetty_block_change_1_3_2), down: custom(prenetty_block_change_1_2_5));
+			converted(multi_block_change, up: custom(prenetty_multi_block_change_1_3_2), down: custom(prenetty_multi_block_change_1_2_5));
+			converted(map_chunk, up: custom(prenetty_map_chunk_1_3_2), down: custom(prenetty_map_chunk_1_2_5));
+			converted(entity_equipment, up: custom(prenetty_entity_equipment_1_3_2), down: custom(prenetty_entity_equipment_1_2_5));
+			converted(named_entity_spawn, down: custom(prenetty_named_entity_spawn_1_2_5));
+			converted(spawn_entity, up: custom(prenetty_spawn_entity_1_3_2), down: custom(prenetty_spawn_entity_1_2_5));
+			converted(spawn_entity_item, down: custom(prenetty_spawn_entity_item_1_2_5));
+			converted(tile_entity_data, up: custom(prenetty_tile_entity_data_1_3_2), down: custom(prenetty_tile_entity_data_1_2_5));
+			converted(world_event, down: custom(prenetty_world_event_1_2_5));
+		};
+
+		updated(packet_explosion) {
+			added(playerMotionX, up: 0.0);
+			added(playerMotionY, up: 0.0);
+			added(playerMotionZ, up: 0.0);
+		};
+
+		updated(packet_login) {
+			converted(dimension);
+			converted(gameMode);
+			removed(username, down: "");
+		};
+
+		updated(packet_named_entity_spawn) {
+			added(metadata, up: []);
+		};
+
+		updated(packet_spawn_entity_living) {
+			added(velocity, up: (x: 0, y: 0, z: 0));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(set_creative_slot, up: custom(prenetty_set_creative_slot_server_1_3_2), down: custom(prenetty_set_creative_slot_server_1_2_5));
+			converted(window_click, up: custom(prenetty_window_click_1_3_2), down: custom(prenetty_window_click_1_2_5));
+			converted(block_place, up: custom(prenetty_block_place_1_3_2), down: custom(prenetty_block_place_1_2_5));
+			added(client_command, down: custom(prenetty_client_command_1_2_5));
+			added(encryption_begin, down: drop);
+			added(settings, down: drop);
+			added(tab_complete, down: drop);
+			converted(login, up: drop, down: drop);
+			converted(respawn, up: custom(prenetty_respawn_server_1_3_2));
+			converted(set_protocol, up: custom(prenetty_set_protocol_1_3_2), down: custom(prenetty_set_protocol_1_2_5));
+			converted(abilities, up: custom(prenetty_abilities_server_1_3_2), down: custom(prenetty_abilities_server_1_2_5));
+		};
+	};
+};

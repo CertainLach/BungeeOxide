@@ -1,0 +1,13 @@
+[
+	{ "op": "test", "path": "/play/toClient/types/packet_world_particles/1/10/name", "value": "data" },
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_world_particles/1/10/type/1/fields/38",
+		"value": ["array", { "count": 1, "type": "varint" }]
+	},
+	{
+		"op": "add",
+		"path": "/play/toClient/types/packet_world_particles/1/10/type/1/fields/46",
+		"value": ["array", { "count": 1, "type": "varint" }]
+	}
+]

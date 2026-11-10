@@ -1,0 +1,9 @@
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			converted(spawn_entity_living, up: custom(village_trader_spawn_1_14_1), down: custom(village_trader_spawn_1_14));
+			converted(entity_metadata, up: custom(village_trader_metadata_1_14_1), down: custom(village_trader_metadata_1_14));
+			converted(entity_destroy, up: custom(village_trader_destroy_1_14_1), down: custom(village_trader_destroy_1_14));
+		};
+	};
+};

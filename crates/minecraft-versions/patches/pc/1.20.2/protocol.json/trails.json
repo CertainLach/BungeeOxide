@@ -1,0 +1,114 @@
+[
+	{
+		"op": "test",
+		"path": "/types/particleData/1/fields/41",
+		"value": [
+			"container",
+			[
+				{
+					"name": "positionType",
+					"type": "string"
+				},
+				{
+					"name": "entityId",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "entityEyeHeight",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "destination",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:block": "position",
+								"minecraft:entity": "varint"
+							}
+						}
+					]
+				},
+				{
+					"name": "ticks",
+					"type": "varint"
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/particleData/1/fields/41",
+		"value": [
+			"container",
+			[
+				{
+					"name": "positionType",
+					"type": "string"
+				},
+				{
+					"name": "entityId",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "varint"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "entityEyeHeight",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:entity": "f32"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "destination",
+					"type": [
+						"switch",
+						{
+							"compareTo": "positionType",
+							"fields": {
+								"minecraft:block": "position"
+							},
+							"default": "void"
+						}
+					]
+				},
+				{
+					"name": "ticks",
+					"type": "varint"
+				}
+			]
+		]
+	}
+]

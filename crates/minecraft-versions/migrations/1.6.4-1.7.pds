@@ -1,0 +1,128 @@
+updated(slot, down: custom(prenetty_slot_down_1_6_4));
+
+updated(entityMetadata, up: custom(prenetty_metadata_1_7), down: custom(prenetty_metadata_1_6_4));
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(encryption_begin, up: drop);
+			removed(flying, up: drop);
+			removed(look, up: custom(prenetty_look_1_7));
+			removed(position_only, up: custom(prenetty_position_only_1_7));
+			removed(set_creative_slot, up: drop);
+			removed(shared_key, up: drop);
+			converted(held_item_slot);
+			converted(open_sign_entity, up: custom(prenetty_open_sign_entity_1_7), down: custom(prenetty_open_sign_entity_1_6_4));
+			converted(statistics, up: custom(prenetty_statistics_1_7), down: custom(prenetty_statistics_1_6_4));
+			converted(tab_complete, up: custom(prenetty_tab_complete_1_7), down: custom(prenetty_tab_complete_1_6_4));
+			converted(chat, up: custom(prenetty_chat_1_7), down: custom(prenetty_chat_1_6_4));
+			converted(kick_disconnect, up: custom(prenetty_kick_1_7), down: custom(prenetty_kick_1_6_4));
+			converted(login, up: custom(prenetty_login_1_7), down: custom(prenetty_login_1_6_4));
+			converted(position, up: custom(prenetty_position_1_7), down: custom(prenetty_position_1_6_4));
+			converted(animation, up: custom(prenetty_animation_1_7), down: custom(prenetty_animation_1_6_4));
+			converted(bed, up: custom(prenetty_bed_1_7), down: custom(prenetty_bed_1_6_4));
+			converted(collect, down: custom(prenetty_collect_1_6_4));
+			converted(named_entity_spawn, up: custom(prenetty_named_entity_spawn_1_7), down: custom(prenetty_named_entity_spawn_1_6_4));
+			converted(multi_block_change, down: custom(prenetty_multi_block_change_1_6_4));
+			converted(block_change, up: custom(prenetty_block_change_1_7), down: custom(prenetty_block_change_1_6_4));
+			converted(map_chunk, down: custom(prenetty_map_chunk_1_6_4_down));
+			converted(map_chunk_bulk, down: custom(prenetty_map_chunk_bulk_1_6_4_down));
+			converted(world_event, down: custom(prenetty_world_event_1_6_4_down));
+			converted(spawn_entity, down: custom(prenetty_spawn_entity_1_6_4));
+			converted(named_sound_effect, up: custom(prenetty_sound_1_7), down: custom(prenetty_sound_1_6_4));
+			converted(respawn, up: custom(prenetty_respawn_1_7), down: custom(prenetty_respawn_1_6_4));
+			converted(open_window, up: custom(prenetty_open_window_1_7), down: custom(prenetty_open_window_1_6_4));
+			converted(player_info, up: custom(prenetty_player_info_1_7), down: custom(prenetty_player_info_1_6_4));
+			converted(scoreboard_objective, up: custom(prenetty_scoreboard_objective_1_7), down: custom(prenetty_scoreboard_objective_1_6_4));
+			converted(scoreboard_display_objective, up: custom(prenetty_scoreboard_display_objective_1_7), down: custom(prenetty_scoreboard_display_objective_1_6_4));
+			converted(scoreboard_score, up: custom(prenetty_scoreboard_score_1_7), down: custom(prenetty_scoreboard_score_1_6_4));
+			converted(scoreboard_team, up: custom(prenetty_scoreboard_team_1_7), down: custom(prenetty_scoreboard_team_1_6_4));
+			converted(spawn_entity_painting, up: custom(prenetty_spawn_entity_painting_1_7), down: custom(prenetty_spawn_entity_painting_1_6_4));
+			converted(update_sign, up: custom(prenetty_update_sign_1_7), down: custom(prenetty_update_sign_1_6_4));
+			converted(custom_payload, up: custom(prenetty_custom_payload_1_7), down: custom(prenetty_custom_payload_1_6_4));
+			converted(update_attributes, up: custom(prenetty_update_attributes_1_7), down: custom(prenetty_update_attributes_1_6_4));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId);
+		};
+
+		updated(packet_block_break_animation) {
+			converted(entityId);
+		};
+
+		updated(packet_explosion) {
+			converted(x);
+			converted(y);
+			converted(z);
+		};
+
+		updated(packet_game_state_change) {
+			converted(gameMode);
+			updated(reason) {
+				added(rain_level_change, down: drop);
+				added(thunder_level_change, down: drop);
+			};
+		};
+
+		updated(packet_map) {
+			converted(itemDamage);
+			removed(itemType, down: 358);
+		};
+
+
+
+
+
+
+
+
+
+
+
+
+		updated(packet_spawn_entity) {
+			converted(entityId);
+		};
+
+		updated(packet_spawn_entity_experience_orb) {
+			converted(entityId);
+		};
+
+		updated(packet_spawn_entity_living) {
+			converted(entityId);
+		};
+
+		updated(packet_spawn_entity_weather) {
+			converted(entityId);
+		};
+
+		updated(packet_world_particles) {
+			converted(particleName, up: custom(prenetty_particle_1_7), down: custom(prenetty_particle_1_6_4));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			removed(encryption_begin, up: drop);
+			removed(kick_disconnect, up: drop);
+			removed(legacy_server_list_ping, up: drop);
+			removed(login, up: drop);
+			removed(respawn, up: drop);
+			removed(set_protocol, up: drop);
+			converted(client_command, up: custom(prenetty_client_command_1_7), down: custom(prenetty_client_command_1_6_4));
+			converted(entity_action, up: custom(prenetty_entity_action_1_7), down: custom(prenetty_entity_action_1_6_4));
+			converted(settings, up: custom(prenetty_settings_1_7), down: custom(prenetty_settings_1_6_4));
+			converted(use_entity, up: custom(prenetty_use_entity_1_7), down: custom(prenetty_use_entity_1_6_4));
+			converted(position, up: custom(prenetty_move_1_7), down: custom(prenetty_move_1_6_4));
+			converted(look, up: custom(prenetty_look_server_1_7), down: custom(prenetty_look_server_1_6_4));
+			converted(position_look, up: custom(prenetty_move_look_1_7), down: custom(prenetty_move_look_1_6_4));
+			converted(chat, up: custom(prenetty_chat_server_1_7), down: custom(prenetty_chat_server_1_6_4));
+			converted(tab_complete, up: custom(prenetty_tab_complete_server_1_7), down: custom(prenetty_tab_complete_server_1_6_4));
+			converted(update_sign, up: custom(prenetty_update_sign_server_1_7), down: custom(prenetty_update_sign_server_1_6_4));
+			converted(custom_payload, up: custom(prenetty_custom_payload_server_1_7), down: custom(prenetty_custom_payload_server_1_6_4));
+		};
+
+
+	};
+};

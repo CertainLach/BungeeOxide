@@ -1,0 +1,898 @@
+0 air 0 0
+1 stone 1 1
+2 granite 2 2
+3 polished_granite 3 3
+4 diorite 4 4
+5 polished_diorite 5 5
+6 andesite 6 6
+7 polished_andesite 7 7
+8 grass_block 8 9 snowy=true,false
+9 dirt 10 10
+10 coarse_dirt 11 11
+11 podzol 12 13 snowy=true,false
+12 cobblestone 14 14
+13 oak_planks 15 15
+14 spruce_planks 16 16
+15 birch_planks 17 17
+16 jungle_planks 18 18
+17 acacia_planks 19 19
+18 dark_oak_planks 20 20
+19 oak_sapling 21 21 stage=0,1
+20 spruce_sapling 23 23 stage=0,1
+21 birch_sapling 25 25 stage=0,1
+22 jungle_sapling 27 27 stage=0,1
+23 acacia_sapling 29 29 stage=0,1
+24 dark_oak_sapling 31 31 stage=0,1
+25 bedrock 33 33
+26 water 34 34 level=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+27 lava 50 50 level=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+28 sand 66 66
+29 red_sand 67 67
+30 gravel 68 68
+31 gold_ore 69 69
+32 deepslate_gold_ore 70 70
+33 iron_ore 71 71
+34 deepslate_iron_ore 72 72
+35 coal_ore 73 73
+36 deepslate_coal_ore 74 74
+37 nether_gold_ore 75 75
+38 oak_log 76 77 axis=x,y,z
+39 spruce_log 79 80 axis=x,y,z
+40 birch_log 82 83 axis=x,y,z
+41 jungle_log 85 86 axis=x,y,z
+42 acacia_log 88 89 axis=x,y,z
+43 dark_oak_log 91 92 axis=x,y,z
+44 stripped_spruce_log 94 95 axis=x,y,z
+45 stripped_birch_log 97 98 axis=x,y,z
+46 stripped_jungle_log 100 101 axis=x,y,z
+47 stripped_acacia_log 103 104 axis=x,y,z
+48 stripped_dark_oak_log 106 107 axis=x,y,z
+49 stripped_oak_log 109 110 axis=x,y,z
+50 oak_wood 112 113 axis=x,y,z
+51 spruce_wood 115 116 axis=x,y,z
+52 birch_wood 118 119 axis=x,y,z
+53 jungle_wood 121 122 axis=x,y,z
+54 acacia_wood 124 125 axis=x,y,z
+55 dark_oak_wood 127 128 axis=x,y,z
+56 stripped_oak_wood 130 131 axis=x,y,z
+57 stripped_spruce_wood 133 134 axis=x,y,z
+58 stripped_birch_wood 136 137 axis=x,y,z
+59 stripped_jungle_wood 139 140 axis=x,y,z
+60 stripped_acacia_wood 142 143 axis=x,y,z
+61 stripped_dark_oak_wood 145 146 axis=x,y,z
+62 oak_leaves 148 161 distance=1,2,3,4,5,6,7 persistent=true,false
+63 spruce_leaves 162 175 distance=1,2,3,4,5,6,7 persistent=true,false
+64 birch_leaves 176 189 distance=1,2,3,4,5,6,7 persistent=true,false
+65 jungle_leaves 190 203 distance=1,2,3,4,5,6,7 persistent=true,false
+66 acacia_leaves 204 217 distance=1,2,3,4,5,6,7 persistent=true,false
+67 dark_oak_leaves 218 231 distance=1,2,3,4,5,6,7 persistent=true,false
+68 azalea_leaves 232 245 distance=1,2,3,4,5,6,7 persistent=true,false
+69 flowering_azalea_leaves 246 259 distance=1,2,3,4,5,6,7 persistent=true,false
+70 sponge 260 260
+71 wet_sponge 261 261
+72 glass 262 262
+73 lapis_ore 263 263
+74 deepslate_lapis_ore 264 264
+75 lapis_block 265 265
+76 dispenser 266 267 facing=north,east,south,west,up,down triggered=true,false
+77 sandstone 278 278
+78 chiseled_sandstone 279 279
+79 cut_sandstone 280 280
+80 note_block 281 282 instrument=harp,basedrum,snare,hat,bass,flute,bell,guitar,chime,xylophone,iron_xylophone,cow_bell,didgeridoo,bit,banjo,pling note=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24 powered=true,false
+81 white_bed 1081 1084 facing=north,south,west,east occupied=true,false part=head,foot
+82 orange_bed 1097 1100 facing=north,south,west,east occupied=true,false part=head,foot
+83 magenta_bed 1113 1116 facing=north,south,west,east occupied=true,false part=head,foot
+84 light_blue_bed 1129 1132 facing=north,south,west,east occupied=true,false part=head,foot
+85 yellow_bed 1145 1148 facing=north,south,west,east occupied=true,false part=head,foot
+86 lime_bed 1161 1164 facing=north,south,west,east occupied=true,false part=head,foot
+87 pink_bed 1177 1180 facing=north,south,west,east occupied=true,false part=head,foot
+88 gray_bed 1193 1196 facing=north,south,west,east occupied=true,false part=head,foot
+89 light_gray_bed 1209 1212 facing=north,south,west,east occupied=true,false part=head,foot
+90 cyan_bed 1225 1228 facing=north,south,west,east occupied=true,false part=head,foot
+91 purple_bed 1241 1244 facing=north,south,west,east occupied=true,false part=head,foot
+92 blue_bed 1257 1260 facing=north,south,west,east occupied=true,false part=head,foot
+93 brown_bed 1273 1276 facing=north,south,west,east occupied=true,false part=head,foot
+94 green_bed 1289 1292 facing=north,south,west,east occupied=true,false part=head,foot
+95 red_bed 1305 1308 facing=north,south,west,east occupied=true,false part=head,foot
+96 black_bed 1321 1324 facing=north,south,west,east occupied=true,false part=head,foot
+97 powered_rail 1337 1350 powered=true,false shape=north_south,east_west,ascending_east,ascending_west,ascending_north,ascending_south waterlogged=true,false
+98 detector_rail 1361 1374 powered=true,false shape=north_south,east_west,ascending_east,ascending_west,ascending_north,ascending_south waterlogged=true,false
+99 sticky_piston 1385 1391 extended=true,false facing=north,east,south,west,up,down
+100 cobweb 1397 1397
+101 grass 1398 1398
+102 fern 1399 1399
+103 dead_bush 1400 1400
+104 seagrass 1401 1401
+105 tall_seagrass 1402 1403 half=upper,lower
+106 piston 1404 1410 extended=true,false facing=north,east,south,west,up,down
+107 piston_head 1416 1418 facing=north,east,south,west,up,down short=true,false type=normal,sticky
+108 white_wool 1440 1440
+109 orange_wool 1441 1441
+110 magenta_wool 1442 1442
+111 light_blue_wool 1443 1443
+112 yellow_wool 1444 1444
+113 lime_wool 1445 1445
+114 pink_wool 1446 1446
+115 gray_wool 1447 1447
+116 light_gray_wool 1448 1448
+117 cyan_wool 1449 1449
+118 purple_wool 1450 1450
+119 blue_wool 1451 1451
+120 brown_wool 1452 1452
+121 green_wool 1453 1453
+122 red_wool 1454 1454
+123 black_wool 1455 1455
+124 moving_piston 1456 1456 facing=north,east,south,west,up,down type=normal,sticky
+125 dandelion 1468 1468
+126 poppy 1469 1469
+127 blue_orchid 1470 1470
+128 allium 1471 1471
+129 azure_bluet 1472 1472
+130 red_tulip 1473 1473
+131 orange_tulip 1474 1474
+132 white_tulip 1475 1475
+133 pink_tulip 1476 1476
+134 oxeye_daisy 1477 1477
+135 cornflower 1478 1478
+136 wither_rose 1479 1479
+137 lily_of_the_valley 1480 1480
+138 brown_mushroom 1481 1481
+139 red_mushroom 1482 1482
+140 gold_block 1483 1483
+141 iron_block 1484 1484
+142 bricks 1485 1485
+143 tnt 1486 1487 unstable=true,false
+144 bookshelf 1488 1488
+145 mossy_cobblestone 1489 1489
+146 obsidian 1490 1490
+147 torch 1491 1491
+148 wall_torch 1492 1492 facing=north,south,west,east
+149 fire 1496 1527 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 east=true,false north=true,false south=true,false up=true,false west=true,false
+150 soul_fire 2008 2008
+151 spawner 2009 2009
+152 oak_stairs 2010 2021 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+153 chest 2090 2091 facing=north,south,west,east type=single,left,right waterlogged=true,false
+154 redstone_wire 2114 3274 east=up,side,none north=up,side,none power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 south=up,side,none west=up,side,none
+155 diamond_ore 3410 3410
+156 deepslate_diamond_ore 3411 3411
+157 diamond_block 3412 3412
+158 crafting_table 3413 3413
+159 wheat 3414 3414 age=0,1,2,3,4,5,6,7
+160 farmland 3422 3422 moisture=0,1,2,3,4,5,6,7
+161 furnace 3430 3431 facing=north,south,west,east lit=true,false
+162 oak_sign 3438 3439 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+163 spruce_sign 3470 3471 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+164 birch_sign 3502 3503 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+165 acacia_sign 3534 3535 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+166 jungle_sign 3566 3567 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+167 dark_oak_sign 3598 3599 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+168 oak_door 3630 3641 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+169 ladder 3694 3695 facing=north,south,west,east waterlogged=true,false
+170 rail 3702 3703 shape=north_south,east_west,ascending_east,ascending_west,ascending_north,ascending_south,south_east,south_west,north_west,north_east waterlogged=true,false
+171 cobblestone_stairs 3722 3733 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+172 oak_wall_sign 3802 3803 facing=north,south,west,east waterlogged=true,false
+173 spruce_wall_sign 3810 3811 facing=north,south,west,east waterlogged=true,false
+174 birch_wall_sign 3818 3819 facing=north,south,west,east waterlogged=true,false
+175 acacia_wall_sign 3826 3827 facing=north,south,west,east waterlogged=true,false
+176 jungle_wall_sign 3834 3835 facing=north,south,west,east waterlogged=true,false
+177 dark_oak_wall_sign 3842 3843 facing=north,south,west,east waterlogged=true,false
+178 lever 3850 3859 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+179 stone_pressure_plate 3874 3875 powered=true,false
+180 iron_door 3876 3887 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+181 oak_pressure_plate 3940 3941 powered=true,false
+182 spruce_pressure_plate 3942 3943 powered=true,false
+183 birch_pressure_plate 3944 3945 powered=true,false
+184 jungle_pressure_plate 3946 3947 powered=true,false
+185 acacia_pressure_plate 3948 3949 powered=true,false
+186 dark_oak_pressure_plate 3950 3951 powered=true,false
+187 redstone_ore 3952 3953 lit=true,false
+188 deepslate_redstone_ore 3954 3955 lit=true,false
+189 redstone_torch 3956 3956 lit=true,false
+190 redstone_wall_torch 3958 3958 facing=north,south,west,east lit=true,false
+191 stone_button 3966 3975 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+192 snow 3990 3990 layers=1,2,3,4,5,6,7,8
+193 ice 3998 3998
+194 snow_block 3999 3999
+195 cactus 4000 4000 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+196 clay 4016 4016
+197 sugar_cane 4017 4017 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+198 jukebox 4033 4034 has_record=true,false
+199 oak_fence 4035 4066 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+200 pumpkin 4067 4067
+201 netherrack 4068 4068
+202 soul_sand 4069 4069
+203 soul_soil 4070 4070
+204 basalt 4071 4072 axis=x,y,z
+205 polished_basalt 4074 4075 axis=x,y,z
+206 soul_torch 4077 4077
+207 soul_wall_torch 4078 4078 facing=north,south,west,east
+208 glowstone 4082 4082
+209 nether_portal 4083 4083 axis=x,z
+210 carved_pumpkin 4085 4085 facing=north,south,west,east
+211 jack_o_lantern 4089 4089 facing=north,south,west,east
+212 cake 4093 4093 bites=0,1,2,3,4,5,6
+213 repeater 4100 4103 delay=1,2,3,4 facing=north,south,west,east locked=true,false powered=true,false
+214 white_stained_glass 4164 4164
+215 orange_stained_glass 4165 4165
+216 magenta_stained_glass 4166 4166
+217 light_blue_stained_glass 4167 4167
+218 yellow_stained_glass 4168 4168
+219 lime_stained_glass 4169 4169
+220 pink_stained_glass 4170 4170
+221 gray_stained_glass 4171 4171
+222 light_gray_stained_glass 4172 4172
+223 cyan_stained_glass 4173 4173
+224 purple_stained_glass 4174 4174
+225 blue_stained_glass 4175 4175
+226 brown_stained_glass 4176 4176
+227 green_stained_glass 4177 4177
+228 red_stained_glass 4178 4178
+229 black_stained_glass 4179 4179
+230 oak_trapdoor 4180 4195 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+231 spruce_trapdoor 4244 4259 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+232 birch_trapdoor 4308 4323 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+233 jungle_trapdoor 4372 4387 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+234 acacia_trapdoor 4436 4451 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+235 dark_oak_trapdoor 4500 4515 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+236 stone_bricks 4564 4564
+237 mossy_stone_bricks 4565 4565
+238 cracked_stone_bricks 4566 4566
+239 chiseled_stone_bricks 4567 4567
+240 infested_stone 4568 4568
+241 infested_cobblestone 4569 4569
+242 infested_stone_bricks 4570 4570
+243 infested_mossy_stone_bricks 4571 4571
+244 infested_cracked_stone_bricks 4572 4572
+245 infested_chiseled_stone_bricks 4573 4573
+246 brown_mushroom_block 4574 4574 down=true,false east=true,false north=true,false south=true,false up=true,false west=true,false
+247 red_mushroom_block 4638 4638 down=true,false east=true,false north=true,false south=true,false up=true,false west=true,false
+248 mushroom_stem 4702 4702 down=true,false east=true,false north=true,false south=true,false up=true,false west=true,false
+249 iron_bars 4766 4797 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+250 chain 4798 4801 axis=x,y,z waterlogged=true,false
+251 glass_pane 4804 4835 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+252 melon 4836 4836
+253 attached_pumpkin_stem 4837 4837 facing=north,south,west,east
+254 attached_melon_stem 4841 4841 facing=north,south,west,east
+255 pumpkin_stem 4845 4845 age=0,1,2,3,4,5,6,7
+256 melon_stem 4853 4853 age=0,1,2,3,4,5,6,7
+257 vine 4861 4892 east=true,false north=true,false south=true,false up=true,false west=true,false
+258 glow_lichen 4893 5020 down=true,false east=true,false north=true,false south=true,false up=true,false waterlogged=true,false west=true,false
+259 oak_fence_gate 5021 5028 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+260 brick_stairs 5053 5064 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+261 stone_brick_stairs 5133 5144 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+262 mycelium 5213 5214 snowy=true,false
+263 lily_pad 5215 5215
+264 nether_bricks 5216 5216
+265 nether_brick_fence 5217 5248 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+266 nether_brick_stairs 5249 5260 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+267 nether_wart 5329 5329 age=0,1,2,3
+268 enchanting_table 5333 5333
+269 brewing_stand 5334 5341 has_bottle_0=true,false has_bottle_1=true,false has_bottle_2=true,false
+270 cauldron 5342 5342
+271 water_cauldron 5343 5343 level=1,2,3
+272 lava_cauldron 5346 5346
+273 powder_snow_cauldron 5347 5347 level=1,2,3
+274 end_portal 5350 5350
+275 end_portal_frame 5351 5355 eye=true,false facing=north,south,west,east
+276 end_stone 5359 5359
+277 dragon_egg 5360 5360
+278 redstone_lamp 5361 5362 lit=true,false
+279 cocoa 5363 5363 age=0,1,2 facing=north,south,west,east
+280 sandstone_stairs 5375 5386 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+281 emerald_ore 5455 5455
+282 deepslate_emerald_ore 5456 5456
+283 ender_chest 5457 5458 facing=north,south,west,east waterlogged=true,false
+284 tripwire_hook 5465 5474 attached=true,false facing=north,south,west,east powered=true,false
+285 tripwire 5481 5608 attached=true,false disarmed=true,false east=true,false north=true,false powered=true,false south=true,false west=true,false
+286 emerald_block 5609 5609
+287 spruce_stairs 5610 5621 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+288 birch_stairs 5690 5701 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+289 jungle_stairs 5770 5781 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+290 command_block 5850 5856 conditional=true,false facing=north,east,south,west,up,down
+291 beacon 5862 5862
+292 cobblestone_wall 5863 5866 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+293 mossy_cobblestone_wall 6187 6190 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+294 flower_pot 6511 6511
+295 potted_oak_sapling 6512 6512
+296 potted_spruce_sapling 6513 6513
+297 potted_birch_sapling 6514 6514
+298 potted_jungle_sapling 6515 6515
+299 potted_acacia_sapling 6516 6516
+300 potted_dark_oak_sapling 6517 6517
+301 potted_fern 6518 6518
+302 potted_dandelion 6519 6519
+303 potted_poppy 6520 6520
+304 potted_blue_orchid 6521 6521
+305 potted_allium 6522 6522
+306 potted_azure_bluet 6523 6523
+307 potted_red_tulip 6524 6524
+308 potted_orange_tulip 6525 6525
+309 potted_white_tulip 6526 6526
+310 potted_pink_tulip 6527 6527
+311 potted_oxeye_daisy 6528 6528
+312 potted_cornflower 6529 6529
+313 potted_lily_of_the_valley 6530 6530
+314 potted_wither_rose 6531 6531
+315 potted_red_mushroom 6532 6532
+316 potted_brown_mushroom 6533 6533
+317 potted_dead_bush 6534 6534
+318 potted_cactus 6535 6535
+319 carrots 6536 6536 age=0,1,2,3,4,5,6,7
+320 potatoes 6544 6544 age=0,1,2,3,4,5,6,7
+321 oak_button 6552 6561 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+322 spruce_button 6576 6585 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+323 birch_button 6600 6609 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+324 jungle_button 6624 6633 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+325 acacia_button 6648 6657 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+326 dark_oak_button 6672 6681 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+327 skeleton_skull 6696 6696 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+328 skeleton_wall_skull 6712 6712 facing=north,south,west,east
+329 wither_skeleton_skull 6716 6716 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+330 wither_skeleton_wall_skull 6732 6732 facing=north,south,west,east
+331 zombie_head 6736 6736 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+332 zombie_wall_head 6752 6752 facing=north,south,west,east
+333 player_head 6756 6756 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+334 player_wall_head 6772 6772 facing=north,south,west,east
+335 creeper_head 6776 6776 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+336 creeper_wall_head 6792 6792 facing=north,south,west,east
+337 dragon_head 6796 6796 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+338 dragon_wall_head 6812 6812 facing=north,south,west,east
+339 anvil 6816 6816 facing=north,south,west,east
+340 chipped_anvil 6820 6820 facing=north,south,west,east
+341 damaged_anvil 6824 6824 facing=north,south,west,east
+342 trapped_chest 6828 6829 facing=north,south,west,east type=single,left,right waterlogged=true,false
+343 light_weighted_pressure_plate 6852 6852 power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+344 heavy_weighted_pressure_plate 6868 6868 power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+345 comparator 6884 6885 facing=north,south,west,east mode=compare,subtract powered=true,false
+346 daylight_detector 6900 6916 inverted=true,false power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+347 redstone_block 6932 6932
+348 nether_quartz_ore 6933 6933
+349 hopper 6934 6934 enabled=true,false facing=down,north,south,west,east
+350 quartz_block 6944 6944
+351 chiseled_quartz_block 6945 6945
+352 quartz_pillar 6946 6947 axis=x,y,z
+353 quartz_stairs 6949 6960 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+354 activator_rail 7029 7042 powered=true,false shape=north_south,east_west,ascending_east,ascending_west,ascending_north,ascending_south waterlogged=true,false
+355 dropper 7053 7054 facing=north,east,south,west,up,down triggered=true,false
+356 white_terracotta 7065 7065
+357 orange_terracotta 7066 7066
+358 magenta_terracotta 7067 7067
+359 light_blue_terracotta 7068 7068
+360 yellow_terracotta 7069 7069
+361 lime_terracotta 7070 7070
+362 pink_terracotta 7071 7071
+363 gray_terracotta 7072 7072
+364 light_gray_terracotta 7073 7073
+365 cyan_terracotta 7074 7074
+366 purple_terracotta 7075 7075
+367 blue_terracotta 7076 7076
+368 brown_terracotta 7077 7077
+369 green_terracotta 7078 7078
+370 red_terracotta 7079 7079
+371 black_terracotta 7080 7080
+372 white_stained_glass_pane 7081 7112 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+373 orange_stained_glass_pane 7113 7144 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+374 magenta_stained_glass_pane 7145 7176 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+375 light_blue_stained_glass_pane 7177 7208 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+376 yellow_stained_glass_pane 7209 7240 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+377 lime_stained_glass_pane 7241 7272 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+378 pink_stained_glass_pane 7273 7304 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+379 gray_stained_glass_pane 7305 7336 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+380 light_gray_stained_glass_pane 7337 7368 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+381 cyan_stained_glass_pane 7369 7400 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+382 purple_stained_glass_pane 7401 7432 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+383 blue_stained_glass_pane 7433 7464 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+384 brown_stained_glass_pane 7465 7496 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+385 green_stained_glass_pane 7497 7528 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+386 red_stained_glass_pane 7529 7560 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+387 black_stained_glass_pane 7561 7592 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+388 acacia_stairs 7593 7604 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+389 dark_oak_stairs 7673 7684 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+390 slime_block 7753 7753
+391 barrier 7754 7754
+392 light 7755 7786 level=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+393 iron_trapdoor 7787 7802 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+394 prismarine 7851 7851
+395 prismarine_bricks 7852 7852
+396 dark_prismarine 7853 7853
+397 prismarine_stairs 7854 7865 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+398 prismarine_brick_stairs 7934 7945 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+399 dark_prismarine_stairs 8014 8025 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+400 prismarine_slab 8094 8097 type=top,bottom,double waterlogged=true,false
+401 prismarine_brick_slab 8100 8103 type=top,bottom,double waterlogged=true,false
+402 dark_prismarine_slab 8106 8109 type=top,bottom,double waterlogged=true,false
+403 sea_lantern 8112 8112
+404 hay_block 8113 8114 axis=x,y,z
+405 white_carpet 8116 8116
+406 orange_carpet 8117 8117
+407 magenta_carpet 8118 8118
+408 light_blue_carpet 8119 8119
+409 yellow_carpet 8120 8120
+410 lime_carpet 8121 8121
+411 pink_carpet 8122 8122
+412 gray_carpet 8123 8123
+413 light_gray_carpet 8124 8124
+414 cyan_carpet 8125 8125
+415 purple_carpet 8126 8126
+416 blue_carpet 8127 8127
+417 brown_carpet 8128 8128
+418 green_carpet 8129 8129
+419 red_carpet 8130 8130
+420 black_carpet 8131 8131
+421 terracotta 8132 8132
+422 coal_block 8133 8133
+423 packed_ice 8134 8134
+424 sunflower 8135 8136 half=upper,lower
+425 lilac 8137 8138 half=upper,lower
+426 rose_bush 8139 8140 half=upper,lower
+427 peony 8141 8142 half=upper,lower
+428 tall_grass 8143 8144 half=upper,lower
+429 large_fern 8145 8146 half=upper,lower
+430 white_banner 8147 8147 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+431 orange_banner 8163 8163 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+432 magenta_banner 8179 8179 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+433 light_blue_banner 8195 8195 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+434 yellow_banner 8211 8211 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+435 lime_banner 8227 8227 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+436 pink_banner 8243 8243 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+437 gray_banner 8259 8259 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+438 light_gray_banner 8275 8275 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+439 cyan_banner 8291 8291 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+440 purple_banner 8307 8307 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+441 blue_banner 8323 8323 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+442 brown_banner 8339 8339 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+443 green_banner 8355 8355 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+444 red_banner 8371 8371 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+445 black_banner 8387 8387 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+446 white_wall_banner 8403 8403 facing=north,south,west,east
+447 orange_wall_banner 8407 8407 facing=north,south,west,east
+448 magenta_wall_banner 8411 8411 facing=north,south,west,east
+449 light_blue_wall_banner 8415 8415 facing=north,south,west,east
+450 yellow_wall_banner 8419 8419 facing=north,south,west,east
+451 lime_wall_banner 8423 8423 facing=north,south,west,east
+452 pink_wall_banner 8427 8427 facing=north,south,west,east
+453 gray_wall_banner 8431 8431 facing=north,south,west,east
+454 light_gray_wall_banner 8435 8435 facing=north,south,west,east
+455 cyan_wall_banner 8439 8439 facing=north,south,west,east
+456 purple_wall_banner 8443 8443 facing=north,south,west,east
+457 blue_wall_banner 8447 8447 facing=north,south,west,east
+458 brown_wall_banner 8451 8451 facing=north,south,west,east
+459 green_wall_banner 8455 8455 facing=north,south,west,east
+460 red_wall_banner 8459 8459 facing=north,south,west,east
+461 black_wall_banner 8463 8463 facing=north,south,west,east
+462 red_sandstone 8467 8467
+463 chiseled_red_sandstone 8468 8468
+464 cut_red_sandstone 8469 8469
+465 red_sandstone_stairs 8470 8481 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+466 oak_slab 8550 8553 type=top,bottom,double waterlogged=true,false
+467 spruce_slab 8556 8559 type=top,bottom,double waterlogged=true,false
+468 birch_slab 8562 8565 type=top,bottom,double waterlogged=true,false
+469 jungle_slab 8568 8571 type=top,bottom,double waterlogged=true,false
+470 acacia_slab 8574 8577 type=top,bottom,double waterlogged=true,false
+471 dark_oak_slab 8580 8583 type=top,bottom,double waterlogged=true,false
+472 stone_slab 8586 8589 type=top,bottom,double waterlogged=true,false
+473 smooth_stone_slab 8592 8595 type=top,bottom,double waterlogged=true,false
+474 sandstone_slab 8598 8601 type=top,bottom,double waterlogged=true,false
+475 cut_sandstone_slab 8604 8607 type=top,bottom,double waterlogged=true,false
+476 petrified_oak_slab 8610 8613 type=top,bottom,double waterlogged=true,false
+477 cobblestone_slab 8616 8619 type=top,bottom,double waterlogged=true,false
+478 brick_slab 8622 8625 type=top,bottom,double waterlogged=true,false
+479 stone_brick_slab 8628 8631 type=top,bottom,double waterlogged=true,false
+480 nether_brick_slab 8634 8637 type=top,bottom,double waterlogged=true,false
+481 quartz_slab 8640 8643 type=top,bottom,double waterlogged=true,false
+482 red_sandstone_slab 8646 8649 type=top,bottom,double waterlogged=true,false
+483 cut_red_sandstone_slab 8652 8655 type=top,bottom,double waterlogged=true,false
+484 purpur_slab 8658 8661 type=top,bottom,double waterlogged=true,false
+485 smooth_stone 8664 8664
+486 smooth_sandstone 8665 8665
+487 smooth_quartz 8666 8666
+488 smooth_red_sandstone 8667 8667
+489 spruce_fence_gate 8668 8675 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+490 birch_fence_gate 8700 8707 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+491 jungle_fence_gate 8732 8739 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+492 acacia_fence_gate 8764 8771 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+493 dark_oak_fence_gate 8796 8803 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+494 spruce_fence 8828 8859 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+495 birch_fence 8860 8891 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+496 jungle_fence 8892 8923 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+497 acacia_fence 8924 8955 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+498 dark_oak_fence 8956 8987 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+499 spruce_door 8988 8999 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+500 birch_door 9052 9063 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+501 jungle_door 9116 9127 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+502 acacia_door 9180 9191 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+503 dark_oak_door 9244 9255 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+504 end_rod 9308 9312 facing=north,east,south,west,up,down
+505 chorus_plant 9314 9377 down=true,false east=true,false north=true,false south=true,false up=true,false west=true,false
+506 chorus_flower 9378 9378 age=0,1,2,3,4,5
+507 purpur_block 9384 9384
+508 purpur_pillar 9385 9386 axis=x,y,z
+509 purpur_stairs 9388 9399 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+510 end_stone_bricks 9468 9468
+511 beetroots 9469 9469 age=0,1,2,3
+512 dirt_path 9473 9473
+513 end_gateway 9474 9474
+514 repeating_command_block 9475 9481 conditional=true,false facing=north,east,south,west,up,down
+515 chain_command_block 9487 9493 conditional=true,false facing=north,east,south,west,up,down
+516 frosted_ice 9499 9499 age=0,1,2,3
+517 magma_block 9503 9503
+518 nether_wart_block 9504 9504
+519 red_nether_bricks 9505 9505
+520 bone_block 9506 9507 axis=x,y,z
+521 structure_void 9509 9509
+522 observer 9510 9515 facing=north,east,south,west,up,down powered=true,false
+523 shulker_box 9522 9526 facing=north,east,south,west,up,down
+524 white_shulker_box 9528 9532 facing=north,east,south,west,up,down
+525 orange_shulker_box 9534 9538 facing=north,east,south,west,up,down
+526 magenta_shulker_box 9540 9544 facing=north,east,south,west,up,down
+527 light_blue_shulker_box 9546 9550 facing=north,east,south,west,up,down
+528 yellow_shulker_box 9552 9556 facing=north,east,south,west,up,down
+529 lime_shulker_box 9558 9562 facing=north,east,south,west,up,down
+530 pink_shulker_box 9564 9568 facing=north,east,south,west,up,down
+531 gray_shulker_box 9570 9574 facing=north,east,south,west,up,down
+532 light_gray_shulker_box 9576 9580 facing=north,east,south,west,up,down
+533 cyan_shulker_box 9582 9586 facing=north,east,south,west,up,down
+534 purple_shulker_box 9588 9592 facing=north,east,south,west,up,down
+535 blue_shulker_box 9594 9598 facing=north,east,south,west,up,down
+536 brown_shulker_box 9600 9604 facing=north,east,south,west,up,down
+537 green_shulker_box 9606 9610 facing=north,east,south,west,up,down
+538 red_shulker_box 9612 9616 facing=north,east,south,west,up,down
+539 black_shulker_box 9618 9622 facing=north,east,south,west,up,down
+540 white_glazed_terracotta 9624 9624 facing=north,south,west,east
+541 orange_glazed_terracotta 9628 9628 facing=north,south,west,east
+542 magenta_glazed_terracotta 9632 9632 facing=north,south,west,east
+543 light_blue_glazed_terracotta 9636 9636 facing=north,south,west,east
+544 yellow_glazed_terracotta 9640 9640 facing=north,south,west,east
+545 lime_glazed_terracotta 9644 9644 facing=north,south,west,east
+546 pink_glazed_terracotta 9648 9648 facing=north,south,west,east
+547 gray_glazed_terracotta 9652 9652 facing=north,south,west,east
+548 light_gray_glazed_terracotta 9656 9656 facing=north,south,west,east
+549 cyan_glazed_terracotta 9660 9660 facing=north,south,west,east
+550 purple_glazed_terracotta 9664 9664 facing=north,south,west,east
+551 blue_glazed_terracotta 9668 9668 facing=north,south,west,east
+552 brown_glazed_terracotta 9672 9672 facing=north,south,west,east
+553 green_glazed_terracotta 9676 9676 facing=north,south,west,east
+554 red_glazed_terracotta 9680 9680 facing=north,south,west,east
+555 black_glazed_terracotta 9684 9684 facing=north,south,west,east
+556 white_concrete 9688 9688
+557 orange_concrete 9689 9689
+558 magenta_concrete 9690 9690
+559 light_blue_concrete 9691 9691
+560 yellow_concrete 9692 9692
+561 lime_concrete 9693 9693
+562 pink_concrete 9694 9694
+563 gray_concrete 9695 9695
+564 light_gray_concrete 9696 9696
+565 cyan_concrete 9697 9697
+566 purple_concrete 9698 9698
+567 blue_concrete 9699 9699
+568 brown_concrete 9700 9700
+569 green_concrete 9701 9701
+570 red_concrete 9702 9702
+571 black_concrete 9703 9703
+572 white_concrete_powder 9704 9704
+573 orange_concrete_powder 9705 9705
+574 magenta_concrete_powder 9706 9706
+575 light_blue_concrete_powder 9707 9707
+576 yellow_concrete_powder 9708 9708
+577 lime_concrete_powder 9709 9709
+578 pink_concrete_powder 9710 9710
+579 gray_concrete_powder 9711 9711
+580 light_gray_concrete_powder 9712 9712
+581 cyan_concrete_powder 9713 9713
+582 purple_concrete_powder 9714 9714
+583 blue_concrete_powder 9715 9715
+584 brown_concrete_powder 9716 9716
+585 green_concrete_powder 9717 9717
+586 red_concrete_powder 9718 9718
+587 black_concrete_powder 9719 9719
+588 kelp 9720 9720 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+589 kelp_plant 9746 9746
+590 dried_kelp_block 9747 9747
+591 turtle_egg 9748 9748 eggs=1,2,3,4 hatch=0,1,2
+592 dead_tube_coral_block 9760 9760
+593 dead_brain_coral_block 9761 9761
+594 dead_bubble_coral_block 9762 9762
+595 dead_fire_coral_block 9763 9763
+596 dead_horn_coral_block 9764 9764
+597 tube_coral_block 9765 9765
+598 brain_coral_block 9766 9766
+599 bubble_coral_block 9767 9767
+600 fire_coral_block 9768 9768
+601 horn_coral_block 9769 9769
+602 dead_tube_coral 9770 9770 waterlogged=true,false
+603 dead_brain_coral 9772 9772 waterlogged=true,false
+604 dead_bubble_coral 9774 9774 waterlogged=true,false
+605 dead_fire_coral 9776 9776 waterlogged=true,false
+606 dead_horn_coral 9778 9778 waterlogged=true,false
+607 tube_coral 9780 9780 waterlogged=true,false
+608 brain_coral 9782 9782 waterlogged=true,false
+609 bubble_coral 9784 9784 waterlogged=true,false
+610 fire_coral 9786 9786 waterlogged=true,false
+611 horn_coral 9788 9788 waterlogged=true,false
+612 dead_tube_coral_fan 9790 9790 waterlogged=true,false
+613 dead_brain_coral_fan 9792 9792 waterlogged=true,false
+614 dead_bubble_coral_fan 9794 9794 waterlogged=true,false
+615 dead_fire_coral_fan 9796 9796 waterlogged=true,false
+616 dead_horn_coral_fan 9798 9798 waterlogged=true,false
+617 tube_coral_fan 9800 9800 waterlogged=true,false
+618 brain_coral_fan 9802 9802 waterlogged=true,false
+619 bubble_coral_fan 9804 9804 waterlogged=true,false
+620 fire_coral_fan 9806 9806 waterlogged=true,false
+621 horn_coral_fan 9808 9808 waterlogged=true,false
+622 dead_tube_coral_wall_fan 9810 9810 facing=north,south,west,east waterlogged=true,false
+623 dead_brain_coral_wall_fan 9818 9818 facing=north,south,west,east waterlogged=true,false
+624 dead_bubble_coral_wall_fan 9826 9826 facing=north,south,west,east waterlogged=true,false
+625 dead_fire_coral_wall_fan 9834 9834 facing=north,south,west,east waterlogged=true,false
+626 dead_horn_coral_wall_fan 9842 9842 facing=north,south,west,east waterlogged=true,false
+627 tube_coral_wall_fan 9850 9850 facing=north,south,west,east waterlogged=true,false
+628 brain_coral_wall_fan 9858 9858 facing=north,south,west,east waterlogged=true,false
+629 bubble_coral_wall_fan 9866 9866 facing=north,south,west,east waterlogged=true,false
+630 fire_coral_wall_fan 9874 9874 facing=north,south,west,east waterlogged=true,false
+631 horn_coral_wall_fan 9882 9882 facing=north,south,west,east waterlogged=true,false
+632 sea_pickle 9890 9890 pickles=1,2,3,4 waterlogged=true,false
+633 blue_ice 9898 9898
+634 conduit 9899 9899 waterlogged=true,false
+635 bamboo_sapling 9901 9901
+636 bamboo 9902 9902 age=0,1 leaves=none,small,large stage=0,1
+637 potted_bamboo 9914 9914
+638 void_air 9915 9915
+639 cave_air 9916 9916
+640 bubble_column 9917 9917 drag=true,false
+641 polished_granite_stairs 9919 9930 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+642 smooth_red_sandstone_stairs 9999 10010 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+643 mossy_stone_brick_stairs 10079 10090 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+644 polished_diorite_stairs 10159 10170 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+645 mossy_cobblestone_stairs 10239 10250 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+646 end_stone_brick_stairs 10319 10330 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+647 stone_stairs 10399 10410 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+648 smooth_sandstone_stairs 10479 10490 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+649 smooth_quartz_stairs 10559 10570 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+650 granite_stairs 10639 10650 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+651 andesite_stairs 10719 10730 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+652 red_nether_brick_stairs 10799 10810 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+653 polished_andesite_stairs 10879 10890 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+654 diorite_stairs 10959 10970 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+655 polished_granite_slab 11039 11042 type=top,bottom,double waterlogged=true,false
+656 smooth_red_sandstone_slab 11045 11048 type=top,bottom,double waterlogged=true,false
+657 mossy_stone_brick_slab 11051 11054 type=top,bottom,double waterlogged=true,false
+658 polished_diorite_slab 11057 11060 type=top,bottom,double waterlogged=true,false
+659 mossy_cobblestone_slab 11063 11066 type=top,bottom,double waterlogged=true,false
+660 end_stone_brick_slab 11069 11072 type=top,bottom,double waterlogged=true,false
+661 smooth_sandstone_slab 11075 11078 type=top,bottom,double waterlogged=true,false
+662 smooth_quartz_slab 11081 11084 type=top,bottom,double waterlogged=true,false
+663 granite_slab 11087 11090 type=top,bottom,double waterlogged=true,false
+664 andesite_slab 11093 11096 type=top,bottom,double waterlogged=true,false
+665 red_nether_brick_slab 11099 11102 type=top,bottom,double waterlogged=true,false
+666 polished_andesite_slab 11105 11108 type=top,bottom,double waterlogged=true,false
+667 diorite_slab 11111 11114 type=top,bottom,double waterlogged=true,false
+668 brick_wall 11117 11120 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+669 prismarine_wall 11441 11444 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+670 red_sandstone_wall 11765 11768 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+671 mossy_stone_brick_wall 12089 12092 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+672 granite_wall 12413 12416 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+673 stone_brick_wall 12737 12740 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+674 nether_brick_wall 13061 13064 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+675 andesite_wall 13385 13388 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+676 red_nether_brick_wall 13709 13712 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+677 sandstone_wall 14033 14036 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+678 end_stone_brick_wall 14357 14360 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+679 diorite_wall 14681 14684 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+680 scaffolding 15005 15036 bottom=true,false distance=0,1,2,3,4,5,6,7 waterlogged=true,false
+681 loom 15037 15037 facing=north,south,west,east
+682 barrel 15041 15042 facing=north,east,south,west,up,down open=true,false
+683 smoker 15053 15054 facing=north,south,west,east lit=true,false
+684 blast_furnace 15061 15062 facing=north,south,west,east lit=true,false
+685 cartography_table 15069 15069
+686 fletching_table 15070 15070
+687 grindstone 15071 15075 face=floor,wall,ceiling facing=north,south,west,east
+688 lectern 15083 15086 facing=north,south,west,east has_book=true,false powered=true,false
+689 smithing_table 15099 15099
+690 stonecutter 15100 15100 facing=north,south,west,east
+691 bell 15104 15105 attachment=floor,ceiling,single_wall,double_wall facing=north,south,west,east powered=true,false
+692 lantern 15136 15139 hanging=true,false waterlogged=true,false
+693 soul_lantern 15140 15143 hanging=true,false waterlogged=true,false
+694 campfire 15144 15147 facing=north,south,west,east lit=true,false signal_fire=true,false waterlogged=true,false
+695 soul_campfire 15176 15179 facing=north,south,west,east lit=true,false signal_fire=true,false waterlogged=true,false
+696 sweet_berry_bush 15208 15208 age=0,1,2,3
+697 warped_stem 15212 15213 axis=x,y,z
+698 stripped_warped_stem 15215 15216 axis=x,y,z
+699 warped_hyphae 15218 15219 axis=x,y,z
+700 stripped_warped_hyphae 15221 15222 axis=x,y,z
+701 warped_nylium 15224 15224
+702 warped_fungus 15225 15225
+703 warped_wart_block 15226 15226
+704 warped_roots 15227 15227
+705 nether_sprouts 15228 15228
+706 crimson_stem 15229 15230 axis=x,y,z
+707 stripped_crimson_stem 15232 15233 axis=x,y,z
+708 crimson_hyphae 15235 15236 axis=x,y,z
+709 stripped_crimson_hyphae 15238 15239 axis=x,y,z
+710 crimson_nylium 15241 15241
+711 crimson_fungus 15242 15242
+712 shroomlight 15243 15243
+713 weeping_vines 15244 15244 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+714 weeping_vines_plant 15270 15270
+715 twisting_vines 15271 15271 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+716 twisting_vines_plant 15297 15297
+717 crimson_roots 15298 15298
+718 crimson_planks 15299 15299
+719 warped_planks 15300 15300
+720 crimson_slab 15301 15304 type=top,bottom,double waterlogged=true,false
+721 warped_slab 15307 15310 type=top,bottom,double waterlogged=true,false
+722 crimson_pressure_plate 15313 15314 powered=true,false
+723 warped_pressure_plate 15315 15316 powered=true,false
+724 crimson_fence 15317 15348 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+725 warped_fence 15349 15380 east=true,false north=true,false south=true,false waterlogged=true,false west=true,false
+726 crimson_trapdoor 15381 15396 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+727 warped_trapdoor 15445 15460 facing=north,south,west,east half=top,bottom open=true,false powered=true,false waterlogged=true,false
+728 crimson_fence_gate 15509 15516 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+729 warped_fence_gate 15541 15548 facing=north,south,west,east in_wall=true,false open=true,false powered=true,false
+730 crimson_stairs 15573 15584 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+731 warped_stairs 15653 15664 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+732 crimson_button 15733 15742 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+733 warped_button 15757 15766 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+734 crimson_door 15781 15792 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+735 warped_door 15845 15856 facing=north,south,west,east half=upper,lower hinge=left,right open=true,false powered=true,false
+736 crimson_sign 15909 15910 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+737 warped_sign 15941 15942 rotation=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 waterlogged=true,false
+738 crimson_wall_sign 15973 15974 facing=north,south,west,east waterlogged=true,false
+739 warped_wall_sign 15981 15982 facing=north,south,west,east waterlogged=true,false
+740 structure_block 15989 15990 mode=save,load,corner,data
+741 jigsaw 15993 16003 orientation=down_east,down_north,down_south,down_west,up_east,up_north,up_south,up_west,west_up,east_up,north_up,south_up
+742 composter 16005 16005 level=0,1,2,3,4,5,6,7,8
+743 target 16014 16014 power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+744 bee_nest 16030 16030 facing=north,south,west,east honey_level=0,1,2,3,4,5
+745 beehive 16054 16054 facing=north,south,west,east honey_level=0,1,2,3,4,5
+746 honey_block 16078 16078
+747 honeycomb_block 16079 16079
+748 netherite_block 16080 16080
+749 ancient_debris 16081 16081
+750 crying_obsidian 16082 16082
+751 respawn_anchor 16083 16083 charges=0,1,2,3,4
+752 potted_crimson_fungus 16088 16088
+753 potted_warped_fungus 16089 16089
+754 potted_crimson_roots 16090 16090
+755 potted_warped_roots 16091 16091
+756 lodestone 16092 16092
+757 blackstone 16093 16093
+758 blackstone_stairs 16094 16105 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+759 blackstone_wall 16174 16177 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+760 blackstone_slab 16498 16501 type=top,bottom,double waterlogged=true,false
+761 polished_blackstone 16504 16504
+762 polished_blackstone_bricks 16505 16505
+763 cracked_polished_blackstone_bricks 16506 16506
+764 chiseled_polished_blackstone 16507 16507
+765 polished_blackstone_brick_slab 16508 16511 type=top,bottom,double waterlogged=true,false
+766 polished_blackstone_brick_stairs 16514 16525 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+767 polished_blackstone_brick_wall 16594 16597 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+768 gilded_blackstone 16918 16918
+769 polished_blackstone_stairs 16919 16930 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+770 polished_blackstone_slab 16999 17002 type=top,bottom,double waterlogged=true,false
+771 polished_blackstone_pressure_plate 17005 17006 powered=true,false
+772 polished_blackstone_button 17007 17016 face=floor,wall,ceiling facing=north,south,west,east powered=true,false
+773 polished_blackstone_wall 17031 17034 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+774 chiseled_nether_bricks 17355 17355
+775 cracked_nether_bricks 17356 17356
+776 quartz_bricks 17357 17357
+777 candle 17358 17361 candles=1,2,3,4 lit=true,false waterlogged=true,false
+778 white_candle 17374 17377 candles=1,2,3,4 lit=true,false waterlogged=true,false
+779 orange_candle 17390 17393 candles=1,2,3,4 lit=true,false waterlogged=true,false
+780 magenta_candle 17406 17409 candles=1,2,3,4 lit=true,false waterlogged=true,false
+781 light_blue_candle 17422 17425 candles=1,2,3,4 lit=true,false waterlogged=true,false
+782 yellow_candle 17438 17441 candles=1,2,3,4 lit=true,false waterlogged=true,false
+783 lime_candle 17454 17457 candles=1,2,3,4 lit=true,false waterlogged=true,false
+784 pink_candle 17470 17473 candles=1,2,3,4 lit=true,false waterlogged=true,false
+785 gray_candle 17486 17489 candles=1,2,3,4 lit=true,false waterlogged=true,false
+786 light_gray_candle 17502 17505 candles=1,2,3,4 lit=true,false waterlogged=true,false
+787 cyan_candle 17518 17521 candles=1,2,3,4 lit=true,false waterlogged=true,false
+788 purple_candle 17534 17537 candles=1,2,3,4 lit=true,false waterlogged=true,false
+789 blue_candle 17550 17553 candles=1,2,3,4 lit=true,false waterlogged=true,false
+790 brown_candle 17566 17569 candles=1,2,3,4 lit=true,false waterlogged=true,false
+791 green_candle 17582 17585 candles=1,2,3,4 lit=true,false waterlogged=true,false
+792 red_candle 17598 17601 candles=1,2,3,4 lit=true,false waterlogged=true,false
+793 black_candle 17614 17617 candles=1,2,3,4 lit=true,false waterlogged=true,false
+794 candle_cake 17630 17631 lit=true,false
+795 white_candle_cake 17632 17633 lit=true,false
+796 orange_candle_cake 17634 17635 lit=true,false
+797 magenta_candle_cake 17636 17637 lit=true,false
+798 light_blue_candle_cake 17638 17639 lit=true,false
+799 yellow_candle_cake 17640 17641 lit=true,false
+800 lime_candle_cake 17642 17643 lit=true,false
+801 pink_candle_cake 17644 17645 lit=true,false
+802 gray_candle_cake 17646 17647 lit=true,false
+803 light_gray_candle_cake 17648 17649 lit=true,false
+804 cyan_candle_cake 17650 17651 lit=true,false
+805 purple_candle_cake 17652 17653 lit=true,false
+806 blue_candle_cake 17654 17655 lit=true,false
+807 brown_candle_cake 17656 17657 lit=true,false
+808 green_candle_cake 17658 17659 lit=true,false
+809 red_candle_cake 17660 17661 lit=true,false
+810 black_candle_cake 17662 17663 lit=true,false
+811 amethyst_block 17664 17664
+812 budding_amethyst 17665 17665
+813 amethyst_cluster 17666 17675 facing=north,east,south,west,up,down waterlogged=true,false
+814 large_amethyst_bud 17678 17687 facing=north,east,south,west,up,down waterlogged=true,false
+815 medium_amethyst_bud 17690 17699 facing=north,east,south,west,up,down waterlogged=true,false
+816 small_amethyst_bud 17702 17711 facing=north,east,south,west,up,down waterlogged=true,false
+817 tuff 17714 17714
+818 calcite 17715 17715
+819 tinted_glass 17716 17716
+820 powder_snow 17717 17717
+821 sculk_sensor 17718 17719 power=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 sculk_sensor_phase=inactive,active,cooldown waterlogged=true,false
+822 oxidized_copper 17814 17814
+823 weathered_copper 17815 17815
+824 exposed_copper 17816 17816
+825 copper_block 17817 17817
+826 copper_ore 17818 17818
+827 deepslate_copper_ore 17819 17819
+828 oxidized_cut_copper 17820 17820
+829 weathered_cut_copper 17821 17821
+830 exposed_cut_copper 17822 17822
+831 cut_copper 17823 17823
+832 oxidized_cut_copper_stairs 17824 17835 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+833 weathered_cut_copper_stairs 17904 17915 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+834 exposed_cut_copper_stairs 17984 17995 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+835 cut_copper_stairs 18064 18075 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+836 oxidized_cut_copper_slab 18144 18147 type=top,bottom,double waterlogged=true,false
+837 weathered_cut_copper_slab 18150 18153 type=top,bottom,double waterlogged=true,false
+838 exposed_cut_copper_slab 18156 18159 type=top,bottom,double waterlogged=true,false
+839 cut_copper_slab 18162 18165 type=top,bottom,double waterlogged=true,false
+840 waxed_copper_block 18168 18168
+841 waxed_weathered_copper 18169 18169
+842 waxed_exposed_copper 18170 18170
+843 waxed_oxidized_copper 18171 18171
+844 waxed_oxidized_cut_copper 18172 18172
+845 waxed_weathered_cut_copper 18173 18173
+846 waxed_exposed_cut_copper 18174 18174
+847 waxed_cut_copper 18175 18175
+848 waxed_oxidized_cut_copper_stairs 18176 18187 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+849 waxed_weathered_cut_copper_stairs 18256 18267 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+850 waxed_exposed_cut_copper_stairs 18336 18347 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+851 waxed_cut_copper_stairs 18416 18427 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+852 waxed_oxidized_cut_copper_slab 18496 18499 type=top,bottom,double waterlogged=true,false
+853 waxed_weathered_cut_copper_slab 18502 18505 type=top,bottom,double waterlogged=true,false
+854 waxed_exposed_cut_copper_slab 18508 18511 type=top,bottom,double waterlogged=true,false
+855 waxed_cut_copper_slab 18514 18517 type=top,bottom,double waterlogged=true,false
+856 lightning_rod 18520 18539 facing=north,east,south,west,up,down powered=true,false waterlogged=true,false
+857 pointed_dripstone 18544 18549 thickness=tip_merge,tip,frustum,middle,base vertical_direction=up,down waterlogged=true,false
+858 dripstone_block 18564 18564
+859 cave_vines 18565 18566 age=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 berries=true,false
+860 cave_vines_plant 18617 18618 berries=true,false
+861 spore_blossom 18619 18619
+862 azalea 18620 18620
+863 flowering_azalea 18621 18621
+864 moss_carpet 18622 18622
+865 moss_block 18623 18623
+866 big_dripleaf 18624 18625 facing=north,south,west,east tilt=none,unstable,partial,full waterlogged=true,false
+867 big_dripleaf_stem 18656 18657 facing=north,south,west,east waterlogged=true,false
+868 small_dripleaf 18664 18667 facing=north,south,west,east half=upper,lower waterlogged=true,false
+869 hanging_roots 18680 18681 waterlogged=true,false
+870 rooted_dirt 18682 18682
+871 deepslate 18683 18684 axis=x,y,z
+872 cobbled_deepslate 18686 18686
+873 cobbled_deepslate_stairs 18687 18698 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+874 cobbled_deepslate_slab 18767 18770 type=top,bottom,double waterlogged=true,false
+875 cobbled_deepslate_wall 18773 18776 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+876 polished_deepslate 19097 19097
+877 polished_deepslate_stairs 19098 19109 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+878 polished_deepslate_slab 19178 19181 type=top,bottom,double waterlogged=true,false
+879 polished_deepslate_wall 19184 19187 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+880 deepslate_tiles 19508 19508
+881 deepslate_tile_stairs 19509 19520 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+882 deepslate_tile_slab 19589 19592 type=top,bottom,double waterlogged=true,false
+883 deepslate_tile_wall 19595 19598 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+884 deepslate_bricks 19919 19919
+885 deepslate_brick_stairs 19920 19931 facing=north,south,west,east half=top,bottom shape=straight,inner_left,inner_right,outer_left,outer_right waterlogged=true,false
+886 deepslate_brick_slab 20000 20003 type=top,bottom,double waterlogged=true,false
+887 deepslate_brick_wall 20006 20009 east=none,low,tall north=none,low,tall south=none,low,tall up=true,false waterlogged=true,false west=none,low,tall
+888 chiseled_deepslate 20330 20330
+889 cracked_deepslate_bricks 20331 20331
+890 cracked_deepslate_tiles 20332 20332
+891 infested_deepslate 20333 20334 axis=x,y,z
+892 smooth_basalt 20336 20336
+893 raw_iron_block 20337 20337
+894 raw_copper_block 20338 20338
+895 raw_gold_block 20339 20339
+896 potted_azalea_bush 20340 20340
+897 potted_flowering_azalea_bush 20341 20341

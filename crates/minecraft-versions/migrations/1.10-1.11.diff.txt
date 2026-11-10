@@ -1,0 +1,13 @@
+= play::toClient::packet (references changed)
+~ play::toClient::packet_collect [FieldsAdded]
+    +pickupItemCount: field() => varint;
+~ play::toClient::packet_spawn_entity_living [FieldsRetypedScalar]
+    ~type: field() => u8; -> field() => varint;
+~ play::toClient::packet_title [ArmsAdded, ArmsChanged]
+    ~v2
+    +v3
+= play::toServer::packet (references changed)
+~ play::toServer::packet_block_place [FieldsRetypedScalar]
+    ~cursorX: field() => i8; -> field() => f32;
+    ~cursorY: field() => i8; -> field() => f32;
+    ~cursorZ: field() => i8; -> field() => f32;

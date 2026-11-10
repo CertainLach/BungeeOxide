@@ -1,0 +1,209 @@
++ login::toClient::packet_compress
++ optionalNbt
++ play::toClient::packet_camera
++ play::toClient::packet_combat_event
++ play::toClient::packet_difficulty
++ play::toClient::packet_playerlist_header
++ play::toClient::packet_resource_pack_send
++ play::toClient::packet_set_compression
++ play::toClient::packet_title
++ play::toClient::packet_update_entity_nbt
++ play::toClient::packet_world_border
++ play::toServer::packet_resource_pack_receive
++ play::toServer::packet_spectate
++ position
++ varlong
+- compressedNbt
+- position_ibi
+- position_iii
+- position_isi
+= entityMetadata (references changed)
+= entityMetadataItem (references changed)
+~ login::toClient::packet [ArmsAdded]
+    +compress
+~ login::toClient::packet_encryption_begin [FieldsRetypedNested]
+    ~publicKey: nested change
+    ~verifyToken: nested change
+= login::toServer::packet (references changed)
+~ login::toServer::packet_encryption_begin [FieldsRetypedNested]
+    ~sharedSecret: nested change
+    ~verifyToken: nested change
+~ play::toClient::packet [ArmsAdded]
+    +difficulty
+    +combat_event
+    +camera
+    +world_border
+    +title
+    +set_compression
+    +playerlist_header
+    +resource_pack_send
+    +update_entity_nbt
+~ play::toClient::packet_bed [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+    ~location: field() => position_ibi; -> field() => position;
+~ play::toClient::packet_block_action [FieldsRetypedScalar]
+    ~location: field() => position_isi; -> field() => position;
+~ play::toClient::packet_block_break_animation [FieldsRetypedScalar]
+    ~location: field() => position_iii; -> field() => position;
+~ play::toClient::packet_block_change [FieldsRemoved, FieldsRetypedScalar]
+    -metadata: field() => u8;
+    ~location: field() => position_ibi; -> field() => position;
+~ play::toClient::packet_chat [ShapeChanged]
+~ play::toClient::packet_collect [FieldsRetypedScalar]
+    ~collectedEntityId: field() => i32; -> field() => varint;
+    ~collectorEntityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_custom_payload [FieldsRetypedNested]
+    ~data: nested change
+~ play::toClient::packet_entity [Other]
+~ play::toClient::packet_entity_destroy [Other]
+~ play::toClient::packet_entity_effect [FieldsAdded, FieldsRetypedScalar]
+    +hideParticles: field() => bool;
+    ~entityId: field() => i32; -> field() => varint;
+    ~duration: field() => i16; -> field() => varint;
+~ play::toClient::packet_entity_equipment [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_head_rotation [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_look [FieldsAdded, FieldsRetypedScalar]
+    +onGround: field() => bool;
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_metadata [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_move_look [FieldsAdded, FieldsRetypedScalar]
+    +onGround: field() => bool;
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_teleport [FieldsAdded, FieldsRetypedScalar]
+    +onGround: field() => bool;
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_entity_velocity [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_experience [FieldsRetypedScalar]
+    ~level: field() => i16; -> field() => varint;
+    ~totalExperience: field() => i16; -> field() => varint;
+~ play::toClient::packet_game_state_change [FieldsRetypedNested]
+    ~reason: nested change
+~ play::toClient::packet_keep_alive [Other]
+~ play::toClient::packet_login [FieldsAdded]
+    +reducedDebugInfo: field() => bool;
+~ play::toClient::packet_map [FieldsAdded, FieldsRemoved]
+    +scale: field() => i8;
+    +icons: field() => array(Count: varint) => container { field(directionAndType) => i8; field(x) => i8; field(z) => i8; };
+    +columns: field() => union(Tag: i8) { variant(v0, match: 0) => void; default => container { field(rows) => i8; field(x) => i8; field(y) => i8; field(data) => buffer(Count: varint); }; };
+    -data: field() => buffer(Count: i16);
+~ play::toClient::packet_map_chunk [FieldsAdded, FieldsRemoved]
+    +chunkData: field() => buffer(Count: varint);
+    -addBitMap: field() => u16;
+    -compressedChunkData: field() => buffer(Count: i32);
+~ play::toClient::packet_map_chunk_bulk [FieldsAdded, FieldsRemoved, FieldsRetypedNested]
+    +data: field() => restBuffer;
+    -chunkColumnCount: virtual_field(, value: i16(./meta/@size)) => i16;
+    -dataLength: virtual_field(, value: i32(./compressedChunkData/@size)) => i32;
+    -compressedChunkData: field() => buffer(count: ../dataLength);
+    ~meta: nested change
+~ play::toClient::packet_multi_block_change [FieldsRemoved, FieldsRetypedNested]
+    -recordCount: virtual_field(, value: i16(./records/@size)) => i16;
+    -dataLength: field() => i32;
+    ~records: nested change
+~ play::toClient::packet_named_entity_spawn [FieldsRemoved, FieldsRetypedScalar]
+    -playerName: field() => string;
+    -data: field() => array(Count: varint) => container { field(name) => string; field(value) => string; field(signature) => string; };
+    ~playerUUID: field() => string; -> field() => UUID;
+~ play::toClient::packet_open_sign_entity [Other]
+~ play::toClient::packet_open_window [FieldsRemoved, FieldsRetypedScalar, FieldsRetypedNested]
+    -useProvidedTitle: field() => bool;
+    ~inventoryType: virtual_field(, value: ./entityId/@tag) => u8; -> field() => string;
+    ~entityId: nested change
+~ play::toClient::packet_player_info [FieldsAdded, FieldsRemoved]
+    +action: field() => union(Tag: varint) { variant(add_player, match: 0); variant(update_game_mode, match: 1); variant(update_latency, match: 2); variant(update_display_name, match: 3); variant(remove_player, match: 4); default; };
+    +data: field() => array(Count: varint) => container { field(uuid) => UUID; field(ANON) => union(tag: ../../../action) { variant(add_player, match: "add_player") => container { field(name) => string; field(properties) => array(Count: varint) => container { field(name) => string; field(value) => string; field(signature) => option => string; }; field(gamemode) => varint; field(ping) => varint; field(displayName) => option => string; }; variant(remove_player, match: "remove_player") => void; variant(update_display_name, match: "update_display_name") => option => string; variant(update_game_mode, match: "update_game_mode") => varint; variant(update_latency, match: "update_latency") => varint; default; }; };
+    -playerName: field() => string;
+    -online: field() => bool;
+    -ping: field() => i16;
+~ play::toClient::packet_position [FieldsAdded, FieldsRemoved]
+    +flags: field() => i8;
+    -onGround: field() => bool;
+~ play::toClient::packet_rel_entity_move [FieldsAdded, FieldsRetypedScalar]
+    +onGround: field() => bool;
+    ~entityId: field() => i32; -> field() => varint;
+~ play::toClient::packet_remove_entity_effect [FieldsRetypedScalar]
+    ~entityId: field() => i32; -> field() => varint;
+= play::toClient::packet_scoreboard_display_objective (references changed)
+~ play::toClient::packet_scoreboard_objective [FieldsRemoved, FieldsRetypedNested]
+    -displayText: field() => string;
+    ~action: nested change
+~ play::toClient::packet_scoreboard_score [FieldsAdded, FieldsRetypedNested]
+    +scoreName: field() => string;
+    +value: field() => union(tag: ../action) { variant(v1, match: 1) => void; default => varint; };
+    ~action: nested change
+~ play::toClient::packet_scoreboard_team [FieldsRetypedNested]
+    ~mode: nested change
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_spawn_entity [FieldsAdded, FieldsRemoved]
+    +velocity: field() => union(Tag: i32) { variant(v0, match: 0) => void; default => vec3i16; };
+    -objectData: field() => union(Tag: i32) { variant(v0, match: 0) => void; default => container { field(velocityX) => i16; field(velocityY) => i16; field(velocityZ) => i16; }; };
+= play::toClient::packet_spawn_entity_living (references changed)
+~ play::toClient::packet_spawn_entity_painting [FieldsRetypedScalar]
+    ~location: field() => position_iii; -> field() => position;
+    ~direction: field() => i32; -> field() => u8;
+~ play::toClient::packet_spawn_position [Other]
+~ play::toClient::packet_tile_entity_data [FieldsRetypedScalar]
+    ~location: field() => position_isi; -> field() => position;
+    ~nbtData: field() => compressedNbt; -> field() => optionalNbt;
+~ play::toClient::packet_transaction [FieldsRetypedScalar]
+    ~windowId: field() => u8; -> field() => i8;
+~ play::toClient::packet_update_attributes [FieldsRetypedScalar, FieldsRetypedNested]
+    ~entityId: field() => i32; -> field() => varint;
+    ~properties: nested change
+~ play::toClient::packet_update_health [FieldsRetypedScalar]
+    ~food: field() => i16; -> field() => varint;
+~ play::toClient::packet_update_sign [FieldsRetypedScalar]
+    ~location: field() => position_isi; -> field() => position;
+= play::toClient::packet_window_items (references changed)
+~ play::toClient::packet_world_event [FieldsRetypedScalar]
+    ~location: field() => position_ibi; -> field() => position;
+~ play::toClient::packet_world_particles [FieldsAdded, FieldsRemoved]
+    +particleId: virtual_field(, value: ./data/@tag) => i32;
+    +longDistance: field() => bool;
+    +data: field() => union(tag: ../particleId) { variant(v36, match: 36) => array(count: 2) => varint; variant(v37, match: 37) => array(count: 1) => varint; variant(v38, match: 38) => array(count: 1) => varint; default => void; };
+    -particleName: field() => string;
+~ play::toServer::packet [ArmsAdded]
+    +spectate
+    +resource_pack_receive
+~ play::toServer::packet_arm_animation [FieldsRemoved]
+    -entityId: field() => i32;
+    -animation: field() => i8;
+~ play::toServer::packet_block_dig [FieldsRetypedScalar]
+    ~status: field() => i8; -> field() => varint;
+    ~location: field() => position_ibi; -> field() => position;
+~ play::toServer::packet_block_place [FieldsRetypedScalar]
+    ~location: field() => position_ibi; -> field() => position;
+~ play::toServer::packet_client_command [TagChanged]
+    tag union(Tag: i8); -> union(Tag: varint);
+~ play::toServer::packet_custom_payload [FieldsRetypedNested]
+    ~data: nested change
+~ play::toServer::packet_entity_action [FieldsRetypedScalar, FieldsRetypedNested]
+    ~entityId: field() => i32; -> field() => varint;
+    ~actionId: nested change
+    ~jumpBoost: field() => i32; -> field() => varint;
+~ play::toServer::packet_keep_alive [Other]
+~ play::toServer::packet_position [FieldsRemoved]
+    -stance: field() => f64;
+~ play::toServer::packet_position_look [FieldsRemoved]
+    -stance: field() => f64;
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_settings [FieldsRemoved, FieldsRenamed]
+    difficulty renamed to skinParts
+    -showCape: field() => bool;
+~ play::toServer::packet_steer_vehicle [FieldsRemoved, FieldsRetypedScalar]
+    -unmount: field() => bool;
+    ~jump: field() => bool; -> field() => u8;
+~ play::toServer::packet_tab_complete [ShapeChanged]
+~ play::toServer::packet_update_sign [FieldsRetypedScalar]
+    ~location: field() => position_isi; -> field() => position;
+~ play::toServer::packet_use_entity [FieldsRetypedScalar, FieldsRetypedNested]
+    ~target: field() => i32; -> field() => varint;
+    ~mouse: nested change
+~ play::toServer::packet_window_click [FieldsRetypedScalar]
+    ~windowId: field() => i8; -> field() => u8;
+~ slot [ArmsChanged]
+    ~default

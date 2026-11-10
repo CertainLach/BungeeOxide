@@ -1,0 +1,5 @@
+[
+	{ "op": "test", "path": "/4/name", "value": "bee" },
+	{ "op": "test", "path": "/4/type", "value": "UNKNOWN" },
+	{ "op": "replace", "path": "/4/type", "value": "mob" }
+]

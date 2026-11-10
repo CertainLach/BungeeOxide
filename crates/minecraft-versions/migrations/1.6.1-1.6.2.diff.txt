@@ -1,0 +1,6 @@
++ UUID
++ play::toClient::packet_open_sign_entity
+~ play::toClient::packet [ArmsAdded]
+    +open_sign_entity
+~ play::toClient::packet_update_attributes [FieldsRetypedNested]
+    ~properties: nested change

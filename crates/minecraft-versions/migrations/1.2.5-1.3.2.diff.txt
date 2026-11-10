@@ -1,0 +1,94 @@
++ compressedNbt
++ play::toClient::packet_block_break_animation
++ play::toClient::packet_encryption_begin
++ play::toClient::packet_map_chunk_bulk
++ play::toClient::packet_named_sound_effect
++ play::toClient::packet_shared_key
++ play::toClient::packet_tab_complete
++ play::toServer::packet_client_command
++ play::toServer::packet_encryption_begin
++ play::toServer::packet_settings
++ play::toServer::packet_tab_complete
+- legacySlot
+- play::toClient::packet_handshake
+- play::toClient::packet_pre_chunk
+~ play::toClient::packet [ArmsAdded, ArmsRemoved]
+    +block_break_animation
+    +map_chunk_bulk
+    +named_sound_effect
+    +tab_complete
+    +shared_key
+    +encryption_begin
+    -handshake
+    -pre_chunk
+~ play::toClient::packet_abilities [FieldsAdded, FieldsRemoved]
+    +flags: field() => i8;
+    +flyingSpeed: field() => i8;
+    +walkingSpeed: field() => i8;
+    -invulnerable: field() => bool;
+    -flying: field() => bool;
+    -canFly: field() => bool;
+    -instantBuild: field() => bool;
+~ play::toClient::packet_block_action [FieldsAdded]
+    +blockId: field() => i16;
+~ play::toClient::packet_block_change [FieldsRetypedScalar]
+    ~type: field() => u8; -> field() => i16;
+~ play::toClient::packet_entity_destroy [Other]
+~ play::toClient::packet_entity_equipment [FieldsAdded, FieldsRemoved]
+    +item: field() => slot;
+    -itemId: field() => i16;
+    -itemDamage: field() => i16;
+~ play::toClient::packet_explosion [FieldsAdded]
+    +playerMotionX: field() => f32;
+    +playerMotionY: field() => f32;
+    +playerMotionZ: field() => f32;
+~ play::toClient::packet_login [FieldsRemoved, FieldsRetypedScalar]
+    -username: field() => string;
+    ~gameMode: field() => i32; -> field() => u8;
+    ~dimension: field() => i32; -> field() => i8;
+~ play::toClient::packet_map_chunk [FieldsRemoved, FieldsRetypedNested]
+    -compressedSize: virtual_field(, value: i32(./compressedChunkData/@size)) => i32;
+    -unused: field() => i32;
+    ~compressedChunkData: nested change
+~ play::toClient::packet_named_entity_spawn [FieldsAdded]
+    +metadata: field() => entityMetadata;
+= play::toClient::packet_set_creative_slot (references changed)
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_spawn_entity_living [FieldsAdded]
+    +velocity: field() => vec3i16;
+~ play::toClient::packet_tile_entity_data [FieldsAdded, FieldsRemoved]
+    +nbtData: field() => compressedNbt;
+    -custom1: field() => i32;
+    -custom2: field() => i32;
+    -custom3: field() => i32;
+= play::toClient::packet_window_items (references changed)
+~ play::toServer::packet [ArmsAdded]
+    +tab_complete
+    +settings
+    +client_command
+    +encryption_begin
+~ play::toServer::packet_abilities [FieldsAdded, FieldsRemoved]
+    +flags: field() => i8;
+    +flyingSpeed: field() => i8;
+    +walkingSpeed: field() => i8;
+    -invulnerable: field() => bool;
+    -flying: field() => bool;
+    -canFly: field() => bool;
+    -instantBuild: field() => bool;
+~ play::toServer::packet_block_place [FieldsAdded]
+    +cursorX: field() => i8;
+    +cursorY: field() => i8;
+    +cursorZ: field() => i8;
+~ play::toServer::packet_login [FieldsRemoved, FieldsRenamed, FieldsRetypedScalar]
+    protocolVersion renamed to entityId
+    -username: field() => string;
+    ~gameMode: field() => i32; -> field() => u8;
+    ~dimension: field() => i32; -> field() => i8;
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_set_protocol [FieldsAdded, FieldsRenamed]
+    usernameAndHost renamed to username
+    +protocolVersion: field() => u8;
+    +serverHost: field() => string;
+    +serverPort: field() => i32;
+= play::toServer::packet_window_click (references changed)
+~ slot [ShapeChanged]
