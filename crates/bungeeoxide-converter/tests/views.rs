@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 use std::ops::Range;
 
-use bungeeoxide_converter::gen::play::to_client::packet as owned;
-use bungeeoxide_converter::gen::view::play::to_client::packet as view;
+use bungeeoxide_converter::minecraft::v26_1::play::to_client::packet as owned;
+use bungeeoxide_converter::minecraft::view::v26_1::play::to_client::packet as view;
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Version;
 use bungeeoxide_converter::{convert, Root, Session};

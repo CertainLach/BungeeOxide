@@ -1,7 +1,6 @@
 minecraft: nbt
-	rm -rf crates/minecraft-protocol/src/gen ts/minecraft-protocol/gen
+	rm -rf ts/minecraft-protocol/gen
 	pds2 minecraft-data upgrade protocol.json
-	pds2 compile protocol.pds rust --to crates/minecraft-protocol/src/gen
 	pds2 compile protocol.pds typescript --to ts/minecraft-protocol/gen
 
 nbt:

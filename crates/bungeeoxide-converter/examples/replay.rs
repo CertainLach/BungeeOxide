@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use bungeeoxide_converter::gen::v1_8::play::to_client::packet;
+use bungeeoxide_converter::minecraft::v1_8::play::to_client::packet;
 use bungeeoxide_converter::pds::{Input, Output};
 
 fn main() -> anyhow::Result<()> {

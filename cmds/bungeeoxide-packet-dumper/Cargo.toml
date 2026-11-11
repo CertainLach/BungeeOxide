@@ -1,0 +1,10 @@
+[package]
+name = "bungeeoxide-packet-dumper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bungeeoxide-minecraft-v1-21-11.workspace = true
+clap = { workspace = true, features = ["derive"] }
+flate2.workspace = true
+pds-bytes-runtime.workspace = true

@@ -1,8 +1,0 @@
-[package]
-name = "minecraft-natives"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-bungeeoxide-nbt = { path = "../bungeeoxide-nbt" }
-pds-bytes-runtime = { path = "../pds-bytes-runtime" }

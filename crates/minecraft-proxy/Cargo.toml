@@ -1,8 +1,0 @@
-[package]
-name = "minecraft-proxy"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-flate2 = "1"
-minecraft-protocol = { path = "../minecraft-protocol" }

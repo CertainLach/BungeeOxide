@@ -4,22 +4,22 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-aes = "0.8"
-anyhow = "1.0"
-base64 = "0.22"
-bytes = "1"
-clap = { version = "4.5", features = ["derive"] }
-flate2 = "1"
-futures = "0.3"
-bungeeoxide-authlib = { path = "../../crates/bungeeoxide-authlib" }
-bungeeoxide-converter = { path = "../../crates/bungeeoxide-converter" }
-bungeeoxide-nbt = { path = "../../crates/bungeeoxide-nbt" }
-pds-bytes-runtime = { path = "../../crates/pds-bytes-runtime" }
-rand = "0.8"
-rsa = "0.9"
-serde_json = "1.0"
-sha2 = { version = "0.10", features = ["oid"] }
-tokio = { version = "1", features = ["full"] }
-tokio-util = { version = "0.7", features = ["codec"] }
-tracing = "0.1.44"
-tracing-subscriber = "0.3.23"
+aes.workspace = true
+anyhow.workspace = true
+base64.workspace = true
+bytes.workspace = true
+clap = { workspace = true, features = ["derive"] }
+flate2.workspace = true
+futures.workspace = true
+bungeeoxide-authlib.workspace = true
+bungeeoxide-converter.workspace = true
+bungeeoxide-nbt.workspace = true
+pds-bytes-runtime.workspace = true
+rand.workspace = true
+rsa.workspace = true
+serde_json.workspace = true
+sha2 = { workspace = true, features = ["oid"] }
+tokio = { workspace = true, features = ["full"] }
+tokio-util = { workspace = true, features = ["codec"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true

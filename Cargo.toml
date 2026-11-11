@@ -2,12 +2,100 @@
 resolver = "2"
 members = [
 	"cmds/bungeeoxide",
-	"crates/minecraft-natives",
-	"crates/minecraft-protocol",
-	"crates/minecraft-proxy",
+	"cmds/bungeeoxide-convert-world",
+	"cmds/bungeeoxide-packet-dumper",
+	"minecraft/*",
+	"crates/bungeeoxide-pds-natives",
 	"crates/bungeeoxide-authlib",
 	"crates/bungeeoxide-converter",
 	"crates/bungeeoxide-nbt",
 	"crates/pds-bytes-runtime",
 ]
 default-members = ["cmds/bungeeoxide"]
+
+[workspace.dependencies]
+bungeeoxide-minecraft = { path = "minecraft/bungeeoxide-minecraft" }
+bungeeoxide-minecraft-root = { path = "minecraft/bungeeoxide-minecraft-root" }
+bungeeoxide-minecraft-v1-0-1 = { path = "minecraft/bungeeoxide-minecraft-v1-0-1" }
+bungeeoxide-minecraft-v1-1 = { path = "minecraft/bungeeoxide-minecraft-v1-1" }
+bungeeoxide-minecraft-v1-10 = { path = "minecraft/bungeeoxide-minecraft-v1-10" }
+bungeeoxide-minecraft-v1-11 = { path = "minecraft/bungeeoxide-minecraft-v1-11" }
+bungeeoxide-minecraft-v1-12 = { path = "minecraft/bungeeoxide-minecraft-v1-12" }
+bungeeoxide-minecraft-v1-12-1 = { path = "minecraft/bungeeoxide-minecraft-v1-12-1" }
+bungeeoxide-minecraft-v1-12-2 = { path = "minecraft/bungeeoxide-minecraft-v1-12-2" }
+bungeeoxide-minecraft-v1-13 = { path = "minecraft/bungeeoxide-minecraft-v1-13" }
+bungeeoxide-minecraft-v1-13-1 = { path = "minecraft/bungeeoxide-minecraft-v1-13-1" }
+bungeeoxide-minecraft-v1-13-2 = { path = "minecraft/bungeeoxide-minecraft-v1-13-2" }
+bungeeoxide-minecraft-v1-14 = { path = "minecraft/bungeeoxide-minecraft-v1-14" }
+bungeeoxide-minecraft-v1-14-1 = { path = "minecraft/bungeeoxide-minecraft-v1-14-1" }
+bungeeoxide-minecraft-v1-14-3 = { path = "minecraft/bungeeoxide-minecraft-v1-14-3" }
+bungeeoxide-minecraft-v1-14-4 = { path = "minecraft/bungeeoxide-minecraft-v1-14-4" }
+bungeeoxide-minecraft-v1-15 = { path = "minecraft/bungeeoxide-minecraft-v1-15" }
+bungeeoxide-minecraft-v1-15-1 = { path = "minecraft/bungeeoxide-minecraft-v1-15-1" }
+bungeeoxide-minecraft-v1-15-2 = { path = "minecraft/bungeeoxide-minecraft-v1-15-2" }
+bungeeoxide-minecraft-v1-16 = { path = "minecraft/bungeeoxide-minecraft-v1-16" }
+bungeeoxide-minecraft-v1-16-1 = { path = "minecraft/bungeeoxide-minecraft-v1-16-1" }
+bungeeoxide-minecraft-v1-16-2 = { path = "minecraft/bungeeoxide-minecraft-v1-16-2" }
+bungeeoxide-minecraft-v1-17 = { path = "minecraft/bungeeoxide-minecraft-v1-17" }
+bungeeoxide-minecraft-v1-17-1 = { path = "minecraft/bungeeoxide-minecraft-v1-17-1" }
+bungeeoxide-minecraft-v1-18 = { path = "minecraft/bungeeoxide-minecraft-v1-18" }
+bungeeoxide-minecraft-v1-18-2 = { path = "minecraft/bungeeoxide-minecraft-v1-18-2" }
+bungeeoxide-minecraft-v1-19 = { path = "minecraft/bungeeoxide-minecraft-v1-19" }
+bungeeoxide-minecraft-v1-19-2 = { path = "minecraft/bungeeoxide-minecraft-v1-19-2" }
+bungeeoxide-minecraft-v1-19-3 = { path = "minecraft/bungeeoxide-minecraft-v1-19-3" }
+bungeeoxide-minecraft-v1-19-4 = { path = "minecraft/bungeeoxide-minecraft-v1-19-4" }
+bungeeoxide-minecraft-v1-2-3 = { path = "minecraft/bungeeoxide-minecraft-v1-2-3" }
+bungeeoxide-minecraft-v1-2-5 = { path = "minecraft/bungeeoxide-minecraft-v1-2-5" }
+bungeeoxide-minecraft-v1-20 = { path = "minecraft/bungeeoxide-minecraft-v1-20" }
+bungeeoxide-minecraft-v1-20-2 = { path = "minecraft/bungeeoxide-minecraft-v1-20-2" }
+bungeeoxide-minecraft-v1-20-3 = { path = "minecraft/bungeeoxide-minecraft-v1-20-3" }
+bungeeoxide-minecraft-v1-20-5 = { path = "minecraft/bungeeoxide-minecraft-v1-20-5" }
+bungeeoxide-minecraft-v1-21-1 = { path = "minecraft/bungeeoxide-minecraft-v1-21-1" }
+bungeeoxide-minecraft-v1-21-11 = { path = "minecraft/bungeeoxide-minecraft-v1-21-11" }
+bungeeoxide-minecraft-v1-21-3 = { path = "minecraft/bungeeoxide-minecraft-v1-21-3" }
+bungeeoxide-minecraft-v1-21-4 = { path = "minecraft/bungeeoxide-minecraft-v1-21-4" }
+bungeeoxide-minecraft-v1-21-5 = { path = "minecraft/bungeeoxide-minecraft-v1-21-5" }
+bungeeoxide-minecraft-v1-21-6 = { path = "minecraft/bungeeoxide-minecraft-v1-21-6" }
+bungeeoxide-minecraft-v1-21-8 = { path = "minecraft/bungeeoxide-minecraft-v1-21-8" }
+bungeeoxide-minecraft-v1-21-9 = { path = "minecraft/bungeeoxide-minecraft-v1-21-9" }
+bungeeoxide-minecraft-v1-3-2 = { path = "minecraft/bungeeoxide-minecraft-v1-3-2" }
+bungeeoxide-minecraft-v1-4-2 = { path = "minecraft/bungeeoxide-minecraft-v1-4-2" }
+bungeeoxide-minecraft-v1-4-5 = { path = "minecraft/bungeeoxide-minecraft-v1-4-5" }
+bungeeoxide-minecraft-v1-4-7 = { path = "minecraft/bungeeoxide-minecraft-v1-4-7" }
+bungeeoxide-minecraft-v1-5-1 = { path = "minecraft/bungeeoxide-minecraft-v1-5-1" }
+bungeeoxide-minecraft-v1-5-2 = { path = "minecraft/bungeeoxide-minecraft-v1-5-2" }
+bungeeoxide-minecraft-v1-6-1 = { path = "minecraft/bungeeoxide-minecraft-v1-6-1" }
+bungeeoxide-minecraft-v1-6-2 = { path = "minecraft/bungeeoxide-minecraft-v1-6-2" }
+bungeeoxide-minecraft-v1-6-4 = { path = "minecraft/bungeeoxide-minecraft-v1-6-4" }
+bungeeoxide-minecraft-v1-7 = { path = "minecraft/bungeeoxide-minecraft-v1-7" }
+bungeeoxide-minecraft-v1-8 = { path = "minecraft/bungeeoxide-minecraft-v1-8" }
+bungeeoxide-minecraft-v1-9 = { path = "minecraft/bungeeoxide-minecraft-v1-9" }
+bungeeoxide-minecraft-v1-9-2 = { path = "minecraft/bungeeoxide-minecraft-v1-9-2" }
+bungeeoxide-minecraft-v1-9-4 = { path = "minecraft/bungeeoxide-minecraft-v1-9-4" }
+bungeeoxide-minecraft-v26-1 = { path = "minecraft/bungeeoxide-minecraft-v26-1" }
+bungeeoxide-pds-natives = { path = "crates/bungeeoxide-pds-natives" }
+pds-bytes-runtime = { path = "crates/pds-bytes-runtime" }
+aes = "0.8"
+anyhow = "1.0"
+base64 = "0.22"
+bungeeoxide-authlib = { path = "crates/bungeeoxide-authlib" }
+bungeeoxide-converter = { path = "crates/bungeeoxide-converter" }
+bungeeoxide-nbt = { path = "crates/bungeeoxide-nbt" }
+bytes = "1"
+clap = "4.5"
+flate2 = "1"
+futures = "0.3"
+md-5 = "0.10"
+psm = "0.1.32"
+rand = "0.8"
+rsa = "0.9"
+serde = "1"
+serde_json = "1.0"
+sha1 = "0.10"
+sha2 = "0.10"
+tokio = "1"
+tokio-util = "0.7"
+toml = "1.2"
+tracing = "0.1.44"
+tracing-subscriber = "0.3.23"
+ureq = { version = "3", default-features = false }

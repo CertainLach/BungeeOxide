@@ -2,6 +2,7 @@ mcdata := "../../target/minecraft-data"
 languages := "../../target/minecraft-languages"
 work := "../../target/bungeeoxide-converter"
 pds2 := "pds2"
+crates := "../../minecraft"
 
 gen:
 	#!/usr/bin/env bash
@@ -9,10 +10,13 @@ gen:
 	mkdir -p {{work}}
 	mapfile -t files < <(printf '%s\n' pds/*.pds | sort -V)
 	{{pds2}} minecraft-data merge "${files[@]}" --to {{work}}/merged.pds
-	rm -rf src/gen
+	rm -rf src/gen {{crates}}
 	latest=$(basename "${files[-1]}" .pds)
-	{{pds2}} compile {{work}}/merged.pds rust --to src/gen --view "v${latest//./_}"
-	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --virtual
+	{{pds2}} compile {{work}}/merged.pds rust --to {{crates}} --view "v${latest//./_}" \
+		--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs \
+		--crate-dependency bungeeoxide-pds-natives --crate-dependency pds-bytes-runtime
+	deno run --allow-read=../.. --allow-write=../../Cargo.toml ../../scripts/workspace-crates.ts ../../Cargo.toml {{crates}}
+	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --virtual --crates bungeeoxide-minecraft
 	cargo test -q -p bungeeoxide-converter
 
 update:
@@ -46,7 +50,7 @@ bump:
 	just update
 
 converters:
-	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --virtual
+	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --virtual --crates bungeeoxide-minecraft
 	cargo test -q -p bungeeoxide-converter
 
 report *versions:
@@ -63,7 +67,7 @@ scaffold:
 	done
 	deno run --allow-read=. --allow-read={{work}} --allow-write=migrations --allow-run={{pds2}} \
 		../../scripts/migration-scaffold.ts migrations -- \
-		{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --check
+		{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --check --crates bungeeoxide-minecraft
 
 diff:
 	#!/usr/bin/env bash

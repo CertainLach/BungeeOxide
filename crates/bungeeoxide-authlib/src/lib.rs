@@ -16,8 +16,6 @@ use sha2::{Digest, Sha256};
 
 pub mod accounts;
 
-pub const PRISM_CLIENT_ID: &str = "c36a9fb6-4f2a-41ff-90bd-ae7cc92031eb";
-
 #[derive(Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct Secret(String);

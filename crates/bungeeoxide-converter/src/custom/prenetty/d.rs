@@ -409,7 +409,7 @@ pub fn prenetty_block_place_1_6_1(
 			},
 		);
 		let mut out = Output::new();
-		if crate::gen::v1_6_2::play::to_client::packet::serialize(&packet, &mut out).is_ok() {
+		if crate::minecraft::v1_6_2::play::to_client::packet::serialize(&packet, &mut out).is_ok() {
 			cx.send(Root::PlayToClient, Version::V1_6_2, out.into_inner());
 		}
 	}

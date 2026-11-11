@@ -6,7 +6,7 @@ use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockEncrypt, KeyInit};
 use aes::Aes128;
 use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_converter::gen;
+use bungeeoxide_converter::minecraft;
 use bungeeoxide_converter::pds::{self, Input};
 use bungeeoxide_converter::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET};
 use bytes::BytesMut;
@@ -33,8 +33,8 @@ macro_rules! lengths {
 			let mut input = Input::new(data);
 			let read = pds::stack::budget(STACK_BUDGET, || match (version, root) {
 				$(
-					(Version::$v, Root::PlayToClient) => Ok(gen::$ns::play::to_client::packet::deserialize(&mut input).map(drop)),
-					(Version::$v, Root::PlayToServer) => Ok(gen::$ns::play::to_server::packet::deserialize(&mut input).map(drop)),
+					(Version::$v, Root::PlayToClient) => Ok(minecraft::$ns::play::to_client::packet::deserialize(&mut input).map(drop)),
+					(Version::$v, Root::PlayToServer) => Ok(minecraft::$ns::play::to_server::packet::deserialize(&mut input).map(drop)),
 				)*
 				(v, r) => Err(format!("{v} has no pre-netty {r:?} packets")),
 			})?;

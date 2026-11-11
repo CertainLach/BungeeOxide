@@ -166,15 +166,1387 @@ dependencies = [
 ]
 
 [[package]]
+name = "bungeeoxide-convert-world"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-converter",
+ "clap",
+]
+
+[[package]]
 name = "bungeeoxide-converter"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "bungeeoxide-minecraft",
  "bungeeoxide-nbt",
+ "bungeeoxide-pds-natives",
  "flate2",
- "minecraft-natives",
  "pds-bytes-runtime",
  "serde_json",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-12-1",
+ "bungeeoxide-minecraft-v1-12-2",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-1",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-1",
+ "bungeeoxide-minecraft-v1-14-3",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-15-1",
+ "bungeeoxide-minecraft-v1-15-2",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-1",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-2-5",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-11",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-21-8",
+ "bungeeoxide-minecraft-v1-21-9",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-5-1",
+ "bungeeoxide-minecraft-v1-5-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-6-2",
+ "bungeeoxide-minecraft-v1-6-4",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-minecraft-v26-1",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-root"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-0-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-10"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-11"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-12"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-12-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-12-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-12-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-13"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-13-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-13-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-minecraft-v1-9-4",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-14"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-14-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-14-3"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-14-4"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-15"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-15-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-15-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-16"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-16-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-16-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-17"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-17-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-18"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-18-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-10",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-14-4",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-19"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-19-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-19-3"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-19-4"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-2-3"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-2-5"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-20"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-13-2",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-15",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-20-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-20-3"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-20-5"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-11"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-21-9",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-3"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-4"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-5"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-6"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-8"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-21-9"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-3-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-4-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-4-5"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-4-7"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-5-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-5-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-5-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-6-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-5-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-6-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-5-1",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-6-4"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-5",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-5-1",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-6-2",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-7"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-2-3",
+ "bungeeoxide-minecraft-v1-3-2",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-4-7",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-8"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-9"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-9-2"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v1-9-4"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-4-2",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v1-9-2",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v26-1"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-11",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-21-9",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
 ]
 
 [[package]]
@@ -184,6 +1556,24 @@ dependencies = [
  "flate2",
  "pds-bytes-runtime",
  "serde_json",
+]
+
+[[package]]
+name = "bungeeoxide-packet-dumper"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-v1-21-11",
+ "clap",
+ "flate2",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-pds-natives"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-nbt",
+ "pds-bytes-runtime",
 ]
 
 [[package]]
@@ -572,30 +1962,6 @@ name = "memchr"
 version = "2.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
-
-[[package]]
-name = "minecraft-natives"
-version = "0.1.0"
-dependencies = [
- "bungeeoxide-nbt",
- "pds-bytes-runtime",
-]
-
-[[package]]
-name = "minecraft-protocol"
-version = "0.1.0"
-dependencies = [
- "bungeeoxide-nbt",
- "pds-bytes-runtime",
-]
-
-[[package]]
-name = "minecraft-proxy"
-version = "0.1.0"
-dependencies = [
- "flate2",
- "minecraft-protocol",
-]
 
 [[package]]
 name = "miniz_oxide"

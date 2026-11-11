@@ -1,4 +1,4 @@
-use bungeeoxide_converter::gen;
+use bungeeoxide_converter::minecraft;
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::pds_native::pds_legacySlot::Item;
 
@@ -59,7 +59,7 @@ impl W {
 
 macro_rules! round_trip {
 	($($root:ident)::+, $bytes:expr) => {{
-		use gen::$($root)::+ as root;
+		use minecraft::$($root)::+ as root;
 		let bytes: Vec<u8> = $bytes.0;
 		let mut input = Input::new(&bytes);
 		let packet = root::deserialize(&mut input).unwrap();
@@ -77,7 +77,7 @@ macro_rules! expect {
 		expect!(@split [] $($seg)+ ; $bytes)
 	};
 	(@split [$($root:ident)*] $arm:ident ; $bytes:expr) => {{
-		use gen::$($root)::* as root;
+		use minecraft::$($root)::* as root;
 		match round_trip!($($root)::*, $bytes) {
 			root::Ty::$arm(p) => p,
 			p => panic!("expected {}, got {p:?}", stringify!($arm)),
@@ -90,7 +90,7 @@ macro_rules! expect {
 
 macro_rules! absent {
 	($($root:ident)::+, $($id:expr),+) => {{
-		use gen::$($root)::+ as root;
+		use minecraft::$($root)::+ as root;
 		$(
 			let bytes = [$id];
 			let packet = root::deserialize(&mut Input::new(&bytes)).unwrap();
@@ -131,12 +131,12 @@ macro_rules! slots_with_nbt {
 			);
 			assert_eq!(items.window_id, 0);
 			assert_eq!(debug(&items.items[0]), "_1");
-			let gen::v1_3_2::Slot::Default(id, sword) = &items.items[1] else {
+			let minecraft::v1_3_2::Slot::Default(id, sword) = &items.items[1] else {
 				panic!()
 			};
 			assert_eq!((*id, sword.item_count, sword.item_damage), (276, 1, 5));
 			assert_eq!(sword.nbt_data.as_deref(), Some(GZIP));
-			let gen::v1_3_2::Slot::Default(id, stone) = &items.items[2] else {
+			let minecraft::v1_3_2::Slot::Default(id, stone) = &items.items[2] else {
 				panic!()
 			};
 			assert_eq!((*id, stone.item_count, &stone.nbt_data), (1, 64, &None));
@@ -648,7 +648,7 @@ fn server_list_ping() {
 		.then(w(0xfa).str("MC|PingHost").i16(host.len() as i16).raw(&host))
 		.0;
 	let input = &mut Input::new(&stream);
-	use gen::v1_6_4::play::to_server::packet as s;
+	use minecraft::v1_6_4::play::to_server::packet as s;
 	assert!(matches!(
 		s::deserialize(input).unwrap(),
 		s::Ty::LegacyServerListPing(1)
@@ -678,7 +678,7 @@ fn server_list_ping() {
 
 #[test]
 fn play_1_6_4() {
-	use gen::v1_6_4::play::to_client::packet as c;
+	use minecraft::v1_6_4::play::to_client::packet as c;
 	let horse = expect!(
 		v1_6_4::play::to_client::packet::OpenWindow,
 		w(0x64).u8(3).u8(11).str("Horse").u8(2).bool(true).i32(99)

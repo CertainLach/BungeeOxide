@@ -795,7 +795,7 @@ pub fn prenetty_client_command_1_6_4(
 				})
 				.collect();
 			let mut out = Output::new();
-			if crate::gen::v1_7::play::to_client::packet::serialize(
+			if crate::minecraft::v1_7::play::to_client::packet::serialize(
 				&Client17::Statistics(stats),
 				&mut out,
 			)

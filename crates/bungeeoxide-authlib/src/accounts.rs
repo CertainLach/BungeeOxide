@@ -12,7 +12,6 @@ use tracing::{info, warn};
 
 use crate::{
 	now_millis, now_secs, offline_uuid_bits, parse_uuid, Endpoints, Joined, PlayerKeys, Secret,
-	PRISM_CLIENT_ID,
 };
 
 const MARGIN_SECS: i64 = 120;
@@ -40,6 +39,7 @@ enum Source {
 	Prism {
 		file: PathBuf,
 		profile: Option<String>,
+		client_id: Option<String>,
 	},
 	Token {
 		token: Secret,
@@ -91,6 +91,7 @@ struct Entry {
 	access_token: Option<Secret>,
 	uuid: Option<String>,
 	name: Option<String>,
+	msa_client_id: Option<String>,
 }
 
 fn home() -> PathBuf {
@@ -180,12 +181,14 @@ impl Accounts {
 							.map(|f| resolve(dir, f))
 							.unwrap_or_else(default_prism_file),
 						profile: entry.profile.clone(),
+						client_id: entry.msa_client_id.clone(),
 					}
 				}
 				"token" => {
 					unused(&[
 						("file", entry.file.is_some()),
 						("profile", entry.profile.is_some()),
+						("msa_client_id", entry.msa_client_id.is_some()),
 					])?;
 					let token = entry
 						.access_token
@@ -216,6 +219,7 @@ impl Accounts {
 						("access_token", entry.access_token.is_some()),
 						("uuid", entry.uuid.is_some()),
 						("name", entry.name.is_some()),
+						("msa_client_id", entry.msa_client_id.is_some()),
 					])?;
 					Source::Process {
 						profile: entry.profile.clone(),
@@ -277,7 +281,11 @@ impl Account {
 			}
 		}
 		let credentials = match &self.source {
-			Source::Prism { file, profile } => self.prism(file, profile.as_deref(), force)?,
+			Source::Prism {
+				file,
+				profile,
+				client_id,
+			} => self.prism(file, profile.as_deref(), client_id.as_deref(), force)?,
 			Source::Token { token, uuid, name } => {
 				if force {
 					bail!(
@@ -360,7 +368,13 @@ impl Account {
 		}
 	}
 
-	fn prism(&self, file: &Path, profile: Option<&str>, force: bool) -> Result<Credentials> {
+	fn prism(
+		&self,
+		file: &Path,
+		profile: Option<&str>,
+		client_id: Option<&str>,
+		force: bool,
+	) -> Result<Credentials> {
 		let text =
 			fs::read_to_string(file).with_context(|| format!("reading {}", file.display()))?;
 		let account = pick(prism_accounts(&text)?, profile)
@@ -394,10 +408,21 @@ impl Account {
 				refresh_tokens.push((token.clone(), cached.client_id.clone()));
 			}
 		}
+		let mut unknown_client = false;
 		if let Some(token) = &account.refresh {
 			if !refresh_tokens.iter().any(|(t, _)| t == token) {
-				refresh_tokens.push((token.clone(), account.client_id.clone()));
+				match account.client_id.as_deref().or(client_id) {
+					Some(id) => refresh_tokens.push((token.clone(), id.to_owned())),
+					None => unknown_client = true,
+				}
 			}
+		}
+		if refresh_tokens.is_empty() && unknown_client {
+			bail!(
+				"{}'s Minecraft token has expired and {} has no msa-client-id for its refresh token, set msa_client_id on the account to the Microsoft client ID of the launcher",
+				account.name,
+				file.display()
+			);
 		}
 		if refresh_tokens.is_empty() {
 			bail!("{}'s Minecraft token has expired and there is no refresh token, log in with the launcher again", account.name);
@@ -437,7 +462,7 @@ pub struct PrismAccount {
 	pub token: Option<Secret>,
 	pub expires: i64,
 	pub refresh: Option<Secret>,
-	pub client_id: String,
+	pub client_id: Option<String>,
 	pub active: bool,
 }
 
@@ -471,8 +496,7 @@ pub fn prism_accounts(json: &str) -> Result<Vec<PrismAccount>> {
 				.and_then(Value::as_i64)
 				.unwrap_or_default(),
 			refresh: text(account, "/msa/refresh_token").map(Secret::new),
-			client_id: text(account, "/msa-client-id")
-				.unwrap_or_else(|| PRISM_CLIENT_ID.to_owned()),
+			client_id: text(account, "/msa-client-id"),
 			active: account
 				.get("active")
 				.and_then(Value::as_bool)
@@ -648,7 +672,7 @@ mod tests {
 			{
 				"active": true,
 				"type": "MSA",
-				"msa-client-id": "c36a9fb6-4f2a-41ff-90bd-ae7cc92031eb",
+				"msa-client-id": "fake-client-id",
 				"msa": { "exp": 1700003600, "iat": 1700000000, "refresh_token": "M.fake-refresh", "token": "fake-msa" },
 				"utoken": { "exp": 1700086400, "extra": { "uhs": "123" }, "token": "fake-user" },
 				"xrp-mc": { "exp": 1700086400, "extra": { "uhs": "123" }, "token": "fake-xsts" },
@@ -681,9 +705,9 @@ mod tests {
 		assert_eq!(notch.token, Some(Secret::new("fake-minecraft-token")));
 		assert_eq!(notch.expires, 1_700_086_400);
 		assert_eq!(notch.refresh, Some(Secret::new("M.fake-refresh")));
-		assert_eq!(notch.client_id, PRISM_CLIENT_ID);
+		assert_eq!(notch.client_id.as_deref(), Some("fake-client-id"));
 		assert!(notch.active);
-		assert_eq!(accounts[1].client_id, PRISM_CLIENT_ID);
+		assert_eq!(accounts[1].client_id, None);
 		assert!(!format!("{accounts:?}").contains("fake-minecraft-token"));
 		assert_eq!(
 			pick(prism_accounts(PRISM).unwrap(), None).unwrap().name,
@@ -820,7 +844,7 @@ mod tests {
 			access_token: Secret::new("cached-token"),
 			expires: future + 100,
 			refresh_token: None,
-			client_id: PRISM_CLIENT_ID.to_owned(),
+			client_id: "fake-client-id".to_owned(),
 		};
 		store_cache(&cache, "069a79f444e94726a5befca90e38aaf5", newer).unwrap();
 		assert_eq!(
@@ -833,7 +857,7 @@ mod tests {
 		);
 		assert_eq!(
 			steve
-				.prism(&dir.join("accounts.json"), None, false)
+				.prism(&dir.join("accounts.json"), None, None, false)
 				.unwrap()
 				.token
 				.expose(),
@@ -843,6 +867,10 @@ mod tests {
 			fs::read_to_string(dir.join("accounts.json")).unwrap(),
 			prism
 		);
+		let unknown = steve
+			.prism(&dir.join("accounts.json"), Some("jeb_"), None, false)
+			.unwrap_err();
+		assert!(format!("{unknown:#}").contains("msa_client_id"), "{unknown:#}");
 		fs::remove_dir_all(&dir).unwrap();
 	}
 }

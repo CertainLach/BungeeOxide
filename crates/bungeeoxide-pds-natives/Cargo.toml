@@ -1,0 +1,8 @@
+[package]
+name = "bungeeoxide-pds-natives"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bungeeoxide-nbt.workspace = true
+pds-bytes-runtime.workspace = true
