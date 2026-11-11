@@ -5,6 +5,7 @@ use std::time::Duration;
 
 use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
+use bungeeoxide::users::User;
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
 use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
@@ -115,6 +116,10 @@ async fn start_proxy_with(target: SocketAddr) -> (SocketAddr, Arc<Config>) {
 		motd: "test bridge".to_owned(),
 		threshold: 32,
 		server_version: Version::V1_8,
+		users: vec![User {
+			allow_goto: true,
+			..User::guest("tester")
+		}],
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config.clone()));
@@ -276,6 +281,35 @@ async fn players_relay_chat_and_move_between_servers() -> Result<()> {
 	assert!(chat(&mut conn).await?.contains("can't move"));
 	say(&mut conn, "still here").await?;
 	assert!(chat(&mut conn).await?.contains("b: still here"));
+	Ok(())
+}
+
+#[tokio::test]
+async fn unlisted_players_join_offline_without_goto() -> Result<()> {
+	let proxy = start_proxy(mock_server("a", 0).await).await;
+	let mut conn = connect(proxy, 2).await?;
+	conn.send(encode(
+		&login_s::Ty::LoginStart("guest".to_owned()),
+		login_s::serialize,
+	)?)
+	.await?;
+	let login_c::Ty::Compress(threshold) = decode(&next(&mut conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected compression");
+	};
+	conn.codec_mut().threshold = Some(usize::try_from(threshold)?);
+	let login_c::Ty::Success(success) = decode(&next(&mut conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected login success");
+	};
+	assert_eq!(success.uuid, bungeeoxide_authlib::offline_uuid("guest"));
+	let play_c::Ty::Login(_) = play(&mut conn).await? else {
+		bail!("expected join game");
+	};
+	say(&mut conn, "/proxy-goto 127.0.0.1:1").await?;
+	assert!(chat(&mut conn).await?.contains("may not use /proxy-goto"));
+	say(&mut conn, "/proxy-ping").await?;
+	assert!(chat(&mut conn).await?.contains("Pong"));
 	Ok(())
 }
 

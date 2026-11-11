@@ -3,21 +3,21 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Context as _, Result};
 use bungeeoxide_converter::gen::convert::v26_1::{
-	login_to_client_packet_encryption_begin as begin, login_to_client_packet_success as success,
-	login_to_server_packet as login_s, login_to_server_packet_encryption_begin as response,
-	login_to_server_packet_login_start,
+	login_to_client_packet as login_c, login_to_client_packet_encryption_begin as begin,
+	login_to_client_packet_success as success, login_to_server_packet as login_s,
+	login_to_server_packet_encryption_begin as response, login_to_server_packet_login_start,
 };
 use bungeeoxide_converter::gen::convert::{v1_19, v1_19_2};
 use bungeeoxide_converter::Root;
-use rsa::pkcs8::DecodePublicKey;
+use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tracing::{info, warn};
 
 use crate::codec::Cipher;
 use crate::signing::Chat;
-use crate::{encode, legacy, Proxy, PIVOT};
+use crate::{decode, encode, legacy, next, Proxy, PIVOT};
 use bungeeoxide_authlib::accounts::{Account, Credentials};
-use bungeeoxide_authlib::{self as auth, offline_uuid_bits, PlayerKeys};
+use bungeeoxide_authlib::{self as auth, offline_uuid_bits, Endpoints, GameProfile, PlayerKeys};
 
 #[derive(Default)]
 pub struct Online {
@@ -179,13 +179,82 @@ impl Online {
 	}
 }
 
+pub async fn authenticate(p: &mut Proxy, endpoints: &Endpoints, username: &str) -> Result<GameProfile> {
+	let key = tokio::task::spawn_blocking(legacy::rsa_key).await?;
+	let public = key
+		.to_public_key()
+		.to_public_key_der()
+		.context("encoding the public key")?
+		.into_vec();
+	let token: [u8; 4] = rand::random();
+	let request = login_c::Ty::EncryptionBegin(begin::Ty {
+		server_id: String::new(),
+		public_key: public.clone(),
+		verify_token: token.to_vec(),
+		should_authenticate: true,
+	});
+	p.send(Root::LoginToClient, PIVOT, encode(&request, login_c::serialize)?)
+		.await?;
+	let data = next(&mut p.client).await?;
+	let (shared, verify) = if (Version::V1_19..Version::V1_19_3).contains(&p.cv) {
+		let reply = match p.cv < Version::V1_19_2 {
+			true => match decode(&data, v1_19::login_to_server_packet::deserialize)? {
+				v1_19::login_to_server_packet::Ty::EncryptionBegin(reply) => reply,
+				_ => bail!("expected the encryption response"),
+			},
+			false => match decode(&data, v1_19_2::login_to_server_packet::deserialize)? {
+				v1_19_2::login_to_server_packet::Ty::EncryptionBegin(reply) => reply,
+				_ => bail!("expected the encryption response"),
+			},
+		};
+		let verify = match reply.crypto {
+			v1_19::login_to_server_packet_encryption_begin_crypto::Ty::True(verify) => Some(verify),
+			v1_19::login_to_server_packet_encryption_begin_crypto::Ty::False(_) => None,
+		};
+		(reply.shared_secret, verify)
+	} else {
+		let cv = p.cv;
+		p.convert(Root::LoginToServer, cv, PIVOT, data)
+			.iter()
+			.find_map(|packet| match decode(packet, login_s::deserialize) {
+				Ok(login_s::Ty::EncryptionBegin(reply)) => {
+					Some((reply.shared_secret, Some(reply.verify_token)))
+				}
+				_ => None,
+			})
+			.ok_or_else(|| anyhow!("expected the encryption response"))?
+	};
+	let secret = key
+		.decrypt(Pkcs1v15Encrypt, &shared)
+		.context("decrypting the shared secret")?;
+	if let Some(verify) = verify {
+		let verify = key
+			.decrypt(Pkcs1v15Encrypt, &verify)
+			.context("decrypting the verify token")?;
+		if verify != token {
+			bail!("the client answered with the wrong verify token");
+		}
+	}
+	let secret: [u8; 16] = secret
+		.try_into()
+		.map_err(|_| anyhow!("the shared secret is not 16 bytes"))?;
+	p.client.codec_mut().cipher = Some(Cipher::new(&secret));
+	let hash = auth::server_hash("", &secret, &public);
+	let (endpoints, name) = (endpoints.clone(), username.to_owned());
+	blocking(move || auth::has_joined(&endpoints, &name, &hash))
+		.await?
+		.ok_or_else(|| {
+			anyhow!("the session server did not see {username} join, restart the game and try again")
+		})
+}
+
 pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Result<()> {
 	let key =
 		RsaPublicKey::from_public_key_der(&request.public_key).context("reading the server key")?;
 	let secret: [u8; 16] = rand::random();
 	if request.should_authenticate {
 		let Some(account) = p.online.account.clone() else {
-			bail!("the server is in online mode, map {username} to an account with --accounts or set online-mode=false");
+			bail!("the server is in online mode, give {username} an upstream account in --users or set online-mode=false");
 		};
 		let credentials = p
 			.online

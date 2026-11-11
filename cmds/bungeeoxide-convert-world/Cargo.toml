@@ -1,7 +1,9 @@
 [package]
 name = "bungeeoxide-convert-world"
-version = "0.1.0"
+description = "Converts Minecraft worlds saved by 1.0 and later to the latest supported version"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 bungeeoxide-converter.workspace = true

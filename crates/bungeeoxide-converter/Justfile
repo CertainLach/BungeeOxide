@@ -10,7 +10,7 @@ gen:
 	mkdir -p {{work}}
 	mapfile -t files < <(printf '%s\n' pds/*.pds | sort -V)
 	{{pds2}} minecraft-data merge "${files[@]}" --to {{work}}/merged.pds
-	rm -rf src/gen {{crates}}
+	rm -rf src/gen {{crates}}/*/src
 	latest=$(basename "${files[-1]}" .pds)
 	{{pds2}} compile {{work}}/merged.pds rust --to {{crates}} --view "v${latest//./_}" \
 		--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs \

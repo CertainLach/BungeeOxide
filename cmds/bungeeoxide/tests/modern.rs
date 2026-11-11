@@ -6,6 +6,7 @@ use std::time::Duration;
 use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::string16;
+use bungeeoxide::users::User;
 use bungeeoxide::{decode, encode, next, protocol_of, serve, text_tag, Config, Conn};
 use bungeeoxide_converter::gen::convert::packet_name;
 use bungeeoxide_converter::gen::convert::v1_8;
@@ -312,6 +313,13 @@ async fn bridge(target: SocketAddr) -> SocketAddr {
 		motd: "modern bridge".to_owned(),
 		threshold: 64,
 		server_version: Version::V26_1,
+		users: vec![User {
+			allow_goto: true,
+			..User::guest("modern")
+		}, User {
+			allow_goto: true,
+			..User::guest("old")
+		}],
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));

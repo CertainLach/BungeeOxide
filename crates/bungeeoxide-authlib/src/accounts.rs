@@ -10,32 +10,19 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tracing::{info, warn};
 
-use crate::{
-	now_millis, now_secs, offline_uuid_bits, parse_uuid, Endpoints, Joined, PlayerKeys, Secret,
-};
+use crate::{now_millis, now_secs, parse_uuid, Endpoints, Joined, PlayerKeys, Secret};
 
 const MARGIN_SECS: i64 = 120;
 
-#[derive(Default)]
-pub struct Accounts {
-	accounts: Vec<Arc<Account>>,
-}
-
 pub struct Account {
 	pub label: String,
-	players: Vec<Player>,
 	source: Source,
 	endpoints: Endpoints,
 	cache: Option<PathBuf>,
 	state: Mutex<State>,
 }
 
-enum Player {
-	Name(String),
-	Uuid(u128),
-}
-
-enum Source {
+pub enum Source {
 	Prism {
 		file: PathBuf,
 		profile: Option<String>,
@@ -71,40 +58,10 @@ impl Credentials {
 	}
 }
 
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct File {
-	cache: Option<PathBuf>,
-	#[serde(default)]
-	endpoints: Endpoints,
-	#[serde(default)]
-	account: Vec<Entry>,
-}
-
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Entry {
-	players: Vec<String>,
-	source: String,
-	file: Option<PathBuf>,
-	profile: Option<String>,
-	access_token: Option<Secret>,
-	uuid: Option<String>,
-	name: Option<String>,
-	msa_client_id: Option<String>,
-}
-
-fn home() -> PathBuf {
+pub fn home() -> PathBuf {
 	std::env::var_os("HOME")
 		.map(PathBuf::from)
 		.unwrap_or_default()
-}
-
-fn resolve(dir: &Path, path: &Path) -> PathBuf {
-	match path.strip_prefix("~") {
-		Ok(rest) => home().join(rest),
-		Err(_) => dir.join(path),
-	}
 }
 
 pub fn default_prism_file() -> PathBuf {
@@ -114,157 +71,35 @@ pub fn default_prism_file() -> PathBuf {
 	data.join("PrismLauncher/accounts.json")
 }
 
-impl Accounts {
-	pub fn load(path: &Path) -> Result<Self> {
-		let text =
-			fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
-		let accounts =
-			Self::parse(&text, path).with_context(|| format!("reading {}", path.display()))?;
-		let shared = fs::metadata(path)
-			.map(|m| m.permissions().mode() & 0o077 != 0)
-			.unwrap_or(false);
-		if shared
-			&& accounts
-				.accounts
-				.iter()
-				.any(|a| matches!(a.source, Source::Token { .. }))
-		{
-			warn!(
-				"{} holds access tokens and other users can read it, chmod 600 it",
-				path.display()
-			);
-		}
-		Ok(accounts)
-	}
-
-	pub fn parse(text: &str, path: &Path) -> Result<Self> {
-		let file: File = toml::from_str(text)?;
-		let dir = path.parent().unwrap_or(Path::new("."));
-		let cache = match file.cache {
-			Some(cache) => resolve(dir, &cache),
-			None => path.with_extension("tokens.json"),
-		};
-		let mut accounts = Vec::new();
-		for (i, entry) in file.account.into_iter().enumerate() {
-			let players = entry
-				.players
-				.iter()
-				.map(|p| match parse_uuid(p) {
-					Some(uuid) => Player::Uuid(uuid),
-					None => Player::Name(p.clone()),
-				})
-				.collect::<Vec<_>>();
-			if players.is_empty() {
-				bail!("account {} maps no players", i + 1);
-			}
-			let unused = |fields: &[(&str, bool)]| -> Result<()> {
-				match fields.iter().find(|(_, set)| *set) {
-					Some((field, _)) => bail!(
-						"account {} has source = {:?}, which takes no {field}",
-						i + 1,
-						entry.source
-					),
-					None => Ok(()),
-				}
-			};
-			let source = match entry.source.as_str() {
-				"prism" | "multimc" => {
-					unused(&[
-						("access_token", entry.access_token.is_some()),
-						("uuid", entry.uuid.is_some()),
-						("name", entry.name.is_some()),
-					])?;
-					Source::Prism {
-						file: entry
-							.file
-							.as_deref()
-							.map(|f| resolve(dir, f))
-							.unwrap_or_else(default_prism_file),
-						profile: entry.profile.clone(),
-						client_id: entry.msa_client_id.clone(),
-					}
-				}
-				"token" => {
-					unused(&[
-						("file", entry.file.is_some()),
-						("profile", entry.profile.is_some()),
-						("msa_client_id", entry.msa_client_id.is_some()),
-					])?;
-					let token = entry
-						.access_token
-						.clone()
-						.filter(|t| !t.is_empty())
-						.ok_or_else(|| {
-							anyhow!(
-								"account {} has source = \"token\" but no access_token",
-								i + 1
-							)
-						})?;
-					let uuid = match &entry.uuid {
-						Some(u) => Some(
-							parse_uuid(u)
-								.ok_or_else(|| anyhow!("account {}: {u:?} is not a UUID", i + 1))?,
-						),
-						None => None,
-					};
-					Source::Token {
-						token,
-						uuid,
-						name: entry.name.clone(),
-					}
-				}
-				"process" => {
-					unused(&[
-						("file", entry.file.is_some()),
-						("access_token", entry.access_token.is_some()),
-						("uuid", entry.uuid.is_some()),
-						("name", entry.name.is_some()),
-						("msa_client_id", entry.msa_client_id.is_some()),
-					])?;
-					Source::Process {
-						profile: entry.profile.clone(),
-					}
-				}
-				other => bail!(
-					"account {} has unknown source {other:?}, expected prism, token or process",
-					i + 1
-				),
-			};
-			let label = match (&source, &entry.profile, &entry.name) {
-				(_, Some(profile), _) | (Source::Token { .. }, _, Some(profile)) => profile.clone(),
-				_ => format!("account {}", i + 1),
-			};
-			accounts.push(Arc::new(Account {
-				label,
-				players,
-				source,
-				endpoints: file.endpoints.clone(),
-				cache: Some(cache.clone()),
-				state: Mutex::new(State::default()),
-			}));
-		}
-		Ok(Self { accounts })
-	}
-
-	pub fn is_empty(&self) -> bool {
-		self.accounts.is_empty()
-	}
-
-	pub fn find(&self, name: &str, claimed: Option<u128>) -> Option<Arc<Account>> {
-		let offline = offline_uuid_bits(name);
-		self.accounts
-			.iter()
-			.find(|a| {
-				a.players.iter().any(|p| match p {
-					Player::Name(n) => n.eq_ignore_ascii_case(name),
-					Player::Uuid(u) => *u == offline || Some(*u) == claimed,
-				})
-			})
-			.cloned()
-	}
-}
-
 impl Account {
+	pub fn new(source: Source, endpoints: Endpoints, cache: Option<PathBuf>) -> Self {
+		let label = match &source {
+			Source::Prism {
+				profile: Some(name), ..
+			}
+			| Source::Process {
+				profile: Some(name),
+			}
+			| Source::Token {
+				name: Some(name), ..
+			} => name.clone(),
+			Source::Prism { file, .. } => format!("the active account of {}", file.display()),
+			Source::Token { .. } => "a configured access token".to_owned(),
+			Source::Process { .. } => "a running game".to_owned(),
+		};
+		Self {
+			label,
+			source,
+			endpoints,
+			cache,
+			state: Mutex::default(),
+		}
+	}
+
+	pub fn has_tokens(&self) -> bool {
+		matches!(self.source, Source::Token { .. })
+	}
+
 	pub fn endpoints(&self) -> &Endpoints {
 		&self.endpoints
 	}
@@ -759,66 +594,24 @@ mod tests {
 	}
 
 	#[test]
-	fn configs_map_names_and_uuids_to_accounts() {
-		let config = r#"
-			[endpoints]
-			session = "http://127.0.0.1:25661"
-
-			[[account]]
-			players = ["Steve", "853c80ef-3c37-49fd-aa49-938b674adae6"]
-			source = "prism"
-			file = "fake-accounts.json"
-			profile = "Notch"
-
-			[[account]]
-			players = ["Alex"]
-			source = "token"
-			access_token = "fake-token"
-			uuid = "069a79f444e94726a5befca90e38aaf5"
-			name = "Notch"
-
-			[[account]]
-			players = ["Bob"]
-			source = "process"
-		"#;
-		let accounts = Accounts::parse(config, Path::new("/srv/bridge/accounts.toml")).unwrap();
-		assert_eq!(accounts.accounts.len(), 3);
-		let steve = accounts.find("steve", None).unwrap();
-		assert_eq!(steve.endpoints().session, "http://127.0.0.1:25661");
-		assert_eq!(
-			steve.endpoints().services,
-			"https://api.minecraftservices.com"
+	fn token_accounts_need_no_requests_when_they_know_the_profile() {
+		let account = Account::new(
+			Source::Token {
+				token: Secret::new("fake-token"),
+				uuid: Some(0x069a79f444e94726a5befca90e38aaf5),
+				name: Some("Notch".to_owned()),
+			},
+			Endpoints::default(),
+			None,
 		);
-		assert_eq!(
-			steve.cache.as_deref(),
-			Some(Path::new("/srv/bridge/accounts.tokens.json"))
-		);
-		let Source::Prism { file, .. } = &steve.source else {
-			panic!("prism")
-		};
-		assert_eq!(file, Path::new("/srv/bridge/fake-accounts.json"));
-		assert!(Arc::ptr_eq(
-			&accounts
-				.find("Herobrine", Some(0x853c80ef3c3749fdaa49938b674adae6))
-				.unwrap(),
-			&steve
-		));
-		assert!(accounts.find("Herobrine", None).is_none());
-		let alex = accounts.find("Alex", None).unwrap();
-		let credentials = alex.credentials(false).unwrap();
+		assert_eq!(account.label, "Notch");
+		assert!(account.has_tokens());
+		let credentials = account.credentials(false).unwrap();
 		assert_eq!(
 			(credentials.uuid, credentials.name.as_str()),
 			(0x069a79f444e94726a5befca90e38aaf5, "Notch")
 		);
 		assert!(!format!("{credentials:?}").contains("fake-token"));
-		assert!(accounts.find("Bob", None).is_some());
-		let wrong = "[[account]]\nplayers = [\"a\"]\nsource = \"token\"\nfile = \"x\"\naccess_token = \"t\"\n";
-		assert!(Accounts::parse(wrong, Path::new("a.toml")).is_err());
-		assert!(Accounts::parse(
-			"[[account]]\nplayers = [\"a\"]\nsource = \"magic\"\n",
-			Path::new("a.toml")
-		)
-		.is_err());
 	}
 
 	#[test]
@@ -831,10 +624,15 @@ mod tests {
 			&format!("{future}, \"iat\": 1700000000, \"token\": \"fake-minecraft-token\""),
 		);
 		fs::write(dir.join("accounts.json"), &prism).unwrap();
-		let config =
-			"[[account]]\nplayers = [\"Steve\"]\nsource = \"prism\"\nfile = \"accounts.json\"\n";
-		let accounts = Accounts::parse(config, &dir.join("bridge.toml")).unwrap();
-		let steve = accounts.find("Steve", None).unwrap();
+		let steve = Account::new(
+			Source::Prism {
+				file: dir.join("accounts.json"),
+				profile: None,
+				client_id: None,
+			},
+			Endpoints::default(),
+			Some(dir.join("bridge.tokens.json")),
+		);
 		let credentials = steve.credentials(false).unwrap();
 		assert_eq!(credentials.token.expose(), "fake-minecraft-token");
 		assert_eq!(credentials.name, "Notch");

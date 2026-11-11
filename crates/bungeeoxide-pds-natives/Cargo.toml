@@ -1,7 +1,9 @@
 [package]
 name = "bungeeoxide-pds-natives"
-version = "0.1.0"
+description = "Hand-written pds2 natives of the Minecraft protocol: varints, UUIDs, NBT, legacy item slots"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 bungeeoxide-nbt.workspace = true

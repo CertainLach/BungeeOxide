@@ -1,24 +1,25 @@
 use bungeeoxide_converter::Version;
+use std::collections::BTreeMap;
 use std::net::SocketAddr;
 use std::path::Path;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
 use anyhow::{bail, Result};
 use bungeeoxide::codec::{Cipher, Codec};
-use bungeeoxide::{decode, encode, next, serve, Config, Conn};
-use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide::{decode, encode, next, serve, users, Config, Conn};
 use bungeeoxide_authlib::{hyphenated, server_hash};
 use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
 	login_to_client_packet_success, login_to_server_packet as login_s,
+	login_to_server_packet_encryption_begin,
 	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
 	play_to_server_packet as play_s,
 };
 use futures::SinkExt;
-use rsa::pkcs8::EncodePublicKey;
-use rsa::{Pkcs1v15Encrypt, RsaPrivateKey};
+use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
+use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::mpsc;
@@ -28,14 +29,25 @@ const PROFILE: u128 = 0x069a79f444e94726a5befca90e38aaf5;
 
 const PROTOCOL_1_8: i32 = 47;
 
-async fn session_server() -> (SocketAddr, mpsc::UnboundedReceiver<serde_json::Value>) {
+type Verified = Arc<Mutex<BTreeMap<String, (String, u128)>>>;
+
+struct Session {
+	addr: SocketAddr,
+	joins: mpsc::UnboundedReceiver<serde_json::Value>,
+	verified: Verified,
+}
+
+async fn session_server() -> Session {
 	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
 	let addr = listener.local_addr().unwrap();
 	let (joins, received) = mpsc::unbounded_channel();
+	let verified = Verified::default();
+	let known = verified.clone();
 	tokio::spawn(async move {
 		loop {
 			let (mut stream, _) = listener.accept().await.unwrap();
 			let joins = joins.clone();
+			let known = known.clone();
 			tokio::spawn(async move {
 				let mut request = Vec::new();
 				let mut buf = [0u8; 4096];
@@ -54,6 +66,30 @@ async fn session_server() -> (SocketAddr, mpsc::UnboundedReceiver<serde_json::Va
 								.map(|v| v.trim().parse::<usize>().unwrap())
 						})
 						.unwrap_or(0);
+					if let Some(query) = head
+						.lines()
+						.next()
+						.and_then(|l| l.strip_prefix("GET /session/minecraft/hasJoined?"))
+					{
+						let query = query.split(' ').next().unwrap_or_default();
+						let param = |key: &str| {
+							query
+								.split('&')
+								.find_map(|p| p.strip_prefix(&format!("{key}=")))
+								.unwrap_or_default()
+								.to_owned()
+						};
+						let found = known.lock().unwrap().get(&param("serverId")).cloned();
+						let reply = match found.filter(|(name, _)| *name == param("username")) {
+							Some((name, id)) => {
+								let body = serde_json::json!({ "id": format!("{id:032x}"), "name": name }).to_string();
+								format!("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}", body.len())
+							}
+							None => "HTTP/1.1 204 No Content\r\nContent-Length: 0\r\nConnection: close\r\n\r\n".to_owned(),
+						};
+						stream.write_all(reply.as_bytes()).await.unwrap();
+						return;
+					}
 					if body.len() >= length || n == 0 {
 						assert!(head.starts_with("POST /session/minecraft/join "), "{head}");
 						break body.to_owned();
@@ -67,7 +103,11 @@ async fn session_server() -> (SocketAddr, mpsc::UnboundedReceiver<serde_json::Va
 			});
 		}
 	});
-	(addr, received)
+	Session {
+		addr,
+		joins: received,
+		verified,
+	}
 }
 
 async fn online_backend() -> (SocketAddr, mpsc::UnboundedReceiver<String>) {
@@ -158,10 +198,15 @@ async fn backend(
 }
 
 async fn start_proxy(target: SocketAddr, session: SocketAddr, version: Version) -> SocketAddr {
-	let accounts = format!(
-		"[endpoints]\nsession = \"http://{session}\"\nservices = \"http://127.0.0.1:1\"\n\n[[account]]\nplayers = [\"Steve\"]\nsource = \"token\"\naccess_token = \"fake-token\"\nuuid = \"{}\"\nname = \"Notch\"\n",
+	let upstream = format!(
+		"{{ source = \"token\", access_token = \"fake-token\", uuid = \"{}\", name = \"Notch\" }}",
 		hyphenated(PROFILE)
 	);
+	let config = format!(
+		"[endpoints]\nsession = \"http://{session}\"\nservices = \"http://127.0.0.1:1\"\n\n[[user]]\nusername = \"Steve\"\ndownstream = false\nallow_goto = false\nupstream = {upstream}\n\n[[user]]\nusername = \"Notch\"\nuuid = \"{}\"\ndownstream = true\nallow_goto = false\nupstream = {upstream}\n",
+		hyphenated(PROFILE)
+	);
+	let users = users::parse(&config, Path::new("/nonexistent/users.toml")).unwrap();
 	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
 	let addr = listener.local_addr().unwrap();
 	let config = Arc::new(Config {
@@ -169,7 +214,8 @@ async fn start_proxy(target: SocketAddr, session: SocketAddr, version: Version) 
 		motd: "online bridge".to_owned(),
 		threshold: 32,
 		server_version: version.to_owned(),
-		accounts: Accounts::parse(&accounts, Path::new("/nonexistent/accounts.toml")).unwrap(),
+		endpoints: users.endpoints,
+		users: users.users,
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));
@@ -199,7 +245,11 @@ async fn receive(conn: &mut Conn) -> Result<Vec<u8>> {
 
 #[tokio::test]
 async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
-	let (session, mut joins) = session_server().await;
+	let Session {
+		addr: session,
+		mut joins,
+		..
+	} = session_server().await;
 	let (backend, mut hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, Version::V1_8).await;
 	let mut conn = login(proxy, "Steve").await?;
@@ -240,7 +290,7 @@ async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
 
 #[tokio::test]
 async fn unmapped_players_are_told_how_to_join_online_servers() -> Result<()> {
-	let (session, _joins) = session_server().await;
+	let Session { addr: session, .. } = session_server().await;
 	let (backend, _hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, Version::V1_8).await;
 	let mut conn = login(proxy, "Alex").await?;
@@ -248,13 +298,13 @@ async fn unmapped_players_are_told_how_to_join_online_servers() -> Result<()> {
 	else {
 		bail!("expected a disconnect");
 	};
-	assert!(reason.contains("--accounts"), "{reason}");
+	assert!(reason.contains("--users"), "{reason}");
 	Ok(())
 }
 
 #[tokio::test]
 async fn pre_netty_servers_are_refused_for_mapped_players() -> Result<()> {
-	let (session, _joins) = session_server().await;
+	let Session { addr: session, .. } = session_server().await;
 	let (backend, _hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, Version::V1_6_4).await;
 	let mut conn = login(proxy, "Steve").await?;
@@ -263,5 +313,72 @@ async fn pre_netty_servers_are_refused_for_mapped_players() -> Result<()> {
 		bail!("expected a disconnect");
 	};
 	assert!(reason.contains("legacy session service"), "{reason}");
+	Ok(())
+}
+
+async fn verify(conn: &mut Conn, name: &str, session: &Session, known: bool) -> Result<()> {
+	let login_c::Ty::EncryptionBegin(request) = decode(&receive(conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected the proxy to ask for encryption");
+	};
+	assert_eq!(request.server_id, "");
+	let key = RsaPublicKey::from_public_key_der(&request.public_key)?;
+	let secret: [u8; 16] = rand::random();
+	if known {
+		session.verified.lock().unwrap().insert(
+			server_hash("", &secret, &request.public_key),
+			(name.to_owned(), PROFILE),
+		);
+	}
+	let seal = |data: &[u8]| key.encrypt(&mut rand::thread_rng(), Pkcs1v15Encrypt, data);
+	let response = login_to_server_packet_encryption_begin::Ty {
+		shared_secret: seal(&secret)?,
+		verify_token: seal(&request.verify_token)?,
+	};
+	conn.send(encode(
+		&login_s::Ty::EncryptionBegin(response),
+		login_s::serialize,
+	)?)
+	.await?;
+	conn.codec_mut().cipher = Some(Cipher::new(&secret));
+	Ok(())
+}
+
+#[tokio::test]
+async fn downstream_players_prove_their_account_before_joining() -> Result<()> {
+	let session = session_server().await;
+	let (backend, _hashes) = online_backend().await;
+	let proxy = start_proxy(backend, session.addr, Version::V1_8).await;
+	let mut conn = login(proxy, "Notch").await?;
+	verify(&mut conn, "Notch", &session, true).await?;
+	let login_c::Ty::Compress(threshold) =
+		decode(&receive(&mut conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected compression");
+	};
+	conn.codec_mut().threshold = Some(usize::try_from(threshold)?);
+	let login_c::Ty::Success(success) = decode(&receive(&mut conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected login success");
+	};
+	assert_eq!(success.uuid, hyphenated(PROFILE));
+	let play_c::Ty::Login(_) = decode(&receive(&mut conn).await?, play_c::deserialize)? else {
+		bail!("expected join game");
+	};
+	Ok(())
+}
+
+#[tokio::test]
+async fn downstream_players_the_session_server_did_not_see_are_kicked() -> Result<()> {
+	let session = session_server().await;
+	let (backend, _hashes) = online_backend().await;
+	let proxy = start_proxy(backend, session.addr, Version::V1_8).await;
+	let mut conn = login(proxy, "Notch").await?;
+	verify(&mut conn, "Notch", &session, false).await?;
+	let login_c::Ty::Disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
+	else {
+		bail!("expected a disconnect");
+	};
+	assert!(reason.contains("did not see Notch join"), "{reason}");
 	Ok(())
 }

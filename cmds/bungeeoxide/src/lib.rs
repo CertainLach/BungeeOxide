@@ -3,7 +3,7 @@ use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide_authlib::Endpoints;
 use bungeeoxide_converter::gen::convert::v26_1::{
 	configuration_to_client_packet as config_c, configuration_to_server_packet as config_s,
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
@@ -32,6 +32,7 @@ pub mod legacy;
 pub mod online;
 pub mod signing;
 pub mod status;
+pub mod users;
 
 use codec::{read_varint, Codec};
 
@@ -50,7 +51,8 @@ pub struct Config {
 	pub motd: String,
 	pub threshold: usize,
 	pub server_version: Version,
-	pub accounts: Accounts,
+	pub endpoints: Endpoints,
+	pub users: Vec<users::User>,
 	pub status_cache: Duration,
 	pub status: status::Cache,
 }
@@ -62,10 +64,17 @@ impl Default for Config {
 			motd: "pds2 bridge".to_owned(),
 			threshold: 256,
 			server_version: Version::V1_8,
-			accounts: Accounts::default(),
+			endpoints: Endpoints::default(),
+			users: Vec::new(),
 			status_cache: Duration::from_secs(5),
 			status: status::Cache::default(),
 		}
+	}
+}
+
+impl Config {
+	pub fn user(&self, username: &str) -> users::User {
+		users::find(&self.users, username)
 	}
 }
 
@@ -980,7 +989,19 @@ async fn login(
 	let player = player.ok_or_else(|| anyhow!("expected login start"))?;
 	let username = player.username;
 	let claimed = Some(player.player_uuid).filter(|uuid| *uuid != 0);
-	p.online = online::Online::new(config.accounts.find(&username, claimed), &username);
+	let user = config.user(&username);
+	let admitted = match user.downstream {
+		true => online::authenticate(&mut p, &config.endpoints, &username)
+			.await
+			.and_then(|profile| user.admit(Some(profile.id))),
+		false => user.admit(claimed),
+	};
+	if let Err(e) = admitted {
+		p.send(Root::LoginToClient, PIVOT, login_kick(&format!("{e:#}"))?)
+			.await?;
+		return Err(e.context(format!("{username} was not let in")));
+	}
+	p.online = online::Online::new(user.upstream.clone(), &username);
 	if let Err(e) = p.connect(&username, false).await {
 		p.send(
 			Root::LoginToClient,
@@ -1010,7 +1031,7 @@ async fn login(
 	}
 	let (join, early) = join_upstream(&mut p, config, &username, modern_client).await?;
 	p.enter(join, early, false).await?;
-	relay(p, &username).await
+	relay(p, &username, user.allow_goto).await
 }
 
 async fn moved(
@@ -1039,7 +1060,7 @@ async fn moved(
 	}
 }
 
-async fn relay(mut p: Proxy, username: &str) -> Result<()> {
+async fn relay(mut p: Proxy, username: &str, allow_goto: bool) -> Result<()> {
 	loop {
 		tokio::select! {
 			from_client = p.client.next() => {
@@ -1055,6 +1076,7 @@ async fn relay(mut p: Proxy, username: &str) -> Result<()> {
 					}
 					Some(Command::Ping) => p.say("Pong").await?,
 					Some(Command::Unknown(message)) => p.say(&format!("unknown proxy command: {message}")).await?,
+					Some(Command::Goto(..)) if !allow_goto => p.say("you may not use /proxy-goto").await?,
 					Some(Command::Goto(target, version)) => {
 						let outcome = p.switch_server(&target, version, username, false).await;
 						moved(&mut p, outcome, username, &target, false).await?

@@ -1,7 +1,9 @@
 [package]
 name = "bungeeoxide"
-version = "0.1.0"
+description = "Minecraft proxy that lets clients of versions 1.0.1 to 26.1 play on a server of another version"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 aes.workspace = true
@@ -17,9 +19,11 @@ bungeeoxide-nbt.workspace = true
 pds-bytes-runtime.workspace = true
 rand.workspace = true
 rsa.workspace = true
+serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 sha2 = { workspace = true, features = ["oid"] }
 tokio = { workspace = true, features = ["full"] }
 tokio-util = { workspace = true, features = ["codec"] }
+toml.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true

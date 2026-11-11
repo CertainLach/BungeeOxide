@@ -332,6 +332,40 @@ pub fn join(
 	bail!("the session server refused the join, {}", reply.error())
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct GameProfile {
+	pub id: u128,
+	pub name: String,
+}
+
+pub fn has_joined(
+	endpoints: &Endpoints,
+	username: &str,
+	server_hash: &str,
+) -> Result<Option<GameProfile>> {
+	let url = Endpoints::url(&endpoints.session, "/session/minecraft/hasJoined");
+	let response = agent()
+		.get(&url)
+		.header("Accept", "application/json")
+		.query("username", username)
+		.query("serverId", server_hash)
+		.call();
+	let reply = reply(&url, response)?;
+	if !reply.ok() {
+		bail!("the session server could not check the join, {}", reply.error());
+	}
+	if reply.status == 204 || reply.body.trim().is_empty() {
+		return Ok(None);
+	}
+	let profile = reply.json()?;
+	let id = parse_uuid(text(&profile, &["id"])?)
+		.ok_or_else(|| anyhow!("the session server answered with a malformed profile id"))?;
+	Ok(Some(GameProfile {
+		id,
+		name: text(&profile, &["name"])?.to_owned(),
+	}))
+}
+
 pub struct PlayerKeys {
 	pub private: RsaPrivateKey,
 	pub public: Vec<u8>,

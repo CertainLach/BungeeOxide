@@ -6,6 +6,7 @@ use std::time::Duration;
 use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::{string16, Cfb8, Legacy};
+use bungeeoxide::users::User;
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
 use bungeeoxide_converter::gen::convert::packet_name;
 use bungeeoxide_converter::gen::convert::v1_8::{
@@ -116,6 +117,16 @@ async fn start_proxy(target: SocketAddr) -> SocketAddr {
 		motd: "test bridge".to_owned(),
 		threshold: 32,
 		server_version: Version::V1_8,
+		users: vec![
+			User {
+				allow_goto: true,
+				..User::guest("tester")
+			},
+			User {
+				downstream: true,
+				..User::guest("verified")
+			},
+		],
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));
@@ -453,6 +464,25 @@ async fn server_list_pings_fall_back_to_the_motd() -> Result<()> {
 	assert!(ping(proxy, &ping_host(74))
 		.await?
 		.starts_with("\u{a7}1\x0074\x00"));
+	Ok(())
+}
+
+#[tokio::test]
+async fn pre_netty_clients_of_verified_users_are_kicked() -> Result<()> {
+	let proxy = start_proxy(mock_server("a", 0).await).await;
+	let mut stream = TcpStream::connect(proxy).await?;
+	let mut hello = vec![0x02];
+	string16(&mut hello, "verified");
+	stream.write_all(&hello).await?;
+	let mut hash = [0u8; 5];
+	stream.read_exact(&mut hash).await?;
+	stream
+		.write_all(&bungeeoxide::legacy::login_request(22, "verified"))
+		.await?;
+	let mut reply = Vec::new();
+	tokio::time::timeout(Duration::from_secs(5), stream.read_to_end(&mut reply)).await??;
+	assert_eq!(reply[0], 0xff);
+	assert!(read_string16(&reply, 1).contains("has to be verified"));
 	Ok(())
 }
 

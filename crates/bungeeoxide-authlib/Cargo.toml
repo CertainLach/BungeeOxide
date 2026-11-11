@@ -1,7 +1,9 @@
 [package]
 name = "bungeeoxide-authlib"
-version = "0.1.0"
+description = "Minecraft account authentication: Microsoft and launcher logins, session server joins and checks, chat signing keys"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 anyhow.workspace = true

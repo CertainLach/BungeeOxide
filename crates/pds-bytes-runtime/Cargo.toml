@@ -1,7 +1,9 @@
 [package]
 name = "pds-bytes-runtime"
-version = "0.1.0"
+description = "Byte-level runtime for the Rust code pds2 generates from PDS binary protocol descriptions"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 psm.workspace = true

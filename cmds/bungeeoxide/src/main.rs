@@ -2,8 +2,7 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 
-use bungeeoxide::{serve, Config};
-use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide::{serve, users, Config};
 use bungeeoxide_converter::Version;
 use clap::Parser;
 use tokio::net::TcpListener;
@@ -13,7 +12,7 @@ struct Opts {
 	/// Address to accept players on
 	#[arg(long, default_value = "127.0.0.1:25577")]
 	listen: String,
-	/// Backend server (host:port), running with online-mode=false unless players are mapped with --accounts
+	/// Backend server (host:port), running with online-mode=false unless users have upstream accounts in --users
 	#[arg(long)]
 	server: String,
 	/// Server list description, shown when the backend server does not answer the server list ping
@@ -31,9 +30,9 @@ struct Opts {
 	/// Language files from `just languages`, to show translated text to old clients [default: target/minecraft-languages of the workspace, if present]
 	#[arg(long)]
 	languages: Option<PathBuf>,
-	/// TOML file mapping players to Minecraft accounts the bridge logs in upstream with
+	/// TOML file listing users: the account each logs in upstream with, whether the session server has to verify them, whether they may /proxy-goto; unlisted players join offline without /proxy-goto
 	#[arg(long)]
-	accounts: Option<PathBuf>,
+	users: Option<PathBuf>,
 }
 
 #[tokio::main]
@@ -53,9 +52,12 @@ async fn main() -> anyhow::Result<()> {
 			"no language files, old clients see translation keys (run just languages)"
 		),
 	}
-	let accounts = match &opts.accounts {
-		Some(path) => Accounts::load(path)?,
-		None => Accounts::default(),
+	let users = match &opts.users {
+		Some(path) => users::load(path)?,
+		None => users::Users {
+			endpoints: Default::default(),
+			users: Vec::new(),
+		},
 	};
 	let listener = TcpListener::bind(&opts.listen).await?;
 	tracing::info!(
@@ -70,7 +72,8 @@ async fn main() -> anyhow::Result<()> {
 			motd: opts.motd,
 			threshold: opts.compression_threshold,
 			server_version: opts.server_version,
-			accounts,
+			endpoints: users.endpoints,
+			users: users.users,
 			status_cache: Duration::try_from_secs_f64(opts.status_cache)?,
 			status: Default::default(),
 		}),

@@ -1,7 +1,9 @@
 [package]
 name = "bungeeoxide-converter"
-version = "0.1.0"
+description = "Converts Minecraft packets, chunks and worlds between versions 1.0.1 and 26.1"
+version = "0.1.1"
 edition = "2021"
+license.workspace = true
 
 [dependencies]
 bungeeoxide-minecraft.workspace = true

@@ -263,7 +263,7 @@ async fn ping(mut stream: TcpStream, config: &Config) -> Result<()> {
 	Ok(())
 }
 
-fn rsa_key() -> &'static RsaPrivateKey {
+pub(crate) fn rsa_key() -> &'static RsaPrivateKey {
 	static KEY: OnceLock<RsaPrivateKey> = OnceLock::new();
 	KEY.get_or_init(|| RsaPrivateKey::new(&mut rand::thread_rng(), 1024).expect("an RSA key"))
 }
@@ -478,13 +478,24 @@ pub async fn connect(
 }
 
 async fn play(
-	client: Conn,
+	mut client: Conn,
 	config: &Config,
 	cv: Version,
 	sv: Version,
 	username: String,
 ) -> Result<()> {
-	let online = crate::online::Online::new(config.accounts.find(&username, None), &username);
+	let user = config.user(&username);
+	let admitted = match user.downstream {
+		true => Err(anyhow!(
+			"{username} has to be verified, which {cv} clients can't do any more, join with 1.7.2 or newer"
+		)),
+		false => user.admit(None),
+	};
+	if let Err(e) = admitted {
+		client.send(kick(&format!("{e:#}"))).await?;
+		return Err(e.context(format!("{username} was not let in")));
+	}
+	let online = crate::online::Online::new(user.upstream.clone(), &username);
 	let mut p = Proxy::new(client, cv, sv, &config.target, online);
 	if let Err(e) = p.connect(&username, false).await {
 		p.client
@@ -494,7 +505,7 @@ async fn play(
 	}
 	let (join, early) = join_upstream(&mut p, config, &username, false).await?;
 	p.enter(join, early, false).await?;
-	relay(p, &username).await
+	relay(p, &username, user.allow_goto).await
 }
 
 #[cfg(test)]
