@@ -14,19 +14,19 @@ pub struct Ty {
     pub experience: pds_f32::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.ingredient,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.fuel,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.result,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.craftingStation,
         output,
     )?;
@@ -41,16 +41,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_ingredient = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_ingredient = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
-    let f_fuel = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_fuel = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
-    let f_result = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_result = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
-    let f_craftingStation = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_craftingStation = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
     let f_duration = pds_varint::deserialize(

@@ -9,7 +9,9 @@ use bytes::BytesMut;
 use futures::SinkExt;
 use minecraft_versions::gen;
 use minecraft_versions::pds::{self, Input};
-use minecraft_versions::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, VERSIONS};
+use minecraft_versions::{
+	legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET, VERSIONS,
+};
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use tokio::io::AsyncReadExt;
@@ -24,13 +26,13 @@ macro_rules! lengths {
 	($($v:literal => $c:ident, $s:ident;)*) => {
 		pub fn packet_len(root: Root, version: usize, data: &[u8]) -> std::result::Result<Option<usize>, String> {
 			let mut input = Input::new(data);
-			let read = match (VERSIONS[version], root) {
+			let read = pds::stack::budget(STACK_BUDGET, || match (VERSIONS[version], root) {
 				$(
-					($v, Root::PlayToClient) => gen::$c::deserialize(&mut input).map(drop),
-					($v, Root::PlayToServer) => gen::$s::deserialize(&mut input).map(drop),
+					($v, Root::PlayToClient) => Ok(gen::$c::deserialize(&mut input).map(drop)),
+					($v, Root::PlayToServer) => Ok(gen::$s::deserialize(&mut input).map(drop)),
 				)*
-				(v, r) => return Err(format!("{v} has no pre-netty {r:?} packets")),
-			};
+				(v, r) => Err(format!("{v} has no pre-netty {r:?} packets")),
+			})?;
 			match read {
 				Ok(()) => Ok(Some(input.offset())),
 				Err(pds::Error::NotEnoughData) => Ok(None),

@@ -86,6 +86,26 @@ mod tests {
 	}
 
 	#[test]
+	fn deep_nesting_fails_past_stack_budget() {
+		use crate::pds::{stack, Error};
+		let nested = |depth: usize| {
+			let mut bytes = vec![9];
+			for _ in 0..depth {
+				bytes.extend([9, 0, 0, 0, 1]);
+			}
+			bytes.extend([0, 0, 0, 0, 0]);
+			bytes
+		};
+		let decode = |bytes: &[u8]| {
+			stack::budget(256 << 10, || pds_Tag::deserialize(&mut Input::new(bytes)))
+		};
+		assert!(decode(&nested(8)).is_ok());
+		assert!(matches!(decode(&nested(1 << 20)), Err(Error::TooDeep)));
+		let snbt = "[".repeat(1 << 20);
+		assert!(stack::budget(256 << 10, || crate::snbt::parse(&snbt)).is_none());
+	}
+
+	#[test]
 	fn modified_utf8() {
 		let s = "a\u{0}\u{e9}\u{1f600}";
 		let bytes = pds_string::encode(s);

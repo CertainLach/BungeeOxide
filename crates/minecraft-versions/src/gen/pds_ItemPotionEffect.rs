@@ -13,7 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.id,
         output,
     )?;
-    pds_ItemEffectDetail::serialize(
+    pds_ItemEffectDetail::serialize_guarded(
         &_0.details,
         output,
     )?;
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_id = pds_varint::deserialize(
         input,
     )?;
-    let f_details = pds_ItemEffectDetail::deserialize(
+    let f_details = pds_ItemEffectDetail::deserialize_guarded(
         input,
     )?;
     Ok(Ty {

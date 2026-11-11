@@ -19,9 +19,25 @@ pub mod session;
 pub use session::{Outgoing, Session};
 
 pub use gen::convert::{
-	convert, index_of, inspect, legacy_version_of, reachable, version_of, Root, LEGACY_PROTOCOLS,
-	PROTOCOLS, STEPS, VERSIONS,
+	index_of, legacy_version_of, reachable, version_of, Root, LEGACY_PROTOCOLS, PROTOCOLS, STEPS,
+	VERSIONS,
 };
+
+pub const STACK_BUDGET: usize = 512 << 10;
+
+pub fn convert(
+	root: Root,
+	from: usize,
+	to: usize,
+	data: &[u8],
+	cx: &mut Session,
+) -> pds::convert::Result<Vec<Vec<u8>>> {
+	pds::stack::budget(STACK_BUDGET, || gen::convert::convert(root, from, to, data, cx))
+}
+
+pub fn inspect(root: Root, version: usize, data: &[u8]) -> Result<String, String> {
+	pds::stack::budget(STACK_BUDGET, || gen::convert::inspect(root, version, data))
+}
 
 pub const CONFIGURATION: &str = "1.20.2";
 

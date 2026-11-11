@@ -173,7 +173,7 @@ fn check<T: Debug>(
 	let unknown = || format!("id {id:#04x}");
 	let parsed = guard(|| {
 		let mut input = Input::new(data);
-		de(&mut input).map(|v| (v, input.offset()))
+		pds::stack::budget(512 << 10, || de(&mut input)).map(|v| (v, input.offset()))
 	});
 	let (value, consumed) = match parsed {
 		Err(msg) => {

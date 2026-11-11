@@ -11,19 +11,19 @@ pub struct Ty {
 	pub craftingStation: pds_play_toClient_SlotDisplay::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	pds_play_toClient_SlotDisplay::serialize(&_0.template, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.base, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.addition, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.result, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.craftingStation, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.template, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.base, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.addition, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.result, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.craftingStation, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	let f_template = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_base = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_addition = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_result = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize(input)?;
+	let f_template = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_base = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_addition = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_result = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
 	Ok(Ty {
 		template: f_template,
 		base: f_base,

@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		pds_play_toClient_SlotDisplay::serialize(e, output)?;
+		pds_play_toClient_SlotDisplay::serialize_guarded(e, output)?;
 	}
 	Ok(())
 }
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		.map_err(|_| Error::InvalidValue)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(pds_play_toClient_SlotDisplay::deserialize(input)?);
+		out.push(pds_play_toClient_SlotDisplay::deserialize_guarded(input)?);
 	}
 	Ok(out)
 }

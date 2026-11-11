@@ -3,6 +3,7 @@ use super::pds_ItemEffectDetail;
 use super::pds_bool;
 use super::pds_option_4;
 use super::pds_varint;
+use crate::pds::stack;
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -46,4 +47,12 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ pds_bool::size_of(&_0.showParticles)
 		+ pds_bool::size_of(&_0.showIcon)
 		+ pds_option_4::size_of(&_0.hiddenEffect)
+}
+pub fn serialize_guarded(_0: &Ty, output: &mut Output) -> Result<()> {
+	stack::check()?;
+	serialize(_0, output)
+}
+pub fn deserialize_guarded(input: &mut Input) -> Result<Ty> {
+	stack::check()?;
+	deserialize(input)
 }

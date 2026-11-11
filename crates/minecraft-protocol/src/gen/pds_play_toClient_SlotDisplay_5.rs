@@ -10,14 +10,14 @@ pub struct Ty {
 	pub pattern: pds_play_toClient_SlotDisplay_4::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	pds_play_toClient_SlotDisplay::serialize(&_0.base, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.material, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.base, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.material, output)?;
 	pds_play_toClient_SlotDisplay_4::serialize(&_0.pattern, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	let f_base = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_material = pds_play_toClient_SlotDisplay::deserialize(input)?;
+	let f_base = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_material = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
 	let f_pattern = pds_play_toClient_SlotDisplay_4::deserialize(input)?;
 	Ok(Ty {
 		base: f_base,

@@ -7,7 +7,7 @@ pub type Ty = Vec<pds_List::Ty>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     pds_i32::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
     for e in _0.iter() {
-        pds_List::serialize(e, output)?;
+        pds_List::serialize_guarded(e, output)?;
     }
     Ok(())
 }
@@ -15,7 +15,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let count: usize = pds_i32::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
-        out.push(pds_List::deserialize(input, )?);
+        out.push(pds_List::deserialize_guarded(input, )?);
     }
     Ok(out)
 }

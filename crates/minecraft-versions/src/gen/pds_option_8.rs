@@ -7,13 +7,13 @@ pub type Ty = Option<pds_ItemStackTemplate::Ty>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     pds_bool::serialize(&_0.is_some(), output)?;
     if let Some(v) = _0 {
-        pds_ItemStackTemplate::serialize(v, output)?;
+        pds_ItemStackTemplate::serialize_guarded(v, output)?;
     }
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     Ok(if pds_bool::deserialize(input)? {
-        Some(pds_ItemStackTemplate::deserialize(input, )?)
+        Some(pds_ItemStackTemplate::deserialize_guarded(input, )?)
     } else {
         None
     })

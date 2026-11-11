@@ -8,21 +8,21 @@ pub struct Ty {
     pub target: pds_play_toClient_SlotDisplay_v26_1::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.dye,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.target,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_dye = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_dye = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
-    let f_target = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_target = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
     Ok(Ty {

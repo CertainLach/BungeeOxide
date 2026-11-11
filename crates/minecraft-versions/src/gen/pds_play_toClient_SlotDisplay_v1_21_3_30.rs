@@ -9,28 +9,28 @@ pub struct Ty {
     pub pattern: pds_play_toClient_SlotDisplay_v1_21_3::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    pds_play_toClient_SlotDisplay_v1_21_3::serialize(
+    pds_play_toClient_SlotDisplay_v1_21_3::serialize_guarded(
         &_0.base,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v1_21_3::serialize(
+    pds_play_toClient_SlotDisplay_v1_21_3::serialize_guarded(
         &_0.material,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v1_21_3::serialize(
+    pds_play_toClient_SlotDisplay_v1_21_3::serialize_guarded(
         &_0.pattern,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_base = pds_play_toClient_SlotDisplay_v1_21_3::deserialize(
+    let f_base = pds_play_toClient_SlotDisplay_v1_21_3::deserialize_guarded(
         input,
     )?;
-    let f_material = pds_play_toClient_SlotDisplay_v1_21_3::deserialize(
+    let f_material = pds_play_toClient_SlotDisplay_v1_21_3::deserialize_guarded(
         input,
     )?;
-    let f_pattern = pds_play_toClient_SlotDisplay_v1_21_3::deserialize(
+    let f_pattern = pds_play_toClient_SlotDisplay_v1_21_3::deserialize_guarded(
         input,
     )?;
     Ok(Ty {

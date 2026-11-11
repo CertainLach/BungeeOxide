@@ -5,6 +5,7 @@ use std::cell::Cell;
 pub mod convert;
 pub mod natives;
 pub mod protobuf;
+pub mod stack;
 
 pub struct Input<'i> {
 	data: &'i [u8],
@@ -78,5 +79,11 @@ pub enum Error {
 	NotEnoughData,
 	TooLargeInteger,
 	InvalidValue,
+	TooDeep,
+}
+impl From<stack::TooDeep> for Error {
+	fn from(_: stack::TooDeep) -> Self {
+		Error::TooDeep
+	}
 }
 pub type Result<T, E = Error> = std::result::Result<T, E>;

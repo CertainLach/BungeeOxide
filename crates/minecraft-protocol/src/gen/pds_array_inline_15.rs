@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		pds_SlotComponent::serialize(e, output)?;
+		pds_SlotComponent::serialize_guarded(e, output)?;
 	}
 	Ok(())
 }
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		.map_err(|_| Error::InvalidValue)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(pds_SlotComponent::deserialize(input)?);
+		out.push(pds_SlotComponent::deserialize_guarded(input)?);
 	}
 	Ok(out)
 }

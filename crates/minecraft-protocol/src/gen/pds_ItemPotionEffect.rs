@@ -10,12 +10,12 @@ pub struct Ty {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	pds_varint::serialize(&_0.id, output)?;
-	pds_ItemEffectDetail::serialize(&_0.details, output)?;
+	pds_ItemEffectDetail::serialize_guarded(&_0.details, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_id = pds_varint::deserialize(input)?;
-	let f_details = pds_ItemEffectDetail::deserialize(input)?;
+	let f_details = pds_ItemEffectDetail::deserialize_guarded(input)?;
 	Ok(Ty {
 		id: f_id,
 		details: f_details,

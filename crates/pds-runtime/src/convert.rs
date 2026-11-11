@@ -5,6 +5,7 @@ pub enum Error {
 	Dropped,
 	Unconvertible(String),
 	Encoding(String),
+	TooDeep,
 }
 
 impl fmt::Display for Error {
@@ -13,7 +14,14 @@ impl fmt::Display for Error {
 			Error::Dropped => write!(f, "the packet is dropped"),
 			Error::Unconvertible(why) => write!(f, "can't convert: {why}"),
 			Error::Encoding(why) => write!(f, "can't encode: {why}"),
+			Error::TooDeep => write!(f, "nested too deep for the stack budget"),
 		}
+	}
+}
+
+impl From<crate::stack::TooDeep> for Error {
+	fn from(_: crate::stack::TooDeep) -> Self {
+		Error::TooDeep
 	}
 }
 

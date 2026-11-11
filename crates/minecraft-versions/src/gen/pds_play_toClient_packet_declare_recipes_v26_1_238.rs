@@ -13,7 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.input,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.slotDisplay,
         output,
     )?;
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_input = pds_IDSet::deserialize(
         input,
     )?;
-    let f_slotDisplay = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_slotDisplay = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
     Ok(Ty {

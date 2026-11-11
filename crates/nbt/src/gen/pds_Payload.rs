@@ -45,8 +45,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::double(__v) => pds_f64::serialize(__v, output),
         Ty::byteArray(__v) => pds_array_inline_7::serialize(__v, output),
         Ty::string(__v) => pds_string::serialize(__v, output),
-        Ty::list(__v) => pds_List::serialize(__v, output),
-        Ty::compound(__v) => pds_Compound::serialize(__v, output),
+        Ty::list(__v) => pds_List::serialize_guarded(__v, output),
+        Ty::compound(__v) => pds_Compound::serialize_guarded(__v, output),
         Ty::intArray(__v) => pds_array_inline_5::serialize(__v, output),
         Ty::longArray(__v) => pds_array_inline_6::serialize(__v, output),
     }
@@ -79,10 +79,10 @@ pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
         return Ok(Ty::string(pds_string::deserialize(input, )?));
     }
     if (__tag.clone() == 9_u8) {
-        return Ok(Ty::list(pds_List::deserialize(input, )?));
+        return Ok(Ty::list(pds_List::deserialize_guarded(input, )?));
     }
     if (__tag.clone() == 10_u8) {
-        return Ok(Ty::compound(pds_Compound::deserialize(input, )?));
+        return Ok(Ty::compound(pds_Compound::deserialize_guarded(input, )?));
     }
     if (__tag.clone() == 11_u8) {
         return Ok(Ty::intArray(pds_array_inline_5::deserialize(input, )?));

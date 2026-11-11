@@ -10,7 +10,7 @@ pub type Ty = Vec<pds_SlotComponent_v1_21_3::Ty>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     let _: pds_varint::Ty = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
     for e in _0.iter() {
-        pds_SlotComponent_v1_21_3::serialize(e, output)?;
+        pds_SlotComponent_v1_21_3::serialize_guarded(e, output)?;
     }
     Ok(())
 }
@@ -18,7 +18,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
     let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
-        out.push(pds_SlotComponent_v1_21_3::deserialize(input, )?);
+        out.push(pds_SlotComponent_v1_21_3::deserialize_guarded(input, )?);
     }
     Ok(out)
 }

@@ -16,16 +16,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	pds_varint::serialize(&_0.width, output)?;
 	pds_varint::serialize(&_0.height, output)?;
 	pds_array_inline_27::serialize(&_0.ingredients, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.result, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.craftingStation, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.result, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.craftingStation, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_width = pds_varint::deserialize(input)?;
 	let f_height = pds_varint::deserialize(input)?;
 	let f_ingredients = pds_array_inline_27::deserialize(input)?;
-	let f_result = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize(input)?;
+	let f_result = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
 	Ok(Ty {
 		width: f_width,
 		height: f_height,

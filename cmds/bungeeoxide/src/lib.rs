@@ -18,7 +18,8 @@ use minecraft_versions::gen::convert::v26_1::{
 use minecraft_versions::gen::convert::{packet_name, v1_20_2};
 use minecraft_versions::pds::{self, Input, Output};
 use minecraft_versions::{
-	convert, index_of, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS, VERSIONS,
+	convert, index_of, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS,
+	STACK_BUDGET, VERSIONS,
 };
 use serde_json::Value;
 use tokio::net::{TcpListener, TcpStream};
@@ -78,12 +79,14 @@ impl Config {
 }
 
 pub fn decode<T>(data: &[u8], de: fn(&mut Input<'_>) -> pds::Result<T>) -> Result<T> {
-	de(&mut Input::new(data)).map_err(|e| anyhow!("malformed packet: {e:?}"))
+	pds::stack::budget(STACK_BUDGET, || de(&mut Input::new(data)))
+		.map_err(|e| anyhow!("malformed packet: {e:?}"))
 }
 
 pub fn encode<T>(value: &T, ser: fn(&T, &mut Output) -> pds::Result<()>) -> Result<Vec<u8>> {
 	let mut out = Output::new();
-	ser(value, &mut out).map_err(|e| anyhow!("can't encode packet: {e:?}"))?;
+	pds::stack::budget(STACK_BUDGET, || ser(value, &mut out))
+		.map_err(|e| anyhow!("can't encode packet: {e:?}"))?;
 	Ok(out.into_inner())
 }
 

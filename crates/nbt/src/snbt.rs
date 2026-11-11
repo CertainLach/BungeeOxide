@@ -56,6 +56,7 @@ impl Reader<'_> {
 	}
 
 	fn value(&mut self) -> Option<Payload> {
+		crate::pds::stack::check().ok()?;
 		match self.peek()? {
 			b'{' => {
 				self.at += 1;

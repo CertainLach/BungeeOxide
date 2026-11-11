@@ -28,7 +28,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.description,
         output,
     )?;
-    pds_ItemStackTemplate::serialize(
+    pds_ItemStackTemplate::serialize_guarded(
         &_0.icon,
         output,
     )?;
@@ -65,7 +65,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_description = pds_anonymousNbt::deserialize(
         input,
     )?;
-    let f_icon = pds_ItemStackTemplate::deserialize(
+    let f_icon = pds_ItemStackTemplate::deserialize_guarded(
         input,
     )?;
     let f_frameType = pds_varint::deserialize(

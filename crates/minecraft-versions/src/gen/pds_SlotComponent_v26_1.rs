@@ -208,7 +208,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::intangible_projectile(__v) => pds_anonymousNbt::serialize(__v, output),
         Ty::food(__v) => pds_SlotComponent_v26_1_383::serialize(__v, output),
         Ty::consumable(__v) => pds_SlotComponent_v26_1_385::serialize(__v, output),
-        Ty::use_remainder(__v) => pds_ItemStackTemplate::serialize(__v, output),
+        Ty::use_remainder(__v) => pds_ItemStackTemplate::serialize_guarded(__v, output),
         Ty::use_cooldown(__v) => pds_SlotComponent_v26_1_386::serialize(__v, output),
         Ty::damage_resistant(__v) => pds_IDSet::serialize(__v, output),
         Ty::tool(__v) => pds_SlotComponent_v26_1_388::serialize(__v, output),
@@ -381,7 +381,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
         return Ok(Ty::consumable(pds_SlotComponent_v26_1_385::deserialize(input, )?));
     }
     if (__tag.clone() == 25_i32) {
-        return Ok(Ty::use_remainder(pds_ItemStackTemplate::deserialize(input, )?));
+        return Ok(Ty::use_remainder(pds_ItemStackTemplate::deserialize_guarded(input, )?));
     }
     if (__tag.clone() == 26_i32) {
         return Ok(Ty::use_cooldown(pds_SlotComponent_v26_1_386::deserialize(input, )?));

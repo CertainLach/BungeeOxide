@@ -7,13 +7,13 @@ pub type Ty = Option<Box<pds_ItemEffectDetail::Ty>>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     pds_bool::serialize(&_0.is_some(), output)?;
     if let Some(v) = _0 {
-        pds_ItemEffectDetail::serialize(v, output)?;
+        pds_ItemEffectDetail::serialize_guarded(v, output)?;
     }
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     Ok(if pds_bool::deserialize(input)? {
-        Some(Box::new(pds_ItemEffectDetail::deserialize(input, )?))
+        Some(Box::new(pds_ItemEffectDetail::deserialize_guarded(input, )?))
     } else {
         None
     })

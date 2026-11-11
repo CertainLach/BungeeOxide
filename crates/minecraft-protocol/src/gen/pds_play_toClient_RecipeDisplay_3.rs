@@ -9,15 +9,15 @@ pub struct Ty {
 	pub craftingStation: pds_play_toClient_SlotDisplay::Ty,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	pds_play_toClient_SlotDisplay::serialize(&_0.ingredient, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.result, output)?;
-	pds_play_toClient_SlotDisplay::serialize(&_0.craftingStation, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.ingredient, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.result, output)?;
+	pds_play_toClient_SlotDisplay::serialize_guarded(&_0.craftingStation, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	let f_ingredient = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_result = pds_play_toClient_SlotDisplay::deserialize(input)?;
-	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize(input)?;
+	let f_ingredient = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_result = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
+	let f_craftingStation = pds_play_toClient_SlotDisplay::deserialize_guarded(input)?;
 	Ok(Ty {
 		ingredient: f_ingredient,
 		result: f_result,

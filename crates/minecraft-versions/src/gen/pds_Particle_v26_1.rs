@@ -194,7 +194,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::composter => Ok(()),
         Ty::heart => Ok(()),
         Ty::instant_effect(__v) => pds_Particle_v26_1_67::serialize(__v, output),
-        Ty::item(__v) => pds_ItemStackTemplate::serialize(__v, output),
+        Ty::item(__v) => pds_ItemStackTemplate::serialize_guarded(__v, output),
         Ty::vibration(__v) => pds_Particle_v26_1_70::serialize(__v, output),
         Ty::trail(__v) => pds_Particle_v26_1_71::serialize(__v, output),
         Ty::copper_fire_flame => Ok(()),
@@ -348,7 +348,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
         return Ok(Ty::instant_effect(pds_Particle_v26_1_67::deserialize(input, )?));
     }
     if (__tag.clone() == 47_i32) {
-        return Ok(Ty::item(pds_ItemStackTemplate::deserialize(input, )?));
+        return Ok(Ty::item(pds_ItemStackTemplate::deserialize_guarded(input, )?));
     }
     if (__tag.clone() == 48_i32) {
         return Ok(Ty::vibration(pds_Particle_v26_1_70::deserialize(input, )?));

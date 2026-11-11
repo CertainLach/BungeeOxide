@@ -6,6 +6,7 @@ use super::pds_play_toClient_SlotDisplay_5;
 use super::pds_play_toClient_SlotDisplay_6;
 use super::pds_pstring_39;
 use super::pds_varint;
+use crate::pds::stack;
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -93,4 +94,12 @@ pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 		Ty::composite(_) => 7_i32,
 		Ty::default(__t) => __t.clone(),
 	}
+}
+pub fn serialize_guarded(_0: &Ty, output: &mut Output) -> Result<()> {
+	stack::check()?;
+	serialize(_0, output)
+}
+pub fn deserialize_guarded(input: &mut Input) -> Result<Ty> {
+	stack::check()?;
+	deserialize(input)
 }

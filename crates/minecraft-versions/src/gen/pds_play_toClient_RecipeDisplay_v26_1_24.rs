@@ -14,11 +14,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.ingredients,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.result,
         output,
     )?;
-    pds_play_toClient_SlotDisplay_v26_1::serialize(
+    pds_play_toClient_SlotDisplay_v26_1::serialize_guarded(
         &_0.craftingStation,
         output,
     )?;
@@ -28,10 +28,10 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_ingredients = pds_array_inline_100::deserialize(
         input,
     )?;
-    let f_result = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_result = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
-    let f_craftingStation = pds_play_toClient_SlotDisplay_v26_1::deserialize(
+    let f_craftingStation = pds_play_toClient_SlotDisplay_v26_1::deserialize_guarded(
         input,
     )?;
     Ok(Ty {
