@@ -58,6 +58,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(28)?;
     let f_inputItem1 = super::super::super::super::v1_13_2::slot::deserialize(
         input,
     )?;

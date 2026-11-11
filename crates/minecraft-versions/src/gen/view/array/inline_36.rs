@@ -11,6 +11,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let count: usize = super::super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
+    input.expect(count.saturating_mul(4))?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
         out.push(super::super::item_stack_template::deserialize_guarded(input, )?);

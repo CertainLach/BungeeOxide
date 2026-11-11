@@ -38,6 +38,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(9)?;
     let f_ingredient = super::slot_display::deserialize_guarded(
         input,
     )?;

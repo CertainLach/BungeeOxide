@@ -134,11 +134,7 @@ pub mod natives {
 				use super::*;
 				pub type Ty = $ty;
 				pub fn deserialize(input: &mut Input) -> Result<Ty> {
-					let mut buf = [0u8; std::mem::size_of::<$ty>()];
-					for b in buf.iter_mut() {
-						*b = input.read()?;
-					}
-					Ok(<$ty>::from_le_bytes(buf))
+					Ok(<$ty>::from_le_bytes(input.exact()?))
 				}
 				pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 					output.write(&_0.to_le_bytes());
@@ -159,11 +155,7 @@ pub mod natives {
 	fixed_native!(pds_double, f64);
 
 	fn rest(input: &Input) -> Result<Vec<u8>> {
-		let mut out = Vec::with_capacity(input.remaining());
-		while input.remaining() > 0 {
-			out.push(input.read()?);
-		}
-		Ok(out)
+		Ok(input.rest().to_vec())
 	}
 
 	pub mod pds_string {

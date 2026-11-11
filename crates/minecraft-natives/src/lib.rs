@@ -100,11 +100,7 @@ pub mod pds_UUID {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let mut buf = [0u8; 16];
-		for b in buf.iter_mut() {
-			*b = input.read()?;
-		}
-		Ok(u128::from_be_bytes(buf))
+		Ok(u128::from_be_bytes(input.exact()?))
 	}
 	pub fn size_of(_0: &Ty) -> usize {
 		16
@@ -119,11 +115,7 @@ pub mod pds_restBuffer {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let mut out = Vec::with_capacity(input.remaining());
-		while input.remaining() > 0 {
-			out.push(input.read()?);
-		}
-		Ok(out)
+		Ok(input.rest().to_vec())
 	}
 	pub fn size_of(_0: &Ty) -> usize {
 		_0.len()
@@ -142,14 +134,13 @@ pub mod pds_string16 {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let len = i16::from_be_bytes([input.read()?, input.read()?]);
+		let len = i16::from_be_bytes(input.exact()?);
 		let len = usize::try_from(len).map_err(|_| Error::InvalidValue)?;
-		if len * 2 > input.remaining() {
-			return Err(Error::NotEnoughData);
-		}
-		let units = (0..len)
-			.map(|_| Ok(u16::from_be_bytes([input.read()?, input.read()?])))
-			.collect::<Result<Vec<u16>>>()?;
+		let units: Vec<u16> = input
+			.bytes(len * 2)?
+			.chunks_exact(2)
+			.map(|c| u16::from_be_bytes([c[0], c[1]]))
+			.collect();
 		String::from_utf16(&units).map_err(|_| Error::InvalidValue)
 	}
 	pub fn size_of(_0: &Ty) -> usize {
@@ -187,12 +178,12 @@ pub mod pds_legacySlot {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let id = i16::from_be_bytes([input.read()?, input.read()?]);
+		let id = i16::from_be_bytes(input.exact()?);
 		if id < 0 {
 			return Ok(None);
 		}
-		let itemCount = input.read()? as i8;
-		let itemDamage = i16::from_be_bytes([input.read()?, input.read()?]);
+		let itemCount = i8::from_be_bytes(input.exact()?);
+		let itemDamage = i16::from_be_bytes(input.exact()?);
 		let nbtData = if has_nbt(id) {
 			pds_compressedNbt::deserialize(input)?
 		} else {
@@ -227,9 +218,7 @@ pub mod pds_lpVec3 {
 		if first == 0 {
 			return Ok(out);
 		}
-		for _ in 0..5 {
-			out.push(input.read()?);
-		}
+		out.extend(input.exact::<5>()?);
 		if first & 4 != 0 {
 			let scale = pds_varint::deserialize(input)?;
 			let mut o = Output::new();

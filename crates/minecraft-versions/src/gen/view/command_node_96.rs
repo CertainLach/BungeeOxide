@@ -26,6 +26,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
+    input.expect(2)?;
     let f_name = super::pstring_96::deserialize(
         input,
     )?;

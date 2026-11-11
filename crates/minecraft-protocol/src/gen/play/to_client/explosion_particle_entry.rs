@@ -18,6 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(10)?;
     let f_data = super::explosion_particle_info::deserialize(
         input,
     )?;

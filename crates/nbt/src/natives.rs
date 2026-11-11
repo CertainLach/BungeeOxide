@@ -82,14 +82,11 @@ pub mod pds_compressedNbt {
 	}
 
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let len = i16::from_be_bytes([input.read()?, input.read()?]);
-		if len < 0 {
+		let len = i16::from_be_bytes(input.exact()?);
+		let Ok(len) = usize::try_from(len) else {
 			return Ok(None);
-		}
-		(0..len)
-			.map(|_| input.read())
-			.collect::<Result<Vec<u8>>>()
-			.map(Some)
+		};
+		Ok(Some(input.bytes(len)?.to_vec()))
 	}
 
 	pub fn size_of(_0: &Ty) -> usize {

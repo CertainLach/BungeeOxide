@@ -18,6 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(2)?;
     let f_action = super::super::super::super::play::to_client::packet_player_info_23::deserialize(
         input,
     )?;

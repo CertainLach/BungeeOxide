@@ -18,6 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(1)?;
     let f_sender = super::super::super::super::uuid::deserialize(
         input,
     )?;

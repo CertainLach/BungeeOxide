@@ -63,6 +63,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(17)?;
     let f_x = super::super::super::super::i32::deserialize(
         input,
     )?;

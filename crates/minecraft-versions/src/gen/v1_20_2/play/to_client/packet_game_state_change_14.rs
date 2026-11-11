@@ -38,6 +38,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     }
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(1)?;
     let __tagv = super::super::super::super::u8::deserialize(
         input,
     )?;

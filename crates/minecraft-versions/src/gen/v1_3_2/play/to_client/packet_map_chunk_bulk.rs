@@ -30,6 +30,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(6)?;
     let f_chunkColumnCount = super::super::super::super::i16::deserialize(
         input,
     )?;

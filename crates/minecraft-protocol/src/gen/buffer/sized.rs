@@ -13,9 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
     let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
-    if count > input.remaining() {
-        return Err(Error::NotEnoughData);
-    }
+    input.expect(count)?;
     let mut out = Vec::with_capacity(count);
     for _ in 0..count {
         out.push(super::super::u8::deserialize(input)?);

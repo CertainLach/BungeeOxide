@@ -23,6 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(29)?;
     let f_target = super::vec3f64::deserialize(
         input,
     )?;

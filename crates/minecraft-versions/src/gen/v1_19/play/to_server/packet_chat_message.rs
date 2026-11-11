@@ -33,6 +33,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(19)?;
     let f_message = super::super::super::super::pstring_96::deserialize(
         input,
     )?;

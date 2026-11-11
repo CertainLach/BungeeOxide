@@ -28,6 +28,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(10)?;
     let f_sessionUUID = super::super::super::super::uuid::deserialize(
         input,
     )?;

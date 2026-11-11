@@ -22,9 +22,15 @@ use crate::codec::Codec;
 use crate::status::{self, Upstream};
 use crate::{at, join_upstream, next, relay, Config, Conn, Proxy};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Frame {
+	Complete(usize),
+	Need(usize),
+}
+
 macro_rules! lengths {
 	($($v:literal => $ns:ident;)*) => {
-		pub fn packet_len(root: Root, version: usize, data: &[u8]) -> std::result::Result<Option<usize>, String> {
+		pub fn packet_len(root: Root, version: usize, data: &[u8]) -> std::result::Result<Frame, String> {
 			let mut input = Input::new(data);
 			let read = pds::stack::budget(STACK_BUDGET, || match (VERSIONS[version], root) {
 				$(
@@ -34,8 +40,8 @@ macro_rules! lengths {
 				(v, r) => Err(format!("{v} has no pre-netty {r:?} packets")),
 			})?;
 			match read {
-				Ok(()) => Ok(Some(input.offset())),
-				Err(pds::Error::NotEnoughData) => Ok(None),
+				Ok(()) => Ok(Frame::Complete(input.offset())),
+				Err(pds::Error::NotEnoughData) => Ok(Frame::Need(input.needed().max(data.len() + 1))),
 				Err(e) => Err(format!("malformed {} packet {:#04x}: {e:?}", VERSIONS[version], data[0])),
 			}
 		}
@@ -62,9 +68,9 @@ pub fn is_legacy(version: usize) -> bool {
 	LEGACY_PROTOCOLS.iter().any(|(_, v)| *v == version)
 }
 
-pub fn handshake_len(data: &[u8]) -> std::result::Result<Option<usize>, String> {
+pub fn handshake_len(data: &[u8]) -> std::result::Result<Frame, String> {
 	match data {
-		[] | [0x02] => Ok(None),
+		[] | [0x02] => Ok(Frame::Need(2)),
 		[0x02, 0, ..] => packet_len(Root::PlayToServer, at("1.2.5"), data),
 		[0x02, ..] => packet_len(Root::PlayToServer, at("1.6.4"), data),
 		[0x01, a, b, c, d, ..] => {
@@ -73,7 +79,7 @@ pub fn handshake_len(data: &[u8]) -> std::result::Result<Option<usize>, String> 
 				.ok_or_else(|| format!("unknown pre-netty protocol {protocol}"))?;
 			packet_len(Root::PlayToServer, version, data)
 		}
-		[0x01, ..] => Ok(None),
+		[0x01, ..] => Ok(Frame::Need(5)),
 		[id, ..] => Err(format!("unexpected pre-netty login packet {id:#04x}")),
 	}
 }
@@ -123,6 +129,7 @@ pub struct Legacy {
 	pub version: Option<usize>,
 	pub cipher: Option<(Cfb8, Cfb8)>,
 	pub plain: BytesMut,
+	pub need: usize,
 }
 
 impl Legacy {
@@ -132,6 +139,7 @@ impl Legacy {
 			version,
 			cipher: None,
 			plain: BytesMut::new(),
+			need: 0,
 		}
 	}
 }
@@ -506,13 +514,15 @@ mod tests {
 	fn handshakes_are_told_apart() {
 		let mut old = vec![0x02];
 		string16(&mut old, "Notch;localhost:25565");
-		assert_eq!(handshake_len(&old), Ok(Some(old.len())));
-		assert_eq!(handshake_len(&old[..5]), Ok(None));
+		assert_eq!(handshake_len(&old), Ok(Frame::Complete(old.len())));
+		assert_eq!(handshake_len(&old[..5]), Ok(Frame::Need(old.len())));
+		assert_eq!(handshake_len(&old[..1]), Ok(Frame::Need(2)));
 		let mut new = vec![0x02, 78];
 		string16(&mut new, "Notch");
 		string16(&mut new, "localhost");
 		new.extend_from_slice(&25565i32.to_be_bytes());
-		assert_eq!(handshake_len(&new), Ok(Some(new.len())));
+		assert_eq!(handshake_len(&new), Ok(Frame::Complete(new.len())));
+		assert_eq!(handshake_len(&new[..8]), Ok(Frame::Need(14)));
 		assert!(handshake_len(&[0x07]).is_err());
 	}
 

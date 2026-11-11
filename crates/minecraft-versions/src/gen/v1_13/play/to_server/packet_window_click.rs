@@ -38,6 +38,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(9)?;
     let f_windowId = super::super::super::super::u8::deserialize(
         input,
     )?;

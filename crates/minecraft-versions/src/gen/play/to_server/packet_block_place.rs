@@ -53,6 +53,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(25)?;
     let f_hand = super::packet_block_place_0::deserialize(
         input,
     )?;

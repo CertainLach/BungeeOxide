@@ -52,6 +52,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(14)?;
     let f_title = super::super::super::super::anonymous_nbt::deserialize(
         input,
     )?;

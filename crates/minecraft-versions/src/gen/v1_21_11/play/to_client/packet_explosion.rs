@@ -43,6 +43,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(36)?;
     let f_center = super::super::super::super::vec3f64::deserialize(
         input,
     )?;

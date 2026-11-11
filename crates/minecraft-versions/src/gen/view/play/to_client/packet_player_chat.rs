@@ -73,6 +73,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(25)?;
     let f_globalIndex = super::super::super::super::varint::deserialize(
         input,
     )?;

@@ -43,6 +43,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(24)?;
     let f_blockDelaySeconds = super::super::f32::deserialize(
         input,
     )?;

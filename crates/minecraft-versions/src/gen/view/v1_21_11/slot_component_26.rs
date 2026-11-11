@@ -63,6 +63,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(11)?;
     let f_slot = super::super::super::v1_21_11::slot_component_25::deserialize(
         input,
     )?;

@@ -18,6 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(2)?;
     let f_nodes = super::super::super::array::inline_48::deserialize(
         input,
     )?;

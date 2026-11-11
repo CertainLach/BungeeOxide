@@ -11,6 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let count: usize = super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
+    input.expect(count)?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
         out.push(super::super::slot_component::deserialize(input, )?);

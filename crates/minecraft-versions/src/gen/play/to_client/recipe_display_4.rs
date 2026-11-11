@@ -33,6 +33,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(5)?;
     let f_template = super::slot_display::deserialize_guarded(
         input,
     )?;

@@ -30,9 +30,19 @@ pub fn compress(data: &[u8]) -> io::Result<Vec<u8>> {
 	z.finish()
 }
 
+pub const MAX_INFLATED: usize = 2 << 20;
+
 pub fn decompress(data: &[u8]) -> io::Result<Vec<u8>> {
 	let mut out = Vec::new();
-	GzDecoder::new(data).read_to_end(&mut out)?;
+	GzDecoder::new(data)
+		.take(MAX_INFLATED as u64 + 1)
+		.read_to_end(&mut out)?;
+	if out.len() > MAX_INFLATED {
+		return Err(io::Error::new(
+			io::ErrorKind::InvalidData,
+			format!("gzip NBT inflates past {MAX_INFLATED} bytes"),
+		));
+	}
 	Ok(out)
 }
 
@@ -101,5 +111,18 @@ mod tests {
 			Err(Error::Nbt(_))
 		));
 		assert!(decompress(&compress(b"hello").unwrap()[..8]).is_err());
+	}
+
+	#[test]
+	fn bombs_stop_at_the_inflate_limit() {
+		let bomb = compress(&vec![0; MAX_INFLATED + 1]).unwrap();
+		assert!(bomb.len() < 4096);
+		assert!(decompress(&bomb).is_err());
+		assert_eq!(
+			decompress(&compress(&vec![0; MAX_INFLATED]).unwrap())
+				.unwrap()
+				.len(),
+			MAX_INFLATED
+		);
 	}
 }

@@ -18,6 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(9)?;
     let f_chunkCoordinates = super::packet_multi_block_change_23::deserialize(
         input,
     )?;

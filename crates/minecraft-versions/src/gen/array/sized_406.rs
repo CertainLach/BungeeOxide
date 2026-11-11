@@ -14,6 +14,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
     let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
+    input.expect(count.saturating_mul(12))?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
         out.push(super::super::v1_3_2::play::to_client::packet_map_chunk_bulk_1::deserialize(input, )?);

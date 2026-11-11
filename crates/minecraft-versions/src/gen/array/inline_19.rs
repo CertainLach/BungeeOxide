@@ -11,6 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let count: usize = super::super::u16::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
+    input.expect(count.saturating_mul(4))?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
         out.push(super::super::v1_12::play::to_server::packet_prepare_crafting_grid_1::deserialize(input, )?);

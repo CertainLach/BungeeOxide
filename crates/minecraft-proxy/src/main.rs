@@ -143,6 +143,9 @@ fn diff(orig: &[u8], ours: &[u8]) -> String {
 	)
 }
 
+const MAX_FRAME: usize = (1 << 21) - 1;
+const MAX_PACKET: usize = 1 << 23;
+
 fn varint(buf: &[u8]) -> Option<(i32, usize)> {
 	let mut v = 0u32;
 	for (i, b) in buf.iter().take(5).enumerate() {
@@ -354,6 +357,12 @@ fn read_frame(r: &mut impl Read) -> io::Result<Option<(Vec<u8>, usize)>> {
 		frame.push(b[0]);
 		len |= ((b[0] & 0x7f) as u32) << (7 * i);
 		if b[0] & 0x80 == 0 {
+			if len as usize > MAX_FRAME {
+				return Err(io::Error::new(
+					io::ErrorKind::InvalidData,
+					format!("frame of {len} bytes is too large"),
+				));
+			}
 			let start = frame.len();
 			frame.resize(start + len as usize, 0);
 			r.read_exact(&mut frame[start..])?;
@@ -376,13 +385,22 @@ fn packet_data(body: &[u8], threshold: i32) -> io::Result<Vec<u8>> {
 	if data_len == 0 {
 		return Ok(rest.to_vec());
 	}
-	let mut out = Vec::with_capacity(data_len as usize);
-	ZlibDecoder::new(rest).read_to_end(&mut out)?;
-	if out.len() != data_len as usize {
-		return Err(io::Error::new(
-			io::ErrorKind::InvalidData,
-			format!("inflated {} bytes, header says {data_len}", out.len()),
-		));
+	let invalid = |msg: String| io::Error::new(io::ErrorKind::InvalidData, msg);
+	let data_len = usize::try_from(data_len)
+		.ok()
+		.filter(|n| *n <= MAX_PACKET)
+		.ok_or_else(|| invalid(format!("data length {data_len} is out of range")))?;
+	let mut out = vec![0; data_len];
+	let mut z = ZlibDecoder::new(rest);
+	z.read_exact(&mut out).map_err(|_| {
+		invalid(format!(
+			"inflates to less than the {data_len} bytes the header says"
+		))
+	})?;
+	if z.read(&mut [0])? != 0 {
+		return Err(invalid(format!(
+			"inflates past the {data_len} bytes the header says"
+		)));
 	}
 	Ok(out)
 }

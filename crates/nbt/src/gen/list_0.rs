@@ -38,6 +38,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     }
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
+    input.expect(4)?;
     let __tag = args.r#type;
     if (__tag.clone() == 0_u8) {
         return Ok(Ty::End(super::i32::deserialize(input, )?));

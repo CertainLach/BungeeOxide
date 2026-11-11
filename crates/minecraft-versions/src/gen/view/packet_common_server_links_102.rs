@@ -18,6 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(2)?;
     let f_hasKnownType = super::packet_common_server_links_101::deserialize(
         input,
     )?;

@@ -18,6 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(2)?;
     let f_match = super::super::super::pstring_39::deserialize(
         input,
     )?;

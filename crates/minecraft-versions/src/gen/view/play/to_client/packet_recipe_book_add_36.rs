@@ -18,6 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(6)?;
     let f_recipe = super::packet_recipe_book_add_34::deserialize(
         input,
     )?;

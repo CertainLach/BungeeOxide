@@ -18,6 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(5)?;
     let f_operation = super::super::super::super::play::to_client::packet_tracked_waypoint_48::deserialize(
         input,
     )?;

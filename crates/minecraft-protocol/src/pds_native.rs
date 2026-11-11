@@ -103,11 +103,7 @@ pub mod pds_UUID {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let mut buf = [0u8; 16];
-		for b in buf.iter_mut() {
-			*b = input.read()?;
-		}
-		Ok(u128::from_be_bytes(buf))
+		Ok(u128::from_be_bytes(input.exact()?))
 	}
 	pub fn size_of(_0: &Ty) -> usize {
 		16
@@ -171,11 +167,8 @@ pub mod pds_lpVec3 {
 		if a == 0 {
 			return Ok(Ty::default());
 		}
-		let b = input.read()?;
-		let mut c = 0u64;
-		for _ in 0..4 {
-			c = (c << 8) | u64::from(input.read()?);
-		}
+		let [b, c0, c1, c2, c3] = input.exact()?;
+		let c = u64::from(u32::from_be_bytes([c0, c1, c2, c3]));
 		let packed = (c << 16) | (u64::from(b) << 8) | u64::from(a);
 		let mut scale = u64::from(a & 3);
 		if a & 4 != 0 {
@@ -208,11 +201,7 @@ pub mod pds_restBuffer {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let mut out = Vec::new();
-		while let Ok(b) = input.read() {
-			out.push(b);
-		}
-		Ok(out)
+		Ok(input.rest().to_vec())
 	}
 	pub fn size_of(_0: &Ty) -> usize {
 		_0.len()

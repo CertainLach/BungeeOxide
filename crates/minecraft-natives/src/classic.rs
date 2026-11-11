@@ -60,12 +60,7 @@ pub mod pds_classicString {
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		if input.remaining() < SIZE {
-			return Err(Error::NotEnoughData);
-		}
-		let bytes = (0..SIZE)
-			.map(|_| input.read())
-			.collect::<Result<Vec<u8>>>()?;
+		let bytes: [u8; SIZE] = input.exact()?;
 		let end = bytes.iter().rposition(|b| *b != b' ').map_or(0, |i| i + 1);
 		Ok(bytes[..end].iter().map(|b| CP437[*b as usize]).collect())
 	}

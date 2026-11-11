@@ -11,6 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let count: usize = super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
+    input.expect(count.saturating_mul(10))?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
         out.push(super::super::v1_21_1::play::to_client::packet_entity_update_attributes_16::deserialize(input, )?);

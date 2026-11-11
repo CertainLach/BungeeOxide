@@ -10,11 +10,7 @@ macro_rules! int_native {
 				Ok(())
 			}
 			pub fn deserialize(input: &mut Input) -> Result<Ty> {
-				let mut buf = [0u8; std::mem::size_of::<$ty>()];
-				for b in buf.iter_mut() {
-					*b = input.read()?;
-				}
-				Ok(<$ty>::from_be_bytes(buf))
+				Ok(<$ty>::from_be_bytes(input.exact()?))
 			}
 			pub fn size_of(_0: &Ty) -> usize {
 				std::mem::size_of::<$ty>()

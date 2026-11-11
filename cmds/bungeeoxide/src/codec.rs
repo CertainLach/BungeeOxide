@@ -6,9 +6,10 @@ use flate2::write::ZlibEncoder;
 use flate2::Compression;
 use tokio_util::codec::{Decoder, Encoder};
 
-use crate::legacy::{handshake_len, packet_len, Cfb8, Legacy};
+use crate::legacy::{handshake_len, packet_len, Cfb8, Frame, Legacy};
 
-const MAX_FRAME: usize = 1 << 23;
+const MAX_FRAME: usize = (1 << 21) - 1;
+const MAX_PACKET: usize = 1 << 23;
 
 pub fn read_varint(buf: &[u8]) -> Option<(i32, usize)> {
 	let mut out = 0u32;
@@ -67,6 +68,7 @@ fn decode_legacy(legacy: &mut Legacy, src: &mut BytesMut) -> io::Result<Option<V
 		version,
 		cipher,
 		plain,
+		need,
 	} = legacy;
 	let buf = match cipher {
 		Some((decrypt, _)) => {
@@ -79,7 +81,7 @@ fn decode_legacy(legacy: &mut Legacy, src: &mut BytesMut) -> io::Result<Option<V
 		}
 		None => src,
 	};
-	if buf.is_empty() {
+	if buf.is_empty() || buf.len() < *need {
 		return Ok(None);
 	}
 	let len = match version {
@@ -87,11 +89,17 @@ fn decode_legacy(legacy: &mut Legacy, src: &mut BytesMut) -> io::Result<Option<V
 		None => handshake_len(buf),
 	};
 	match len.map_err(invalid)? {
-		Some(n) => Ok(Some(buf.split_to(n).to_vec())),
-		None => {
-			if buf.len() > MAX_FRAME {
-				return Err(invalid("pre-netty packet is too large"));
+		Frame::Complete(n) => {
+			*need = 0;
+			Ok(Some(buf.split_to(n).to_vec()))
+		}
+		Frame::Need(n) => {
+			if n > MAX_PACKET {
+				return Err(invalid(format!(
+					"pre-netty packet of at least {n} bytes is too large"
+				)));
 			}
+			*need = n;
 			Ok(None)
 		}
 	}
@@ -146,13 +154,15 @@ fn decode_frame(threshold: Option<usize>, src: &mut BytesMut) -> io::Result<Opti
 		return Ok(Some(body.to_vec()));
 	}
 	let data_len = usize::try_from(data_len).map_err(|_| invalid("negative data length"))?;
-	if data_len > MAX_FRAME {
+	if data_len > MAX_PACKET {
 		return Err(invalid(format!("packet of {data_len} bytes is too large")));
 	}
-	let mut out = Vec::with_capacity(data_len);
-	ZlibDecoder::new(body).read_to_end(&mut out)?;
-	if out.len() != data_len {
-		return Err(invalid("decompressed size does not match"));
+	let mut out = vec![0; data_len];
+	let mut z = ZlibDecoder::new(body);
+	z.read_exact(&mut out)
+		.map_err(|_| invalid("packet inflates to less than its declared size"))?;
+	if z.read(&mut [0])? != 0 {
+		return Err(invalid("packet inflates past its declared size"));
 	}
 	Ok(Some(out))
 }
@@ -234,5 +244,83 @@ mod tests {
 				assert_eq!(got, packets, "{threshold:?} {encrypted}");
 			}
 		}
+	}
+
+	fn compressed(declared: i32, inflated: &[u8]) -> BytesMut {
+		let mut payload = Vec::new();
+		write_varint(&mut payload, declared);
+		let mut z = ZlibEncoder::new(&mut payload, Compression::default());
+		z.write_all(inflated).unwrap();
+		z.finish().unwrap();
+		let mut frame = Vec::new();
+		write_varint(&mut frame, payload.len() as i32);
+		frame.extend_from_slice(&payload);
+		BytesMut::from(&frame[..])
+	}
+
+	fn decode_compressed(mut frame: BytesMut) -> io::Result<Option<Vec<u8>>> {
+		Codec {
+			threshold: Some(64),
+			..Codec::default()
+		}
+		.decode(&mut frame)
+	}
+
+	#[test]
+	fn compressed_packets_inflate_to_exactly_their_declared_size() {
+		assert_eq!(
+			decode_compressed(compressed(100, &[7; 100])).unwrap(),
+			Some(vec![7; 100])
+		);
+		let bomb = compressed(100, &vec![0; 1 << 26]);
+		assert!(bomb.len() < 1 << 17);
+		assert!(decode_compressed(bomb).is_err());
+		assert!(decode_compressed(compressed(100, &[7; 99])).is_err());
+		assert!(decode_compressed(compressed(MAX_PACKET as i32 + 1, &[0])).is_err());
+	}
+
+	#[test]
+	fn frames_past_the_vanilla_limit_are_rejected() {
+		let mut header = Vec::new();
+		write_varint(&mut header, MAX_FRAME as i32 + 1);
+		let mut src = BytesMut::from(&header[..]);
+		assert!(Codec::default().decode(&mut src).is_err());
+	}
+
+	#[test]
+	fn legacy_packets_wait_for_the_bytes_they_are_known_to_need() {
+		let mut handshake = vec![0x02, 0, 30];
+		for unit in "a".repeat(30).encode_utf16() {
+			handshake.extend_from_slice(&unit.to_be_bytes());
+		}
+		let mut codec = Codec {
+			legacy: Some(Legacy::new(minecraft_versions::Root::PlayToServer, None)),
+			..Codec::default()
+		};
+		let mut src = BytesMut::new();
+		for (i, b) in handshake.iter().enumerate() {
+			src.put_u8(*b);
+			let got = codec.decode(&mut src).unwrap();
+			if i + 1 < handshake.len() {
+				assert_eq!(got, None);
+				if i >= 2 {
+					assert_eq!(codec.legacy.as_ref().unwrap().need, handshake.len());
+				}
+			} else {
+				assert_eq!(got, Some(handshake.clone()));
+			}
+		}
+
+		let mut chunk = vec![0x33];
+		chunk.extend_from_slice(&[0; 13]);
+		chunk.extend_from_slice(&i32::MAX.to_be_bytes());
+		let mut codec = Codec {
+			legacy: Some(Legacy::new(
+				minecraft_versions::Root::PlayToClient,
+				Some(crate::at("1.6.4")),
+			)),
+			..Codec::default()
+		};
+		assert!(codec.decode(&mut BytesMut::from(&chunk[..])).is_err());
 	}
 }

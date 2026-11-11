@@ -28,6 +28,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(4)?;
     let f_ANON = super::chunk_block_entity_78::deserialize(
         input,
     )?;

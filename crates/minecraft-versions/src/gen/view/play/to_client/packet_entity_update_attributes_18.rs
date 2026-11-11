@@ -23,6 +23,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
+    input.expect(10)?;
     let f_uuid = super::super::super::pstring_96::deserialize(
         input,
     )?;

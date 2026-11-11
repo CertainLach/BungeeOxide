@@ -20,12 +20,8 @@ pub mod pds_string {
 	}
 
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
-		let len = u16::from_be_bytes([input.read()?, input.read()?]) as usize;
-		let mut bytes = Vec::with_capacity(len);
-		for _ in 0..len {
-			bytes.push(input.read()?);
-		}
-		decode(&bytes)
+		let len = u16::from_be_bytes(input.exact()?) as usize;
+		decode(input.bytes(len)?)
 	}
 
 	pub fn size_of(_0: &Ty) -> usize {
@@ -93,7 +89,7 @@ pub mod view {
 		}
 
 		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
-			let len = u16::from_be_bytes([input.read()?, input.read()?]) as usize;
+			let len = u16::from_be_bytes(input.exact()?) as usize;
 			let bytes = input.bytes(len)?;
 			match std::str::from_utf8(bytes) {
 				Ok(s) if bytes.iter().all(|b| *b < 0xf0) => Ok(Cow::Borrowed(s)),

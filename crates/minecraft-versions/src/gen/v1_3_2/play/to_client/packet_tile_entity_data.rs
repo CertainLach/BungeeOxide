@@ -23,6 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
+    input.expect(11)?;
     let f_location = super::super::super::super::v1_0_1::position_isi::deserialize(
         input,
     )?;
