@@ -64,6 +64,21 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::master => "master",
+        Ty::music => "music",
+        Ty::record => "record",
+        Ty::weather => "weather",
+        Ty::block => "block",
+        Ty::hostile => "hostile",
+        Ty::neutral => "neutral",
+        Ty::player => "player",
+        Ty::ambient => "ambient",
+        Ty::voice => "voice",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::master => 0_i32,

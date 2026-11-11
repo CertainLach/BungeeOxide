@@ -47,6 +47,15 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::always => "always",
+		Ty::never => "never",
+		Ty::push_other_teams => "push_other_teams",
+		Ty::push_own_team => "push_own_team",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::always => 0_i32,

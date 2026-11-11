@@ -64,6 +64,21 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::bug_report => "bug_report",
+        Ty::community_guidelines => "community_guidelines",
+        Ty::support => "support",
+        Ty::status => "status",
+        Ty::feedback => "feedback",
+        Ty::community => "community",
+        Ty::website => "website",
+        Ty::forums => "forums",
+        Ty::news => "news",
+        Ty::announcements => "announcements",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::bug_report => 0_i32,

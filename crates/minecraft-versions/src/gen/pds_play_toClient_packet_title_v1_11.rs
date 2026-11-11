@@ -50,6 +50,15 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::v0(_) => "v0",
+        Ty::v1(_) => "v1",
+        Ty::v2(_) => "v2",
+        Ty::v3(_) => "v3",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::v0(_) => 0_i32,

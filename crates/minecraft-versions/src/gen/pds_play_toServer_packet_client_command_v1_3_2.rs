@@ -32,6 +32,13 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::initial_spawn => "initial_spawn",
+        Ty::perform_respawn => "perform_respawn",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_i8::Ty {
     match _0 {
         Ty::initial_spawn => 0_i8,

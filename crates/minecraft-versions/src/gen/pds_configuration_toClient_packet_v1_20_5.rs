@@ -132,6 +132,26 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::cookie_request(_) => "cookie_request",
+        Ty::custom_payload(_) => "custom_payload",
+        Ty::disconnect(_) => "disconnect",
+        Ty::finish_configuration(_) => "finish_configuration",
+        Ty::keep_alive(_) => "keep_alive",
+        Ty::ping(_) => "ping",
+        Ty::reset_chat(_) => "reset_chat",
+        Ty::registry_data(_) => "registry_data",
+        Ty::remove_resource_pack(_) => "remove_resource_pack",
+        Ty::add_resource_pack(_) => "add_resource_pack",
+        Ty::store_cookie(_) => "store_cookie",
+        Ty::transfer(_) => "transfer",
+        Ty::feature_flags(_) => "feature_flags",
+        Ty::tags(_) => "tags",
+        Ty::select_known_packs(_) => "select_known_packs",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::cookie_request(_) => 0_i32,

@@ -34,6 +34,12 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::r#true(__v) => pds_array_sized_384::size_of(__v),
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::r#false => "false",
+        Ty::r#true(_) => "true",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_bool::Ty) {
     debug_assert!(
         match _0 {

@@ -29,6 +29,12 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::minecraft_entity(_) => "minecraft_entity",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &String) {
     debug_assert!(
         match _0 {

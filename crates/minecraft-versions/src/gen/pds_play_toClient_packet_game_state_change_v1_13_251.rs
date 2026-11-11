@@ -68,6 +68,22 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::no_respawn_block_available => "no_respawn_block_available",
+        Ty::start_raining => "start_raining",
+        Ty::guardian_elder_effect => "guardian_elder_effect",
+        Ty::stop_raining => "stop_raining",
+        Ty::change_game_mode => "change_game_mode",
+        Ty::win_game => "win_game",
+        Ty::demo_event => "demo_event",
+        Ty::play_arrow_hit_sound => "play_arrow_hit_sound",
+        Ty::rain_level_change => "rain_level_change",
+        Ty::thunder_level_change => "thunder_level_change",
+        Ty::puffer_fish_sting => "puffer_fish_sting",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_u8::Ty {
     match _0 {
         Ty::no_respawn_block_available => 0_u8,

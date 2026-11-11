@@ -47,6 +47,15 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::ignore_entities => "ignore_entities",
+		Ty::show_air => "show_air",
+		Ty::show_bounding_box => "show_bounding_box",
+		Ty::strict => "strict",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_u8::Ty {
 	match _0 {
 		Ty::ignore_entities => 0_u8,

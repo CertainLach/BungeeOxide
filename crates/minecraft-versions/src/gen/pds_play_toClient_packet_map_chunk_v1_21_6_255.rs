@@ -48,6 +48,17 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::world_surface_wg => "world_surface_wg",
+        Ty::world_surface => "world_surface",
+        Ty::ocean_floor_wg => "ocean_floor_wg",
+        Ty::ocean_floor => "ocean_floor",
+        Ty::motion_blocking => "motion_blocking",
+        Ty::motion_blocking_no_leaves => "motion_blocking_no_leaves",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::world_surface_wg => 0_i32,

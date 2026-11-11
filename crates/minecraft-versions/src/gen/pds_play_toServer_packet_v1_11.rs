@@ -229,6 +229,41 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::teleport_confirm(_) => "teleport_confirm",
+        Ty::tab_complete(_) => "tab_complete",
+        Ty::chat(_) => "chat",
+        Ty::client_command(_) => "client_command",
+        Ty::settings(_) => "settings",
+        Ty::transaction(_) => "transaction",
+        Ty::enchant_item(_) => "enchant_item",
+        Ty::window_click(_) => "window_click",
+        Ty::close_window(_) => "close_window",
+        Ty::custom_payload(_) => "custom_payload",
+        Ty::use_entity(_) => "use_entity",
+        Ty::keep_alive(_) => "keep_alive",
+        Ty::position(_) => "position",
+        Ty::position_look(_) => "position_look",
+        Ty::look(_) => "look",
+        Ty::flying(_) => "flying",
+        Ty::vehicle_move(_) => "vehicle_move",
+        Ty::steer_boat(_) => "steer_boat",
+        Ty::abilities(_) => "abilities",
+        Ty::block_dig(_) => "block_dig",
+        Ty::entity_action(_) => "entity_action",
+        Ty::steer_vehicle(_) => "steer_vehicle",
+        Ty::resource_pack_receive(_) => "resource_pack_receive",
+        Ty::held_item_slot(_) => "held_item_slot",
+        Ty::set_creative_slot(_) => "set_creative_slot",
+        Ty::update_sign(_) => "update_sign",
+        Ty::arm_animation(_) => "arm_animation",
+        Ty::spectate(_) => "spectate",
+        Ty::block_place(_) => "block_place",
+        Ty::use_item(_) => "use_item",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::teleport_confirm(_) => 0_i32,

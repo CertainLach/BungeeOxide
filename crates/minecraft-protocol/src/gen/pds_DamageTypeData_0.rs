@@ -41,6 +41,14 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::never => "never",
+		Ty::when_caused_by_living_non_player => "when_caused_by_living_non_player",
+		Ty::always => "always",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::never => 0_i32,

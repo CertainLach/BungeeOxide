@@ -78,6 +78,16 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::login_start(_) => "login_start",
+		Ty::encryption_begin(_) => "encryption_begin",
+		Ty::login_plugin_response(_) => "login_plugin_response",
+		Ty::login_acknowledged(_) => "login_acknowledged",
+		Ty::cookie_response(_) => "cookie_response",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::login_start(_) => 0_i32,

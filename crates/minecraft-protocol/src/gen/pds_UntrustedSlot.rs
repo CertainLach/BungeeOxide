@@ -33,6 +33,12 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_, __v) => pds_UntrustedSlot_77::size_of(__v),
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::v0 => "v0",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::v0 => 0_i32,

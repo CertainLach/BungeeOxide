@@ -230,6 +230,41 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::keep_alive(_) => "keep_alive",
+        Ty::login(_) => "login",
+        Ty::set_protocol(_) => "set_protocol",
+        Ty::chat(_) => "chat",
+        Ty::use_entity(_) => "use_entity",
+        Ty::respawn(_) => "respawn",
+        Ty::flying(_) => "flying",
+        Ty::position(_) => "position",
+        Ty::look(_) => "look",
+        Ty::position_look(_) => "position_look",
+        Ty::block_dig(_) => "block_dig",
+        Ty::block_place(_) => "block_place",
+        Ty::held_item_slot(_) => "held_item_slot",
+        Ty::arm_animation(_) => "arm_animation",
+        Ty::entity_action(_) => "entity_action",
+        Ty::steer_vehicle(_) => "steer_vehicle",
+        Ty::close_window(_) => "close_window",
+        Ty::window_click(_) => "window_click",
+        Ty::transaction(_) => "transaction",
+        Ty::set_creative_slot(_) => "set_creative_slot",
+        Ty::enchant_item(_) => "enchant_item",
+        Ty::update_sign(_) => "update_sign",
+        Ty::abilities(_) => "abilities",
+        Ty::tab_complete(_) => "tab_complete",
+        Ty::settings(_) => "settings",
+        Ty::client_command(_) => "client_command",
+        Ty::custom_payload(_) => "custom_payload",
+        Ty::encryption_begin(_) => "encryption_begin",
+        Ty::legacy_server_list_ping(_) => "legacy_server_list_ping",
+        Ty::kick_disconnect(_) => "kick_disconnect",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_u8::Ty {
     match _0 {
         Ty::keep_alive(_) => 0_u8,

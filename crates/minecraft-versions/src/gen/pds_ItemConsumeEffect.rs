@@ -56,6 +56,16 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::apply_effects(_) => "apply_effects",
+        Ty::remove_effects(_) => "remove_effects",
+        Ty::clear_all_effects => "clear_all_effects",
+        Ty::teleport_randomly(_) => "teleport_randomly",
+        Ty::play_sound(_) => "play_sound",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::apply_effects(_) => 0_i32,

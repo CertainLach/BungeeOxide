@@ -36,6 +36,14 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::perform_respawn => "perform_respawn",
+        Ty::request_stats => "request_stats",
+        Ty::open_inventory_achievement => "open_inventory_achievement",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_i8::Ty {
     match _0 {
         Ty::perform_respawn => 0_i8,

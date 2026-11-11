@@ -81,6 +81,19 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::settings(_) => "settings",
+        Ty::cookie_response(_) => "cookie_response",
+        Ty::custom_payload(_) => "custom_payload",
+        Ty::finish_configuration(_) => "finish_configuration",
+        Ty::keep_alive(_) => "keep_alive",
+        Ty::pong(_) => "pong",
+        Ty::resource_pack_receive(_) => "resource_pack_receive",
+        Ty::select_known_packs(_) => "select_known_packs",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::settings(_) => 0_i32,

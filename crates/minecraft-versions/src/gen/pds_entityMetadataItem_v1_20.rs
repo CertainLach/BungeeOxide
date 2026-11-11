@@ -209,6 +209,39 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::block_pos(_) => "block_pos",
+        Ty::block_state(_) => "block_state",
+        Ty::boolean(_) => "boolean",
+        Ty::byte(_) => "byte",
+        Ty::cat_variant(_) => "cat_variant",
+        Ty::component(_) => "component",
+        Ty::compound_tag(_) => "compound_tag",
+        Ty::direction(_) => "direction",
+        Ty::float(_) => "float",
+        Ty::frog_variant(_) => "frog_variant",
+        Ty::int(_) => "int",
+        Ty::item_stack(_) => "item_stack",
+        Ty::long(_) => "long",
+        Ty::optional_block_pos(_) => "optional_block_pos",
+        Ty::optional_block_state(_) => "optional_block_state",
+        Ty::optional_component(_) => "optional_component",
+        Ty::optional_global_pos(_) => "optional_global_pos",
+        Ty::optional_unsigned_int(_) => "optional_unsigned_int",
+        Ty::optional_uuid(_) => "optional_uuid",
+        Ty::painting_variant(_) => "painting_variant",
+        Ty::particle(_) => "particle",
+        Ty::pose(_) => "pose",
+        Ty::quaternion(_) => "quaternion",
+        Ty::rotations(_) => "rotations",
+        Ty::sniffer_state(_) => "sniffer_state",
+        Ty::string(_) => "string",
+        Ty::vector3(_) => "vector3",
+        Ty::villager_data(_) => "villager_data",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_entityMetadata_v1_20_699::Ty) {
     debug_assert!(
         match _0 {

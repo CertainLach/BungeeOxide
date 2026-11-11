@@ -148,6 +148,42 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::generic_armor => "generic_armor",
+        Ty::generic_armor_toughness => "generic_armor_toughness",
+        Ty::generic_fall_damage_multiplier => "generic_fall_damage_multiplier",
+        Ty::generic_flying_speed => "generic_flying_speed",
+        Ty::generic_follow_range => "generic_follow_range",
+        Ty::generic_gravity => "generic_gravity",
+        Ty::generic_jump_strength => "generic_jump_strength",
+        Ty::generic_knockback_resistance => "generic_knockback_resistance",
+        Ty::generic_luck => "generic_luck",
+        Ty::generic_max_absorption => "generic_max_absorption",
+        Ty::generic_max_health => "generic_max_health",
+        Ty::player_mining_efficiency => "player_mining_efficiency",
+        Ty::generic_attack_damage => "generic_attack_damage",
+        Ty::generic_movement_efficiency => "generic_movement_efficiency",
+        Ty::generic_movement_speed => "generic_movement_speed",
+        Ty::generic_oxygen_bonus => "generic_oxygen_bonus",
+        Ty::generic_safe_fall_distance => "generic_safe_fall_distance",
+        Ty::generic_scale => "generic_scale",
+        Ty::player_sneaking_speed => "player_sneaking_speed",
+        Ty::zombie_spawn_reinforcements => "zombie_spawn_reinforcements",
+        Ty::generic_step_height => "generic_step_height",
+        Ty::player_submerged_mining_speed => "player_submerged_mining_speed",
+        Ty::player_sweeping_damage_ratio => "player_sweeping_damage_ratio",
+        Ty::generic_attack_knockback => "generic_attack_knockback",
+        Ty::generic_water_movement_efficiency => "generic_water_movement_efficiency",
+        Ty::generic_attack_speed => "generic_attack_speed",
+        Ty::player_block_break_speed => "player_block_break_speed",
+        Ty::player_block_interaction_range => "player_block_interaction_range",
+        Ty::generic_burning_time => "generic_burning_time",
+        Ty::generic_explosion_knockback_resistance => "generic_explosion_knockback_resistance",
+        Ty::player_entity_interaction_range => "player_entity_interaction_range",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::generic_armor => 0_i32,

@@ -128,6 +128,37 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::blocked => "blocked",
+        Ty::open => "open",
+        Ty::water_border => "water_border",
+        Ty::rail => "rail",
+        Ty::unpassable_rail => "unpassable_rail",
+        Ty::danger_fire => "danger_fire",
+        Ty::damage_fire => "damage_fire",
+        Ty::danger_other => "danger_other",
+        Ty::damage_other => "damage_other",
+        Ty::door_open => "door_open",
+        Ty::door_wood_closed => "door_wood_closed",
+        Ty::door_iron_closed => "door_iron_closed",
+        Ty::walkable => "walkable",
+        Ty::breach => "breach",
+        Ty::leaves => "leaves",
+        Ty::sticky_honey => "sticky_honey",
+        Ty::cocoa => "cocoa",
+        Ty::damage_cautious => "damage_cautious",
+        Ty::danger_trapdoor => "danger_trapdoor",
+        Ty::walkable_door => "walkable_door",
+        Ty::trapdoor => "trapdoor",
+        Ty::powder_snow => "powder_snow",
+        Ty::danger_powder_snow => "danger_powder_snow",
+        Ty::fence => "fence",
+        Ty::lava => "lava",
+        Ty::water => "water",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::blocked => 0_i32,

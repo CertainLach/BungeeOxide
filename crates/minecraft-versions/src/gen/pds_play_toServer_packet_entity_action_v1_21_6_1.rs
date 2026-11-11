@@ -52,6 +52,18 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::stop_sleeping => "stop_sleeping",
+        Ty::start_sprinting => "start_sprinting",
+        Ty::stop_sprinting => "stop_sprinting",
+        Ty::start_riding_jump => "start_riding_jump",
+        Ty::stop_riding_jump => "stop_riding_jump",
+        Ty::open_inventory => "open_inventory",
+        Ty::start_fall_flying => "start_fall_flying",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::stop_sleeping => 0_i32,

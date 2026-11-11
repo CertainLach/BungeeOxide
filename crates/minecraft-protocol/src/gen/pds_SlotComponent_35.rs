@@ -89,6 +89,22 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::none => "none",
+		Ty::eat => "eat",
+		Ty::bundle => "bundle",
+		Ty::drink => "drink",
+		Ty::block => "block",
+		Ty::bow => "bow",
+		Ty::spear => "spear",
+		Ty::crossbow => "crossbow",
+		Ty::spyglass => "spyglass",
+		Ty::toot_horn => "toot_horn",
+		Ty::brush => "brush",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::none => 0_i32,

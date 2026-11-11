@@ -44,6 +44,16 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::add_player => "add_player",
+        Ty::update_game_mode => "update_game_mode",
+        Ty::update_latency => "update_latency",
+        Ty::update_display_name => "update_display_name",
+        Ty::remove_player => "remove_player",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::add_player => 0_i32,

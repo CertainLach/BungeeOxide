@@ -29,6 +29,12 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_, __v) => pds_slot_v1_3_2_744::size_of(__v),
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::_1 => "_1",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_i16::Ty {
     match _0 {
         Ty::_1 => -1_i16,

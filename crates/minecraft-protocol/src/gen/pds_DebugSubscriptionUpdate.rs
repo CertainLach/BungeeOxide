@@ -147,6 +147,27 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_, __v) => pds_option_20::size_of(__v),
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::DedicatedServerTickTime => "DedicatedServerTickTime",
+		Ty::Bees(_) => "Bees",
+		Ty::VillageSections(_) => "VillageSections",
+		Ty::Raids(_) => "Raids",
+		Ty::Structures(_) => "Structures",
+		Ty::GameEventListeners(_) => "GameEventListeners",
+		Ty::NeighborUpdates(_) => "NeighborUpdates",
+		Ty::GameEvents(_) => "GameEvents",
+		Ty::Brains(_) => "Brains",
+		Ty::Breezes(_) => "Breezes",
+		Ty::GoalSelectors(_) => "GoalSelectors",
+		Ty::EntityPaths(_) => "EntityPaths",
+		Ty::EntityBlockIntersections(_) => "EntityBlockIntersections",
+		Ty::BeeHives(_) => "BeeHives",
+		Ty::Pois(_) => "Pois",
+		Ty::RedstoneWireOrientations(_) => "RedstoneWireOrientations",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::DedicatedServerTickTime => 0_i32,

@@ -68,6 +68,16 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::crafting_shapeless(_) => "crafting_shapeless",
+		Ty::crafting_shaped(_) => "crafting_shaped",
+		Ty::furnace(_) => "furnace",
+		Ty::stonecutter(_) => "stonecutter",
+		Ty::smithing(_) => "smithing",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::crafting_shapeless(_) => 0_i32,

@@ -36,6 +36,14 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default_(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::default => "default",
+        Ty::fall_variants => "fall_variants",
+        Ty::intentional_game_design => "intentional_game_design",
+        Ty::default_(..) => "default_",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::default => 0_i32,

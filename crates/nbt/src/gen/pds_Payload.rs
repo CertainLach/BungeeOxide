@@ -109,6 +109,23 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::longArray(__v) => pds_array_inline_6::size_of(__v),
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::end => "end",
+        Ty::byte(_) => "byte",
+        Ty::short(_) => "short",
+        Ty::int(_) => "int",
+        Ty::long(_) => "long",
+        Ty::float(_) => "float",
+        Ty::double(_) => "double",
+        Ty::byteArray(_) => "byteArray",
+        Ty::string(_) => "string",
+        Ty::list(_) => "list",
+        Ty::compound(_) => "compound",
+        Ty::intArray(_) => "intArray",
+        Ty::longArray(_) => "longArray",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_u8::Ty) {
     debug_assert!(
         match _0 {

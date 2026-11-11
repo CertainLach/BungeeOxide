@@ -40,6 +40,15 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::survival => "survival",
+        Ty::creative => "creative",
+        Ty::adventure => "adventure",
+        Ty::spectator => "spectator",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::survival => 0_i32,

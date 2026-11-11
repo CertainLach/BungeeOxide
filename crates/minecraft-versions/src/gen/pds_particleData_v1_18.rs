@@ -70,6 +70,18 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::v14(_) => "v14",
+        Ty::v15(_) => "v15",
+        Ty::v2(_) => "v2",
+        Ty::v24(_) => "v24",
+        Ty::v3(_) => "v3",
+        Ty::v35(_) => "v35",
+        Ty::v36(_) => "v36",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_i32::Ty) {
     debug_assert!(
         match _0 {

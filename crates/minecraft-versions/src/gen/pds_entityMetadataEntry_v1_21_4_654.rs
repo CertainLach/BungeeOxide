@@ -231,6 +231,42 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::byte(_) => "byte",
+        Ty::int(_) => "int",
+        Ty::block_pos(_) => "block_pos",
+        Ty::optional_block_pos(_) => "optional_block_pos",
+        Ty::direction(_) => "direction",
+        Ty::optional_uuid(_) => "optional_uuid",
+        Ty::block_state(_) => "block_state",
+        Ty::optional_block_state(_) => "optional_block_state",
+        Ty::compound_tag(_) => "compound_tag",
+        Ty::particle(_) => "particle",
+        Ty::particles(_) => "particles",
+        Ty::villager_data(_) => "villager_data",
+        Ty::long(_) => "long",
+        Ty::optional_unsigned_int(_) => "optional_unsigned_int",
+        Ty::pose(_) => "pose",
+        Ty::cat_variant(_) => "cat_variant",
+        Ty::wolf_variant(_) => "wolf_variant",
+        Ty::frog_variant(_) => "frog_variant",
+        Ty::optional_global_pos(_) => "optional_global_pos",
+        Ty::painting_variant(_) => "painting_variant",
+        Ty::sniffer_state(_) => "sniffer_state",
+        Ty::armadillo_state(_) => "armadillo_state",
+        Ty::vector3(_) => "vector3",
+        Ty::float(_) => "float",
+        Ty::quaternion(_) => "quaternion",
+        Ty::string(_) => "string",
+        Ty::component(_) => "component",
+        Ty::optional_component(_) => "optional_component",
+        Ty::item_stack(_) => "item_stack",
+        Ty::boolean(_) => "boolean",
+        Ty::rotations(_) => "rotations",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::byte(_) => 0_i32,

@@ -88,6 +88,27 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::white => "white",
+        Ty::orange => "orange",
+        Ty::purple => "purple",
+        Ty::blue => "blue",
+        Ty::brown => "brown",
+        Ty::green => "green",
+        Ty::red => "red",
+        Ty::black => "black",
+        Ty::magenta => "magenta",
+        Ty::light_blue => "light_blue",
+        Ty::yellow => "yellow",
+        Ty::lime => "lime",
+        Ty::pink => "pink",
+        Ty::gray => "gray",
+        Ty::light_gray => "light_gray",
+        Ty::cyan => "cyan",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::white => 0_i32,

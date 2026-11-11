@@ -95,6 +95,27 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::crafting_shaped(_) => "crafting_shaped",
+        Ty::crafting_shapeless(_) => "crafting_shapeless",
+        Ty::crafting_special_armordye => "crafting_special_armordye",
+        Ty::crafting_special_banneraddpattern => "crafting_special_banneraddpattern",
+        Ty::crafting_special_bannerduplicate => "crafting_special_bannerduplicate",
+        Ty::crafting_special_bookcloning => "crafting_special_bookcloning",
+        Ty::crafting_special_firework_rocket => "crafting_special_firework_rocket",
+        Ty::crafting_special_firework_star => "crafting_special_firework_star",
+        Ty::crafting_special_firework_star_fade => "crafting_special_firework_star_fade",
+        Ty::crafting_special_mapcloning => "crafting_special_mapcloning",
+        Ty::crafting_special_mapextending => "crafting_special_mapextending",
+        Ty::crafting_special_repairitem => "crafting_special_repairitem",
+        Ty::crafting_special_shielddecoration => "crafting_special_shielddecoration",
+        Ty::crafting_special_shulkerboxcoloring => "crafting_special_shulkerboxcoloring",
+        Ty::crafting_special_tippedarrow => "crafting_special_tippedarrow",
+        Ty::smelting(_) => "smelting",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &String) {
     debug_assert!(
         match _0 {

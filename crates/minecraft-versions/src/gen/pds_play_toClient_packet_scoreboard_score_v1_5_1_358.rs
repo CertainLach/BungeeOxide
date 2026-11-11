@@ -29,6 +29,12 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_, __v) => pds_play_toClient_packet_scoreboard_score_v1_5_1_357::size_of(__v),
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::v1 => "v1",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_i8::Ty {
     match _0 {
         Ty::v1 => 1_i8,

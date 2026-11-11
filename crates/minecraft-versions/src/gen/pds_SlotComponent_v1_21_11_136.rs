@@ -39,6 +39,14 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default_(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::default => "default",
+        Ty::hidden => "hidden",
+        Ty::r#override(_) => "override",
+        Ty::default_(..) => "default_",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::default => 0_i32,

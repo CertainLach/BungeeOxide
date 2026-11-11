@@ -32,6 +32,12 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::r#true(__v) => pds_slot_v1_13_2_744::size_of(__v),
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::r#false => "false",
+        Ty::r#true(_) => "true",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_bool::Ty {
     match _0 {
         Ty::r#false => false,

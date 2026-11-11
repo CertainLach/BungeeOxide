@@ -76,6 +76,24 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::crafting_building_blocks => "crafting_building_blocks",
+        Ty::crafting_redstone => "crafting_redstone",
+        Ty::stonecutter => "stonecutter",
+        Ty::smithing => "smithing",
+        Ty::campfire => "campfire",
+        Ty::crafting_equipment => "crafting_equipment",
+        Ty::crafting_misc => "crafting_misc",
+        Ty::furnace_food => "furnace_food",
+        Ty::furnace_blocks => "furnace_blocks",
+        Ty::furnace_misc => "furnace_misc",
+        Ty::blast_furnace_blocks => "blast_furnace_blocks",
+        Ty::blast_furnace_misc => "blast_furnace_misc",
+        Ty::smoker_food => "smoker_food",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::crafting_building_blocks => 0_i32,

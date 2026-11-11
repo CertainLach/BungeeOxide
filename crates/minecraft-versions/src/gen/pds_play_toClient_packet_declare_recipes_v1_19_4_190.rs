@@ -180,6 +180,36 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::minecraft_blasting(_) => "minecraft_blasting",
+        Ty::minecraft_campfire_cooking(_) => "minecraft_campfire_cooking",
+        Ty::minecraft_crafting_decorated_pot(_) => "minecraft_crafting_decorated_pot",
+        Ty::minecraft_crafting_shaped(_) => "minecraft_crafting_shaped",
+        Ty::minecraft_crafting_shapeless(_) => "minecraft_crafting_shapeless",
+        Ty::minecraft_crafting_special_armordye(_) => "minecraft_crafting_special_armordye",
+        Ty::minecraft_crafting_special_banneraddpattern(_) => "minecraft_crafting_special_banneraddpattern",
+        Ty::minecraft_crafting_special_bannerduplicate(_) => "minecraft_crafting_special_bannerduplicate",
+        Ty::minecraft_crafting_special_bookcloning(_) => "minecraft_crafting_special_bookcloning",
+        Ty::minecraft_crafting_special_firework_rocket(_) => "minecraft_crafting_special_firework_rocket",
+        Ty::minecraft_crafting_special_firework_star(_) => "minecraft_crafting_special_firework_star",
+        Ty::minecraft_crafting_special_firework_star_fade(_) => "minecraft_crafting_special_firework_star_fade",
+        Ty::minecraft_crafting_special_mapcloning(_) => "minecraft_crafting_special_mapcloning",
+        Ty::minecraft_crafting_special_mapextending(_) => "minecraft_crafting_special_mapextending",
+        Ty::minecraft_crafting_special_repairitem(_) => "minecraft_crafting_special_repairitem",
+        Ty::minecraft_crafting_special_shielddecoration(_) => "minecraft_crafting_special_shielddecoration",
+        Ty::minecraft_crafting_special_shulkerboxcoloring(_) => "minecraft_crafting_special_shulkerboxcoloring",
+        Ty::minecraft_crafting_special_suspiciousstew(_) => "minecraft_crafting_special_suspiciousstew",
+        Ty::minecraft_crafting_special_tippedarrow(_) => "minecraft_crafting_special_tippedarrow",
+        Ty::minecraft_smelting(_) => "minecraft_smelting",
+        Ty::minecraft_smithing(_) => "minecraft_smithing",
+        Ty::minecraft_smithing_transform(_) => "minecraft_smithing_transform",
+        Ty::minecraft_smithing_trim(_) => "minecraft_smithing_trim",
+        Ty::minecraft_smoking(_) => "minecraft_smoking",
+        Ty::minecraft_stonecutting(_) => "minecraft_stonecutting",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &String) {
     debug_assert!(
         match _0 {

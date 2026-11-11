@@ -95,6 +95,22 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::empty => "empty",
+        Ty::any_fuel => "any_fuel",
+        Ty::composite(_) => "composite",
+        Ty::with_any_potion(_) => "with_any_potion",
+        Ty::only_with_component(_) => "only_with_component",
+        Ty::item(_) => "item",
+        Ty::item_stack(_) => "item_stack",
+        Ty::tag(_) => "tag",
+        Ty::dyed_slot_demo(_) => "dyed_slot_demo",
+        Ty::smithing_trim(_) => "smithing_trim",
+        Ty::with_remainder(_) => "with_remainder",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::empty => 0_i32,

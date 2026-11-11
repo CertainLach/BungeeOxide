@@ -54,6 +54,16 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::add_player(_) => "add_player",
+        Ty::remove_player => "remove_player",
+        Ty::update_display_name(_) => "update_display_name",
+        Ty::update_game_mode(_) => "update_game_mode",
+        Ty::update_latency(_) => "update_latency",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_play_toClient_packet_player_info_v1_8_323::Ty) {
     debug_assert!(
         match _0 {

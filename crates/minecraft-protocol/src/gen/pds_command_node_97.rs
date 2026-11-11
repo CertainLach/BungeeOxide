@@ -41,6 +41,14 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::SINGLE_WORD => "SINGLE_WORD",
+		Ty::QUOTABLE_PHRASE => "QUOTABLE_PHRASE",
+		Ty::GREEDY_PHRASE => "GREEDY_PHRASE",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::SINGLE_WORD => 0_i32,

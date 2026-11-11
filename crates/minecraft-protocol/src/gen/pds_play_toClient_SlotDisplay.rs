@@ -82,6 +82,19 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::default(_) => 0,
 		}
 }
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::empty => "empty",
+		Ty::any_fuel => "any_fuel",
+		Ty::item(_) => "item",
+		Ty::item_stack(_) => "item_stack",
+		Ty::tag(_) => "tag",
+		Ty::smithing_trim(_) => "smithing_trim",
+		Ty::with_remainder(_) => "with_remainder",
+		Ty::composite(_) => "composite",
+		Ty::default(..) => "default",
+	}
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
 	match _0 {
 		Ty::empty => 0_i32,

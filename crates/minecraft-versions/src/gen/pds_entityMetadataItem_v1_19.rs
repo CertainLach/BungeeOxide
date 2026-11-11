@@ -177,6 +177,34 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::v0(_) => "v0",
+        Ty::v1(_) => "v1",
+        Ty::v10(_) => "v10",
+        Ty::v11(_) => "v11",
+        Ty::v12(_) => "v12",
+        Ty::v13(_) => "v13",
+        Ty::v14(_) => "v14",
+        Ty::v15(_) => "v15",
+        Ty::v16(_) => "v16",
+        Ty::v17(_) => "v17",
+        Ty::v18(_) => "v18",
+        Ty::v19(_) => "v19",
+        Ty::v2(_) => "v2",
+        Ty::v20(_) => "v20",
+        Ty::v21(_) => "v21",
+        Ty::v22(_) => "v22",
+        Ty::v3(_) => "v3",
+        Ty::v4(_) => "v4",
+        Ty::v5(_) => "v5",
+        Ty::v6(_) => "v6",
+        Ty::v7(_) => "v7",
+        Ty::v8(_) => "v8",
+        Ty::v9(_) => "v9",
+        Ty::default(..) => "default",
+    }
+}
 pub fn debug_assert_tag(_0: &Ty, __tag: &pds_varint::Ty) {
     debug_assert!(
         match _0 {

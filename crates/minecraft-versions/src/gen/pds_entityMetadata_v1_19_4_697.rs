@@ -136,6 +136,39 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::byte => "byte",
+        Ty::int => "int",
+        Ty::block_pos => "block_pos",
+        Ty::optional_block_pos => "optional_block_pos",
+        Ty::direction => "direction",
+        Ty::optional_uuid => "optional_uuid",
+        Ty::block_state => "block_state",
+        Ty::optional_block_state => "optional_block_state",
+        Ty::compound_tag => "compound_tag",
+        Ty::particle => "particle",
+        Ty::villager_data => "villager_data",
+        Ty::optional_unsigned_int => "optional_unsigned_int",
+        Ty::long => "long",
+        Ty::pose => "pose",
+        Ty::cat_variant => "cat_variant",
+        Ty::frog_variant => "frog_variant",
+        Ty::optional_global_pos => "optional_global_pos",
+        Ty::painting_variant => "painting_variant",
+        Ty::sniffer_state => "sniffer_state",
+        Ty::vector3 => "vector3",
+        Ty::quaternion => "quaternion",
+        Ty::float => "float",
+        Ty::string => "string",
+        Ty::component => "component",
+        Ty::optional_component => "optional_component",
+        Ty::item_stack => "item_stack",
+        Ty::boolean => "boolean",
+        Ty::rotations => "rotations",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::byte => 0_i32,

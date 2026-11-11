@@ -112,6 +112,33 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::generic_armor => "generic_armor",
+        Ty::generic_armor_toughness => "generic_armor_toughness",
+        Ty::generic_follow_range => "generic_follow_range",
+        Ty::generic_gravity => "generic_gravity",
+        Ty::generic_jump_strength => "generic_jump_strength",
+        Ty::generic_knockback_resistance => "generic_knockback_resistance",
+        Ty::generic_luck => "generic_luck",
+        Ty::generic_max_absorption => "generic_max_absorption",
+        Ty::generic_max_health => "generic_max_health",
+        Ty::generic_movement_speed => "generic_movement_speed",
+        Ty::generic_safe_fall_distance => "generic_safe_fall_distance",
+        Ty::generic_scale => "generic_scale",
+        Ty::generic_attack_damage => "generic_attack_damage",
+        Ty::zombie_spawn_reinforcements => "zombie_spawn_reinforcements",
+        Ty::generic_step_height => "generic_step_height",
+        Ty::generic_attack_knockback => "generic_attack_knockback",
+        Ty::generic_attack_speed => "generic_attack_speed",
+        Ty::player_block_break_speed => "player_block_break_speed",
+        Ty::player_block_interaction_range => "player_block_interaction_range",
+        Ty::player_entity_interaction_range => "player_entity_interaction_range",
+        Ty::generic_fall_damage_multiplier => "generic_fall_damage_multiplier",
+        Ty::generic_flying_speed => "generic_flying_speed",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_varint::Ty {
     match _0 {
         Ty::generic_armor => 0_i32,

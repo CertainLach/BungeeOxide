@@ -55,6 +55,16 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::default(_) => 0,
     }
 }
+pub fn name(_0: &Ty) -> &'static str {
+    match _0 {
+        Ty::add(_) => "add",
+        Ty::remove => "remove",
+        Ty::change(_) => "change",
+        Ty::join(_) => "join",
+        Ty::leave(_) => "leave",
+        Ty::default(..) => "default",
+    }
+}
 pub fn virtual_tag(_0: &Ty) -> pds_i8::Ty {
     match _0 {
         Ty::add(_) => 0_i8,
