@@ -6,16 +6,16 @@ use anyhow::{anyhow, bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::{string16, Cfb8, Legacy};
 use bungeeoxide::{decode, encode, next, Conn};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::v1_8::{
+use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
 };
-use minecraft_versions::gen::convert::{
+use bungeeoxide_converter::gen::convert::{
 	v1_0_1, v1_12_2, v1_2_5, v1_3_2, v1_4_7, v1_5_2, v1_6_4, v1_8,
 };
-use minecraft_versions::pds::{Input, Output};
-use minecraft_versions::{Root, Version};
+use bungeeoxide_converter::pds::{Input, Output};
+use bungeeoxide_converter::{Root, Version};
+use futures::SinkExt;
 use rsa::pkcs8::DecodePublicKey;
 use tokio::net::TcpStream;
 use tokio_util::codec::Framed;
@@ -1264,7 +1264,7 @@ macro_rules! old_client {
 	};
 }
 
-fn legacy_item(item: &Option<minecraft_versions::pds_native::pds_legacySlot::Item>) -> i16 {
+fn legacy_item(item: &Option<bungeeoxide_converter::pds_native::pds_legacySlot::Item>) -> i16 {
 	item.as_ref().map_or(-1, |i| i.id)
 }
 
@@ -1707,14 +1707,14 @@ async fn run_script(script: Script, name: String) -> Result<()> {
 
 fn ser<T>(
 	value: &T,
-	f: fn(&T, &mut Output) -> minecraft_versions::pds::Result<()>,
+	f: fn(&T, &mut Output) -> bungeeoxide_converter::pds::Result<()>,
 ) -> Result<Vec<u8>> {
 	let mut out = Output::new();
 	f(value, &mut out).map_err(|e| anyhow!("encoding: {e:?}"))?;
 	Ok(out.into_inner())
 }
 
-fn de<T>(data: &[u8], f: fn(&mut Input) -> minecraft_versions::pds::Result<T>) -> Result<T> {
+fn de<T>(data: &[u8], f: fn(&mut Input) -> bungeeoxide_converter::pds::Result<T>) -> Result<T> {
 	f(&mut Input::new(data)).map_err(|e| anyhow!("decoding: {e:?}"))
 }
 

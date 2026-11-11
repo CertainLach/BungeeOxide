@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
-use pds_runtime::{Error, Input, Output, Result};
+use pds_bytes_runtime::{Error, Input, Output, Result};
 
-pub use nbt::natives::*;
+pub use bungeeoxide_nbt::natives::*;
 
 mod classic;
 pub use classic::*;
@@ -233,9 +233,9 @@ pub mod pds_lpVec3 {
 }
 
 pub mod view {
-	use pds_runtime::{Input, Output, Result};
+	use pds_bytes_runtime::{Input, Output, Result};
 
-	pub use nbt::natives::view::*;
+	pub use bungeeoxide_nbt::natives::view::*;
 
 	pub mod pds_restBuffer {
 		use super::*;

@@ -60,6 +60,14 @@ for (const version of releases) {
 }
 await Deno.writeTextFile(`${out}/versions.tsv`, versions.join("\n") + "\n");
 
+type Protocol = { minecraftVersion: string; dataVersion?: number };
+const protocols = (await fetchJson("pc/common/protocolVersions.json")) as Protocol[];
+const dataVersions = releases.flatMap((version) => {
+	const found = protocols.find((p) => p.minecraftVersion === version && p.dataVersion !== undefined);
+	return found ? [`${version}\t${found.dataVersion}`] : [];
+});
+await Deno.writeTextFile(`${out}/data-versions.tsv`, dataVersions.join("\n") + "\n");
+
 const legacy = (await fetchJson("pc/common/legacy.json")) as { blocks: Record<string, string>; items: Record<string, string> };
 const legacyLines = [
 	...Object.entries(legacy.blocks).map(([k, v]) => `block ${k} ${v}`),
@@ -67,7 +75,7 @@ const legacyLines = [
 ];
 await Deno.writeTextFile(`${out}/legacy.txt`, legacyLines.join("\n") + "\n");
 
-const files = [...written].map((f) => f.slice(out.length + 1)).concat(["legacy.txt", "versions.tsv"]).sort();
+const files = [...written].map((f) => f.slice(out.length + 1)).concat(["data-versions.tsv", "legacy.txt", "versions.tsv"]).sort();
 const rust = [
 	"pub const FILES: &[(&str, &str)] = &[",
 	...files.map((f) => `\t(${JSON.stringify(f)}, include_str!(${JSON.stringify(`../../data/${f}`)})),`),

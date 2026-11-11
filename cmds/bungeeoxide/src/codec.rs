@@ -209,7 +209,7 @@ impl Encoder<Vec<u8>> for Codec {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use minecraft_versions::Version;
+	use bungeeoxide_converter::Version;
 
 	#[test]
 	fn frames_roundtrip_with_and_without_compression_and_encryption() {
@@ -295,7 +295,7 @@ mod tests {
 			handshake.extend_from_slice(&unit.to_be_bytes());
 		}
 		let mut codec = Codec {
-			legacy: Some(Legacy::new(minecraft_versions::Root::PlayToServer, None)),
+			legacy: Some(Legacy::new(bungeeoxide_converter::Root::PlayToServer, None)),
 			..Codec::default()
 		};
 		let mut src = BytesMut::new();
@@ -317,7 +317,7 @@ mod tests {
 		chunk.extend_from_slice(&i32::MAX.to_be_bytes());
 		let mut codec = Codec {
 			legacy: Some(Legacy::new(
-				minecraft_versions::Root::PlayToClient,
+				bungeeoxide_converter::Root::PlayToClient,
 				Some(Version::V1_6_4),
 			)),
 			..Codec::default()

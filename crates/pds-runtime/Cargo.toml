@@ -1,7 +1,0 @@
-[package]
-name = "pds-runtime"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-psm = "0.1.32"

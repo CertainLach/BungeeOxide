@@ -2,7 +2,7 @@
 
 use crate::pds::{Error, Input, Output, Result};
 
-pub use pds_runtime::natives::{
+pub use pds_bytes_runtime::natives::{
 	pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
 	pds_u8, pds_void,
 };
@@ -111,11 +111,11 @@ pub mod pds_UUID {
 }
 
 pub mod pds_anonymousNbt {
-	pub use nbt::gen::tag::*;
+	pub use bungeeoxide_nbt::gen::tag::*;
 }
 
 pub mod pds_anonOptionalNbt {
-	pub use nbt::gen::tag::*;
+	pub use bungeeoxide_nbt::gen::tag::*;
 }
 
 pub mod pds_lpVec3 {

@@ -1,15 +1,15 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Result};
-use minecraft_versions::gen::convert::{packet_name, v26_1};
-use minecraft_versions::{convert, Root, Session};
+use bungeeoxide_converter::gen::convert::{packet_name, v26_1};
+use bungeeoxide_converter::{convert, Root, Session};
 use sha2::{Digest, Sha256};
 use tracing::warn;
 
-use crate::auth::{now_millis, PlayerKeys};
 use crate::codec::{read_varint, write_varint};
 use crate::decode;
-use minecraft_versions::Version;
+use bungeeoxide_authlib::{now_millis, PlayerKeys};
+use bungeeoxide_converter::Version;
 
 const ACK_AFTER: i32 = 64;
 const LAST_SEEN: usize = 20;
@@ -1109,7 +1109,7 @@ mod tests {
 	}
 
 	fn inspect(sv: Version, packet: &[u8]) -> String {
-		minecraft_versions::inspect(Root::PlayToServer, sv, packet)
+		bungeeoxide_converter::inspect(Root::PlayToServer, sv, packet)
 			.unwrap_or_else(|e| panic!("{}: {e}", sv))
 	}
 

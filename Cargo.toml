@@ -5,8 +5,9 @@ members = [
 	"crates/minecraft-natives",
 	"crates/minecraft-protocol",
 	"crates/minecraft-proxy",
-	"crates/minecraft-versions",
-	"crates/nbt",
-	"crates/pds-runtime",
+	"crates/bungeeoxide-authlib",
+	"crates/bungeeoxide-converter",
+	"crates/bungeeoxide-nbt",
+	"crates/pds-bytes-runtime",
 ]
 default-members = ["cmds/bungeeoxide"]

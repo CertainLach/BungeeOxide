@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-nbt = { path = "../nbt" }
-pds-runtime = { path = "../pds-runtime" }
+bungeeoxide-nbt = { path = "../bungeeoxide-nbt" }
+pds-bytes-runtime = { path = "../pds-bytes-runtime" }

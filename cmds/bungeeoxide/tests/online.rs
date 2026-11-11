@@ -1,22 +1,22 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::net::SocketAddr;
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::{bail, Result};
-use bungeeoxide::accounts::Accounts;
-use bungeeoxide::auth::{hyphenated, server_hash};
 use bungeeoxide::codec::{Cipher, Codec};
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::v1_8::{
+use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide_authlib::{hyphenated, server_hash};
+use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
 	login_to_client_packet_success, login_to_server_packet as login_s,
 	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
 	play_to_server_packet as play_s,
 };
+use futures::SinkExt;
 use rsa::pkcs8::EncodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};

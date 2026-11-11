@@ -1,23 +1,23 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use minecraft_versions::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::v26_1::{
 	login_to_client_packet_encryption_begin as begin, login_to_client_packet_success as success,
 	login_to_server_packet as login_s, login_to_server_packet_encryption_begin as response,
 	login_to_server_packet_login_start,
 };
-use minecraft_versions::gen::convert::{v1_19, v1_19_2};
-use minecraft_versions::Root;
+use bungeeoxide_converter::gen::convert::{v1_19, v1_19_2};
+use bungeeoxide_converter::Root;
 use rsa::pkcs8::DecodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tracing::{info, warn};
 
-use crate::accounts::{Account, Credentials};
-use crate::auth::{self, PlayerKeys};
 use crate::codec::Cipher;
 use crate::signing::Chat;
-use crate::{encode, legacy, offline_uuid_bits, Proxy, PIVOT};
+use crate::{encode, legacy, Proxy, PIVOT};
+use bungeeoxide_authlib::accounts::{Account, Credentials};
+use bungeeoxide_authlib::{self as auth, offline_uuid_bits, PlayerKeys};
 
 #[derive(Default)]
 pub struct Online {
@@ -252,7 +252,7 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 mod tests {
 	use super::*;
 	use crate::decode;
-	use minecraft_versions::{convert, Session};
+	use bungeeoxide_converter::{convert, Session};
 
 	#[test]
 	fn verify_token_responses_reach_signing_versions_unsigned() {

@@ -98,9 +98,9 @@ mod tests {
 	fn option_tag_derived_from_union() {
 		use crate::gen::play::to_client::packet_scoreboard_score as t;
 		use crate::gen::play::to_client::packet_scoreboard_score_38 as styling;
-		let end = nbt::Tag {
+		let end = bungeeoxide_nbt::Tag {
 			r#type: 0,
-			value: nbt::Payload::End,
+			value: bungeeoxide_nbt::Payload::End,
 		};
 		let v = t::Ty {
 			item_name: "a".into(),
@@ -137,7 +137,7 @@ mod tests {
 		let mut input = Input::new(&bytes);
 		let v = pds_anonymousNbt::deserialize(&mut input).unwrap();
 		assert_eq!(input.offset(), nbt.len());
-		let nbt::Payload::Compound(entries) = &v.value else {
+		let bungeeoxide_nbt::Payload::Compound(entries) = &v.value else {
 			panic!("{v:?}")
 		};
 		assert_eq!(entries[0].name, "text");
@@ -146,7 +146,7 @@ mod tests {
 		assert_eq!(out.into_inner(), nbt);
 
 		let empty = pds_anonOptionalNbt::deserialize(&mut Input::new(&[0, 0xff])).unwrap();
-		assert!(matches!(empty.value, nbt::Payload::End));
+		assert!(matches!(empty.value, bungeeoxide_nbt::Payload::End));
 	}
 
 	#[test]

@@ -1,4 +1,4 @@
-use pds_runtime::{Error, Input, Output, Result};
+use pds_bytes_runtime::{Error, Input, Output, Result};
 
 pub const CP437: [char; 256] = {
 	let high: [u16; 129] = [

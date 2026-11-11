@@ -2,10 +2,10 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 
-use bungeeoxide::accounts::Accounts;
 use bungeeoxide::{serve, Config};
+use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide_converter::Version;
 use clap::Parser;
-use minecraft_versions::Version;
 use tokio::net::TcpListener;
 
 #[derive(Parser)]
@@ -47,7 +47,7 @@ async fn main() -> anyhow::Result<()> {
 	{
 		Some(dir) => {
 			tracing::info!("translating text for old clients with {}", dir.display());
-			minecraft_versions::languages::load(dir);
+			bungeeoxide_converter::languages::load(dir);
 		}
 		None => tracing::info!(
 			"no language files, old clients see translation keys (run just languages)"

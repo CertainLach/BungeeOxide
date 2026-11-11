@@ -1,11 +1,10 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use futures::{SinkExt, StreamExt};
-use md5::{Digest, Md5};
-use minecraft_versions::gen::convert::v26_1::{
+use bungeeoxide_authlib::accounts::Accounts;
+use bungeeoxide_converter::gen::convert::v26_1::{
 	configuration_to_client_packet as config_c, configuration_to_server_packet as config_s,
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
@@ -16,18 +15,17 @@ use minecraft_versions::gen::convert::v26_1::{
 	play_to_client_spawn_info, play_to_server_packet as play_s,
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 };
-use minecraft_versions::gen::convert::{packet_name, v1_20_2};
-use minecraft_versions::pds::{self, Input, Output};
-use minecraft_versions::{
+use bungeeoxide_converter::gen::convert::{packet_name, v1_20_2};
+use bungeeoxide_converter::pds::{self, Input, Output};
+use bungeeoxide_converter::{
 	convert, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS, STACK_BUDGET,
 };
+use futures::{SinkExt, StreamExt};
 use serde_json::Value;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Framed;
 use tracing::{info, warn};
 
-pub mod accounts;
-pub mod auth;
 pub mod codec;
 pub mod cookies;
 pub mod legacy;
@@ -52,7 +50,7 @@ pub struct Config {
 	pub motd: String,
 	pub threshold: usize,
 	pub server_version: Version,
-	pub accounts: accounts::Accounts,
+	pub accounts: Accounts,
 	pub status_cache: Duration,
 	pub status: status::Cache,
 }
@@ -64,7 +62,7 @@ impl Default for Config {
 			motd: "pds2 bridge".to_owned(),
 			threshold: 256,
 			server_version: Version::V1_8,
-			accounts: accounts::Accounts::default(),
+			accounts: Accounts::default(),
 			status_cache: Duration::from_secs(5),
 			status: status::Cache::default(),
 		}
@@ -118,8 +116,10 @@ pub fn reach(server: Version) -> (Version, Version) {
 	(low, high)
 }
 
-pub fn text_tag(text: &str) -> nbt::Tag {
-	nbt::Tag::new(nbt::json::text_to_nbt(&serde_json::json!({ "text": text })))
+pub fn text_tag(text: &str) -> bungeeoxide_nbt::Tag {
+	bungeeoxide_nbt::Tag::new(bungeeoxide_nbt::json::text_to_nbt(
+		&serde_json::json!({ "text": text }),
+	))
 }
 
 pub fn chat_text(text: &str) -> Result<Vec<u8>> {
@@ -135,17 +135,6 @@ pub fn chat_text(text: &str) -> Result<Vec<u8>> {
 pub fn login_kick(reason: &str) -> Result<Vec<u8>> {
 	let reason = serde_json::json!({ "text": reason }).to_string();
 	encode(&login_c::Ty::Disconnect(reason), login_c::serialize)
-}
-
-pub fn offline_uuid_bits(name: &str) -> u128 {
-	let mut b: [u8; 16] = Md5::digest(format!("OfflinePlayer:{name}")).into();
-	b[6] = (b[6] & 0x0f) | 0x30;
-	b[8] = (b[8] & 0x3f) | 0x80;
-	u128::from_be_bytes(b)
-}
-
-pub fn offline_uuid(name: &str) -> String {
-	auth::hyphenated(offline_uuid_bits(name))
 }
 
 pub(crate) fn split_target(target: &str) -> Result<(String, u16)> {
@@ -169,7 +158,7 @@ fn join_target(host: &str, port: i32) -> String {
 fn dimension_types() -> &'static [String] {
 	static TYPES: OnceLock<Vec<String>> = OnceLock::new();
 	TYPES.get_or_init(|| {
-		minecraft_versions::registry::login_packet(PIVOT)
+		bungeeoxide_converter::registry::login_packet(PIVOT)
 			.and_then(|text| serde_json::from_str::<Value>(text).ok())
 			.and_then(|login| {
 				let entries =
@@ -541,7 +530,7 @@ impl Proxy {
 					login_c::Ty::Disconnect(reason) => {
 						bail!(
 							"server refused the login: {}",
-							minecraft_versions::custom::localize::legacy(&reason)
+							bungeeoxide_converter::custom::localize::legacy(&reason)
 						)
 					}
 					login_c::Ty::EncryptionBegin(request) => {
@@ -644,17 +633,18 @@ impl Proxy {
 			if name == Some("disconnect") {
 				for p in self.at_pivot(Root::ConfigurationToClient, self.sv, &data) {
 					if let config_c::Ty::Disconnect(reason) = decode(&p, config_c::deserialize)? {
-						let reason = nbt::json::text_from_nbt(&reason.value).to_string();
+						let reason =
+							bungeeoxide_nbt::json::text_from_nbt(&reason.value).to_string();
 						bail!(
 							"the server disconnected: {}",
-							minecraft_versions::custom::localize::legacy(&reason)
+							bungeeoxide_converter::custom::localize::legacy(&reason)
 						);
 					}
 				}
 			}
 			for p in self.convert(Root::ConfigurationToClient, self.sv, base, data) {
 				let replies =
-					minecraft_versions::custom::configuration_capture_1_20_2(&mut self.cx, &p)
+					bungeeoxide_converter::custom::configuration_capture_1_20_2(&mut self.cx, &p)
 						.map_err(|e| anyhow!("configuration from the server: {e}"))?;
 				for reply in replies {
 					self.send(Root::ConfigurationToServer, base, reply).await?;
@@ -711,7 +701,7 @@ impl Proxy {
 
 	async fn configure_client(&mut self) -> Result<()> {
 		let base = CONFIGURATION;
-		let packets = minecraft_versions::configuration_packets(&mut self.cx)
+		let packets = bungeeoxide_converter::configuration_packets(&mut self.cx)
 			.map_err(|e| anyhow!("configuring {}: {e}", self.cv))?;
 		for p in packets {
 			self.send(Root::ConfigurationToClient, base, p).await?;
@@ -1102,7 +1092,7 @@ mod tests {
 			dimension,
 			name: name.to_owned(),
 			hashed_seed: 5,
-			gamemode: minecraft_versions::gen::convert::v26_1::play_to_client_spawn_info_gamemode::Ty::Creative,
+			gamemode: bungeeoxide_converter::gen::convert::v26_1::play_to_client_spawn_info_gamemode::Ty::Creative,
 			previous_gamemode: 255,
 			is_debug: false,
 			is_flat: true,
@@ -1215,7 +1205,7 @@ mod tests {
 
 	#[test]
 	fn old_clients_see_the_dimension_change_twice() {
-		use minecraft_versions::gen::convert::{v1_0_1, v1_12_2, v1_16, v1_20_3, v1_8};
+		use bungeeoxide_converter::gen::convert::{v1_0_1, v1_12_2, v1_16, v1_20_3, v1_8};
 		let overworld = login(world(0, "minecraft:overworld"));
 		let nether = login(world(3, "minecraft:the_nether"));
 		let dims = |l: &play_to_client_packet_login::Ty, v: Version| -> Vec<String> {
@@ -1286,7 +1276,7 @@ mod tests {
 		.unwrap();
 		let plain = encode(
 			&play_s::Ty::ChatMessage(
-				minecraft_versions::gen::convert::v26_1::play_to_server_packet_chat_message::Ty {
+				bungeeoxide_converter::gen::convert::v26_1::play_to_server_packet_chat_message::Ty {
 					message: "/proxy-goto".to_owned(),
 					timestamp: 0,
 					salt: 0,

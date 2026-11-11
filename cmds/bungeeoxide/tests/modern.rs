@@ -1,4 +1,4 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -7,10 +7,9 @@ use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::string16;
 use bungeeoxide::{decode, encode, next, protocol_of, serve, text_tag, Config, Conn};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::packet_name;
-use minecraft_versions::gen::convert::v1_8;
-use minecraft_versions::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::packet_name;
+use bungeeoxide_converter::gen::convert::v1_8;
+use bungeeoxide_converter::gen::convert::v26_1::{
 	configuration_to_client_packet as config_c,
 	configuration_to_client_packet_finish_configuration,
 	configuration_to_server_packet as config_s,
@@ -25,7 +24,8 @@ use minecraft_versions::gen::convert::v26_1::{
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use minecraft_versions::Root;
+use bungeeoxide_converter::Root;
+use futures::SinkExt;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::mpsc;
@@ -424,7 +424,7 @@ impl Client {
 	async fn chat(&mut self) -> Result<String> {
 		loop {
 			if let play_c::Ty::SystemChat(c) = self.packet().await? {
-				return Ok(nbt::json::text_from_nbt(&c.content.value).to_string());
+				return Ok(bungeeoxide_nbt::json::text_from_nbt(&c.content.value).to_string());
 			}
 		}
 	}

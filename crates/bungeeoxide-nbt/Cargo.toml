@@ -1,0 +1,9 @@
+[package]
+name = "bungeeoxide-nbt"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flate2 = "1"
+pds-bytes-runtime = { path = "../pds-bytes-runtime" }
+serde_json = "1"

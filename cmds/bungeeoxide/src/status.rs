@@ -1,15 +1,15 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::v26_1::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use minecraft_versions::{legacy_version_of, version_of, Session};
+use bungeeoxide_converter::{legacy_version_of, version_of, Session};
+use futures::SinkExt;
 use serde_json::{json, Map, Value};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
@@ -278,7 +278,7 @@ pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) 
 	}
 	let mut text = reply.to_string();
 	if let Err(e) =
-		minecraft_versions::custom::localize_status(&mut text, PIVOT, shown, &mut Session::new())
+		bungeeoxide_converter::custom::localize_status(&mut text, PIVOT, shown, &mut Session::new())
 	{
 		warn!("can't translate the server list text: {e}");
 	}
@@ -287,7 +287,7 @@ pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) 
 
 pub fn legacy_motd(description: &Value) -> String {
 	let flat = downgrade(description, Version::V1_7).to_string();
-	minecraft_versions::custom::localize::legacy(&flat)
+	bungeeoxide_converter::custom::localize::legacy(&flat)
 		.chars()
 		.map(|c| if c == '\n' || c == '\r' { ' ' } else { c })
 		.filter(|c| *c != '\0')

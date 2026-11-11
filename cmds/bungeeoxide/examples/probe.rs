@@ -4,12 +4,12 @@ use std::time::{Duration, Instant};
 use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::{decode, encode, next};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::v1_8::{
+use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
 	play_to_client_packet as play_c, play_to_server_packet as play_s,
 };
+use futures::SinkExt;
 use tokio::net::TcpStream;
 use tokio_util::codec::Framed;
 

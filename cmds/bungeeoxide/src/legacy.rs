@@ -1,4 +1,4 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::sync::OnceLock;
 use std::time::Duration;
 
@@ -6,11 +6,11 @@ use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockEncrypt, KeyInit};
 use aes::Aes128;
 use anyhow::{anyhow, bail, Context as _, Result};
+use bungeeoxide_converter::gen;
+use bungeeoxide_converter::pds::{self, Input};
+use bungeeoxide_converter::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET};
 use bytes::BytesMut;
 use futures::SinkExt;
-use minecraft_versions::gen;
-use minecraft_versions::pds::{self, Input};
-use minecraft_versions::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET};
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use tokio::io::AsyncReadExt;

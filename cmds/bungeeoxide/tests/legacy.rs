@@ -1,4 +1,4 @@
-use minecraft_versions::Version;
+use bungeeoxide_converter::Version;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -7,16 +7,16 @@ use anyhow::{bail, Result};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::{string16, Cfb8, Legacy};
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
-use futures::SinkExt;
-use minecraft_versions::gen::convert::packet_name;
-use minecraft_versions::gen::convert::v1_8::{
+use bungeeoxide_converter::gen::convert::packet_name;
+use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, login_to_client_packet as login_c,
 	login_to_client_packet_success, login_to_server_packet as login_s,
 	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
 	play_to_server_packet as play_s, status_to_client_packet as status_c,
 	status_to_server_packet as status_s,
 };
-use minecraft_versions::Root;
+use bungeeoxide_converter::Root;
+use futures::SinkExt;
 use rsa::pkcs8::DecodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -67,7 +67,7 @@ async fn backend(mut conn: Conn, name: &str, dimension: i8) -> Result<()> {
 		bail!("login start");
 	};
 	let success = login_to_client_packet_success::Ty {
-		uuid: bungeeoxide::offline_uuid(&username),
+		uuid: bungeeoxide_authlib::offline_uuid(&username),
 		username,
 	};
 	conn.send(encode(&login_c::Ty::Success(success), login_c::serialize)?)

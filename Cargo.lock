@@ -130,26 +130,60 @@ dependencies = [
  "aes",
  "anyhow",
  "base64 0.22.1",
+ "bungeeoxide-authlib",
+ "bungeeoxide-converter",
+ "bungeeoxide-nbt",
  "bytes",
  "clap",
  "flate2",
  "futures",
- "md-5",
- "minecraft-versions",
- "nbt",
- "pds-runtime",
+ "pds-bytes-runtime",
  "rand",
+ "rsa",
+ "serde_json",
+ "sha2",
+ "tokio",
+ "tokio-util",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "bungeeoxide-authlib"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "md-5",
  "rsa",
  "serde",
  "serde_json",
  "sha1",
  "sha2",
- "tokio",
- "tokio-util",
  "toml",
  "tracing",
- "tracing-subscriber",
  "ureq",
+]
+
+[[package]]
+name = "bungeeoxide-converter"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bungeeoxide-nbt",
+ "flate2",
+ "minecraft-natives",
+ "pds-bytes-runtime",
+ "serde_json",
+]
+
+[[package]]
+name = "bungeeoxide-nbt"
+version = "0.1.0"
+dependencies = [
+ "flate2",
+ "pds-bytes-runtime",
+ "serde_json",
 ]
 
 [[package]]
@@ -543,16 +577,16 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 name = "minecraft-natives"
 version = "0.1.0"
 dependencies = [
- "nbt",
- "pds-runtime",
+ "bungeeoxide-nbt",
+ "pds-bytes-runtime",
 ]
 
 [[package]]
 name = "minecraft-protocol"
 version = "0.1.0"
 dependencies = [
- "nbt",
- "pds-runtime",
+ "bungeeoxide-nbt",
+ "pds-bytes-runtime",
 ]
 
 [[package]]
@@ -561,18 +595,6 @@ version = "0.1.0"
 dependencies = [
  "flate2",
  "minecraft-protocol",
-]
-
-[[package]]
-name = "minecraft-versions"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "flate2",
- "minecraft-natives",
- "nbt",
- "pds-runtime",
- "serde_json",
 ]
 
 [[package]]
@@ -594,15 +616,6 @@ dependencies = [
  "libc",
  "wasi",
  "windows-sys 0.61.2",
-]
-
-[[package]]
-name = "nbt"
-version = "0.1.0"
-dependencies = [
- "flate2",
- "pds-runtime",
- "serde_json",
 ]
 
 [[package]]
@@ -704,7 +717,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "pds-runtime"
+name = "pds-bytes-runtime"
 version = "0.1.0"
 dependencies = [
  "psm",

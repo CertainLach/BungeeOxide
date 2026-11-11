@@ -11,7 +11,7 @@ const table = read(`${viaData}/identifier-table.nbt`) as unknown as { sounds: st
 const strip = (n: string) => n.replace(/^minecraft:/, "");
 const via = (v: string) => mapping(read(`${viaData}/identifiers-${v}.nbt`).sounds as never).map((g) => strip(table.sounds[g]));
 
-const commit = (await Deno.readTextFile("crates/minecraft-versions/minecraft-data.commit")).trim();
+const commit = (await Deno.readTextFile("crates/bungeeoxide-converter/minecraft-data.commit")).trim();
 const source = await Source.open(cache, commit);
 const vanilla = async (v: string) => ((await source.json(`pc/${v}/sounds.json`)) as { id: number; name: string }[]).map((s) => s.name);
 
