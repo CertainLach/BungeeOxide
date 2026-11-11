@@ -19,7 +19,7 @@ def_native(f32);
 @scalar f64 @encoding be
 def_native(f64);
 
-def_native(string);
+@view borrow def_native(string);
 
 def_native(void) {
 	is_void;

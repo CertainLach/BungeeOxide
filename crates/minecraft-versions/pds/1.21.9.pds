@@ -1655,9 +1655,9 @@ def(UntrustedSlotComponent) => container {
 	field(data) => ByteArray;
 };
 
-def_native(anonOptionalNbt);
+@view take def_native(anonOptionalNbt);
 
-def_native(anonymousNbt);
+@view take def_native(anonymousNbt);
 
 @specializer array
 def_native(array) {
@@ -2137,7 +2137,7 @@ def(game_profile_name_prop) => container {
 
 def(ingredient) => array(Count: varint) => Slot;
 
-def_native(lpVec3);
+@view borrow def_native(lpVec3);
 
 @specializer option
 def_native(option) {

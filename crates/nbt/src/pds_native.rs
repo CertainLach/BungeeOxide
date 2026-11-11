@@ -8,7 +8,11 @@ pub mod pds_string {
 	pub type Ty = String;
 
 	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		let bytes = encode(_0);
+		write(_0, output)
+	}
+
+	pub fn write(s: &str, output: &mut Output) -> Result<()> {
+		let bytes = encode(s);
 		let len = u16::try_from(bytes.len()).map_err(|_| Error::InvalidValue)?;
 		output.write(&len.to_be_bytes());
 		output.write(&bytes);
@@ -72,5 +76,37 @@ pub mod pds_string {
 			}
 		}
 		String::from_utf16(&units).map_err(|_| Error::InvalidValue)
+	}
+}
+
+pub mod view {
+	pub mod pds_string {
+		use std::borrow::Cow;
+
+		use crate::pds::{Input, Output, Result};
+		use crate::pds_native::pds_string::{decode, encode, write};
+
+		pub type Ty<'i> = Cow<'i, str>;
+
+		pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+			write(_0, output)
+		}
+
+		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+			let len = u16::from_be_bytes([input.read()?, input.read()?]) as usize;
+			let bytes = input.bytes(len)?;
+			match std::str::from_utf8(bytes) {
+				Ok(s) if bytes.iter().all(|b| *b < 0xf0) => Ok(Cow::Borrowed(s)),
+				_ => decode(bytes).map(Cow::Owned),
+			}
+		}
+
+		pub fn size_of(_0: &Ty) -> usize {
+			2 + encode(_0).len()
+		}
+
+		pub fn view(_0: &String) -> Ty<'_> {
+			Cow::Borrowed(_0)
+		}
 	}
 }

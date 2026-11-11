@@ -243,6 +243,58 @@ pub mod pds_lpVec3 {
 	}
 }
 
+pub mod view {
+	use pds_runtime::{Input, Output, Result};
+
+	pub use nbt::natives::view::*;
+
+	pub mod pds_restBuffer {
+		use super::*;
+		pub type Ty<'i> = &'i [u8];
+		pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+			output.write(_0);
+			Ok(())
+		}
+		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+			Ok(input.rest())
+		}
+		pub fn size_of(_0: &Ty) -> usize {
+			_0.len()
+		}
+		pub fn view(_0: &Vec<u8>) -> Ty<'_> {
+			_0
+		}
+	}
+
+	pub mod pds_lpVec3 {
+		use super::*;
+		pub type Ty<'i> = &'i [u8];
+		pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+			output.write(_0);
+			Ok(())
+		}
+		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+			let start = input.offset();
+			let first = input.read()?;
+			if first != 0 {
+				input.bytes(5)?;
+				if first & 4 != 0 {
+					crate::pds_varint::deserialize(input)?;
+				}
+			}
+			let end = input.offset();
+			input.rewind(start);
+			input.bytes(end - start)
+		}
+		pub fn size_of(_0: &Ty) -> usize {
+			_0.len()
+		}
+		pub fn view(_0: &Vec<u8>) -> Ty<'_> {
+			_0
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

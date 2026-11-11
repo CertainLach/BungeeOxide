@@ -97,6 +97,60 @@ pub mod pds_compressedNbt {
 	}
 }
 
+pub mod view {
+	macro_rules! optional {
+		($name:ident, $inner:ident) => {
+			pub mod $name {
+				use crate::gen::view::$inner;
+				use crate::pds::{Input, Output, Result};
+
+				pub type Ty<'i> = Option<$inner::Ty<'i>>;
+
+				pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+					match _0 {
+						Some(tag) => $inner::serialize(tag, output),
+						None => {
+							output.write(&[0]);
+							Ok(())
+						}
+					}
+				}
+
+				pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+					if input.peek()? == 0 {
+						input.read()?;
+						return Ok(None);
+					}
+					Ok(Some($inner::deserialize(input)?))
+				}
+
+				pub fn size_of(_0: &Ty) -> usize {
+					_0.as_ref().map_or(1, $inner::size_of)
+				}
+
+				pub fn view(_0: &super::super::$name::Ty) -> Ty<'_> {
+					_0.as_ref().map($inner::view)
+				}
+
+				pub fn into_view(_0: &mut super::super::$name::Ty) -> Ty<'_> {
+					_0.as_mut().map($inner::into_view)
+				}
+			}
+		};
+	}
+
+	pub mod pds_nbt {
+		pub use crate::gen::view::pds_Entry::*;
+	}
+
+	pub mod pds_anonymousNbt {
+		pub use crate::gen::view::pds_Tag::*;
+	}
+
+	optional!(pds_optionalNbt, pds_Entry);
+	optional!(pds_anonOptionalNbt, pds_Tag);
+}
+
 #[cfg(test)]
 mod tests {
 	use super::{pds_anonOptionalNbt, pds_compressedNbt, pds_optionalNbt};

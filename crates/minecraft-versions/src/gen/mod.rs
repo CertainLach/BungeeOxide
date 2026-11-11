@@ -3564,4 +3564,5 @@ pub mod pds_array_inline_361;
 pub mod pds_array_inline_362;
 pub mod pds_pstring_96;
 pub mod pds_array_inline_363;
+pub mod view;
 pub mod convert;

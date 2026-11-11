@@ -8,7 +8,6 @@ pub struct Args<'a> {
 }
 pub type Ty = Vec<pds_UntrustedSlotComponent_v1_21_5::Ty>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    let _: pds_varint::Ty = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
     for e in _0.iter() {
         pds_UntrustedSlotComponent_v1_21_5::serialize(e, output)?;
     }

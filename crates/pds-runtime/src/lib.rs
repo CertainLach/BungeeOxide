@@ -6,6 +6,7 @@ pub mod convert;
 pub mod natives;
 pub mod protobuf;
 pub mod stack;
+pub mod view;
 
 pub struct Input<'i> {
 	data: &'i [u8],
@@ -49,12 +50,20 @@ impl<'i> Input<'i> {
 		self.offset.set(offset)
 	}
 	pub fn take(&self, n: usize) -> Result<Input<'i>> {
+		Ok(Input::new(self.bytes(n)?))
+	}
+	pub fn bytes(&self, n: usize) -> Result<&'i [u8]> {
 		if n > self.remaining() {
 			return Err(Error::NotEnoughData);
 		}
 		let start = self.offset();
 		self.offset.set(start + n);
-		Ok(Input::new(&self.data[start..start + n]))
+		Ok(&self.data[start..start + n])
+	}
+	pub fn rest(&self) -> &'i [u8] {
+		let start = self.offset().min(self.data.len());
+		self.offset.set(self.data.len());
+		&self.data[start..]
 	}
 }
 

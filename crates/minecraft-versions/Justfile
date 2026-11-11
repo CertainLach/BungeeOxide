@@ -10,7 +10,8 @@ gen:
 	mapfile -t files < <(printf '%s\n' pds/*.pds | sort -V)
 	{{pds2}} minecraft-data merge "${files[@]}" --to {{work}}/merged.pds
 	rm -rf src/gen
-	{{pds2}} compile {{work}}/merged.pds rust --to src/gen
+	latest=$(basename "${files[-1]}" .pds)
+	{{pds2}} compile {{work}}/merged.pds rust --to src/gen --view "v${latest//./_}"
 	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --gen src/gen --virtual
 	cargo test -q -p minecraft-versions
 

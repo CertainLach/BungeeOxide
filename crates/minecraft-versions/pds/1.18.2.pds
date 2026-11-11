@@ -424,14 +424,14 @@ def(minecraft_smelting_format) => container {
 	field(cookTime) => varint;
 };
 
-def_native(nbt);
+@view take def_native(nbt);
 
 @specializer option
 def_native(option) {
 	type(Value);
 };
 
-def_native(optionalNbt);
+@view take def_native(optionalNbt);
 
 def(optvarint) => varint;
 

@@ -140,14 +140,14 @@ def_native(entityMetadataLoop) {
 
 @encoding be @scalar i8 def_native(i8);
 
-def_native(nbt);
+@view take def_native(nbt);
 
 @specializer option
 def_native(option) {
 	type(Value);
 };
 
-def_native(optionalNbt);
+@view take def_native(optionalNbt);
 
 def(position) => bitfield {
 	field(x, signed: true, size: 26);

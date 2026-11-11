@@ -195,4 +195,42 @@ pub mod natives {
 			_0.len()
 		}
 	}
+
+	pub mod view {
+		pub mod pds_string {
+			use crate::{Error, Input, Output, Result};
+			pub type Ty<'i> = &'i str;
+			pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+				std::str::from_utf8(input.rest()).map_err(|_| Error::InvalidValue)
+			}
+			pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+				output.write(_0.as_bytes());
+				Ok(())
+			}
+			pub fn size_of(_0: &Ty) -> usize {
+				_0.len()
+			}
+			pub fn view(_0: &String) -> Ty<'_> {
+				_0
+			}
+		}
+
+		pub mod pds_bytes {
+			use crate::{Input, Output, Result};
+			pub type Ty<'i> = &'i [u8];
+			pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+				Ok(input.rest())
+			}
+			pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+				output.write(_0);
+				Ok(())
+			}
+			pub fn size_of(_0: &Ty) -> usize {
+				_0.len()
+			}
+			pub fn view(_0: &Vec<u8>) -> Ty<'_> {
+				_0
+			}
+		}
+	}
 }

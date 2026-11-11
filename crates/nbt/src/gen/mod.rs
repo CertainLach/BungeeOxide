@@ -26,3 +26,4 @@ pub mod pds_array_inline_1;
 pub mod pds_array_inline_0;
 pub mod pds_array_inline_10;
 pub mod pds_array_inline_11;
+pub mod view;

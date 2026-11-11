@@ -1033,9 +1033,9 @@ def(SlotComponentType) => union(Tag: varint) {
 
 def_native(UUID);
 
-def_native(anonOptionalNbt);
+@view take def_native(anonOptionalNbt);
 
-def_native(anonymousNbt);
+@view take def_native(anonymousNbt);
 
 @specializer array
 def_native(array) {

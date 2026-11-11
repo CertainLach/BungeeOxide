@@ -6,7 +6,7 @@ minecraft: nbt
 
 nbt:
 	rm -rf crates/nbt/src/gen ts/nbt/gen
-	pds2 compile crates/nbt/nbt.pds rust --to crates/nbt/src/gen
+	pds2 compile crates/nbt/nbt.pds rust --to crates/nbt/src/gen --view ''
 	pds2 compile crates/nbt/nbt.pds typescript --to ts/nbt/gen
 
 mcdata := "target/minecraft-data"

@@ -10,7 +10,6 @@ pub struct Args<'a> {
 }
 pub type Ty = Vec<Vec<Vec<pds_slot_v1_13_2::Ty>>>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    let _: pds_varint::Ty = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
     for e in _0.iter() {
         pds_array_sized_386::serialize(e, output)?;
     }
