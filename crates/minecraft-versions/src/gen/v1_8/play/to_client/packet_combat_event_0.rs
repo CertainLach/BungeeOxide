@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCombatEvent0 {
-    pub duration: super::super::super::super::Varint,
-    pub entity_id: super::super::super::super::I32,
+	pub duration: super::super::super::super::Varint,
+	pub entity_id: super::super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.duration,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.duration, output)?;
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_duration = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        duration: f_duration,entity_id: f_entityId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_duration = super::super::super::super::varint::deserialize(input)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		duration: f_duration,
+		entity_id: f_entityId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.duration
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
+	0 + super::super::super::super::varint::size_of(&_0.duration)
+		+ super::super::super::super::i32::size_of(&_0.entity_id)
 }
- pub type Ty = PacketCombatEvent0;
+pub type Ty = PacketCombatEvent0;

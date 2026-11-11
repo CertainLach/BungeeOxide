@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTabComplete {
-    pub text: String,
-    pub block: Option<super::super::super::Position>,
+	pub text: String,
+	pub block: Option<super::super::super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.text,
-        output,
-    )?;
-    super::super::super::super::option_22::serialize(
-        &_0.block,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.text, output)?;
+	super::super::super::super::option_22::serialize(&_0.block, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_text = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_block = super::super::super::super::option_22::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        text: f_text,block: f_block
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_text = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_block = super::super::super::super::option_22::deserialize(input)?;
+	Ok(Ty {
+		text: f_text,
+		block: f_block,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.text
-    )
-    + super::super::super::super::option_22::size_of(
-        &_0.block
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.text)
+		+ super::super::super::super::option_22::size_of(&_0.block)
 }
- pub type Ty = PacketTabComplete;
+pub type Ty = PacketTabComplete;

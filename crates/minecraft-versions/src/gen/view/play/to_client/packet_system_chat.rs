@@ -3,49 +3,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSystemChat<'i> {
-    pub content: super::super::super::AnonymousNbt::<'i>,
-    pub is_action_bar: super::super::super::super::Bool,
+	pub content: super::super::super::AnonymousNbt<'i>,
+	pub is_action_bar: super::super::super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.content,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.is_action_bar,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.content, output)?;
+	super::super::super::super::bool::serialize(&_0.is_action_bar, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_content = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_isActionBar = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        content: f_content,is_action_bar: f_isActionBar
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_content = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_isActionBar = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		content: f_content,
+		is_action_bar: f_isActionBar,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.content
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.is_action_bar
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.content)
+		+ super::super::super::super::bool::size_of(&_0.is_action_bar)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketSystemChat) -> Ty<'i> {
-    Ty {
-        content: super::super::super::anonymous_nbt::view(&_0.content),is_action_bar: ::core::clone::Clone::clone(&_0.is_action_bar)
-    }
+	Ty {
+		content: super::super::super::anonymous_nbt::view(&_0.content),
+		is_action_bar: ::core::clone::Clone::clone(&_0.is_action_bar),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketSystemChat) -> Ty<'i> {
-    Ty {
-        content: super::super::super::anonymous_nbt::into_view(&mut _0.content),is_action_bar: ::core::clone::Clone::clone(&mut _0.is_action_bar)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketSystemChat,
+) -> Ty<'i> {
+	Ty {
+		content: super::super::super::anonymous_nbt::into_view(&mut _0.content),
+		is_action_bar: ::core::clone::Clone::clone(&mut _0.is_action_bar),
+	}
 }
- pub type Ty<'i> = PacketSystemChat<'i>;
+pub type Ty<'i> = PacketSystemChat<'i>;

@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements12<'i> {
-    pub key: super::super::super::Pstring96::<'i>,
-    pub value: super::PacketAdvancements11::<'i>,
+	pub key: super::super::super::Pstring96<'i>,
+	pub value: super::PacketAdvancements11<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::packet_advancements_11::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.key, output)?;
+	super::packet_advancements_11::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(5)?;
-    let f_key = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::packet_advancements_11::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(5)?;
+	let f_key = super::super::super::pstring_96::deserialize(input)?;
+	let f_value = super::packet_advancements_11::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::packet_advancements_11::size_of(
-        &_0.value
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.key)
+		+ super::packet_advancements_11::size_of(&_0.value)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements12) -> Ty<'i> {
-    Ty {
-        key: super::super::super::pstring_96::view(&_0.key),value: super::packet_advancements_11::view(&_0.value)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketAdvancements12,
+) -> Ty<'i> {
+	Ty {
+		key: super::super::super::pstring_96::view(&_0.key),
+		value: super::packet_advancements_11::view(&_0.value),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements12) -> Ty<'i> {
-    Ty {
-        key: super::super::super::pstring_96::view(&mut _0.key),value: super::packet_advancements_11::into_view(&mut _0.value)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements12,
+) -> Ty<'i> {
+	Ty {
+		key: super::super::super::pstring_96::view(&mut _0.key),
+		value: super::packet_advancements_11::into_view(&mut _0.value),
+	}
 }
- pub type Ty<'i> = PacketAdvancements12<'i>;
+pub type Ty<'i> = PacketAdvancements12<'i>;

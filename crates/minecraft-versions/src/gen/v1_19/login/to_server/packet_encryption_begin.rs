@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEncryptionBegin {
-    pub shared_secret: Vec<u8>,
-    pub crypto: super::PacketEncryptionBegin1,
+	pub shared_secret: Vec<u8>,
+	pub crypto: super::PacketEncryptionBegin1,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.shared_secret,
-        output,
-    )?;
-    super::packet_encryption_begin_1::serialize(
-        &_0.crypto,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::buffer::inline_3::serialize(&_0.shared_secret, output)?;
+	super::packet_encryption_begin_1::serialize(&_0.crypto, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_sharedSecret = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_crypto = super::packet_encryption_begin_1::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        shared_secret: f_sharedSecret,crypto: f_crypto
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_sharedSecret = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_crypto = super::packet_encryption_begin_1::deserialize(input)?;
+	Ok(Ty {
+		shared_secret: f_sharedSecret,
+		crypto: f_crypto,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.shared_secret
-    )
-    + super::packet_encryption_begin_1::size_of(
-        &_0.crypto
-    )
+	0 + super::super::super::super::buffer::inline_3::size_of(&_0.shared_secret)
+		+ super::packet_encryption_begin_1::size_of(&_0.crypto)
 }
- pub type Ty = PacketEncryptionBegin;
+pub type Ty = PacketEncryptionBegin;

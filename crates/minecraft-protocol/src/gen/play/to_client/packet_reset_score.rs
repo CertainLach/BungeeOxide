@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResetScore {
-    pub entity_name: String,
-    pub objective_name: Option<String>,
+	pub entity_name: String,
+	pub objective_name: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_39::serialize(
-        &_0.entity_name,
-        output,
-    )?;
-    super::super::super::option_16::serialize(
-        &_0.objective_name,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_39::serialize(&_0.entity_name, output)?;
+	super::super::super::option_16::serialize(&_0.objective_name, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entity_name = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_objective_name = super::super::super::option_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_name: f_entity_name,objective_name: f_objective_name
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entity_name = super::super::super::pstring_39::deserialize(input)?;
+	let f_objective_name = super::super::super::option_16::deserialize(input)?;
+	Ok(Ty {
+		entity_name: f_entity_name,
+		objective_name: f_objective_name,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::pstring_39::size_of(
-        &_0.entity_name
-    )
-    + super::super::super::option_16::size_of(
-        &_0.objective_name
-    )
+	0 + super::super::super::pstring_39::size_of(&_0.entity_name)
+		+ super::super::super::option_16::size_of(&_0.objective_name)
 }
- pub type Ty = PacketResetScore;
+pub type Ty = PacketResetScore;

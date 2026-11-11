@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionEvent2 {
-    pub hive_pos: Option<super::Position>,
-    pub flower_pos: Option<super::Position>,
-    pub travel_ticks: super::Varint,
-    pub blacklisted_hives: Vec<super::Position>,
+	pub hive_pos: Option<super::Position>,
+	pub flower_pos: Option<super::Position>,
+	pub travel_ticks: super::Varint,
+	pub blacklisted_hives: Vec<super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_16::serialize(
-        &_0.hive_pos,
-        output,
-    )?;
-    super::option_16::serialize(
-        &_0.flower_pos,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.travel_ticks,
-        output,
-    )?;
-    super::array::inline_56::serialize(
-        &_0.blacklisted_hives,
-        output,
-    )?;
-    Ok(())
+	super::option_16::serialize(&_0.hive_pos, output)?;
+	super::option_16::serialize(&_0.flower_pos, output)?;
+	super::varint::serialize(&_0.travel_ticks, output)?;
+	super::array::inline_56::serialize(&_0.blacklisted_hives, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_hivePos = super::option_16::deserialize(
-        input,
-    )?;
-    let f_flowerPos = super::option_16::deserialize(
-        input,
-    )?;
-    let f_travelTicks = super::varint::deserialize(
-        input,
-    )?;
-    let f_blacklistedHives = super::array::inline_56::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        hive_pos: f_hivePos,flower_pos: f_flowerPos,travel_ticks: f_travelTicks,blacklisted_hives: f_blacklistedHives
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_hivePos = super::option_16::deserialize(input)?;
+	let f_flowerPos = super::option_16::deserialize(input)?;
+	let f_travelTicks = super::varint::deserialize(input)?;
+	let f_blacklistedHives = super::array::inline_56::deserialize(input)?;
+	Ok(Ty {
+		hive_pos: f_hivePos,
+		flower_pos: f_flowerPos,
+		travel_ticks: f_travelTicks,
+		blacklisted_hives: f_blacklistedHives,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::option_16::size_of(
-        &_0.hive_pos
-    )
-    + super::option_16::size_of(
-        &_0.flower_pos
-    )
-    + super::varint::size_of(
-        &_0.travel_ticks
-    )
-    + super::array::inline_56::size_of(
-        &_0.blacklisted_hives
-    )
+	0 + super::option_16::size_of(&_0.hive_pos)
+		+ super::option_16::size_of(&_0.flower_pos)
+		+ super::varint::size_of(&_0.travel_ticks)
+		+ super::array::inline_56::size_of(&_0.blacklisted_hives)
 }
- pub type Ty = DebugSubscriptionEvent2;
+pub type Ty = DebugSubscriptionEvent2;

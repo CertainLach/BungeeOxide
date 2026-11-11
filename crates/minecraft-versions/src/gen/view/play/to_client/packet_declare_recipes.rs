@@ -3,49 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes<'i> {
-    pub recipes: super::super::super::array::Inline132::<'i>,
-    pub stone_cutter_recipes: super::super::super::array::Inline133::<'i>,
+	pub recipes: super::super::super::array::Inline132<'i>,
+	pub stone_cutter_recipes: super::super::super::array::Inline133<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::array::inline_132::serialize(
-        &_0.recipes,
-        output,
-    )?;
-    super::super::super::array::inline_133::serialize(
-        &_0.stone_cutter_recipes,
-        output,
-    )?;
-    Ok(())
+	super::super::super::array::inline_132::serialize(&_0.recipes, output)?;
+	super::super::super::array::inline_133::serialize(&_0.stone_cutter_recipes, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_recipes = super::super::super::array::inline_132::deserialize(
-        input,
-    )?;
-    let f_stoneCutterRecipes = super::super::super::array::inline_133::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        recipes: f_recipes,stone_cutter_recipes: f_stoneCutterRecipes
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_recipes = super::super::super::array::inline_132::deserialize(input)?;
+	let f_stoneCutterRecipes = super::super::super::array::inline_133::deserialize(input)?;
+	Ok(Ty {
+		recipes: f_recipes,
+		stone_cutter_recipes: f_stoneCutterRecipes,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::array::inline_132::size_of(
-        &_0.recipes
-    )
-    + super::super::super::array::inline_133::size_of(
-        &_0.stone_cutter_recipes
-    )
+	0 + super::super::super::array::inline_132::size_of(&_0.recipes)
+		+ super::super::super::array::inline_133::size_of(&_0.stone_cutter_recipes)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketDeclareRecipes) -> Ty<'i> {
-    Ty {
-        recipes: super::super::super::array::inline_132::view(&_0.recipes),stone_cutter_recipes: super::super::super::array::inline_133::view(&_0.stone_cutter_recipes)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketDeclareRecipes,
+) -> Ty<'i> {
+	Ty {
+		recipes: super::super::super::array::inline_132::view(&_0.recipes),
+		stone_cutter_recipes: super::super::super::array::inline_133::view(
+			&_0.stone_cutter_recipes,
+		),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketDeclareRecipes) -> Ty<'i> {
-    Ty {
-        recipes: super::super::super::array::inline_132::into_view(&mut _0.recipes),stone_cutter_recipes: super::super::super::array::inline_133::into_view(&mut _0.stone_cutter_recipes)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketDeclareRecipes,
+) -> Ty<'i> {
+	Ty {
+		recipes: super::super::super::array::inline_132::into_view(&mut _0.recipes),
+		stone_cutter_recipes: super::super::super::array::inline_133::into_view(
+			&mut _0.stone_cutter_recipes,
+		),
+	}
 }
- pub type Ty<'i> = PacketDeclareRecipes<'i>;
+pub type Ty<'i> = PacketDeclareRecipes<'i>;

@@ -3,105 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTeams43 {
-    pub name: super::super::super::AnonymousNbt,
-    pub flags: super::PacketTeams40,
-    pub name_tag_visibility: super::PacketTeams41,
-    pub collision_rule: super::PacketTeams42,
-    pub formatting: super::super::super::Varint,
-    pub prefix: super::super::super::AnonymousNbt,
-    pub suffix: super::super::super::AnonymousNbt,
-    pub players: Vec<String>,
+	pub name: super::super::super::AnonymousNbt,
+	pub flags: super::PacketTeams40,
+	pub name_tag_visibility: super::PacketTeams41,
+	pub collision_rule: super::PacketTeams42,
+	pub formatting: super::super::super::Varint,
+	pub prefix: super::super::super::AnonymousNbt,
+	pub suffix: super::super::super::AnonymousNbt,
+	pub players: Vec<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::packet_teams_40::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::packet_teams_41::serialize(
-        &_0.name_tag_visibility,
-        output,
-    )?;
-    super::packet_teams_42::serialize(
-        &_0.collision_rule,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.formatting,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.prefix,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.suffix,
-        output,
-    )?;
-    super::super::super::array::inline_57::serialize(
-        &_0.players,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.name, output)?;
+	super::packet_teams_40::serialize(&_0.flags, output)?;
+	super::packet_teams_41::serialize(&_0.name_tag_visibility, output)?;
+	super::packet_teams_42::serialize(&_0.collision_rule, output)?;
+	super::super::super::varint::serialize(&_0.formatting, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.prefix, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.suffix, output)?;
+	super::super::super::array::inline_57::serialize(&_0.players, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_name = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_flags = super::packet_teams_40::deserialize(
-        input,
-    )?;
-    let f_nameTagVisibility = super::packet_teams_41::deserialize(
-        input,
-    )?;
-    let f_collisionRule = super::packet_teams_42::deserialize(
-        input,
-    )?;
-    let f_formatting = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_prefix = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_suffix = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_players = super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,flags: f_flags,name_tag_visibility: f_nameTagVisibility,collision_rule: f_collisionRule,formatting: f_formatting,prefix: f_prefix,suffix: f_suffix,players: f_players
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_name = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_flags = super::packet_teams_40::deserialize(input)?;
+	let f_nameTagVisibility = super::packet_teams_41::deserialize(input)?;
+	let f_collisionRule = super::packet_teams_42::deserialize(input)?;
+	let f_formatting = super::super::super::varint::deserialize(input)?;
+	let f_prefix = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_suffix = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_players = super::super::super::array::inline_57::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		flags: f_flags,
+		name_tag_visibility: f_nameTagVisibility,
+		collision_rule: f_collisionRule,
+		formatting: f_formatting,
+		prefix: f_prefix,
+		suffix: f_suffix,
+		players: f_players,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.name
-    )
-    + super::packet_teams_40::size_of(
-        &_0.flags
-    )
-    + super::packet_teams_41::size_of(
-        &_0.name_tag_visibility
-    )
-    + super::packet_teams_42::size_of(
-        &_0.collision_rule
-    )
-    + super::super::super::varint::size_of(
-        &_0.formatting
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.prefix
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.suffix
-    )
-    + super::super::super::array::inline_57::size_of(
-        &_0.players
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.name)
+		+ super::packet_teams_40::size_of(&_0.flags)
+		+ super::packet_teams_41::size_of(&_0.name_tag_visibility)
+		+ super::packet_teams_42::size_of(&_0.collision_rule)
+		+ super::super::super::varint::size_of(&_0.formatting)
+		+ super::super::super::anonymous_nbt::size_of(&_0.prefix)
+		+ super::super::super::anonymous_nbt::size_of(&_0.suffix)
+		+ super::super::super::array::inline_57::size_of(&_0.players)
 }
- pub type Ty = PacketTeams43;
+pub type Ty = PacketTeams43;

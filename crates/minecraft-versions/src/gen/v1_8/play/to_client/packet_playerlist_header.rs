@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerlistHeader {
-    pub header: String,
-    pub footer: String,
+	pub header: String,
+	pub footer: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.header,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.footer,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.header, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.footer, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_header = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_footer = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        header: f_header,footer: f_footer
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_header = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_footer = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		header: f_header,
+		footer: f_footer,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.header
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.footer
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.header)
+		+ super::super::super::super::pstring_96::size_of(&_0.footer)
 }
- pub type Ty = PacketPlayerlistHeader;
+pub type Ty = PacketPlayerlistHeader;

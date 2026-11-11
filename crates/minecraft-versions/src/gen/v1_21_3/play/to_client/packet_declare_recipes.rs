@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes {
-    pub recipes: Vec<super::PacketDeclareRecipes12>,
-    pub stone_cutter_recipes: Vec<super::PacketDeclareRecipes13>,
+	pub recipes: Vec<super::PacketDeclareRecipes12>,
+	pub stone_cutter_recipes: Vec<super::PacketDeclareRecipes13>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::array::inline_275::serialize(
-        &_0.recipes,
-        output,
-    )?;
-    super::super::super::super::array::inline_276::serialize(
-        &_0.stone_cutter_recipes,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::array::inline_275::serialize(&_0.recipes, output)?;
+	super::super::super::super::array::inline_276::serialize(&_0.stone_cutter_recipes, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_recipes = super::super::super::super::array::inline_275::deserialize(
-        input,
-    )?;
-    let f_stoneCutterRecipes = super::super::super::super::array::inline_276::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        recipes: f_recipes,stone_cutter_recipes: f_stoneCutterRecipes
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_recipes = super::super::super::super::array::inline_275::deserialize(input)?;
+	let f_stoneCutterRecipes = super::super::super::super::array::inline_276::deserialize(input)?;
+	Ok(Ty {
+		recipes: f_recipes,
+		stone_cutter_recipes: f_stoneCutterRecipes,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::array::inline_275::size_of(
-        &_0.recipes
-    )
-    + super::super::super::super::array::inline_276::size_of(
-        &_0.stone_cutter_recipes
-    )
+	0 + super::super::super::super::array::inline_275::size_of(&_0.recipes)
+		+ super::super::super::super::array::inline_276::size_of(&_0.stone_cutter_recipes)
 }
- pub type Ty = PacketDeclareRecipes;
+pub type Ty = PacketDeclareRecipes;

@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Path {
-    pub reached: super::Bool,
-    pub next_node_index: super::I32,
-    pub target: super::Position,
-    pub nodes: Vec<super::Node>,
-    pub debug_data: super::PathDebugData,
+	pub reached: super::Bool,
+	pub next_node_index: super::I32,
+	pub target: super::Position,
+	pub nodes: Vec<super::Node>,
+	pub debug_data: super::PathDebugData,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(
-        &_0.reached,
-        output,
-    )?;
-    super::i32::serialize(
-        &_0.next_node_index,
-        output,
-    )?;
-    super::position::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::array::inline_38::serialize(
-        &_0.nodes,
-        output,
-    )?;
-    super::path_debug_data::serialize(
-        &_0.debug_data,
-        output,
-    )?;
-    Ok(())
+	super::bool::serialize(&_0.reached, output)?;
+	super::i32::serialize(&_0.next_node_index, output)?;
+	super::position::serialize(&_0.target, output)?;
+	super::array::inline_38::serialize(&_0.nodes, output)?;
+	super::path_debug_data::serialize(&_0.debug_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(17)?;
-    let f_reached = super::bool::deserialize(
-        input,
-    )?;
-    let f_nextNodeIndex = super::i32::deserialize(
-        input,
-    )?;
-    let f_target = super::position::deserialize(
-        input,
-    )?;
-    let f_nodes = super::array::inline_38::deserialize(
-        input,
-    )?;
-    let f_debugData = super::path_debug_data::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        reached: f_reached,next_node_index: f_nextNodeIndex,target: f_target,nodes: f_nodes,debug_data: f_debugData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(17)?;
+	let f_reached = super::bool::deserialize(input)?;
+	let f_nextNodeIndex = super::i32::deserialize(input)?;
+	let f_target = super::position::deserialize(input)?;
+	let f_nodes = super::array::inline_38::deserialize(input)?;
+	let f_debugData = super::path_debug_data::deserialize(input)?;
+	Ok(Ty {
+		reached: f_reached,
+		next_node_index: f_nextNodeIndex,
+		target: f_target,
+		nodes: f_nodes,
+		debug_data: f_debugData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::bool::size_of(
-        &_0.reached
-    )
-    + super::i32::size_of(
-        &_0.next_node_index
-    )
-    + super::position::size_of(
-        &_0.target
-    )
-    + super::array::inline_38::size_of(
-        &_0.nodes
-    )
-    + super::path_debug_data::size_of(
-        &_0.debug_data
-    )
+	0 + super::bool::size_of(&_0.reached)
+		+ super::i32::size_of(&_0.next_node_index)
+		+ super::position::size_of(&_0.target)
+		+ super::array::inline_38::size_of(&_0.nodes)
+		+ super::path_debug_data::size_of(&_0.debug_data)
 }
- pub type Ty = Path;
+pub type Ty = Path;

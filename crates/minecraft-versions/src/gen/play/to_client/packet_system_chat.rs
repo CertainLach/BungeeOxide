@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSystemChat {
-    pub content: super::super::super::AnonymousNbt,
-    pub is_action_bar: super::super::super::Bool,
+	pub content: super::super::super::AnonymousNbt,
+	pub is_action_bar: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.content,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.is_action_bar,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.content, output)?;
+	super::super::super::bool::serialize(&_0.is_action_bar, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_content = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_isActionBar = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        content: f_content,is_action_bar: f_isActionBar
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_content = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_isActionBar = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		content: f_content,
+		is_action_bar: f_isActionBar,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.content
-    )
-    + super::super::super::bool::size_of(
-        &_0.is_action_bar
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.content)
+		+ super::super::super::bool::size_of(&_0.is_action_bar)
 }
- pub type Ty = PacketSystemChat;
+pub type Ty = PacketSystemChat;

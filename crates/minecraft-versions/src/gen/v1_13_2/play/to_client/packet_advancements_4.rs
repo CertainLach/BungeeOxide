@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements4 {
-    pub parent_id: Option<String>,
-    pub display_data: Option<super::PacketAdvancements2>,
-    pub criteria: Vec<super::PacketAdvancements3>,
-    pub requirements: Vec<Vec<String>>,
+	pub parent_id: Option<String>,
+	pub display_data: Option<super::PacketAdvancements2>,
+	pub criteria: Vec<super::PacketAdvancements3>,
+	pub requirements: Vec<Vec<String>>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::option_18::serialize(
-        &_0.parent_id,
-        output,
-    )?;
-    super::super::super::super::option_42::serialize(
-        &_0.display_data,
-        output,
-    )?;
-    super::super::super::super::array::inline_162::serialize(
-        &_0.criteria,
-        output,
-    )?;
-    super::super::super::super::array::inline_364::serialize(
-        &_0.requirements,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::option_18::serialize(&_0.parent_id, output)?;
+	super::super::super::super::option_42::serialize(&_0.display_data, output)?;
+	super::super::super::super::array::inline_162::serialize(&_0.criteria, output)?;
+	super::super::super::super::array::inline_364::serialize(&_0.requirements, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_parentId = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_displayData = super::super::super::super::option_42::deserialize(
-        input,
-    )?;
-    let f_criteria = super::super::super::super::array::inline_162::deserialize(
-        input,
-    )?;
-    let f_requirements = super::super::super::super::array::inline_364::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        parent_id: f_parentId,display_data: f_displayData,criteria: f_criteria,requirements: f_requirements
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_parentId = super::super::super::super::option_18::deserialize(input)?;
+	let f_displayData = super::super::super::super::option_42::deserialize(input)?;
+	let f_criteria = super::super::super::super::array::inline_162::deserialize(input)?;
+	let f_requirements = super::super::super::super::array::inline_364::deserialize(input)?;
+	Ok(Ty {
+		parent_id: f_parentId,
+		display_data: f_displayData,
+		criteria: f_criteria,
+		requirements: f_requirements,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::option_18::size_of(
-        &_0.parent_id
-    )
-    + super::super::super::super::option_42::size_of(
-        &_0.display_data
-    )
-    + super::super::super::super::array::inline_162::size_of(
-        &_0.criteria
-    )
-    + super::super::super::super::array::inline_364::size_of(
-        &_0.requirements
-    )
+	0 + super::super::super::super::option_18::size_of(&_0.parent_id)
+		+ super::super::super::super::option_42::size_of(&_0.display_data)
+		+ super::super::super::super::array::inline_162::size_of(&_0.criteria)
+		+ super::super::super::super::array::inline_364::size_of(&_0.requirements)
 }
- pub type Ty = PacketAdvancements4;
+pub type Ty = PacketAdvancements4;

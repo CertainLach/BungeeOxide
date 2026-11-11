@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent6 {
-    pub predicates: Vec<super::ItemBlockPredicate>,
-    pub show_tooltip: super::super::Bool,
+	pub predicates: Vec<super::ItemBlockPredicate>,
+	pub show_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::array::inline_71::serialize(
-        &_0.predicates,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::super::array::inline_71::serialize(&_0.predicates, output)?;
+	super::super::bool::serialize(&_0.show_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_predicates = super::super::array::inline_71::deserialize(
-        input,
-    )?;
-    let f_showTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        predicates: f_predicates,show_tooltip: f_showTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_predicates = super::super::array::inline_71::deserialize(input)?;
+	let f_showTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		predicates: f_predicates,
+		show_tooltip: f_showTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::array::inline_71::size_of(
-        &_0.predicates
-    )
-    + super::super::bool::size_of(
-        &_0.show_tooltip
-    )
+	0 + super::super::array::inline_71::size_of(&_0.predicates)
+		+ super::super::bool::size_of(&_0.show_tooltip)
 }
- pub type Ty = SlotComponent6;
+pub type Ty = SlotComponent6;

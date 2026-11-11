@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent30 {
-    pub deals_knockback: super::super::Bool,
-    pub dismounts: super::super::Bool,
-    pub sound: Option<super::super::ItemSoundHolder>,
-    pub hit_sound: Option<super::super::ItemSoundHolder>,
+	pub deals_knockback: super::super::Bool,
+	pub dismounts: super::super::Bool,
+	pub sound: Option<super::super::ItemSoundHolder>,
+	pub hit_sound: Option<super::super::ItemSoundHolder>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::bool::serialize(
-        &_0.deals_knockback,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.dismounts,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.sound,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.hit_sound,
-        output,
-    )?;
-    Ok(())
+	super::super::bool::serialize(&_0.deals_knockback, output)?;
+	super::super::bool::serialize(&_0.dismounts, output)?;
+	super::super::option_5::serialize(&_0.sound, output)?;
+	super::super::option_5::serialize(&_0.hit_sound, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_dealsKnockback = super::super::bool::deserialize(
-        input,
-    )?;
-    let f_dismounts = super::super::bool::deserialize(
-        input,
-    )?;
-    let f_sound = super::super::option_5::deserialize(
-        input,
-    )?;
-    let f_hitSound = super::super::option_5::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        deals_knockback: f_dealsKnockback,dismounts: f_dismounts,sound: f_sound,hit_sound: f_hitSound
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_dealsKnockback = super::super::bool::deserialize(input)?;
+	let f_dismounts = super::super::bool::deserialize(input)?;
+	let f_sound = super::super::option_5::deserialize(input)?;
+	let f_hitSound = super::super::option_5::deserialize(input)?;
+	Ok(Ty {
+		deals_knockback: f_dealsKnockback,
+		dismounts: f_dismounts,
+		sound: f_sound,
+		hit_sound: f_hitSound,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::bool::size_of(
-        &_0.deals_knockback
-    )
-    + super::super::bool::size_of(
-        &_0.dismounts
-    )
-    + super::super::option_5::size_of(
-        &_0.sound
-    )
-    + super::super::option_5::size_of(
-        &_0.hit_sound
-    )
+	0 + super::super::bool::size_of(&_0.deals_knockback)
+		+ super::super::bool::size_of(&_0.dismounts)
+		+ super::super::option_5::size_of(&_0.sound)
+		+ super::super::option_5::size_of(&_0.hit_sound)
 }
- pub type Ty = SlotComponent30;
+pub type Ty = SlotComponent30;

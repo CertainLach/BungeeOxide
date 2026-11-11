@@ -3,191 +3,242 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Node17 {
-    Blocked,
-    Open,
-    WaterBorder,
-    Rail,
-    UnpassableRail,
-    DangerFire,
-    DamageFire,
-    DangerOther,
-    DamageOther,
-    DoorOpen,
-    DoorWoodClosed,
-    DoorIronClosed,
-    Walkable,
-    Breach,
-    Leaves,
-    StickyHoney,
-    Cocoa,
-    DamageCautious,
-    DangerTrapdoor,
-    WalkableDoor,
-    Trapdoor,
-    PowderSnow,
-    DangerPowderSnow,
-    Fence,
-    Lava,
-    Water,
-    Default(super::Varint),
+	Blocked,
+	Open,
+	WaterBorder,
+	Rail,
+	UnpassableRail,
+	DangerFire,
+	DamageFire,
+	DangerOther,
+	DamageOther,
+	DoorOpen,
+	DoorWoodClosed,
+	DoorIronClosed,
+	Walkable,
+	Breach,
+	Leaves,
+	StickyHoney,
+	Cocoa,
+	DamageCautious,
+	DangerTrapdoor,
+	WalkableDoor,
+	Trapdoor,
+	PowderSnow,
+	DangerPowderSnow,
+	Fence,
+	Lava,
+	Water,
+	Default(super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Blocked => Ok(()),
-        Ty::Open => Ok(()),
-        Ty::WaterBorder => Ok(()),
-        Ty::Rail => Ok(()),
-        Ty::UnpassableRail => Ok(()),
-        Ty::DangerFire => Ok(()),
-        Ty::DamageFire => Ok(()),
-        Ty::DangerOther => Ok(()),
-        Ty::DamageOther => Ok(()),
-        Ty::DoorOpen => Ok(()),
-        Ty::DoorWoodClosed => Ok(()),
-        Ty::DoorIronClosed => Ok(()),
-        Ty::Walkable => Ok(()),
-        Ty::Breach => Ok(()),
-        Ty::Leaves => Ok(()),
-        Ty::StickyHoney => Ok(()),
-        Ty::Cocoa => Ok(()),
-        Ty::DamageCautious => Ok(()),
-        Ty::DangerTrapdoor => Ok(()),
-        Ty::WalkableDoor => Ok(()),
-        Ty::Trapdoor => Ok(()),
-        Ty::PowderSnow => Ok(()),
-        Ty::DangerPowderSnow => Ok(()),
-        Ty::Fence => Ok(()),
-        Ty::Lava => Ok(()),
-        Ty::Water => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Blocked => Ok(()),
+		Ty::Open => Ok(()),
+		Ty::WaterBorder => Ok(()),
+		Ty::Rail => Ok(()),
+		Ty::UnpassableRail => Ok(()),
+		Ty::DangerFire => Ok(()),
+		Ty::DamageFire => Ok(()),
+		Ty::DangerOther => Ok(()),
+		Ty::DamageOther => Ok(()),
+		Ty::DoorOpen => Ok(()),
+		Ty::DoorWoodClosed => Ok(()),
+		Ty::DoorIronClosed => Ok(()),
+		Ty::Walkable => Ok(()),
+		Ty::Breach => Ok(()),
+		Ty::Leaves => Ok(()),
+		Ty::StickyHoney => Ok(()),
+		Ty::Cocoa => Ok(()),
+		Ty::DamageCautious => Ok(()),
+		Ty::DangerTrapdoor => Ok(()),
+		Ty::WalkableDoor => Ok(()),
+		Ty::Trapdoor => Ok(()),
+		Ty::PowderSnow => Ok(()),
+		Ty::DangerPowderSnow => Ok(()),
+		Ty::Fence => Ok(()),
+		Ty::Lava => Ok(()),
+		Ty::Water => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Blocked); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Open); }
-    if (__tag.clone() == 10_i32) { return Ok(Ty::WaterBorder); }
-    if (__tag.clone() == 11_i32) { return Ok(Ty::Rail); }
-    if (__tag.clone() == 12_i32) { return Ok(Ty::UnpassableRail); }
-    if (__tag.clone() == 13_i32) { return Ok(Ty::DangerFire); }
-    if (__tag.clone() == 14_i32) { return Ok(Ty::DamageFire); }
-    if (__tag.clone() == 15_i32) { return Ok(Ty::DangerOther); }
-    if (__tag.clone() == 16_i32) { return Ok(Ty::DamageOther); }
-    if (__tag.clone() == 17_i32) { return Ok(Ty::DoorOpen); }
-    if (__tag.clone() == 18_i32) { return Ok(Ty::DoorWoodClosed); }
-    if (__tag.clone() == 19_i32) { return Ok(Ty::DoorIronClosed); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Walkable); }
-    if (__tag.clone() == 20_i32) { return Ok(Ty::Breach); }
-    if (__tag.clone() == 21_i32) { return Ok(Ty::Leaves); }
-    if (__tag.clone() == 22_i32) { return Ok(Ty::StickyHoney); }
-    if (__tag.clone() == 23_i32) { return Ok(Ty::Cocoa); }
-    if (__tag.clone() == 24_i32) { return Ok(Ty::DamageCautious); }
-    if (__tag.clone() == 25_i32) { return Ok(Ty::DangerTrapdoor); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::WalkableDoor); }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Trapdoor); }
-    if (__tag.clone() == 5_i32) { return Ok(Ty::PowderSnow); }
-    if (__tag.clone() == 6_i32) { return Ok(Ty::DangerPowderSnow); }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::Fence); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::Lava); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::Water); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Blocked);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Open);
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::WaterBorder);
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::Rail);
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::UnpassableRail);
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::DangerFire);
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::DamageFire);
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::DangerOther);
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::DamageOther);
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::DoorOpen);
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::DoorWoodClosed);
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::DoorIronClosed);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Walkable);
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::Breach);
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::Leaves);
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::StickyHoney);
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::Cocoa);
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::DamageCautious);
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::DangerTrapdoor);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::WalkableDoor);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Trapdoor);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::PowderSnow);
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::DangerPowderSnow);
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::Fence);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::Lava);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::Water);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Blocked => 0,
-        Ty::Open => 0,
-        Ty::WaterBorder => 0,
-        Ty::Rail => 0,
-        Ty::UnpassableRail => 0,
-        Ty::DangerFire => 0,
-        Ty::DamageFire => 0,
-        Ty::DangerOther => 0,
-        Ty::DamageOther => 0,
-        Ty::DoorOpen => 0,
-        Ty::DoorWoodClosed => 0,
-        Ty::DoorIronClosed => 0,
-        Ty::Walkable => 0,
-        Ty::Breach => 0,
-        Ty::Leaves => 0,
-        Ty::StickyHoney => 0,
-        Ty::Cocoa => 0,
-        Ty::DamageCautious => 0,
-        Ty::DangerTrapdoor => 0,
-        Ty::WalkableDoor => 0,
-        Ty::Trapdoor => 0,
-        Ty::PowderSnow => 0,
-        Ty::DangerPowderSnow => 0,
-        Ty::Fence => 0,
-        Ty::Lava => 0,
-        Ty::Water => 0,
-        Ty::Default(_) => 0,
-    }
+	super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Blocked => 0,
+			Ty::Open => 0,
+			Ty::WaterBorder => 0,
+			Ty::Rail => 0,
+			Ty::UnpassableRail => 0,
+			Ty::DangerFire => 0,
+			Ty::DamageFire => 0,
+			Ty::DangerOther => 0,
+			Ty::DamageOther => 0,
+			Ty::DoorOpen => 0,
+			Ty::DoorWoodClosed => 0,
+			Ty::DoorIronClosed => 0,
+			Ty::Walkable => 0,
+			Ty::Breach => 0,
+			Ty::Leaves => 0,
+			Ty::StickyHoney => 0,
+			Ty::Cocoa => 0,
+			Ty::DamageCautious => 0,
+			Ty::DangerTrapdoor => 0,
+			Ty::WalkableDoor => 0,
+			Ty::Trapdoor => 0,
+			Ty::PowderSnow => 0,
+			Ty::DangerPowderSnow => 0,
+			Ty::Fence => 0,
+			Ty::Lava => 0,
+			Ty::Water => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Blocked => "blocked",
-        Ty::Open => "open",
-        Ty::WaterBorder => "water_border",
-        Ty::Rail => "rail",
-        Ty::UnpassableRail => "unpassable_rail",
-        Ty::DangerFire => "danger_fire",
-        Ty::DamageFire => "damage_fire",
-        Ty::DangerOther => "danger_other",
-        Ty::DamageOther => "damage_other",
-        Ty::DoorOpen => "door_open",
-        Ty::DoorWoodClosed => "door_wood_closed",
-        Ty::DoorIronClosed => "door_iron_closed",
-        Ty::Walkable => "walkable",
-        Ty::Breach => "breach",
-        Ty::Leaves => "leaves",
-        Ty::StickyHoney => "sticky_honey",
-        Ty::Cocoa => "cocoa",
-        Ty::DamageCautious => "damage_cautious",
-        Ty::DangerTrapdoor => "danger_trapdoor",
-        Ty::WalkableDoor => "walkable_door",
-        Ty::Trapdoor => "trapdoor",
-        Ty::PowderSnow => "powder_snow",
-        Ty::DangerPowderSnow => "danger_powder_snow",
-        Ty::Fence => "fence",
-        Ty::Lava => "lava",
-        Ty::Water => "water",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Blocked => "blocked",
+		Ty::Open => "open",
+		Ty::WaterBorder => "water_border",
+		Ty::Rail => "rail",
+		Ty::UnpassableRail => "unpassable_rail",
+		Ty::DangerFire => "danger_fire",
+		Ty::DamageFire => "damage_fire",
+		Ty::DangerOther => "danger_other",
+		Ty::DamageOther => "damage_other",
+		Ty::DoorOpen => "door_open",
+		Ty::DoorWoodClosed => "door_wood_closed",
+		Ty::DoorIronClosed => "door_iron_closed",
+		Ty::Walkable => "walkable",
+		Ty::Breach => "breach",
+		Ty::Leaves => "leaves",
+		Ty::StickyHoney => "sticky_honey",
+		Ty::Cocoa => "cocoa",
+		Ty::DamageCautious => "damage_cautious",
+		Ty::DangerTrapdoor => "danger_trapdoor",
+		Ty::WalkableDoor => "walkable_door",
+		Ty::Trapdoor => "trapdoor",
+		Ty::PowderSnow => "powder_snow",
+		Ty::DangerPowderSnow => "danger_powder_snow",
+		Ty::Fence => "fence",
+		Ty::Lava => "lava",
+		Ty::Water => "water",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Varint {
-    match _0 {
-        Ty::Blocked => 0_i32,
-        Ty::Open => 1_i32,
-        Ty::WaterBorder => 10_i32,
-        Ty::Rail => 11_i32,
-        Ty::UnpassableRail => 12_i32,
-        Ty::DangerFire => 13_i32,
-        Ty::DamageFire => 14_i32,
-        Ty::DangerOther => 15_i32,
-        Ty::DamageOther => 16_i32,
-        Ty::DoorOpen => 17_i32,
-        Ty::DoorWoodClosed => 18_i32,
-        Ty::DoorIronClosed => 19_i32,
-        Ty::Walkable => 2_i32,
-        Ty::Breach => 20_i32,
-        Ty::Leaves => 21_i32,
-        Ty::StickyHoney => 22_i32,
-        Ty::Cocoa => 23_i32,
-        Ty::DamageCautious => 24_i32,
-        Ty::DangerTrapdoor => 25_i32,
-        Ty::WalkableDoor => 3_i32,
-        Ty::Trapdoor => 4_i32,
-        Ty::PowderSnow => 5_i32,
-        Ty::DangerPowderSnow => 6_i32,
-        Ty::Fence => 7_i32,
-        Ty::Lava => 8_i32,
-        Ty::Water => 9_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Blocked => 0_i32,
+		Ty::Open => 1_i32,
+		Ty::WaterBorder => 10_i32,
+		Ty::Rail => 11_i32,
+		Ty::UnpassableRail => 12_i32,
+		Ty::DangerFire => 13_i32,
+		Ty::DamageFire => 14_i32,
+		Ty::DangerOther => 15_i32,
+		Ty::DamageOther => 16_i32,
+		Ty::DoorOpen => 17_i32,
+		Ty::DoorWoodClosed => 18_i32,
+		Ty::DoorIronClosed => 19_i32,
+		Ty::Walkable => 2_i32,
+		Ty::Breach => 20_i32,
+		Ty::Leaves => 21_i32,
+		Ty::StickyHoney => 22_i32,
+		Ty::Cocoa => 23_i32,
+		Ty::DamageCautious => 24_i32,
+		Ty::DangerTrapdoor => 25_i32,
+		Ty::WalkableDoor => 3_i32,
+		Ty::Trapdoor => 4_i32,
+		Ty::PowderSnow => 5_i32,
+		Ty::DangerPowderSnow => 6_i32,
+		Ty::Fence => 7_i32,
+		Ty::Lava => 8_i32,
+		Ty::Water => 9_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Node17;
+pub type Ty = Node17;

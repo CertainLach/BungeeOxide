@@ -3,95 +3,114 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent16 {
-    None,
-    Eat,
-    Drink,
-    Block,
-    Bow,
-    Spear,
-    Crossbow,
-    Spyglass,
-    TootHorn,
-    Brush,
-    Default(super::super::Varint),
+	None,
+	Eat,
+	Drink,
+	Block,
+	Bow,
+	Spear,
+	Crossbow,
+	Spyglass,
+	TootHorn,
+	Brush,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::None => Ok(()),
-        Ty::Eat => Ok(()),
-        Ty::Drink => Ok(()),
-        Ty::Block => Ok(()),
-        Ty::Bow => Ok(()),
-        Ty::Spear => Ok(()),
-        Ty::Crossbow => Ok(()),
-        Ty::Spyglass => Ok(()),
-        Ty::TootHorn => Ok(()),
-        Ty::Brush => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::None => Ok(()),
+		Ty::Eat => Ok(()),
+		Ty::Drink => Ok(()),
+		Ty::Block => Ok(()),
+		Ty::Bow => Ok(()),
+		Ty::Spear => Ok(()),
+		Ty::Crossbow => Ok(()),
+		Ty::Spyglass => Ok(()),
+		Ty::TootHorn => Ok(()),
+		Ty::Brush => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::None); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Eat); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Drink); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::Block); }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Bow); }
-    if (__tag.clone() == 5_i32) { return Ok(Ty::Spear); }
-    if (__tag.clone() == 6_i32) { return Ok(Ty::Crossbow); }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::Spyglass); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::TootHorn); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::Brush); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::None);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Eat);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Drink);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Block);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Bow);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::Spear);
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::Crossbow);
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::Spyglass);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::TootHorn);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::Brush);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::None => 0,
-        Ty::Eat => 0,
-        Ty::Drink => 0,
-        Ty::Block => 0,
-        Ty::Bow => 0,
-        Ty::Spear => 0,
-        Ty::Crossbow => 0,
-        Ty::Spyglass => 0,
-        Ty::TootHorn => 0,
-        Ty::Brush => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::None => 0,
+			Ty::Eat => 0,
+			Ty::Drink => 0,
+			Ty::Block => 0,
+			Ty::Bow => 0,
+			Ty::Spear => 0,
+			Ty::Crossbow => 0,
+			Ty::Spyglass => 0,
+			Ty::TootHorn => 0,
+			Ty::Brush => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::None => "none",
-        Ty::Eat => "eat",
-        Ty::Drink => "drink",
-        Ty::Block => "block",
-        Ty::Bow => "bow",
-        Ty::Spear => "spear",
-        Ty::Crossbow => "crossbow",
-        Ty::Spyglass => "spyglass",
-        Ty::TootHorn => "toot_horn",
-        Ty::Brush => "brush",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::None => "none",
+		Ty::Eat => "eat",
+		Ty::Drink => "drink",
+		Ty::Block => "block",
+		Ty::Bow => "bow",
+		Ty::Spear => "spear",
+		Ty::Crossbow => "crossbow",
+		Ty::Spyglass => "spyglass",
+		Ty::TootHorn => "toot_horn",
+		Ty::Brush => "brush",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::None => 0_i32,
-        Ty::Eat => 1_i32,
-        Ty::Drink => 2_i32,
-        Ty::Block => 3_i32,
-        Ty::Bow => 4_i32,
-        Ty::Spear => 5_i32,
-        Ty::Crossbow => 6_i32,
-        Ty::Spyglass => 7_i32,
-        Ty::TootHorn => 8_i32,
-        Ty::Brush => 9_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::None => 0_i32,
+		Ty::Eat => 1_i32,
+		Ty::Drink => 2_i32,
+		Ty::Block => 3_i32,
+		Ty::Bow => 4_i32,
+		Ty::Spear => 5_i32,
+		Ty::Crossbow => 6_i32,
+		Ty::Spyglass => 7_i32,
+		Ty::TootHorn => 8_i32,
+		Ty::Brush => 9_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = SlotComponent16;
+pub type Ty = SlotComponent16;

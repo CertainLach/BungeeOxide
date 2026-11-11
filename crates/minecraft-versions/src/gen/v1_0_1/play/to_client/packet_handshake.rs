@@ -3,27 +3,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketHandshake {
-    pub connection_hash: super::super::super::super::String16,
+	pub connection_hash: super::super::super::super::String16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.connection_hash,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.connection_hash, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_connectionHash = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        connection_hash: f_connectionHash
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let f_connectionHash = super::super::super::super::string16::deserialize(input)?;
+	Ok(Ty {
+		connection_hash: f_connectionHash,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.connection_hash
-    )
+	0 + super::super::super::super::string16::size_of(&_0.connection_hash)
 }
- pub type Ty = PacketHandshake;
+pub type Ty = PacketHandshake;

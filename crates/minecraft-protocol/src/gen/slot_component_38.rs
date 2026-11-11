@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent38 {
-    pub blocks: super::IdSet,
-    pub speed: Option<super::F32>,
-    pub correct_drop_for_blocks: Option<super::Bool>,
+	pub blocks: super::IdSet,
+	pub speed: Option<super::F32>,
+	pub correct_drop_for_blocks: Option<super::Bool>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::id_set::serialize(
-        &_0.blocks,
-        output,
-    )?;
-    super::option_11::serialize(
-        &_0.speed,
-        output,
-    )?;
-    super::option_9::serialize(
-        &_0.correct_drop_for_blocks,
-        output,
-    )?;
-    Ok(())
+	super::id_set::serialize(&_0.blocks, output)?;
+	super::option_11::serialize(&_0.speed, output)?;
+	super::option_9::serialize(&_0.correct_drop_for_blocks, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_blocks = super::id_set::deserialize(
-        input,
-    )?;
-    let f_speed = super::option_11::deserialize(
-        input,
-    )?;
-    let f_correctDropForBlocks = super::option_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        blocks: f_blocks,speed: f_speed,correct_drop_for_blocks: f_correctDropForBlocks
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_blocks = super::id_set::deserialize(input)?;
+	let f_speed = super::option_11::deserialize(input)?;
+	let f_correctDropForBlocks = super::option_9::deserialize(input)?;
+	Ok(Ty {
+		blocks: f_blocks,
+		speed: f_speed,
+		correct_drop_for_blocks: f_correctDropForBlocks,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::id_set::size_of(
-        &_0.blocks
-    )
-    + super::option_11::size_of(
-        &_0.speed
-    )
-    + super::option_9::size_of(
-        &_0.correct_drop_for_blocks
-    )
+	0 + super::id_set::size_of(&_0.blocks)
+		+ super::option_11::size_of(&_0.speed)
+		+ super::option_9::size_of(&_0.correct_drop_for_blocks)
 }
- pub type Ty = SlotComponent38;
+pub type Ty = SlotComponent38;

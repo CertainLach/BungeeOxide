@@ -3,47 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum EntityMetadataEntry62 {
-    Left,
-    Right,
-    Default(super::super::Varint),
+	Left,
+	Right,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Left => Ok(()),
-        Ty::Right => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Left => Ok(()),
+		Ty::Right => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Left); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Right); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Left);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Right);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Left => 0,
-        Ty::Right => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Left => 0,
+			Ty::Right => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Left => "left",
-        Ty::Right => "right",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Left => "left",
+		Ty::Right => "right",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::Left => 0_i32,
-        Ty::Right => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Left => 0_i32,
+		Ty::Right => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = EntityMetadataEntry62;
+pub type Ty = EntityMetadataEntry62;

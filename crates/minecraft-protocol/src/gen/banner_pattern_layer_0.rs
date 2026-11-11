@@ -3,30 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum BannerPatternLayer0 {
-    Id(super::Varint),
-    Inline(super::BannerPattern),
+	Id(super::Varint),
+	Inline(super::BannerPattern),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::varint::serialize(&0, output)?;
-            super::banner_pattern::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::varint::serialize(&0, output)?;
+			super::banner_pattern::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let n = super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::banner_pattern::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let n = super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::banner_pattern::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    match _0 {
-        Ty::Id(id) => super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::varint::size_of(&0) + super::banner_pattern::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => super::varint::size_of(&0) + super::banner_pattern::size_of(v),
+	}
 }
- pub type Ty = BannerPatternLayer0;
+pub type Ty = BannerPatternLayer0;

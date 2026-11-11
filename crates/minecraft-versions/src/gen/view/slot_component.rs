@@ -3,1139 +3,1648 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent<'i> {
-    CustomData(super::AnonymousNbt::<'i>),
-    MaxStackSize(super::super::Varint),
-    ItemModel(super::Pstring96::<'i>),
-    FrogVariant(super::super::Varint),
-    HorseVariant(super::super::Varint),
-    PaintingVariant(super::SlotComponent27::<'i>),
-    LlamaVariant(super::super::Varint),
-    AxolotlVariant(super::super::Varint),
-    CatVariant(super::super::Varint),
-    CatSoundVariant(super::super::Varint),
-    CatCollar(super::super::DyeColor),
-    SheepColor(super::super::DyeColor),
-    ShulkerColor(super::super::DyeColor),
-    Lore(super::array::Inline45::<'i>),
-    Rarity(super::super::SlotComponent28),
-    Enchantments(super::super::array::Inline114),
-    CanPlaceOn(super::array::Inline30::<'i>),
-    CanBreak(super::array::Inline30::<'i>),
-    AttributeModifiers(super::array::Inline115::<'i>),
-    CustomModelData(super::SlotComponent34::<'i>),
-    TooltipDisplay(super::super::SlotComponent35),
-    RepairCost(super::super::Varint),
-    MaxDamage(super::super::Varint),
-    CreativeSlotLock,
-    EnchantmentGlintOverride(super::super::Bool),
-    IntangibleProjectile(super::AnonymousNbt::<'i>),
-    Food(super::super::SlotComponent36),
-    Consumable(super::SlotComponent38::<'i>),
-    UseRemainder(super::ItemStackTemplate::<'i>),
-    UseCooldown(super::SlotComponent39::<'i>),
-    DamageResistant(super::IdSet::<'i>),
-    Tool(super::SlotComponent41::<'i>),
-    Weapon(super::super::SlotComponent42),
-    Damage(super::super::Varint),
-    AttackRange(super::super::SlotComponent43),
-    Enchantable(super::super::Varint),
-    Equippable(super::SlotComponent45::<'i>),
-    Repairable(super::IdSet::<'i>),
-    Glider,
-    TooltipStyle(super::Pstring96::<'i>),
-    DeathProtection(super::array::Inline33::<'i>),
-    BlocksAttacks(super::SlotComponent48::<'i>),
-    PiercingWeapon(super::SlotComponent49::<'i>),
-    KineticWeapon(super::SlotComponent50::<'i>),
-    Unbreakable,
-    SwingAnimation(super::super::SlotComponent52),
-    AdditionalTradeCost(super::super::Varint),
-    StoredEnchantments(super::super::array::Inline118),
-    Dye(super::super::DyeColor),
-    DyedColor(super::super::I32),
-    MapColor(super::super::I32),
-    MapId(super::super::Varint),
-    MapDecorations(super::AnonymousNbt::<'i>),
-    MapPostProcessing(super::super::Varint),
-    ChargedProjectiles(super::array::Inline36::<'i>),
-    UseEffects(super::super::SlotComponent54),
-    BundleContents(super::array::Inline36::<'i>),
-    PotionContents(super::SlotComponent55::<'i>),
-    PotionDurationScale(super::super::F32),
-    SuspiciousStewEffects(super::super::array::Inline119),
-    WritableBookContent(super::array::Inline32::<'i>),
-    WrittenBookContent(super::SlotComponent57::<'i>),
-    Trim(super::SlotComponent60::<'i>),
-    DebugStickState(super::AnonymousNbt::<'i>),
-    EntityData(super::SlotComponent61::<'i>),
-    BucketEntityData(super::AnonymousNbt::<'i>),
-    CustomName(super::AnonymousNbt::<'i>),
-    BlockEntityData(super::SlotComponent62::<'i>),
-    Instrument(super::SlotComponent63::<'i>),
-    ProvidesTrimMaterial(super::SlotComponent64::<'i>),
-    OminousBottleAmplifier(super::super::Varint),
-    JukeboxPlayable(super::SlotComponent65::<'i>),
-    ProvidesBannerPatterns(super::IdSet::<'i>),
-    Recipes(super::AnonymousNbt::<'i>),
-    LodestoneTracker(super::SlotComponent66::<'i>),
-    FireworkExplosion(super::super::ItemFireworkExplosion),
-    Fireworks(super::super::SlotComponent67),
-    MinimumAttackCharge(super::super::F32),
-    Profile(super::ResolvableProfile::<'i>),
-    NoteBlockSound(super::Pstring96::<'i>),
-    BannerPatterns(super::array::Inline24::<'i>),
-    BaseColor(super::super::DyeColor),
-    PotDecorations(super::super::array::Inline107),
-    Container(super::array::Inline365::<'i>),
-    BlockState(super::array::Inline120::<'i>),
-    Bees(super::array::Inline121::<'i>),
-    Lock(super::AnonymousNbt::<'i>),
-    ContainerLoot(super::AnonymousNbt::<'i>),
-    DamageType(super::super::Varint),
-    BreakSound(super::ItemSoundHolder::<'i>),
-    VillagerVariant(super::super::Varint),
-    WolfVariant(super::super::Varint),
-    WolfSoundVariant(super::super::Varint),
-    WolfCollar(super::super::DyeColor),
-    FoxVariant(super::super::Varint),
-    SalmonSize(super::super::Varint),
-    ParrotVariant(super::super::Varint),
-    TropicalFishPattern(super::super::Varint),
-    TropicalFishBaseColor(super::super::DyeColor),
-    ItemName(super::AnonymousNbt::<'i>),
-    TropicalFishPatternColor(super::super::DyeColor),
-    MooshroomVariant(super::super::Varint),
-    RabbitVariant(super::super::Varint),
-    PigVariant(super::super::Varint),
-    PigSoundVariant(super::super::Varint),
-    CowVariant(super::super::Varint),
-    CowSoundVariant(super::super::Varint),
-    ChickenVariant(super::super::Varint),
-    ChickenSoundVariant(super::super::Varint),
-    ZombieNautilusVariant(super::super::Varint),
-    Default(super::super::Varint),
+	CustomData(super::AnonymousNbt<'i>),
+	MaxStackSize(super::super::Varint),
+	ItemModel(super::Pstring96<'i>),
+	FrogVariant(super::super::Varint),
+	HorseVariant(super::super::Varint),
+	PaintingVariant(super::SlotComponent27<'i>),
+	LlamaVariant(super::super::Varint),
+	AxolotlVariant(super::super::Varint),
+	CatVariant(super::super::Varint),
+	CatSoundVariant(super::super::Varint),
+	CatCollar(super::super::DyeColor),
+	SheepColor(super::super::DyeColor),
+	ShulkerColor(super::super::DyeColor),
+	Lore(super::array::Inline45<'i>),
+	Rarity(super::super::SlotComponent28),
+	Enchantments(super::super::array::Inline114),
+	CanPlaceOn(super::array::Inline30<'i>),
+	CanBreak(super::array::Inline30<'i>),
+	AttributeModifiers(super::array::Inline115<'i>),
+	CustomModelData(super::SlotComponent34<'i>),
+	TooltipDisplay(super::super::SlotComponent35),
+	RepairCost(super::super::Varint),
+	MaxDamage(super::super::Varint),
+	CreativeSlotLock,
+	EnchantmentGlintOverride(super::super::Bool),
+	IntangibleProjectile(super::AnonymousNbt<'i>),
+	Food(super::super::SlotComponent36),
+	Consumable(super::SlotComponent38<'i>),
+	UseRemainder(super::ItemStackTemplate<'i>),
+	UseCooldown(super::SlotComponent39<'i>),
+	DamageResistant(super::IdSet<'i>),
+	Tool(super::SlotComponent41<'i>),
+	Weapon(super::super::SlotComponent42),
+	Damage(super::super::Varint),
+	AttackRange(super::super::SlotComponent43),
+	Enchantable(super::super::Varint),
+	Equippable(super::SlotComponent45<'i>),
+	Repairable(super::IdSet<'i>),
+	Glider,
+	TooltipStyle(super::Pstring96<'i>),
+	DeathProtection(super::array::Inline33<'i>),
+	BlocksAttacks(super::SlotComponent48<'i>),
+	PiercingWeapon(super::SlotComponent49<'i>),
+	KineticWeapon(super::SlotComponent50<'i>),
+	Unbreakable,
+	SwingAnimation(super::super::SlotComponent52),
+	AdditionalTradeCost(super::super::Varint),
+	StoredEnchantments(super::super::array::Inline118),
+	Dye(super::super::DyeColor),
+	DyedColor(super::super::I32),
+	MapColor(super::super::I32),
+	MapId(super::super::Varint),
+	MapDecorations(super::AnonymousNbt<'i>),
+	MapPostProcessing(super::super::Varint),
+	ChargedProjectiles(super::array::Inline36<'i>),
+	UseEffects(super::super::SlotComponent54),
+	BundleContents(super::array::Inline36<'i>),
+	PotionContents(super::SlotComponent55<'i>),
+	PotionDurationScale(super::super::F32),
+	SuspiciousStewEffects(super::super::array::Inline119),
+	WritableBookContent(super::array::Inline32<'i>),
+	WrittenBookContent(super::SlotComponent57<'i>),
+	Trim(super::SlotComponent60<'i>),
+	DebugStickState(super::AnonymousNbt<'i>),
+	EntityData(super::SlotComponent61<'i>),
+	BucketEntityData(super::AnonymousNbt<'i>),
+	CustomName(super::AnonymousNbt<'i>),
+	BlockEntityData(super::SlotComponent62<'i>),
+	Instrument(super::SlotComponent63<'i>),
+	ProvidesTrimMaterial(super::SlotComponent64<'i>),
+	OminousBottleAmplifier(super::super::Varint),
+	JukeboxPlayable(super::SlotComponent65<'i>),
+	ProvidesBannerPatterns(super::IdSet<'i>),
+	Recipes(super::AnonymousNbt<'i>),
+	LodestoneTracker(super::SlotComponent66<'i>),
+	FireworkExplosion(super::super::ItemFireworkExplosion),
+	Fireworks(super::super::SlotComponent67),
+	MinimumAttackCharge(super::super::F32),
+	Profile(super::ResolvableProfile<'i>),
+	NoteBlockSound(super::Pstring96<'i>),
+	BannerPatterns(super::array::Inline24<'i>),
+	BaseColor(super::super::DyeColor),
+	PotDecorations(super::super::array::Inline107),
+	Container(super::array::Inline365<'i>),
+	BlockState(super::array::Inline120<'i>),
+	Bees(super::array::Inline121<'i>),
+	Lock(super::AnonymousNbt<'i>),
+	ContainerLoot(super::AnonymousNbt<'i>),
+	DamageType(super::super::Varint),
+	BreakSound(super::ItemSoundHolder<'i>),
+	VillagerVariant(super::super::Varint),
+	WolfVariant(super::super::Varint),
+	WolfSoundVariant(super::super::Varint),
+	WolfCollar(super::super::DyeColor),
+	FoxVariant(super::super::Varint),
+	SalmonSize(super::super::Varint),
+	ParrotVariant(super::super::Varint),
+	TropicalFishPattern(super::super::Varint),
+	TropicalFishBaseColor(super::super::DyeColor),
+	ItemName(super::AnonymousNbt<'i>),
+	TropicalFishPatternColor(super::super::DyeColor),
+	MooshroomVariant(super::super::Varint),
+	RabbitVariant(super::super::Varint),
+	PigVariant(super::super::Varint),
+	PigSoundVariant(super::super::Varint),
+	CowVariant(super::super::Varint),
+	CowSoundVariant(super::super::Varint),
+	ChickenVariant(super::super::Varint),
+	ChickenSoundVariant(super::super::Varint),
+	ZombieNautilusVariant(super::super::Varint),
+	Default(super::super::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::CustomData(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::MaxStackSize(__v) => super::super::varint::serialize(__v, output),
-        Ty::ItemModel(__v) => super::pstring_96::serialize(__v, output),
-        Ty::FrogVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::HorseVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::PaintingVariant(__v) => super::slot_component_27::serialize(__v, output),
-        Ty::LlamaVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::AxolotlVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::CatVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::CatSoundVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::CatCollar(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::SheepColor(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::ShulkerColor(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::Lore(__v) => super::array::inline_45::serialize(__v, output),
-        Ty::Rarity(__v) => super::super::slot_component_28::serialize(__v, output),
-        Ty::Enchantments(__v) => super::super::array::inline_114::serialize(__v, output),
-        Ty::CanPlaceOn(__v) => super::array::inline_30::serialize(__v, output),
-        Ty::CanBreak(__v) => super::array::inline_30::serialize(__v, output),
-        Ty::AttributeModifiers(__v) => super::array::inline_115::serialize(__v, output),
-        Ty::CustomModelData(__v) => super::slot_component_34::serialize(__v, output),
-        Ty::TooltipDisplay(__v) => super::super::slot_component_35::serialize(__v, output),
-        Ty::RepairCost(__v) => super::super::varint::serialize(__v, output),
-        Ty::MaxDamage(__v) => super::super::varint::serialize(__v, output),
-        Ty::CreativeSlotLock => Ok(()),
-        Ty::EnchantmentGlintOverride(__v) => super::super::bool::serialize(__v, output),
-        Ty::IntangibleProjectile(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::Food(__v) => super::super::slot_component_36::serialize(__v, output),
-        Ty::Consumable(__v) => super::slot_component_38::serialize(__v, output),
-        Ty::UseRemainder(__v) => super::item_stack_template::serialize_guarded(__v, output),
-        Ty::UseCooldown(__v) => super::slot_component_39::serialize(__v, output),
-        Ty::DamageResistant(__v) => super::id_set::serialize(__v, output),
-        Ty::Tool(__v) => super::slot_component_41::serialize(__v, output),
-        Ty::Weapon(__v) => super::super::slot_component_42::serialize(__v, output),
-        Ty::Damage(__v) => super::super::varint::serialize(__v, output),
-        Ty::AttackRange(__v) => super::super::slot_component_43::serialize(__v, output),
-        Ty::Enchantable(__v) => super::super::varint::serialize(__v, output),
-        Ty::Equippable(__v) => super::slot_component_45::serialize(__v, output),
-        Ty::Repairable(__v) => super::id_set::serialize(__v, output),
-        Ty::Glider => Ok(()),
-        Ty::TooltipStyle(__v) => super::pstring_96::serialize(__v, output),
-        Ty::DeathProtection(__v) => super::array::inline_33::serialize(__v, output),
-        Ty::BlocksAttacks(__v) => super::slot_component_48::serialize(__v, output),
-        Ty::PiercingWeapon(__v) => super::slot_component_49::serialize(__v, output),
-        Ty::KineticWeapon(__v) => super::slot_component_50::serialize(__v, output),
-        Ty::Unbreakable => Ok(()),
-        Ty::SwingAnimation(__v) => super::super::slot_component_52::serialize(__v, output),
-        Ty::AdditionalTradeCost(__v) => super::super::varint::serialize(__v, output),
-        Ty::StoredEnchantments(__v) => super::super::array::inline_118::serialize(__v, output),
-        Ty::Dye(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::DyedColor(__v) => super::super::i32::serialize(__v, output),
-        Ty::MapColor(__v) => super::super::i32::serialize(__v, output),
-        Ty::MapId(__v) => super::super::varint::serialize(__v, output),
-        Ty::MapDecorations(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::MapPostProcessing(__v) => super::super::varint::serialize(__v, output),
-        Ty::ChargedProjectiles(__v) => super::array::inline_36::serialize(__v, output),
-        Ty::UseEffects(__v) => super::super::slot_component_54::serialize(__v, output),
-        Ty::BundleContents(__v) => super::array::inline_36::serialize(__v, output),
-        Ty::PotionContents(__v) => super::slot_component_55::serialize(__v, output),
-        Ty::PotionDurationScale(__v) => super::super::f32::serialize(__v, output),
-        Ty::SuspiciousStewEffects(__v) => super::super::array::inline_119::serialize(__v, output),
-        Ty::WritableBookContent(__v) => super::array::inline_32::serialize(__v, output),
-        Ty::WrittenBookContent(__v) => super::slot_component_57::serialize(__v, output),
-        Ty::Trim(__v) => super::slot_component_60::serialize(__v, output),
-        Ty::DebugStickState(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::EntityData(__v) => super::slot_component_61::serialize(__v, output),
-        Ty::BucketEntityData(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::CustomName(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::BlockEntityData(__v) => super::slot_component_62::serialize(__v, output),
-        Ty::Instrument(__v) => super::slot_component_63::serialize(__v, output),
-        Ty::ProvidesTrimMaterial(__v) => super::slot_component_64::serialize(__v, output),
-        Ty::OminousBottleAmplifier(__v) => super::super::varint::serialize(__v, output),
-        Ty::JukeboxPlayable(__v) => super::slot_component_65::serialize(__v, output),
-        Ty::ProvidesBannerPatterns(__v) => super::id_set::serialize(__v, output),
-        Ty::Recipes(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::LodestoneTracker(__v) => super::slot_component_66::serialize(__v, output),
-        Ty::FireworkExplosion(__v) => super::super::item_firework_explosion::serialize(__v, output),
-        Ty::Fireworks(__v) => super::super::slot_component_67::serialize(__v, output),
-        Ty::MinimumAttackCharge(__v) => super::super::f32::serialize(__v, output),
-        Ty::Profile(__v) => super::resolvable_profile::serialize(__v, output),
-        Ty::NoteBlockSound(__v) => super::pstring_96::serialize(__v, output),
-        Ty::BannerPatterns(__v) => super::array::inline_24::serialize(__v, output),
-        Ty::BaseColor(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::PotDecorations(__v) => super::super::array::inline_107::serialize(__v, output),
-        Ty::Container(__v) => super::array::inline_365::serialize(__v, output),
-        Ty::BlockState(__v) => super::array::inline_120::serialize(__v, output),
-        Ty::Bees(__v) => super::array::inline_121::serialize(__v, output),
-        Ty::Lock(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::ContainerLoot(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::DamageType(__v) => super::super::varint::serialize(__v, output),
-        Ty::BreakSound(__v) => super::item_sound_holder::serialize(__v, output),
-        Ty::VillagerVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::WolfVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::WolfSoundVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::WolfCollar(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::FoxVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::SalmonSize(__v) => super::super::varint::serialize(__v, output),
-        Ty::ParrotVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::TropicalFishPattern(__v) => super::super::varint::serialize(__v, output),
-        Ty::TropicalFishBaseColor(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::ItemName(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::TropicalFishPatternColor(__v) => super::super::dye_color::serialize(__v, output),
-        Ty::MooshroomVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::RabbitVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::PigVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::PigSoundVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::CowVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::CowSoundVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::ChickenVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::ChickenSoundVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::ZombieNautilusVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::CustomData(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::MaxStackSize(__v) => super::super::varint::serialize(__v, output),
+		Ty::ItemModel(__v) => super::pstring_96::serialize(__v, output),
+		Ty::FrogVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::HorseVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::PaintingVariant(__v) => super::slot_component_27::serialize(__v, output),
+		Ty::LlamaVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::AxolotlVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::CatVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::CatSoundVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::CatCollar(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::SheepColor(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::ShulkerColor(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::Lore(__v) => super::array::inline_45::serialize(__v, output),
+		Ty::Rarity(__v) => super::super::slot_component_28::serialize(__v, output),
+		Ty::Enchantments(__v) => super::super::array::inline_114::serialize(__v, output),
+		Ty::CanPlaceOn(__v) => super::array::inline_30::serialize(__v, output),
+		Ty::CanBreak(__v) => super::array::inline_30::serialize(__v, output),
+		Ty::AttributeModifiers(__v) => super::array::inline_115::serialize(__v, output),
+		Ty::CustomModelData(__v) => super::slot_component_34::serialize(__v, output),
+		Ty::TooltipDisplay(__v) => super::super::slot_component_35::serialize(__v, output),
+		Ty::RepairCost(__v) => super::super::varint::serialize(__v, output),
+		Ty::MaxDamage(__v) => super::super::varint::serialize(__v, output),
+		Ty::CreativeSlotLock => Ok(()),
+		Ty::EnchantmentGlintOverride(__v) => super::super::bool::serialize(__v, output),
+		Ty::IntangibleProjectile(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::Food(__v) => super::super::slot_component_36::serialize(__v, output),
+		Ty::Consumable(__v) => super::slot_component_38::serialize(__v, output),
+		Ty::UseRemainder(__v) => super::item_stack_template::serialize_guarded(__v, output),
+		Ty::UseCooldown(__v) => super::slot_component_39::serialize(__v, output),
+		Ty::DamageResistant(__v) => super::id_set::serialize(__v, output),
+		Ty::Tool(__v) => super::slot_component_41::serialize(__v, output),
+		Ty::Weapon(__v) => super::super::slot_component_42::serialize(__v, output),
+		Ty::Damage(__v) => super::super::varint::serialize(__v, output),
+		Ty::AttackRange(__v) => super::super::slot_component_43::serialize(__v, output),
+		Ty::Enchantable(__v) => super::super::varint::serialize(__v, output),
+		Ty::Equippable(__v) => super::slot_component_45::serialize(__v, output),
+		Ty::Repairable(__v) => super::id_set::serialize(__v, output),
+		Ty::Glider => Ok(()),
+		Ty::TooltipStyle(__v) => super::pstring_96::serialize(__v, output),
+		Ty::DeathProtection(__v) => super::array::inline_33::serialize(__v, output),
+		Ty::BlocksAttacks(__v) => super::slot_component_48::serialize(__v, output),
+		Ty::PiercingWeapon(__v) => super::slot_component_49::serialize(__v, output),
+		Ty::KineticWeapon(__v) => super::slot_component_50::serialize(__v, output),
+		Ty::Unbreakable => Ok(()),
+		Ty::SwingAnimation(__v) => super::super::slot_component_52::serialize(__v, output),
+		Ty::AdditionalTradeCost(__v) => super::super::varint::serialize(__v, output),
+		Ty::StoredEnchantments(__v) => super::super::array::inline_118::serialize(__v, output),
+		Ty::Dye(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::DyedColor(__v) => super::super::i32::serialize(__v, output),
+		Ty::MapColor(__v) => super::super::i32::serialize(__v, output),
+		Ty::MapId(__v) => super::super::varint::serialize(__v, output),
+		Ty::MapDecorations(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::MapPostProcessing(__v) => super::super::varint::serialize(__v, output),
+		Ty::ChargedProjectiles(__v) => super::array::inline_36::serialize(__v, output),
+		Ty::UseEffects(__v) => super::super::slot_component_54::serialize(__v, output),
+		Ty::BundleContents(__v) => super::array::inline_36::serialize(__v, output),
+		Ty::PotionContents(__v) => super::slot_component_55::serialize(__v, output),
+		Ty::PotionDurationScale(__v) => super::super::f32::serialize(__v, output),
+		Ty::SuspiciousStewEffects(__v) => super::super::array::inline_119::serialize(__v, output),
+		Ty::WritableBookContent(__v) => super::array::inline_32::serialize(__v, output),
+		Ty::WrittenBookContent(__v) => super::slot_component_57::serialize(__v, output),
+		Ty::Trim(__v) => super::slot_component_60::serialize(__v, output),
+		Ty::DebugStickState(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::EntityData(__v) => super::slot_component_61::serialize(__v, output),
+		Ty::BucketEntityData(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::CustomName(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::BlockEntityData(__v) => super::slot_component_62::serialize(__v, output),
+		Ty::Instrument(__v) => super::slot_component_63::serialize(__v, output),
+		Ty::ProvidesTrimMaterial(__v) => super::slot_component_64::serialize(__v, output),
+		Ty::OminousBottleAmplifier(__v) => super::super::varint::serialize(__v, output),
+		Ty::JukeboxPlayable(__v) => super::slot_component_65::serialize(__v, output),
+		Ty::ProvidesBannerPatterns(__v) => super::id_set::serialize(__v, output),
+		Ty::Recipes(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::LodestoneTracker(__v) => super::slot_component_66::serialize(__v, output),
+		Ty::FireworkExplosion(__v) => super::super::item_firework_explosion::serialize(__v, output),
+		Ty::Fireworks(__v) => super::super::slot_component_67::serialize(__v, output),
+		Ty::MinimumAttackCharge(__v) => super::super::f32::serialize(__v, output),
+		Ty::Profile(__v) => super::resolvable_profile::serialize(__v, output),
+		Ty::NoteBlockSound(__v) => super::pstring_96::serialize(__v, output),
+		Ty::BannerPatterns(__v) => super::array::inline_24::serialize(__v, output),
+		Ty::BaseColor(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::PotDecorations(__v) => super::super::array::inline_107::serialize(__v, output),
+		Ty::Container(__v) => super::array::inline_365::serialize(__v, output),
+		Ty::BlockState(__v) => super::array::inline_120::serialize(__v, output),
+		Ty::Bees(__v) => super::array::inline_121::serialize(__v, output),
+		Ty::Lock(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::ContainerLoot(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::DamageType(__v) => super::super::varint::serialize(__v, output),
+		Ty::BreakSound(__v) => super::item_sound_holder::serialize(__v, output),
+		Ty::VillagerVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::WolfVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::WolfSoundVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::WolfCollar(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::FoxVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::SalmonSize(__v) => super::super::varint::serialize(__v, output),
+		Ty::ParrotVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::TropicalFishPattern(__v) => super::super::varint::serialize(__v, output),
+		Ty::TropicalFishBaseColor(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::ItemName(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::TropicalFishPatternColor(__v) => super::super::dye_color::serialize(__v, output),
+		Ty::MooshroomVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::RabbitVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::PigVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::PigSoundVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::CowVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::CowSoundVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::ChickenVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::ChickenSoundVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::ZombieNautilusVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::CustomData(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::MaxStackSize(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) {
-        return Ok(Ty::ItemModel(super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 100_i32) {
-        return Ok(Ty::FrogVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 101_i32) {
-        return Ok(Ty::HorseVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 102_i32) {
-        return Ok(Ty::PaintingVariant(super::slot_component_27::deserialize(input, )?));
-    }
-    if (__tag.clone() == 103_i32) {
-        return Ok(Ty::LlamaVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 104_i32) {
-        return Ok(Ty::AxolotlVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 105_i32) {
-        return Ok(Ty::CatVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 106_i32) {
-        return Ok(Ty::CatSoundVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 107_i32) {
-        return Ok(Ty::CatCollar(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 108_i32) {
-        return Ok(Ty::SheepColor(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 109_i32) {
-        return Ok(Ty::ShulkerColor(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_i32) {
-        return Ok(Ty::Lore(super::array::inline_45::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_i32) {
-        return Ok(Ty::Rarity(super::super::slot_component_28::deserialize(input, )?));
-    }
-    if (__tag.clone() == 13_i32) {
-        return Ok(Ty::Enchantments(super::super::array::inline_114::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::CanPlaceOn(super::array::inline_30::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) {
-        return Ok(Ty::CanBreak(super::array::inline_30::deserialize(input, )?));
-    }
-    if (__tag.clone() == 16_i32) {
-        return Ok(Ty::AttributeModifiers(super::array::inline_115::deserialize(input, )?));
-    }
-    if (__tag.clone() == 17_i32) {
-        return Ok(Ty::CustomModelData(super::slot_component_34::deserialize(input, )?));
-    }
-    if (__tag.clone() == 18_i32) {
-        return Ok(Ty::TooltipDisplay(super::super::slot_component_35::deserialize(input, )?));
-    }
-    if (__tag.clone() == 19_i32) {
-        return Ok(Ty::RepairCost(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::MaxDamage(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 20_i32) { return Ok(Ty::CreativeSlotLock); }
-    if (__tag.clone() == 21_i32) {
-        return Ok(Ty::EnchantmentGlintOverride(super::super::bool::deserialize(input, )?));
-    }
-    if (__tag.clone() == 22_i32) {
-        return Ok(Ty::IntangibleProjectile(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 23_i32) {
-        return Ok(Ty::Food(super::super::slot_component_36::deserialize(input, )?));
-    }
-    if (__tag.clone() == 24_i32) {
-        return Ok(Ty::Consumable(super::slot_component_38::deserialize(input, )?));
-    }
-    if (__tag.clone() == 25_i32) {
-        return Ok(Ty::UseRemainder(super::item_stack_template::deserialize_guarded(input, )?));
-    }
-    if (__tag.clone() == 26_i32) {
-        return Ok(Ty::UseCooldown(super::slot_component_39::deserialize(input, )?));
-    }
-    if (__tag.clone() == 27_i32) {
-        return Ok(Ty::DamageResistant(super::id_set::deserialize(input, )?));
-    }
-    if (__tag.clone() == 28_i32) {
-        return Ok(Ty::Tool(super::slot_component_41::deserialize(input, )?));
-    }
-    if (__tag.clone() == 29_i32) {
-        return Ok(Ty::Weapon(super::super::slot_component_42::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::Damage(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 30_i32) {
-        return Ok(Ty::AttackRange(super::super::slot_component_43::deserialize(input, )?));
-    }
-    if (__tag.clone() == 31_i32) {
-        return Ok(Ty::Enchantable(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 32_i32) {
-        return Ok(Ty::Equippable(super::slot_component_45::deserialize(input, )?));
-    }
-    if (__tag.clone() == 33_i32) {
-        return Ok(Ty::Repairable(super::id_set::deserialize(input, )?));
-    }
-    if (__tag.clone() == 34_i32) { return Ok(Ty::Glider); }
-    if (__tag.clone() == 35_i32) {
-        return Ok(Ty::TooltipStyle(super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 36_i32) {
-        return Ok(Ty::DeathProtection(super::array::inline_33::deserialize(input, )?));
-    }
-    if (__tag.clone() == 37_i32) {
-        return Ok(Ty::BlocksAttacks(super::slot_component_48::deserialize(input, )?));
-    }
-    if (__tag.clone() == 38_i32) {
-        return Ok(Ty::PiercingWeapon(super::slot_component_49::deserialize(input, )?));
-    }
-    if (__tag.clone() == 39_i32) {
-        return Ok(Ty::KineticWeapon(super::slot_component_50::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Unbreakable); }
-    if (__tag.clone() == 40_i32) {
-        return Ok(Ty::SwingAnimation(super::super::slot_component_52::deserialize(input, )?));
-    }
-    if (__tag.clone() == 41_i32) {
-        return Ok(Ty::AdditionalTradeCost(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 42_i32) {
-        return Ok(Ty::StoredEnchantments(super::super::array::inline_118::deserialize(input, )?));
-    }
-    if (__tag.clone() == 43_i32) {
-        return Ok(Ty::Dye(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 44_i32) {
-        return Ok(Ty::DyedColor(super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 45_i32) {
-        return Ok(Ty::MapColor(super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 46_i32) {
-        return Ok(Ty::MapId(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 47_i32) {
-        return Ok(Ty::MapDecorations(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 48_i32) {
-        return Ok(Ty::MapPostProcessing(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 49_i32) {
-        return Ok(Ty::ChargedProjectiles(super::array::inline_36::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::UseEffects(super::super::slot_component_54::deserialize(input, )?));
-    }
-    if (__tag.clone() == 50_i32) {
-        return Ok(Ty::BundleContents(super::array::inline_36::deserialize(input, )?));
-    }
-    if (__tag.clone() == 51_i32) {
-        return Ok(Ty::PotionContents(super::slot_component_55::deserialize(input, )?));
-    }
-    if (__tag.clone() == 52_i32) {
-        return Ok(Ty::PotionDurationScale(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 53_i32) {
-        return Ok(Ty::SuspiciousStewEffects(super::super::array::inline_119::deserialize(input, )?));
-    }
-    if (__tag.clone() == 54_i32) {
-        return Ok(Ty::WritableBookContent(super::array::inline_32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 55_i32) {
-        return Ok(Ty::WrittenBookContent(super::slot_component_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 56_i32) {
-        return Ok(Ty::Trim(super::slot_component_60::deserialize(input, )?));
-    }
-    if (__tag.clone() == 57_i32) {
-        return Ok(Ty::DebugStickState(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 58_i32) {
-        return Ok(Ty::EntityData(super::slot_component_61::deserialize(input, )?));
-    }
-    if (__tag.clone() == 59_i32) {
-        return Ok(Ty::BucketEntityData(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::CustomName(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 60_i32) {
-        return Ok(Ty::BlockEntityData(super::slot_component_62::deserialize(input, )?));
-    }
-    if (__tag.clone() == 61_i32) {
-        return Ok(Ty::Instrument(super::slot_component_63::deserialize(input, )?));
-    }
-    if (__tag.clone() == 62_i32) {
-        return Ok(Ty::ProvidesTrimMaterial(super::slot_component_64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 63_i32) {
-        return Ok(Ty::OminousBottleAmplifier(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 64_i32) {
-        return Ok(Ty::JukeboxPlayable(super::slot_component_65::deserialize(input, )?));
-    }
-    if (__tag.clone() == 65_i32) {
-        return Ok(Ty::ProvidesBannerPatterns(super::id_set::deserialize(input, )?));
-    }
-    if (__tag.clone() == 66_i32) {
-        return Ok(Ty::Recipes(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 67_i32) {
-        return Ok(Ty::LodestoneTracker(super::slot_component_66::deserialize(input, )?));
-    }
-    if (__tag.clone() == 68_i32) {
-        return Ok(Ty::FireworkExplosion(super::super::item_firework_explosion::deserialize(input, )?));
-    }
-    if (__tag.clone() == 69_i32) {
-        return Ok(Ty::Fireworks(super::super::slot_component_67::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::MinimumAttackCharge(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 70_i32) {
-        return Ok(Ty::Profile(super::resolvable_profile::deserialize(input, )?));
-    }
-    if (__tag.clone() == 71_i32) {
-        return Ok(Ty::NoteBlockSound(super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 72_i32) {
-        return Ok(Ty::BannerPatterns(super::array::inline_24::deserialize(input, )?));
-    }
-    if (__tag.clone() == 73_i32) {
-        return Ok(Ty::BaseColor(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 74_i32) {
-        return Ok(Ty::PotDecorations(super::super::array::inline_107::deserialize(input, )?));
-    }
-    if (__tag.clone() == 75_i32) {
-        return Ok(Ty::Container(super::array::inline_365::deserialize(input, )?));
-    }
-    if (__tag.clone() == 76_i32) {
-        return Ok(Ty::BlockState(super::array::inline_120::deserialize(input, )?));
-    }
-    if (__tag.clone() == 77_i32) {
-        return Ok(Ty::Bees(super::array::inline_121::deserialize(input, )?));
-    }
-    if (__tag.clone() == 78_i32) {
-        return Ok(Ty::Lock(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 79_i32) {
-        return Ok(Ty::ContainerLoot(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::DamageType(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 80_i32) {
-        return Ok(Ty::BreakSound(super::item_sound_holder::deserialize(input, )?));
-    }
-    if (__tag.clone() == 81_i32) {
-        return Ok(Ty::VillagerVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 82_i32) {
-        return Ok(Ty::WolfVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 83_i32) {
-        return Ok(Ty::WolfSoundVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 84_i32) {
-        return Ok(Ty::WolfCollar(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 85_i32) {
-        return Ok(Ty::FoxVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 86_i32) {
-        return Ok(Ty::SalmonSize(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 87_i32) {
-        return Ok(Ty::ParrotVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 88_i32) {
-        return Ok(Ty::TropicalFishPattern(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 89_i32) {
-        return Ok(Ty::TropicalFishBaseColor(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_i32) {
-        return Ok(Ty::ItemName(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 90_i32) {
-        return Ok(Ty::TropicalFishPatternColor(super::super::dye_color::deserialize(input, )?));
-    }
-    if (__tag.clone() == 91_i32) {
-        return Ok(Ty::MooshroomVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 92_i32) {
-        return Ok(Ty::RabbitVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 93_i32) {
-        return Ok(Ty::PigVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 94_i32) {
-        return Ok(Ty::PigSoundVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 95_i32) {
-        return Ok(Ty::CowVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 96_i32) {
-        return Ok(Ty::CowSoundVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 97_i32) {
-        return Ok(Ty::ChickenVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 98_i32) {
-        return Ok(Ty::ChickenSoundVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 99_i32) {
-        return Ok(Ty::ZombieNautilusVariant(super::super::varint::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::CustomData(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::MaxStackSize(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::ItemModel(super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == 100_i32) {
+		return Ok(Ty::FrogVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 101_i32) {
+		return Ok(Ty::HorseVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 102_i32) {
+		return Ok(Ty::PaintingVariant(super::slot_component_27::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 103_i32) {
+		return Ok(Ty::LlamaVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 104_i32) {
+		return Ok(Ty::AxolotlVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 105_i32) {
+		return Ok(Ty::CatVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 106_i32) {
+		return Ok(Ty::CatSoundVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 107_i32) {
+		return Ok(Ty::CatCollar(super::super::dye_color::deserialize(input)?));
+	}
+	if (__tag.clone() == 108_i32) {
+		return Ok(Ty::SheepColor(super::super::dye_color::deserialize(input)?));
+	}
+	if (__tag.clone() == 109_i32) {
+		return Ok(Ty::ShulkerColor(super::super::dye_color::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::Lore(super::array::inline_45::deserialize(input)?));
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::Rarity(super::super::slot_component_28::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::Enchantments(
+			super::super::array::inline_114::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::CanPlaceOn(super::array::inline_30::deserialize(input)?));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::CanBreak(super::array::inline_30::deserialize(input)?));
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::AttributeModifiers(
+			super::array::inline_115::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::CustomModelData(super::slot_component_34::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::TooltipDisplay(
+			super::super::slot_component_35::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::RepairCost(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::MaxDamage(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::CreativeSlotLock);
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::EnchantmentGlintOverride(
+			super::super::bool::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::IntangibleProjectile(super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::Food(super::super::slot_component_36::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::Consumable(super::slot_component_38::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::UseRemainder(
+			super::item_stack_template::deserialize_guarded(input)?,
+		));
+	}
+	if (__tag.clone() == 26_i32) {
+		return Ok(Ty::UseCooldown(super::slot_component_39::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::DamageResistant(super::id_set::deserialize(input)?));
+	}
+	if (__tag.clone() == 28_i32) {
+		return Ok(Ty::Tool(super::slot_component_41::deserialize(input)?));
+	}
+	if (__tag.clone() == 29_i32) {
+		return Ok(Ty::Weapon(super::super::slot_component_42::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Damage(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::AttackRange(
+			super::super::slot_component_43::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 31_i32) {
+		return Ok(Ty::Enchantable(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 32_i32) {
+		return Ok(Ty::Equippable(super::slot_component_45::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 33_i32) {
+		return Ok(Ty::Repairable(super::id_set::deserialize(input)?));
+	}
+	if (__tag.clone() == 34_i32) {
+		return Ok(Ty::Glider);
+	}
+	if (__tag.clone() == 35_i32) {
+		return Ok(Ty::TooltipStyle(super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == 36_i32) {
+		return Ok(Ty::DeathProtection(super::array::inline_33::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 37_i32) {
+		return Ok(Ty::BlocksAttacks(super::slot_component_48::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 38_i32) {
+		return Ok(Ty::PiercingWeapon(super::slot_component_49::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::KineticWeapon(super::slot_component_50::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Unbreakable);
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::SwingAnimation(
+			super::super::slot_component_52::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 41_i32) {
+		return Ok(Ty::AdditionalTradeCost(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 42_i32) {
+		return Ok(Ty::StoredEnchantments(
+			super::super::array::inline_118::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 43_i32) {
+		return Ok(Ty::Dye(super::super::dye_color::deserialize(input)?));
+	}
+	if (__tag.clone() == 44_i32) {
+		return Ok(Ty::DyedColor(super::super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 45_i32) {
+		return Ok(Ty::MapColor(super::super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 46_i32) {
+		return Ok(Ty::MapId(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 47_i32) {
+		return Ok(Ty::MapDecorations(super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 48_i32) {
+		return Ok(Ty::MapPostProcessing(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 49_i32) {
+		return Ok(Ty::ChargedProjectiles(
+			super::array::inline_36::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::UseEffects(
+			super::super::slot_component_54::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 50_i32) {
+		return Ok(Ty::BundleContents(super::array::inline_36::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 51_i32) {
+		return Ok(Ty::PotionContents(super::slot_component_55::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 52_i32) {
+		return Ok(Ty::PotionDurationScale(super::super::f32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 53_i32) {
+		return Ok(Ty::SuspiciousStewEffects(
+			super::super::array::inline_119::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 54_i32) {
+		return Ok(Ty::WritableBookContent(
+			super::array::inline_32::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 55_i32) {
+		return Ok(Ty::WrittenBookContent(
+			super::slot_component_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 56_i32) {
+		return Ok(Ty::Trim(super::slot_component_60::deserialize(input)?));
+	}
+	if (__tag.clone() == 57_i32) {
+		return Ok(Ty::DebugStickState(super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 58_i32) {
+		return Ok(Ty::EntityData(super::slot_component_61::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 59_i32) {
+		return Ok(Ty::BucketEntityData(super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::CustomName(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 60_i32) {
+		return Ok(Ty::BlockEntityData(super::slot_component_62::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 61_i32) {
+		return Ok(Ty::Instrument(super::slot_component_63::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 62_i32) {
+		return Ok(Ty::ProvidesTrimMaterial(
+			super::slot_component_64::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 63_i32) {
+		return Ok(Ty::OminousBottleAmplifier(
+			super::super::varint::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 64_i32) {
+		return Ok(Ty::JukeboxPlayable(super::slot_component_65::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 65_i32) {
+		return Ok(Ty::ProvidesBannerPatterns(super::id_set::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 66_i32) {
+		return Ok(Ty::Recipes(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 67_i32) {
+		return Ok(Ty::LodestoneTracker(super::slot_component_66::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 68_i32) {
+		return Ok(Ty::FireworkExplosion(
+			super::super::item_firework_explosion::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 69_i32) {
+		return Ok(Ty::Fireworks(super::super::slot_component_67::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::MinimumAttackCharge(super::super::f32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 70_i32) {
+		return Ok(Ty::Profile(super::resolvable_profile::deserialize(input)?));
+	}
+	if (__tag.clone() == 71_i32) {
+		return Ok(Ty::NoteBlockSound(super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == 72_i32) {
+		return Ok(Ty::BannerPatterns(super::array::inline_24::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 73_i32) {
+		return Ok(Ty::BaseColor(super::super::dye_color::deserialize(input)?));
+	}
+	if (__tag.clone() == 74_i32) {
+		return Ok(Ty::PotDecorations(
+			super::super::array::inline_107::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 75_i32) {
+		return Ok(Ty::Container(super::array::inline_365::deserialize(input)?));
+	}
+	if (__tag.clone() == 76_i32) {
+		return Ok(Ty::BlockState(super::array::inline_120::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 77_i32) {
+		return Ok(Ty::Bees(super::array::inline_121::deserialize(input)?));
+	}
+	if (__tag.clone() == 78_i32) {
+		return Ok(Ty::Lock(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 79_i32) {
+		return Ok(Ty::ContainerLoot(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::DamageType(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 80_i32) {
+		return Ok(Ty::BreakSound(super::item_sound_holder::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 81_i32) {
+		return Ok(Ty::VillagerVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 82_i32) {
+		return Ok(Ty::WolfVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 83_i32) {
+		return Ok(Ty::WolfSoundVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 84_i32) {
+		return Ok(Ty::WolfCollar(super::super::dye_color::deserialize(input)?));
+	}
+	if (__tag.clone() == 85_i32) {
+		return Ok(Ty::FoxVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 86_i32) {
+		return Ok(Ty::SalmonSize(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 87_i32) {
+		return Ok(Ty::ParrotVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 88_i32) {
+		return Ok(Ty::TropicalFishPattern(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 89_i32) {
+		return Ok(Ty::TropicalFishBaseColor(
+			super::super::dye_color::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::ItemName(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == 90_i32) {
+		return Ok(Ty::TropicalFishPatternColor(
+			super::super::dye_color::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 91_i32) {
+		return Ok(Ty::MooshroomVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 92_i32) {
+		return Ok(Ty::RabbitVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 93_i32) {
+		return Ok(Ty::PigVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 94_i32) {
+		return Ok(Ty::PigSoundVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 95_i32) {
+		return Ok(Ty::CowVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 96_i32) {
+		return Ok(Ty::CowSoundVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 97_i32) {
+		return Ok(Ty::ChickenVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 98_i32) {
+		return Ok(Ty::ChickenSoundVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 99_i32) {
+		return Ok(Ty::ZombieNautilusVariant(
+			super::super::varint::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::CustomData(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::MaxStackSize(__v) => super::super::varint::size_of(__v),
-        Ty::ItemModel(__v) => super::pstring_96::size_of(__v),
-        Ty::FrogVariant(__v) => super::super::varint::size_of(__v),
-        Ty::HorseVariant(__v) => super::super::varint::size_of(__v),
-        Ty::PaintingVariant(__v) => super::slot_component_27::size_of(__v),
-        Ty::LlamaVariant(__v) => super::super::varint::size_of(__v),
-        Ty::AxolotlVariant(__v) => super::super::varint::size_of(__v),
-        Ty::CatVariant(__v) => super::super::varint::size_of(__v),
-        Ty::CatSoundVariant(__v) => super::super::varint::size_of(__v),
-        Ty::CatCollar(__v) => super::super::dye_color::size_of(__v),
-        Ty::SheepColor(__v) => super::super::dye_color::size_of(__v),
-        Ty::ShulkerColor(__v) => super::super::dye_color::size_of(__v),
-        Ty::Lore(__v) => super::array::inline_45::size_of(__v),
-        Ty::Rarity(__v) => super::super::slot_component_28::size_of(__v),
-        Ty::Enchantments(__v) => super::super::array::inline_114::size_of(__v),
-        Ty::CanPlaceOn(__v) => super::array::inline_30::size_of(__v),
-        Ty::CanBreak(__v) => super::array::inline_30::size_of(__v),
-        Ty::AttributeModifiers(__v) => super::array::inline_115::size_of(__v),
-        Ty::CustomModelData(__v) => super::slot_component_34::size_of(__v),
-        Ty::TooltipDisplay(__v) => super::super::slot_component_35::size_of(__v),
-        Ty::RepairCost(__v) => super::super::varint::size_of(__v),
-        Ty::MaxDamage(__v) => super::super::varint::size_of(__v),
-        Ty::CreativeSlotLock => 0,
-        Ty::EnchantmentGlintOverride(__v) => super::super::bool::size_of(__v),
-        Ty::IntangibleProjectile(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::Food(__v) => super::super::slot_component_36::size_of(__v),
-        Ty::Consumable(__v) => super::slot_component_38::size_of(__v),
-        Ty::UseRemainder(__v) => super::item_stack_template::size_of(__v),
-        Ty::UseCooldown(__v) => super::slot_component_39::size_of(__v),
-        Ty::DamageResistant(__v) => super::id_set::size_of(__v),
-        Ty::Tool(__v) => super::slot_component_41::size_of(__v),
-        Ty::Weapon(__v) => super::super::slot_component_42::size_of(__v),
-        Ty::Damage(__v) => super::super::varint::size_of(__v),
-        Ty::AttackRange(__v) => super::super::slot_component_43::size_of(__v),
-        Ty::Enchantable(__v) => super::super::varint::size_of(__v),
-        Ty::Equippable(__v) => super::slot_component_45::size_of(__v),
-        Ty::Repairable(__v) => super::id_set::size_of(__v),
-        Ty::Glider => 0,
-        Ty::TooltipStyle(__v) => super::pstring_96::size_of(__v),
-        Ty::DeathProtection(__v) => super::array::inline_33::size_of(__v),
-        Ty::BlocksAttacks(__v) => super::slot_component_48::size_of(__v),
-        Ty::PiercingWeapon(__v) => super::slot_component_49::size_of(__v),
-        Ty::KineticWeapon(__v) => super::slot_component_50::size_of(__v),
-        Ty::Unbreakable => 0,
-        Ty::SwingAnimation(__v) => super::super::slot_component_52::size_of(__v),
-        Ty::AdditionalTradeCost(__v) => super::super::varint::size_of(__v),
-        Ty::StoredEnchantments(__v) => super::super::array::inline_118::size_of(__v),
-        Ty::Dye(__v) => super::super::dye_color::size_of(__v),
-        Ty::DyedColor(__v) => super::super::i32::size_of(__v),
-        Ty::MapColor(__v) => super::super::i32::size_of(__v),
-        Ty::MapId(__v) => super::super::varint::size_of(__v),
-        Ty::MapDecorations(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::MapPostProcessing(__v) => super::super::varint::size_of(__v),
-        Ty::ChargedProjectiles(__v) => super::array::inline_36::size_of(__v),
-        Ty::UseEffects(__v) => super::super::slot_component_54::size_of(__v),
-        Ty::BundleContents(__v) => super::array::inline_36::size_of(__v),
-        Ty::PotionContents(__v) => super::slot_component_55::size_of(__v),
-        Ty::PotionDurationScale(__v) => super::super::f32::size_of(__v),
-        Ty::SuspiciousStewEffects(__v) => super::super::array::inline_119::size_of(__v),
-        Ty::WritableBookContent(__v) => super::array::inline_32::size_of(__v),
-        Ty::WrittenBookContent(__v) => super::slot_component_57::size_of(__v),
-        Ty::Trim(__v) => super::slot_component_60::size_of(__v),
-        Ty::DebugStickState(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::EntityData(__v) => super::slot_component_61::size_of(__v),
-        Ty::BucketEntityData(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::CustomName(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::BlockEntityData(__v) => super::slot_component_62::size_of(__v),
-        Ty::Instrument(__v) => super::slot_component_63::size_of(__v),
-        Ty::ProvidesTrimMaterial(__v) => super::slot_component_64::size_of(__v),
-        Ty::OminousBottleAmplifier(__v) => super::super::varint::size_of(__v),
-        Ty::JukeboxPlayable(__v) => super::slot_component_65::size_of(__v),
-        Ty::ProvidesBannerPatterns(__v) => super::id_set::size_of(__v),
-        Ty::Recipes(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::LodestoneTracker(__v) => super::slot_component_66::size_of(__v),
-        Ty::FireworkExplosion(__v) => super::super::item_firework_explosion::size_of(__v),
-        Ty::Fireworks(__v) => super::super::slot_component_67::size_of(__v),
-        Ty::MinimumAttackCharge(__v) => super::super::f32::size_of(__v),
-        Ty::Profile(__v) => super::resolvable_profile::size_of(__v),
-        Ty::NoteBlockSound(__v) => super::pstring_96::size_of(__v),
-        Ty::BannerPatterns(__v) => super::array::inline_24::size_of(__v),
-        Ty::BaseColor(__v) => super::super::dye_color::size_of(__v),
-        Ty::PotDecorations(__v) => super::super::array::inline_107::size_of(__v),
-        Ty::Container(__v) => super::array::inline_365::size_of(__v),
-        Ty::BlockState(__v) => super::array::inline_120::size_of(__v),
-        Ty::Bees(__v) => super::array::inline_121::size_of(__v),
-        Ty::Lock(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::ContainerLoot(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::DamageType(__v) => super::super::varint::size_of(__v),
-        Ty::BreakSound(__v) => super::item_sound_holder::size_of(__v),
-        Ty::VillagerVariant(__v) => super::super::varint::size_of(__v),
-        Ty::WolfVariant(__v) => super::super::varint::size_of(__v),
-        Ty::WolfSoundVariant(__v) => super::super::varint::size_of(__v),
-        Ty::WolfCollar(__v) => super::super::dye_color::size_of(__v),
-        Ty::FoxVariant(__v) => super::super::varint::size_of(__v),
-        Ty::SalmonSize(__v) => super::super::varint::size_of(__v),
-        Ty::ParrotVariant(__v) => super::super::varint::size_of(__v),
-        Ty::TropicalFishPattern(__v) => super::super::varint::size_of(__v),
-        Ty::TropicalFishBaseColor(__v) => super::super::dye_color::size_of(__v),
-        Ty::ItemName(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::TropicalFishPatternColor(__v) => super::super::dye_color::size_of(__v),
-        Ty::MooshroomVariant(__v) => super::super::varint::size_of(__v),
-        Ty::RabbitVariant(__v) => super::super::varint::size_of(__v),
-        Ty::PigVariant(__v) => super::super::varint::size_of(__v),
-        Ty::PigSoundVariant(__v) => super::super::varint::size_of(__v),
-        Ty::CowVariant(__v) => super::super::varint::size_of(__v),
-        Ty::CowSoundVariant(__v) => super::super::varint::size_of(__v),
-        Ty::ChickenVariant(__v) => super::super::varint::size_of(__v),
-        Ty::ChickenSoundVariant(__v) => super::super::varint::size_of(__v),
-        Ty::ZombieNautilusVariant(__v) => super::super::varint::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::CustomData(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::MaxStackSize(__v) => super::super::varint::size_of(__v),
+			Ty::ItemModel(__v) => super::pstring_96::size_of(__v),
+			Ty::FrogVariant(__v) => super::super::varint::size_of(__v),
+			Ty::HorseVariant(__v) => super::super::varint::size_of(__v),
+			Ty::PaintingVariant(__v) => super::slot_component_27::size_of(__v),
+			Ty::LlamaVariant(__v) => super::super::varint::size_of(__v),
+			Ty::AxolotlVariant(__v) => super::super::varint::size_of(__v),
+			Ty::CatVariant(__v) => super::super::varint::size_of(__v),
+			Ty::CatSoundVariant(__v) => super::super::varint::size_of(__v),
+			Ty::CatCollar(__v) => super::super::dye_color::size_of(__v),
+			Ty::SheepColor(__v) => super::super::dye_color::size_of(__v),
+			Ty::ShulkerColor(__v) => super::super::dye_color::size_of(__v),
+			Ty::Lore(__v) => super::array::inline_45::size_of(__v),
+			Ty::Rarity(__v) => super::super::slot_component_28::size_of(__v),
+			Ty::Enchantments(__v) => super::super::array::inline_114::size_of(__v),
+			Ty::CanPlaceOn(__v) => super::array::inline_30::size_of(__v),
+			Ty::CanBreak(__v) => super::array::inline_30::size_of(__v),
+			Ty::AttributeModifiers(__v) => super::array::inline_115::size_of(__v),
+			Ty::CustomModelData(__v) => super::slot_component_34::size_of(__v),
+			Ty::TooltipDisplay(__v) => super::super::slot_component_35::size_of(__v),
+			Ty::RepairCost(__v) => super::super::varint::size_of(__v),
+			Ty::MaxDamage(__v) => super::super::varint::size_of(__v),
+			Ty::CreativeSlotLock => 0,
+			Ty::EnchantmentGlintOverride(__v) => super::super::bool::size_of(__v),
+			Ty::IntangibleProjectile(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::Food(__v) => super::super::slot_component_36::size_of(__v),
+			Ty::Consumable(__v) => super::slot_component_38::size_of(__v),
+			Ty::UseRemainder(__v) => super::item_stack_template::size_of(__v),
+			Ty::UseCooldown(__v) => super::slot_component_39::size_of(__v),
+			Ty::DamageResistant(__v) => super::id_set::size_of(__v),
+			Ty::Tool(__v) => super::slot_component_41::size_of(__v),
+			Ty::Weapon(__v) => super::super::slot_component_42::size_of(__v),
+			Ty::Damage(__v) => super::super::varint::size_of(__v),
+			Ty::AttackRange(__v) => super::super::slot_component_43::size_of(__v),
+			Ty::Enchantable(__v) => super::super::varint::size_of(__v),
+			Ty::Equippable(__v) => super::slot_component_45::size_of(__v),
+			Ty::Repairable(__v) => super::id_set::size_of(__v),
+			Ty::Glider => 0,
+			Ty::TooltipStyle(__v) => super::pstring_96::size_of(__v),
+			Ty::DeathProtection(__v) => super::array::inline_33::size_of(__v),
+			Ty::BlocksAttacks(__v) => super::slot_component_48::size_of(__v),
+			Ty::PiercingWeapon(__v) => super::slot_component_49::size_of(__v),
+			Ty::KineticWeapon(__v) => super::slot_component_50::size_of(__v),
+			Ty::Unbreakable => 0,
+			Ty::SwingAnimation(__v) => super::super::slot_component_52::size_of(__v),
+			Ty::AdditionalTradeCost(__v) => super::super::varint::size_of(__v),
+			Ty::StoredEnchantments(__v) => super::super::array::inline_118::size_of(__v),
+			Ty::Dye(__v) => super::super::dye_color::size_of(__v),
+			Ty::DyedColor(__v) => super::super::i32::size_of(__v),
+			Ty::MapColor(__v) => super::super::i32::size_of(__v),
+			Ty::MapId(__v) => super::super::varint::size_of(__v),
+			Ty::MapDecorations(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::MapPostProcessing(__v) => super::super::varint::size_of(__v),
+			Ty::ChargedProjectiles(__v) => super::array::inline_36::size_of(__v),
+			Ty::UseEffects(__v) => super::super::slot_component_54::size_of(__v),
+			Ty::BundleContents(__v) => super::array::inline_36::size_of(__v),
+			Ty::PotionContents(__v) => super::slot_component_55::size_of(__v),
+			Ty::PotionDurationScale(__v) => super::super::f32::size_of(__v),
+			Ty::SuspiciousStewEffects(__v) => super::super::array::inline_119::size_of(__v),
+			Ty::WritableBookContent(__v) => super::array::inline_32::size_of(__v),
+			Ty::WrittenBookContent(__v) => super::slot_component_57::size_of(__v),
+			Ty::Trim(__v) => super::slot_component_60::size_of(__v),
+			Ty::DebugStickState(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::EntityData(__v) => super::slot_component_61::size_of(__v),
+			Ty::BucketEntityData(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::CustomName(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::BlockEntityData(__v) => super::slot_component_62::size_of(__v),
+			Ty::Instrument(__v) => super::slot_component_63::size_of(__v),
+			Ty::ProvidesTrimMaterial(__v) => super::slot_component_64::size_of(__v),
+			Ty::OminousBottleAmplifier(__v) => super::super::varint::size_of(__v),
+			Ty::JukeboxPlayable(__v) => super::slot_component_65::size_of(__v),
+			Ty::ProvidesBannerPatterns(__v) => super::id_set::size_of(__v),
+			Ty::Recipes(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::LodestoneTracker(__v) => super::slot_component_66::size_of(__v),
+			Ty::FireworkExplosion(__v) => super::super::item_firework_explosion::size_of(__v),
+			Ty::Fireworks(__v) => super::super::slot_component_67::size_of(__v),
+			Ty::MinimumAttackCharge(__v) => super::super::f32::size_of(__v),
+			Ty::Profile(__v) => super::resolvable_profile::size_of(__v),
+			Ty::NoteBlockSound(__v) => super::pstring_96::size_of(__v),
+			Ty::BannerPatterns(__v) => super::array::inline_24::size_of(__v),
+			Ty::BaseColor(__v) => super::super::dye_color::size_of(__v),
+			Ty::PotDecorations(__v) => super::super::array::inline_107::size_of(__v),
+			Ty::Container(__v) => super::array::inline_365::size_of(__v),
+			Ty::BlockState(__v) => super::array::inline_120::size_of(__v),
+			Ty::Bees(__v) => super::array::inline_121::size_of(__v),
+			Ty::Lock(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::ContainerLoot(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::DamageType(__v) => super::super::varint::size_of(__v),
+			Ty::BreakSound(__v) => super::item_sound_holder::size_of(__v),
+			Ty::VillagerVariant(__v) => super::super::varint::size_of(__v),
+			Ty::WolfVariant(__v) => super::super::varint::size_of(__v),
+			Ty::WolfSoundVariant(__v) => super::super::varint::size_of(__v),
+			Ty::WolfCollar(__v) => super::super::dye_color::size_of(__v),
+			Ty::FoxVariant(__v) => super::super::varint::size_of(__v),
+			Ty::SalmonSize(__v) => super::super::varint::size_of(__v),
+			Ty::ParrotVariant(__v) => super::super::varint::size_of(__v),
+			Ty::TropicalFishPattern(__v) => super::super::varint::size_of(__v),
+			Ty::TropicalFishBaseColor(__v) => super::super::dye_color::size_of(__v),
+			Ty::ItemName(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::TropicalFishPatternColor(__v) => super::super::dye_color::size_of(__v),
+			Ty::MooshroomVariant(__v) => super::super::varint::size_of(__v),
+			Ty::RabbitVariant(__v) => super::super::varint::size_of(__v),
+			Ty::PigVariant(__v) => super::super::varint::size_of(__v),
+			Ty::PigSoundVariant(__v) => super::super::varint::size_of(__v),
+			Ty::CowVariant(__v) => super::super::varint::size_of(__v),
+			Ty::CowSoundVariant(__v) => super::super::varint::size_of(__v),
+			Ty::ChickenVariant(__v) => super::super::varint::size_of(__v),
+			Ty::ChickenSoundVariant(__v) => super::super::varint::size_of(__v),
+			Ty::ZombieNautilusVariant(__v) => super::super::varint::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::CustomData(_) => "custom_data",
-        Ty::MaxStackSize(_) => "max_stack_size",
-        Ty::ItemModel(_) => "item_model",
-        Ty::FrogVariant(_) => "frog_variant",
-        Ty::HorseVariant(_) => "horse_variant",
-        Ty::PaintingVariant(_) => "painting_variant",
-        Ty::LlamaVariant(_) => "llama_variant",
-        Ty::AxolotlVariant(_) => "axolotl_variant",
-        Ty::CatVariant(_) => "cat_variant",
-        Ty::CatSoundVariant(_) => "cat_sound_variant",
-        Ty::CatCollar(_) => "cat_collar",
-        Ty::SheepColor(_) => "sheep_color",
-        Ty::ShulkerColor(_) => "shulker_color",
-        Ty::Lore(_) => "lore",
-        Ty::Rarity(_) => "rarity",
-        Ty::Enchantments(_) => "enchantments",
-        Ty::CanPlaceOn(_) => "can_place_on",
-        Ty::CanBreak(_) => "can_break",
-        Ty::AttributeModifiers(_) => "attribute_modifiers",
-        Ty::CustomModelData(_) => "custom_model_data",
-        Ty::TooltipDisplay(_) => "tooltip_display",
-        Ty::RepairCost(_) => "repair_cost",
-        Ty::MaxDamage(_) => "max_damage",
-        Ty::CreativeSlotLock => "creative_slot_lock",
-        Ty::EnchantmentGlintOverride(_) => "enchantment_glint_override",
-        Ty::IntangibleProjectile(_) => "intangible_projectile",
-        Ty::Food(_) => "food",
-        Ty::Consumable(_) => "consumable",
-        Ty::UseRemainder(_) => "use_remainder",
-        Ty::UseCooldown(_) => "use_cooldown",
-        Ty::DamageResistant(_) => "damage_resistant",
-        Ty::Tool(_) => "tool",
-        Ty::Weapon(_) => "weapon",
-        Ty::Damage(_) => "damage",
-        Ty::AttackRange(_) => "attack_range",
-        Ty::Enchantable(_) => "enchantable",
-        Ty::Equippable(_) => "equippable",
-        Ty::Repairable(_) => "repairable",
-        Ty::Glider => "glider",
-        Ty::TooltipStyle(_) => "tooltip_style",
-        Ty::DeathProtection(_) => "death_protection",
-        Ty::BlocksAttacks(_) => "blocks_attacks",
-        Ty::PiercingWeapon(_) => "piercing_weapon",
-        Ty::KineticWeapon(_) => "kinetic_weapon",
-        Ty::Unbreakable => "unbreakable",
-        Ty::SwingAnimation(_) => "swing_animation",
-        Ty::AdditionalTradeCost(_) => "additional_trade_cost",
-        Ty::StoredEnchantments(_) => "stored_enchantments",
-        Ty::Dye(_) => "dye",
-        Ty::DyedColor(_) => "dyed_color",
-        Ty::MapColor(_) => "map_color",
-        Ty::MapId(_) => "map_id",
-        Ty::MapDecorations(_) => "map_decorations",
-        Ty::MapPostProcessing(_) => "map_post_processing",
-        Ty::ChargedProjectiles(_) => "charged_projectiles",
-        Ty::UseEffects(_) => "use_effects",
-        Ty::BundleContents(_) => "bundle_contents",
-        Ty::PotionContents(_) => "potion_contents",
-        Ty::PotionDurationScale(_) => "potion_duration_scale",
-        Ty::SuspiciousStewEffects(_) => "suspicious_stew_effects",
-        Ty::WritableBookContent(_) => "writable_book_content",
-        Ty::WrittenBookContent(_) => "written_book_content",
-        Ty::Trim(_) => "trim",
-        Ty::DebugStickState(_) => "debug_stick_state",
-        Ty::EntityData(_) => "entity_data",
-        Ty::BucketEntityData(_) => "bucket_entity_data",
-        Ty::CustomName(_) => "custom_name",
-        Ty::BlockEntityData(_) => "block_entity_data",
-        Ty::Instrument(_) => "instrument",
-        Ty::ProvidesTrimMaterial(_) => "provides_trim_material",
-        Ty::OminousBottleAmplifier(_) => "ominous_bottle_amplifier",
-        Ty::JukeboxPlayable(_) => "jukebox_playable",
-        Ty::ProvidesBannerPatterns(_) => "provides_banner_patterns",
-        Ty::Recipes(_) => "recipes",
-        Ty::LodestoneTracker(_) => "lodestone_tracker",
-        Ty::FireworkExplosion(_) => "firework_explosion",
-        Ty::Fireworks(_) => "fireworks",
-        Ty::MinimumAttackCharge(_) => "minimum_attack_charge",
-        Ty::Profile(_) => "profile",
-        Ty::NoteBlockSound(_) => "note_block_sound",
-        Ty::BannerPatterns(_) => "banner_patterns",
-        Ty::BaseColor(_) => "base_color",
-        Ty::PotDecorations(_) => "pot_decorations",
-        Ty::Container(_) => "container",
-        Ty::BlockState(_) => "block_state",
-        Ty::Bees(_) => "bees",
-        Ty::Lock(_) => "lock",
-        Ty::ContainerLoot(_) => "container_loot",
-        Ty::DamageType(_) => "damage_type",
-        Ty::BreakSound(_) => "break_sound",
-        Ty::VillagerVariant(_) => "villager_variant",
-        Ty::WolfVariant(_) => "wolf_variant",
-        Ty::WolfSoundVariant(_) => "wolf_sound_variant",
-        Ty::WolfCollar(_) => "wolf_collar",
-        Ty::FoxVariant(_) => "fox_variant",
-        Ty::SalmonSize(_) => "salmon_size",
-        Ty::ParrotVariant(_) => "parrot_variant",
-        Ty::TropicalFishPattern(_) => "tropical_fish_pattern",
-        Ty::TropicalFishBaseColor(_) => "tropical_fish_base_color",
-        Ty::ItemName(_) => "item_name",
-        Ty::TropicalFishPatternColor(_) => "tropical_fish_pattern_color",
-        Ty::MooshroomVariant(_) => "mooshroom_variant",
-        Ty::RabbitVariant(_) => "rabbit_variant",
-        Ty::PigVariant(_) => "pig_variant",
-        Ty::PigSoundVariant(_) => "pig_sound_variant",
-        Ty::CowVariant(_) => "cow_variant",
-        Ty::CowSoundVariant(_) => "cow_sound_variant",
-        Ty::ChickenVariant(_) => "chicken_variant",
-        Ty::ChickenSoundVariant(_) => "chicken_sound_variant",
-        Ty::ZombieNautilusVariant(_) => "zombie_nautilus_variant",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::CustomData(_) => "custom_data",
+		Ty::MaxStackSize(_) => "max_stack_size",
+		Ty::ItemModel(_) => "item_model",
+		Ty::FrogVariant(_) => "frog_variant",
+		Ty::HorseVariant(_) => "horse_variant",
+		Ty::PaintingVariant(_) => "painting_variant",
+		Ty::LlamaVariant(_) => "llama_variant",
+		Ty::AxolotlVariant(_) => "axolotl_variant",
+		Ty::CatVariant(_) => "cat_variant",
+		Ty::CatSoundVariant(_) => "cat_sound_variant",
+		Ty::CatCollar(_) => "cat_collar",
+		Ty::SheepColor(_) => "sheep_color",
+		Ty::ShulkerColor(_) => "shulker_color",
+		Ty::Lore(_) => "lore",
+		Ty::Rarity(_) => "rarity",
+		Ty::Enchantments(_) => "enchantments",
+		Ty::CanPlaceOn(_) => "can_place_on",
+		Ty::CanBreak(_) => "can_break",
+		Ty::AttributeModifiers(_) => "attribute_modifiers",
+		Ty::CustomModelData(_) => "custom_model_data",
+		Ty::TooltipDisplay(_) => "tooltip_display",
+		Ty::RepairCost(_) => "repair_cost",
+		Ty::MaxDamage(_) => "max_damage",
+		Ty::CreativeSlotLock => "creative_slot_lock",
+		Ty::EnchantmentGlintOverride(_) => "enchantment_glint_override",
+		Ty::IntangibleProjectile(_) => "intangible_projectile",
+		Ty::Food(_) => "food",
+		Ty::Consumable(_) => "consumable",
+		Ty::UseRemainder(_) => "use_remainder",
+		Ty::UseCooldown(_) => "use_cooldown",
+		Ty::DamageResistant(_) => "damage_resistant",
+		Ty::Tool(_) => "tool",
+		Ty::Weapon(_) => "weapon",
+		Ty::Damage(_) => "damage",
+		Ty::AttackRange(_) => "attack_range",
+		Ty::Enchantable(_) => "enchantable",
+		Ty::Equippable(_) => "equippable",
+		Ty::Repairable(_) => "repairable",
+		Ty::Glider => "glider",
+		Ty::TooltipStyle(_) => "tooltip_style",
+		Ty::DeathProtection(_) => "death_protection",
+		Ty::BlocksAttacks(_) => "blocks_attacks",
+		Ty::PiercingWeapon(_) => "piercing_weapon",
+		Ty::KineticWeapon(_) => "kinetic_weapon",
+		Ty::Unbreakable => "unbreakable",
+		Ty::SwingAnimation(_) => "swing_animation",
+		Ty::AdditionalTradeCost(_) => "additional_trade_cost",
+		Ty::StoredEnchantments(_) => "stored_enchantments",
+		Ty::Dye(_) => "dye",
+		Ty::DyedColor(_) => "dyed_color",
+		Ty::MapColor(_) => "map_color",
+		Ty::MapId(_) => "map_id",
+		Ty::MapDecorations(_) => "map_decorations",
+		Ty::MapPostProcessing(_) => "map_post_processing",
+		Ty::ChargedProjectiles(_) => "charged_projectiles",
+		Ty::UseEffects(_) => "use_effects",
+		Ty::BundleContents(_) => "bundle_contents",
+		Ty::PotionContents(_) => "potion_contents",
+		Ty::PotionDurationScale(_) => "potion_duration_scale",
+		Ty::SuspiciousStewEffects(_) => "suspicious_stew_effects",
+		Ty::WritableBookContent(_) => "writable_book_content",
+		Ty::WrittenBookContent(_) => "written_book_content",
+		Ty::Trim(_) => "trim",
+		Ty::DebugStickState(_) => "debug_stick_state",
+		Ty::EntityData(_) => "entity_data",
+		Ty::BucketEntityData(_) => "bucket_entity_data",
+		Ty::CustomName(_) => "custom_name",
+		Ty::BlockEntityData(_) => "block_entity_data",
+		Ty::Instrument(_) => "instrument",
+		Ty::ProvidesTrimMaterial(_) => "provides_trim_material",
+		Ty::OminousBottleAmplifier(_) => "ominous_bottle_amplifier",
+		Ty::JukeboxPlayable(_) => "jukebox_playable",
+		Ty::ProvidesBannerPatterns(_) => "provides_banner_patterns",
+		Ty::Recipes(_) => "recipes",
+		Ty::LodestoneTracker(_) => "lodestone_tracker",
+		Ty::FireworkExplosion(_) => "firework_explosion",
+		Ty::Fireworks(_) => "fireworks",
+		Ty::MinimumAttackCharge(_) => "minimum_attack_charge",
+		Ty::Profile(_) => "profile",
+		Ty::NoteBlockSound(_) => "note_block_sound",
+		Ty::BannerPatterns(_) => "banner_patterns",
+		Ty::BaseColor(_) => "base_color",
+		Ty::PotDecorations(_) => "pot_decorations",
+		Ty::Container(_) => "container",
+		Ty::BlockState(_) => "block_state",
+		Ty::Bees(_) => "bees",
+		Ty::Lock(_) => "lock",
+		Ty::ContainerLoot(_) => "container_loot",
+		Ty::DamageType(_) => "damage_type",
+		Ty::BreakSound(_) => "break_sound",
+		Ty::VillagerVariant(_) => "villager_variant",
+		Ty::WolfVariant(_) => "wolf_variant",
+		Ty::WolfSoundVariant(_) => "wolf_sound_variant",
+		Ty::WolfCollar(_) => "wolf_collar",
+		Ty::FoxVariant(_) => "fox_variant",
+		Ty::SalmonSize(_) => "salmon_size",
+		Ty::ParrotVariant(_) => "parrot_variant",
+		Ty::TropicalFishPattern(_) => "tropical_fish_pattern",
+		Ty::TropicalFishBaseColor(_) => "tropical_fish_base_color",
+		Ty::ItemName(_) => "item_name",
+		Ty::TropicalFishPatternColor(_) => "tropical_fish_pattern_color",
+		Ty::MooshroomVariant(_) => "mooshroom_variant",
+		Ty::RabbitVariant(_) => "rabbit_variant",
+		Ty::PigVariant(_) => "pig_variant",
+		Ty::PigSoundVariant(_) => "pig_sound_variant",
+		Ty::CowVariant(_) => "cow_variant",
+		Ty::CowSoundVariant(_) => "cow_sound_variant",
+		Ty::ChickenVariant(_) => "chicken_variant",
+		Ty::ChickenSoundVariant(_) => "chicken_sound_variant",
+		Ty::ZombieNautilusVariant(_) => "zombie_nautilus_variant",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::Varint {
-    match _0 {
-        Ty::CustomData(_) => 0_i32,
-        Ty::MaxStackSize(_) => 1_i32,
-        Ty::ItemModel(_) => 10_i32,
-        Ty::FrogVariant(_) => 100_i32,
-        Ty::HorseVariant(_) => 101_i32,
-        Ty::PaintingVariant(_) => 102_i32,
-        Ty::LlamaVariant(_) => 103_i32,
-        Ty::AxolotlVariant(_) => 104_i32,
-        Ty::CatVariant(_) => 105_i32,
-        Ty::CatSoundVariant(_) => 106_i32,
-        Ty::CatCollar(_) => 107_i32,
-        Ty::SheepColor(_) => 108_i32,
-        Ty::ShulkerColor(_) => 109_i32,
-        Ty::Lore(_) => 11_i32,
-        Ty::Rarity(_) => 12_i32,
-        Ty::Enchantments(_) => 13_i32,
-        Ty::CanPlaceOn(_) => 14_i32,
-        Ty::CanBreak(_) => 15_i32,
-        Ty::AttributeModifiers(_) => 16_i32,
-        Ty::CustomModelData(_) => 17_i32,
-        Ty::TooltipDisplay(_) => 18_i32,
-        Ty::RepairCost(_) => 19_i32,
-        Ty::MaxDamage(_) => 2_i32,
-        Ty::CreativeSlotLock => 20_i32,
-        Ty::EnchantmentGlintOverride(_) => 21_i32,
-        Ty::IntangibleProjectile(_) => 22_i32,
-        Ty::Food(_) => 23_i32,
-        Ty::Consumable(_) => 24_i32,
-        Ty::UseRemainder(_) => 25_i32,
-        Ty::UseCooldown(_) => 26_i32,
-        Ty::DamageResistant(_) => 27_i32,
-        Ty::Tool(_) => 28_i32,
-        Ty::Weapon(_) => 29_i32,
-        Ty::Damage(_) => 3_i32,
-        Ty::AttackRange(_) => 30_i32,
-        Ty::Enchantable(_) => 31_i32,
-        Ty::Equippable(_) => 32_i32,
-        Ty::Repairable(_) => 33_i32,
-        Ty::Glider => 34_i32,
-        Ty::TooltipStyle(_) => 35_i32,
-        Ty::DeathProtection(_) => 36_i32,
-        Ty::BlocksAttacks(_) => 37_i32,
-        Ty::PiercingWeapon(_) => 38_i32,
-        Ty::KineticWeapon(_) => 39_i32,
-        Ty::Unbreakable => 4_i32,
-        Ty::SwingAnimation(_) => 40_i32,
-        Ty::AdditionalTradeCost(_) => 41_i32,
-        Ty::StoredEnchantments(_) => 42_i32,
-        Ty::Dye(_) => 43_i32,
-        Ty::DyedColor(_) => 44_i32,
-        Ty::MapColor(_) => 45_i32,
-        Ty::MapId(_) => 46_i32,
-        Ty::MapDecorations(_) => 47_i32,
-        Ty::MapPostProcessing(_) => 48_i32,
-        Ty::ChargedProjectiles(_) => 49_i32,
-        Ty::UseEffects(_) => 5_i32,
-        Ty::BundleContents(_) => 50_i32,
-        Ty::PotionContents(_) => 51_i32,
-        Ty::PotionDurationScale(_) => 52_i32,
-        Ty::SuspiciousStewEffects(_) => 53_i32,
-        Ty::WritableBookContent(_) => 54_i32,
-        Ty::WrittenBookContent(_) => 55_i32,
-        Ty::Trim(_) => 56_i32,
-        Ty::DebugStickState(_) => 57_i32,
-        Ty::EntityData(_) => 58_i32,
-        Ty::BucketEntityData(_) => 59_i32,
-        Ty::CustomName(_) => 6_i32,
-        Ty::BlockEntityData(_) => 60_i32,
-        Ty::Instrument(_) => 61_i32,
-        Ty::ProvidesTrimMaterial(_) => 62_i32,
-        Ty::OminousBottleAmplifier(_) => 63_i32,
-        Ty::JukeboxPlayable(_) => 64_i32,
-        Ty::ProvidesBannerPatterns(_) => 65_i32,
-        Ty::Recipes(_) => 66_i32,
-        Ty::LodestoneTracker(_) => 67_i32,
-        Ty::FireworkExplosion(_) => 68_i32,
-        Ty::Fireworks(_) => 69_i32,
-        Ty::MinimumAttackCharge(_) => 7_i32,
-        Ty::Profile(_) => 70_i32,
-        Ty::NoteBlockSound(_) => 71_i32,
-        Ty::BannerPatterns(_) => 72_i32,
-        Ty::BaseColor(_) => 73_i32,
-        Ty::PotDecorations(_) => 74_i32,
-        Ty::Container(_) => 75_i32,
-        Ty::BlockState(_) => 76_i32,
-        Ty::Bees(_) => 77_i32,
-        Ty::Lock(_) => 78_i32,
-        Ty::ContainerLoot(_) => 79_i32,
-        Ty::DamageType(_) => 8_i32,
-        Ty::BreakSound(_) => 80_i32,
-        Ty::VillagerVariant(_) => 81_i32,
-        Ty::WolfVariant(_) => 82_i32,
-        Ty::WolfSoundVariant(_) => 83_i32,
-        Ty::WolfCollar(_) => 84_i32,
-        Ty::FoxVariant(_) => 85_i32,
-        Ty::SalmonSize(_) => 86_i32,
-        Ty::ParrotVariant(_) => 87_i32,
-        Ty::TropicalFishPattern(_) => 88_i32,
-        Ty::TropicalFishBaseColor(_) => 89_i32,
-        Ty::ItemName(_) => 9_i32,
-        Ty::TropicalFishPatternColor(_) => 90_i32,
-        Ty::MooshroomVariant(_) => 91_i32,
-        Ty::RabbitVariant(_) => 92_i32,
-        Ty::PigVariant(_) => 93_i32,
-        Ty::PigSoundVariant(_) => 94_i32,
-        Ty::CowVariant(_) => 95_i32,
-        Ty::CowSoundVariant(_) => 96_i32,
-        Ty::ChickenVariant(_) => 97_i32,
-        Ty::ChickenSoundVariant(_) => 98_i32,
-        Ty::ZombieNautilusVariant(_) => 99_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::CustomData(_) => 0_i32,
+		Ty::MaxStackSize(_) => 1_i32,
+		Ty::ItemModel(_) => 10_i32,
+		Ty::FrogVariant(_) => 100_i32,
+		Ty::HorseVariant(_) => 101_i32,
+		Ty::PaintingVariant(_) => 102_i32,
+		Ty::LlamaVariant(_) => 103_i32,
+		Ty::AxolotlVariant(_) => 104_i32,
+		Ty::CatVariant(_) => 105_i32,
+		Ty::CatSoundVariant(_) => 106_i32,
+		Ty::CatCollar(_) => 107_i32,
+		Ty::SheepColor(_) => 108_i32,
+		Ty::ShulkerColor(_) => 109_i32,
+		Ty::Lore(_) => 11_i32,
+		Ty::Rarity(_) => 12_i32,
+		Ty::Enchantments(_) => 13_i32,
+		Ty::CanPlaceOn(_) => 14_i32,
+		Ty::CanBreak(_) => 15_i32,
+		Ty::AttributeModifiers(_) => 16_i32,
+		Ty::CustomModelData(_) => 17_i32,
+		Ty::TooltipDisplay(_) => 18_i32,
+		Ty::RepairCost(_) => 19_i32,
+		Ty::MaxDamage(_) => 2_i32,
+		Ty::CreativeSlotLock => 20_i32,
+		Ty::EnchantmentGlintOverride(_) => 21_i32,
+		Ty::IntangibleProjectile(_) => 22_i32,
+		Ty::Food(_) => 23_i32,
+		Ty::Consumable(_) => 24_i32,
+		Ty::UseRemainder(_) => 25_i32,
+		Ty::UseCooldown(_) => 26_i32,
+		Ty::DamageResistant(_) => 27_i32,
+		Ty::Tool(_) => 28_i32,
+		Ty::Weapon(_) => 29_i32,
+		Ty::Damage(_) => 3_i32,
+		Ty::AttackRange(_) => 30_i32,
+		Ty::Enchantable(_) => 31_i32,
+		Ty::Equippable(_) => 32_i32,
+		Ty::Repairable(_) => 33_i32,
+		Ty::Glider => 34_i32,
+		Ty::TooltipStyle(_) => 35_i32,
+		Ty::DeathProtection(_) => 36_i32,
+		Ty::BlocksAttacks(_) => 37_i32,
+		Ty::PiercingWeapon(_) => 38_i32,
+		Ty::KineticWeapon(_) => 39_i32,
+		Ty::Unbreakable => 4_i32,
+		Ty::SwingAnimation(_) => 40_i32,
+		Ty::AdditionalTradeCost(_) => 41_i32,
+		Ty::StoredEnchantments(_) => 42_i32,
+		Ty::Dye(_) => 43_i32,
+		Ty::DyedColor(_) => 44_i32,
+		Ty::MapColor(_) => 45_i32,
+		Ty::MapId(_) => 46_i32,
+		Ty::MapDecorations(_) => 47_i32,
+		Ty::MapPostProcessing(_) => 48_i32,
+		Ty::ChargedProjectiles(_) => 49_i32,
+		Ty::UseEffects(_) => 5_i32,
+		Ty::BundleContents(_) => 50_i32,
+		Ty::PotionContents(_) => 51_i32,
+		Ty::PotionDurationScale(_) => 52_i32,
+		Ty::SuspiciousStewEffects(_) => 53_i32,
+		Ty::WritableBookContent(_) => 54_i32,
+		Ty::WrittenBookContent(_) => 55_i32,
+		Ty::Trim(_) => 56_i32,
+		Ty::DebugStickState(_) => 57_i32,
+		Ty::EntityData(_) => 58_i32,
+		Ty::BucketEntityData(_) => 59_i32,
+		Ty::CustomName(_) => 6_i32,
+		Ty::BlockEntityData(_) => 60_i32,
+		Ty::Instrument(_) => 61_i32,
+		Ty::ProvidesTrimMaterial(_) => 62_i32,
+		Ty::OminousBottleAmplifier(_) => 63_i32,
+		Ty::JukeboxPlayable(_) => 64_i32,
+		Ty::ProvidesBannerPatterns(_) => 65_i32,
+		Ty::Recipes(_) => 66_i32,
+		Ty::LodestoneTracker(_) => 67_i32,
+		Ty::FireworkExplosion(_) => 68_i32,
+		Ty::Fireworks(_) => 69_i32,
+		Ty::MinimumAttackCharge(_) => 7_i32,
+		Ty::Profile(_) => 70_i32,
+		Ty::NoteBlockSound(_) => 71_i32,
+		Ty::BannerPatterns(_) => 72_i32,
+		Ty::BaseColor(_) => 73_i32,
+		Ty::PotDecorations(_) => 74_i32,
+		Ty::Container(_) => 75_i32,
+		Ty::BlockState(_) => 76_i32,
+		Ty::Bees(_) => 77_i32,
+		Ty::Lock(_) => 78_i32,
+		Ty::ContainerLoot(_) => 79_i32,
+		Ty::DamageType(_) => 8_i32,
+		Ty::BreakSound(_) => 80_i32,
+		Ty::VillagerVariant(_) => 81_i32,
+		Ty::WolfVariant(_) => 82_i32,
+		Ty::WolfSoundVariant(_) => 83_i32,
+		Ty::WolfCollar(_) => 84_i32,
+		Ty::FoxVariant(_) => 85_i32,
+		Ty::SalmonSize(_) => 86_i32,
+		Ty::ParrotVariant(_) => 87_i32,
+		Ty::TropicalFishPattern(_) => 88_i32,
+		Ty::TropicalFishBaseColor(_) => 89_i32,
+		Ty::ItemName(_) => 9_i32,
+		Ty::TropicalFishPatternColor(_) => 90_i32,
+		Ty::MooshroomVariant(_) => 91_i32,
+		Ty::RabbitVariant(_) => 92_i32,
+		Ty::PigVariant(_) => 93_i32,
+		Ty::PigSoundVariant(_) => 94_i32,
+		Ty::CowVariant(_) => 95_i32,
+		Ty::CowSoundVariant(_) => 96_i32,
+		Ty::ChickenVariant(_) => 97_i32,
+		Ty::ChickenSoundVariant(_) => 98_i32,
+		Ty::ZombieNautilusVariant(_) => 99_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::SlotComponent) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent::CustomData(__v) => Ty::CustomData(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::MaxStackSize(__v) => Ty::MaxStackSize(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ItemModel(__v) => Ty::ItemModel(super::pstring_96::view(__v)),
-        super::super::SlotComponent::FrogVariant(__v) => Ty::FrogVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::HorseVariant(__v) => Ty::HorseVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PaintingVariant(__v) => Ty::PaintingVariant(super::slot_component_27::view(__v)),
-        super::super::SlotComponent::LlamaVariant(__v) => Ty::LlamaVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AxolotlVariant(__v) => Ty::AxolotlVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatVariant(__v) => Ty::CatVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatSoundVariant(__v) => Ty::CatSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatCollar(__v) => Ty::CatCollar(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SheepColor(__v) => Ty::SheepColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ShulkerColor(__v) => Ty::ShulkerColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Lore(__v) => Ty::Lore(super::array::inline_45::view(__v)),
-        super::super::SlotComponent::Rarity(__v) => Ty::Rarity(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Enchantments(__v) => Ty::Enchantments(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CanPlaceOn(__v) => Ty::CanPlaceOn(super::array::inline_30::view(__v)),
-        super::super::SlotComponent::CanBreak(__v) => Ty::CanBreak(super::array::inline_30::view(__v)),
-        super::super::SlotComponent::AttributeModifiers(__v) => Ty::AttributeModifiers(super::array::inline_115::view(__v)),
-        super::super::SlotComponent::CustomModelData(__v) => Ty::CustomModelData(super::slot_component_34::view(__v)),
-        super::super::SlotComponent::TooltipDisplay(__v) => Ty::TooltipDisplay(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::RepairCost(__v) => Ty::RepairCost(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MaxDamage(__v) => Ty::MaxDamage(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CreativeSlotLock => Ty::CreativeSlotLock,
-        super::super::SlotComponent::EnchantmentGlintOverride(__v) => Ty::EnchantmentGlintOverride(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::IntangibleProjectile(__v) => Ty::IntangibleProjectile(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::Food(__v) => Ty::Food(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Consumable(__v) => Ty::Consumable(super::slot_component_38::view(__v)),
-        super::super::SlotComponent::UseRemainder(__v) => Ty::UseRemainder(super::item_stack_template::view(__v)),
-        super::super::SlotComponent::UseCooldown(__v) => Ty::UseCooldown(super::slot_component_39::view(__v)),
-        super::super::SlotComponent::DamageResistant(__v) => Ty::DamageResistant(super::id_set::view(__v)),
-        super::super::SlotComponent::Tool(__v) => Ty::Tool(super::slot_component_41::view(__v)),
-        super::super::SlotComponent::Weapon(__v) => Ty::Weapon(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Damage(__v) => Ty::Damage(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AttackRange(__v) => Ty::AttackRange(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Enchantable(__v) => Ty::Enchantable(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Equippable(__v) => Ty::Equippable(super::slot_component_45::view(__v)),
-        super::super::SlotComponent::Repairable(__v) => Ty::Repairable(super::id_set::view(__v)),
-        super::super::SlotComponent::Glider => Ty::Glider,
-        super::super::SlotComponent::TooltipStyle(__v) => Ty::TooltipStyle(super::pstring_96::view(__v)),
-        super::super::SlotComponent::DeathProtection(__v) => Ty::DeathProtection(super::array::inline_33::view(__v)),
-        super::super::SlotComponent::BlocksAttacks(__v) => Ty::BlocksAttacks(super::slot_component_48::view(__v)),
-        super::super::SlotComponent::PiercingWeapon(__v) => Ty::PiercingWeapon(super::slot_component_49::view(__v)),
-        super::super::SlotComponent::KineticWeapon(__v) => Ty::KineticWeapon(super::slot_component_50::view(__v)),
-        super::super::SlotComponent::Unbreakable => Ty::Unbreakable,
-        super::super::SlotComponent::SwingAnimation(__v) => Ty::SwingAnimation(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AdditionalTradeCost(__v) => Ty::AdditionalTradeCost(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::StoredEnchantments(__v) => Ty::StoredEnchantments(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Dye(__v) => Ty::Dye(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::DyedColor(__v) => Ty::DyedColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapColor(__v) => Ty::MapColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapId(__v) => Ty::MapId(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapDecorations(__v) => Ty::MapDecorations(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::MapPostProcessing(__v) => Ty::MapPostProcessing(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChargedProjectiles(__v) => Ty::ChargedProjectiles(super::array::inline_36::view(__v)),
-        super::super::SlotComponent::UseEffects(__v) => Ty::UseEffects(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::BundleContents(__v) => Ty::BundleContents(super::array::inline_36::view(__v)),
-        super::super::SlotComponent::PotionContents(__v) => Ty::PotionContents(super::slot_component_55::view(__v)),
-        super::super::SlotComponent::PotionDurationScale(__v) => Ty::PotionDurationScale(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SuspiciousStewEffects(__v) => Ty::SuspiciousStewEffects(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WritableBookContent(__v) => Ty::WritableBookContent(super::array::inline_32::view(__v)),
-        super::super::SlotComponent::WrittenBookContent(__v) => Ty::WrittenBookContent(super::slot_component_57::view(__v)),
-        super::super::SlotComponent::Trim(__v) => Ty::Trim(super::slot_component_60::view(__v)),
-        super::super::SlotComponent::DebugStickState(__v) => Ty::DebugStickState(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::EntityData(__v) => Ty::EntityData(super::slot_component_61::view(__v)),
-        super::super::SlotComponent::BucketEntityData(__v) => Ty::BucketEntityData(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::CustomName(__v) => Ty::CustomName(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::BlockEntityData(__v) => Ty::BlockEntityData(super::slot_component_62::view(__v)),
-        super::super::SlotComponent::Instrument(__v) => Ty::Instrument(super::slot_component_63::view(__v)),
-        super::super::SlotComponent::ProvidesTrimMaterial(__v) => Ty::ProvidesTrimMaterial(super::slot_component_64::view(__v)),
-        super::super::SlotComponent::OminousBottleAmplifier(__v) => Ty::OminousBottleAmplifier(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::JukeboxPlayable(__v) => Ty::JukeboxPlayable(super::slot_component_65::view(__v)),
-        super::super::SlotComponent::ProvidesBannerPatterns(__v) => Ty::ProvidesBannerPatterns(super::id_set::view(__v)),
-        super::super::SlotComponent::Recipes(__v) => Ty::Recipes(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::LodestoneTracker(__v) => Ty::LodestoneTracker(super::slot_component_66::view(__v)),
-        super::super::SlotComponent::FireworkExplosion(__v) => Ty::FireworkExplosion(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Fireworks(__v) => Ty::Fireworks(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MinimumAttackCharge(__v) => Ty::MinimumAttackCharge(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Profile(__v) => Ty::Profile(super::resolvable_profile::view(__v)),
-        super::super::SlotComponent::NoteBlockSound(__v) => Ty::NoteBlockSound(super::pstring_96::view(__v)),
-        super::super::SlotComponent::BannerPatterns(__v) => Ty::BannerPatterns(super::array::inline_24::view(__v)),
-        super::super::SlotComponent::BaseColor(__v) => Ty::BaseColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PotDecorations(__v) => Ty::PotDecorations(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Container(__v) => Ty::Container(super::array::inline_365::view(__v)),
-        super::super::SlotComponent::BlockState(__v) => Ty::BlockState(super::array::inline_120::view(__v)),
-        super::super::SlotComponent::Bees(__v) => Ty::Bees(super::array::inline_121::view(__v)),
-        super::super::SlotComponent::Lock(__v) => Ty::Lock(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::ContainerLoot(__v) => Ty::ContainerLoot(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::DamageType(__v) => Ty::DamageType(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::BreakSound(__v) => Ty::BreakSound(super::item_sound_holder::view(__v)),
-        super::super::SlotComponent::VillagerVariant(__v) => Ty::VillagerVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfVariant(__v) => Ty::WolfVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfSoundVariant(__v) => Ty::WolfSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfCollar(__v) => Ty::WolfCollar(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::FoxVariant(__v) => Ty::FoxVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SalmonSize(__v) => Ty::SalmonSize(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ParrotVariant(__v) => Ty::ParrotVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::TropicalFishPattern(__v) => Ty::TropicalFishPattern(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::TropicalFishBaseColor(__v) => Ty::TropicalFishBaseColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ItemName(__v) => Ty::ItemName(super::anonymous_nbt::view(__v)),
-        super::super::SlotComponent::TropicalFishPatternColor(__v) => Ty::TropicalFishPatternColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MooshroomVariant(__v) => Ty::MooshroomVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::RabbitVariant(__v) => Ty::RabbitVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PigVariant(__v) => Ty::PigVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PigSoundVariant(__v) => Ty::PigSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CowVariant(__v) => Ty::CowVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CowSoundVariant(__v) => Ty::CowSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChickenVariant(__v) => Ty::ChickenVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChickenSoundVariant(__v) => Ty::ChickenSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ZombieNautilusVariant(__v) => Ty::ZombieNautilusVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::SlotComponent::CustomData(__v) => {
+			Ty::CustomData(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::MaxStackSize(__v) => {
+			Ty::MaxStackSize(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ItemModel(__v) => Ty::ItemModel(super::pstring_96::view(__v)),
+		super::super::SlotComponent::FrogVariant(__v) => {
+			Ty::FrogVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::HorseVariant(__v) => {
+			Ty::HorseVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PaintingVariant(__v) => {
+			Ty::PaintingVariant(super::slot_component_27::view(__v))
+		}
+		super::super::SlotComponent::LlamaVariant(__v) => {
+			Ty::LlamaVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::AxolotlVariant(__v) => {
+			Ty::AxolotlVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatVariant(__v) => {
+			Ty::CatVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatSoundVariant(__v) => {
+			Ty::CatSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatCollar(__v) => {
+			Ty::CatCollar(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SheepColor(__v) => {
+			Ty::SheepColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ShulkerColor(__v) => {
+			Ty::ShulkerColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Lore(__v) => Ty::Lore(super::array::inline_45::view(__v)),
+		super::super::SlotComponent::Rarity(__v) => Ty::Rarity(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Enchantments(__v) => {
+			Ty::Enchantments(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CanPlaceOn(__v) => {
+			Ty::CanPlaceOn(super::array::inline_30::view(__v))
+		}
+		super::super::SlotComponent::CanBreak(__v) => {
+			Ty::CanBreak(super::array::inline_30::view(__v))
+		}
+		super::super::SlotComponent::AttributeModifiers(__v) => {
+			Ty::AttributeModifiers(super::array::inline_115::view(__v))
+		}
+		super::super::SlotComponent::CustomModelData(__v) => {
+			Ty::CustomModelData(super::slot_component_34::view(__v))
+		}
+		super::super::SlotComponent::TooltipDisplay(__v) => {
+			Ty::TooltipDisplay(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::RepairCost(__v) => {
+			Ty::RepairCost(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MaxDamage(__v) => {
+			Ty::MaxDamage(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CreativeSlotLock => Ty::CreativeSlotLock,
+		super::super::SlotComponent::EnchantmentGlintOverride(__v) => {
+			Ty::EnchantmentGlintOverride(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::IntangibleProjectile(__v) => {
+			Ty::IntangibleProjectile(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::Food(__v) => Ty::Food(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Consumable(__v) => {
+			Ty::Consumable(super::slot_component_38::view(__v))
+		}
+		super::super::SlotComponent::UseRemainder(__v) => {
+			Ty::UseRemainder(super::item_stack_template::view(__v))
+		}
+		super::super::SlotComponent::UseCooldown(__v) => {
+			Ty::UseCooldown(super::slot_component_39::view(__v))
+		}
+		super::super::SlotComponent::DamageResistant(__v) => {
+			Ty::DamageResistant(super::id_set::view(__v))
+		}
+		super::super::SlotComponent::Tool(__v) => Ty::Tool(super::slot_component_41::view(__v)),
+		super::super::SlotComponent::Weapon(__v) => Ty::Weapon(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Damage(__v) => Ty::Damage(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::AttackRange(__v) => {
+			Ty::AttackRange(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Enchantable(__v) => {
+			Ty::Enchantable(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Equippable(__v) => {
+			Ty::Equippable(super::slot_component_45::view(__v))
+		}
+		super::super::SlotComponent::Repairable(__v) => Ty::Repairable(super::id_set::view(__v)),
+		super::super::SlotComponent::Glider => Ty::Glider,
+		super::super::SlotComponent::TooltipStyle(__v) => {
+			Ty::TooltipStyle(super::pstring_96::view(__v))
+		}
+		super::super::SlotComponent::DeathProtection(__v) => {
+			Ty::DeathProtection(super::array::inline_33::view(__v))
+		}
+		super::super::SlotComponent::BlocksAttacks(__v) => {
+			Ty::BlocksAttacks(super::slot_component_48::view(__v))
+		}
+		super::super::SlotComponent::PiercingWeapon(__v) => {
+			Ty::PiercingWeapon(super::slot_component_49::view(__v))
+		}
+		super::super::SlotComponent::KineticWeapon(__v) => {
+			Ty::KineticWeapon(super::slot_component_50::view(__v))
+		}
+		super::super::SlotComponent::Unbreakable => Ty::Unbreakable,
+		super::super::SlotComponent::SwingAnimation(__v) => {
+			Ty::SwingAnimation(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::AdditionalTradeCost(__v) => {
+			Ty::AdditionalTradeCost(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::StoredEnchantments(__v) => {
+			Ty::StoredEnchantments(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Dye(__v) => Ty::Dye(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::DyedColor(__v) => {
+			Ty::DyedColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MapColor(__v) => {
+			Ty::MapColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MapId(__v) => Ty::MapId(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::MapDecorations(__v) => {
+			Ty::MapDecorations(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::MapPostProcessing(__v) => {
+			Ty::MapPostProcessing(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChargedProjectiles(__v) => {
+			Ty::ChargedProjectiles(super::array::inline_36::view(__v))
+		}
+		super::super::SlotComponent::UseEffects(__v) => {
+			Ty::UseEffects(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::BundleContents(__v) => {
+			Ty::BundleContents(super::array::inline_36::view(__v))
+		}
+		super::super::SlotComponent::PotionContents(__v) => {
+			Ty::PotionContents(super::slot_component_55::view(__v))
+		}
+		super::super::SlotComponent::PotionDurationScale(__v) => {
+			Ty::PotionDurationScale(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SuspiciousStewEffects(__v) => {
+			Ty::SuspiciousStewEffects(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WritableBookContent(__v) => {
+			Ty::WritableBookContent(super::array::inline_32::view(__v))
+		}
+		super::super::SlotComponent::WrittenBookContent(__v) => {
+			Ty::WrittenBookContent(super::slot_component_57::view(__v))
+		}
+		super::super::SlotComponent::Trim(__v) => Ty::Trim(super::slot_component_60::view(__v)),
+		super::super::SlotComponent::DebugStickState(__v) => {
+			Ty::DebugStickState(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::EntityData(__v) => {
+			Ty::EntityData(super::slot_component_61::view(__v))
+		}
+		super::super::SlotComponent::BucketEntityData(__v) => {
+			Ty::BucketEntityData(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::CustomName(__v) => {
+			Ty::CustomName(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::BlockEntityData(__v) => {
+			Ty::BlockEntityData(super::slot_component_62::view(__v))
+		}
+		super::super::SlotComponent::Instrument(__v) => {
+			Ty::Instrument(super::slot_component_63::view(__v))
+		}
+		super::super::SlotComponent::ProvidesTrimMaterial(__v) => {
+			Ty::ProvidesTrimMaterial(super::slot_component_64::view(__v))
+		}
+		super::super::SlotComponent::OminousBottleAmplifier(__v) => {
+			Ty::OminousBottleAmplifier(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::JukeboxPlayable(__v) => {
+			Ty::JukeboxPlayable(super::slot_component_65::view(__v))
+		}
+		super::super::SlotComponent::ProvidesBannerPatterns(__v) => {
+			Ty::ProvidesBannerPatterns(super::id_set::view(__v))
+		}
+		super::super::SlotComponent::Recipes(__v) => Ty::Recipes(super::anonymous_nbt::view(__v)),
+		super::super::SlotComponent::LodestoneTracker(__v) => {
+			Ty::LodestoneTracker(super::slot_component_66::view(__v))
+		}
+		super::super::SlotComponent::FireworkExplosion(__v) => {
+			Ty::FireworkExplosion(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Fireworks(__v) => {
+			Ty::Fireworks(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MinimumAttackCharge(__v) => {
+			Ty::MinimumAttackCharge(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Profile(__v) => {
+			Ty::Profile(super::resolvable_profile::view(__v))
+		}
+		super::super::SlotComponent::NoteBlockSound(__v) => {
+			Ty::NoteBlockSound(super::pstring_96::view(__v))
+		}
+		super::super::SlotComponent::BannerPatterns(__v) => {
+			Ty::BannerPatterns(super::array::inline_24::view(__v))
+		}
+		super::super::SlotComponent::BaseColor(__v) => {
+			Ty::BaseColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PotDecorations(__v) => {
+			Ty::PotDecorations(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Container(__v) => {
+			Ty::Container(super::array::inline_365::view(__v))
+		}
+		super::super::SlotComponent::BlockState(__v) => {
+			Ty::BlockState(super::array::inline_120::view(__v))
+		}
+		super::super::SlotComponent::Bees(__v) => Ty::Bees(super::array::inline_121::view(__v)),
+		super::super::SlotComponent::Lock(__v) => Ty::Lock(super::anonymous_nbt::view(__v)),
+		super::super::SlotComponent::ContainerLoot(__v) => {
+			Ty::ContainerLoot(super::anonymous_nbt::view(__v))
+		}
+		super::super::SlotComponent::DamageType(__v) => {
+			Ty::DamageType(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::BreakSound(__v) => {
+			Ty::BreakSound(super::item_sound_holder::view(__v))
+		}
+		super::super::SlotComponent::VillagerVariant(__v) => {
+			Ty::VillagerVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfVariant(__v) => {
+			Ty::WolfVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfSoundVariant(__v) => {
+			Ty::WolfSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfCollar(__v) => {
+			Ty::WolfCollar(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::FoxVariant(__v) => {
+			Ty::FoxVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SalmonSize(__v) => {
+			Ty::SalmonSize(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ParrotVariant(__v) => {
+			Ty::ParrotVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::TropicalFishPattern(__v) => {
+			Ty::TropicalFishPattern(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::TropicalFishBaseColor(__v) => {
+			Ty::TropicalFishBaseColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ItemName(__v) => Ty::ItemName(super::anonymous_nbt::view(__v)),
+		super::super::SlotComponent::TropicalFishPatternColor(__v) => {
+			Ty::TropicalFishPatternColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MooshroomVariant(__v) => {
+			Ty::MooshroomVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::RabbitVariant(__v) => {
+			Ty::RabbitVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PigVariant(__v) => {
+			Ty::PigVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PigSoundVariant(__v) => {
+			Ty::PigSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CowVariant(__v) => {
+			Ty::CowVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CowSoundVariant(__v) => {
+			Ty::CowSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChickenVariant(__v) => {
+			Ty::ChickenVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChickenSoundVariant(__v) => {
+			Ty::ChickenSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ZombieNautilusVariant(__v) => {
+			Ty::ZombieNautilusVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent::CustomData(__v) => Ty::CustomData(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::MaxStackSize(__v) => Ty::MaxStackSize(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ItemModel(__v) => Ty::ItemModel(super::pstring_96::view(__v)),
-        super::super::SlotComponent::FrogVariant(__v) => Ty::FrogVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::HorseVariant(__v) => Ty::HorseVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PaintingVariant(__v) => Ty::PaintingVariant(super::slot_component_27::into_view(__v)),
-        super::super::SlotComponent::LlamaVariant(__v) => Ty::LlamaVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AxolotlVariant(__v) => Ty::AxolotlVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatVariant(__v) => Ty::CatVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatSoundVariant(__v) => Ty::CatSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CatCollar(__v) => Ty::CatCollar(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SheepColor(__v) => Ty::SheepColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ShulkerColor(__v) => Ty::ShulkerColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Lore(__v) => Ty::Lore(super::array::inline_45::into_view(__v)),
-        super::super::SlotComponent::Rarity(__v) => Ty::Rarity(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Enchantments(__v) => Ty::Enchantments(::core::mem::take(__v)),
-        super::super::SlotComponent::CanPlaceOn(__v) => Ty::CanPlaceOn(super::array::inline_30::into_view(__v)),
-        super::super::SlotComponent::CanBreak(__v) => Ty::CanBreak(super::array::inline_30::into_view(__v)),
-        super::super::SlotComponent::AttributeModifiers(__v) => Ty::AttributeModifiers(super::array::inline_115::into_view(__v)),
-        super::super::SlotComponent::CustomModelData(__v) => Ty::CustomModelData(super::slot_component_34::into_view(__v)),
-        super::super::SlotComponent::TooltipDisplay(__v) => Ty::TooltipDisplay(super::slot_component_35::into_view(__v)),
-        super::super::SlotComponent::RepairCost(__v) => Ty::RepairCost(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MaxDamage(__v) => Ty::MaxDamage(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CreativeSlotLock => Ty::CreativeSlotLock,
-        super::super::SlotComponent::EnchantmentGlintOverride(__v) => Ty::EnchantmentGlintOverride(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::IntangibleProjectile(__v) => Ty::IntangibleProjectile(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::Food(__v) => Ty::Food(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Consumable(__v) => Ty::Consumable(super::slot_component_38::into_view(__v)),
-        super::super::SlotComponent::UseRemainder(__v) => Ty::UseRemainder(super::item_stack_template::into_view(__v)),
-        super::super::SlotComponent::UseCooldown(__v) => Ty::UseCooldown(super::slot_component_39::view(__v)),
-        super::super::SlotComponent::DamageResistant(__v) => Ty::DamageResistant(super::id_set::into_view(__v)),
-        super::super::SlotComponent::Tool(__v) => Ty::Tool(super::slot_component_41::into_view(__v)),
-        super::super::SlotComponent::Weapon(__v) => Ty::Weapon(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Damage(__v) => Ty::Damage(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AttackRange(__v) => Ty::AttackRange(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Enchantable(__v) => Ty::Enchantable(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Equippable(__v) => Ty::Equippable(super::slot_component_45::into_view(__v)),
-        super::super::SlotComponent::Repairable(__v) => Ty::Repairable(super::id_set::into_view(__v)),
-        super::super::SlotComponent::Glider => Ty::Glider,
-        super::super::SlotComponent::TooltipStyle(__v) => Ty::TooltipStyle(super::pstring_96::view(__v)),
-        super::super::SlotComponent::DeathProtection(__v) => Ty::DeathProtection(super::array::inline_33::into_view(__v)),
-        super::super::SlotComponent::BlocksAttacks(__v) => Ty::BlocksAttacks(super::slot_component_48::into_view(__v)),
-        super::super::SlotComponent::PiercingWeapon(__v) => Ty::PiercingWeapon(super::slot_component_49::view(__v)),
-        super::super::SlotComponent::KineticWeapon(__v) => Ty::KineticWeapon(super::slot_component_50::view(__v)),
-        super::super::SlotComponent::Unbreakable => Ty::Unbreakable,
-        super::super::SlotComponent::SwingAnimation(__v) => Ty::SwingAnimation(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::AdditionalTradeCost(__v) => Ty::AdditionalTradeCost(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::StoredEnchantments(__v) => Ty::StoredEnchantments(::core::mem::take(__v)),
-        super::super::SlotComponent::Dye(__v) => Ty::Dye(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::DyedColor(__v) => Ty::DyedColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapColor(__v) => Ty::MapColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapId(__v) => Ty::MapId(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MapDecorations(__v) => Ty::MapDecorations(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::MapPostProcessing(__v) => Ty::MapPostProcessing(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChargedProjectiles(__v) => Ty::ChargedProjectiles(super::array::inline_36::into_view(__v)),
-        super::super::SlotComponent::UseEffects(__v) => Ty::UseEffects(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::BundleContents(__v) => Ty::BundleContents(super::array::inline_36::into_view(__v)),
-        super::super::SlotComponent::PotionContents(__v) => Ty::PotionContents(super::slot_component_55::into_view(__v)),
-        super::super::SlotComponent::PotionDurationScale(__v) => Ty::PotionDurationScale(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SuspiciousStewEffects(__v) => Ty::SuspiciousStewEffects(::core::mem::take(__v)),
-        super::super::SlotComponent::WritableBookContent(__v) => Ty::WritableBookContent(super::array::inline_32::view(__v)),
-        super::super::SlotComponent::WrittenBookContent(__v) => Ty::WrittenBookContent(super::slot_component_57::into_view(__v)),
-        super::super::SlotComponent::Trim(__v) => Ty::Trim(super::slot_component_60::into_view(__v)),
-        super::super::SlotComponent::DebugStickState(__v) => Ty::DebugStickState(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::EntityData(__v) => Ty::EntityData(super::slot_component_61::into_view(__v)),
-        super::super::SlotComponent::BucketEntityData(__v) => Ty::BucketEntityData(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::CustomName(__v) => Ty::CustomName(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::BlockEntityData(__v) => Ty::BlockEntityData(super::slot_component_62::into_view(__v)),
-        super::super::SlotComponent::Instrument(__v) => Ty::Instrument(super::slot_component_63::into_view(__v)),
-        super::super::SlotComponent::ProvidesTrimMaterial(__v) => Ty::ProvidesTrimMaterial(super::slot_component_64::into_view(__v)),
-        super::super::SlotComponent::OminousBottleAmplifier(__v) => Ty::OminousBottleAmplifier(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::JukeboxPlayable(__v) => Ty::JukeboxPlayable(super::slot_component_65::into_view(__v)),
-        super::super::SlotComponent::ProvidesBannerPatterns(__v) => Ty::ProvidesBannerPatterns(super::id_set::into_view(__v)),
-        super::super::SlotComponent::Recipes(__v) => Ty::Recipes(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::LodestoneTracker(__v) => Ty::LodestoneTracker(super::slot_component_66::view(__v)),
-        super::super::SlotComponent::FireworkExplosion(__v) => Ty::FireworkExplosion(super::item_firework_explosion::into_view(__v)),
-        super::super::SlotComponent::Fireworks(__v) => Ty::Fireworks(super::slot_component_67::into_view(__v)),
-        super::super::SlotComponent::MinimumAttackCharge(__v) => Ty::MinimumAttackCharge(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Profile(__v) => Ty::Profile(super::resolvable_profile::into_view(__v)),
-        super::super::SlotComponent::NoteBlockSound(__v) => Ty::NoteBlockSound(super::pstring_96::view(__v)),
-        super::super::SlotComponent::BannerPatterns(__v) => Ty::BannerPatterns(super::array::inline_24::view(__v)),
-        super::super::SlotComponent::BaseColor(__v) => Ty::BaseColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PotDecorations(__v) => Ty::PotDecorations(::core::mem::take(__v)),
-        super::super::SlotComponent::Container(__v) => Ty::Container(super::array::inline_365::into_view(__v)),
-        super::super::SlotComponent::BlockState(__v) => Ty::BlockState(super::array::inline_120::view(__v)),
-        super::super::SlotComponent::Bees(__v) => Ty::Bees(super::array::inline_121::into_view(__v)),
-        super::super::SlotComponent::Lock(__v) => Ty::Lock(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::ContainerLoot(__v) => Ty::ContainerLoot(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::DamageType(__v) => Ty::DamageType(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::BreakSound(__v) => Ty::BreakSound(super::item_sound_holder::view(__v)),
-        super::super::SlotComponent::VillagerVariant(__v) => Ty::VillagerVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfVariant(__v) => Ty::WolfVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfSoundVariant(__v) => Ty::WolfSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::WolfCollar(__v) => Ty::WolfCollar(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::FoxVariant(__v) => Ty::FoxVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::SalmonSize(__v) => Ty::SalmonSize(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ParrotVariant(__v) => Ty::ParrotVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::TropicalFishPattern(__v) => Ty::TropicalFishPattern(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::TropicalFishBaseColor(__v) => Ty::TropicalFishBaseColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ItemName(__v) => Ty::ItemName(super::anonymous_nbt::into_view(__v)),
-        super::super::SlotComponent::TropicalFishPatternColor(__v) => Ty::TropicalFishPatternColor(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::MooshroomVariant(__v) => Ty::MooshroomVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::RabbitVariant(__v) => Ty::RabbitVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PigVariant(__v) => Ty::PigVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::PigSoundVariant(__v) => Ty::PigSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CowVariant(__v) => Ty::CowVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::CowSoundVariant(__v) => Ty::CowSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChickenVariant(__v) => Ty::ChickenVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ChickenSoundVariant(__v) => Ty::ChickenSoundVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::ZombieNautilusVariant(__v) => Ty::ZombieNautilusVariant(::core::clone::Clone::clone(__v)),
-        super::super::SlotComponent::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent) -> Ty<'i> {
+	match _0 {
+		super::super::SlotComponent::CustomData(__v) => {
+			Ty::CustomData(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::MaxStackSize(__v) => {
+			Ty::MaxStackSize(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ItemModel(__v) => Ty::ItemModel(super::pstring_96::view(__v)),
+		super::super::SlotComponent::FrogVariant(__v) => {
+			Ty::FrogVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::HorseVariant(__v) => {
+			Ty::HorseVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PaintingVariant(__v) => {
+			Ty::PaintingVariant(super::slot_component_27::into_view(__v))
+		}
+		super::super::SlotComponent::LlamaVariant(__v) => {
+			Ty::LlamaVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::AxolotlVariant(__v) => {
+			Ty::AxolotlVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatVariant(__v) => {
+			Ty::CatVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatSoundVariant(__v) => {
+			Ty::CatSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CatCollar(__v) => {
+			Ty::CatCollar(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SheepColor(__v) => {
+			Ty::SheepColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ShulkerColor(__v) => {
+			Ty::ShulkerColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Lore(__v) => Ty::Lore(super::array::inline_45::into_view(__v)),
+		super::super::SlotComponent::Rarity(__v) => Ty::Rarity(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Enchantments(__v) => Ty::Enchantments(::core::mem::take(__v)),
+		super::super::SlotComponent::CanPlaceOn(__v) => {
+			Ty::CanPlaceOn(super::array::inline_30::into_view(__v))
+		}
+		super::super::SlotComponent::CanBreak(__v) => {
+			Ty::CanBreak(super::array::inline_30::into_view(__v))
+		}
+		super::super::SlotComponent::AttributeModifiers(__v) => {
+			Ty::AttributeModifiers(super::array::inline_115::into_view(__v))
+		}
+		super::super::SlotComponent::CustomModelData(__v) => {
+			Ty::CustomModelData(super::slot_component_34::into_view(__v))
+		}
+		super::super::SlotComponent::TooltipDisplay(__v) => {
+			Ty::TooltipDisplay(super::slot_component_35::into_view(__v))
+		}
+		super::super::SlotComponent::RepairCost(__v) => {
+			Ty::RepairCost(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MaxDamage(__v) => {
+			Ty::MaxDamage(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CreativeSlotLock => Ty::CreativeSlotLock,
+		super::super::SlotComponent::EnchantmentGlintOverride(__v) => {
+			Ty::EnchantmentGlintOverride(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::IntangibleProjectile(__v) => {
+			Ty::IntangibleProjectile(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::Food(__v) => Ty::Food(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Consumable(__v) => {
+			Ty::Consumable(super::slot_component_38::into_view(__v))
+		}
+		super::super::SlotComponent::UseRemainder(__v) => {
+			Ty::UseRemainder(super::item_stack_template::into_view(__v))
+		}
+		super::super::SlotComponent::UseCooldown(__v) => {
+			Ty::UseCooldown(super::slot_component_39::view(__v))
+		}
+		super::super::SlotComponent::DamageResistant(__v) => {
+			Ty::DamageResistant(super::id_set::into_view(__v))
+		}
+		super::super::SlotComponent::Tool(__v) => {
+			Ty::Tool(super::slot_component_41::into_view(__v))
+		}
+		super::super::SlotComponent::Weapon(__v) => Ty::Weapon(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::Damage(__v) => Ty::Damage(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::AttackRange(__v) => {
+			Ty::AttackRange(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Enchantable(__v) => {
+			Ty::Enchantable(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Equippable(__v) => {
+			Ty::Equippable(super::slot_component_45::into_view(__v))
+		}
+		super::super::SlotComponent::Repairable(__v) => {
+			Ty::Repairable(super::id_set::into_view(__v))
+		}
+		super::super::SlotComponent::Glider => Ty::Glider,
+		super::super::SlotComponent::TooltipStyle(__v) => {
+			Ty::TooltipStyle(super::pstring_96::view(__v))
+		}
+		super::super::SlotComponent::DeathProtection(__v) => {
+			Ty::DeathProtection(super::array::inline_33::into_view(__v))
+		}
+		super::super::SlotComponent::BlocksAttacks(__v) => {
+			Ty::BlocksAttacks(super::slot_component_48::into_view(__v))
+		}
+		super::super::SlotComponent::PiercingWeapon(__v) => {
+			Ty::PiercingWeapon(super::slot_component_49::view(__v))
+		}
+		super::super::SlotComponent::KineticWeapon(__v) => {
+			Ty::KineticWeapon(super::slot_component_50::view(__v))
+		}
+		super::super::SlotComponent::Unbreakable => Ty::Unbreakable,
+		super::super::SlotComponent::SwingAnimation(__v) => {
+			Ty::SwingAnimation(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::AdditionalTradeCost(__v) => {
+			Ty::AdditionalTradeCost(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::StoredEnchantments(__v) => {
+			Ty::StoredEnchantments(::core::mem::take(__v))
+		}
+		super::super::SlotComponent::Dye(__v) => Ty::Dye(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::DyedColor(__v) => {
+			Ty::DyedColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MapColor(__v) => {
+			Ty::MapColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MapId(__v) => Ty::MapId(::core::clone::Clone::clone(__v)),
+		super::super::SlotComponent::MapDecorations(__v) => {
+			Ty::MapDecorations(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::MapPostProcessing(__v) => {
+			Ty::MapPostProcessing(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChargedProjectiles(__v) => {
+			Ty::ChargedProjectiles(super::array::inline_36::into_view(__v))
+		}
+		super::super::SlotComponent::UseEffects(__v) => {
+			Ty::UseEffects(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::BundleContents(__v) => {
+			Ty::BundleContents(super::array::inline_36::into_view(__v))
+		}
+		super::super::SlotComponent::PotionContents(__v) => {
+			Ty::PotionContents(super::slot_component_55::into_view(__v))
+		}
+		super::super::SlotComponent::PotionDurationScale(__v) => {
+			Ty::PotionDurationScale(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SuspiciousStewEffects(__v) => {
+			Ty::SuspiciousStewEffects(::core::mem::take(__v))
+		}
+		super::super::SlotComponent::WritableBookContent(__v) => {
+			Ty::WritableBookContent(super::array::inline_32::view(__v))
+		}
+		super::super::SlotComponent::WrittenBookContent(__v) => {
+			Ty::WrittenBookContent(super::slot_component_57::into_view(__v))
+		}
+		super::super::SlotComponent::Trim(__v) => {
+			Ty::Trim(super::slot_component_60::into_view(__v))
+		}
+		super::super::SlotComponent::DebugStickState(__v) => {
+			Ty::DebugStickState(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::EntityData(__v) => {
+			Ty::EntityData(super::slot_component_61::into_view(__v))
+		}
+		super::super::SlotComponent::BucketEntityData(__v) => {
+			Ty::BucketEntityData(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::CustomName(__v) => {
+			Ty::CustomName(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::BlockEntityData(__v) => {
+			Ty::BlockEntityData(super::slot_component_62::into_view(__v))
+		}
+		super::super::SlotComponent::Instrument(__v) => {
+			Ty::Instrument(super::slot_component_63::into_view(__v))
+		}
+		super::super::SlotComponent::ProvidesTrimMaterial(__v) => {
+			Ty::ProvidesTrimMaterial(super::slot_component_64::into_view(__v))
+		}
+		super::super::SlotComponent::OminousBottleAmplifier(__v) => {
+			Ty::OminousBottleAmplifier(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::JukeboxPlayable(__v) => {
+			Ty::JukeboxPlayable(super::slot_component_65::into_view(__v))
+		}
+		super::super::SlotComponent::ProvidesBannerPatterns(__v) => {
+			Ty::ProvidesBannerPatterns(super::id_set::into_view(__v))
+		}
+		super::super::SlotComponent::Recipes(__v) => {
+			Ty::Recipes(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::LodestoneTracker(__v) => {
+			Ty::LodestoneTracker(super::slot_component_66::view(__v))
+		}
+		super::super::SlotComponent::FireworkExplosion(__v) => {
+			Ty::FireworkExplosion(super::item_firework_explosion::into_view(__v))
+		}
+		super::super::SlotComponent::Fireworks(__v) => {
+			Ty::Fireworks(super::slot_component_67::into_view(__v))
+		}
+		super::super::SlotComponent::MinimumAttackCharge(__v) => {
+			Ty::MinimumAttackCharge(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Profile(__v) => {
+			Ty::Profile(super::resolvable_profile::into_view(__v))
+		}
+		super::super::SlotComponent::NoteBlockSound(__v) => {
+			Ty::NoteBlockSound(super::pstring_96::view(__v))
+		}
+		super::super::SlotComponent::BannerPatterns(__v) => {
+			Ty::BannerPatterns(super::array::inline_24::view(__v))
+		}
+		super::super::SlotComponent::BaseColor(__v) => {
+			Ty::BaseColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PotDecorations(__v) => {
+			Ty::PotDecorations(::core::mem::take(__v))
+		}
+		super::super::SlotComponent::Container(__v) => {
+			Ty::Container(super::array::inline_365::into_view(__v))
+		}
+		super::super::SlotComponent::BlockState(__v) => {
+			Ty::BlockState(super::array::inline_120::view(__v))
+		}
+		super::super::SlotComponent::Bees(__v) => {
+			Ty::Bees(super::array::inline_121::into_view(__v))
+		}
+		super::super::SlotComponent::Lock(__v) => Ty::Lock(super::anonymous_nbt::into_view(__v)),
+		super::super::SlotComponent::ContainerLoot(__v) => {
+			Ty::ContainerLoot(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::DamageType(__v) => {
+			Ty::DamageType(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::BreakSound(__v) => {
+			Ty::BreakSound(super::item_sound_holder::view(__v))
+		}
+		super::super::SlotComponent::VillagerVariant(__v) => {
+			Ty::VillagerVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfVariant(__v) => {
+			Ty::WolfVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfSoundVariant(__v) => {
+			Ty::WolfSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::WolfCollar(__v) => {
+			Ty::WolfCollar(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::FoxVariant(__v) => {
+			Ty::FoxVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::SalmonSize(__v) => {
+			Ty::SalmonSize(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ParrotVariant(__v) => {
+			Ty::ParrotVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::TropicalFishPattern(__v) => {
+			Ty::TropicalFishPattern(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::TropicalFishBaseColor(__v) => {
+			Ty::TropicalFishBaseColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ItemName(__v) => {
+			Ty::ItemName(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::SlotComponent::TropicalFishPatternColor(__v) => {
+			Ty::TropicalFishPatternColor(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::MooshroomVariant(__v) => {
+			Ty::MooshroomVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::RabbitVariant(__v) => {
+			Ty::RabbitVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PigVariant(__v) => {
+			Ty::PigVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::PigSoundVariant(__v) => {
+			Ty::PigSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CowVariant(__v) => {
+			Ty::CowVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::CowSoundVariant(__v) => {
+			Ty::CowSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChickenVariant(__v) => {
+			Ty::ChickenVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ChickenSoundVariant(__v) => {
+			Ty::ChickenSoundVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::ZombieNautilusVariant(__v) => {
+			Ty::ZombieNautilusVariant(::core::clone::Clone::clone(__v))
+		}
+		super::super::SlotComponent::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
+	}
 }
- pub type Ty<'i> = SlotComponent<'i>;
+pub type Ty<'i> = SlotComponent<'i>;

@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardObjective {
-    pub name: super::super::super::super::String16,
-    pub display_text: super::super::super::super::String16,
-    pub action: super::super::super::super::I8,
+	pub name: super::super::super::super::String16,
+	pub display_text: super::super::super::super::String16,
+	pub action: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::string16::serialize(
-        &_0.display_text,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.action,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.name, output)?;
+	super::super::super::super::string16::serialize(&_0.display_text, output)?;
+	super::super::super::super::i8::serialize(&_0.action, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_name = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_displayText = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_action = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,display_text: f_displayText,action: f_action
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_name = super::super::super::super::string16::deserialize(input)?;
+	let f_displayText = super::super::super::super::string16::deserialize(input)?;
+	let f_action = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		display_text: f_displayText,
+		action: f_action,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.name
-    )
-    + super::super::super::super::string16::size_of(
-        &_0.display_text
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.action
-    )
+	0 + super::super::super::super::string16::size_of(&_0.name)
+		+ super::super::super::super::string16::size_of(&_0.display_text)
+		+ super::super::super::super::i8::size_of(&_0.action)
 }
- pub type Ty = PacketScoreboardObjective;
+pub type Ty = PacketScoreboardObjective;

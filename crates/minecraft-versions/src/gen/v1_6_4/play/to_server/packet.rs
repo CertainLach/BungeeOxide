@@ -3,13 +3,11 @@ use crate::pds::{Input, Output, Result};
 
 pub type Ty = super::super::super::super::v1_6_1::play::to_server::Packet;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::v1_6_1::play::to_server::packet::serialize(_0, output)
+	super::super::super::super::v1_6_1::play::to_server::packet::serialize(_0, output)
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-    super::super::super::super::v1_6_1::play::to_server::packet::deserialize(
-        input,
-    )
+	super::super::super::super::v1_6_1::play::to_server::packet::deserialize(input)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::v1_6_1::play::to_server::packet::size_of(_0)
+	super::super::super::super::v1_6_1::play::to_server::packet::size_of(_0)
 }

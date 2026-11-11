@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes12 {
-    pub name: String,
-    pub items: Vec<super::super::super::super::Varint>,
+	pub name: String,
+	pub items: Vec<super::super::super::super::Varint>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::array::inline_107::serialize(
-        &_0.items,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::array::inline_107::serialize(&_0.items, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_items = super::super::super::super::array::inline_107::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,items: f_items
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_items = super::super::super::super::array::inline_107::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		items: f_items,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::array::inline_107::size_of(
-        &_0.items
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::array::inline_107::size_of(&_0.items)
 }
- pub type Ty = PacketDeclareRecipes12;
+pub type Ty = PacketDeclareRecipes12;

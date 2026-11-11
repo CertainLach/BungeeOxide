@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntityExperienceOrb {
-    pub entity_id: super::super::super::super::I32,
-    pub x: super::super::super::super::I32,
-    pub y: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub count: super::super::super::super::I16,
+	pub entity_id: super::super::super::super::I32,
+	pub x: super::super::super::super::I32,
+	pub y: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub count: super::super::super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.count,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.y, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::i16::serialize(&_0.count, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(18)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_count = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,x: f_x,y: f_y,z: f_z,count: f_count
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(18)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_y = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_count = super::super::super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		count: f_count,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.y
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.count
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.y)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::i16::size_of(&_0.count)
 }
- pub type Ty = PacketSpawnEntityExperienceOrb;
+pub type Ty = PacketSpawnEntityExperienceOrb;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements {
-    pub reset: super::super::super::super::Bool,
-    pub advancement_mapping: Vec<super::PacketAdvancements5>,
-    pub identifiers: Vec<String>,
-    pub progress_mapping: Vec<super::PacketAdvancements7>,
+	pub reset: super::super::super::super::Bool,
+	pub advancement_mapping: Vec<super::PacketAdvancements5>,
+	pub identifiers: Vec<String>,
+	pub progress_mapping: Vec<super::PacketAdvancements7>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::bool::serialize(
-        &_0.reset,
-        output,
-    )?;
-    super::super::super::super::array::inline_151::serialize(
-        &_0.advancement_mapping,
-        output,
-    )?;
-    super::super::super::super::array::inline_57::serialize(
-        &_0.identifiers,
-        output,
-    )?;
-    super::super::super::super::array::inline_153::serialize(
-        &_0.progress_mapping,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::bool::serialize(&_0.reset, output)?;
+	super::super::super::super::array::inline_151::serialize(&_0.advancement_mapping, output)?;
+	super::super::super::super::array::inline_57::serialize(&_0.identifiers, output)?;
+	super::super::super::super::array::inline_153::serialize(&_0.progress_mapping, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_reset = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_advancementMapping = super::super::super::super::array::inline_151::deserialize(
-        input,
-    )?;
-    let f_identifiers = super::super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_progressMapping = super::super::super::super::array::inline_153::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        reset: f_reset,advancement_mapping: f_advancementMapping,identifiers: f_identifiers,progress_mapping: f_progressMapping
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_reset = super::super::super::super::bool::deserialize(input)?;
+	let f_advancementMapping = super::super::super::super::array::inline_151::deserialize(input)?;
+	let f_identifiers = super::super::super::super::array::inline_57::deserialize(input)?;
+	let f_progressMapping = super::super::super::super::array::inline_153::deserialize(input)?;
+	Ok(Ty {
+		reset: f_reset,
+		advancement_mapping: f_advancementMapping,
+		identifiers: f_identifiers,
+		progress_mapping: f_progressMapping,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::bool::size_of(
-        &_0.reset
-    )
-    + super::super::super::super::array::inline_151::size_of(
-        &_0.advancement_mapping
-    )
-    + super::super::super::super::array::inline_57::size_of(
-        &_0.identifiers
-    )
-    + super::super::super::super::array::inline_153::size_of(
-        &_0.progress_mapping
-    )
+	0 + super::super::super::super::bool::size_of(&_0.reset)
+		+ super::super::super::super::array::inline_151::size_of(&_0.advancement_mapping)
+		+ super::super::super::super::array::inline_57::size_of(&_0.identifiers)
+		+ super::super::super::super::array::inline_153::size_of(&_0.progress_mapping)
 }
- pub type Ty = PacketAdvancements;
+pub type Ty = PacketAdvancements;

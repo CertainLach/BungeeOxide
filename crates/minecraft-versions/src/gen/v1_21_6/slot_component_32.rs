@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent32 {
-    pub material: super::SlotComponent30,
-    pub pattern: super::SlotComponent31,
+	pub material: super::SlotComponent30,
+	pub pattern: super::SlotComponent31,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_component_30::serialize(
-        &_0.material,
-        output,
-    )?;
-    super::slot_component_31::serialize(
-        &_0.pattern,
-        output,
-    )?;
-    Ok(())
+	super::slot_component_30::serialize(&_0.material, output)?;
+	super::slot_component_31::serialize(&_0.pattern, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_material = super::slot_component_30::deserialize(
-        input,
-    )?;
-    let f_pattern = super::slot_component_31::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        material: f_material,pattern: f_pattern
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_material = super::slot_component_30::deserialize(input)?;
+	let f_pattern = super::slot_component_31::deserialize(input)?;
+	Ok(Ty {
+		material: f_material,
+		pattern: f_pattern,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_component_30::size_of(
-        &_0.material
-    )
-    + super::slot_component_31::size_of(
-        &_0.pattern
-    )
+	0 + super::slot_component_30::size_of(&_0.material)
+		+ super::slot_component_31::size_of(&_0.pattern)
 }
- pub type Ty = SlotComponent32;
+pub type Ty = SlotComponent32;

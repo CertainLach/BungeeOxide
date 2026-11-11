@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMultiBlockChange3 {
-    pub horizontal_pos: super::super::super::super::U8,
-    pub y: super::super::super::super::U8,
-    pub block_id: super::super::super::super::Varint,
+	pub horizontal_pos: super::super::super::super::U8,
+	pub y: super::super::super::super::U8,
+	pub block_id: super::super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::u8::serialize(
-        &_0.horizontal_pos,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.block_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::u8::serialize(&_0.horizontal_pos, output)?;
+	super::super::super::super::u8::serialize(&_0.y, output)?;
+	super::super::super::super::varint::serialize(&_0.block_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_horizontalPos = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_blockId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        horizontal_pos: f_horizontalPos,y: f_y,block_id: f_blockId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_horizontalPos = super::super::super::super::u8::deserialize(input)?;
+	let f_y = super::super::super::super::u8::deserialize(input)?;
+	let f_blockId = super::super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		horizontal_pos: f_horizontalPos,
+		y: f_y,
+		block_id: f_blockId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::u8::size_of(
-        &_0.horizontal_pos
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.y
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.block_id
-    )
+	0 + super::super::super::super::u8::size_of(&_0.horizontal_pos)
+		+ super::super::super::super::u8::size_of(&_0.y)
+		+ super::super::super::super::varint::size_of(&_0.block_id)
 }
- pub type Ty = PacketMultiBlockChange3;
+pub type Ty = PacketMultiBlockChange3;

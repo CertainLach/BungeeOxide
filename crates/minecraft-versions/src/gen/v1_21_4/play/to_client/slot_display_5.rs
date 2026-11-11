@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotDisplay5 {
-    pub input: super::SlotDisplay,
-    pub remainder: super::SlotDisplay,
+	pub input: super::SlotDisplay,
+	pub remainder: super::SlotDisplay,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_display::serialize_guarded(
-        &_0.input,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.remainder,
-        output,
-    )?;
-    Ok(())
+	super::slot_display::serialize_guarded(&_0.input, output)?;
+	super::slot_display::serialize_guarded(&_0.remainder, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_input = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_remainder = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        input: f_input,remainder: f_remainder
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_input = super::slot_display::deserialize_guarded(input)?;
+	let f_remainder = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		input: f_input,
+		remainder: f_remainder,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_display::size_of(
-        &_0.input
-    )
-    + super::slot_display::size_of(
-        &_0.remainder
-    )
+	0 + super::slot_display::size_of(&_0.input) + super::slot_display::size_of(&_0.remainder)
 }
- pub type Ty = SlotDisplay5;
+pub type Ty = SlotDisplay5;

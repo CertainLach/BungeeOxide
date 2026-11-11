@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent53 {
-    pub can_sprint: super::Bool,
-    pub interact_vibrations: super::Bool,
-    pub speed_multiplier: super::F32,
+	pub can_sprint: super::Bool,
+	pub interact_vibrations: super::Bool,
+	pub speed_multiplier: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(
-        &_0.can_sprint,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.interact_vibrations,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.speed_multiplier,
-        output,
-    )?;
-    Ok(())
+	super::bool::serialize(&_0.can_sprint, output)?;
+	super::bool::serialize(&_0.interact_vibrations, output)?;
+	super::f32::serialize(&_0.speed_multiplier, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_can_sprint = super::bool::deserialize(
-        input,
-    )?;
-    let f_interact_vibrations = super::bool::deserialize(
-        input,
-    )?;
-    let f_speed_multiplier = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        can_sprint: f_can_sprint,interact_vibrations: f_interact_vibrations,speed_multiplier: f_speed_multiplier
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_can_sprint = super::bool::deserialize(input)?;
+	let f_interact_vibrations = super::bool::deserialize(input)?;
+	let f_speed_multiplier = super::f32::deserialize(input)?;
+	Ok(Ty {
+		can_sprint: f_can_sprint,
+		interact_vibrations: f_interact_vibrations,
+		speed_multiplier: f_speed_multiplier,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::bool::size_of(
-        &_0.can_sprint
-    )
-    + super::bool::size_of(
-        &_0.interact_vibrations
-    )
-    + super::f32::size_of(
-        &_0.speed_multiplier
-    )
+	0 + super::bool::size_of(&_0.can_sprint)
+		+ super::bool::size_of(&_0.interact_vibrations)
+		+ super::f32::size_of(&_0.speed_multiplier)
 }
- pub type Ty = SlotComponent53;
+pub type Ty = SlotComponent53;

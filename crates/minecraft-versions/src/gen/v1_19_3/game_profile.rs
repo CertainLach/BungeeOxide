@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameProfile {
-    pub name: String,
-    pub properties: Vec<super::GameProfile27>,
+	pub name: String,
+	pub properties: Vec<super::GameProfile27>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::array::inline_183::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::array::inline_183::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_name = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::array::inline_183::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,properties: f_properties
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_name = super::super::pstring_96::deserialize(input)?;
+	let f_properties = super::super::array::inline_183::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		properties: f_properties,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::array::inline_183::size_of(
-        &_0.properties
-    )
+	0 + super::super::pstring_96::size_of(&_0.name)
+		+ super::super::array::inline_183::size_of(&_0.properties)
 }
- pub type Ty = GameProfile;
+pub type Ty = GameProfile;

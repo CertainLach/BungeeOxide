@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRespawn {
-    pub world_state: super::SpawnInfo,
-    pub copy_metadata: super::super::super::super::U8,
+	pub world_state: super::SpawnInfo,
+	pub copy_metadata: super::super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::spawn_info::serialize(
-        &_0.world_state,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.copy_metadata,
-        output,
-    )?;
-    Ok(())
+	super::spawn_info::serialize(&_0.world_state, output)?;
+	super::super::super::super::u8::serialize(&_0.copy_metadata, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(17)?;
-    let f_worldState = super::spawn_info::deserialize(
-        input,
-    )?;
-    let f_copyMetadata = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        world_state: f_worldState,copy_metadata: f_copyMetadata
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(17)?;
+	let f_worldState = super::spawn_info::deserialize(input)?;
+	let f_copyMetadata = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		world_state: f_worldState,
+		copy_metadata: f_copyMetadata,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::spawn_info::size_of(
-        &_0.world_state
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.copy_metadata
-    )
+	0 + super::spawn_info::size_of(&_0.world_state)
+		+ super::super::super::super::u8::size_of(&_0.copy_metadata)
 }
- pub type Ty = PacketRespawn;
+pub type Ty = PacketRespawn;

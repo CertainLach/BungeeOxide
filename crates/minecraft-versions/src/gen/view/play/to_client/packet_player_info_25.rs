@@ -2,51 +2,57 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub action_initialize_chat: &'a super::super::super::super::Bool,
+	pub action_initialize_chat: &'a super::super::super::super::Bool,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketPlayerInfo25<'i> {
-    True(super::super::super::Option36::<'i>),
-    Default(super::super::super::super::Bool),
+	True(super::super::super::Option36<'i>),
+	Default(super::super::super::super::Bool),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::True(__v) => super::super::super::option_36::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::True(__v) => super::super::super::option_36::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
-    let __tag = args.action_initialize_chat;
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::super::super::option_36::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
+	let __tag = args.action_initialize_chat;
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::super::super::option_36::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0 + match _0 {
-        Ty::True(__v) => super::super::super::option_36::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::True(__v) => super::super::super::option_36::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::True(_) => "true",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::True(_) => "true",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &super::super::super::super::Bool) {
-    debug_assert!(
-        match _0 {
-            Ty::True(_) => (__tag.clone() == true),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::True(_) => (__tag.clone() == true),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerInfo25) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::play::to_client::PacketPlayerInfo25::True(__v) => Ty::True(super::super::super::option_36::view(__v)),
-        super::super::super::super::play::to_client::PacketPlayerInfo25::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::super::super::play::to_client::PacketPlayerInfo25::True(__v) => {
+			Ty::True(super::super::super::option_36::view(__v))
+		}
+		super::super::super::super::play::to_client::PacketPlayerInfo25::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = PacketPlayerInfo25<'i>;
+pub type Ty<'i> = PacketPlayerInfo25<'i>;

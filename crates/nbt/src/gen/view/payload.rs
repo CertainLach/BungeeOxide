@@ -2,168 +2,174 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub r#type: &'a super::super::U8,
+	pub r#type: &'a super::super::U8,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum Payload<'i> {
-    End,
-    Byte(super::super::I8),
-    Short(super::super::I16),
-    Int(super::super::I32),
-    Long(super::super::I64),
-    Float(super::super::F32),
-    Double(super::super::F64),
-    ByteArray(super::array::Inline7::<'i>),
-    String(super::String::<'i>),
-    List(super::List::<'i>),
-    Compound(super::Compound::<'i>),
-    IntArray(super::super::array::Inline5),
-    LongArray(super::super::array::Inline6),
+	End,
+	Byte(super::super::I8),
+	Short(super::super::I16),
+	Int(super::super::I32),
+	Long(super::super::I64),
+	Float(super::super::F32),
+	Double(super::super::F64),
+	ByteArray(super::array::Inline7<'i>),
+	String(super::String<'i>),
+	List(super::List<'i>),
+	Compound(super::Compound<'i>),
+	IntArray(super::super::array::Inline5),
+	LongArray(super::super::array::Inline6),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::End => Ok(()),
-        Ty::Byte(__v) => super::super::i8::serialize(__v, output),
-        Ty::Short(__v) => super::super::i16::serialize(__v, output),
-        Ty::Int(__v) => super::super::i32::serialize(__v, output),
-        Ty::Long(__v) => super::super::i64::serialize(__v, output),
-        Ty::Float(__v) => super::super::f32::serialize(__v, output),
-        Ty::Double(__v) => super::super::f64::serialize(__v, output),
-        Ty::ByteArray(__v) => super::array::inline_7::serialize(__v, output),
-        Ty::String(__v) => super::string::serialize(__v, output),
-        Ty::List(__v) => super::list::serialize_guarded(__v, output),
-        Ty::Compound(__v) => super::compound::serialize_guarded(__v, output),
-        Ty::IntArray(__v) => super::super::array::inline_5::serialize(__v, output),
-        Ty::LongArray(__v) => super::super::array::inline_6::serialize(__v, output),
-    }
+	match _0 {
+		Ty::End => Ok(()),
+		Ty::Byte(__v) => super::super::i8::serialize(__v, output),
+		Ty::Short(__v) => super::super::i16::serialize(__v, output),
+		Ty::Int(__v) => super::super::i32::serialize(__v, output),
+		Ty::Long(__v) => super::super::i64::serialize(__v, output),
+		Ty::Float(__v) => super::super::f32::serialize(__v, output),
+		Ty::Double(__v) => super::super::f64::serialize(__v, output),
+		Ty::ByteArray(__v) => super::array::inline_7::serialize(__v, output),
+		Ty::String(__v) => super::string::serialize(__v, output),
+		Ty::List(__v) => super::list::serialize_guarded(__v, output),
+		Ty::Compound(__v) => super::compound::serialize_guarded(__v, output),
+		Ty::IntArray(__v) => super::super::array::inline_5::serialize(__v, output),
+		Ty::LongArray(__v) => super::super::array::inline_6::serialize(__v, output),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
-    let __tag = args.r#type;
-    if (__tag.clone() == 0_u8) { return Ok(Ty::End); }
-    if (__tag.clone() == 1_u8) {
-        return Ok(Ty::Byte(super::super::i8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_u8) {
-        return Ok(Ty::Short(super::super::i16::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_u8) {
-        return Ok(Ty::Int(super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_u8) {
-        return Ok(Ty::Long(super::super::i64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_u8) {
-        return Ok(Ty::Float(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_u8) {
-        return Ok(Ty::Double(super::super::f64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_u8) {
-        return Ok(Ty::ByteArray(super::array::inline_7::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_u8) {
-        return Ok(Ty::String(super::string::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_u8) {
-        return Ok(Ty::List(super::list::deserialize_guarded(input, )?));
-    }
-    if (__tag.clone() == 10_u8) {
-        return Ok(Ty::Compound(super::compound::deserialize_guarded(input, )?));
-    }
-    if (__tag.clone() == 11_u8) {
-        return Ok(Ty::IntArray(super::super::array::inline_5::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_u8) {
-        return Ok(Ty::LongArray(super::super::array::inline_6::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
+	let __tag = args.r#type;
+	if (__tag.clone() == 0_u8) {
+		return Ok(Ty::End);
+	}
+	if (__tag.clone() == 1_u8) {
+		return Ok(Ty::Byte(super::super::i8::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_u8) {
+		return Ok(Ty::Short(super::super::i16::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_u8) {
+		return Ok(Ty::Int(super::super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 4_u8) {
+		return Ok(Ty::Long(super::super::i64::deserialize(input)?));
+	}
+	if (__tag.clone() == 5_u8) {
+		return Ok(Ty::Float(super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == 6_u8) {
+		return Ok(Ty::Double(super::super::f64::deserialize(input)?));
+	}
+	if (__tag.clone() == 7_u8) {
+		return Ok(Ty::ByteArray(super::array::inline_7::deserialize(input)?));
+	}
+	if (__tag.clone() == 8_u8) {
+		return Ok(Ty::String(super::string::deserialize(input)?));
+	}
+	if (__tag.clone() == 9_u8) {
+		return Ok(Ty::List(super::list::deserialize_guarded(input)?));
+	}
+	if (__tag.clone() == 10_u8) {
+		return Ok(Ty::Compound(super::compound::deserialize_guarded(input)?));
+	}
+	if (__tag.clone() == 11_u8) {
+		return Ok(Ty::IntArray(super::super::array::inline_5::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 12_u8) {
+		return Ok(Ty::LongArray(super::super::array::inline_6::deserialize(
+			input,
+		)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0 + match _0 {
-        Ty::End => 0,
-        Ty::Byte(__v) => super::super::i8::size_of(__v),
-        Ty::Short(__v) => super::super::i16::size_of(__v),
-        Ty::Int(__v) => super::super::i32::size_of(__v),
-        Ty::Long(__v) => super::super::i64::size_of(__v),
-        Ty::Float(__v) => super::super::f32::size_of(__v),
-        Ty::Double(__v) => super::super::f64::size_of(__v),
-        Ty::ByteArray(__v) => super::array::inline_7::size_of(__v),
-        Ty::String(__v) => super::string::size_of(__v),
-        Ty::List(__v) => super::list::size_of(__v),
-        Ty::Compound(__v) => super::compound::size_of(__v),
-        Ty::IntArray(__v) => super::super::array::inline_5::size_of(__v),
-        Ty::LongArray(__v) => super::super::array::inline_6::size_of(__v),
-    }
+	0 + match _0 {
+		Ty::End => 0,
+		Ty::Byte(__v) => super::super::i8::size_of(__v),
+		Ty::Short(__v) => super::super::i16::size_of(__v),
+		Ty::Int(__v) => super::super::i32::size_of(__v),
+		Ty::Long(__v) => super::super::i64::size_of(__v),
+		Ty::Float(__v) => super::super::f32::size_of(__v),
+		Ty::Double(__v) => super::super::f64::size_of(__v),
+		Ty::ByteArray(__v) => super::array::inline_7::size_of(__v),
+		Ty::String(__v) => super::string::size_of(__v),
+		Ty::List(__v) => super::list::size_of(__v),
+		Ty::Compound(__v) => super::compound::size_of(__v),
+		Ty::IntArray(__v) => super::super::array::inline_5::size_of(__v),
+		Ty::LongArray(__v) => super::super::array::inline_6::size_of(__v),
+	}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::End => "end",
-        Ty::Byte(_) => "byte",
-        Ty::Short(_) => "short",
-        Ty::Int(_) => "int",
-        Ty::Long(_) => "long",
-        Ty::Float(_) => "float",
-        Ty::Double(_) => "double",
-        Ty::ByteArray(_) => "byteArray",
-        Ty::String(_) => "string",
-        Ty::List(_) => "list",
-        Ty::Compound(_) => "compound",
-        Ty::IntArray(_) => "intArray",
-        Ty::LongArray(_) => "longArray",
-    }
+	match _0 {
+		Ty::End => "end",
+		Ty::Byte(_) => "byte",
+		Ty::Short(_) => "short",
+		Ty::Int(_) => "int",
+		Ty::Long(_) => "long",
+		Ty::Float(_) => "float",
+		Ty::Double(_) => "double",
+		Ty::ByteArray(_) => "byteArray",
+		Ty::String(_) => "string",
+		Ty::List(_) => "list",
+		Ty::Compound(_) => "compound",
+		Ty::IntArray(_) => "intArray",
+		Ty::LongArray(_) => "longArray",
+	}
 }
 pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &super::super::U8) {
-    debug_assert!(
-        match _0 {
-            Ty::End => (__tag.clone() == 0_u8),
-            Ty::Byte(_) => (__tag.clone() == 1_u8),
-            Ty::Short(_) => (__tag.clone() == 2_u8),
-            Ty::Int(_) => (__tag.clone() == 3_u8),
-            Ty::Long(_) => (__tag.clone() == 4_u8),
-            Ty::Float(_) => (__tag.clone() == 5_u8),
-            Ty::Double(_) => (__tag.clone() == 6_u8),
-            Ty::ByteArray(_) => (__tag.clone() == 7_u8),
-            Ty::String(_) => (__tag.clone() == 8_u8),
-            Ty::List(_) => (__tag.clone() == 9_u8),
-            Ty::Compound(_) => (__tag.clone() == 10_u8),
-            Ty::IntArray(_) => (__tag.clone() == 11_u8),
-            Ty::LongArray(_) => (__tag.clone() == 12_u8),
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::End => (__tag.clone() == 0_u8),
+			Ty::Byte(_) => (__tag.clone() == 1_u8),
+			Ty::Short(_) => (__tag.clone() == 2_u8),
+			Ty::Int(_) => (__tag.clone() == 3_u8),
+			Ty::Long(_) => (__tag.clone() == 4_u8),
+			Ty::Float(_) => (__tag.clone() == 5_u8),
+			Ty::Double(_) => (__tag.clone() == 6_u8),
+			Ty::ByteArray(_) => (__tag.clone() == 7_u8),
+			Ty::String(_) => (__tag.clone() == 8_u8),
+			Ty::List(_) => (__tag.clone() == 9_u8),
+			Ty::Compound(_) => (__tag.clone() == 10_u8),
+			Ty::IntArray(_) => (__tag.clone() == 11_u8),
+			Ty::LongArray(_) => (__tag.clone() == 12_u8),
+		},
+		"union variant does not match its external tag",
+	);
 }
 pub fn view<'i>(_0: &'i super::super::Payload) -> Ty<'i> {
-    match _0 {
-        super::super::Payload::End => Ty::End,
-        super::super::Payload::Byte(__v) => Ty::Byte(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Short(__v) => Ty::Short(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Int(__v) => Ty::Int(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Long(__v) => Ty::Long(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Float(__v) => Ty::Float(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Double(__v) => Ty::Double(::core::clone::Clone::clone(__v)),
-        super::super::Payload::ByteArray(__v) => Ty::ByteArray(super::array::inline_7::view(__v)),
-        super::super::Payload::String(__v) => Ty::String(super::string::view(__v)),
-        super::super::Payload::List(__v) => Ty::List(super::list::view(__v)),
-        super::super::Payload::Compound(__v) => Ty::Compound(super::compound::view(__v)),
-        super::super::Payload::IntArray(__v) => Ty::IntArray(::core::clone::Clone::clone(__v)),
-        super::super::Payload::LongArray(__v) => Ty::LongArray(::core::clone::Clone::clone(__v)),
-    }
+	match _0 {
+		super::super::Payload::End => Ty::End,
+		super::super::Payload::Byte(__v) => Ty::Byte(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Short(__v) => Ty::Short(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Int(__v) => Ty::Int(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Long(__v) => Ty::Long(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Float(__v) => Ty::Float(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Double(__v) => Ty::Double(::core::clone::Clone::clone(__v)),
+		super::super::Payload::ByteArray(__v) => Ty::ByteArray(super::array::inline_7::view(__v)),
+		super::super::Payload::String(__v) => Ty::String(super::string::view(__v)),
+		super::super::Payload::List(__v) => Ty::List(super::list::view(__v)),
+		super::super::Payload::Compound(__v) => Ty::Compound(super::compound::view(__v)),
+		super::super::Payload::IntArray(__v) => Ty::IntArray(::core::clone::Clone::clone(__v)),
+		super::super::Payload::LongArray(__v) => Ty::LongArray(::core::clone::Clone::clone(__v)),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::Payload) -> Ty<'i> {
-    match _0 {
-        super::super::Payload::End => Ty::End,
-        super::super::Payload::Byte(__v) => Ty::Byte(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Short(__v) => Ty::Short(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Int(__v) => Ty::Int(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Long(__v) => Ty::Long(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Float(__v) => Ty::Float(::core::clone::Clone::clone(__v)),
-        super::super::Payload::Double(__v) => Ty::Double(::core::clone::Clone::clone(__v)),
-        super::super::Payload::ByteArray(__v) => Ty::ByteArray(super::array::inline_7::view(__v)),
-        super::super::Payload::String(__v) => Ty::String(super::string::view(__v)),
-        super::super::Payload::List(__v) => Ty::List(super::list::into_view(__v)),
-        super::super::Payload::Compound(__v) => Ty::Compound(super::compound::into_view(__v)),
-        super::super::Payload::IntArray(__v) => Ty::IntArray(::core::mem::take(__v)),
-        super::super::Payload::LongArray(__v) => Ty::LongArray(::core::mem::take(__v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::Payload) -> Ty<'i> {
+	match _0 {
+		super::super::Payload::End => Ty::End,
+		super::super::Payload::Byte(__v) => Ty::Byte(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Short(__v) => Ty::Short(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Int(__v) => Ty::Int(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Long(__v) => Ty::Long(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Float(__v) => Ty::Float(::core::clone::Clone::clone(__v)),
+		super::super::Payload::Double(__v) => Ty::Double(::core::clone::Clone::clone(__v)),
+		super::super::Payload::ByteArray(__v) => Ty::ByteArray(super::array::inline_7::view(__v)),
+		super::super::Payload::String(__v) => Ty::String(super::string::view(__v)),
+		super::super::Payload::List(__v) => Ty::List(super::list::into_view(__v)),
+		super::super::Payload::Compound(__v) => Ty::Compound(super::compound::into_view(__v)),
+		super::super::Payload::IntArray(__v) => Ty::IntArray(::core::mem::take(__v)),
+		super::super::Payload::LongArray(__v) => Ty::LongArray(::core::mem::take(__v)),
+	}
 }
- pub type Ty<'i> = Payload<'i>;
+pub type Ty<'i> = Payload<'i>;

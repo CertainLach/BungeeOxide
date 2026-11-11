@@ -3,33 +3,31 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMultiBlockChange21 {
-    pub x: super::super::super::I32,
-    pub z: super::super::super::I32,
-    pub y: super::super::super::I32,
+	pub x: super::super::super::I32,
+	pub z: super::super::super::I32,
+	pub y: super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    let mut acc: u128 = 0;
-    acc = (acc << 22) | ((_0.x as u128) & 0x3fffff);
-    acc = (acc << 22) | ((_0.z as u128) & 0x3fffff);
-    acc = (acc << 20) | ((_0.y as u128) & 0xfffff);
-    for i in (0..8u32).rev() {
-        super::super::super::u8::serialize(&(((acc >> (i * 8)) & 0xff) as u8), output)?;
-    }
-    Ok(())
+	let mut acc: u128 = 0;
+	acc = (acc << 22) | ((_0.x as u128) & 0x3fffff);
+	acc = (acc << 22) | ((_0.z as u128) & 0x3fffff);
+	acc = (acc << 20) | ((_0.y as u128) & 0xfffff);
+	for i in (0..8u32).rev() {
+		super::super::super::u8::serialize(&(((acc >> (i * 8)) & 0xff) as u8), output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let mut acc: u128 = 0;
-    for _ in 0..8u32 {
-        acc = (acc << 8) | (super::super::super::u8::deserialize(input)? as u128);
-    }
-    let x = (((((acc >> 42) & 0x3fffff) as u32) << 10) as i32) >> 10;
-    let z = (((((acc >> 20) & 0x3fffff) as u32) << 10) as i32) >> 10;
-    let y = (((((acc >> 0) & 0xfffff) as u32) << 12) as i32) >> 12;
-    Ok(Ty {
-        x, z, y
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let mut acc: u128 = 0;
+	for _ in 0..8u32 {
+		acc = (acc << 8) | (super::super::super::u8::deserialize(input)? as u128);
+	}
+	let x = (((((acc >> 42) & 0x3fffff) as u32) << 10) as i32) >> 10;
+	let z = (((((acc >> 20) & 0x3fffff) as u32) << 10) as i32) >> 10;
+	let y = (((((acc >> 0) & 0xfffff) as u32) << 12) as i32) >> 12;
+	Ok(Ty { x, z, y })
 }
 pub fn size_of(_0: &Ty) -> usize {
-    8
+	8
 }
- pub type Ty = PacketMultiBlockChange21;
+pub type Ty = PacketMultiBlockChange21;

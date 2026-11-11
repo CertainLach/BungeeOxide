@@ -3,121 +3,73 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent31<'i> {
-    pub contact_cooldown_ticks: super::super::super::Varint,
-    pub delay_ticks: super::super::super::Varint,
-    pub dismount_conditions: super::super::super::Option7,
-    pub knockback_conditions: super::super::super::Option7,
-    pub damage_conditions: super::super::super::Option7,
-    pub forward_movement: super::super::super::F32,
-    pub damage_multiplier: super::super::super::F32,
-    pub sound: super::super::Option5::<'i>,
-    pub hit_sound: super::super::Option5::<'i>,
+	pub contact_cooldown_ticks: super::super::super::Varint,
+	pub delay_ticks: super::super::super::Varint,
+	pub dismount_conditions: super::super::super::Option7,
+	pub knockback_conditions: super::super::super::Option7,
+	pub damage_conditions: super::super::super::Option7,
+	pub forward_movement: super::super::super::F32,
+	pub damage_multiplier: super::super::super::F32,
+	pub sound: super::super::Option5<'i>,
+	pub hit_sound: super::super::Option5<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.contact_cooldown_ticks,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.delay_ticks,
-        output,
-    )?;
-    super::super::super::option_7::serialize(
-        &_0.dismount_conditions,
-        output,
-    )?;
-    super::super::super::option_7::serialize(
-        &_0.knockback_conditions,
-        output,
-    )?;
-    super::super::super::option_7::serialize(
-        &_0.damage_conditions,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.forward_movement,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.damage_multiplier,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.sound,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.hit_sound,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.contact_cooldown_ticks, output)?;
+	super::super::super::varint::serialize(&_0.delay_ticks, output)?;
+	super::super::super::option_7::serialize(&_0.dismount_conditions, output)?;
+	super::super::super::option_7::serialize(&_0.knockback_conditions, output)?;
+	super::super::super::option_7::serialize(&_0.damage_conditions, output)?;
+	super::super::super::f32::serialize(&_0.forward_movement, output)?;
+	super::super::super::f32::serialize(&_0.damage_multiplier, output)?;
+	super::super::option_5::serialize(&_0.sound, output)?;
+	super::super::option_5::serialize(&_0.hit_sound, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(15)?;
-    let f_contactCooldownTicks = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_delayTicks = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_dismountConditions = super::super::super::option_7::deserialize(
-        input,
-    )?;
-    let f_knockbackConditions = super::super::super::option_7::deserialize(
-        input,
-    )?;
-    let f_damageConditions = super::super::super::option_7::deserialize(
-        input,
-    )?;
-    let f_forwardMovement = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_damageMultiplier = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_sound = super::super::option_5::deserialize(
-        input,
-    )?;
-    let f_hitSound = super::super::option_5::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        contact_cooldown_ticks: f_contactCooldownTicks,delay_ticks: f_delayTicks,dismount_conditions: f_dismountConditions,knockback_conditions: f_knockbackConditions,damage_conditions: f_damageConditions,forward_movement: f_forwardMovement,damage_multiplier: f_damageMultiplier,sound: f_sound,hit_sound: f_hitSound
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(15)?;
+	let f_contactCooldownTicks = super::super::super::varint::deserialize(input)?;
+	let f_delayTicks = super::super::super::varint::deserialize(input)?;
+	let f_dismountConditions = super::super::super::option_7::deserialize(input)?;
+	let f_knockbackConditions = super::super::super::option_7::deserialize(input)?;
+	let f_damageConditions = super::super::super::option_7::deserialize(input)?;
+	let f_forwardMovement = super::super::super::f32::deserialize(input)?;
+	let f_damageMultiplier = super::super::super::f32::deserialize(input)?;
+	let f_sound = super::super::option_5::deserialize(input)?;
+	let f_hitSound = super::super::option_5::deserialize(input)?;
+	Ok(Ty {
+		contact_cooldown_ticks: f_contactCooldownTicks,
+		delay_ticks: f_delayTicks,
+		dismount_conditions: f_dismountConditions,
+		knockback_conditions: f_knockbackConditions,
+		damage_conditions: f_damageConditions,
+		forward_movement: f_forwardMovement,
+		damage_multiplier: f_damageMultiplier,
+		sound: f_sound,
+		hit_sound: f_hitSound,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.contact_cooldown_ticks
-    )
-    + super::super::super::varint::size_of(
-        &_0.delay_ticks
-    )
-    + super::super::super::option_7::size_of(
-        &_0.dismount_conditions
-    )
-    + super::super::super::option_7::size_of(
-        &_0.knockback_conditions
-    )
-    + super::super::super::option_7::size_of(
-        &_0.damage_conditions
-    )
-    + super::super::super::f32::size_of(
-        &_0.forward_movement
-    )
-    + super::super::super::f32::size_of(
-        &_0.damage_multiplier
-    )
-    + super::super::option_5::size_of(
-        &_0.sound
-    )
-    + super::super::option_5::size_of(
-        &_0.hit_sound
-    )
+	0 + super::super::super::varint::size_of(&_0.contact_cooldown_ticks)
+		+ super::super::super::varint::size_of(&_0.delay_ticks)
+		+ super::super::super::option_7::size_of(&_0.dismount_conditions)
+		+ super::super::super::option_7::size_of(&_0.knockback_conditions)
+		+ super::super::super::option_7::size_of(&_0.damage_conditions)
+		+ super::super::super::f32::size_of(&_0.forward_movement)
+		+ super::super::super::f32::size_of(&_0.damage_multiplier)
+		+ super::super::option_5::size_of(&_0.sound)
+		+ super::super::option_5::size_of(&_0.hit_sound)
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent31) -> Ty<'i> {
-    Ty {
-        contact_cooldown_ticks: ::core::clone::Clone::clone(&_0.contact_cooldown_ticks),delay_ticks: ::core::clone::Clone::clone(&_0.delay_ticks),dismount_conditions: ::core::clone::Clone::clone(&_0.dismount_conditions),knockback_conditions: ::core::clone::Clone::clone(&_0.knockback_conditions),damage_conditions: ::core::clone::Clone::clone(&_0.damage_conditions),forward_movement: ::core::clone::Clone::clone(&_0.forward_movement),damage_multiplier: ::core::clone::Clone::clone(&_0.damage_multiplier),sound: super::super::option_5::view(&_0.sound),hit_sound: super::super::option_5::view(&_0.hit_sound)
-    }
+	Ty {
+		contact_cooldown_ticks: ::core::clone::Clone::clone(&_0.contact_cooldown_ticks),
+		delay_ticks: ::core::clone::Clone::clone(&_0.delay_ticks),
+		dismount_conditions: ::core::clone::Clone::clone(&_0.dismount_conditions),
+		knockback_conditions: ::core::clone::Clone::clone(&_0.knockback_conditions),
+		damage_conditions: ::core::clone::Clone::clone(&_0.damage_conditions),
+		forward_movement: ::core::clone::Clone::clone(&_0.forward_movement),
+		damage_multiplier: ::core::clone::Clone::clone(&_0.damage_multiplier),
+		sound: super::super::option_5::view(&_0.sound),
+		hit_sound: super::super::option_5::view(&_0.hit_sound),
+	}
 }
- pub type Ty<'i> = SlotComponent31<'i>;
+pub type Ty<'i> = SlotComponent31<'i>;

@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBossBar0 {
-    pub title: String,
-    pub health: super::super::super::super::F32,
-    pub color: super::super::super::super::Varint,
-    pub dividers: super::super::super::super::Varint,
-    pub flags: super::super::super::super::U8,
+	pub title: String,
+	pub health: super::super::super::super::F32,
+	pub color: super::super::super::super::Varint,
+	pub dividers: super::super::super::super::Varint,
+	pub flags: super::super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.title,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.health,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.color,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.dividers,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.flags,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.title, output)?;
+	super::super::super::super::f32::serialize(&_0.health, output)?;
+	super::super::super::super::varint::serialize(&_0.color, output)?;
+	super::super::super::super::varint::serialize(&_0.dividers, output)?;
+	super::super::super::super::u8::serialize(&_0.flags, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_title = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_health = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_color = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_dividers = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_flags = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        title: f_title,health: f_health,color: f_color,dividers: f_dividers,flags: f_flags
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_title = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_health = super::super::super::super::f32::deserialize(input)?;
+	let f_color = super::super::super::super::varint::deserialize(input)?;
+	let f_dividers = super::super::super::super::varint::deserialize(input)?;
+	let f_flags = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		title: f_title,
+		health: f_health,
+		color: f_color,
+		dividers: f_dividers,
+		flags: f_flags,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.title
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.health
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.color
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.dividers
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.flags
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.title)
+		+ super::super::super::super::f32::size_of(&_0.health)
+		+ super::super::super::super::varint::size_of(&_0.color)
+		+ super::super::super::super::varint::size_of(&_0.dividers)
+		+ super::super::super::super::u8::size_of(&_0.flags)
 }
- pub type Ty = PacketBossBar0;
+pub type Ty = PacketBossBar0;

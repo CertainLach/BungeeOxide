@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTrackedWaypoint50 {
-    pub red: super::super::super::U8,
-    pub green: super::super::super::U8,
-    pub blue: super::super::super::U8,
+	pub red: super::super::super::U8,
+	pub green: super::super::super::U8,
+	pub blue: super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::u8::serialize(
-        &_0.red,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.green,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.blue,
-        output,
-    )?;
-    Ok(())
+	super::super::super::u8::serialize(&_0.red, output)?;
+	super::super::super::u8::serialize(&_0.green, output)?;
+	super::super::super::u8::serialize(&_0.blue, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_red = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_green = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_blue = super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        red: f_red,green: f_green,blue: f_blue
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_red = super::super::super::u8::deserialize(input)?;
+	let f_green = super::super::super::u8::deserialize(input)?;
+	let f_blue = super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		red: f_red,
+		green: f_green,
+		blue: f_blue,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::u8::size_of(
-        &_0.red
-    )
-    + super::super::super::u8::size_of(
-        &_0.green
-    )
-    + super::super::super::u8::size_of(
-        &_0.blue
-    )
+	0 + super::super::super::u8::size_of(&_0.red)
+		+ super::super::super::u8::size_of(&_0.green)
+		+ super::super::super::u8::size_of(&_0.blue)
 }
- pub type Ty = PacketTrackedWaypoint50;
+pub type Ty = PacketTrackedWaypoint50;

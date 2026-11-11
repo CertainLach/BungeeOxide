@@ -2,137 +2,137 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub r#type: &'a super::U8,
+	pub r#type: &'a super::U8,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum List0 {
-    End(super::I32),
-    Byte(Vec<super::I8>),
-    Short(Vec<super::I16>),
-    Int(Vec<super::I32>),
-    Long(Vec<super::I64>),
-    Float(Vec<super::F32>),
-    Double(Vec<super::F64>),
-    ByteArray(Vec<Vec<super::I8>>),
-    String(Vec<super::String>),
-    List(Vec<super::List>),
-    Compound(Vec<Vec<super::Entry>>),
-    IntArray(Vec<Vec<super::I32>>),
-    LongArray(Vec<Vec<super::I64>>),
+	End(super::I32),
+	Byte(Vec<super::I8>),
+	Short(Vec<super::I16>),
+	Int(Vec<super::I32>),
+	Long(Vec<super::I64>),
+	Float(Vec<super::F32>),
+	Double(Vec<super::F64>),
+	ByteArray(Vec<Vec<super::I8>>),
+	String(Vec<super::String>),
+	List(Vec<super::List>),
+	Compound(Vec<Vec<super::Entry>>),
+	IntArray(Vec<Vec<super::I32>>),
+	LongArray(Vec<Vec<super::I64>>),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::End(__v) => super::i32::serialize(__v, output),
-        Ty::Byte(__v) => super::array::inline_7::serialize(__v, output),
-        Ty::Short(__v) => super::array::inline_4::serialize(__v, output),
-        Ty::Int(__v) => super::array::inline_5::serialize(__v, output),
-        Ty::Long(__v) => super::array::inline_6::serialize(__v, output),
-        Ty::Float(__v) => super::array::inline_2::serialize(__v, output),
-        Ty::Double(__v) => super::array::inline_3::serialize(__v, output),
-        Ty::ByteArray(__v) => super::array::inline_9::serialize(__v, output),
-        Ty::String(__v) => super::array::inline_8::serialize(__v, output),
-        Ty::List(__v) => super::array::inline_1::serialize(__v, output),
-        Ty::Compound(__v) => super::array::inline_0::serialize(__v, output),
-        Ty::IntArray(__v) => super::array::inline_10::serialize(__v, output),
-        Ty::LongArray(__v) => super::array::inline_11::serialize(__v, output),
-    }
+	match _0 {
+		Ty::End(__v) => super::i32::serialize(__v, output),
+		Ty::Byte(__v) => super::array::inline_7::serialize(__v, output),
+		Ty::Short(__v) => super::array::inline_4::serialize(__v, output),
+		Ty::Int(__v) => super::array::inline_5::serialize(__v, output),
+		Ty::Long(__v) => super::array::inline_6::serialize(__v, output),
+		Ty::Float(__v) => super::array::inline_2::serialize(__v, output),
+		Ty::Double(__v) => super::array::inline_3::serialize(__v, output),
+		Ty::ByteArray(__v) => super::array::inline_9::serialize(__v, output),
+		Ty::String(__v) => super::array::inline_8::serialize(__v, output),
+		Ty::List(__v) => super::array::inline_1::serialize(__v, output),
+		Ty::Compound(__v) => super::array::inline_0::serialize(__v, output),
+		Ty::IntArray(__v) => super::array::inline_10::serialize(__v, output),
+		Ty::LongArray(__v) => super::array::inline_11::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    input.expect(4)?;
-    let __tag = args.r#type;
-    if (__tag.clone() == 0_u8) {
-        return Ok(Ty::End(super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_u8) {
-        return Ok(Ty::Byte(super::array::inline_7::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_u8) {
-        return Ok(Ty::Short(super::array::inline_4::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_u8) {
-        return Ok(Ty::Int(super::array::inline_5::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_u8) {
-        return Ok(Ty::Long(super::array::inline_6::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_u8) {
-        return Ok(Ty::Float(super::array::inline_2::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_u8) {
-        return Ok(Ty::Double(super::array::inline_3::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_u8) {
-        return Ok(Ty::ByteArray(super::array::inline_9::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_u8) {
-        return Ok(Ty::String(super::array::inline_8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_u8) {
-        return Ok(Ty::List(super::array::inline_1::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_u8) {
-        return Ok(Ty::Compound(super::array::inline_0::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_u8) {
-        return Ok(Ty::IntArray(super::array::inline_10::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_u8) {
-        return Ok(Ty::LongArray(super::array::inline_11::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	input.expect(4)?;
+	let __tag = args.r#type;
+	if (__tag.clone() == 0_u8) {
+		return Ok(Ty::End(super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 1_u8) {
+		return Ok(Ty::Byte(super::array::inline_7::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_u8) {
+		return Ok(Ty::Short(super::array::inline_4::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_u8) {
+		return Ok(Ty::Int(super::array::inline_5::deserialize(input)?));
+	}
+	if (__tag.clone() == 4_u8) {
+		return Ok(Ty::Long(super::array::inline_6::deserialize(input)?));
+	}
+	if (__tag.clone() == 5_u8) {
+		return Ok(Ty::Float(super::array::inline_2::deserialize(input)?));
+	}
+	if (__tag.clone() == 6_u8) {
+		return Ok(Ty::Double(super::array::inline_3::deserialize(input)?));
+	}
+	if (__tag.clone() == 7_u8) {
+		return Ok(Ty::ByteArray(super::array::inline_9::deserialize(input)?));
+	}
+	if (__tag.clone() == 8_u8) {
+		return Ok(Ty::String(super::array::inline_8::deserialize(input)?));
+	}
+	if (__tag.clone() == 9_u8) {
+		return Ok(Ty::List(super::array::inline_1::deserialize(input)?));
+	}
+	if (__tag.clone() == 10_u8) {
+		return Ok(Ty::Compound(super::array::inline_0::deserialize(input)?));
+	}
+	if (__tag.clone() == 11_u8) {
+		return Ok(Ty::IntArray(super::array::inline_10::deserialize(input)?));
+	}
+	if (__tag.clone() == 12_u8) {
+		return Ok(Ty::LongArray(super::array::inline_11::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::End(__v) => super::i32::size_of(__v),
-        Ty::Byte(__v) => super::array::inline_7::size_of(__v),
-        Ty::Short(__v) => super::array::inline_4::size_of(__v),
-        Ty::Int(__v) => super::array::inline_5::size_of(__v),
-        Ty::Long(__v) => super::array::inline_6::size_of(__v),
-        Ty::Float(__v) => super::array::inline_2::size_of(__v),
-        Ty::Double(__v) => super::array::inline_3::size_of(__v),
-        Ty::ByteArray(__v) => super::array::inline_9::size_of(__v),
-        Ty::String(__v) => super::array::inline_8::size_of(__v),
-        Ty::List(__v) => super::array::inline_1::size_of(__v),
-        Ty::Compound(__v) => super::array::inline_0::size_of(__v),
-        Ty::IntArray(__v) => super::array::inline_10::size_of(__v),
-        Ty::LongArray(__v) => super::array::inline_11::size_of(__v),
-    }
+	0 + match _0 {
+		Ty::End(__v) => super::i32::size_of(__v),
+		Ty::Byte(__v) => super::array::inline_7::size_of(__v),
+		Ty::Short(__v) => super::array::inline_4::size_of(__v),
+		Ty::Int(__v) => super::array::inline_5::size_of(__v),
+		Ty::Long(__v) => super::array::inline_6::size_of(__v),
+		Ty::Float(__v) => super::array::inline_2::size_of(__v),
+		Ty::Double(__v) => super::array::inline_3::size_of(__v),
+		Ty::ByteArray(__v) => super::array::inline_9::size_of(__v),
+		Ty::String(__v) => super::array::inline_8::size_of(__v),
+		Ty::List(__v) => super::array::inline_1::size_of(__v),
+		Ty::Compound(__v) => super::array::inline_0::size_of(__v),
+		Ty::IntArray(__v) => super::array::inline_10::size_of(__v),
+		Ty::LongArray(__v) => super::array::inline_11::size_of(__v),
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::End(_) => "end",
-        Ty::Byte(_) => "byte",
-        Ty::Short(_) => "short",
-        Ty::Int(_) => "int",
-        Ty::Long(_) => "long",
-        Ty::Float(_) => "float",
-        Ty::Double(_) => "double",
-        Ty::ByteArray(_) => "byteArray",
-        Ty::String(_) => "string",
-        Ty::List(_) => "list",
-        Ty::Compound(_) => "compound",
-        Ty::IntArray(_) => "intArray",
-        Ty::LongArray(_) => "longArray",
-    }
+	match _0 {
+		Ty::End(_) => "end",
+		Ty::Byte(_) => "byte",
+		Ty::Short(_) => "short",
+		Ty::Int(_) => "int",
+		Ty::Long(_) => "long",
+		Ty::Float(_) => "float",
+		Ty::Double(_) => "double",
+		Ty::ByteArray(_) => "byteArray",
+		Ty::String(_) => "string",
+		Ty::List(_) => "list",
+		Ty::Compound(_) => "compound",
+		Ty::IntArray(_) => "intArray",
+		Ty::LongArray(_) => "longArray",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::U8) {
-    debug_assert!(
-        match _0 {
-            Ty::End(_) => (__tag.clone() == 0_u8),
-            Ty::Byte(_) => (__tag.clone() == 1_u8),
-            Ty::Short(_) => (__tag.clone() == 2_u8),
-            Ty::Int(_) => (__tag.clone() == 3_u8),
-            Ty::Long(_) => (__tag.clone() == 4_u8),
-            Ty::Float(_) => (__tag.clone() == 5_u8),
-            Ty::Double(_) => (__tag.clone() == 6_u8),
-            Ty::ByteArray(_) => (__tag.clone() == 7_u8),
-            Ty::String(_) => (__tag.clone() == 8_u8),
-            Ty::List(_) => (__tag.clone() == 9_u8),
-            Ty::Compound(_) => (__tag.clone() == 10_u8),
-            Ty::IntArray(_) => (__tag.clone() == 11_u8),
-            Ty::LongArray(_) => (__tag.clone() == 12_u8),
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::End(_) => (__tag.clone() == 0_u8),
+			Ty::Byte(_) => (__tag.clone() == 1_u8),
+			Ty::Short(_) => (__tag.clone() == 2_u8),
+			Ty::Int(_) => (__tag.clone() == 3_u8),
+			Ty::Long(_) => (__tag.clone() == 4_u8),
+			Ty::Float(_) => (__tag.clone() == 5_u8),
+			Ty::Double(_) => (__tag.clone() == 6_u8),
+			Ty::ByteArray(_) => (__tag.clone() == 7_u8),
+			Ty::String(_) => (__tag.clone() == 8_u8),
+			Ty::List(_) => (__tag.clone() == 9_u8),
+			Ty::Compound(_) => (__tag.clone() == 10_u8),
+			Ty::IntArray(_) => (__tag.clone() == 11_u8),
+			Ty::LongArray(_) => (__tag.clone() == 12_u8),
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = List0;
+pub type Ty = List0;

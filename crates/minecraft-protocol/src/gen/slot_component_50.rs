@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent50 {
-    pub r#type: super::SlotComponent49,
-    pub duration: super::Varint,
+	pub r#type: super::SlotComponent49,
+	pub duration: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_component_49::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.duration,
-        output,
-    )?;
-    Ok(())
+	super::slot_component_49::serialize(&_0.r#type, output)?;
+	super::varint::serialize(&_0.duration, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_type = super::slot_component_49::deserialize(
-        input,
-    )?;
-    let f_duration = super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,duration: f_duration
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_type = super::slot_component_49::deserialize(input)?;
+	let f_duration = super::varint::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		duration: f_duration,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_component_49::size_of(
-        &_0.r#type
-    )
-    + super::varint::size_of(
-        &_0.duration
-    )
+	0 + super::slot_component_49::size_of(&_0.r#type) + super::varint::size_of(&_0.duration)
 }
- pub type Ty = SlotComponent50;
+pub type Ty = SlotComponent50;

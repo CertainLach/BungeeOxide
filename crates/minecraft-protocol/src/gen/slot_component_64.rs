@@ -3,46 +3,45 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent64 {
-    False(String),
-    True(super::SlotComponent63),
+	False(String),
+	True(super::SlotComponent63),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::pstring_39::serialize(__v, output),
-        Ty::True(__v) => super::slot_component_63::serialize(__v, output),
-    }
+	super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::pstring_39::serialize(__v, output),
+		Ty::True(__v) => super::slot_component_63::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let __tagv = super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::pstring_39::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::slot_component_63::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let __tagv = super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::pstring_39::deserialize(input)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::slot_component_63::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::pstring_39::size_of(__v),
-        Ty::True(__v) => super::slot_component_63::size_of(__v),
-    }
+	super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::pstring_39::size_of(__v),
+			Ty::True(__v) => super::slot_component_63::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = SlotComponent64;
+pub type Ty = SlotComponent64;

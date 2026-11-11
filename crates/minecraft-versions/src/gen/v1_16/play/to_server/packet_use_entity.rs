@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUseEntity {
-    pub target: super::super::super::super::Varint,
-    pub mouse: super::PacketUseEntity1,
-    pub sneaking: super::super::super::super::Bool,
+	pub target: super::super::super::super::Varint,
+	pub mouse: super::PacketUseEntity1,
+	pub sneaking: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::packet_use_entity_1::serialize(
-        &_0.mouse,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.sneaking,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.target, output)?;
+	super::packet_use_entity_1::serialize(&_0.mouse, output)?;
+	super::super::super::super::bool::serialize(&_0.sneaking, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_target = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_mouse = super::packet_use_entity_1::deserialize(
-        input,
-    )?;
-    let f_sneaking = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        target: f_target,mouse: f_mouse,sneaking: f_sneaking
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_target = super::super::super::super::varint::deserialize(input)?;
+	let f_mouse = super::packet_use_entity_1::deserialize(input)?;
+	let f_sneaking = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		target: f_target,
+		mouse: f_mouse,
+		sneaking: f_sneaking,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.target
-    )
-    + super::packet_use_entity_1::size_of(
-        &_0.mouse
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.sneaking
-    )
+	0 + super::super::super::super::varint::size_of(&_0.target)
+		+ super::packet_use_entity_1::size_of(&_0.mouse)
+		+ super::super::super::super::bool::size_of(&_0.sneaking)
 }
- pub type Ty = PacketUseEntity;
+pub type Ty = PacketUseEntity;

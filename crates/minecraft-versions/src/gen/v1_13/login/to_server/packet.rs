@@ -3,59 +3,78 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    LoginStart(String),
-    EncryptionBegin(super::super::super::super::login::to_server::PacketEncryptionBegin),
-    LoginPluginResponse(super::super::super::super::login::to_server::PacketLoginPluginResponse),
-    Default(super::super::super::super::Varint),
+	LoginStart(String),
+	EncryptionBegin(super::super::super::super::login::to_server::PacketEncryptionBegin),
+	LoginPluginResponse(super::super::super::super::login::to_server::PacketLoginPluginResponse),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::LoginStart(__v) => super::super::super::super::pstring_96::serialize(__v, output),
-        Ty::EncryptionBegin(__v) => super::super::super::super::login::to_server::packet_encryption_begin::serialize(__v, output),
-        Ty::LoginPluginResponse(__v) => super::super::super::super::login::to_server::packet_login_plugin_response::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::LoginStart(__v) => super::super::super::super::pstring_96::serialize(__v, output),
+		Ty::EncryptionBegin(__v) => {
+			super::super::super::super::login::to_server::packet_encryption_begin::serialize(
+				__v, output,
+			)
+		}
+		Ty::LoginPluginResponse(__v) => {
+			super::super::super::super::login::to_server::packet_login_plugin_response::serialize(
+				__v, output,
+			)
+		}
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::LoginStart(super::super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::EncryptionBegin(super::super::super::super::login::to_server::packet_encryption_begin::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::LoginPluginResponse(super::super::super::super::login::to_server::packet_login_plugin_response::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::LoginStart(
+			super::super::super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::EncryptionBegin(
+			super::super::super::super::login::to_server::packet_encryption_begin::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::LoginPluginResponse(super::super::super::super::login::to_server::packet_login_plugin_response::deserialize(input, )?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::LoginStart(__v) => super::super::super::super::pstring_96::size_of(__v),
-        Ty::EncryptionBegin(__v) => super::super::super::super::login::to_server::packet_encryption_begin::size_of(__v),
-        Ty::LoginPluginResponse(__v) => super::super::super::super::login::to_server::packet_login_plugin_response::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::LoginStart(__v) => super::super::super::super::pstring_96::size_of(__v),
+			Ty::EncryptionBegin(__v) => {
+				super::super::super::super::login::to_server::packet_encryption_begin::size_of(__v)
+			}
+			Ty::LoginPluginResponse(__v) => {
+				super::super::super::super::login::to_server::packet_login_plugin_response::size_of(
+					__v,
+				)
+			}
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::LoginStart(_) => "login_start",
-        Ty::EncryptionBegin(_) => "encryption_begin",
-        Ty::LoginPluginResponse(_) => "login_plugin_response",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::LoginStart(_) => "login_start",
+		Ty::EncryptionBegin(_) => "encryption_begin",
+		Ty::LoginPluginResponse(_) => "login_plugin_response",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::LoginStart(_) => 0_i32,
-        Ty::EncryptionBegin(_) => 1_i32,
-        Ty::LoginPluginResponse(_) => 2_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::LoginStart(_) => 0_i32,
+		Ty::EncryptionBegin(_) => 1_i32,
+		Ty::LoginPluginResponse(_) => 2_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

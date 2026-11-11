@@ -3,55 +3,60 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent12 {
-    default,
-    Hidden,
-    Override(super::super::AnonymousNbt),
-    default_(super::super::Varint),
+	default,
+	Hidden,
+	Override(super::super::AnonymousNbt),
+	default_(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::default => Ok(()),
-        Ty::Hidden => Ok(()),
-        Ty::Override(__v) => super::super::anonymous_nbt::serialize(__v, output),
-        Ty::default_(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::default => Ok(()),
+		Ty::Hidden => Ok(()),
+		Ty::Override(__v) => super::super::anonymous_nbt::serialize(__v, output),
+		Ty::default_(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::default); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Hidden); }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::Override(super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    Ok(Ty::default_(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::default);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Hidden);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Override(super::super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::default_(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::default => 0,
-        Ty::Hidden => 0,
-        Ty::Override(__v) => super::super::anonymous_nbt::size_of(__v),
-        Ty::default_(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::default => 0,
+			Ty::Hidden => 0,
+			Ty::Override(__v) => super::super::anonymous_nbt::size_of(__v),
+			Ty::default_(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::default => "default",
-        Ty::Hidden => "hidden",
-        Ty::Override(_) => "override",
-        Ty::default_(..) => "default_",
-    }
+	match _0 {
+		Ty::default => "default",
+		Ty::Hidden => "hidden",
+		Ty::Override(_) => "override",
+		Ty::default_(..) => "default_",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::default => 0_i32,
-        Ty::Hidden => 1_i32,
-        Ty::Override(_) => 2_i32,
-        Ty::default_(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::default => 0_i32,
+		Ty::Hidden => 1_i32,
+		Ty::Override(_) => 2_i32,
+		Ty::default_(__t) => __t.clone(),
+	}
 }
- pub type Ty = SlotComponent12;
+pub type Ty = SlotComponent12;

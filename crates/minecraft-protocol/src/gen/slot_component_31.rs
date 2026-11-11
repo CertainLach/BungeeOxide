@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent31 {
-    pub type_id: super::Varint,
-    pub name: String,
-    pub value: super::F64,
-    pub operation: super::SlotComponent28,
-    pub slot: super::SlotComponent29,
-    pub display: super::SlotComponent30,
+	pub type_id: super::Varint,
+	pub name: String,
+	pub value: super::F64,
+	pub operation: super::SlotComponent28,
+	pub slot: super::SlotComponent29,
+	pub display: super::SlotComponent30,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.type_id,
-        output,
-    )?;
-    super::pstring_39::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::f64::serialize(
-        &_0.value,
-        output,
-    )?;
-    super::slot_component_28::serialize(
-        &_0.operation,
-        output,
-    )?;
-    super::slot_component_29::serialize(
-        &_0.slot,
-        output,
-    )?;
-    super::slot_component_30::serialize(
-        &_0.display,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.type_id, output)?;
+	super::pstring_39::serialize(&_0.name, output)?;
+	super::f64::serialize(&_0.value, output)?;
+	super::slot_component_28::serialize(&_0.operation, output)?;
+	super::slot_component_29::serialize(&_0.slot, output)?;
+	super::slot_component_30::serialize(&_0.display, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_typeId = super::varint::deserialize(
-        input,
-    )?;
-    let f_name = super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_value = super::f64::deserialize(
-        input,
-    )?;
-    let f_operation = super::slot_component_28::deserialize(
-        input,
-    )?;
-    let f_slot = super::slot_component_29::deserialize(
-        input,
-    )?;
-    let f_display = super::slot_component_30::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        type_id: f_typeId,name: f_name,value: f_value,operation: f_operation,slot: f_slot,display: f_display
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_typeId = super::varint::deserialize(input)?;
+	let f_name = super::pstring_39::deserialize(input)?;
+	let f_value = super::f64::deserialize(input)?;
+	let f_operation = super::slot_component_28::deserialize(input)?;
+	let f_slot = super::slot_component_29::deserialize(input)?;
+	let f_display = super::slot_component_30::deserialize(input)?;
+	Ok(Ty {
+		type_id: f_typeId,
+		name: f_name,
+		value: f_value,
+		operation: f_operation,
+		slot: f_slot,
+		display: f_display,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.type_id
-    )
-    + super::pstring_39::size_of(
-        &_0.name
-    )
-    + super::f64::size_of(
-        &_0.value
-    )
-    + super::slot_component_28::size_of(
-        &_0.operation
-    )
-    + super::slot_component_29::size_of(
-        &_0.slot
-    )
-    + super::slot_component_30::size_of(
-        &_0.display
-    )
+	0 + super::varint::size_of(&_0.type_id)
+		+ super::pstring_39::size_of(&_0.name)
+		+ super::f64::size_of(&_0.value)
+		+ super::slot_component_28::size_of(&_0.operation)
+		+ super::slot_component_29::size_of(&_0.slot)
+		+ super::slot_component_30::size_of(&_0.display)
 }
- pub type Ty = SlotComponent31;
+pub type Ty = SlotComponent31;

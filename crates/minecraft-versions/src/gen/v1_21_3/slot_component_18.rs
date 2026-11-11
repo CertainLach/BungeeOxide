@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent18 {
-    pub seconds: super::super::F32,
-    pub cooldown_group: Option<String>,
+	pub seconds: super::super::F32,
+	pub cooldown_group: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::f32::serialize(
-        &_0.seconds,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.cooldown_group,
-        output,
-    )?;
-    Ok(())
+	super::super::f32::serialize(&_0.seconds, output)?;
+	super::super::option_18::serialize(&_0.cooldown_group, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_seconds = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_cooldownGroup = super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        seconds: f_seconds,cooldown_group: f_cooldownGroup
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_seconds = super::super::f32::deserialize(input)?;
+	let f_cooldownGroup = super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		seconds: f_seconds,
+		cooldown_group: f_cooldownGroup,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::f32::size_of(
-        &_0.seconds
-    )
-    + super::super::option_18::size_of(
-        &_0.cooldown_group
-    )
+	0 + super::super::f32::size_of(&_0.seconds)
+		+ super::super::option_18::size_of(&_0.cooldown_group)
 }
- pub type Ty = SlotComponent18;
+pub type Ty = SlotComponent18;

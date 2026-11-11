@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLook {
-    pub yaw: super::super::super::super::F32,
-    pub pitch: super::super::super::super::F32,
-    pub on_ground: super::super::super::super::Bool,
+	pub yaw: super::super::super::super::F32,
+	pub pitch: super::super::super::super::F32,
+	pub on_ground: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.on_ground,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::super::super::f32::serialize(&_0.pitch, output)?;
+	super::super::super::super::bool::serialize(&_0.on_ground, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_yaw = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_onGround = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        yaw: f_yaw,pitch: f_pitch,on_ground: f_onGround
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_yaw = super::super::super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::super::super::f32::deserialize(input)?;
+	let f_onGround = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		yaw: f_yaw,
+		pitch: f_pitch,
+		on_ground: f_onGround,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.on_ground
-    )
+	0 + super::super::super::super::f32::size_of(&_0.yaw)
+		+ super::super::super::super::f32::size_of(&_0.pitch)
+		+ super::super::super::super::bool::size_of(&_0.on_ground)
 }
- pub type Ty = PacketLook;
+pub type Ty = PacketLook;

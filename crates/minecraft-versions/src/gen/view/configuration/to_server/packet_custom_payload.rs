@@ -3,44 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCustomPayload<'i> {
-    pub channel: super::super::super::Pstring96::<'i>,
-    pub data: super::super::super::RestBuffer::<'i>,
+	pub channel: super::super::super::Pstring96<'i>,
+	pub data: super::super::super::RestBuffer<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.channel,
-        output,
-    )?;
-    super::super::super::rest_buffer::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.channel, output)?;
+	super::super::super::rest_buffer::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_channel = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::rest_buffer::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        channel: f_channel,data: f_data
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_channel = super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::super::super::rest_buffer::deserialize(input)?;
+	Ok(Ty {
+		channel: f_channel,
+		data: f_data,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.channel
-    )
-    + super::super::super::rest_buffer::size_of(
-        &_0.data
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.channel)
+		+ super::super::super::rest_buffer::size_of(&_0.data)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_server::PacketCustomPayload) -> Ty<'i> {
-    Ty {
-        channel: super::super::super::pstring_96::view(&_0.channel),data: super::super::super::rest_buffer::view(&_0.data)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::configuration::to_server::PacketCustomPayload,
+) -> Ty<'i> {
+	Ty {
+		channel: super::super::super::pstring_96::view(&_0.channel),
+		data: super::super::super::rest_buffer::view(&_0.data),
+	}
 }
- pub type Ty<'i> = PacketCustomPayload<'i>;
+pub type Ty<'i> = PacketCustomPayload<'i>;

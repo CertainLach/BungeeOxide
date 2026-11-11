@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCraftProgressBar {
-    pub window_id: super::super::super::Varint,
-    pub property: super::super::super::I16,
-    pub value: super::super::super::I16,
+	pub window_id: super::super::super::Varint,
+	pub property: super::super::super::I16,
+	pub value: super::super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::i16::serialize(
-        &_0.property,
-        output,
-    )?;
-    super::super::super::i16::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.window_id, output)?;
+	super::super::super::i16::serialize(&_0.property, output)?;
+	super::super::super::i16::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_windowId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_property = super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,property: f_property,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_windowId = super::super::super::varint::deserialize(input)?;
+	let f_property = super::super::super::i16::deserialize(input)?;
+	let f_value = super::super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		property: f_property,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.window_id
-    )
-    + super::super::super::i16::size_of(
-        &_0.property
-    )
-    + super::super::super::i16::size_of(
-        &_0.value
-    )
+	0 + super::super::super::varint::size_of(&_0.window_id)
+		+ super::super::super::i16::size_of(&_0.property)
+		+ super::super::super::i16::size_of(&_0.value)
 }
- pub type Ty = PacketCraftProgressBar;
+pub type Ty = PacketCraftProgressBar;

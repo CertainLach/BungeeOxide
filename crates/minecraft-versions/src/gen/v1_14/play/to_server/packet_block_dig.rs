@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockDig {
-    pub status: super::super::super::super::Varint,
-    pub location: super::super::super::super::Position,
-    pub face: super::super::super::super::I8,
+	pub status: super::super::super::super::Varint,
+	pub location: super::super::super::super::Position,
+	pub face: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.status,
-        output,
-    )?;
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.face,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.status, output)?;
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::i8::serialize(&_0.face, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_status = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_face = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        status: f_status,location: f_location,face: f_face
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_status = super::super::super::super::varint::deserialize(input)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_face = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		status: f_status,
+		location: f_location,
+		face: f_face,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.status
-    )
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.face
-    )
+	0 + super::super::super::super::varint::size_of(&_0.status)
+		+ super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::i8::size_of(&_0.face)
 }
- pub type Ty = PacketBlockDig;
+pub type Ty = PacketBlockDig;

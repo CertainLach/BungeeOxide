@@ -3,95 +3,114 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ServerLinkType {
-    BugReport,
-    CommunityGuidelines,
-    Support,
-    Status,
-    Feedback,
-    Community,
-    Website,
-    Forums,
-    News,
-    Announcements,
-    Default(super::Varint),
+	BugReport,
+	CommunityGuidelines,
+	Support,
+	Status,
+	Feedback,
+	Community,
+	Website,
+	Forums,
+	News,
+	Announcements,
+	Default(super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::BugReport => Ok(()),
-        Ty::CommunityGuidelines => Ok(()),
-        Ty::Support => Ok(()),
-        Ty::Status => Ok(()),
-        Ty::Feedback => Ok(()),
-        Ty::Community => Ok(()),
-        Ty::Website => Ok(()),
-        Ty::Forums => Ok(()),
-        Ty::News => Ok(()),
-        Ty::Announcements => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::BugReport => Ok(()),
+		Ty::CommunityGuidelines => Ok(()),
+		Ty::Support => Ok(()),
+		Ty::Status => Ok(()),
+		Ty::Feedback => Ok(()),
+		Ty::Community => Ok(()),
+		Ty::Website => Ok(()),
+		Ty::Forums => Ok(()),
+		Ty::News => Ok(()),
+		Ty::Announcements => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::BugReport); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::CommunityGuidelines); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Support); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::Status); }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Feedback); }
-    if (__tag.clone() == 5_i32) { return Ok(Ty::Community); }
-    if (__tag.clone() == 6_i32) { return Ok(Ty::Website); }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::Forums); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::News); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::Announcements); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::BugReport);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::CommunityGuidelines);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Support);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Status);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Feedback);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::Community);
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::Website);
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::Forums);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::News);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::Announcements);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::BugReport => 0,
-        Ty::CommunityGuidelines => 0,
-        Ty::Support => 0,
-        Ty::Status => 0,
-        Ty::Feedback => 0,
-        Ty::Community => 0,
-        Ty::Website => 0,
-        Ty::Forums => 0,
-        Ty::News => 0,
-        Ty::Announcements => 0,
-        Ty::Default(_) => 0,
-    }
+	super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::BugReport => 0,
+			Ty::CommunityGuidelines => 0,
+			Ty::Support => 0,
+			Ty::Status => 0,
+			Ty::Feedback => 0,
+			Ty::Community => 0,
+			Ty::Website => 0,
+			Ty::Forums => 0,
+			Ty::News => 0,
+			Ty::Announcements => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::BugReport => "bug_report",
-        Ty::CommunityGuidelines => "community_guidelines",
-        Ty::Support => "support",
-        Ty::Status => "status",
-        Ty::Feedback => "feedback",
-        Ty::Community => "community",
-        Ty::Website => "website",
-        Ty::Forums => "forums",
-        Ty::News => "news",
-        Ty::Announcements => "announcements",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::BugReport => "bug_report",
+		Ty::CommunityGuidelines => "community_guidelines",
+		Ty::Support => "support",
+		Ty::Status => "status",
+		Ty::Feedback => "feedback",
+		Ty::Community => "community",
+		Ty::Website => "website",
+		Ty::Forums => "forums",
+		Ty::News => "news",
+		Ty::Announcements => "announcements",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Varint {
-    match _0 {
-        Ty::BugReport => 0_i32,
-        Ty::CommunityGuidelines => 1_i32,
-        Ty::Support => 2_i32,
-        Ty::Status => 3_i32,
-        Ty::Feedback => 4_i32,
-        Ty::Community => 5_i32,
-        Ty::Website => 6_i32,
-        Ty::Forums => 7_i32,
-        Ty::News => 8_i32,
-        Ty::Announcements => 9_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::BugReport => 0_i32,
+		Ty::CommunityGuidelines => 1_i32,
+		Ty::Support => 2_i32,
+		Ty::Status => 3_i32,
+		Ty::Feedback => 4_i32,
+		Ty::Community => 5_i32,
+		Ty::Website => 6_i32,
+		Ty::Forums => 7_i32,
+		Ty::News => 8_i32,
+		Ty::Announcements => 9_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = ServerLinkType;
+pub type Ty = ServerLinkType;

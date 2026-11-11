@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginStart0 {
-    pub timestamp: super::super::super::super::I64,
-    pub public_key: Vec<u8>,
-    pub signature: Vec<u8>,
+	pub timestamp: super::super::super::super::I64,
+	pub public_key: Vec<u8>,
+	pub signature: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.public_key,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.public_key, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_publicKey = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        timestamp: f_timestamp,public_key: f_publicKey,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_publicKey = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_signature = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		timestamp: f_timestamp,
+		public_key: f_publicKey,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.public_key
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.public_key)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.signature)
 }
- pub type Ty = PacketLoginStart0;
+pub type Ty = PacketLoginStart0;

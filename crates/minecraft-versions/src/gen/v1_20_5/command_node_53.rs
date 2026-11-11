@@ -3,64 +3,58 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode53 {
-    pub flags: super::CommandNode50,
-    pub min: super::CommandNode51,
-    pub max: super::CommandNode52,
+	pub flags: super::CommandNode50,
+	pub min: super::CommandNode51,
+	pub max: super::CommandNode52,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::command_node_50::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::command_node_51::debug_assert_tag(
-        &_0.min,
-        {let _0: &super::CommandNode50 = &_0.flags;let _0: &super::super::U8 = &_0.min_present;_0},
-    );
-    super::command_node_51::serialize(
-        &_0.min,
-        output,
-    )?;
-    super::command_node_52::debug_assert_tag(
-        &_0.max,
-        {let _0: &super::CommandNode50 = &_0.flags;let _0: &super::super::U8 = &_0.max_present;_0},
-    );
-    super::command_node_52::serialize(
-        &_0.max,
-        output,
-    )?;
-    Ok(())
+	super::command_node_50::serialize(&_0.flags, output)?;
+	super::command_node_51::debug_assert_tag(&_0.min, {
+		let _0: &super::CommandNode50 = &_0.flags;
+		let _0: &super::super::U8 = &_0.min_present;
+		_0
+	});
+	super::command_node_51::serialize(&_0.min, output)?;
+	super::command_node_52::debug_assert_tag(&_0.max, {
+		let _0: &super::CommandNode50 = &_0.flags;
+		let _0: &super::super::U8 = &_0.max_present;
+		_0
+	});
+	super::command_node_52::serialize(&_0.max, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_flags = super::command_node_50::deserialize(
-        input,
-    )?;
-    let f_min = super::command_node_51::deserialize(
-        input,
-        super::command_node_51::Args {
-            flags_min_present: {let _0: &super::CommandNode50 = &f_flags;let _0: &super::super::U8 = &_0.min_present;_0}
-        },
-    )?;
-    let f_max = super::command_node_52::deserialize(
-        input,
-        super::command_node_52::Args {
-            flags_max_present: {let _0: &super::CommandNode50 = &f_flags;let _0: &super::super::U8 = &_0.max_present;_0}
-        },
-    )?;
-    Ok(Ty {
-        flags: f_flags,min: f_min,max: f_max
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_flags = super::command_node_50::deserialize(input)?;
+	let f_min = super::command_node_51::deserialize(
+		input,
+		super::command_node_51::Args {
+			flags_min_present: {
+				let _0: &super::CommandNode50 = &f_flags;
+				let _0: &super::super::U8 = &_0.min_present;
+				_0
+			},
+		},
+	)?;
+	let f_max = super::command_node_52::deserialize(
+		input,
+		super::command_node_52::Args {
+			flags_max_present: {
+				let _0: &super::CommandNode50 = &f_flags;
+				let _0: &super::super::U8 = &_0.max_present;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		flags: f_flags,
+		min: f_min,
+		max: f_max,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::command_node_50::size_of(
-        &_0.flags
-    )
-    + super::command_node_51::size_of(
-        &_0.min
-    )
-    + super::command_node_52::size_of(
-        &_0.max
-    )
+	0 + super::command_node_50::size_of(&_0.flags)
+		+ super::command_node_51::size_of(&_0.min)
+		+ super::command_node_52::size_of(&_0.max)
 }
- pub type Ty = CommandNode53;
+pub type Ty = CommandNode53;

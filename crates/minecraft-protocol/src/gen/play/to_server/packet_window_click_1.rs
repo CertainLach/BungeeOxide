@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWindowClick1 {
-    pub location: super::super::super::I16,
-    pub item: Option<super::super::super::HashedSlot>,
+	pub location: super::super::super::I16,
+	pub item: Option<super::super::super::HashedSlot>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i16::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::option_2::serialize(
-        &_0.item,
-        output,
-    )?;
-    Ok(())
+	super::super::super::i16::serialize(&_0.location, output)?;
+	super::super::super::option_2::serialize(&_0.item, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_location = super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_item = super::super::super::option_2::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,item: f_item
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_location = super::super::super::i16::deserialize(input)?;
+	let f_item = super::super::super::option_2::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		item: f_item,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::i16::size_of(
-        &_0.location
-    )
-    + super::super::super::option_2::size_of(
-        &_0.item
-    )
+	0 + super::super::super::i16::size_of(&_0.location)
+		+ super::super::super::option_2::size_of(&_0.item)
 }
- pub type Ty = PacketWindowClick1;
+pub type Ty = PacketWindowClick1;

@@ -3,71 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketProfilelessChat<'i> {
-    pub message: super::super::super::AnonymousNbt::<'i>,
-    pub r#type: super::ChatTypesHolder::<'i>,
-    pub name: super::super::super::AnonymousNbt::<'i>,
-    pub target: super::super::super::Option9::<'i>,
+	pub message: super::super::super::AnonymousNbt<'i>,
+	pub r#type: super::ChatTypesHolder<'i>,
+	pub name: super::super::super::AnonymousNbt<'i>,
+	pub target: super::super::super::Option9<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.message,
-        output,
-    )?;
-    super::chat_types_holder::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::option_9::serialize(
-        &_0.target,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.message, output)?;
+	super::chat_types_holder::serialize(&_0.r#type, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.name, output)?;
+	super::super::super::option_9::serialize(&_0.target, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_message = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_type = super::chat_types_holder::deserialize(
-        input,
-    )?;
-    let f_name = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_target = super::super::super::option_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message: f_message,r#type: f_type,name: f_name,target: f_target
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_message = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_type = super::chat_types_holder::deserialize(input)?;
+	let f_name = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_target = super::super::super::option_9::deserialize(input)?;
+	Ok(Ty {
+		message: f_message,
+		r#type: f_type,
+		name: f_name,
+		target: f_target,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.message
-    )
-    + super::chat_types_holder::size_of(
-        &_0.r#type
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.name
-    )
-    + super::super::super::option_9::size_of(
-        &_0.target
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.message)
+		+ super::chat_types_holder::size_of(&_0.r#type)
+		+ super::super::super::anonymous_nbt::size_of(&_0.name)
+		+ super::super::super::option_9::size_of(&_0.target)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketProfilelessChat) -> Ty<'i> {
-    Ty {
-        message: super::super::super::anonymous_nbt::view(&_0.message),r#type: super::chat_types_holder::view(&_0.r#type),name: super::super::super::anonymous_nbt::view(&_0.name),target: super::super::super::option_9::view(&_0.target)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketProfilelessChat,
+) -> Ty<'i> {
+	Ty {
+		message: super::super::super::anonymous_nbt::view(&_0.message),
+		r#type: super::chat_types_holder::view(&_0.r#type),
+		name: super::super::super::anonymous_nbt::view(&_0.name),
+		target: super::super::super::option_9::view(&_0.target),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketProfilelessChat) -> Ty<'i> {
-    Ty {
-        message: super::super::super::anonymous_nbt::into_view(&mut _0.message),r#type: super::chat_types_holder::into_view(&mut _0.r#type),name: super::super::super::anonymous_nbt::into_view(&mut _0.name),target: super::super::super::option_9::into_view(&mut _0.target)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketProfilelessChat,
+) -> Ty<'i> {
+	Ty {
+		message: super::super::super::anonymous_nbt::into_view(&mut _0.message),
+		r#type: super::chat_types_holder::into_view(&mut _0.r#type),
+		name: super::super::super::anonymous_nbt::into_view(&mut _0.name),
+		target: super::super::super::option_9::into_view(&mut _0.target),
+	}
 }
- pub type Ty<'i> = PacketProfilelessChat<'i>;
+pub type Ty<'i> = PacketProfilelessChat<'i>;

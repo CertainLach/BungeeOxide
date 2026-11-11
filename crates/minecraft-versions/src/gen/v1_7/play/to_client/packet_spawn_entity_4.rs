@@ -3,41 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketSpawnEntity4 {
-    V0,
-    Default(super::super::super::super::I32, super::PacketSpawnEntity3),
+	V0,
+	Default(super::super::super::super::I32, super::PacketSpawnEntity3),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0 => Ok(()),
-        Ty::Default(_, __v) => super::packet_spawn_entity_3::serialize(__v, output),
-    }
+	super::super::super::super::i32::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0 => Ok(()),
+		Ty::Default(_, __v) => super::packet_spawn_entity_3::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let __tagv = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::V0); }
-    Ok(Ty::Default(__tagv, super::packet_spawn_entity_3::deserialize(input, )?))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let __tagv = super::super::super::super::i32::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0);
+	}
+	Ok(Ty::Default(
+		__tagv,
+		super::packet_spawn_entity_3::deserialize(input)?,
+	))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::i32::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0 => 0,
-        Ty::Default(_, __v) => super::packet_spawn_entity_3::size_of(__v),
-    }
+	super::super::super::super::i32::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0 => 0,
+			Ty::Default(_, __v) => super::packet_spawn_entity_3::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V0 => "v0",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0 => "v0",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::I32 {
-    match _0 {
-        Ty::V0 => 0_i32,
-        Ty::Default(__t, _) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0 => 0_i32,
+		Ty::Default(__t, _) => __t.clone(),
+	}
 }
- pub type Ty = PacketSpawnEntity4;
+pub type Ty = PacketSpawnEntity4;

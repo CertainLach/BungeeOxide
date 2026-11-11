@@ -3,30 +3,32 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent25 {
-    Id(super::super::Varint),
-    Inline(super::super::v1_20_5::InstrumentData),
+	Id(super::super::Varint),
+	Inline(super::super::v1_20_5::InstrumentData),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::varint::serialize(&0, output)?;
-            super::super::v1_20_5::instrument_data::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::varint::serialize(&0, output)?;
+			super::super::v1_20_5::instrument_data::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let n = super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::super::v1_20_5::instrument_data::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let n = super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::super::v1_20_5::instrument_data::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::varint::size_of(&0) + super::super::v1_20_5::instrument_data::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => {
+			super::super::varint::size_of(&0) + super::super::v1_20_5::instrument_data::size_of(v)
+		}
+	}
 }
- pub type Ty = SlotComponent25;
+pub type Ty = SlotComponent25;

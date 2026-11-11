@@ -2,27 +2,27 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub count: &'a usize,
+	pub count: &'a usize,
 }
 pub type Ty = Vec<u8>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    for b in _0.iter() {
-        super::super::u8::serialize(b, output)?;
-    }
-    Ok(())
+	for b in _0.iter() {
+		super::super::u8::serialize(b, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count)?;
-    let mut out = Vec::with_capacity(count);
-    for _ in 0..count {
-        out.push(super::super::u8::deserialize(input)?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
+	let mut out = Vec::with_capacity(count);
+	for _ in 0..count {
+		out.push(super::super::u8::deserialize(input)?);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    _0.len()
+	_0.len()
 }
 pub fn virtual_size(_0: &Ty) -> super::super::Varint {
-    _0.len().try_into().unwrap_or_default()
+	_0.len().try_into().unwrap_or_default()
 }

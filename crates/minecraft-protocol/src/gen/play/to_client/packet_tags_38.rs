@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTags38 {
-    pub tag_type: String,
-    pub tags: Vec<super::super::super::Tags107>,
+	pub tag_type: String,
+	pub tags: Vec<super::super::super::Tags107>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_39::serialize(
-        &_0.tag_type,
-        output,
-    )?;
-    super::super::super::array::inline_70::serialize(
-        &_0.tags,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_39::serialize(&_0.tag_type, output)?;
+	super::super::super::array::inline_70::serialize(&_0.tags, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_tagType = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_tags = super::super::super::array::inline_70::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        tag_type: f_tagType,tags: f_tags
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_tagType = super::super::super::pstring_39::deserialize(input)?;
+	let f_tags = super::super::super::array::inline_70::deserialize(input)?;
+	Ok(Ty {
+		tag_type: f_tagType,
+		tags: f_tags,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::pstring_39::size_of(
-        &_0.tag_type
-    )
-    + super::super::super::array::inline_70::size_of(
-        &_0.tags
-    )
+	0 + super::super::super::pstring_39::size_of(&_0.tag_type)
+		+ super::super::super::array::inline_70::size_of(&_0.tags)
 }
- pub type Ty = PacketTags38;
+pub type Ty = PacketTags38;

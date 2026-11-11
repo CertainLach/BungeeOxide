@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketOpenWindow {
-    pub window_id: super::super::super::super::Varint,
-    pub inventory_type: super::super::super::super::Varint,
-    pub window_title: String,
+	pub window_id: super::super::super::super::Varint,
+	pub inventory_type: super::super::super::super::Varint,
+	pub window_title: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.inventory_type,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.window_title,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.window_id, output)?;
+	super::super::super::super::varint::serialize(&_0.inventory_type, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.window_title, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_windowId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_inventoryType = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_windowTitle = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,inventory_type: f_inventoryType,window_title: f_windowTitle
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_windowId = super::super::super::super::varint::deserialize(input)?;
+	let f_inventoryType = super::super::super::super::varint::deserialize(input)?;
+	let f_windowTitle = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		inventory_type: f_inventoryType,
+		window_title: f_windowTitle,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.inventory_type
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.window_title
-    )
+	0 + super::super::super::super::varint::size_of(&_0.window_id)
+		+ super::super::super::super::varint::size_of(&_0.inventory_type)
+		+ super::super::super::super::pstring_96::size_of(&_0.window_title)
 }
- pub type Ty = PacketOpenWindow;
+pub type Ty = PacketOpenWindow;

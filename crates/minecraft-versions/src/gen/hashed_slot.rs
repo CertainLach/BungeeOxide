@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct HashedSlot {
-    pub item_id: super::Varint,
-    pub item_count: super::Varint,
-    pub components: Vec<super::HashedSlot16>,
-    pub remove_components: Vec<super::SlotComponentType>,
+	pub item_id: super::Varint,
+	pub item_count: super::Varint,
+	pub components: Vec<super::HashedSlot16>,
+	pub remove_components: Vec<super::SlotComponentType>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.item_id,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::array::inline_113::serialize(
-        &_0.components,
-        output,
-    )?;
-    super::array::inline_42::serialize(
-        &_0.remove_components,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.item_id, output)?;
+	super::varint::serialize(&_0.item_count, output)?;
+	super::array::inline_113::serialize(&_0.components, output)?;
+	super::array::inline_42::serialize(&_0.remove_components, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_itemId = super::varint::deserialize(
-        input,
-    )?;
-    let f_itemCount = super::varint::deserialize(
-        input,
-    )?;
-    let f_components = super::array::inline_113::deserialize(
-        input,
-    )?;
-    let f_removeComponents = super::array::inline_42::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_id: f_itemId,item_count: f_itemCount,components: f_components,remove_components: f_removeComponents
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_itemId = super::varint::deserialize(input)?;
+	let f_itemCount = super::varint::deserialize(input)?;
+	let f_components = super::array::inline_113::deserialize(input)?;
+	let f_removeComponents = super::array::inline_42::deserialize(input)?;
+	Ok(Ty {
+		item_id: f_itemId,
+		item_count: f_itemCount,
+		components: f_components,
+		remove_components: f_removeComponents,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.item_id
-    )
-    + super::varint::size_of(
-        &_0.item_count
-    )
-    + super::array::inline_113::size_of(
-        &_0.components
-    )
-    + super::array::inline_42::size_of(
-        &_0.remove_components
-    )
+	0 + super::varint::size_of(&_0.item_id)
+		+ super::varint::size_of(&_0.item_count)
+		+ super::array::inline_113::size_of(&_0.components)
+		+ super::array::inline_42::size_of(&_0.remove_components)
 }
- pub type Ty = HashedSlot;
+pub type Ty = HashedSlot;

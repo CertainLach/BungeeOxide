@@ -3,115 +3,92 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMapChunk {
-    pub x: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub ground_up: super::super::super::super::Bool,
-    pub bit_map: super::super::super::super::U16,
-    pub add_bit_map: super::super::super::super::U16,
-    //  compressedSize - virtual field
-    pub unused: super::super::super::super::I32,
-    pub compressed_chunk_data: Vec<u8>,
+	pub x: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub ground_up: super::super::super::super::Bool,
+	pub bit_map: super::super::super::super::U16,
+	pub add_bit_map: super::super::super::super::U16,
+	//  compressedSize - virtual field
+	pub unused: super::super::super::super::I32,
+	pub compressed_chunk_data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.ground_up,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.bit_map,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.add_bit_map,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &((((&{let _0: &Vec<u8> = &_0.compressed_chunk_data;let __v1: super::super::super::super::Varint = super::super::super::super::buffer::sized::virtual_size(_0);
-        let _0 = &__v1;_0.clone()}).clone()) as super::super::super::super::I32)),
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.unused,
-        output,
-    )?;
-    super::super::super::super::buffer::sized::serialize(
-        &_0.compressed_chunk_data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::bool::serialize(&_0.ground_up, output)?;
+	super::super::super::super::u16::serialize(&_0.bit_map, output)?;
+	super::super::super::super::u16::serialize(&_0.add_bit_map, output)?;
+	super::super::super::super::i32::serialize(
+		&(((&{
+			let _0: &Vec<u8> = &_0.compressed_chunk_data;
+			let __v1: super::super::super::super::Varint =
+				super::super::super::super::buffer::sized::virtual_size(_0);
+			let _0 = &__v1;
+			_0.clone()
+		})
+			.clone()) as super::super::super::super::I32),
+		output,
+	)?;
+	super::super::super::super::i32::serialize(&_0.unused, output)?;
+	super::super::super::super::buffer::sized::serialize(&_0.compressed_chunk_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(21)?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_groundUp = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_bitMap = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_addBitMap = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_compressedSize = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_unused = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_compressedChunkData = super::super::super::super::buffer::sized::deserialize(
-        input,
-        super::super::super::super::buffer::sized::Args {
-            count: {let _0: &super::super::super::super::I32 = &f_compressedSize;_0}
-        },
-    )?;
-    debug_assert!(
-        &f_compressedSize == &((((&{let _0: &Vec<u8> = &f_compressedChunkData;let __v1: super::super::super::super::Varint = super::super::super::super::buffer::sized::virtual_size(_0);
-        let _0 = &__v1;_0.clone()}).clone()) as super::super::super::super::I32)),
-        "virtual field compressedSize does not match its value source"
-    );
-    Ok(Ty {
-        x: f_x,z: f_z,ground_up: f_groundUp,bit_map: f_bitMap,add_bit_map: f_addBitMap,unused: f_unused,compressed_chunk_data: f_compressedChunkData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(21)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_groundUp = super::super::super::super::bool::deserialize(input)?;
+	let f_bitMap = super::super::super::super::u16::deserialize(input)?;
+	let f_addBitMap = super::super::super::super::u16::deserialize(input)?;
+	let f_compressedSize = super::super::super::super::i32::deserialize(input)?;
+	let f_unused = super::super::super::super::i32::deserialize(input)?;
+	let f_compressedChunkData = super::super::super::super::buffer::sized::deserialize(
+		input,
+		super::super::super::super::buffer::sized::Args {
+			count: {
+				let _0: &super::super::super::super::I32 = &f_compressedSize;
+				_0
+			},
+		},
+	)?;
+	debug_assert!(
+		&f_compressedSize
+			== &(((&{
+				let _0: &Vec<u8> = &f_compressedChunkData;
+				let __v1: super::super::super::super::Varint =
+					super::super::super::super::buffer::sized::virtual_size(_0);
+				let _0 = &__v1;
+				_0.clone()
+			})
+				.clone()) as super::super::super::super::I32),
+		"virtual field compressedSize does not match its value source"
+	);
+	Ok(Ty {
+		x: f_x,
+		z: f_z,
+		ground_up: f_groundUp,
+		bit_map: f_bitMap,
+		add_bit_map: f_addBitMap,
+		unused: f_unused,
+		compressed_chunk_data: f_compressedChunkData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.ground_up
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.bit_map
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.add_bit_map
-    )
-    + super::super::super::super::i32::size_of(
-        &((((&{let _0: &Vec<u8> = &_0.compressed_chunk_data;let __v1: super::super::super::super::Varint = super::super::super::super::buffer::sized::virtual_size(_0);
-        let _0 = &__v1;_0.clone()}).clone()) as super::super::super::super::I32))
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.unused
-    )
-    + super::super::super::super::buffer::sized::size_of(
-        &_0.compressed_chunk_data
-    )
+	0 + super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::bool::size_of(&_0.ground_up)
+		+ super::super::super::super::u16::size_of(&_0.bit_map)
+		+ super::super::super::super::u16::size_of(&_0.add_bit_map)
+		+ super::super::super::super::i32::size_of(
+			&(((&{
+				let _0: &Vec<u8> = &_0.compressed_chunk_data;
+				let __v1: super::super::super::super::Varint =
+					super::super::super::super::buffer::sized::virtual_size(_0);
+				let _0 = &__v1;
+				_0.clone()
+			})
+				.clone()) as super::super::super::super::I32),
+		) + super::super::super::super::i32::size_of(&_0.unused)
+		+ super::super::super::super::buffer::sized::size_of(&_0.compressed_chunk_data)
 }
- pub type Ty = PacketMapChunk;
+pub type Ty = PacketMapChunk;

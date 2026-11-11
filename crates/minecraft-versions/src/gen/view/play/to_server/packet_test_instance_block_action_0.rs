@@ -3,93 +3,69 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTestInstanceBlockAction0<'i> {
-    pub test: super::super::super::Option18::<'i>,
-    pub size: super::super::super::super::Vec3i,
-    pub rotation: super::super::super::super::Varint,
-    pub ignore_entities: super::super::super::super::Bool,
-    pub status: super::super::super::super::Varint,
-    pub error_message: super::super::super::Option9::<'i>,
+	pub test: super::super::super::Option18<'i>,
+	pub size: super::super::super::super::Vec3i,
+	pub rotation: super::super::super::super::Varint,
+	pub ignore_entities: super::super::super::super::Bool,
+	pub status: super::super::super::super::Varint,
+	pub error_message: super::super::super::Option9<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::option_18::serialize(
-        &_0.test,
-        output,
-    )?;
-    super::super::super::super::vec3i::serialize(
-        &_0.size,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.rotation,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.ignore_entities,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.status,
-        output,
-    )?;
-    super::super::super::option_9::serialize(
-        &_0.error_message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::option_18::serialize(&_0.test, output)?;
+	super::super::super::super::vec3i::serialize(&_0.size, output)?;
+	super::super::super::super::varint::serialize(&_0.rotation, output)?;
+	super::super::super::super::bool::serialize(&_0.ignore_entities, output)?;
+	super::super::super::super::varint::serialize(&_0.status, output)?;
+	super::super::super::option_9::serialize(&_0.error_message, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(8)?;
-    let f_test = super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_size = super::super::super::super::vec3i::deserialize(
-        input,
-    )?;
-    let f_rotation = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ignoreEntities = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_status = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_errorMessage = super::super::super::option_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        test: f_test,size: f_size,rotation: f_rotation,ignore_entities: f_ignoreEntities,status: f_status,error_message: f_errorMessage
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(8)?;
+	let f_test = super::super::super::option_18::deserialize(input)?;
+	let f_size = super::super::super::super::vec3i::deserialize(input)?;
+	let f_rotation = super::super::super::super::varint::deserialize(input)?;
+	let f_ignoreEntities = super::super::super::super::bool::deserialize(input)?;
+	let f_status = super::super::super::super::varint::deserialize(input)?;
+	let f_errorMessage = super::super::super::option_9::deserialize(input)?;
+	Ok(Ty {
+		test: f_test,
+		size: f_size,
+		rotation: f_rotation,
+		ignore_entities: f_ignoreEntities,
+		status: f_status,
+		error_message: f_errorMessage,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::option_18::size_of(
-        &_0.test
-    )
-    + super::super::super::super::vec3i::size_of(
-        &_0.size
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.rotation
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.ignore_entities
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.status
-    )
-    + super::super::super::option_9::size_of(
-        &_0.error_message
-    )
+	0 + super::super::super::option_18::size_of(&_0.test)
+		+ super::super::super::super::vec3i::size_of(&_0.size)
+		+ super::super::super::super::varint::size_of(&_0.rotation)
+		+ super::super::super::super::bool::size_of(&_0.ignore_entities)
+		+ super::super::super::super::varint::size_of(&_0.status)
+		+ super::super::super::option_9::size_of(&_0.error_message)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketTestInstanceBlockAction0) -> Ty<'i> {
-    Ty {
-        test: super::super::super::option_18::view(&_0.test),size: ::core::clone::Clone::clone(&_0.size),rotation: ::core::clone::Clone::clone(&_0.rotation),ignore_entities: ::core::clone::Clone::clone(&_0.ignore_entities),status: ::core::clone::Clone::clone(&_0.status),error_message: super::super::super::option_9::view(&_0.error_message)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_server::PacketTestInstanceBlockAction0,
+) -> Ty<'i> {
+	Ty {
+		test: super::super::super::option_18::view(&_0.test),
+		size: ::core::clone::Clone::clone(&_0.size),
+		rotation: ::core::clone::Clone::clone(&_0.rotation),
+		ignore_entities: ::core::clone::Clone::clone(&_0.ignore_entities),
+		status: ::core::clone::Clone::clone(&_0.status),
+		error_message: super::super::super::option_9::view(&_0.error_message),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_server::PacketTestInstanceBlockAction0) -> Ty<'i> {
-    Ty {
-        test: super::super::super::option_18::view(&mut _0.test),size: ::core::clone::Clone::clone(&mut _0.size),rotation: ::core::clone::Clone::clone(&mut _0.rotation),ignore_entities: ::core::clone::Clone::clone(&mut _0.ignore_entities),status: ::core::clone::Clone::clone(&mut _0.status),error_message: super::super::super::option_9::into_view(&mut _0.error_message)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_server::PacketTestInstanceBlockAction0,
+) -> Ty<'i> {
+	Ty {
+		test: super::super::super::option_18::view(&mut _0.test),
+		size: ::core::clone::Clone::clone(&mut _0.size),
+		rotation: ::core::clone::Clone::clone(&mut _0.rotation),
+		ignore_entities: ::core::clone::Clone::clone(&mut _0.ignore_entities),
+		status: ::core::clone::Clone::clone(&mut _0.status),
+		error_message: super::super::super::option_9::into_view(&mut _0.error_message),
+	}
 }
- pub type Ty<'i> = PacketTestInstanceBlockAction0<'i>;
+pub type Ty<'i> = PacketTestInstanceBlockAction0<'i>;

@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntity {
-    pub entity_id: super::super::super::super::I32,
-    pub r#type: super::super::super::super::I8,
-    pub x: super::super::super::super::I32,
-    pub y: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub object_data: super::PacketSpawnEntity4,
+	pub entity_id: super::super::super::super::I32,
+	pub r#type: super::super::super::super::I8,
+	pub x: super::super::super::super::I32,
+	pub y: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub object_data: super::PacketSpawnEntity4,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::packet_spawn_entity_4::serialize(
-        &_0.object_data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.r#type, output)?;
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.y, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::packet_spawn_entity_4::serialize(&_0.object_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(21)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_objectData = super::packet_spawn_entity_4::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,r#type: f_type,x: f_x,y: f_y,z: f_z,object_data: f_objectData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(21)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_type = super::super::super::super::i8::deserialize(input)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_y = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_objectData = super::packet_spawn_entity_4::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		r#type: f_type,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		object_data: f_objectData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.y
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::packet_spawn_entity_4::size_of(
-        &_0.object_data
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.r#type)
+		+ super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.y)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::packet_spawn_entity_4::size_of(&_0.object_data)
 }
- pub type Ty = PacketSpawnEntity;
+pub type Ty = PacketSpawnEntity;

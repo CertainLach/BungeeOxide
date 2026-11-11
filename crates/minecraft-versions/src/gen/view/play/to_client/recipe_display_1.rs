@@ -3,82 +3,60 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RecipeDisplay1<'i> {
-    pub width: super::super::super::super::Varint,
-    pub height: super::super::super::super::Varint,
-    pub ingredients: super::super::super::array::Inline55::<'i>,
-    pub result: super::SlotDisplay::<'i>,
-    pub crafting_station: super::SlotDisplay::<'i>,
+	pub width: super::super::super::super::Varint,
+	pub height: super::super::super::super::Varint,
+	pub ingredients: super::super::super::array::Inline55<'i>,
+	pub result: super::SlotDisplay<'i>,
+	pub crafting_station: super::SlotDisplay<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.width,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.height,
-        output,
-    )?;
-    super::super::super::array::inline_55::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.result,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.crafting_station,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.width, output)?;
+	super::super::super::super::varint::serialize(&_0.height, output)?;
+	super::super::super::array::inline_55::serialize(&_0.ingredients, output)?;
+	super::slot_display::serialize_guarded(&_0.result, output)?;
+	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(5)?;
-    let f_width = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_height = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ingredients = super::super::super::array::inline_55::deserialize(
-        input,
-    )?;
-    let f_result = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_craftingStation = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        width: f_width,height: f_height,ingredients: f_ingredients,result: f_result,crafting_station: f_craftingStation
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(5)?;
+	let f_width = super::super::super::super::varint::deserialize(input)?;
+	let f_height = super::super::super::super::varint::deserialize(input)?;
+	let f_ingredients = super::super::super::array::inline_55::deserialize(input)?;
+	let f_result = super::slot_display::deserialize_guarded(input)?;
+	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		width: f_width,
+		height: f_height,
+		ingredients: f_ingredients,
+		result: f_result,
+		crafting_station: f_craftingStation,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.width
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.height
-    )
-    + super::super::super::array::inline_55::size_of(
-        &_0.ingredients
-    )
-    + super::slot_display::size_of(
-        &_0.result
-    )
-    + super::slot_display::size_of(
-        &_0.crafting_station
-    )
+	0 + super::super::super::super::varint::size_of(&_0.width)
+		+ super::super::super::super::varint::size_of(&_0.height)
+		+ super::super::super::array::inline_55::size_of(&_0.ingredients)
+		+ super::slot_display::size_of(&_0.result)
+		+ super::slot_display::size_of(&_0.crafting_station)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::RecipeDisplay1) -> Ty<'i> {
-    Ty {
-        width: ::core::clone::Clone::clone(&_0.width),height: ::core::clone::Clone::clone(&_0.height),ingredients: super::super::super::array::inline_55::view(&_0.ingredients),result: super::slot_display::view(&_0.result),crafting_station: super::slot_display::view(&_0.crafting_station)
-    }
+	Ty {
+		width: ::core::clone::Clone::clone(&_0.width),
+		height: ::core::clone::Clone::clone(&_0.height),
+		ingredients: super::super::super::array::inline_55::view(&_0.ingredients),
+		result: super::slot_display::view(&_0.result),
+		crafting_station: super::slot_display::view(&_0.crafting_station),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::RecipeDisplay1) -> Ty<'i> {
-    Ty {
-        width: ::core::clone::Clone::clone(&mut _0.width),height: ::core::clone::Clone::clone(&mut _0.height),ingredients: super::super::super::array::inline_55::into_view(&mut _0.ingredients),result: super::slot_display::into_view(&mut _0.result),crafting_station: super::slot_display::into_view(&mut _0.crafting_station)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::RecipeDisplay1,
+) -> Ty<'i> {
+	Ty {
+		width: ::core::clone::Clone::clone(&mut _0.width),
+		height: ::core::clone::Clone::clone(&mut _0.height),
+		ingredients: super::super::super::array::inline_55::into_view(&mut _0.ingredients),
+		result: super::slot_display::into_view(&mut _0.result),
+		crafting_station: super::slot_display::into_view(&mut _0.crafting_station),
+	}
 }
- pub type Ty<'i> = RecipeDisplay1<'i>;
+pub type Ty<'i> = RecipeDisplay1<'i>;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes9 {
-    pub group: String,
-    pub category: super::super::super::super::Varint,
-    pub ingredients: Vec<Vec<super::super::super::Slot>>,
-    pub result: super::super::super::Slot,
+	pub group: String,
+	pub category: super::super::super::super::Varint,
+	pub ingredients: Vec<Vec<super::super::super::Slot>>,
+	pub result: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.category,
-        output,
-    )?;
-    super::super::super::super::array::inline_78::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::super::super::slot::serialize_guarded(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::super::super::varint::serialize(&_0.category, output)?;
+	super::super::super::super::array::inline_78::serialize(&_0.ingredients, output)?;
+	super::super::super::slot::serialize_guarded(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_group = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_category = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ingredients = super::super::super::super::array::inline_78::deserialize(
-        input,
-    )?;
-    let f_result = super::super::super::slot::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        group: f_group,category: f_category,ingredients: f_ingredients,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_group = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_category = super::super::super::super::varint::deserialize(input)?;
+	let f_ingredients = super::super::super::super::array::inline_78::deserialize(input)?;
+	let f_result = super::super::super::slot::deserialize_guarded(input)?;
+	Ok(Ty {
+		group: f_group,
+		category: f_category,
+		ingredients: f_ingredients,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.category
-    )
-    + super::super::super::super::array::inline_78::size_of(
-        &_0.ingredients
-    )
-    + super::super::super::slot::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.group)
+		+ super::super::super::super::varint::size_of(&_0.category)
+		+ super::super::super::super::array::inline_78::size_of(&_0.ingredients)
+		+ super::super::super::slot::size_of(&_0.result)
 }
- pub type Ty = PacketDeclareRecipes9;
+pub type Ty = PacketDeclareRecipes9;

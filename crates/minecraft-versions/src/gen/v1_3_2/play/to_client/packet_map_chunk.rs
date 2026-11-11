@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMapChunk {
-    pub x: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub ground_up: super::super::super::super::Bool,
-    pub bit_map: super::super::super::super::U16,
-    pub add_bit_map: super::super::super::super::U16,
-    pub compressed_chunk_data: Vec<u8>,
+	pub x: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub ground_up: super::super::super::super::Bool,
+	pub bit_map: super::super::super::super::U16,
+	pub add_bit_map: super::super::super::super::U16,
+	pub compressed_chunk_data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.ground_up,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.bit_map,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.add_bit_map,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_1::serialize(
-        &_0.compressed_chunk_data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::bool::serialize(&_0.ground_up, output)?;
+	super::super::super::super::u16::serialize(&_0.bit_map, output)?;
+	super::super::super::super::u16::serialize(&_0.add_bit_map, output)?;
+	super::super::super::super::buffer::inline_1::serialize(&_0.compressed_chunk_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(17)?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_groundUp = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_bitMap = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_addBitMap = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_compressedChunkData = super::super::super::super::buffer::inline_1::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,z: f_z,ground_up: f_groundUp,bit_map: f_bitMap,add_bit_map: f_addBitMap,compressed_chunk_data: f_compressedChunkData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(17)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_groundUp = super::super::super::super::bool::deserialize(input)?;
+	let f_bitMap = super::super::super::super::u16::deserialize(input)?;
+	let f_addBitMap = super::super::super::super::u16::deserialize(input)?;
+	let f_compressedChunkData = super::super::super::super::buffer::inline_1::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		z: f_z,
+		ground_up: f_groundUp,
+		bit_map: f_bitMap,
+		add_bit_map: f_addBitMap,
+		compressed_chunk_data: f_compressedChunkData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.ground_up
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.bit_map
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.add_bit_map
-    )
-    + super::super::super::super::buffer::inline_1::size_of(
-        &_0.compressed_chunk_data
-    )
+	0 + super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::bool::size_of(&_0.ground_up)
+		+ super::super::super::super::u16::size_of(&_0.bit_map)
+		+ super::super::super::super::u16::size_of(&_0.add_bit_map)
+		+ super::super::super::super::buffer::inline_1::size_of(&_0.compressed_chunk_data)
 }
- pub type Ty = PacketMapChunk;
+pub type Ty = PacketMapChunk;

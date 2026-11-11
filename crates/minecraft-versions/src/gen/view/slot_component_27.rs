@@ -3,42 +3,48 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent27<'i> {
-    Id(super::super::Varint),
-    Inline(super::EntityMetadataPaintingVariant::<'i>),
+	Id(super::super::Varint),
+	Inline(super::EntityMetadataPaintingVariant<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::varint::serialize(&0, output)?;
-            super::entity_metadata_painting_variant::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::varint::serialize(&0, output)?;
+			super::entity_metadata_painting_variant::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let n = super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::entity_metadata_painting_variant::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let n = super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::entity_metadata_painting_variant::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::varint::size_of(&0) + super::entity_metadata_painting_variant::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => {
+			super::super::varint::size_of(&0) + super::entity_metadata_painting_variant::size_of(v)
+		}
+	}
 }
 pub fn view<'i>(_0: &'i super::super::SlotComponent27) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent27::Id(id) => Ty::Id(*id),
-        super::super::SlotComponent27::Inline(v) => Ty::Inline(super::entity_metadata_painting_variant::view(v)),
-    }
+	match _0 {
+		super::super::SlotComponent27::Id(id) => Ty::Id(*id),
+		super::super::SlotComponent27::Inline(v) => {
+			Ty::Inline(super::entity_metadata_painting_variant::view(v))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent27) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent27::Id(id) => Ty::Id(*id),
-        super::super::SlotComponent27::Inline(v) => Ty::Inline(super::entity_metadata_painting_variant::into_view(v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent27) -> Ty<'i> {
+	match _0 {
+		super::super::SlotComponent27::Id(id) => Ty::Id(*id),
+		super::super::SlotComponent27::Inline(v) => {
+			Ty::Inline(super::entity_metadata_painting_variant::into_view(v))
+		}
+	}
 }
- pub type Ty<'i> = SlotComponent27<'i>;
+pub type Ty<'i> = SlotComponent27<'i>;

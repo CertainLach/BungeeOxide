@@ -3,26 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct MovementFlags {
-    pub on_ground: super::super::super::Bool,
-    pub has_horizontal_collision: super::super::super::Bool,
+	pub on_ground: super::super::super::Bool,
+	pub has_horizontal_collision: super::super::super::Bool,
 }
 fn pack(_0: &Ty) -> u64 {
-    let mut acc: u64 = 0;
-    if _0.on_ground { acc |= 0x1; }
-    if _0.has_horizontal_collision { acc |= 0x2; }
-    acc
+	let mut acc: u64 = 0;
+	if _0.on_ground {
+		acc |= 0x1;
+	}
+	if _0.has_horizontal_collision {
+		acc |= 0x2;
+	}
+	acc
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::u8::serialize(&(pack(_0) as super::super::super::U8), output)
+	super::super::super::u8::serialize(&(pack(_0) as super::super::super::U8), output)
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let acc = super::super::super::u8::deserialize(input)? as u64;
-    Ok(Ty {
-        on_ground: acc & 0x1 != 0,
-        has_horizontal_collision: acc & 0x2 != 0,
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let acc = super::super::super::u8::deserialize(input)? as u64;
+	Ok(Ty {
+		on_ground: acc & 0x1 != 0,
+		has_horizontal_collision: acc & 0x2 != 0,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::u8::size_of(&(pack(_0) as super::super::super::U8))
+	super::super::super::u8::size_of(&(pack(_0) as super::super::super::U8))
 }
- pub type Ty = MovementFlags;
+pub type Ty = MovementFlags;

@@ -3,51 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Particle5 {
-    Block(super::super::Position),
-    Entity(super::Particle4),
-    Default(super::super::Varint),
+	Block(super::super::Position),
+	Entity(super::Particle4),
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Block(__v) => super::super::position::serialize(__v, output),
-        Ty::Entity(__v) => super::particle_4::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Block(__v) => super::super::position::serialize(__v, output),
+		Ty::Entity(__v) => super::particle_4::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::Block(super::super::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::Entity(super::particle_4::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Block(super::super::position::deserialize(input)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Entity(super::particle_4::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Block(__v) => super::super::position::size_of(__v),
-        Ty::Entity(__v) => super::particle_4::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Block(__v) => super::super::position::size_of(__v),
+			Ty::Entity(__v) => super::particle_4::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Block(_) => "block",
-        Ty::Entity(_) => "entity",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Block(_) => "block",
+		Ty::Entity(_) => "entity",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::Block(_) => 0_i32,
-        Ty::Entity(_) => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Block(_) => 0_i32,
+		Ty::Entity(_) => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Particle5;
+pub type Ty = Particle5;

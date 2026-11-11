@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugStructureInfo2 {
-    pub bounding_box_min: super::Position,
-    pub bounding_box_max: super::Position,
-    pub is_start: super::Bool,
+	pub bounding_box_min: super::Position,
+	pub bounding_box_max: super::Position,
+	pub is_start: super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::position::serialize(
-        &_0.bounding_box_min,
-        output,
-    )?;
-    super::position::serialize(
-        &_0.bounding_box_max,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.is_start,
-        output,
-    )?;
-    Ok(())
+	super::position::serialize(&_0.bounding_box_min, output)?;
+	super::position::serialize(&_0.bounding_box_max, output)?;
+	super::bool::serialize(&_0.is_start, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(17)?;
-    let f_boundingBoxMin = super::position::deserialize(
-        input,
-    )?;
-    let f_boundingBoxMax = super::position::deserialize(
-        input,
-    )?;
-    let f_isStart = super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        bounding_box_min: f_boundingBoxMin,bounding_box_max: f_boundingBoxMax,is_start: f_isStart
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(17)?;
+	let f_boundingBoxMin = super::position::deserialize(input)?;
+	let f_boundingBoxMax = super::position::deserialize(input)?;
+	let f_isStart = super::bool::deserialize(input)?;
+	Ok(Ty {
+		bounding_box_min: f_boundingBoxMin,
+		bounding_box_max: f_boundingBoxMax,
+		is_start: f_isStart,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::position::size_of(
-        &_0.bounding_box_min
-    )
-    + super::position::size_of(
-        &_0.bounding_box_max
-    )
-    + super::bool::size_of(
-        &_0.is_start
-    )
+	0 + super::position::size_of(&_0.bounding_box_min)
+		+ super::position::size_of(&_0.bounding_box_max)
+		+ super::bool::size_of(&_0.is_start)
 }
- pub type Ty = DebugStructureInfo2;
+pub type Ty = DebugStructureInfo2;

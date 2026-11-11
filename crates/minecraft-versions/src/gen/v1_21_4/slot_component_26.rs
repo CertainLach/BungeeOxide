@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent26 {
-    pub color: super::super::I32,
-    pub show_tooltip: super::super::Bool,
+	pub color: super::super::I32,
+	pub show_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i32::serialize(
-        &_0.color,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::super::i32::serialize(&_0.color, output)?;
+	super::super::bool::serialize(&_0.show_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_color = super::super::i32::deserialize(
-        input,
-    )?;
-    let f_showTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        color: f_color,show_tooltip: f_showTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_color = super::super::i32::deserialize(input)?;
+	let f_showTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		color: f_color,
+		show_tooltip: f_showTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::i32::size_of(
-        &_0.color
-    )
-    + super::super::bool::size_of(
-        &_0.show_tooltip
-    )
+	0 + super::super::i32::size_of(&_0.color) + super::super::bool::size_of(&_0.show_tooltip)
 }
- pub type Ty = SlotComponent26;
+pub type Ty = SlotComponent26;

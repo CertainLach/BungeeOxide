@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDebugEntityValue {
-    pub entity_id: super::super::super::Varint,
-    pub update: super::super::super::DebugSubscriptionUpdate,
+	pub entity_id: super::super::super::Varint,
+	pub update: super::super::super::DebugSubscriptionUpdate,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::debug_subscription_update::serialize(
-        &_0.update,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::debug_subscription_update::serialize(&_0.update, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_update = super::super::super::debug_subscription_update::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,update: f_update
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_update = super::super::super::debug_subscription_update::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		update: f_update,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::debug_subscription_update::size_of(
-        &_0.update
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::debug_subscription_update::size_of(&_0.update)
 }
- pub type Ty = PacketDebugEntityValue;
+pub type Ty = PacketDebugEntityValue;

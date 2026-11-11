@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketFacePlayer19 {
-    pub entity_id: super::super::super::Varint,
-    pub entity_feet_eyes: super::super::super::Varint,
+	pub entity_id: super::super::super::Varint,
+	pub entity_feet_eyes: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.entity_feet_eyes,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::varint::serialize(&_0.entity_feet_eyes, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_entity_feet_eyes = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,entity_feet_eyes: f_entity_feet_eyes
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_entity_feet_eyes = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		entity_feet_eyes: f_entity_feet_eyes,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.entity_feet_eyes
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::varint::size_of(&_0.entity_feet_eyes)
 }
- pub type Ty = PacketFacePlayer19;
+pub type Ty = PacketFacePlayer19;

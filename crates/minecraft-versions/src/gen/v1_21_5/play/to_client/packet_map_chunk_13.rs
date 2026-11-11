@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMapChunk13 {
-    pub r#type: super::super::super::super::Varint,
-    pub data: Vec<super::super::super::super::I64>,
+	pub r#type: super::super::super::super::Varint,
+	pub data: Vec<super::super::super::super::I64>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_type = super::super::super::super::varint::deserialize(input)?;
+	let f_data = super::super::super::super::array::inline_51::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::super::array::inline_51::size_of(&_0.data)
 }
- pub type Ty = PacketMapChunk13;
+pub type Ty = PacketMapChunk13;

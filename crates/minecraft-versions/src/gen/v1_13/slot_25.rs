@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Slot25 {
-    pub item_count: super::super::I8,
-    pub nbt_data: super::super::OptionalNbt,
+	pub item_count: super::super::I8,
+	pub nbt_data: super::super::OptionalNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i8::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::super::optional_nbt::serialize(
-        &_0.nbt_data,
-        output,
-    )?;
-    Ok(())
+	super::super::i8::serialize(&_0.item_count, output)?;
+	super::super::optional_nbt::serialize(&_0.nbt_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_itemCount = super::super::i8::deserialize(
-        input,
-    )?;
-    let f_nbtData = super::super::optional_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_count: f_itemCount,nbt_data: f_nbtData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_itemCount = super::super::i8::deserialize(input)?;
+	let f_nbtData = super::super::optional_nbt::deserialize(input)?;
+	Ok(Ty {
+		item_count: f_itemCount,
+		nbt_data: f_nbtData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::i8::size_of(
-        &_0.item_count
-    )
-    + super::super::optional_nbt::size_of(
-        &_0.nbt_data
-    )
+	0 + super::super::i8::size_of(&_0.item_count)
+		+ super::super::optional_nbt::size_of(&_0.nbt_data)
 }
- pub type Ty = Slot25;
+pub type Ty = Slot25;

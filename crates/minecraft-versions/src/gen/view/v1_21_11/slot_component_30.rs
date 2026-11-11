@@ -3,66 +3,43 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent30<'i> {
-    pub deals_knockback: super::super::super::Bool,
-    pub dismounts: super::super::super::Bool,
-    pub sound: super::super::Option5::<'i>,
-    pub hit_sound: super::super::Option5::<'i>,
+	pub deals_knockback: super::super::super::Bool,
+	pub dismounts: super::super::super::Bool,
+	pub sound: super::super::Option5<'i>,
+	pub hit_sound: super::super::Option5<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::bool::serialize(
-        &_0.deals_knockback,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.dismounts,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.sound,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.hit_sound,
-        output,
-    )?;
-    Ok(())
+	super::super::super::bool::serialize(&_0.deals_knockback, output)?;
+	super::super::super::bool::serialize(&_0.dismounts, output)?;
+	super::super::option_5::serialize(&_0.sound, output)?;
+	super::super::option_5::serialize(&_0.hit_sound, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_dealsKnockback = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_dismounts = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_sound = super::super::option_5::deserialize(
-        input,
-    )?;
-    let f_hitSound = super::super::option_5::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        deals_knockback: f_dealsKnockback,dismounts: f_dismounts,sound: f_sound,hit_sound: f_hitSound
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_dealsKnockback = super::super::super::bool::deserialize(input)?;
+	let f_dismounts = super::super::super::bool::deserialize(input)?;
+	let f_sound = super::super::option_5::deserialize(input)?;
+	let f_hitSound = super::super::option_5::deserialize(input)?;
+	Ok(Ty {
+		deals_knockback: f_dealsKnockback,
+		dismounts: f_dismounts,
+		sound: f_sound,
+		hit_sound: f_hitSound,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::bool::size_of(
-        &_0.deals_knockback
-    )
-    + super::super::super::bool::size_of(
-        &_0.dismounts
-    )
-    + super::super::option_5::size_of(
-        &_0.sound
-    )
-    + super::super::option_5::size_of(
-        &_0.hit_sound
-    )
+	0 + super::super::super::bool::size_of(&_0.deals_knockback)
+		+ super::super::super::bool::size_of(&_0.dismounts)
+		+ super::super::option_5::size_of(&_0.sound)
+		+ super::super::option_5::size_of(&_0.hit_sound)
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent30) -> Ty<'i> {
-    Ty {
-        deals_knockback: ::core::clone::Clone::clone(&_0.deals_knockback),dismounts: ::core::clone::Clone::clone(&_0.dismounts),sound: super::super::option_5::view(&_0.sound),hit_sound: super::super::option_5::view(&_0.hit_sound)
-    }
+	Ty {
+		deals_knockback: ::core::clone::Clone::clone(&_0.deals_knockback),
+		dismounts: ::core::clone::Clone::clone(&_0.dismounts),
+		sound: super::super::option_5::view(&_0.sound),
+		hit_sound: super::super::option_5::view(&_0.hit_sound),
+	}
 }
- pub type Ty<'i> = SlotComponent30<'i>;
+pub type Ty<'i> = SlotComponent30<'i>;

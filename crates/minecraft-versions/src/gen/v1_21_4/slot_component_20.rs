@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent20 {
-    pub blocks: super::super::IdSet,
-    pub speed: Option<super::super::F32>,
-    pub correct_drop_for_blocks: Option<super::super::Bool>,
+	pub blocks: super::super::IdSet,
+	pub speed: Option<super::super::F32>,
+	pub correct_drop_for_blocks: Option<super::super::Bool>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::id_set::serialize(
-        &_0.blocks,
-        output,
-    )?;
-    super::super::option_12::serialize(
-        &_0.speed,
-        output,
-    )?;
-    super::super::option_10::serialize(
-        &_0.correct_drop_for_blocks,
-        output,
-    )?;
-    Ok(())
+	super::super::id_set::serialize(&_0.blocks, output)?;
+	super::super::option_12::serialize(&_0.speed, output)?;
+	super::super::option_10::serialize(&_0.correct_drop_for_blocks, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_blocks = super::super::id_set::deserialize(
-        input,
-    )?;
-    let f_speed = super::super::option_12::deserialize(
-        input,
-    )?;
-    let f_correctDropForBlocks = super::super::option_10::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        blocks: f_blocks,speed: f_speed,correct_drop_for_blocks: f_correctDropForBlocks
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_blocks = super::super::id_set::deserialize(input)?;
+	let f_speed = super::super::option_12::deserialize(input)?;
+	let f_correctDropForBlocks = super::super::option_10::deserialize(input)?;
+	Ok(Ty {
+		blocks: f_blocks,
+		speed: f_speed,
+		correct_drop_for_blocks: f_correctDropForBlocks,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::id_set::size_of(
-        &_0.blocks
-    )
-    + super::super::option_12::size_of(
-        &_0.speed
-    )
-    + super::super::option_10::size_of(
-        &_0.correct_drop_for_blocks
-    )
+	0 + super::super::id_set::size_of(&_0.blocks)
+		+ super::super::option_12::size_of(&_0.speed)
+		+ super::super::option_10::size_of(&_0.correct_drop_for_blocks)
 }
- pub type Ty = SlotComponent20;
+pub type Ty = SlotComponent20;

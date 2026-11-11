@@ -3,67 +3,76 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketStopSound<'i> {
-    V1(super::super::super::super::Varint),
-    V2(super::super::super::Pstring96::<'i>),
-    V3(super::PacketStopSound40::<'i>),
-    Default(super::super::super::super::I8),
+	V1(super::super::super::super::Varint),
+	V2(super::super::super::Pstring96<'i>),
+	V3(super::PacketStopSound40<'i>),
+	Default(super::super::super::super::I8),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V1(__v) => super::super::super::super::varint::serialize(__v, output),
-        Ty::V2(__v) => super::super::super::pstring_96::serialize(__v, output),
-        Ty::V3(__v) => super::packet_stop_sound_40::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V1(__v) => super::super::super::super::varint::serialize(__v, output),
+		Ty::V2(__v) => super::super::super::pstring_96::serialize(__v, output),
+		Ty::V3(__v) => super::packet_stop_sound_40::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 1_i8) {
-        return Ok(Ty::V1(super::super::super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i8) {
-        return Ok(Ty::V2(super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i8) {
-        return Ok(Ty::V3(super::packet_stop_sound_40::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::i8::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 1_i8) {
+		return Ok(Ty::V1(super::super::super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 2_i8) {
+		return Ok(Ty::V2(super::super::super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i8) {
+		return Ok(Ty::V3(super::packet_stop_sound_40::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V1(__v) => super::super::super::super::varint::size_of(__v),
-        Ty::V2(__v) => super::super::super::pstring_96::size_of(__v),
-        Ty::V3(__v) => super::packet_stop_sound_40::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::i8::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V1(__v) => super::super::super::super::varint::size_of(__v),
+			Ty::V2(__v) => super::super::super::pstring_96::size_of(__v),
+			Ty::V3(__v) => super::packet_stop_sound_40::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::V1(_) => "v1",
-        Ty::V2(_) => "v2",
-        Ty::V3(_) => "v3",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V1(_) => "v1",
+		Ty::V2(_) => "v2",
+		Ty::V3(_) => "v3",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::super::I8 {
-    match _0 {
-        Ty::V1(_) => 1_i8,
-        Ty::V2(_) => 2_i8,
-        Ty::V3(_) => 3_i8,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V1(_) => 1_i8,
+		Ty::V2(_) => 2_i8,
+		Ty::V3(_) => 3_i8,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketStopSound) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::play::to_client::PacketStopSound::V1(__v) => Ty::V1(::core::clone::Clone::clone(__v)),
-        super::super::super::super::play::to_client::PacketStopSound::V2(__v) => Ty::V2(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::play::to_client::PacketStopSound::V3(__v) => Ty::V3(super::packet_stop_sound_40::view(__v)),
-        super::super::super::super::play::to_client::PacketStopSound::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::super::super::play::to_client::PacketStopSound::V1(__v) => {
+			Ty::V1(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::play::to_client::PacketStopSound::V2(__v) => {
+			Ty::V2(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::play::to_client::PacketStopSound::V3(__v) => {
+			Ty::V3(super::packet_stop_sound_40::view(__v))
+		}
+		super::super::super::super::play::to_client::PacketStopSound::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = PacketStopSound<'i>;
+pub type Ty<'i> = PacketStopSound<'i>;

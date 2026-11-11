@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent46 {
-    pub horizontal_blocking_angle: super::F32,
-    pub r#type: Option<super::IdSet>,
-    pub base: super::F32,
-    pub factor: super::F32,
+	pub horizontal_blocking_angle: super::F32,
+	pub r#type: Option<super::IdSet>,
+	pub base: super::F32,
+	pub factor: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.horizontal_blocking_angle,
-        output,
-    )?;
-    super::option_3::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.base,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.factor,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.horizontal_blocking_angle, output)?;
+	super::option_3::serialize(&_0.r#type, output)?;
+	super::f32::serialize(&_0.base, output)?;
+	super::f32::serialize(&_0.factor, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_horizontalBlockingAngle = super::f32::deserialize(
-        input,
-    )?;
-    let f_type = super::option_3::deserialize(
-        input,
-    )?;
-    let f_base = super::f32::deserialize(
-        input,
-    )?;
-    let f_factor = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        horizontal_blocking_angle: f_horizontalBlockingAngle,r#type: f_type,base: f_base,factor: f_factor
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_horizontalBlockingAngle = super::f32::deserialize(input)?;
+	let f_type = super::option_3::deserialize(input)?;
+	let f_base = super::f32::deserialize(input)?;
+	let f_factor = super::f32::deserialize(input)?;
+	Ok(Ty {
+		horizontal_blocking_angle: f_horizontalBlockingAngle,
+		r#type: f_type,
+		base: f_base,
+		factor: f_factor,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.horizontal_blocking_angle
-    )
-    + super::option_3::size_of(
-        &_0.r#type
-    )
-    + super::f32::size_of(
-        &_0.base
-    )
-    + super::f32::size_of(
-        &_0.factor
-    )
+	0 + super::f32::size_of(&_0.horizontal_blocking_angle)
+		+ super::option_3::size_of(&_0.r#type)
+		+ super::f32::size_of(&_0.base)
+		+ super::f32::size_of(&_0.factor)
 }
- pub type Ty = SlotComponent46;
+pub type Ty = SlotComponent46;

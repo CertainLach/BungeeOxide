@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataEntry97 {
-    pub villager_type: super::Varint,
-    pub villager_profession: super::Varint,
-    pub level: super::Varint,
+	pub villager_type: super::Varint,
+	pub villager_profession: super::Varint,
+	pub level: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.villager_type,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.villager_profession,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.level,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.villager_type, output)?;
+	super::varint::serialize(&_0.villager_profession, output)?;
+	super::varint::serialize(&_0.level, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_villagerType = super::varint::deserialize(
-        input,
-    )?;
-    let f_villagerProfession = super::varint::deserialize(
-        input,
-    )?;
-    let f_level = super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        villager_type: f_villagerType,villager_profession: f_villagerProfession,level: f_level
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_villagerType = super::varint::deserialize(input)?;
+	let f_villagerProfession = super::varint::deserialize(input)?;
+	let f_level = super::varint::deserialize(input)?;
+	Ok(Ty {
+		villager_type: f_villagerType,
+		villager_profession: f_villagerProfession,
+		level: f_level,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.villager_type
-    )
-    + super::varint::size_of(
-        &_0.villager_profession
-    )
-    + super::varint::size_of(
-        &_0.level
-    )
+	0 + super::varint::size_of(&_0.villager_type)
+		+ super::varint::size_of(&_0.villager_profession)
+		+ super::varint::size_of(&_0.level)
 }
- pub type Ty = EntityMetadataEntry97;
+pub type Ty = EntityMetadataEntry97;

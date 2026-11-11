@@ -3,39 +3,21 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWorldBorderCenter {
-    pub x: super::super::super::F64,
-    pub z: super::super::super::F64,
+	pub x: super::super::super::F64,
+	pub z: super::super::super::F64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::f64::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(16)?;
-    let f_x = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(16)?;
+	let f_x = super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::f64::deserialize(input)?;
+	Ok(Ty { x: f_x, z: f_z })
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::f64::size_of(
-        &_0.z
-    )
+	0 + super::super::super::f64::size_of(&_0.x) + super::super::super::f64::size_of(&_0.z)
 }
- pub type Ty = PacketWorldBorderCenter;
+pub type Ty = PacketWorldBorderCenter;

@@ -3,42 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommandSigned0 {
-    pub argument_name: String,
-    pub signature: Vec<u8>,
+	pub argument_name: String,
+	pub signature: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.argument_name,
-        output,
-    )?;
-    super::super::super::super::buffer::sized::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.argument_name, output)?;
+	super::super::super::super::buffer::sized::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_argumentName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::buffer::sized::deserialize(
-        input,
-        super::super::super::super::buffer::sized::Args {
-            count: &(256).try_into().expect("constant fits")
-        },
-    )?;
-    Ok(Ty {
-        argument_name: f_argumentName,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_argumentName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_signature = super::super::super::super::buffer::sized::deserialize(
+		input,
+		super::super::super::super::buffer::sized::Args {
+			count: &(256).try_into().expect("constant fits"),
+		},
+	)?;
+	Ok(Ty {
+		argument_name: f_argumentName,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.argument_name
-    )
-    + super::super::super::super::buffer::sized::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.argument_name)
+		+ super::super::super::super::buffer::sized::size_of(&_0.signature)
 }
- pub type Ty = PacketChatCommandSigned0;
+pub type Ty = PacketChatCommandSigned0;

@@ -3,149 +3,75 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerChat {
-    pub sender_uuid: super::super::super::super::Uuid,
-    pub index: super::super::super::super::Varint,
-    pub signature: Option<Vec<u8>>,
-    pub plain_message: String,
-    pub timestamp: super::super::super::super::I64,
-    pub salt: super::super::super::super::I64,
-    pub previous_messages: Vec<super::super::super::super::PreviousMessages102>,
-    pub unsigned_chat_content: Option<String>,
-    pub filter_type_mask: super::PacketPlayerChat8,
-    pub r#type: super::super::super::super::Varint,
-    pub network_name: String,
-    pub network_target_name: Option<String>,
+	pub sender_uuid: super::super::super::super::Uuid,
+	pub index: super::super::super::super::Varint,
+	pub signature: Option<Vec<u8>>,
+	pub plain_message: String,
+	pub timestamp: super::super::super::super::I64,
+	pub salt: super::super::super::super::I64,
+	pub previous_messages: Vec<super::super::super::super::PreviousMessages102>,
+	pub unsigned_chat_content: Option<String>,
+	pub filter_type_mask: super::PacketPlayerChat8,
+	pub r#type: super::super::super::super::Varint,
+	pub network_name: String,
+	pub network_target_name: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.sender_uuid,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.index,
-        output,
-    )?;
-    super::super::super::super::option_11::serialize(
-        &_0.signature,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.plain_message,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.salt,
-        output,
-    )?;
-    super::super::super::super::array::inline_148::serialize(
-        &_0.previous_messages,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.unsigned_chat_content,
-        output,
-    )?;
-    super::packet_player_chat_8::serialize(
-        &_0.filter_type_mask,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.network_name,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.network_target_name,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.sender_uuid, output)?;
+	super::super::super::super::varint::serialize(&_0.index, output)?;
+	super::super::super::super::option_11::serialize(&_0.signature, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.plain_message, output)?;
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::i64::serialize(&_0.salt, output)?;
+	super::super::super::super::array::inline_148::serialize(&_0.previous_messages, output)?;
+	super::super::super::super::option_18::serialize(&_0.unsigned_chat_content, output)?;
+	super::packet_player_chat_8::serialize(&_0.filter_type_mask, output)?;
+	super::super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.network_name, output)?;
+	super::super::super::super::option_18::serialize(&_0.network_target_name, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(25)?;
-    let f_senderUuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_index = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::option_11::deserialize(
-        input,
-    )?;
-    let f_plainMessage = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_salt = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_previousMessages = super::super::super::super::array::inline_148::deserialize(
-        input,
-    )?;
-    let f_unsignedChatContent = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_filterTypeMask = super::packet_player_chat_8::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_networkName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_networkTargetName = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        sender_uuid: f_senderUuid,index: f_index,signature: f_signature,plain_message: f_plainMessage,timestamp: f_timestamp,salt: f_salt,previous_messages: f_previousMessages,unsigned_chat_content: f_unsignedChatContent,filter_type_mask: f_filterTypeMask,r#type: f_type,network_name: f_networkName,network_target_name: f_networkTargetName
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(25)?;
+	let f_senderUuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_index = super::super::super::super::varint::deserialize(input)?;
+	let f_signature = super::super::super::super::option_11::deserialize(input)?;
+	let f_plainMessage = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_salt = super::super::super::super::i64::deserialize(input)?;
+	let f_previousMessages = super::super::super::super::array::inline_148::deserialize(input)?;
+	let f_unsignedChatContent = super::super::super::super::option_18::deserialize(input)?;
+	let f_filterTypeMask = super::packet_player_chat_8::deserialize(input)?;
+	let f_type = super::super::super::super::varint::deserialize(input)?;
+	let f_networkName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_networkTargetName = super::super::super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		sender_uuid: f_senderUuid,
+		index: f_index,
+		signature: f_signature,
+		plain_message: f_plainMessage,
+		timestamp: f_timestamp,
+		salt: f_salt,
+		previous_messages: f_previousMessages,
+		unsigned_chat_content: f_unsignedChatContent,
+		filter_type_mask: f_filterTypeMask,
+		r#type: f_type,
+		network_name: f_networkName,
+		network_target_name: f_networkTargetName,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.sender_uuid
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.index
-    )
-    + super::super::super::super::option_11::size_of(
-        &_0.signature
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.plain_message
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.salt
-    )
-    + super::super::super::super::array::inline_148::size_of(
-        &_0.previous_messages
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.unsigned_chat_content
-    )
-    + super::packet_player_chat_8::size_of(
-        &_0.filter_type_mask
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.network_name
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.network_target_name
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.sender_uuid)
+		+ super::super::super::super::varint::size_of(&_0.index)
+		+ super::super::super::super::option_11::size_of(&_0.signature)
+		+ super::super::super::super::pstring_96::size_of(&_0.plain_message)
+		+ super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::i64::size_of(&_0.salt)
+		+ super::super::super::super::array::inline_148::size_of(&_0.previous_messages)
+		+ super::super::super::super::option_18::size_of(&_0.unsigned_chat_content)
+		+ super::packet_player_chat_8::size_of(&_0.filter_type_mask)
+		+ super::super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::super::pstring_96::size_of(&_0.network_name)
+		+ super::super::super::super::option_18::size_of(&_0.network_target_name)
 }
- pub type Ty = PacketPlayerChat;
+pub type Ty = PacketPlayerChat;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMessageHeader {
-    pub previous_signature: Option<Vec<u8>>,
-    pub sender_uuid: super::super::super::super::Uuid,
-    pub signature: Vec<u8>,
-    pub message_hash: Vec<u8>,
+	pub previous_signature: Option<Vec<u8>>,
+	pub sender_uuid: super::super::super::super::Uuid,
+	pub signature: Vec<u8>,
+	pub message_hash: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::option_89::serialize(
-        &_0.previous_signature,
-        output,
-    )?;
-    super::super::super::super::uuid::serialize(
-        &_0.sender_uuid,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.signature,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.message_hash,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::option_89::serialize(&_0.previous_signature, output)?;
+	super::super::super::super::uuid::serialize(&_0.sender_uuid, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.signature, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.message_hash, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_previousSignature = super::super::super::super::option_89::deserialize(
-        input,
-    )?;
-    let f_senderUuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_messageHash = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        previous_signature: f_previousSignature,sender_uuid: f_senderUuid,signature: f_signature,message_hash: f_messageHash
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_previousSignature = super::super::super::super::option_89::deserialize(input)?;
+	let f_senderUuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_signature = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_messageHash = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		previous_signature: f_previousSignature,
+		sender_uuid: f_senderUuid,
+		signature: f_signature,
+		message_hash: f_messageHash,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::option_89::size_of(
-        &_0.previous_signature
-    )
-    + super::super::super::super::uuid::size_of(
-        &_0.sender_uuid
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.signature
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.message_hash
-    )
+	0 + super::super::super::super::option_89::size_of(&_0.previous_signature)
+		+ super::super::super::super::uuid::size_of(&_0.sender_uuid)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.signature)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.message_hash)
 }
- pub type Ty = PacketMessageHeader;
+pub type Ty = PacketMessageHeader;

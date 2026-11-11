@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent36 {
-    pub song: super::SlotComponent35,
-    pub show_in_tooltip: super::super::Bool,
+	pub song: super::SlotComponent35,
+	pub show_in_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_component_35::serialize(
-        &_0.song,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_in_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::slot_component_35::serialize(&_0.song, output)?;
+	super::super::bool::serialize(&_0.show_in_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_song = super::slot_component_35::deserialize(
-        input,
-    )?;
-    let f_showInTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        song: f_song,show_in_tooltip: f_showInTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_song = super::slot_component_35::deserialize(input)?;
+	let f_showInTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		song: f_song,
+		show_in_tooltip: f_showInTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_component_35::size_of(
-        &_0.song
-    )
-    + super::super::bool::size_of(
-        &_0.show_in_tooltip
-    )
+	0 + super::slot_component_35::size_of(&_0.song)
+		+ super::super::bool::size_of(&_0.show_in_tooltip)
 }
- pub type Ty = SlotComponent36;
+pub type Ty = SlotComponent36;

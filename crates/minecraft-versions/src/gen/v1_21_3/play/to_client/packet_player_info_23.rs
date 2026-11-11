@@ -2,135 +2,120 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub action_add_player: &'a super::super::super::super::Bool,
-    pub action_initialize_chat: &'a super::super::super::super::Bool,
-    pub action_update_game_mode: &'a super::super::super::super::Bool,
-    pub action_update_listed: &'a super::super::super::super::Bool,
-    pub action_update_latency: &'a super::super::super::super::Bool,
-    pub action_update_display_name: &'a super::super::super::super::Bool,
-    pub action_update_list_order: &'a super::super::super::super::Bool,
+	pub action_add_player: &'a super::super::super::super::Bool,
+	pub action_initialize_chat: &'a super::super::super::super::Bool,
+	pub action_update_game_mode: &'a super::super::super::super::Bool,
+	pub action_update_listed: &'a super::super::super::super::Bool,
+	pub action_update_latency: &'a super::super::super::super::Bool,
+	pub action_update_display_name: &'a super::super::super::super::Bool,
+	pub action_update_list_order: &'a super::super::super::super::Bool,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo23 {
-    pub uuid: super::super::super::super::Uuid,
-    pub player: super::PacketPlayerInfo16,
-    pub chat_session: super::PacketPlayerInfo17,
-    pub gamemode: super::PacketPlayerInfo18,
-    pub listed: super::PacketPlayerInfo19,
-    pub latency: super::PacketPlayerInfo20,
-    pub display_name: super::PacketPlayerInfo21,
-    pub list_priority: super::PacketPlayerInfo22,
+	pub uuid: super::super::super::super::Uuid,
+	pub player: super::PacketPlayerInfo16,
+	pub chat_session: super::PacketPlayerInfo17,
+	pub gamemode: super::PacketPlayerInfo18,
+	pub listed: super::PacketPlayerInfo19,
+	pub latency: super::PacketPlayerInfo20,
+	pub display_name: super::PacketPlayerInfo21,
+	pub list_priority: super::PacketPlayerInfo22,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::packet_player_info_16::serialize(
-        &_0.player,
-        output,
-    )?;
-    super::packet_player_info_17::serialize(
-        &_0.chat_session,
-        output,
-    )?;
-    super::packet_player_info_18::serialize(
-        &_0.gamemode,
-        output,
-    )?;
-    super::packet_player_info_19::serialize(
-        &_0.listed,
-        output,
-    )?;
-    super::packet_player_info_20::serialize(
-        &_0.latency,
-        output,
-    )?;
-    super::packet_player_info_21::serialize(
-        &_0.display_name,
-        output,
-    )?;
-    super::packet_player_info_22::serialize(
-        &_0.list_priority,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.uuid, output)?;
+	super::packet_player_info_16::serialize(&_0.player, output)?;
+	super::packet_player_info_17::serialize(&_0.chat_session, output)?;
+	super::packet_player_info_18::serialize(&_0.gamemode, output)?;
+	super::packet_player_info_19::serialize(&_0.listed, output)?;
+	super::packet_player_info_20::serialize(&_0.latency, output)?;
+	super::packet_player_info_21::serialize(&_0.display_name, output)?;
+	super::packet_player_info_22::serialize(&_0.list_priority, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let f_uuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_player = super::packet_player_info_16::deserialize(
-        input,
-        super::packet_player_info_16::Args {
-            action_add_player: {let _0 = args.action_add_player;_0}
-        },
-    )?;
-    let f_chatSession = super::packet_player_info_17::deserialize(
-        input,
-        super::packet_player_info_17::Args {
-            action_initialize_chat: {let _0 = args.action_initialize_chat;_0}
-        },
-    )?;
-    let f_gamemode = super::packet_player_info_18::deserialize(
-        input,
-        super::packet_player_info_18::Args {
-            action_update_game_mode: {let _0 = args.action_update_game_mode;_0}
-        },
-    )?;
-    let f_listed = super::packet_player_info_19::deserialize(
-        input,
-        super::packet_player_info_19::Args {
-            action_update_listed: {let _0 = args.action_update_listed;_0}
-        },
-    )?;
-    let f_latency = super::packet_player_info_20::deserialize(
-        input,
-        super::packet_player_info_20::Args {
-            action_update_latency: {let _0 = args.action_update_latency;_0}
-        },
-    )?;
-    let f_displayName = super::packet_player_info_21::deserialize(
-        input,
-        super::packet_player_info_21::Args {
-            action_update_display_name: {let _0 = args.action_update_display_name;_0}
-        },
-    )?;
-    let f_listPriority = super::packet_player_info_22::deserialize(
-        input,
-        super::packet_player_info_22::Args {
-            action_update_list_order: {let _0 = args.action_update_list_order;_0}
-        },
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,player: f_player,chat_session: f_chatSession,gamemode: f_gamemode,listed: f_listed,latency: f_latency,display_name: f_displayName,list_priority: f_listPriority
-    })
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let f_uuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_player = super::packet_player_info_16::deserialize(
+		input,
+		super::packet_player_info_16::Args {
+			action_add_player: {
+				let _0 = args.action_add_player;
+				_0
+			},
+		},
+	)?;
+	let f_chatSession = super::packet_player_info_17::deserialize(
+		input,
+		super::packet_player_info_17::Args {
+			action_initialize_chat: {
+				let _0 = args.action_initialize_chat;
+				_0
+			},
+		},
+	)?;
+	let f_gamemode = super::packet_player_info_18::deserialize(
+		input,
+		super::packet_player_info_18::Args {
+			action_update_game_mode: {
+				let _0 = args.action_update_game_mode;
+				_0
+			},
+		},
+	)?;
+	let f_listed = super::packet_player_info_19::deserialize(
+		input,
+		super::packet_player_info_19::Args {
+			action_update_listed: {
+				let _0 = args.action_update_listed;
+				_0
+			},
+		},
+	)?;
+	let f_latency = super::packet_player_info_20::deserialize(
+		input,
+		super::packet_player_info_20::Args {
+			action_update_latency: {
+				let _0 = args.action_update_latency;
+				_0
+			},
+		},
+	)?;
+	let f_displayName = super::packet_player_info_21::deserialize(
+		input,
+		super::packet_player_info_21::Args {
+			action_update_display_name: {
+				let _0 = args.action_update_display_name;
+				_0
+			},
+		},
+	)?;
+	let f_listPriority = super::packet_player_info_22::deserialize(
+		input,
+		super::packet_player_info_22::Args {
+			action_update_list_order: {
+				let _0 = args.action_update_list_order;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		player: f_player,
+		chat_session: f_chatSession,
+		gamemode: f_gamemode,
+		listed: f_listed,
+		latency: f_latency,
+		display_name: f_displayName,
+		list_priority: f_listPriority,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::packet_player_info_16::size_of(
-        &_0.player
-    )
-    + super::packet_player_info_17::size_of(
-        &_0.chat_session
-    )
-    + super::packet_player_info_18::size_of(
-        &_0.gamemode
-    )
-    + super::packet_player_info_19::size_of(
-        &_0.listed
-    )
-    + super::packet_player_info_20::size_of(
-        &_0.latency
-    )
-    + super::packet_player_info_21::size_of(
-        &_0.display_name
-    )
-    + super::packet_player_info_22::size_of(
-        &_0.list_priority
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.uuid)
+		+ super::packet_player_info_16::size_of(&_0.player)
+		+ super::packet_player_info_17::size_of(&_0.chat_session)
+		+ super::packet_player_info_18::size_of(&_0.gamemode)
+		+ super::packet_player_info_19::size_of(&_0.listed)
+		+ super::packet_player_info_20::size_of(&_0.latency)
+		+ super::packet_player_info_21::size_of(&_0.display_name)
+		+ super::packet_player_info_22::size_of(&_0.list_priority)
 }
- pub type Ty = PacketPlayerInfo23;
+pub type Ty = PacketPlayerInfo23;

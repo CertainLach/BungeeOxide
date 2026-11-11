@@ -3,44 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameProfileNameProp<'i> {
-    pub name: super::Pstring96::<'i>,
-    pub properties: super::array::Inline27::<'i>,
+	pub name: super::Pstring96<'i>,
+	pub properties: super::array::Inline27<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::array::inline_27::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.name, output)?;
+	super::array::inline_27::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_name = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::array::inline_27::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,properties: f_properties
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_name = super::pstring_96::deserialize(input)?;
+	let f_properties = super::array::inline_27::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		properties: f_properties,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::array::inline_27::size_of(
-        &_0.properties
-    )
+	0 + super::pstring_96::size_of(&_0.name) + super::array::inline_27::size_of(&_0.properties)
 }
 pub fn view<'i>(_0: &'i super::super::GameProfileNameProp) -> Ty<'i> {
-    Ty {
-        name: super::pstring_96::view(&_0.name),properties: super::array::inline_27::view(&_0.properties)
-    }
+	Ty {
+		name: super::pstring_96::view(&_0.name),
+		properties: super::array::inline_27::view(&_0.properties),
+	}
 }
- pub type Ty<'i> = GameProfileNameProp<'i>;
+pub type Ty<'i> = GameProfileNameProp<'i>;

@@ -3,95 +3,126 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum RecipeDisplay<'i> {
-    CraftingShapeless(super::RecipeDisplay0::<'i>),
-    CraftingShaped(super::RecipeDisplay1::<'i>),
-    Furnace(super::RecipeDisplay2::<'i>),
-    Stonecutter(super::RecipeDisplay3::<'i>),
-    Smithing(super::RecipeDisplay4::<'i>),
-    Default(super::super::super::super::Varint),
+	CraftingShapeless(super::RecipeDisplay0<'i>),
+	CraftingShaped(super::RecipeDisplay1<'i>),
+	Furnace(super::RecipeDisplay2<'i>),
+	Stonecutter(super::RecipeDisplay3<'i>),
+	Smithing(super::RecipeDisplay4<'i>),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::CraftingShapeless(__v) => super::recipe_display_0::serialize(__v, output),
-        Ty::CraftingShaped(__v) => super::recipe_display_1::serialize(__v, output),
-        Ty::Furnace(__v) => super::recipe_display_2::serialize(__v, output),
-        Ty::Stonecutter(__v) => super::recipe_display_3::serialize(__v, output),
-        Ty::Smithing(__v) => super::recipe_display_4::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::CraftingShapeless(__v) => super::recipe_display_0::serialize(__v, output),
+		Ty::CraftingShaped(__v) => super::recipe_display_1::serialize(__v, output),
+		Ty::Furnace(__v) => super::recipe_display_2::serialize(__v, output),
+		Ty::Stonecutter(__v) => super::recipe_display_3::serialize(__v, output),
+		Ty::Smithing(__v) => super::recipe_display_4::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::CraftingShapeless(super::recipe_display_0::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::CraftingShaped(super::recipe_display_1::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::Furnace(super::recipe_display_2::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::Stonecutter(super::recipe_display_3::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::Smithing(super::recipe_display_4::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::CraftingShapeless(super::recipe_display_0::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::CraftingShaped(super::recipe_display_1::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Furnace(super::recipe_display_2::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Stonecutter(super::recipe_display_3::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Smithing(super::recipe_display_4::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::CraftingShapeless(__v) => super::recipe_display_0::size_of(__v),
-        Ty::CraftingShaped(__v) => super::recipe_display_1::size_of(__v),
-        Ty::Furnace(__v) => super::recipe_display_2::size_of(__v),
-        Ty::Stonecutter(__v) => super::recipe_display_3::size_of(__v),
-        Ty::Smithing(__v) => super::recipe_display_4::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::CraftingShapeless(__v) => super::recipe_display_0::size_of(__v),
+			Ty::CraftingShaped(__v) => super::recipe_display_1::size_of(__v),
+			Ty::Furnace(__v) => super::recipe_display_2::size_of(__v),
+			Ty::Stonecutter(__v) => super::recipe_display_3::size_of(__v),
+			Ty::Smithing(__v) => super::recipe_display_4::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::CraftingShapeless(_) => "crafting_shapeless",
-        Ty::CraftingShaped(_) => "crafting_shaped",
-        Ty::Furnace(_) => "furnace",
-        Ty::Stonecutter(_) => "stonecutter",
-        Ty::Smithing(_) => "smithing",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::CraftingShapeless(_) => "crafting_shapeless",
+		Ty::CraftingShaped(_) => "crafting_shaped",
+		Ty::Furnace(_) => "furnace",
+		Ty::Stonecutter(_) => "stonecutter",
+		Ty::Smithing(_) => "smithing",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::CraftingShapeless(_) => 0_i32,
-        Ty::CraftingShaped(_) => 1_i32,
-        Ty::Furnace(_) => 2_i32,
-        Ty::Stonecutter(_) => 3_i32,
-        Ty::Smithing(_) => 4_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::CraftingShapeless(_) => 0_i32,
+		Ty::CraftingShaped(_) => 1_i32,
+		Ty::Furnace(_) => 2_i32,
+		Ty::Stonecutter(_) => 3_i32,
+		Ty::Smithing(_) => 4_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::RecipeDisplay) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::play::to_client::RecipeDisplay::CraftingShapeless(__v) => Ty::CraftingShapeless(super::recipe_display_0::view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::CraftingShaped(__v) => Ty::CraftingShaped(super::recipe_display_1::view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Furnace(__v) => Ty::Furnace(super::recipe_display_2::view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Stonecutter(__v) => Ty::Stonecutter(super::recipe_display_3::view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Smithing(__v) => Ty::Smithing(super::recipe_display_4::view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::super::super::play::to_client::RecipeDisplay::CraftingShapeless(__v) => {
+			Ty::CraftingShapeless(super::recipe_display_0::view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::CraftingShaped(__v) => {
+			Ty::CraftingShaped(super::recipe_display_1::view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Furnace(__v) => {
+			Ty::Furnace(super::recipe_display_2::view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Stonecutter(__v) => {
+			Ty::Stonecutter(super::recipe_display_3::view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Smithing(__v) => {
+			Ty::Smithing(super::recipe_display_4::view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::RecipeDisplay) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::play::to_client::RecipeDisplay::CraftingShapeless(__v) => Ty::CraftingShapeless(super::recipe_display_0::into_view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::CraftingShaped(__v) => Ty::CraftingShaped(super::recipe_display_1::into_view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Furnace(__v) => Ty::Furnace(super::recipe_display_2::into_view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Stonecutter(__v) => Ty::Stonecutter(super::recipe_display_3::into_view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Smithing(__v) => Ty::Smithing(super::recipe_display_4::into_view(__v)),
-        super::super::super::super::play::to_client::RecipeDisplay::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::RecipeDisplay,
+) -> Ty<'i> {
+	match _0 {
+		super::super::super::super::play::to_client::RecipeDisplay::CraftingShapeless(__v) => {
+			Ty::CraftingShapeless(super::recipe_display_0::into_view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::CraftingShaped(__v) => {
+			Ty::CraftingShaped(super::recipe_display_1::into_view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Furnace(__v) => {
+			Ty::Furnace(super::recipe_display_2::into_view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Stonecutter(__v) => {
+			Ty::Stonecutter(super::recipe_display_3::into_view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Smithing(__v) => {
+			Ty::Smithing(super::recipe_display_4::into_view(__v))
+		}
+		super::super::super::super::play::to_client::RecipeDisplay::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = RecipeDisplay<'i>;
+pub type Ty<'i> = RecipeDisplay<'i>;

@@ -3,59 +3,66 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketTeams46 {
-    Always,
-    Never,
-    PushOtherTeams,
-    PushOwnTeam,
-    Default(super::super::super::Varint),
+	Always,
+	Never,
+	PushOtherTeams,
+	PushOwnTeam,
+	Default(super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Always => Ok(()),
-        Ty::Never => Ok(()),
-        Ty::PushOtherTeams => Ok(()),
-        Ty::PushOwnTeam => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Always => Ok(()),
+		Ty::Never => Ok(()),
+		Ty::PushOtherTeams => Ok(()),
+		Ty::PushOwnTeam => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Always); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Never); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::PushOtherTeams); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::PushOwnTeam); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Always);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Never);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::PushOtherTeams);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::PushOwnTeam);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Always => 0,
-        Ty::Never => 0,
-        Ty::PushOtherTeams => 0,
-        Ty::PushOwnTeam => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Always => 0,
+			Ty::Never => 0,
+			Ty::PushOtherTeams => 0,
+			Ty::PushOwnTeam => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Always => "always",
-        Ty::Never => "never",
-        Ty::PushOtherTeams => "push_other_teams",
-        Ty::PushOwnTeam => "push_own_team",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Always => "always",
+		Ty::Never => "never",
+		Ty::PushOtherTeams => "push_other_teams",
+		Ty::PushOwnTeam => "push_own_team",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::Varint {
-    match _0 {
-        Ty::Always => 0_i32,
-        Ty::Never => 1_i32,
-        Ty::PushOtherTeams => 2_i32,
-        Ty::PushOwnTeam => 3_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Always => 0_i32,
+		Ty::Never => 1_i32,
+		Ty::PushOtherTeams => 2_i32,
+		Ty::PushOwnTeam => 3_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketTeams46;
+pub type Ty = PacketTeams46;

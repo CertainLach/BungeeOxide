@@ -3,85 +3,84 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode<'i> {
-    pub flags: super::super::CommandNode73,
-    pub children: super::super::array::Inline107,
-    pub redirect_node: super::super::CommandNode74,
-    pub extra_node_data: super::CommandNode97::<'i>,
+	pub flags: super::super::CommandNode73,
+	pub children: super::super::array::Inline107,
+	pub redirect_node: super::super::CommandNode74,
+	pub extra_node_data: super::CommandNode97<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::command_node_73::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::super::array::inline_107::serialize(
-        &_0.children,
-        output,
-    )?;
-    super::super::command_node_74::debug_assert_tag(
-        &_0.redirect_node,
-        {let _0: &super::super::CommandNode73 = &_0.flags;let _0: &super::super::U8 = &_0.has_redirect_node;_0},
-    );
-    super::super::command_node_74::serialize(
-        &_0.redirect_node,
-        output,
-    )?;
-    super::command_node_97::debug_assert_tag(
-        &_0.extra_node_data,
-        {let _0: &super::super::CommandNode73 = &_0.flags;let _0: &super::super::U8 = &_0.command_node_type;_0},
-    );
-    super::command_node_97::serialize(
-        &_0.extra_node_data,
-        output,
-    )?;
-    Ok(())
+	super::super::command_node_73::serialize(&_0.flags, output)?;
+	super::super::array::inline_107::serialize(&_0.children, output)?;
+	super::super::command_node_74::debug_assert_tag(&_0.redirect_node, {
+		let _0: &super::super::CommandNode73 = &_0.flags;
+		let _0: &super::super::U8 = &_0.has_redirect_node;
+		_0
+	});
+	super::super::command_node_74::serialize(&_0.redirect_node, output)?;
+	super::command_node_97::debug_assert_tag(&_0.extra_node_data, {
+		let _0: &super::super::CommandNode73 = &_0.flags;
+		let _0: &super::super::U8 = &_0.command_node_type;
+		_0
+	});
+	super::command_node_97::serialize(&_0.extra_node_data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_flags = super::super::command_node_73::deserialize(
-        input,
-    )?;
-    let f_children = super::super::array::inline_107::deserialize(
-        input,
-    )?;
-    let f_redirectNode = super::super::command_node_74::deserialize(
-        input,
-        super::super::command_node_74::Args {
-            flags_has_redirect_node: {let _0: &super::super::CommandNode73 = &f_flags;let _0: &super::super::U8 = &_0.has_redirect_node;_0}
-        },
-    )?;
-    let f_extraNodeData = super::command_node_97::deserialize(
-        input,
-        super::command_node_97::Args {
-            flags_has_custom_suggestions: {let _0: &super::super::CommandNode73 = &f_flags;let _0: &super::super::U8 = &_0.has_custom_suggestions;_0},flags_command_node_type: {let _0: &super::super::CommandNode73 = &f_flags;let _0: &super::super::U8 = &_0.command_node_type;_0}
-        },
-    )?;
-    Ok(Ty {
-        flags: f_flags,children: f_children,redirect_node: f_redirectNode,extra_node_data: f_extraNodeData
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_flags = super::super::command_node_73::deserialize(input)?;
+	let f_children = super::super::array::inline_107::deserialize(input)?;
+	let f_redirectNode = super::super::command_node_74::deserialize(
+		input,
+		super::super::command_node_74::Args {
+			flags_has_redirect_node: {
+				let _0: &super::super::CommandNode73 = &f_flags;
+				let _0: &super::super::U8 = &_0.has_redirect_node;
+				_0
+			},
+		},
+	)?;
+	let f_extraNodeData = super::command_node_97::deserialize(
+		input,
+		super::command_node_97::Args {
+			flags_has_custom_suggestions: {
+				let _0: &super::super::CommandNode73 = &f_flags;
+				let _0: &super::super::U8 = &_0.has_custom_suggestions;
+				_0
+			},
+			flags_command_node_type: {
+				let _0: &super::super::CommandNode73 = &f_flags;
+				let _0: &super::super::U8 = &_0.command_node_type;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		flags: f_flags,
+		children: f_children,
+		redirect_node: f_redirectNode,
+		extra_node_data: f_extraNodeData,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::command_node_73::size_of(
-        &_0.flags
-    )
-    + super::super::array::inline_107::size_of(
-        &_0.children
-    )
-    + super::super::command_node_74::size_of(
-        &_0.redirect_node
-    )
-    + super::command_node_97::size_of(
-        &_0.extra_node_data
-    )
+	0 + super::super::command_node_73::size_of(&_0.flags)
+		+ super::super::array::inline_107::size_of(&_0.children)
+		+ super::super::command_node_74::size_of(&_0.redirect_node)
+		+ super::command_node_97::size_of(&_0.extra_node_data)
 }
 pub fn view<'i>(_0: &'i super::super::CommandNode) -> Ty<'i> {
-    Ty {
-        flags: ::core::clone::Clone::clone(&_0.flags),children: ::core::clone::Clone::clone(&_0.children),redirect_node: ::core::clone::Clone::clone(&_0.redirect_node),extra_node_data: super::command_node_97::view(&_0.extra_node_data)
-    }
+	Ty {
+		flags: ::core::clone::Clone::clone(&_0.flags),
+		children: ::core::clone::Clone::clone(&_0.children),
+		redirect_node: ::core::clone::Clone::clone(&_0.redirect_node),
+		extra_node_data: super::command_node_97::view(&_0.extra_node_data),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::CommandNode) -> Ty<'i> {
-    Ty {
-        flags: ::core::clone::Clone::clone(&mut _0.flags),children: ::core::mem::take(&mut _0.children),redirect_node: ::core::clone::Clone::clone(&mut _0.redirect_node),extra_node_data: super::command_node_97::view(&mut _0.extra_node_data)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::CommandNode) -> Ty<'i> {
+	Ty {
+		flags: ::core::clone::Clone::clone(&mut _0.flags),
+		children: ::core::mem::take(&mut _0.children),
+		redirect_node: ::core::clone::Clone::clone(&mut _0.redirect_node),
+		extra_node_data: super::command_node_97::view(&mut _0.extra_node_data),
+	}
 }
- pub type Ty<'i> = CommandNode<'i>;
+pub type Ty<'i> = CommandNode<'i>;

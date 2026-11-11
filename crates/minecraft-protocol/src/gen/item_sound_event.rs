@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemSoundEvent {
-    pub sound_name: String,
-    pub fixed_range: Option<super::F32>,
+	pub sound_name: String,
+	pub fixed_range: Option<super::F32>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_39::serialize(
-        &_0.sound_name,
-        output,
-    )?;
-    super::option_11::serialize(
-        &_0.fixed_range,
-        output,
-    )?;
-    Ok(())
+	super::pstring_39::serialize(&_0.sound_name, output)?;
+	super::option_11::serialize(&_0.fixed_range, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_soundName = super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_fixedRange = super::option_11::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        sound_name: f_soundName,fixed_range: f_fixedRange
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_soundName = super::pstring_39::deserialize(input)?;
+	let f_fixedRange = super::option_11::deserialize(input)?;
+	Ok(Ty {
+		sound_name: f_soundName,
+		fixed_range: f_fixedRange,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_39::size_of(
-        &_0.sound_name
-    )
-    + super::option_11::size_of(
-        &_0.fixed_range
-    )
+	0 + super::pstring_39::size_of(&_0.sound_name) + super::option_11::size_of(&_0.fixed_range)
 }
- pub type Ty = ItemSoundEvent;
+pub type Ty = ItemSoundEvent;

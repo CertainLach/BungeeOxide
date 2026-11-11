@@ -2,51 +2,53 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub action: &'a super::super::super::super::Varint,
+	pub action: &'a super::super::super::super::Varint,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketUnlockRecipes7 {
-    V0(Vec<super::super::super::super::Varint>),
-    Default(super::super::super::super::Varint),
+	V0(Vec<super::super::super::super::Varint>),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::V0(__v) => super::super::super::super::array::inline_107::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::V0(__v) => super::super::super::super::array::inline_107::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.action;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::V0(super::super::super::super::array::inline_107::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.action;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0(
+			super::super::super::super::array::inline_107::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::V0(__v) => super::super::super::super::array::inline_107::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::V0(__v) => super::super::super::super::array::inline_107::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V0(_) => "v0",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0(_) => "v0",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::super::super::super::Varint) {
-    debug_assert!(
-        match _0 {
-            Ty::V0(_) => (__tag.clone() == 0_i32),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::V0(_) => (__tag.clone() == 0_i32),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::V0(_) => 0_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0(_) => 0_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketUnlockRecipes7;
+pub type Ty = PacketUnlockRecipes7;

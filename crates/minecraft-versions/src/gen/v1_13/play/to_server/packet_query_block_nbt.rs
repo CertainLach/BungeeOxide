@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketQueryBlockNbt {
-    pub transaction_id: super::super::super::super::Varint,
-    pub location: super::super::super::super::v1_8::Position,
+	pub transaction_id: super::super::super::super::Varint,
+	pub location: super::super::super::super::v1_8::Position,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.transaction_id,
-        output,
-    )?;
-    super::super::super::super::v1_8::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.transaction_id, output)?;
+	super::super::super::super::v1_8::position::serialize(&_0.location, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_transactionId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::super::v1_8::position::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        transaction_id: f_transactionId,location: f_location
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_transactionId = super::super::super::super::varint::deserialize(input)?;
+	let f_location = super::super::super::super::v1_8::position::deserialize(input)?;
+	Ok(Ty {
+		transaction_id: f_transactionId,
+		location: f_location,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.transaction_id
-    )
-    + super::super::super::super::v1_8::position::size_of(
-        &_0.location
-    )
+	0 + super::super::super::super::varint::size_of(&_0.transaction_id)
+		+ super::super::super::super::v1_8::position::size_of(&_0.location)
 }
- pub type Ty = PacketQueryBlockNbt;
+pub type Ty = PacketQueryBlockNbt;

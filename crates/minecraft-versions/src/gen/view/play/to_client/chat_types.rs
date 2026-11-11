@@ -3,49 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatTypes<'i> {
-    pub chat: super::ChatType::<'i>,
-    pub narration: super::ChatType::<'i>,
+	pub chat: super::ChatType<'i>,
+	pub narration: super::ChatType<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::chat_type::serialize(
-        &_0.chat,
-        output,
-    )?;
-    super::chat_type::serialize(
-        &_0.narration,
-        output,
-    )?;
-    Ok(())
+	super::chat_type::serialize(&_0.chat, output)?;
+	super::chat_type::serialize(&_0.narration, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_chat = super::chat_type::deserialize(
-        input,
-    )?;
-    let f_narration = super::chat_type::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        chat: f_chat,narration: f_narration
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_chat = super::chat_type::deserialize(input)?;
+	let f_narration = super::chat_type::deserialize(input)?;
+	Ok(Ty {
+		chat: f_chat,
+		narration: f_narration,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::chat_type::size_of(
-        &_0.chat
-    )
-    + super::chat_type::size_of(
-        &_0.narration
-    )
+	0 + super::chat_type::size_of(&_0.chat) + super::chat_type::size_of(&_0.narration)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::ChatTypes) -> Ty<'i> {
-    Ty {
-        chat: super::chat_type::view(&_0.chat),narration: super::chat_type::view(&_0.narration)
-    }
+	Ty {
+		chat: super::chat_type::view(&_0.chat),
+		narration: super::chat_type::view(&_0.narration),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ChatTypes) -> Ty<'i> {
-    Ty {
-        chat: super::chat_type::into_view(&mut _0.chat),narration: super::chat_type::into_view(&mut _0.narration)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ChatTypes) -> Ty<'i> {
+	Ty {
+		chat: super::chat_type::into_view(&mut _0.chat),
+		narration: super::chat_type::into_view(&mut _0.narration),
+	}
 }
- pub type Ty<'i> = ChatTypes<'i>;
+pub type Ty<'i> = ChatTypes<'i>;

@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RecipeDisplay0 {
-    pub ingredients: Vec<super::SlotDisplay>,
-    pub result: super::SlotDisplay,
-    pub crafting_station: super::SlotDisplay,
+	pub ingredients: Vec<super::SlotDisplay>,
+	pub result: super::SlotDisplay,
+	pub crafting_station: super::SlotDisplay,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::array::inline_90::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.result,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.crafting_station,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::array::inline_90::serialize(&_0.ingredients, output)?;
+	super::slot_display::serialize_guarded(&_0.result, output)?;
+	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_ingredients = super::super::super::super::array::inline_90::deserialize(
-        input,
-    )?;
-    let f_result = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_craftingStation = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        ingredients: f_ingredients,result: f_result,crafting_station: f_craftingStation
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_ingredients = super::super::super::super::array::inline_90::deserialize(input)?;
+	let f_result = super::slot_display::deserialize_guarded(input)?;
+	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		ingredients: f_ingredients,
+		result: f_result,
+		crafting_station: f_craftingStation,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::array::inline_90::size_of(
-        &_0.ingredients
-    )
-    + super::slot_display::size_of(
-        &_0.result
-    )
-    + super::slot_display::size_of(
-        &_0.crafting_station
-    )
+	0 + super::super::super::super::array::inline_90::size_of(&_0.ingredients)
+		+ super::slot_display::size_of(&_0.result)
+		+ super::slot_display::size_of(&_0.crafting_station)
 }
- pub type Ty = RecipeDisplay0;
+pub type Ty = RecipeDisplay0;

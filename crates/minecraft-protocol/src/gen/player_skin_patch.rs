@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PlayerSkinPatch {
-    pub body: Option<String>,
-    pub cape: Option<String>,
-    pub elytra: Option<String>,
-    pub model: Option<super::PlayerSkinPatch24>,
+	pub body: Option<String>,
+	pub cape: Option<String>,
+	pub elytra: Option<String>,
+	pub model: Option<super::PlayerSkinPatch24>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_16::serialize(
-        &_0.body,
-        output,
-    )?;
-    super::option_16::serialize(
-        &_0.cape,
-        output,
-    )?;
-    super::option_16::serialize(
-        &_0.elytra,
-        output,
-    )?;
-    super::option_29::serialize(
-        &_0.model,
-        output,
-    )?;
-    Ok(())
+	super::option_16::serialize(&_0.body, output)?;
+	super::option_16::serialize(&_0.cape, output)?;
+	super::option_16::serialize(&_0.elytra, output)?;
+	super::option_29::serialize(&_0.model, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_body = super::option_16::deserialize(
-        input,
-    )?;
-    let f_cape = super::option_16::deserialize(
-        input,
-    )?;
-    let f_elytra = super::option_16::deserialize(
-        input,
-    )?;
-    let f_model = super::option_29::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        body: f_body,cape: f_cape,elytra: f_elytra,model: f_model
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_body = super::option_16::deserialize(input)?;
+	let f_cape = super::option_16::deserialize(input)?;
+	let f_elytra = super::option_16::deserialize(input)?;
+	let f_model = super::option_29::deserialize(input)?;
+	Ok(Ty {
+		body: f_body,
+		cape: f_cape,
+		elytra: f_elytra,
+		model: f_model,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::option_16::size_of(
-        &_0.body
-    )
-    + super::option_16::size_of(
-        &_0.cape
-    )
-    + super::option_16::size_of(
-        &_0.elytra
-    )
-    + super::option_29::size_of(
-        &_0.model
-    )
+	0 + super::option_16::size_of(&_0.body)
+		+ super::option_16::size_of(&_0.cape)
+		+ super::option_16::size_of(&_0.elytra)
+		+ super::option_29::size_of(&_0.model)
 }
- pub type Ty = PlayerSkinPatch;
+pub type Ty = PlayerSkinPatch;

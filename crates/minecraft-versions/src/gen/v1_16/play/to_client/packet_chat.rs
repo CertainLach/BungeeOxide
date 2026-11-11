@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChat {
-    pub message: String,
-    pub position: super::super::super::super::I8,
-    pub sender: super::super::super::super::Uuid,
+	pub message: String,
+	pub position: super::super::super::super::I8,
+	pub sender: super::super::super::super::Uuid,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.message,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::super::super::uuid::serialize(
-        &_0.sender,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.message, output)?;
+	super::super::super::super::i8::serialize(&_0.position, output)?;
+	super::super::super::super::uuid::serialize(&_0.sender, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_message = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_position = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_sender = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message: f_message,position: f_position,sender: f_sender
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_message = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_position = super::super::super::super::i8::deserialize(input)?;
+	let f_sender = super::super::super::super::uuid::deserialize(input)?;
+	Ok(Ty {
+		message: f_message,
+		position: f_position,
+		sender: f_sender,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.message
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.position
-    )
-    + super::super::super::super::uuid::size_of(
-        &_0.sender
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.message)
+		+ super::super::super::super::i8::size_of(&_0.position)
+		+ super::super::super::super::uuid::size_of(&_0.sender)
 }
- pub type Ty = PacketChat;
+pub type Ty = PacketChat;

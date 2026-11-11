@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockPredicate {
-    pub block_set: Option<super::ItemBlockPredicate0>,
-    pub properties: Option<Vec<super::super::ItemBlockProperty>>,
-    pub nbt: super::super::AnonOptionalNbt,
+	pub block_set: Option<super::ItemBlockPredicate0>,
+	pub properties: Option<Vec<super::super::ItemBlockProperty>>,
+	pub nbt: super::super::AnonOptionalNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::option_61::serialize(
-        &_0.block_set,
-        output,
-    )?;
-    super::super::option_93::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::super::anon_optional_nbt::serialize(
-        &_0.nbt,
-        output,
-    )?;
-    Ok(())
+	super::super::option_61::serialize(&_0.block_set, output)?;
+	super::super::option_93::serialize(&_0.properties, output)?;
+	super::super::anon_optional_nbt::serialize(&_0.nbt, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_blockSet = super::super::option_61::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::option_93::deserialize(
-        input,
-    )?;
-    let f_nbt = super::super::anon_optional_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        block_set: f_blockSet,properties: f_properties,nbt: f_nbt
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_blockSet = super::super::option_61::deserialize(input)?;
+	let f_properties = super::super::option_93::deserialize(input)?;
+	let f_nbt = super::super::anon_optional_nbt::deserialize(input)?;
+	Ok(Ty {
+		block_set: f_blockSet,
+		properties: f_properties,
+		nbt: f_nbt,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::option_61::size_of(
-        &_0.block_set
-    )
-    + super::super::option_93::size_of(
-        &_0.properties
-    )
-    + super::super::anon_optional_nbt::size_of(
-        &_0.nbt
-    )
+	0 + super::super::option_61::size_of(&_0.block_set)
+		+ super::super::option_93::size_of(&_0.properties)
+		+ super::super::anon_optional_nbt::size_of(&_0.nbt)
 }
- pub type Ty = ItemBlockPredicate;
+pub type Ty = ItemBlockPredicate;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResourcePackSend {
-    pub url: String,
-    pub hash: String,
-    pub forced: super::super::super::super::Bool,
-    pub prompt_message: Option<String>,
+	pub url: String,
+	pub hash: String,
+	pub forced: super::super::super::super::Bool,
+	pub prompt_message: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.url,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.hash,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.forced,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.prompt_message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.url, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.hash, output)?;
+	super::super::super::super::bool::serialize(&_0.forced, output)?;
+	super::super::super::super::option_18::serialize(&_0.prompt_message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_url = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_hash = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_forced = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_promptMessage = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        url: f_url,hash: f_hash,forced: f_forced,prompt_message: f_promptMessage
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_url = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_hash = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_forced = super::super::super::super::bool::deserialize(input)?;
+	let f_promptMessage = super::super::super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		url: f_url,
+		hash: f_hash,
+		forced: f_forced,
+		prompt_message: f_promptMessage,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.url
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.hash
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.forced
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.prompt_message
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.url)
+		+ super::super::super::super::pstring_96::size_of(&_0.hash)
+		+ super::super::super::super::bool::size_of(&_0.forced)
+		+ super::super::super::super::option_18::size_of(&_0.prompt_message)
 }
- pub type Ty = PacketResourcePackSend;
+pub type Ty = PacketResourcePackSend;

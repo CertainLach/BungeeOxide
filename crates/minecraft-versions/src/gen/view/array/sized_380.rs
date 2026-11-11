@@ -2,35 +2,43 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub count: &'a super::super::super::Varint,
+	pub count: &'a super::super::super::Varint,
 }
-pub type Ty<'i> = Vec<super::super::v1_21_11::SlotComponent::<'i>>;
+pub type Ty<'i> = Vec<super::super::v1_21_11::SlotComponent<'i>>;
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    for e in _0.iter() {
-        super::super::v1_21_11::slot_component::serialize_guarded(e, output)?;
-    }
-    Ok(())
+	for e in _0.iter() {
+		super::super::v1_21_11::slot_component::serialize_guarded(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
-    let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count)?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::v1_21_11::slot_component::deserialize_guarded(input, )?);
-    }
-    Ok(out)
+pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
+	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(super::super::v1_21_11::slot_component::deserialize_guarded(
+			input,
+		)?);
+	}
+	Ok(out)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    let mut n = 0;
-    for e in _0.iter() { n += super::super::v1_21_11::slot_component::size_of(e); }
-    n
+	let mut n = 0;
+	for e in _0.iter() {
+		n += super::super::v1_21_11::slot_component::size_of(e);
+	}
+	n
 }
 pub fn virtual_size<'i>(_0: &Ty<'i>) -> super::super::super::Varint {
-    _0.len().try_into().unwrap_or_default()
+	_0.len().try_into().unwrap_or_default()
 }
 pub fn view<'i>(_0: &'i super::super::super::array::Sized380) -> Ty<'i> {
-    _0.iter().map(|e| super::super::v1_21_11::slot_component::view(e)).collect()
+	_0.iter()
+		.map(|e| super::super::v1_21_11::slot_component::view(e))
+		.collect()
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::array::Sized380) -> Ty<'i> {
-    _0.iter_mut().map(|e| super::super::v1_21_11::slot_component::into_view(e)).collect()
+pub fn into_view<'i>(_0: &'i mut super::super::super::array::Sized380) -> Ty<'i> {
+	_0.iter_mut()
+		.map(|e| super::super::v1_21_11::slot_component::into_view(e))
+		.collect()
 }

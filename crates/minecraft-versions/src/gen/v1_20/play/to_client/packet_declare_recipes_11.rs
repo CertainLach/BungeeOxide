@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes11 {
-    pub template: Vec<super::super::super::super::v1_13_2::Slot>,
-    pub base: Vec<super::super::super::super::v1_13_2::Slot>,
-    pub addition: Vec<super::super::super::super::v1_13_2::Slot>,
-    pub result: super::super::super::super::v1_13_2::Slot,
+	pub template: Vec<super::super::super::super::v1_13_2::Slot>,
+	pub base: Vec<super::super::super::super::v1_13_2::Slot>,
+	pub addition: Vec<super::super::super::super::v1_13_2::Slot>,
+	pub result: super::super::super::super::v1_13_2::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::array::inline_63::serialize(
-        &_0.template,
-        output,
-    )?;
-    super::super::super::super::array::inline_63::serialize(
-        &_0.base,
-        output,
-    )?;
-    super::super::super::super::array::inline_63::serialize(
-        &_0.addition,
-        output,
-    )?;
-    super::super::super::super::v1_13_2::slot::serialize(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::array::inline_63::serialize(&_0.template, output)?;
+	super::super::super::super::array::inline_63::serialize(&_0.base, output)?;
+	super::super::super::super::array::inline_63::serialize(&_0.addition, output)?;
+	super::super::super::super::v1_13_2::slot::serialize(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_template = super::super::super::super::array::inline_63::deserialize(
-        input,
-    )?;
-    let f_base = super::super::super::super::array::inline_63::deserialize(
-        input,
-    )?;
-    let f_addition = super::super::super::super::array::inline_63::deserialize(
-        input,
-    )?;
-    let f_result = super::super::super::super::v1_13_2::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        template: f_template,base: f_base,addition: f_addition,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_template = super::super::super::super::array::inline_63::deserialize(input)?;
+	let f_base = super::super::super::super::array::inline_63::deserialize(input)?;
+	let f_addition = super::super::super::super::array::inline_63::deserialize(input)?;
+	let f_result = super::super::super::super::v1_13_2::slot::deserialize(input)?;
+	Ok(Ty {
+		template: f_template,
+		base: f_base,
+		addition: f_addition,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::array::inline_63::size_of(
-        &_0.template
-    )
-    + super::super::super::super::array::inline_63::size_of(
-        &_0.base
-    )
-    + super::super::super::super::array::inline_63::size_of(
-        &_0.addition
-    )
-    + super::super::super::super::v1_13_2::slot::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::array::inline_63::size_of(&_0.template)
+		+ super::super::super::super::array::inline_63::size_of(&_0.base)
+		+ super::super::super::super::array::inline_63::size_of(&_0.addition)
+		+ super::super::super::super::v1_13_2::slot::size_of(&_0.result)
 }
- pub type Ty = PacketDeclareRecipes11;
+pub type Ty = PacketDeclareRecipes11;

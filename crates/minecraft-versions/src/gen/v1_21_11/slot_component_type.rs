@@ -3,659 +3,866 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponentType {
-    CustomData,
-    MaxStackSize,
-    ItemModel,
-    CatVariant,
-    CatCollar,
-    SheepColor,
-    ShulkerColor,
-    Lore,
-    Rarity,
-    Enchantments,
-    CanPlaceOn,
-    CanBreak,
-    AttributeModifiers,
-    CustomModelData,
-    TooltipDisplay,
-    RepairCost,
-    MaxDamage,
-    CreativeSlotLock,
-    EnchantmentGlintOverride,
-    IntangibleProjectile,
-    Food,
-    Consumable,
-    UseRemainder,
-    UseCooldown,
-    DamageResistant,
-    Tool,
-    Weapon,
-    Damage,
-    AttackRange,
-    Enchantable,
-    Equippable,
-    Repairable,
-    Glider,
-    TooltipStyle,
-    DeathProtection,
-    BlocksAttacks,
-    PiercingWeapon,
-    KineticWeapon,
-    Unbreakable,
-    SwingAnimation,
-    StoredEnchantments,
-    DyedColor,
-    MapColor,
-    MapId,
-    MapDecorations,
-    MapPostProcessing,
-    ChargedProjectiles,
-    BundleContents,
-    PotionContents,
-    UseEffects,
-    PotionDurationScale,
-    SuspiciousStewEffects,
-    WritableBookContent,
-    WrittenBookContent,
-    Trim,
-    DebugStickState,
-    EntityData,
-    BucketEntityData,
-    BlockEntityData,
-    Instrument,
-    CustomName,
-    ProvidesTrimMaterial,
-    OminousBottleAmplifier,
-    JukeboxPlayable,
-    ProvidesBannerPatterns,
-    Recipes,
-    LodestoneTracker,
-    FireworkExplosion,
-    Fireworks,
-    Profile,
-    NoteBlockSound,
-    MinimumAttackCharge,
-    BannerPatterns,
-    BaseColor,
-    PotDecorations,
-    Container,
-    BlockState,
-    Bees,
-    Lock,
-    ContainerLoot,
-    BreakSound,
-    VillagerVariant,
-    DamageType,
-    WolfVariant,
-    WolfSoundVariant,
-    WolfCollar,
-    FoxVariant,
-    SalmonSize,
-    ParrotVariant,
-    TropicalFishPattern,
-    TropicalFishBaseColor,
-    TropicalFishPatternColor,
-    MooshroomVariant,
-    ItemName,
-    RabbitVariant,
-    PigVariant,
-    CowVariant,
-    ChickenVariant,
-    ZombieNautilusVariant,
-    FrogVariant,
-    HorseVariant,
-    PaintingVariant,
-    LlamaVariant,
-    AxolotlVariant,
-    Default(super::super::Varint),
+	CustomData,
+	MaxStackSize,
+	ItemModel,
+	CatVariant,
+	CatCollar,
+	SheepColor,
+	ShulkerColor,
+	Lore,
+	Rarity,
+	Enchantments,
+	CanPlaceOn,
+	CanBreak,
+	AttributeModifiers,
+	CustomModelData,
+	TooltipDisplay,
+	RepairCost,
+	MaxDamage,
+	CreativeSlotLock,
+	EnchantmentGlintOverride,
+	IntangibleProjectile,
+	Food,
+	Consumable,
+	UseRemainder,
+	UseCooldown,
+	DamageResistant,
+	Tool,
+	Weapon,
+	Damage,
+	AttackRange,
+	Enchantable,
+	Equippable,
+	Repairable,
+	Glider,
+	TooltipStyle,
+	DeathProtection,
+	BlocksAttacks,
+	PiercingWeapon,
+	KineticWeapon,
+	Unbreakable,
+	SwingAnimation,
+	StoredEnchantments,
+	DyedColor,
+	MapColor,
+	MapId,
+	MapDecorations,
+	MapPostProcessing,
+	ChargedProjectiles,
+	BundleContents,
+	PotionContents,
+	UseEffects,
+	PotionDurationScale,
+	SuspiciousStewEffects,
+	WritableBookContent,
+	WrittenBookContent,
+	Trim,
+	DebugStickState,
+	EntityData,
+	BucketEntityData,
+	BlockEntityData,
+	Instrument,
+	CustomName,
+	ProvidesTrimMaterial,
+	OminousBottleAmplifier,
+	JukeboxPlayable,
+	ProvidesBannerPatterns,
+	Recipes,
+	LodestoneTracker,
+	FireworkExplosion,
+	Fireworks,
+	Profile,
+	NoteBlockSound,
+	MinimumAttackCharge,
+	BannerPatterns,
+	BaseColor,
+	PotDecorations,
+	Container,
+	BlockState,
+	Bees,
+	Lock,
+	ContainerLoot,
+	BreakSound,
+	VillagerVariant,
+	DamageType,
+	WolfVariant,
+	WolfSoundVariant,
+	WolfCollar,
+	FoxVariant,
+	SalmonSize,
+	ParrotVariant,
+	TropicalFishPattern,
+	TropicalFishBaseColor,
+	TropicalFishPatternColor,
+	MooshroomVariant,
+	ItemName,
+	RabbitVariant,
+	PigVariant,
+	CowVariant,
+	ChickenVariant,
+	ZombieNautilusVariant,
+	FrogVariant,
+	HorseVariant,
+	PaintingVariant,
+	LlamaVariant,
+	AxolotlVariant,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::CustomData => Ok(()),
-        Ty::MaxStackSize => Ok(()),
-        Ty::ItemModel => Ok(()),
-        Ty::CatVariant => Ok(()),
-        Ty::CatCollar => Ok(()),
-        Ty::SheepColor => Ok(()),
-        Ty::ShulkerColor => Ok(()),
-        Ty::Lore => Ok(()),
-        Ty::Rarity => Ok(()),
-        Ty::Enchantments => Ok(()),
-        Ty::CanPlaceOn => Ok(()),
-        Ty::CanBreak => Ok(()),
-        Ty::AttributeModifiers => Ok(()),
-        Ty::CustomModelData => Ok(()),
-        Ty::TooltipDisplay => Ok(()),
-        Ty::RepairCost => Ok(()),
-        Ty::MaxDamage => Ok(()),
-        Ty::CreativeSlotLock => Ok(()),
-        Ty::EnchantmentGlintOverride => Ok(()),
-        Ty::IntangibleProjectile => Ok(()),
-        Ty::Food => Ok(()),
-        Ty::Consumable => Ok(()),
-        Ty::UseRemainder => Ok(()),
-        Ty::UseCooldown => Ok(()),
-        Ty::DamageResistant => Ok(()),
-        Ty::Tool => Ok(()),
-        Ty::Weapon => Ok(()),
-        Ty::Damage => Ok(()),
-        Ty::AttackRange => Ok(()),
-        Ty::Enchantable => Ok(()),
-        Ty::Equippable => Ok(()),
-        Ty::Repairable => Ok(()),
-        Ty::Glider => Ok(()),
-        Ty::TooltipStyle => Ok(()),
-        Ty::DeathProtection => Ok(()),
-        Ty::BlocksAttacks => Ok(()),
-        Ty::PiercingWeapon => Ok(()),
-        Ty::KineticWeapon => Ok(()),
-        Ty::Unbreakable => Ok(()),
-        Ty::SwingAnimation => Ok(()),
-        Ty::StoredEnchantments => Ok(()),
-        Ty::DyedColor => Ok(()),
-        Ty::MapColor => Ok(()),
-        Ty::MapId => Ok(()),
-        Ty::MapDecorations => Ok(()),
-        Ty::MapPostProcessing => Ok(()),
-        Ty::ChargedProjectiles => Ok(()),
-        Ty::BundleContents => Ok(()),
-        Ty::PotionContents => Ok(()),
-        Ty::UseEffects => Ok(()),
-        Ty::PotionDurationScale => Ok(()),
-        Ty::SuspiciousStewEffects => Ok(()),
-        Ty::WritableBookContent => Ok(()),
-        Ty::WrittenBookContent => Ok(()),
-        Ty::Trim => Ok(()),
-        Ty::DebugStickState => Ok(()),
-        Ty::EntityData => Ok(()),
-        Ty::BucketEntityData => Ok(()),
-        Ty::BlockEntityData => Ok(()),
-        Ty::Instrument => Ok(()),
-        Ty::CustomName => Ok(()),
-        Ty::ProvidesTrimMaterial => Ok(()),
-        Ty::OminousBottleAmplifier => Ok(()),
-        Ty::JukeboxPlayable => Ok(()),
-        Ty::ProvidesBannerPatterns => Ok(()),
-        Ty::Recipes => Ok(()),
-        Ty::LodestoneTracker => Ok(()),
-        Ty::FireworkExplosion => Ok(()),
-        Ty::Fireworks => Ok(()),
-        Ty::Profile => Ok(()),
-        Ty::NoteBlockSound => Ok(()),
-        Ty::MinimumAttackCharge => Ok(()),
-        Ty::BannerPatterns => Ok(()),
-        Ty::BaseColor => Ok(()),
-        Ty::PotDecorations => Ok(()),
-        Ty::Container => Ok(()),
-        Ty::BlockState => Ok(()),
-        Ty::Bees => Ok(()),
-        Ty::Lock => Ok(()),
-        Ty::ContainerLoot => Ok(()),
-        Ty::BreakSound => Ok(()),
-        Ty::VillagerVariant => Ok(()),
-        Ty::DamageType => Ok(()),
-        Ty::WolfVariant => Ok(()),
-        Ty::WolfSoundVariant => Ok(()),
-        Ty::WolfCollar => Ok(()),
-        Ty::FoxVariant => Ok(()),
-        Ty::SalmonSize => Ok(()),
-        Ty::ParrotVariant => Ok(()),
-        Ty::TropicalFishPattern => Ok(()),
-        Ty::TropicalFishBaseColor => Ok(()),
-        Ty::TropicalFishPatternColor => Ok(()),
-        Ty::MooshroomVariant => Ok(()),
-        Ty::ItemName => Ok(()),
-        Ty::RabbitVariant => Ok(()),
-        Ty::PigVariant => Ok(()),
-        Ty::CowVariant => Ok(()),
-        Ty::ChickenVariant => Ok(()),
-        Ty::ZombieNautilusVariant => Ok(()),
-        Ty::FrogVariant => Ok(()),
-        Ty::HorseVariant => Ok(()),
-        Ty::PaintingVariant => Ok(()),
-        Ty::LlamaVariant => Ok(()),
-        Ty::AxolotlVariant => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::CustomData => Ok(()),
+		Ty::MaxStackSize => Ok(()),
+		Ty::ItemModel => Ok(()),
+		Ty::CatVariant => Ok(()),
+		Ty::CatCollar => Ok(()),
+		Ty::SheepColor => Ok(()),
+		Ty::ShulkerColor => Ok(()),
+		Ty::Lore => Ok(()),
+		Ty::Rarity => Ok(()),
+		Ty::Enchantments => Ok(()),
+		Ty::CanPlaceOn => Ok(()),
+		Ty::CanBreak => Ok(()),
+		Ty::AttributeModifiers => Ok(()),
+		Ty::CustomModelData => Ok(()),
+		Ty::TooltipDisplay => Ok(()),
+		Ty::RepairCost => Ok(()),
+		Ty::MaxDamage => Ok(()),
+		Ty::CreativeSlotLock => Ok(()),
+		Ty::EnchantmentGlintOverride => Ok(()),
+		Ty::IntangibleProjectile => Ok(()),
+		Ty::Food => Ok(()),
+		Ty::Consumable => Ok(()),
+		Ty::UseRemainder => Ok(()),
+		Ty::UseCooldown => Ok(()),
+		Ty::DamageResistant => Ok(()),
+		Ty::Tool => Ok(()),
+		Ty::Weapon => Ok(()),
+		Ty::Damage => Ok(()),
+		Ty::AttackRange => Ok(()),
+		Ty::Enchantable => Ok(()),
+		Ty::Equippable => Ok(()),
+		Ty::Repairable => Ok(()),
+		Ty::Glider => Ok(()),
+		Ty::TooltipStyle => Ok(()),
+		Ty::DeathProtection => Ok(()),
+		Ty::BlocksAttacks => Ok(()),
+		Ty::PiercingWeapon => Ok(()),
+		Ty::KineticWeapon => Ok(()),
+		Ty::Unbreakable => Ok(()),
+		Ty::SwingAnimation => Ok(()),
+		Ty::StoredEnchantments => Ok(()),
+		Ty::DyedColor => Ok(()),
+		Ty::MapColor => Ok(()),
+		Ty::MapId => Ok(()),
+		Ty::MapDecorations => Ok(()),
+		Ty::MapPostProcessing => Ok(()),
+		Ty::ChargedProjectiles => Ok(()),
+		Ty::BundleContents => Ok(()),
+		Ty::PotionContents => Ok(()),
+		Ty::UseEffects => Ok(()),
+		Ty::PotionDurationScale => Ok(()),
+		Ty::SuspiciousStewEffects => Ok(()),
+		Ty::WritableBookContent => Ok(()),
+		Ty::WrittenBookContent => Ok(()),
+		Ty::Trim => Ok(()),
+		Ty::DebugStickState => Ok(()),
+		Ty::EntityData => Ok(()),
+		Ty::BucketEntityData => Ok(()),
+		Ty::BlockEntityData => Ok(()),
+		Ty::Instrument => Ok(()),
+		Ty::CustomName => Ok(()),
+		Ty::ProvidesTrimMaterial => Ok(()),
+		Ty::OminousBottleAmplifier => Ok(()),
+		Ty::JukeboxPlayable => Ok(()),
+		Ty::ProvidesBannerPatterns => Ok(()),
+		Ty::Recipes => Ok(()),
+		Ty::LodestoneTracker => Ok(()),
+		Ty::FireworkExplosion => Ok(()),
+		Ty::Fireworks => Ok(()),
+		Ty::Profile => Ok(()),
+		Ty::NoteBlockSound => Ok(()),
+		Ty::MinimumAttackCharge => Ok(()),
+		Ty::BannerPatterns => Ok(()),
+		Ty::BaseColor => Ok(()),
+		Ty::PotDecorations => Ok(()),
+		Ty::Container => Ok(()),
+		Ty::BlockState => Ok(()),
+		Ty::Bees => Ok(()),
+		Ty::Lock => Ok(()),
+		Ty::ContainerLoot => Ok(()),
+		Ty::BreakSound => Ok(()),
+		Ty::VillagerVariant => Ok(()),
+		Ty::DamageType => Ok(()),
+		Ty::WolfVariant => Ok(()),
+		Ty::WolfSoundVariant => Ok(()),
+		Ty::WolfCollar => Ok(()),
+		Ty::FoxVariant => Ok(()),
+		Ty::SalmonSize => Ok(()),
+		Ty::ParrotVariant => Ok(()),
+		Ty::TropicalFishPattern => Ok(()),
+		Ty::TropicalFishBaseColor => Ok(()),
+		Ty::TropicalFishPatternColor => Ok(()),
+		Ty::MooshroomVariant => Ok(()),
+		Ty::ItemName => Ok(()),
+		Ty::RabbitVariant => Ok(()),
+		Ty::PigVariant => Ok(()),
+		Ty::CowVariant => Ok(()),
+		Ty::ChickenVariant => Ok(()),
+		Ty::ZombieNautilusVariant => Ok(()),
+		Ty::FrogVariant => Ok(()),
+		Ty::HorseVariant => Ok(()),
+		Ty::PaintingVariant => Ok(()),
+		Ty::LlamaVariant => Ok(()),
+		Ty::AxolotlVariant => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::CustomData); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::MaxStackSize); }
-    if (__tag.clone() == 10_i32) { return Ok(Ty::ItemModel); }
-    if (__tag.clone() == 100_i32) { return Ok(Ty::CatVariant); }
-    if (__tag.clone() == 101_i32) { return Ok(Ty::CatCollar); }
-    if (__tag.clone() == 102_i32) { return Ok(Ty::SheepColor); }
-    if (__tag.clone() == 103_i32) { return Ok(Ty::ShulkerColor); }
-    if (__tag.clone() == 11_i32) { return Ok(Ty::Lore); }
-    if (__tag.clone() == 12_i32) { return Ok(Ty::Rarity); }
-    if (__tag.clone() == 13_i32) { return Ok(Ty::Enchantments); }
-    if (__tag.clone() == 14_i32) { return Ok(Ty::CanPlaceOn); }
-    if (__tag.clone() == 15_i32) { return Ok(Ty::CanBreak); }
-    if (__tag.clone() == 16_i32) { return Ok(Ty::AttributeModifiers); }
-    if (__tag.clone() == 17_i32) { return Ok(Ty::CustomModelData); }
-    if (__tag.clone() == 18_i32) { return Ok(Ty::TooltipDisplay); }
-    if (__tag.clone() == 19_i32) { return Ok(Ty::RepairCost); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::MaxDamage); }
-    if (__tag.clone() == 20_i32) { return Ok(Ty::CreativeSlotLock); }
-    if (__tag.clone() == 21_i32) { return Ok(Ty::EnchantmentGlintOverride); }
-    if (__tag.clone() == 22_i32) { return Ok(Ty::IntangibleProjectile); }
-    if (__tag.clone() == 23_i32) { return Ok(Ty::Food); }
-    if (__tag.clone() == 24_i32) { return Ok(Ty::Consumable); }
-    if (__tag.clone() == 25_i32) { return Ok(Ty::UseRemainder); }
-    if (__tag.clone() == 26_i32) { return Ok(Ty::UseCooldown); }
-    if (__tag.clone() == 27_i32) { return Ok(Ty::DamageResistant); }
-    if (__tag.clone() == 28_i32) { return Ok(Ty::Tool); }
-    if (__tag.clone() == 29_i32) { return Ok(Ty::Weapon); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::Damage); }
-    if (__tag.clone() == 30_i32) { return Ok(Ty::AttackRange); }
-    if (__tag.clone() == 31_i32) { return Ok(Ty::Enchantable); }
-    if (__tag.clone() == 32_i32) { return Ok(Ty::Equippable); }
-    if (__tag.clone() == 33_i32) { return Ok(Ty::Repairable); }
-    if (__tag.clone() == 34_i32) { return Ok(Ty::Glider); }
-    if (__tag.clone() == 35_i32) { return Ok(Ty::TooltipStyle); }
-    if (__tag.clone() == 36_i32) { return Ok(Ty::DeathProtection); }
-    if (__tag.clone() == 37_i32) { return Ok(Ty::BlocksAttacks); }
-    if (__tag.clone() == 38_i32) { return Ok(Ty::PiercingWeapon); }
-    if (__tag.clone() == 39_i32) { return Ok(Ty::KineticWeapon); }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Unbreakable); }
-    if (__tag.clone() == 40_i32) { return Ok(Ty::SwingAnimation); }
-    if (__tag.clone() == 41_i32) { return Ok(Ty::StoredEnchantments); }
-    if (__tag.clone() == 42_i32) { return Ok(Ty::DyedColor); }
-    if (__tag.clone() == 43_i32) { return Ok(Ty::MapColor); }
-    if (__tag.clone() == 44_i32) { return Ok(Ty::MapId); }
-    if (__tag.clone() == 45_i32) { return Ok(Ty::MapDecorations); }
-    if (__tag.clone() == 46_i32) { return Ok(Ty::MapPostProcessing); }
-    if (__tag.clone() == 47_i32) { return Ok(Ty::ChargedProjectiles); }
-    if (__tag.clone() == 48_i32) { return Ok(Ty::BundleContents); }
-    if (__tag.clone() == 49_i32) { return Ok(Ty::PotionContents); }
-    if (__tag.clone() == 5_i32) { return Ok(Ty::UseEffects); }
-    if (__tag.clone() == 50_i32) { return Ok(Ty::PotionDurationScale); }
-    if (__tag.clone() == 51_i32) { return Ok(Ty::SuspiciousStewEffects); }
-    if (__tag.clone() == 52_i32) { return Ok(Ty::WritableBookContent); }
-    if (__tag.clone() == 53_i32) { return Ok(Ty::WrittenBookContent); }
-    if (__tag.clone() == 54_i32) { return Ok(Ty::Trim); }
-    if (__tag.clone() == 55_i32) { return Ok(Ty::DebugStickState); }
-    if (__tag.clone() == 56_i32) { return Ok(Ty::EntityData); }
-    if (__tag.clone() == 57_i32) { return Ok(Ty::BucketEntityData); }
-    if (__tag.clone() == 58_i32) { return Ok(Ty::BlockEntityData); }
-    if (__tag.clone() == 59_i32) { return Ok(Ty::Instrument); }
-    if (__tag.clone() == 6_i32) { return Ok(Ty::CustomName); }
-    if (__tag.clone() == 60_i32) { return Ok(Ty::ProvidesTrimMaterial); }
-    if (__tag.clone() == 61_i32) { return Ok(Ty::OminousBottleAmplifier); }
-    if (__tag.clone() == 62_i32) { return Ok(Ty::JukeboxPlayable); }
-    if (__tag.clone() == 63_i32) { return Ok(Ty::ProvidesBannerPatterns); }
-    if (__tag.clone() == 64_i32) { return Ok(Ty::Recipes); }
-    if (__tag.clone() == 65_i32) { return Ok(Ty::LodestoneTracker); }
-    if (__tag.clone() == 66_i32) { return Ok(Ty::FireworkExplosion); }
-    if (__tag.clone() == 67_i32) { return Ok(Ty::Fireworks); }
-    if (__tag.clone() == 68_i32) { return Ok(Ty::Profile); }
-    if (__tag.clone() == 69_i32) { return Ok(Ty::NoteBlockSound); }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::MinimumAttackCharge); }
-    if (__tag.clone() == 70_i32) { return Ok(Ty::BannerPatterns); }
-    if (__tag.clone() == 71_i32) { return Ok(Ty::BaseColor); }
-    if (__tag.clone() == 72_i32) { return Ok(Ty::PotDecorations); }
-    if (__tag.clone() == 73_i32) { return Ok(Ty::Container); }
-    if (__tag.clone() == 74_i32) { return Ok(Ty::BlockState); }
-    if (__tag.clone() == 75_i32) { return Ok(Ty::Bees); }
-    if (__tag.clone() == 76_i32) { return Ok(Ty::Lock); }
-    if (__tag.clone() == 77_i32) { return Ok(Ty::ContainerLoot); }
-    if (__tag.clone() == 78_i32) { return Ok(Ty::BreakSound); }
-    if (__tag.clone() == 79_i32) { return Ok(Ty::VillagerVariant); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::DamageType); }
-    if (__tag.clone() == 80_i32) { return Ok(Ty::WolfVariant); }
-    if (__tag.clone() == 81_i32) { return Ok(Ty::WolfSoundVariant); }
-    if (__tag.clone() == 82_i32) { return Ok(Ty::WolfCollar); }
-    if (__tag.clone() == 83_i32) { return Ok(Ty::FoxVariant); }
-    if (__tag.clone() == 84_i32) { return Ok(Ty::SalmonSize); }
-    if (__tag.clone() == 85_i32) { return Ok(Ty::ParrotVariant); }
-    if (__tag.clone() == 86_i32) { return Ok(Ty::TropicalFishPattern); }
-    if (__tag.clone() == 87_i32) { return Ok(Ty::TropicalFishBaseColor); }
-    if (__tag.clone() == 88_i32) { return Ok(Ty::TropicalFishPatternColor); }
-    if (__tag.clone() == 89_i32) { return Ok(Ty::MooshroomVariant); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::ItemName); }
-    if (__tag.clone() == 90_i32) { return Ok(Ty::RabbitVariant); }
-    if (__tag.clone() == 91_i32) { return Ok(Ty::PigVariant); }
-    if (__tag.clone() == 92_i32) { return Ok(Ty::CowVariant); }
-    if (__tag.clone() == 93_i32) { return Ok(Ty::ChickenVariant); }
-    if (__tag.clone() == 94_i32) { return Ok(Ty::ZombieNautilusVariant); }
-    if (__tag.clone() == 95_i32) { return Ok(Ty::FrogVariant); }
-    if (__tag.clone() == 96_i32) { return Ok(Ty::HorseVariant); }
-    if (__tag.clone() == 97_i32) { return Ok(Ty::PaintingVariant); }
-    if (__tag.clone() == 98_i32) { return Ok(Ty::LlamaVariant); }
-    if (__tag.clone() == 99_i32) { return Ok(Ty::AxolotlVariant); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::CustomData);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::MaxStackSize);
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::ItemModel);
+	}
+	if (__tag.clone() == 100_i32) {
+		return Ok(Ty::CatVariant);
+	}
+	if (__tag.clone() == 101_i32) {
+		return Ok(Ty::CatCollar);
+	}
+	if (__tag.clone() == 102_i32) {
+		return Ok(Ty::SheepColor);
+	}
+	if (__tag.clone() == 103_i32) {
+		return Ok(Ty::ShulkerColor);
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::Lore);
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::Rarity);
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::Enchantments);
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::CanPlaceOn);
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::CanBreak);
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::AttributeModifiers);
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::CustomModelData);
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::TooltipDisplay);
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::RepairCost);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::MaxDamage);
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::CreativeSlotLock);
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::EnchantmentGlintOverride);
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::IntangibleProjectile);
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::Food);
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::Consumable);
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::UseRemainder);
+	}
+	if (__tag.clone() == 26_i32) {
+		return Ok(Ty::UseCooldown);
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::DamageResistant);
+	}
+	if (__tag.clone() == 28_i32) {
+		return Ok(Ty::Tool);
+	}
+	if (__tag.clone() == 29_i32) {
+		return Ok(Ty::Weapon);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Damage);
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::AttackRange);
+	}
+	if (__tag.clone() == 31_i32) {
+		return Ok(Ty::Enchantable);
+	}
+	if (__tag.clone() == 32_i32) {
+		return Ok(Ty::Equippable);
+	}
+	if (__tag.clone() == 33_i32) {
+		return Ok(Ty::Repairable);
+	}
+	if (__tag.clone() == 34_i32) {
+		return Ok(Ty::Glider);
+	}
+	if (__tag.clone() == 35_i32) {
+		return Ok(Ty::TooltipStyle);
+	}
+	if (__tag.clone() == 36_i32) {
+		return Ok(Ty::DeathProtection);
+	}
+	if (__tag.clone() == 37_i32) {
+		return Ok(Ty::BlocksAttacks);
+	}
+	if (__tag.clone() == 38_i32) {
+		return Ok(Ty::PiercingWeapon);
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::KineticWeapon);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Unbreakable);
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::SwingAnimation);
+	}
+	if (__tag.clone() == 41_i32) {
+		return Ok(Ty::StoredEnchantments);
+	}
+	if (__tag.clone() == 42_i32) {
+		return Ok(Ty::DyedColor);
+	}
+	if (__tag.clone() == 43_i32) {
+		return Ok(Ty::MapColor);
+	}
+	if (__tag.clone() == 44_i32) {
+		return Ok(Ty::MapId);
+	}
+	if (__tag.clone() == 45_i32) {
+		return Ok(Ty::MapDecorations);
+	}
+	if (__tag.clone() == 46_i32) {
+		return Ok(Ty::MapPostProcessing);
+	}
+	if (__tag.clone() == 47_i32) {
+		return Ok(Ty::ChargedProjectiles);
+	}
+	if (__tag.clone() == 48_i32) {
+		return Ok(Ty::BundleContents);
+	}
+	if (__tag.clone() == 49_i32) {
+		return Ok(Ty::PotionContents);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::UseEffects);
+	}
+	if (__tag.clone() == 50_i32) {
+		return Ok(Ty::PotionDurationScale);
+	}
+	if (__tag.clone() == 51_i32) {
+		return Ok(Ty::SuspiciousStewEffects);
+	}
+	if (__tag.clone() == 52_i32) {
+		return Ok(Ty::WritableBookContent);
+	}
+	if (__tag.clone() == 53_i32) {
+		return Ok(Ty::WrittenBookContent);
+	}
+	if (__tag.clone() == 54_i32) {
+		return Ok(Ty::Trim);
+	}
+	if (__tag.clone() == 55_i32) {
+		return Ok(Ty::DebugStickState);
+	}
+	if (__tag.clone() == 56_i32) {
+		return Ok(Ty::EntityData);
+	}
+	if (__tag.clone() == 57_i32) {
+		return Ok(Ty::BucketEntityData);
+	}
+	if (__tag.clone() == 58_i32) {
+		return Ok(Ty::BlockEntityData);
+	}
+	if (__tag.clone() == 59_i32) {
+		return Ok(Ty::Instrument);
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::CustomName);
+	}
+	if (__tag.clone() == 60_i32) {
+		return Ok(Ty::ProvidesTrimMaterial);
+	}
+	if (__tag.clone() == 61_i32) {
+		return Ok(Ty::OminousBottleAmplifier);
+	}
+	if (__tag.clone() == 62_i32) {
+		return Ok(Ty::JukeboxPlayable);
+	}
+	if (__tag.clone() == 63_i32) {
+		return Ok(Ty::ProvidesBannerPatterns);
+	}
+	if (__tag.clone() == 64_i32) {
+		return Ok(Ty::Recipes);
+	}
+	if (__tag.clone() == 65_i32) {
+		return Ok(Ty::LodestoneTracker);
+	}
+	if (__tag.clone() == 66_i32) {
+		return Ok(Ty::FireworkExplosion);
+	}
+	if (__tag.clone() == 67_i32) {
+		return Ok(Ty::Fireworks);
+	}
+	if (__tag.clone() == 68_i32) {
+		return Ok(Ty::Profile);
+	}
+	if (__tag.clone() == 69_i32) {
+		return Ok(Ty::NoteBlockSound);
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::MinimumAttackCharge);
+	}
+	if (__tag.clone() == 70_i32) {
+		return Ok(Ty::BannerPatterns);
+	}
+	if (__tag.clone() == 71_i32) {
+		return Ok(Ty::BaseColor);
+	}
+	if (__tag.clone() == 72_i32) {
+		return Ok(Ty::PotDecorations);
+	}
+	if (__tag.clone() == 73_i32) {
+		return Ok(Ty::Container);
+	}
+	if (__tag.clone() == 74_i32) {
+		return Ok(Ty::BlockState);
+	}
+	if (__tag.clone() == 75_i32) {
+		return Ok(Ty::Bees);
+	}
+	if (__tag.clone() == 76_i32) {
+		return Ok(Ty::Lock);
+	}
+	if (__tag.clone() == 77_i32) {
+		return Ok(Ty::ContainerLoot);
+	}
+	if (__tag.clone() == 78_i32) {
+		return Ok(Ty::BreakSound);
+	}
+	if (__tag.clone() == 79_i32) {
+		return Ok(Ty::VillagerVariant);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::DamageType);
+	}
+	if (__tag.clone() == 80_i32) {
+		return Ok(Ty::WolfVariant);
+	}
+	if (__tag.clone() == 81_i32) {
+		return Ok(Ty::WolfSoundVariant);
+	}
+	if (__tag.clone() == 82_i32) {
+		return Ok(Ty::WolfCollar);
+	}
+	if (__tag.clone() == 83_i32) {
+		return Ok(Ty::FoxVariant);
+	}
+	if (__tag.clone() == 84_i32) {
+		return Ok(Ty::SalmonSize);
+	}
+	if (__tag.clone() == 85_i32) {
+		return Ok(Ty::ParrotVariant);
+	}
+	if (__tag.clone() == 86_i32) {
+		return Ok(Ty::TropicalFishPattern);
+	}
+	if (__tag.clone() == 87_i32) {
+		return Ok(Ty::TropicalFishBaseColor);
+	}
+	if (__tag.clone() == 88_i32) {
+		return Ok(Ty::TropicalFishPatternColor);
+	}
+	if (__tag.clone() == 89_i32) {
+		return Ok(Ty::MooshroomVariant);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::ItemName);
+	}
+	if (__tag.clone() == 90_i32) {
+		return Ok(Ty::RabbitVariant);
+	}
+	if (__tag.clone() == 91_i32) {
+		return Ok(Ty::PigVariant);
+	}
+	if (__tag.clone() == 92_i32) {
+		return Ok(Ty::CowVariant);
+	}
+	if (__tag.clone() == 93_i32) {
+		return Ok(Ty::ChickenVariant);
+	}
+	if (__tag.clone() == 94_i32) {
+		return Ok(Ty::ZombieNautilusVariant);
+	}
+	if (__tag.clone() == 95_i32) {
+		return Ok(Ty::FrogVariant);
+	}
+	if (__tag.clone() == 96_i32) {
+		return Ok(Ty::HorseVariant);
+	}
+	if (__tag.clone() == 97_i32) {
+		return Ok(Ty::PaintingVariant);
+	}
+	if (__tag.clone() == 98_i32) {
+		return Ok(Ty::LlamaVariant);
+	}
+	if (__tag.clone() == 99_i32) {
+		return Ok(Ty::AxolotlVariant);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::CustomData => 0,
-        Ty::MaxStackSize => 0,
-        Ty::ItemModel => 0,
-        Ty::CatVariant => 0,
-        Ty::CatCollar => 0,
-        Ty::SheepColor => 0,
-        Ty::ShulkerColor => 0,
-        Ty::Lore => 0,
-        Ty::Rarity => 0,
-        Ty::Enchantments => 0,
-        Ty::CanPlaceOn => 0,
-        Ty::CanBreak => 0,
-        Ty::AttributeModifiers => 0,
-        Ty::CustomModelData => 0,
-        Ty::TooltipDisplay => 0,
-        Ty::RepairCost => 0,
-        Ty::MaxDamage => 0,
-        Ty::CreativeSlotLock => 0,
-        Ty::EnchantmentGlintOverride => 0,
-        Ty::IntangibleProjectile => 0,
-        Ty::Food => 0,
-        Ty::Consumable => 0,
-        Ty::UseRemainder => 0,
-        Ty::UseCooldown => 0,
-        Ty::DamageResistant => 0,
-        Ty::Tool => 0,
-        Ty::Weapon => 0,
-        Ty::Damage => 0,
-        Ty::AttackRange => 0,
-        Ty::Enchantable => 0,
-        Ty::Equippable => 0,
-        Ty::Repairable => 0,
-        Ty::Glider => 0,
-        Ty::TooltipStyle => 0,
-        Ty::DeathProtection => 0,
-        Ty::BlocksAttacks => 0,
-        Ty::PiercingWeapon => 0,
-        Ty::KineticWeapon => 0,
-        Ty::Unbreakable => 0,
-        Ty::SwingAnimation => 0,
-        Ty::StoredEnchantments => 0,
-        Ty::DyedColor => 0,
-        Ty::MapColor => 0,
-        Ty::MapId => 0,
-        Ty::MapDecorations => 0,
-        Ty::MapPostProcessing => 0,
-        Ty::ChargedProjectiles => 0,
-        Ty::BundleContents => 0,
-        Ty::PotionContents => 0,
-        Ty::UseEffects => 0,
-        Ty::PotionDurationScale => 0,
-        Ty::SuspiciousStewEffects => 0,
-        Ty::WritableBookContent => 0,
-        Ty::WrittenBookContent => 0,
-        Ty::Trim => 0,
-        Ty::DebugStickState => 0,
-        Ty::EntityData => 0,
-        Ty::BucketEntityData => 0,
-        Ty::BlockEntityData => 0,
-        Ty::Instrument => 0,
-        Ty::CustomName => 0,
-        Ty::ProvidesTrimMaterial => 0,
-        Ty::OminousBottleAmplifier => 0,
-        Ty::JukeboxPlayable => 0,
-        Ty::ProvidesBannerPatterns => 0,
-        Ty::Recipes => 0,
-        Ty::LodestoneTracker => 0,
-        Ty::FireworkExplosion => 0,
-        Ty::Fireworks => 0,
-        Ty::Profile => 0,
-        Ty::NoteBlockSound => 0,
-        Ty::MinimumAttackCharge => 0,
-        Ty::BannerPatterns => 0,
-        Ty::BaseColor => 0,
-        Ty::PotDecorations => 0,
-        Ty::Container => 0,
-        Ty::BlockState => 0,
-        Ty::Bees => 0,
-        Ty::Lock => 0,
-        Ty::ContainerLoot => 0,
-        Ty::BreakSound => 0,
-        Ty::VillagerVariant => 0,
-        Ty::DamageType => 0,
-        Ty::WolfVariant => 0,
-        Ty::WolfSoundVariant => 0,
-        Ty::WolfCollar => 0,
-        Ty::FoxVariant => 0,
-        Ty::SalmonSize => 0,
-        Ty::ParrotVariant => 0,
-        Ty::TropicalFishPattern => 0,
-        Ty::TropicalFishBaseColor => 0,
-        Ty::TropicalFishPatternColor => 0,
-        Ty::MooshroomVariant => 0,
-        Ty::ItemName => 0,
-        Ty::RabbitVariant => 0,
-        Ty::PigVariant => 0,
-        Ty::CowVariant => 0,
-        Ty::ChickenVariant => 0,
-        Ty::ZombieNautilusVariant => 0,
-        Ty::FrogVariant => 0,
-        Ty::HorseVariant => 0,
-        Ty::PaintingVariant => 0,
-        Ty::LlamaVariant => 0,
-        Ty::AxolotlVariant => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::CustomData => 0,
+			Ty::MaxStackSize => 0,
+			Ty::ItemModel => 0,
+			Ty::CatVariant => 0,
+			Ty::CatCollar => 0,
+			Ty::SheepColor => 0,
+			Ty::ShulkerColor => 0,
+			Ty::Lore => 0,
+			Ty::Rarity => 0,
+			Ty::Enchantments => 0,
+			Ty::CanPlaceOn => 0,
+			Ty::CanBreak => 0,
+			Ty::AttributeModifiers => 0,
+			Ty::CustomModelData => 0,
+			Ty::TooltipDisplay => 0,
+			Ty::RepairCost => 0,
+			Ty::MaxDamage => 0,
+			Ty::CreativeSlotLock => 0,
+			Ty::EnchantmentGlintOverride => 0,
+			Ty::IntangibleProjectile => 0,
+			Ty::Food => 0,
+			Ty::Consumable => 0,
+			Ty::UseRemainder => 0,
+			Ty::UseCooldown => 0,
+			Ty::DamageResistant => 0,
+			Ty::Tool => 0,
+			Ty::Weapon => 0,
+			Ty::Damage => 0,
+			Ty::AttackRange => 0,
+			Ty::Enchantable => 0,
+			Ty::Equippable => 0,
+			Ty::Repairable => 0,
+			Ty::Glider => 0,
+			Ty::TooltipStyle => 0,
+			Ty::DeathProtection => 0,
+			Ty::BlocksAttacks => 0,
+			Ty::PiercingWeapon => 0,
+			Ty::KineticWeapon => 0,
+			Ty::Unbreakable => 0,
+			Ty::SwingAnimation => 0,
+			Ty::StoredEnchantments => 0,
+			Ty::DyedColor => 0,
+			Ty::MapColor => 0,
+			Ty::MapId => 0,
+			Ty::MapDecorations => 0,
+			Ty::MapPostProcessing => 0,
+			Ty::ChargedProjectiles => 0,
+			Ty::BundleContents => 0,
+			Ty::PotionContents => 0,
+			Ty::UseEffects => 0,
+			Ty::PotionDurationScale => 0,
+			Ty::SuspiciousStewEffects => 0,
+			Ty::WritableBookContent => 0,
+			Ty::WrittenBookContent => 0,
+			Ty::Trim => 0,
+			Ty::DebugStickState => 0,
+			Ty::EntityData => 0,
+			Ty::BucketEntityData => 0,
+			Ty::BlockEntityData => 0,
+			Ty::Instrument => 0,
+			Ty::CustomName => 0,
+			Ty::ProvidesTrimMaterial => 0,
+			Ty::OminousBottleAmplifier => 0,
+			Ty::JukeboxPlayable => 0,
+			Ty::ProvidesBannerPatterns => 0,
+			Ty::Recipes => 0,
+			Ty::LodestoneTracker => 0,
+			Ty::FireworkExplosion => 0,
+			Ty::Fireworks => 0,
+			Ty::Profile => 0,
+			Ty::NoteBlockSound => 0,
+			Ty::MinimumAttackCharge => 0,
+			Ty::BannerPatterns => 0,
+			Ty::BaseColor => 0,
+			Ty::PotDecorations => 0,
+			Ty::Container => 0,
+			Ty::BlockState => 0,
+			Ty::Bees => 0,
+			Ty::Lock => 0,
+			Ty::ContainerLoot => 0,
+			Ty::BreakSound => 0,
+			Ty::VillagerVariant => 0,
+			Ty::DamageType => 0,
+			Ty::WolfVariant => 0,
+			Ty::WolfSoundVariant => 0,
+			Ty::WolfCollar => 0,
+			Ty::FoxVariant => 0,
+			Ty::SalmonSize => 0,
+			Ty::ParrotVariant => 0,
+			Ty::TropicalFishPattern => 0,
+			Ty::TropicalFishBaseColor => 0,
+			Ty::TropicalFishPatternColor => 0,
+			Ty::MooshroomVariant => 0,
+			Ty::ItemName => 0,
+			Ty::RabbitVariant => 0,
+			Ty::PigVariant => 0,
+			Ty::CowVariant => 0,
+			Ty::ChickenVariant => 0,
+			Ty::ZombieNautilusVariant => 0,
+			Ty::FrogVariant => 0,
+			Ty::HorseVariant => 0,
+			Ty::PaintingVariant => 0,
+			Ty::LlamaVariant => 0,
+			Ty::AxolotlVariant => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::CustomData => "custom_data",
-        Ty::MaxStackSize => "max_stack_size",
-        Ty::ItemModel => "item_model",
-        Ty::CatVariant => "cat_variant",
-        Ty::CatCollar => "cat_collar",
-        Ty::SheepColor => "sheep_color",
-        Ty::ShulkerColor => "shulker_color",
-        Ty::Lore => "lore",
-        Ty::Rarity => "rarity",
-        Ty::Enchantments => "enchantments",
-        Ty::CanPlaceOn => "can_place_on",
-        Ty::CanBreak => "can_break",
-        Ty::AttributeModifiers => "attribute_modifiers",
-        Ty::CustomModelData => "custom_model_data",
-        Ty::TooltipDisplay => "tooltip_display",
-        Ty::RepairCost => "repair_cost",
-        Ty::MaxDamage => "max_damage",
-        Ty::CreativeSlotLock => "creative_slot_lock",
-        Ty::EnchantmentGlintOverride => "enchantment_glint_override",
-        Ty::IntangibleProjectile => "intangible_projectile",
-        Ty::Food => "food",
-        Ty::Consumable => "consumable",
-        Ty::UseRemainder => "use_remainder",
-        Ty::UseCooldown => "use_cooldown",
-        Ty::DamageResistant => "damage_resistant",
-        Ty::Tool => "tool",
-        Ty::Weapon => "weapon",
-        Ty::Damage => "damage",
-        Ty::AttackRange => "attack_range",
-        Ty::Enchantable => "enchantable",
-        Ty::Equippable => "equippable",
-        Ty::Repairable => "repairable",
-        Ty::Glider => "glider",
-        Ty::TooltipStyle => "tooltip_style",
-        Ty::DeathProtection => "death_protection",
-        Ty::BlocksAttacks => "blocks_attacks",
-        Ty::PiercingWeapon => "piercing_weapon",
-        Ty::KineticWeapon => "kinetic_weapon",
-        Ty::Unbreakable => "unbreakable",
-        Ty::SwingAnimation => "swing_animation",
-        Ty::StoredEnchantments => "stored_enchantments",
-        Ty::DyedColor => "dyed_color",
-        Ty::MapColor => "map_color",
-        Ty::MapId => "map_id",
-        Ty::MapDecorations => "map_decorations",
-        Ty::MapPostProcessing => "map_post_processing",
-        Ty::ChargedProjectiles => "charged_projectiles",
-        Ty::BundleContents => "bundle_contents",
-        Ty::PotionContents => "potion_contents",
-        Ty::UseEffects => "use_effects",
-        Ty::PotionDurationScale => "potion_duration_scale",
-        Ty::SuspiciousStewEffects => "suspicious_stew_effects",
-        Ty::WritableBookContent => "writable_book_content",
-        Ty::WrittenBookContent => "written_book_content",
-        Ty::Trim => "trim",
-        Ty::DebugStickState => "debug_stick_state",
-        Ty::EntityData => "entity_data",
-        Ty::BucketEntityData => "bucket_entity_data",
-        Ty::BlockEntityData => "block_entity_data",
-        Ty::Instrument => "instrument",
-        Ty::CustomName => "custom_name",
-        Ty::ProvidesTrimMaterial => "provides_trim_material",
-        Ty::OminousBottleAmplifier => "ominous_bottle_amplifier",
-        Ty::JukeboxPlayable => "jukebox_playable",
-        Ty::ProvidesBannerPatterns => "provides_banner_patterns",
-        Ty::Recipes => "recipes",
-        Ty::LodestoneTracker => "lodestone_tracker",
-        Ty::FireworkExplosion => "firework_explosion",
-        Ty::Fireworks => "fireworks",
-        Ty::Profile => "profile",
-        Ty::NoteBlockSound => "note_block_sound",
-        Ty::MinimumAttackCharge => "minimum_attack_charge",
-        Ty::BannerPatterns => "banner_patterns",
-        Ty::BaseColor => "base_color",
-        Ty::PotDecorations => "pot_decorations",
-        Ty::Container => "container",
-        Ty::BlockState => "block_state",
-        Ty::Bees => "bees",
-        Ty::Lock => "lock",
-        Ty::ContainerLoot => "container_loot",
-        Ty::BreakSound => "break_sound",
-        Ty::VillagerVariant => "villager_variant",
-        Ty::DamageType => "damage_type",
-        Ty::WolfVariant => "wolf_variant",
-        Ty::WolfSoundVariant => "wolf_sound_variant",
-        Ty::WolfCollar => "wolf_collar",
-        Ty::FoxVariant => "fox_variant",
-        Ty::SalmonSize => "salmon_size",
-        Ty::ParrotVariant => "parrot_variant",
-        Ty::TropicalFishPattern => "tropical_fish_pattern",
-        Ty::TropicalFishBaseColor => "tropical_fish_base_color",
-        Ty::TropicalFishPatternColor => "tropical_fish_pattern_color",
-        Ty::MooshroomVariant => "mooshroom_variant",
-        Ty::ItemName => "item_name",
-        Ty::RabbitVariant => "rabbit_variant",
-        Ty::PigVariant => "pig_variant",
-        Ty::CowVariant => "cow_variant",
-        Ty::ChickenVariant => "chicken_variant",
-        Ty::ZombieNautilusVariant => "zombie_nautilus_variant",
-        Ty::FrogVariant => "frog_variant",
-        Ty::HorseVariant => "horse_variant",
-        Ty::PaintingVariant => "painting_variant",
-        Ty::LlamaVariant => "llama_variant",
-        Ty::AxolotlVariant => "axolotl_variant",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::CustomData => "custom_data",
+		Ty::MaxStackSize => "max_stack_size",
+		Ty::ItemModel => "item_model",
+		Ty::CatVariant => "cat_variant",
+		Ty::CatCollar => "cat_collar",
+		Ty::SheepColor => "sheep_color",
+		Ty::ShulkerColor => "shulker_color",
+		Ty::Lore => "lore",
+		Ty::Rarity => "rarity",
+		Ty::Enchantments => "enchantments",
+		Ty::CanPlaceOn => "can_place_on",
+		Ty::CanBreak => "can_break",
+		Ty::AttributeModifiers => "attribute_modifiers",
+		Ty::CustomModelData => "custom_model_data",
+		Ty::TooltipDisplay => "tooltip_display",
+		Ty::RepairCost => "repair_cost",
+		Ty::MaxDamage => "max_damage",
+		Ty::CreativeSlotLock => "creative_slot_lock",
+		Ty::EnchantmentGlintOverride => "enchantment_glint_override",
+		Ty::IntangibleProjectile => "intangible_projectile",
+		Ty::Food => "food",
+		Ty::Consumable => "consumable",
+		Ty::UseRemainder => "use_remainder",
+		Ty::UseCooldown => "use_cooldown",
+		Ty::DamageResistant => "damage_resistant",
+		Ty::Tool => "tool",
+		Ty::Weapon => "weapon",
+		Ty::Damage => "damage",
+		Ty::AttackRange => "attack_range",
+		Ty::Enchantable => "enchantable",
+		Ty::Equippable => "equippable",
+		Ty::Repairable => "repairable",
+		Ty::Glider => "glider",
+		Ty::TooltipStyle => "tooltip_style",
+		Ty::DeathProtection => "death_protection",
+		Ty::BlocksAttacks => "blocks_attacks",
+		Ty::PiercingWeapon => "piercing_weapon",
+		Ty::KineticWeapon => "kinetic_weapon",
+		Ty::Unbreakable => "unbreakable",
+		Ty::SwingAnimation => "swing_animation",
+		Ty::StoredEnchantments => "stored_enchantments",
+		Ty::DyedColor => "dyed_color",
+		Ty::MapColor => "map_color",
+		Ty::MapId => "map_id",
+		Ty::MapDecorations => "map_decorations",
+		Ty::MapPostProcessing => "map_post_processing",
+		Ty::ChargedProjectiles => "charged_projectiles",
+		Ty::BundleContents => "bundle_contents",
+		Ty::PotionContents => "potion_contents",
+		Ty::UseEffects => "use_effects",
+		Ty::PotionDurationScale => "potion_duration_scale",
+		Ty::SuspiciousStewEffects => "suspicious_stew_effects",
+		Ty::WritableBookContent => "writable_book_content",
+		Ty::WrittenBookContent => "written_book_content",
+		Ty::Trim => "trim",
+		Ty::DebugStickState => "debug_stick_state",
+		Ty::EntityData => "entity_data",
+		Ty::BucketEntityData => "bucket_entity_data",
+		Ty::BlockEntityData => "block_entity_data",
+		Ty::Instrument => "instrument",
+		Ty::CustomName => "custom_name",
+		Ty::ProvidesTrimMaterial => "provides_trim_material",
+		Ty::OminousBottleAmplifier => "ominous_bottle_amplifier",
+		Ty::JukeboxPlayable => "jukebox_playable",
+		Ty::ProvidesBannerPatterns => "provides_banner_patterns",
+		Ty::Recipes => "recipes",
+		Ty::LodestoneTracker => "lodestone_tracker",
+		Ty::FireworkExplosion => "firework_explosion",
+		Ty::Fireworks => "fireworks",
+		Ty::Profile => "profile",
+		Ty::NoteBlockSound => "note_block_sound",
+		Ty::MinimumAttackCharge => "minimum_attack_charge",
+		Ty::BannerPatterns => "banner_patterns",
+		Ty::BaseColor => "base_color",
+		Ty::PotDecorations => "pot_decorations",
+		Ty::Container => "container",
+		Ty::BlockState => "block_state",
+		Ty::Bees => "bees",
+		Ty::Lock => "lock",
+		Ty::ContainerLoot => "container_loot",
+		Ty::BreakSound => "break_sound",
+		Ty::VillagerVariant => "villager_variant",
+		Ty::DamageType => "damage_type",
+		Ty::WolfVariant => "wolf_variant",
+		Ty::WolfSoundVariant => "wolf_sound_variant",
+		Ty::WolfCollar => "wolf_collar",
+		Ty::FoxVariant => "fox_variant",
+		Ty::SalmonSize => "salmon_size",
+		Ty::ParrotVariant => "parrot_variant",
+		Ty::TropicalFishPattern => "tropical_fish_pattern",
+		Ty::TropicalFishBaseColor => "tropical_fish_base_color",
+		Ty::TropicalFishPatternColor => "tropical_fish_pattern_color",
+		Ty::MooshroomVariant => "mooshroom_variant",
+		Ty::ItemName => "item_name",
+		Ty::RabbitVariant => "rabbit_variant",
+		Ty::PigVariant => "pig_variant",
+		Ty::CowVariant => "cow_variant",
+		Ty::ChickenVariant => "chicken_variant",
+		Ty::ZombieNautilusVariant => "zombie_nautilus_variant",
+		Ty::FrogVariant => "frog_variant",
+		Ty::HorseVariant => "horse_variant",
+		Ty::PaintingVariant => "painting_variant",
+		Ty::LlamaVariant => "llama_variant",
+		Ty::AxolotlVariant => "axolotl_variant",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::CustomData => 0_i32,
-        Ty::MaxStackSize => 1_i32,
-        Ty::ItemModel => 10_i32,
-        Ty::CatVariant => 100_i32,
-        Ty::CatCollar => 101_i32,
-        Ty::SheepColor => 102_i32,
-        Ty::ShulkerColor => 103_i32,
-        Ty::Lore => 11_i32,
-        Ty::Rarity => 12_i32,
-        Ty::Enchantments => 13_i32,
-        Ty::CanPlaceOn => 14_i32,
-        Ty::CanBreak => 15_i32,
-        Ty::AttributeModifiers => 16_i32,
-        Ty::CustomModelData => 17_i32,
-        Ty::TooltipDisplay => 18_i32,
-        Ty::RepairCost => 19_i32,
-        Ty::MaxDamage => 2_i32,
-        Ty::CreativeSlotLock => 20_i32,
-        Ty::EnchantmentGlintOverride => 21_i32,
-        Ty::IntangibleProjectile => 22_i32,
-        Ty::Food => 23_i32,
-        Ty::Consumable => 24_i32,
-        Ty::UseRemainder => 25_i32,
-        Ty::UseCooldown => 26_i32,
-        Ty::DamageResistant => 27_i32,
-        Ty::Tool => 28_i32,
-        Ty::Weapon => 29_i32,
-        Ty::Damage => 3_i32,
-        Ty::AttackRange => 30_i32,
-        Ty::Enchantable => 31_i32,
-        Ty::Equippable => 32_i32,
-        Ty::Repairable => 33_i32,
-        Ty::Glider => 34_i32,
-        Ty::TooltipStyle => 35_i32,
-        Ty::DeathProtection => 36_i32,
-        Ty::BlocksAttacks => 37_i32,
-        Ty::PiercingWeapon => 38_i32,
-        Ty::KineticWeapon => 39_i32,
-        Ty::Unbreakable => 4_i32,
-        Ty::SwingAnimation => 40_i32,
-        Ty::StoredEnchantments => 41_i32,
-        Ty::DyedColor => 42_i32,
-        Ty::MapColor => 43_i32,
-        Ty::MapId => 44_i32,
-        Ty::MapDecorations => 45_i32,
-        Ty::MapPostProcessing => 46_i32,
-        Ty::ChargedProjectiles => 47_i32,
-        Ty::BundleContents => 48_i32,
-        Ty::PotionContents => 49_i32,
-        Ty::UseEffects => 5_i32,
-        Ty::PotionDurationScale => 50_i32,
-        Ty::SuspiciousStewEffects => 51_i32,
-        Ty::WritableBookContent => 52_i32,
-        Ty::WrittenBookContent => 53_i32,
-        Ty::Trim => 54_i32,
-        Ty::DebugStickState => 55_i32,
-        Ty::EntityData => 56_i32,
-        Ty::BucketEntityData => 57_i32,
-        Ty::BlockEntityData => 58_i32,
-        Ty::Instrument => 59_i32,
-        Ty::CustomName => 6_i32,
-        Ty::ProvidesTrimMaterial => 60_i32,
-        Ty::OminousBottleAmplifier => 61_i32,
-        Ty::JukeboxPlayable => 62_i32,
-        Ty::ProvidesBannerPatterns => 63_i32,
-        Ty::Recipes => 64_i32,
-        Ty::LodestoneTracker => 65_i32,
-        Ty::FireworkExplosion => 66_i32,
-        Ty::Fireworks => 67_i32,
-        Ty::Profile => 68_i32,
-        Ty::NoteBlockSound => 69_i32,
-        Ty::MinimumAttackCharge => 7_i32,
-        Ty::BannerPatterns => 70_i32,
-        Ty::BaseColor => 71_i32,
-        Ty::PotDecorations => 72_i32,
-        Ty::Container => 73_i32,
-        Ty::BlockState => 74_i32,
-        Ty::Bees => 75_i32,
-        Ty::Lock => 76_i32,
-        Ty::ContainerLoot => 77_i32,
-        Ty::BreakSound => 78_i32,
-        Ty::VillagerVariant => 79_i32,
-        Ty::DamageType => 8_i32,
-        Ty::WolfVariant => 80_i32,
-        Ty::WolfSoundVariant => 81_i32,
-        Ty::WolfCollar => 82_i32,
-        Ty::FoxVariant => 83_i32,
-        Ty::SalmonSize => 84_i32,
-        Ty::ParrotVariant => 85_i32,
-        Ty::TropicalFishPattern => 86_i32,
-        Ty::TropicalFishBaseColor => 87_i32,
-        Ty::TropicalFishPatternColor => 88_i32,
-        Ty::MooshroomVariant => 89_i32,
-        Ty::ItemName => 9_i32,
-        Ty::RabbitVariant => 90_i32,
-        Ty::PigVariant => 91_i32,
-        Ty::CowVariant => 92_i32,
-        Ty::ChickenVariant => 93_i32,
-        Ty::ZombieNautilusVariant => 94_i32,
-        Ty::FrogVariant => 95_i32,
-        Ty::HorseVariant => 96_i32,
-        Ty::PaintingVariant => 97_i32,
-        Ty::LlamaVariant => 98_i32,
-        Ty::AxolotlVariant => 99_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::CustomData => 0_i32,
+		Ty::MaxStackSize => 1_i32,
+		Ty::ItemModel => 10_i32,
+		Ty::CatVariant => 100_i32,
+		Ty::CatCollar => 101_i32,
+		Ty::SheepColor => 102_i32,
+		Ty::ShulkerColor => 103_i32,
+		Ty::Lore => 11_i32,
+		Ty::Rarity => 12_i32,
+		Ty::Enchantments => 13_i32,
+		Ty::CanPlaceOn => 14_i32,
+		Ty::CanBreak => 15_i32,
+		Ty::AttributeModifiers => 16_i32,
+		Ty::CustomModelData => 17_i32,
+		Ty::TooltipDisplay => 18_i32,
+		Ty::RepairCost => 19_i32,
+		Ty::MaxDamage => 2_i32,
+		Ty::CreativeSlotLock => 20_i32,
+		Ty::EnchantmentGlintOverride => 21_i32,
+		Ty::IntangibleProjectile => 22_i32,
+		Ty::Food => 23_i32,
+		Ty::Consumable => 24_i32,
+		Ty::UseRemainder => 25_i32,
+		Ty::UseCooldown => 26_i32,
+		Ty::DamageResistant => 27_i32,
+		Ty::Tool => 28_i32,
+		Ty::Weapon => 29_i32,
+		Ty::Damage => 3_i32,
+		Ty::AttackRange => 30_i32,
+		Ty::Enchantable => 31_i32,
+		Ty::Equippable => 32_i32,
+		Ty::Repairable => 33_i32,
+		Ty::Glider => 34_i32,
+		Ty::TooltipStyle => 35_i32,
+		Ty::DeathProtection => 36_i32,
+		Ty::BlocksAttacks => 37_i32,
+		Ty::PiercingWeapon => 38_i32,
+		Ty::KineticWeapon => 39_i32,
+		Ty::Unbreakable => 4_i32,
+		Ty::SwingAnimation => 40_i32,
+		Ty::StoredEnchantments => 41_i32,
+		Ty::DyedColor => 42_i32,
+		Ty::MapColor => 43_i32,
+		Ty::MapId => 44_i32,
+		Ty::MapDecorations => 45_i32,
+		Ty::MapPostProcessing => 46_i32,
+		Ty::ChargedProjectiles => 47_i32,
+		Ty::BundleContents => 48_i32,
+		Ty::PotionContents => 49_i32,
+		Ty::UseEffects => 5_i32,
+		Ty::PotionDurationScale => 50_i32,
+		Ty::SuspiciousStewEffects => 51_i32,
+		Ty::WritableBookContent => 52_i32,
+		Ty::WrittenBookContent => 53_i32,
+		Ty::Trim => 54_i32,
+		Ty::DebugStickState => 55_i32,
+		Ty::EntityData => 56_i32,
+		Ty::BucketEntityData => 57_i32,
+		Ty::BlockEntityData => 58_i32,
+		Ty::Instrument => 59_i32,
+		Ty::CustomName => 6_i32,
+		Ty::ProvidesTrimMaterial => 60_i32,
+		Ty::OminousBottleAmplifier => 61_i32,
+		Ty::JukeboxPlayable => 62_i32,
+		Ty::ProvidesBannerPatterns => 63_i32,
+		Ty::Recipes => 64_i32,
+		Ty::LodestoneTracker => 65_i32,
+		Ty::FireworkExplosion => 66_i32,
+		Ty::Fireworks => 67_i32,
+		Ty::Profile => 68_i32,
+		Ty::NoteBlockSound => 69_i32,
+		Ty::MinimumAttackCharge => 7_i32,
+		Ty::BannerPatterns => 70_i32,
+		Ty::BaseColor => 71_i32,
+		Ty::PotDecorations => 72_i32,
+		Ty::Container => 73_i32,
+		Ty::BlockState => 74_i32,
+		Ty::Bees => 75_i32,
+		Ty::Lock => 76_i32,
+		Ty::ContainerLoot => 77_i32,
+		Ty::BreakSound => 78_i32,
+		Ty::VillagerVariant => 79_i32,
+		Ty::DamageType => 8_i32,
+		Ty::WolfVariant => 80_i32,
+		Ty::WolfSoundVariant => 81_i32,
+		Ty::WolfCollar => 82_i32,
+		Ty::FoxVariant => 83_i32,
+		Ty::SalmonSize => 84_i32,
+		Ty::ParrotVariant => 85_i32,
+		Ty::TropicalFishPattern => 86_i32,
+		Ty::TropicalFishBaseColor => 87_i32,
+		Ty::TropicalFishPatternColor => 88_i32,
+		Ty::MooshroomVariant => 89_i32,
+		Ty::ItemName => 9_i32,
+		Ty::RabbitVariant => 90_i32,
+		Ty::PigVariant => 91_i32,
+		Ty::CowVariant => 92_i32,
+		Ty::ChickenVariant => 93_i32,
+		Ty::ZombieNautilusVariant => 94_i32,
+		Ty::FrogVariant => 95_i32,
+		Ty::HorseVariant => 96_i32,
+		Ty::PaintingVariant => 97_i32,
+		Ty::LlamaVariant => 98_i32,
+		Ty::AxolotlVariant => 99_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = SlotComponentType;
+pub type Ty = SlotComponentType;

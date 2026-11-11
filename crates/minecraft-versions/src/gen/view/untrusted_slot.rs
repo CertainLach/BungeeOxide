@@ -3,56 +3,48 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct UntrustedSlot<'i> {
-    pub item_count: super::super::Varint,
-    pub anon: super::UntrustedSlot72::<'i>,
+	pub item_count: super::super::Varint,
+	pub anon: super::UntrustedSlot72<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::untrusted_slot_72::debug_assert_tag(
-        &_0.anon,
-        {let _0: &super::super::Varint = &_0.item_count;_0},
-    );
-    super::untrusted_slot_72::serialize(
-        &_0.anon,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.item_count, output)?;
+	super::untrusted_slot_72::debug_assert_tag(&_0.anon, {
+		let _0: &super::super::Varint = &_0.item_count;
+		_0
+	});
+	super::untrusted_slot_72::serialize(&_0.anon, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_itemCount = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ANON = super::untrusted_slot_72::deserialize(
-        input,
-        super::untrusted_slot_72::Args {
-            item_count: {let _0: &super::super::Varint = &f_itemCount;_0}
-        },
-    )?;
-    Ok(Ty {
-        item_count: f_itemCount,anon: f_ANON
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_itemCount = super::super::varint::deserialize(input)?;
+	let f_ANON = super::untrusted_slot_72::deserialize(
+		input,
+		super::untrusted_slot_72::Args {
+			item_count: {
+				let _0: &super::super::Varint = &f_itemCount;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		item_count: f_itemCount,
+		anon: f_ANON,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.item_count
-    )
-    + super::untrusted_slot_72::size_of(
-        &_0.anon
-    )
+	0 + super::super::varint::size_of(&_0.item_count) + super::untrusted_slot_72::size_of(&_0.anon)
 }
 pub fn view<'i>(_0: &'i super::super::UntrustedSlot) -> Ty<'i> {
-    Ty {
-        item_count: ::core::clone::Clone::clone(&_0.item_count),anon: super::untrusted_slot_72::view(&_0.anon)
-    }
+	Ty {
+		item_count: ::core::clone::Clone::clone(&_0.item_count),
+		anon: super::untrusted_slot_72::view(&_0.anon),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::UntrustedSlot) -> Ty<'i> {
-    Ty {
-        item_count: ::core::clone::Clone::clone(&mut _0.item_count),anon: super::untrusted_slot_72::into_view(&mut _0.anon)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::UntrustedSlot) -> Ty<'i> {
+	Ty {
+		item_count: ::core::clone::Clone::clone(&mut _0.item_count),
+		anon: super::untrusted_slot_72::into_view(&mut _0.anon),
+	}
 }
- pub type Ty<'i> = UntrustedSlot<'i>;
+pub type Ty<'i> = UntrustedSlot<'i>;

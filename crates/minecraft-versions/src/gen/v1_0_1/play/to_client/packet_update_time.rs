@@ -3,28 +3,18 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateTime {
-    pub time: super::super::super::super::I64,
+	pub time: super::super::super::super::I64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i64::serialize(
-        &_0.time,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i64::serialize(&_0.time, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_time = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        time: f_time
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_time = super::super::super::super::i64::deserialize(input)?;
+	Ok(Ty { time: f_time })
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i64::size_of(
-        &_0.time
-    )
+	0 + super::super::super::super::i64::size_of(&_0.time)
 }
- pub type Ty = PacketUpdateTime;
+pub type Ty = PacketUpdateTime;

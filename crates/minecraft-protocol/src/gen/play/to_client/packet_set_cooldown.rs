@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetCooldown {
-    pub cooldown_group: String,
-    pub cooldown_ticks: super::super::super::Varint,
+	pub cooldown_group: String,
+	pub cooldown_ticks: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_39::serialize(
-        &_0.cooldown_group,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.cooldown_ticks,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_39::serialize(&_0.cooldown_group, output)?;
+	super::super::super::varint::serialize(&_0.cooldown_ticks, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_cooldownGroup = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_cooldownTicks = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        cooldown_group: f_cooldownGroup,cooldown_ticks: f_cooldownTicks
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_cooldownGroup = super::super::super::pstring_39::deserialize(input)?;
+	let f_cooldownTicks = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		cooldown_group: f_cooldownGroup,
+		cooldown_ticks: f_cooldownTicks,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::pstring_39::size_of(
-        &_0.cooldown_group
-    )
-    + super::super::super::varint::size_of(
-        &_0.cooldown_ticks
-    )
+	0 + super::super::super::pstring_39::size_of(&_0.cooldown_group)
+		+ super::super::super::varint::size_of(&_0.cooldown_ticks)
 }
- pub type Ty = PacketSetCooldown;
+pub type Ty = PacketSetCooldown;

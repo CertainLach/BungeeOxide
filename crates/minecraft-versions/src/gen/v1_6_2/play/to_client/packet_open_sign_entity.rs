@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketOpenSignEntity {
-    pub tile_entity_id: super::super::super::super::I8,
-    pub location: super::super::super::super::v1_0_1::PositionIii,
+	pub tile_entity_id: super::super::super::super::I8,
+	pub location: super::super::super::super::v1_0_1::PositionIii,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.tile_entity_id,
-        output,
-    )?;
-    super::super::super::super::v1_0_1::position_iii::serialize(
-        &_0.location,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.tile_entity_id, output)?;
+	super::super::super::super::v1_0_1::position_iii::serialize(&_0.location, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_tileEntityId = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::super::v1_0_1::position_iii::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        tile_entity_id: f_tileEntityId,location: f_location
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_tileEntityId = super::super::super::super::i8::deserialize(input)?;
+	let f_location = super::super::super::super::v1_0_1::position_iii::deserialize(input)?;
+	Ok(Ty {
+		tile_entity_id: f_tileEntityId,
+		location: f_location,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.tile_entity_id
-    )
-    + super::super::super::super::v1_0_1::position_iii::size_of(
-        &_0.location
-    )
+	0 + super::super::super::super::i8::size_of(&_0.tile_entity_id)
+		+ super::super::super::super::v1_0_1::position_iii::size_of(&_0.location)
 }
- pub type Ty = PacketOpenSignEntity;
+pub type Ty = PacketOpenSignEntity;

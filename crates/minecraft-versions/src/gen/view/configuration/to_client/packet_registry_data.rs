@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRegistryData<'i> {
-    pub id: super::super::super::Pstring96::<'i>,
-    pub entries: super::super::super::array::Inline122::<'i>,
+	pub id: super::super::super::Pstring96<'i>,
+	pub entries: super::super::super::array::Inline122<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.id,
-        output,
-    )?;
-    super::super::super::array::inline_122::serialize(
-        &_0.entries,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.id, output)?;
+	super::super::super::array::inline_122::serialize(&_0.entries, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_id = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_entries = super::super::super::array::inline_122::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        id: f_id,entries: f_entries
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_id = super::super::super::pstring_96::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_122::deserialize(input)?;
+	Ok(Ty {
+		id: f_id,
+		entries: f_entries,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.id
-    )
-    + super::super::super::array::inline_122::size_of(
-        &_0.entries
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.id)
+		+ super::super::super::array::inline_122::size_of(&_0.entries)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::PacketRegistryData) -> Ty<'i> {
-    Ty {
-        id: super::super::super::pstring_96::view(&_0.id),entries: super::super::super::array::inline_122::view(&_0.entries)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::configuration::to_client::PacketRegistryData,
+) -> Ty<'i> {
+	Ty {
+		id: super::super::super::pstring_96::view(&_0.id),
+		entries: super::super::super::array::inline_122::view(&_0.entries),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::PacketRegistryData) -> Ty<'i> {
-    Ty {
-        id: super::super::super::pstring_96::view(&mut _0.id),entries: super::super::super::array::inline_122::into_view(&mut _0.entries)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::configuration::to_client::PacketRegistryData,
+) -> Ty<'i> {
+	Ty {
+		id: super::super::super::pstring_96::view(&mut _0.id),
+		entries: super::super::super::array::inline_122::into_view(&mut _0.entries),
+	}
 }
- pub type Ty<'i> = PacketRegistryData<'i>;
+pub type Ty<'i> = PacketRegistryData<'i>;

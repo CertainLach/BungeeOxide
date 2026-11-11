@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent34 {
-    pub id: super::super::Varint,
-    pub level: super::super::Varint,
+	pub id: super::super::Varint,
+	pub level: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.id,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.level,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.id, output)?;
+	super::super::varint::serialize(&_0.level, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_id = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_level = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        id: f_id,level: f_level
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_id = super::super::varint::deserialize(input)?;
+	let f_level = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		id: f_id,
+		level: f_level,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.id
-    )
-    + super::super::varint::size_of(
-        &_0.level
-    )
+	0 + super::super::varint::size_of(&_0.id) + super::super::varint::size_of(&_0.level)
 }
- pub type Ty = SlotComponent34;
+pub type Ty = SlotComponent34;

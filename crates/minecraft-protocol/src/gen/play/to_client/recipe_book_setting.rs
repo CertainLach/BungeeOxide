@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RecipeBookSetting {
-    pub open: super::super::super::Bool,
-    pub filtering: super::super::super::Bool,
+	pub open: super::super::super::Bool,
+	pub filtering: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::bool::serialize(
-        &_0.open,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.filtering,
-        output,
-    )?;
-    Ok(())
+	super::super::super::bool::serialize(&_0.open, output)?;
+	super::super::super::bool::serialize(&_0.filtering, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_open = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_filtering = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        open: f_open,filtering: f_filtering
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_open = super::super::super::bool::deserialize(input)?;
+	let f_filtering = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		open: f_open,
+		filtering: f_filtering,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::bool::size_of(
-        &_0.open
-    )
-    + super::super::super::bool::size_of(
-        &_0.filtering
-    )
+	0 + super::super::super::bool::size_of(&_0.open)
+		+ super::super::super::bool::size_of(&_0.filtering)
 }
- pub type Ty = RecipeBookSetting;
+pub type Ty = RecipeBookSetting;

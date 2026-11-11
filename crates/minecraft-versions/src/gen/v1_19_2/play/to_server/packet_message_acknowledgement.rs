@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMessageAcknowledgement {
-    pub previous_messages: Vec<super::super::super::PreviousMessages0>,
-    pub last_rejected_message: Option<super::PacketMessageAcknowledgement1>,
+	pub previous_messages: Vec<super::super::super::PreviousMessages0>,
+	pub last_rejected_message: Option<super::PacketMessageAcknowledgement1>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::array::inline_182::serialize(
-        &_0.previous_messages,
-        output,
-    )?;
-    super::super::super::super::option_52::serialize(
-        &_0.last_rejected_message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::array::inline_182::serialize(&_0.previous_messages, output)?;
+	super::super::super::super::option_52::serialize(&_0.last_rejected_message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_previousMessages = super::super::super::super::array::inline_182::deserialize(
-        input,
-    )?;
-    let f_lastRejectedMessage = super::super::super::super::option_52::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        previous_messages: f_previousMessages,last_rejected_message: f_lastRejectedMessage
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_previousMessages = super::super::super::super::array::inline_182::deserialize(input)?;
+	let f_lastRejectedMessage = super::super::super::super::option_52::deserialize(input)?;
+	Ok(Ty {
+		previous_messages: f_previousMessages,
+		last_rejected_message: f_lastRejectedMessage,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::array::inline_182::size_of(
-        &_0.previous_messages
-    )
-    + super::super::super::super::option_52::size_of(
-        &_0.last_rejected_message
-    )
+	0 + super::super::super::super::array::inline_182::size_of(&_0.previous_messages)
+		+ super::super::super::super::option_52::size_of(&_0.last_rejected_message)
 }
- pub type Ty = PacketMessageAcknowledgement;
+pub type Ty = PacketMessageAcknowledgement;

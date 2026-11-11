@@ -3,39 +3,21 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vec2f {
-    pub x: super::F32,
-    pub y: super::F32,
+	pub x: super::F32,
+	pub y: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.y,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.x, output)?;
+	super::f32::serialize(&_0.y, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_x = super::f32::deserialize(
-        input,
-    )?;
-    let f_y = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_x = super::f32::deserialize(input)?;
+	let f_y = super::f32::deserialize(input)?;
+	Ok(Ty { x: f_x, y: f_y })
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.x
-    )
-    + super::f32::size_of(
-        &_0.y
-    )
+	0 + super::f32::size_of(&_0.x) + super::f32::size_of(&_0.y)
 }
- pub type Ty = Vec2f;
+pub type Ty = Vec2f;

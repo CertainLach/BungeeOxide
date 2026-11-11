@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDamageEvent {
-    pub entity_id: super::super::super::Varint,
-    pub source_type_id: super::super::super::Varint,
-    pub source_cause_id: super::super::super::Varint,
-    pub source_direct_id: super::super::super::Varint,
-    pub source_position: Option<super::super::super::Vec3f64>,
+	pub entity_id: super::super::super::Varint,
+	pub source_type_id: super::super::super::Varint,
+	pub source_cause_id: super::super::super::Varint,
+	pub source_direct_id: super::super::super::Varint,
+	pub source_position: Option<super::super::super::Vec3f64>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.source_type_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.source_cause_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.source_direct_id,
-        output,
-    )?;
-    super::super::super::option_24::serialize(
-        &_0.source_position,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::varint::serialize(&_0.source_type_id, output)?;
+	super::super::super::varint::serialize(&_0.source_cause_id, output)?;
+	super::super::super::varint::serialize(&_0.source_direct_id, output)?;
+	super::super::super::option_24::serialize(&_0.source_position, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_sourceTypeId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_sourceCauseId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_sourceDirectId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_sourcePosition = super::super::super::option_24::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,source_type_id: f_sourceTypeId,source_cause_id: f_sourceCauseId,source_direct_id: f_sourceDirectId,source_position: f_sourcePosition
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_sourceTypeId = super::super::super::varint::deserialize(input)?;
+	let f_sourceCauseId = super::super::super::varint::deserialize(input)?;
+	let f_sourceDirectId = super::super::super::varint::deserialize(input)?;
+	let f_sourcePosition = super::super::super::option_24::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		source_type_id: f_sourceTypeId,
+		source_cause_id: f_sourceCauseId,
+		source_direct_id: f_sourceDirectId,
+		source_position: f_sourcePosition,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.source_type_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.source_cause_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.source_direct_id
-    )
-    + super::super::super::option_24::size_of(
-        &_0.source_position
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::varint::size_of(&_0.source_type_id)
+		+ super::super::super::varint::size_of(&_0.source_cause_id)
+		+ super::super::super::varint::size_of(&_0.source_direct_id)
+		+ super::super::super::option_24::size_of(&_0.source_position)
 }
- pub type Ty = PacketDamageEvent;
+pub type Ty = PacketDamageEvent;

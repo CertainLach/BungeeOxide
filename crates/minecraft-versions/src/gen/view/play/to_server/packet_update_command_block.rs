@@ -3,66 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateCommandBlock<'i> {
-    pub location: super::super::super::super::Position,
-    pub command: super::super::super::Pstring96::<'i>,
-    pub mode: super::super::super::super::Varint,
-    pub flags: super::super::super::super::U8,
+	pub location: super::super::super::super::Position,
+	pub command: super::super::super::Pstring96<'i>,
+	pub mode: super::super::super::super::Varint,
+	pub flags: super::super::super::super::U8,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.command,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.mode,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.flags,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::pstring_96::serialize(&_0.command, output)?;
+	super::super::super::super::varint::serialize(&_0.mode, output)?;
+	super::super::super::super::u8::serialize(&_0.flags, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(11)?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_command = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_mode = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_flags = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,command: f_command,mode: f_mode,flags: f_flags
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(11)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_command = super::super::super::pstring_96::deserialize(input)?;
+	let f_mode = super::super::super::super::varint::deserialize(input)?;
+	let f_flags = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		command: f_command,
+		mode: f_mode,
+		flags: f_flags,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.command
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.mode
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.flags
-    )
+	0 + super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::pstring_96::size_of(&_0.command)
+		+ super::super::super::super::varint::size_of(&_0.mode)
+		+ super::super::super::super::u8::size_of(&_0.flags)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketUpdateCommandBlock) -> Ty<'i> {
-    Ty {
-        location: ::core::clone::Clone::clone(&_0.location),command: super::super::super::pstring_96::view(&_0.command),mode: ::core::clone::Clone::clone(&_0.mode),flags: ::core::clone::Clone::clone(&_0.flags)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_server::PacketUpdateCommandBlock,
+) -> Ty<'i> {
+	Ty {
+		location: ::core::clone::Clone::clone(&_0.location),
+		command: super::super::super::pstring_96::view(&_0.command),
+		mode: ::core::clone::Clone::clone(&_0.mode),
+		flags: ::core::clone::Clone::clone(&_0.flags),
+	}
 }
- pub type Ty<'i> = PacketUpdateCommandBlock<'i>;
+pub type Ty<'i> = PacketUpdateCommandBlock<'i>;

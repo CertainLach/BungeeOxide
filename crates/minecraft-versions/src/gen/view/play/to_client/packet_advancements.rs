@@ -3,82 +3,62 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements<'i> {
-    pub reset: super::super::super::super::Bool,
-    pub advancement_mapping: super::super::super::array::Inline128::<'i>,
-    pub identifiers: super::super::super::array::Inline57::<'i>,
-    pub progress_mapping: super::super::super::array::Inline130::<'i>,
-    pub show_advancements: super::super::super::super::Bool,
+	pub reset: super::super::super::super::Bool,
+	pub advancement_mapping: super::super::super::array::Inline128<'i>,
+	pub identifiers: super::super::super::array::Inline57<'i>,
+	pub progress_mapping: super::super::super::array::Inline130<'i>,
+	pub show_advancements: super::super::super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::bool::serialize(
-        &_0.reset,
-        output,
-    )?;
-    super::super::super::array::inline_128::serialize(
-        &_0.advancement_mapping,
-        output,
-    )?;
-    super::super::super::array::inline_57::serialize(
-        &_0.identifiers,
-        output,
-    )?;
-    super::super::super::array::inline_130::serialize(
-        &_0.progress_mapping,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.show_advancements,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::bool::serialize(&_0.reset, output)?;
+	super::super::super::array::inline_128::serialize(&_0.advancement_mapping, output)?;
+	super::super::super::array::inline_57::serialize(&_0.identifiers, output)?;
+	super::super::super::array::inline_130::serialize(&_0.progress_mapping, output)?;
+	super::super::super::super::bool::serialize(&_0.show_advancements, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(5)?;
-    let f_reset = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_advancementMapping = super::super::super::array::inline_128::deserialize(
-        input,
-    )?;
-    let f_identifiers = super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_progressMapping = super::super::super::array::inline_130::deserialize(
-        input,
-    )?;
-    let f_showAdvancements = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        reset: f_reset,advancement_mapping: f_advancementMapping,identifiers: f_identifiers,progress_mapping: f_progressMapping,show_advancements: f_showAdvancements
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(5)?;
+	let f_reset = super::super::super::super::bool::deserialize(input)?;
+	let f_advancementMapping = super::super::super::array::inline_128::deserialize(input)?;
+	let f_identifiers = super::super::super::array::inline_57::deserialize(input)?;
+	let f_progressMapping = super::super::super::array::inline_130::deserialize(input)?;
+	let f_showAdvancements = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		reset: f_reset,
+		advancement_mapping: f_advancementMapping,
+		identifiers: f_identifiers,
+		progress_mapping: f_progressMapping,
+		show_advancements: f_showAdvancements,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::bool::size_of(
-        &_0.reset
-    )
-    + super::super::super::array::inline_128::size_of(
-        &_0.advancement_mapping
-    )
-    + super::super::super::array::inline_57::size_of(
-        &_0.identifiers
-    )
-    + super::super::super::array::inline_130::size_of(
-        &_0.progress_mapping
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.show_advancements
-    )
+	0 + super::super::super::super::bool::size_of(&_0.reset)
+		+ super::super::super::array::inline_128::size_of(&_0.advancement_mapping)
+		+ super::super::super::array::inline_57::size_of(&_0.identifiers)
+		+ super::super::super::array::inline_130::size_of(&_0.progress_mapping)
+		+ super::super::super::super::bool::size_of(&_0.show_advancements)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements) -> Ty<'i> {
-    Ty {
-        reset: ::core::clone::Clone::clone(&_0.reset),advancement_mapping: super::super::super::array::inline_128::view(&_0.advancement_mapping),identifiers: super::super::super::array::inline_57::view(&_0.identifiers),progress_mapping: super::super::super::array::inline_130::view(&_0.progress_mapping),show_advancements: ::core::clone::Clone::clone(&_0.show_advancements)
-    }
+	Ty {
+		reset: ::core::clone::Clone::clone(&_0.reset),
+		advancement_mapping: super::super::super::array::inline_128::view(&_0.advancement_mapping),
+		identifiers: super::super::super::array::inline_57::view(&_0.identifiers),
+		progress_mapping: super::super::super::array::inline_130::view(&_0.progress_mapping),
+		show_advancements: ::core::clone::Clone::clone(&_0.show_advancements),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements) -> Ty<'i> {
-    Ty {
-        reset: ::core::clone::Clone::clone(&mut _0.reset),advancement_mapping: super::super::super::array::inline_128::into_view(&mut _0.advancement_mapping),identifiers: super::super::super::array::inline_57::view(&mut _0.identifiers),progress_mapping: super::super::super::array::inline_130::view(&mut _0.progress_mapping),show_advancements: ::core::clone::Clone::clone(&mut _0.show_advancements)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements,
+) -> Ty<'i> {
+	Ty {
+		reset: ::core::clone::Clone::clone(&mut _0.reset),
+		advancement_mapping: super::super::super::array::inline_128::into_view(
+			&mut _0.advancement_mapping,
+		),
+		identifiers: super::super::super::array::inline_57::view(&mut _0.identifiers),
+		progress_mapping: super::super::super::array::inline_130::view(&mut _0.progress_mapping),
+		show_advancements: ::core::clone::Clone::clone(&mut _0.show_advancements),
+	}
 }
- pub type Ty<'i> = PacketAdvancements<'i>;
+pub type Ty<'i> = PacketAdvancements<'i>;

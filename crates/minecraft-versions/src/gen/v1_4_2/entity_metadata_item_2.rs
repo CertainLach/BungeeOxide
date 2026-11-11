@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataItem2 {
-    pub item_count: super::super::I8,
-    pub item_damage: super::super::I16,
+	pub item_count: super::super::I8,
+	pub item_damage: super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i8::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::super::i16::serialize(
-        &_0.item_damage,
-        output,
-    )?;
-    Ok(())
+	super::super::i8::serialize(&_0.item_count, output)?;
+	super::super::i16::serialize(&_0.item_damage, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_itemCount = super::super::i8::deserialize(
-        input,
-    )?;
-    let f_itemDamage = super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_count: f_itemCount,item_damage: f_itemDamage
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_itemCount = super::super::i8::deserialize(input)?;
+	let f_itemDamage = super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		item_count: f_itemCount,
+		item_damage: f_itemDamage,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::i8::size_of(
-        &_0.item_count
-    )
-    + super::super::i16::size_of(
-        &_0.item_damage
-    )
+	0 + super::super::i8::size_of(&_0.item_count) + super::super::i16::size_of(&_0.item_damage)
 }
- pub type Ty = EntityMetadataItem2;
+pub type Ty = EntityMetadataItem2;

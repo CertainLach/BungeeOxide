@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCraftingBookData0 {
-    pub crafting_book_open: super::super::super::super::Bool,
-    pub crafting_filter: super::super::super::super::Bool,
+	pub crafting_book_open: super::super::super::super::Bool,
+	pub crafting_filter: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::bool::serialize(
-        &_0.crafting_book_open,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.crafting_filter,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::bool::serialize(&_0.crafting_book_open, output)?;
+	super::super::super::super::bool::serialize(&_0.crafting_filter, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_craftingBookOpen = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_craftingFilter = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        crafting_book_open: f_craftingBookOpen,crafting_filter: f_craftingFilter
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_craftingBookOpen = super::super::super::super::bool::deserialize(input)?;
+	let f_craftingFilter = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		crafting_book_open: f_craftingBookOpen,
+		crafting_filter: f_craftingFilter,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::bool::size_of(
-        &_0.crafting_book_open
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.crafting_filter
-    )
+	0 + super::super::super::super::bool::size_of(&_0.crafting_book_open)
+		+ super::super::super::super::bool::size_of(&_0.crafting_filter)
 }
- pub type Ty = PacketCraftingBookData0;
+pub type Ty = PacketCraftingBookData0;

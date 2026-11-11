@@ -3,104 +3,82 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUnlockRecipes {
-    //  action - virtual field
-    pub crafting_book_open: super::super::super::super::Bool,
-    pub filtering_craftable: super::super::super::super::Bool,
-    pub smelting_book_open: super::super::super::super::Bool,
-    pub filtering_smeltable: super::super::super::super::Bool,
-    pub recipes1: Vec<String>,
-    pub recipes2: super::PacketUnlockRecipes20,
+	//  action - virtual field
+	pub crafting_book_open: super::super::super::super::Bool,
+	pub filtering_craftable: super::super::super::super::Bool,
+	pub smelting_book_open: super::super::super::super::Bool,
+	pub filtering_smeltable: super::super::super::super::Bool,
+	pub recipes1: Vec<String>,
+	pub recipes2: super::PacketUnlockRecipes20,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &{let _0: &super::PacketUnlockRecipes20 = &_0.recipes2;let __v1: super::super::super::super::Varint = super::packet_unlock_recipes_20::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.crafting_book_open,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.filtering_craftable,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.smelting_book_open,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.filtering_smeltable,
-        output,
-    )?;
-    super::super::super::super::array::inline_57::serialize(
-        &_0.recipes1,
-        output,
-    )?;
-    super::packet_unlock_recipes_20::serialize(
-        &_0.recipes2,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(
+		&{
+			let _0: &super::PacketUnlockRecipes20 = &_0.recipes2;
+			let __v1: super::super::super::super::Varint =
+				super::packet_unlock_recipes_20::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		},
+		output,
+	)?;
+	super::super::super::super::bool::serialize(&_0.crafting_book_open, output)?;
+	super::super::super::super::bool::serialize(&_0.filtering_craftable, output)?;
+	super::super::super::super::bool::serialize(&_0.smelting_book_open, output)?;
+	super::super::super::super::bool::serialize(&_0.filtering_smeltable, output)?;
+	super::super::super::super::array::inline_57::serialize(&_0.recipes1, output)?;
+	super::packet_unlock_recipes_20::serialize(&_0.recipes2, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_action = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_craftingBookOpen = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_filteringCraftable = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_smeltingBookOpen = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_filteringSmeltable = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_recipes1 = super::super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_recipes2 = super::packet_unlock_recipes_20::deserialize(
-        input,
-        super::packet_unlock_recipes_20::Args {
-            action: {let _0: &super::super::super::super::Varint = &f_action;_0}
-        },
-    )?;
-    debug_assert!(
-        &f_action == &{let _0: &super::PacketUnlockRecipes20 = &f_recipes2;let __v1: super::super::super::super::Varint = super::packet_unlock_recipes_20::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        "virtual field action does not match its value source"
-    );
-    Ok(Ty {
-        crafting_book_open: f_craftingBookOpen,filtering_craftable: f_filteringCraftable,smelting_book_open: f_smeltingBookOpen,filtering_smeltable: f_filteringSmeltable,recipes1: f_recipes1,recipes2: f_recipes2
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_action = super::super::super::super::varint::deserialize(input)?;
+	let f_craftingBookOpen = super::super::super::super::bool::deserialize(input)?;
+	let f_filteringCraftable = super::super::super::super::bool::deserialize(input)?;
+	let f_smeltingBookOpen = super::super::super::super::bool::deserialize(input)?;
+	let f_filteringSmeltable = super::super::super::super::bool::deserialize(input)?;
+	let f_recipes1 = super::super::super::super::array::inline_57::deserialize(input)?;
+	let f_recipes2 = super::packet_unlock_recipes_20::deserialize(
+		input,
+		super::packet_unlock_recipes_20::Args {
+			action: {
+				let _0: &super::super::super::super::Varint = &f_action;
+				_0
+			},
+		},
+	)?;
+	debug_assert!(
+		&f_action
+			== &{
+				let _0: &super::PacketUnlockRecipes20 = &f_recipes2;
+				let __v1: super::super::super::super::Varint =
+					super::packet_unlock_recipes_20::virtual_tag(_0);
+				let _0 = &__v1;
+				_0.clone()
+			},
+		"virtual field action does not match its value source"
+	);
+	Ok(Ty {
+		crafting_book_open: f_craftingBookOpen,
+		filtering_craftable: f_filteringCraftable,
+		smelting_book_open: f_smeltingBookOpen,
+		filtering_smeltable: f_filteringSmeltable,
+		recipes1: f_recipes1,
+		recipes2: f_recipes2,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &{let _0: &super::PacketUnlockRecipes20 = &_0.recipes2;let __v1: super::super::super::super::Varint = super::packet_unlock_recipes_20::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()}
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.crafting_book_open
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.filtering_craftable
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.smelting_book_open
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.filtering_smeltable
-    )
-    + super::super::super::super::array::inline_57::size_of(
-        &_0.recipes1
-    )
-    + super::packet_unlock_recipes_20::size_of(
-        &_0.recipes2
-    )
+	0 + super::super::super::super::varint::size_of(&{
+		let _0: &super::PacketUnlockRecipes20 = &_0.recipes2;
+		let __v1: super::super::super::super::Varint =
+			super::packet_unlock_recipes_20::virtual_tag(_0);
+		let _0 = &__v1;
+		_0.clone()
+	}) + super::super::super::super::bool::size_of(&_0.crafting_book_open)
+		+ super::super::super::super::bool::size_of(&_0.filtering_craftable)
+		+ super::super::super::super::bool::size_of(&_0.smelting_book_open)
+		+ super::super::super::super::bool::size_of(&_0.filtering_smeltable)
+		+ super::super::super::super::array::inline_57::size_of(&_0.recipes1)
+		+ super::packet_unlock_recipes_20::size_of(&_0.recipes2)
 }
- pub type Ty = PacketUnlockRecipes;
+pub type Ty = PacketUnlockRecipes;

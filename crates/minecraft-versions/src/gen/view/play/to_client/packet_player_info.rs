@@ -3,52 +3,94 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo<'i> {
-    pub action: super::super::super::super::play::to_client::PacketPlayerInfo23,
-    pub data: super::super::super::array::Inline139::<'i>,
+	pub action: super::super::super::super::play::to_client::PacketPlayerInfo23,
+	pub data: super::super::super::array::Inline139<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::play::to_client::packet_player_info_23::serialize(
-        &_0.action,
-        output,
-    )?;
-    super::super::super::array::inline_139::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::play::to_client::packet_player_info_23::serialize(
+		&_0.action, output,
+	)?;
+	super::super::super::array::inline_139::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_action = super::super::super::super::play::to_client::packet_player_info_23::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::array::inline_139::deserialize(
-        input,
-        super::super::super::array::inline_139::Args {
-            action_add_player: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.add_player;_0},action_initialize_chat: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.initialize_chat;_0},action_update_display_name: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_display_name;_0},action_update_game_mode: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_game_mode;_0},action_update_hat: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_hat;_0},action_update_latency: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_latency;_0},action_update_list_order: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_list_order;_0},action_update_listed: {let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 = &f_action;let _0: &super::super::super::super::Bool = &_0.update_listed;_0}
-        },
-    )?;
-    Ok(Ty {
-        action: f_action,data: f_data
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_action =
+		super::super::super::super::play::to_client::packet_player_info_23::deserialize(input)?;
+	let f_data = super::super::super::array::inline_139::deserialize(
+		input,
+		super::super::super::array::inline_139::Args {
+			action_add_player: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.add_player;
+				_0
+			},
+			action_initialize_chat: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.initialize_chat;
+				_0
+			},
+			action_update_display_name: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_display_name;
+				_0
+			},
+			action_update_game_mode: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_game_mode;
+				_0
+			},
+			action_update_hat: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_hat;
+				_0
+			},
+			action_update_latency: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_latency;
+				_0
+			},
+			action_update_list_order: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_list_order;
+				_0
+			},
+			action_update_listed: {
+				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo23 =
+					&f_action;
+				let _0: &super::super::super::super::Bool = &_0.update_listed;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		action: f_action,
+		data: f_data,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::play::to_client::packet_player_info_23::size_of(
-        &_0.action
-    )
-    + super::super::super::array::inline_139::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::play::to_client::packet_player_info_23::size_of(&_0.action)
+		+ super::super::super::array::inline_139::size_of(&_0.data)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerInfo) -> Ty<'i> {
-    Ty {
-        action: ::core::clone::Clone::clone(&_0.action),data: super::super::super::array::inline_139::view(&_0.data)
-    }
+	Ty {
+		action: ::core::clone::Clone::clone(&_0.action),
+		data: super::super::super::array::inline_139::view(&_0.data),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketPlayerInfo) -> Ty<'i> {
-    Ty {
-        action: ::core::clone::Clone::clone(&mut _0.action),data: super::super::super::array::inline_139::into_view(&mut _0.data)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketPlayerInfo,
+) -> Ty<'i> {
+	Ty {
+		action: ::core::clone::Clone::clone(&mut _0.action),
+		data: super::super::super::array::inline_139::into_view(&mut _0.data),
+	}
 }
- pub type Ty<'i> = PacketPlayerInfo<'i>;
+pub type Ty<'i> = PacketPlayerInfo<'i>;

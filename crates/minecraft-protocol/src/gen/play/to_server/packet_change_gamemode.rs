@@ -3,59 +3,66 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketChangeGamemode {
-    Survival,
-    Creative,
-    Adventure,
-    Spectator,
-    Default(super::super::super::Varint),
+	Survival,
+	Creative,
+	Adventure,
+	Spectator,
+	Default(super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Survival => Ok(()),
-        Ty::Creative => Ok(()),
-        Ty::Adventure => Ok(()),
-        Ty::Spectator => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Survival => Ok(()),
+		Ty::Creative => Ok(()),
+		Ty::Adventure => Ok(()),
+		Ty::Spectator => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Survival); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Creative); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Adventure); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::Spectator); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Survival);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Creative);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Adventure);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Spectator);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Survival => 0,
-        Ty::Creative => 0,
-        Ty::Adventure => 0,
-        Ty::Spectator => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Survival => 0,
+			Ty::Creative => 0,
+			Ty::Adventure => 0,
+			Ty::Spectator => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Survival => "survival",
-        Ty::Creative => "creative",
-        Ty::Adventure => "adventure",
-        Ty::Spectator => "spectator",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Survival => "survival",
+		Ty::Creative => "creative",
+		Ty::Adventure => "adventure",
+		Ty::Spectator => "spectator",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::Varint {
-    match _0 {
-        Ty::Survival => 0_i32,
-        Ty::Creative => 1_i32,
-        Ty::Adventure => 2_i32,
-        Ty::Spectator => 3_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Survival => 0_i32,
+		Ty::Creative => 1_i32,
+		Ty::Adventure => 2_i32,
+		Ty::Spectator => 3_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketChangeGamemode;
+pub type Ty = PacketChangeGamemode;

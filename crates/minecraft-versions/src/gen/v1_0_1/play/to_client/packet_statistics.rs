@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketStatistics {
-    pub statistic_id: super::super::super::super::I32,
-    pub amount: super::super::super::super::I8,
+	pub statistic_id: super::super::super::super::I32,
+	pub amount: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.statistic_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.amount,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.statistic_id, output)?;
+	super::super::super::super::i8::serialize(&_0.amount, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_statisticId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_amount = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        statistic_id: f_statisticId,amount: f_amount
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_statisticId = super::super::super::super::i32::deserialize(input)?;
+	let f_amount = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		statistic_id: f_statisticId,
+		amount: f_amount,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.statistic_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.amount
-    )
+	0 + super::super::super::super::i32::size_of(&_0.statistic_id)
+		+ super::super::super::super::i8::size_of(&_0.amount)
 }
- pub type Ty = PacketStatistics;
+pub type Ty = PacketStatistics;

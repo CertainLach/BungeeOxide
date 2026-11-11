@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements11 {
-    pub criterion_identifier: String,
-    pub criterion_progress: Option<super::super::super::super::I64>,
+	pub criterion_identifier: String,
+	pub criterion_progress: Option<super::super::super::super::I64>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.criterion_identifier,
-        output,
-    )?;
-    super::super::super::super::option_14::serialize(
-        &_0.criterion_progress,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.criterion_identifier, output)?;
+	super::super::super::super::option_14::serialize(&_0.criterion_progress, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_criterionIdentifier = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_criterionProgress = super::super::super::super::option_14::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        criterion_identifier: f_criterionIdentifier,criterion_progress: f_criterionProgress
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_criterionIdentifier = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_criterionProgress = super::super::super::super::option_14::deserialize(input)?;
+	Ok(Ty {
+		criterion_identifier: f_criterionIdentifier,
+		criterion_progress: f_criterionProgress,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.criterion_identifier
-    )
-    + super::super::super::super::option_14::size_of(
-        &_0.criterion_progress
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.criterion_identifier)
+		+ super::super::super::super::option_14::size_of(&_0.criterion_progress)
 }
- pub type Ty = PacketAdvancements11;
+pub type Ty = PacketAdvancements11;

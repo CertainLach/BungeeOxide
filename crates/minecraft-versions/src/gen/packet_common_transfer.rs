@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonTransfer {
-    pub host: String,
-    pub port: super::Varint,
+	pub host: String,
+	pub port: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.host,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.port,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.host, output)?;
+	super::varint::serialize(&_0.port, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_host = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_port = super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        host: f_host,port: f_port
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_host = super::pstring_96::deserialize(input)?;
+	let f_port = super::varint::deserialize(input)?;
+	Ok(Ty {
+		host: f_host,
+		port: f_port,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.host
-    )
-    + super::varint::size_of(
-        &_0.port
-    )
+	0 + super::pstring_96::size_of(&_0.host) + super::varint::size_of(&_0.port)
 }
- pub type Ty = PacketCommonTransfer;
+pub type Ty = PacketCommonTransfer;

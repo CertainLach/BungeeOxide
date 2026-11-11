@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BannerPatternLayer {
-    pub pattern: super::BannerPatternLayer0,
-    pub color_id: super::Varint,
+	pub pattern: super::BannerPatternLayer0,
+	pub color_id: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::banner_pattern_layer_0::serialize(
-        &_0.pattern,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.color_id,
-        output,
-    )?;
-    Ok(())
+	super::banner_pattern_layer_0::serialize(&_0.pattern, output)?;
+	super::varint::serialize(&_0.color_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_pattern = super::banner_pattern_layer_0::deserialize(
-        input,
-    )?;
-    let f_colorId = super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        pattern: f_pattern,color_id: f_colorId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_pattern = super::banner_pattern_layer_0::deserialize(input)?;
+	let f_colorId = super::varint::deserialize(input)?;
+	Ok(Ty {
+		pattern: f_pattern,
+		color_id: f_colorId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::banner_pattern_layer_0::size_of(
-        &_0.pattern
-    )
-    + super::varint::size_of(
-        &_0.color_id
-    )
+	0 + super::banner_pattern_layer_0::size_of(&_0.pattern) + super::varint::size_of(&_0.color_id)
 }
- pub type Ty = BannerPatternLayer;
+pub type Ty = BannerPatternLayer;

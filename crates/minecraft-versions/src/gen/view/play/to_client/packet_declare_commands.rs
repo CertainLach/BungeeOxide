@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareCommands<'i> {
-    pub nodes: super::super::super::array::Inline48::<'i>,
-    pub root_index: super::super::super::super::Varint,
+	pub nodes: super::super::super::array::Inline48<'i>,
+	pub root_index: super::super::super::super::Varint,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::array::inline_48::serialize(
-        &_0.nodes,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.root_index,
-        output,
-    )?;
-    Ok(())
+	super::super::super::array::inline_48::serialize(&_0.nodes, output)?;
+	super::super::super::super::varint::serialize(&_0.root_index, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_nodes = super::super::super::array::inline_48::deserialize(
-        input,
-    )?;
-    let f_rootIndex = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        nodes: f_nodes,root_index: f_rootIndex
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_nodes = super::super::super::array::inline_48::deserialize(input)?;
+	let f_rootIndex = super::super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		nodes: f_nodes,
+		root_index: f_rootIndex,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::array::inline_48::size_of(
-        &_0.nodes
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.root_index
-    )
+	0 + super::super::super::array::inline_48::size_of(&_0.nodes)
+		+ super::super::super::super::varint::size_of(&_0.root_index)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketDeclareCommands) -> Ty<'i> {
-    Ty {
-        nodes: super::super::super::array::inline_48::view(&_0.nodes),root_index: ::core::clone::Clone::clone(&_0.root_index)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketDeclareCommands,
+) -> Ty<'i> {
+	Ty {
+		nodes: super::super::super::array::inline_48::view(&_0.nodes),
+		root_index: ::core::clone::Clone::clone(&_0.root_index),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketDeclareCommands) -> Ty<'i> {
-    Ty {
-        nodes: super::super::super::array::inline_48::into_view(&mut _0.nodes),root_index: ::core::clone::Clone::clone(&mut _0.root_index)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketDeclareCommands,
+) -> Ty<'i> {
+	Ty {
+		nodes: super::super::super::array::inline_48::into_view(&mut _0.nodes),
+		root_index: ::core::clone::Clone::clone(&mut _0.root_index),
+	}
 }
- pub type Ty<'i> = PacketDeclareCommands<'i>;
+pub type Ty<'i> = PacketDeclareCommands<'i>;

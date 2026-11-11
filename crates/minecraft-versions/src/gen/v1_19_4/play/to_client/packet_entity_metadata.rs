@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityMetadata {
-    pub entity_id: super::super::super::super::Varint,
-    pub metadata: Vec<super::super::super::EntityMetadata26>,
+	pub entity_id: super::super::super::super::Varint,
+	pub metadata: Vec<super::super::super::EntityMetadata26>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::entity_metadata::serialize(
-        &_0.metadata,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::entity_metadata::serialize(&_0.metadata, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_metadata = super::super::super::entity_metadata::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,metadata: f_metadata
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_metadata = super::super::super::entity_metadata::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		metadata: f_metadata,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::entity_metadata::size_of(
-        &_0.metadata
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::entity_metadata::size_of(&_0.metadata)
 }
- pub type Ty = PacketEntityMetadata;
+pub type Ty = PacketEntityMetadata;

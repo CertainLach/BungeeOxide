@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResourcePackReceive {
-    pub hash: String,
-    pub result: super::super::super::super::Varint,
+	pub hash: String,
+	pub result: super::super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.hash,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.hash, output)?;
+	super::super::super::super::varint::serialize(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_hash = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_result = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        hash: f_hash,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_hash = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_result = super::super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		hash: f_hash,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.hash
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.hash)
+		+ super::super::super::super::varint::size_of(&_0.result)
 }
- pub type Ty = PacketResourcePackReceive;
+pub type Ty = PacketResourcePackReceive;

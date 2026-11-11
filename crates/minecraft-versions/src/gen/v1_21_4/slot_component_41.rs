@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent41 {
-    pub name: Option<String>,
-    pub uuid: Option<super::super::Uuid>,
-    pub properties: Vec<super::SlotComponent40>,
+	pub name: Option<String>,
+	pub uuid: Option<super::super::Uuid>,
+	pub properties: Vec<super::SlotComponent40>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::option_18::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::option_8::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::super::array::inline_289::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::super::option_18::serialize(&_0.name, output)?;
+	super::super::option_8::serialize(&_0.uuid, output)?;
+	super::super::array::inline_289::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_name = super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_uuid = super::super::option_8::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::array::inline_289::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,uuid: f_uuid,properties: f_properties
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_name = super::super::option_18::deserialize(input)?;
+	let f_uuid = super::super::option_8::deserialize(input)?;
+	let f_properties = super::super::array::inline_289::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		uuid: f_uuid,
+		properties: f_properties,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::option_18::size_of(
-        &_0.name
-    )
-    + super::super::option_8::size_of(
-        &_0.uuid
-    )
-    + super::super::array::inline_289::size_of(
-        &_0.properties
-    )
+	0 + super::super::option_18::size_of(&_0.name)
+		+ super::super::option_8::size_of(&_0.uuid)
+		+ super::super::array::inline_289::size_of(&_0.properties)
 }
- pub type Ty = SlotComponent41;
+pub type Ty = SlotComponent41;

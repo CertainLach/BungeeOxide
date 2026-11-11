@@ -3,94 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockPlace {
-    pub hand: super::super::super::super::Varint,
-    pub location: super::super::super::super::Position,
-    pub direction: super::super::super::super::Varint,
-    pub cursor_x: super::super::super::super::F32,
-    pub cursor_y: super::super::super::super::F32,
-    pub cursor_z: super::super::super::super::F32,
-    pub inside_block: super::super::super::super::Bool,
+	pub hand: super::super::super::super::Varint,
+	pub location: super::super::super::super::Position,
+	pub direction: super::super::super::super::Varint,
+	pub cursor_x: super::super::super::super::F32,
+	pub cursor_y: super::super::super::super::F32,
+	pub cursor_z: super::super::super::super::F32,
+	pub inside_block: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.hand,
-        output,
-    )?;
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.direction,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.cursor_x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.cursor_y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.cursor_z,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.inside_block,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.hand, output)?;
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::varint::serialize(&_0.direction, output)?;
+	super::super::super::super::f32::serialize(&_0.cursor_x, output)?;
+	super::super::super::super::f32::serialize(&_0.cursor_y, output)?;
+	super::super::super::super::f32::serialize(&_0.cursor_z, output)?;
+	super::super::super::super::bool::serialize(&_0.inside_block, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(23)?;
-    let f_hand = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_direction = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_cursorX = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_cursorY = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_cursorZ = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_insideBlock = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        hand: f_hand,location: f_location,direction: f_direction,cursor_x: f_cursorX,cursor_y: f_cursorY,cursor_z: f_cursorZ,inside_block: f_insideBlock
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(23)?;
+	let f_hand = super::super::super::super::varint::deserialize(input)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_direction = super::super::super::super::varint::deserialize(input)?;
+	let f_cursorX = super::super::super::super::f32::deserialize(input)?;
+	let f_cursorY = super::super::super::super::f32::deserialize(input)?;
+	let f_cursorZ = super::super::super::super::f32::deserialize(input)?;
+	let f_insideBlock = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		hand: f_hand,
+		location: f_location,
+		direction: f_direction,
+		cursor_x: f_cursorX,
+		cursor_y: f_cursorY,
+		cursor_z: f_cursorZ,
+		inside_block: f_insideBlock,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.hand
-    )
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.direction
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.cursor_x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.cursor_y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.cursor_z
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.inside_block
-    )
+	0 + super::super::super::super::varint::size_of(&_0.hand)
+		+ super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::varint::size_of(&_0.direction)
+		+ super::super::super::super::f32::size_of(&_0.cursor_x)
+		+ super::super::super::super::f32::size_of(&_0.cursor_y)
+		+ super::super::super::super::f32::size_of(&_0.cursor_z)
+		+ super::super::super::super::bool::size_of(&_0.inside_block)
 }
- pub type Ty = PacketBlockPlace;
+pub type Ty = PacketBlockPlace;

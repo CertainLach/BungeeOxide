@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo {
-    pub player_name: String,
-    pub online: super::super::super::super::Bool,
-    pub ping: super::super::super::super::I16,
+	pub player_name: String,
+	pub online: super::super::super::super::Bool,
+	pub ping: super::super::super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.player_name,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.online,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.ping,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.player_name, output)?;
+	super::super::super::super::bool::serialize(&_0.online, output)?;
+	super::super::super::super::i16::serialize(&_0.ping, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_playerName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_online = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_ping = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        player_name: f_playerName,online: f_online,ping: f_ping
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_playerName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_online = super::super::super::super::bool::deserialize(input)?;
+	let f_ping = super::super::super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		player_name: f_playerName,
+		online: f_online,
+		ping: f_ping,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.player_name
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.online
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.ping
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.player_name)
+		+ super::super::super::super::bool::size_of(&_0.online)
+		+ super::super::super::super::i16::size_of(&_0.ping)
 }
- pub type Ty = PacketPlayerInfo;
+pub type Ty = PacketPlayerInfo;

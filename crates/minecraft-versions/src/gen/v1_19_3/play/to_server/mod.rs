@@ -6,6 +6,6 @@ pub mod packet_chat_message;
 pub mod packet_chat_session_update;
 pub use self::packet::Packet;
 pub use self::packet_chat_command::PacketChatCommand;
+pub use self::packet_chat_command_0::PacketChatCommand0;
 pub use self::packet_chat_message::PacketChatMessage;
 pub use self::packet_chat_session_update::PacketChatSessionUpdate;
-pub use self::packet_chat_command_0::PacketChatCommand0;

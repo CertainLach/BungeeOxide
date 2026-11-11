@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSettings {
-    pub locale: super::super::super::super::String16,
-    pub view_distance: super::super::super::super::I8,
-    pub chat_flags: super::super::super::super::I8,
-    pub difficulty: super::super::super::super::U8,
-    pub show_cape: super::super::super::super::Bool,
+	pub locale: super::super::super::super::String16,
+	pub view_distance: super::super::super::super::I8,
+	pub chat_flags: super::super::super::super::I8,
+	pub difficulty: super::super::super::super::U8,
+	pub show_cape: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.locale,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.view_distance,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.chat_flags,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.difficulty,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.show_cape,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.locale, output)?;
+	super::super::super::super::i8::serialize(&_0.view_distance, output)?;
+	super::super::super::super::i8::serialize(&_0.chat_flags, output)?;
+	super::super::super::super::u8::serialize(&_0.difficulty, output)?;
+	super::super::super::super::bool::serialize(&_0.show_cape, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_locale = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_viewDistance = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_chatFlags = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_difficulty = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_showCape = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        locale: f_locale,view_distance: f_viewDistance,chat_flags: f_chatFlags,difficulty: f_difficulty,show_cape: f_showCape
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_locale = super::super::super::super::string16::deserialize(input)?;
+	let f_viewDistance = super::super::super::super::i8::deserialize(input)?;
+	let f_chatFlags = super::super::super::super::i8::deserialize(input)?;
+	let f_difficulty = super::super::super::super::u8::deserialize(input)?;
+	let f_showCape = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		locale: f_locale,
+		view_distance: f_viewDistance,
+		chat_flags: f_chatFlags,
+		difficulty: f_difficulty,
+		show_cape: f_showCape,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.locale
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.view_distance
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.chat_flags
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.difficulty
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.show_cape
-    )
+	0 + super::super::super::super::string16::size_of(&_0.locale)
+		+ super::super::super::super::i8::size_of(&_0.view_distance)
+		+ super::super::super::super::i8::size_of(&_0.chat_flags)
+		+ super::super::super::super::u8::size_of(&_0.difficulty)
+		+ super::super::super::super::bool::size_of(&_0.show_cape)
 }
- pub type Ty = PacketSettings;
+pub type Ty = PacketSettings;

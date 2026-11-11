@@ -3,36 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum BannerPatternLayer0<'i> {
-    Id(super::super::Varint),
-    Inline(super::BannerPattern::<'i>),
+	Id(super::super::Varint),
+	Inline(super::BannerPattern<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::varint::serialize(&0, output)?;
-            super::banner_pattern::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::varint::serialize(&0, output)?;
+			super::banner_pattern::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let n = super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::banner_pattern::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let n = super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::banner_pattern::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::varint::size_of(&0) + super::banner_pattern::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => super::super::varint::size_of(&0) + super::banner_pattern::size_of(v),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::BannerPatternLayer0) -> Ty<'i> {
-    match _0 {
-        super::super::BannerPatternLayer0::Id(id) => Ty::Id(*id),
-        super::super::BannerPatternLayer0::Inline(v) => Ty::Inline(super::banner_pattern::view(v)),
-    }
+	match _0 {
+		super::super::BannerPatternLayer0::Id(id) => Ty::Id(*id),
+		super::super::BannerPatternLayer0::Inline(v) => Ty::Inline(super::banner_pattern::view(v)),
+	}
 }
- pub type Ty<'i> = BannerPatternLayer0<'i>;
+pub type Ty<'i> = BannerPatternLayer0<'i>;

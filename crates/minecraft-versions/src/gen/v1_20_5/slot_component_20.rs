@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent20 {
-    pub effect: super::super::Varint,
-    pub duration: super::super::Varint,
+	pub effect: super::super::Varint,
+	pub duration: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.effect,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.duration,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.effect, output)?;
+	super::super::varint::serialize(&_0.duration, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_effect = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_duration = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        effect: f_effect,duration: f_duration
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_effect = super::super::varint::deserialize(input)?;
+	let f_duration = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		effect: f_effect,
+		duration: f_duration,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.effect
-    )
-    + super::super::varint::size_of(
-        &_0.duration
-    )
+	0 + super::super::varint::size_of(&_0.effect) + super::super::varint::size_of(&_0.duration)
 }
- pub type Ty = SlotComponent20;
+pub type Ty = SlotComponent20;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParticleData3 {
-    pub red: super::super::F32,
-    pub green: super::super::F32,
-    pub blue: super::super::F32,
-    pub scale: super::super::F32,
+	pub red: super::super::F32,
+	pub green: super::super::F32,
+	pub blue: super::super::F32,
+	pub scale: super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::f32::serialize(
-        &_0.red,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.green,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.blue,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.scale,
-        output,
-    )?;
-    Ok(())
+	super::super::f32::serialize(&_0.red, output)?;
+	super::super::f32::serialize(&_0.green, output)?;
+	super::super::f32::serialize(&_0.blue, output)?;
+	super::super::f32::serialize(&_0.scale, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(16)?;
-    let f_red = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_green = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_blue = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_scale = super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        red: f_red,green: f_green,blue: f_blue,scale: f_scale
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(16)?;
+	let f_red = super::super::f32::deserialize(input)?;
+	let f_green = super::super::f32::deserialize(input)?;
+	let f_blue = super::super::f32::deserialize(input)?;
+	let f_scale = super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		red: f_red,
+		green: f_green,
+		blue: f_blue,
+		scale: f_scale,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::f32::size_of(
-        &_0.red
-    )
-    + super::super::f32::size_of(
-        &_0.green
-    )
-    + super::super::f32::size_of(
-        &_0.blue
-    )
-    + super::super::f32::size_of(
-        &_0.scale
-    )
+	0 + super::super::f32::size_of(&_0.red)
+		+ super::super::f32::size_of(&_0.green)
+		+ super::super::f32::size_of(&_0.blue)
+		+ super::super::f32::size_of(&_0.scale)
 }
- pub type Ty = ParticleData3;
+pub type Ty = ParticleData3;

@@ -2,69 +2,69 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub compare_to: &'a super::super::I32,
+	pub compare_to: &'a super::super::I32,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParticleData {
-    V11(super::ParticleData1),
-    V20(super::super::Varint),
-    V27(super::Slot),
-    V3(super::super::Varint),
-    Default(super::super::I32),
+	V11(super::ParticleData1),
+	V20(super::super::Varint),
+	V27(super::Slot),
+	V3(super::super::Varint),
+	Default(super::super::I32),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::V11(__v) => super::particle_data_1::serialize(__v, output),
-        Ty::V20(__v) => super::super::varint::serialize(__v, output),
-        Ty::V27(__v) => super::slot::serialize(__v, output),
-        Ty::V3(__v) => super::super::varint::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::V11(__v) => super::particle_data_1::serialize(__v, output),
+		Ty::V20(__v) => super::super::varint::serialize(__v, output),
+		Ty::V27(__v) => super::slot::serialize(__v, output),
+		Ty::V3(__v) => super::super::varint::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.compare_to;
-    if (__tag.clone() == 11_i32) {
-        return Ok(Ty::V11(super::particle_data_1::deserialize(input, )?));
-    }
-    if (__tag.clone() == 20_i32) {
-        return Ok(Ty::V20(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 27_i32) {
-        return Ok(Ty::V27(super::slot::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::V3(super::super::varint::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.compare_to;
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::V11(super::particle_data_1::deserialize(input)?));
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::V20(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::V27(super::slot::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::V3(super::super::varint::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::V11(__v) => super::particle_data_1::size_of(__v),
-        Ty::V20(__v) => super::super::varint::size_of(__v),
-        Ty::V27(__v) => super::slot::size_of(__v),
-        Ty::V3(__v) => super::super::varint::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::V11(__v) => super::particle_data_1::size_of(__v),
+		Ty::V20(__v) => super::super::varint::size_of(__v),
+		Ty::V27(__v) => super::slot::size_of(__v),
+		Ty::V3(__v) => super::super::varint::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V11(_) => "v11",
-        Ty::V20(_) => "v20",
-        Ty::V27(_) => "v27",
-        Ty::V3(_) => "v3",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V11(_) => "v11",
+		Ty::V20(_) => "v20",
+		Ty::V27(_) => "v27",
+		Ty::V3(_) => "v3",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::super::I32) {
-    debug_assert!(
-        match _0 {
-            Ty::V11(_) => (__tag.clone() == 11_i32),
-            Ty::V20(_) => (__tag.clone() == 20_i32),
-            Ty::V27(_) => (__tag.clone() == 27_i32),
-            Ty::V3(_) => (__tag.clone() == 3_i32),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::V11(_) => (__tag.clone() == 11_i32),
+			Ty::V20(_) => (__tag.clone() == 20_i32),
+			Ty::V27(_) => (__tag.clone() == 27_i32),
+			Ty::V3(_) => (__tag.clone() == 3_i32),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = ParticleData;
+pub type Ty = ParticleData;

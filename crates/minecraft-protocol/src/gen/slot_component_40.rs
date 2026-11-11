@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent40 {
-    pub item_damage_per_attack: super::Varint,
-    pub disable_blocking_for_seconds: super::F32,
+	pub item_damage_per_attack: super::Varint,
+	pub disable_blocking_for_seconds: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.item_damage_per_attack,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.disable_blocking_for_seconds,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.item_damage_per_attack, output)?;
+	super::f32::serialize(&_0.disable_blocking_for_seconds, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_itemDamagePerAttack = super::varint::deserialize(
-        input,
-    )?;
-    let f_disableBlockingForSeconds = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_damage_per_attack: f_itemDamagePerAttack,disable_blocking_for_seconds: f_disableBlockingForSeconds
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_itemDamagePerAttack = super::varint::deserialize(input)?;
+	let f_disableBlockingForSeconds = super::f32::deserialize(input)?;
+	Ok(Ty {
+		item_damage_per_attack: f_itemDamagePerAttack,
+		disable_blocking_for_seconds: f_disableBlockingForSeconds,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.item_damage_per_attack
-    )
-    + super::f32::size_of(
-        &_0.disable_blocking_for_seconds
-    )
+	0 + super::varint::size_of(&_0.item_damage_per_attack)
+		+ super::f32::size_of(&_0.disable_blocking_for_seconds)
 }
- pub type Ty = SlotComponent40;
+pub type Ty = SlotComponent40;

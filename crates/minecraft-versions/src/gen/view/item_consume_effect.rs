@@ -3,93 +3,116 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ItemConsumeEffect<'i> {
-    ApplyEffects(super::super::ItemConsumeEffect17),
-    RemoveEffects(super::IdSet::<'i>),
-    ClearAllEffects,
-    TeleportRandomly(super::super::F32),
-    PlaySound(super::ItemSoundHolder::<'i>),
-    Default(super::super::Varint),
+	ApplyEffects(super::super::ItemConsumeEffect17),
+	RemoveEffects(super::IdSet<'i>),
+	ClearAllEffects,
+	TeleportRandomly(super::super::F32),
+	PlaySound(super::ItemSoundHolder<'i>),
+	Default(super::super::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::ApplyEffects(__v) => super::super::item_consume_effect_17::serialize(__v, output),
-        Ty::RemoveEffects(__v) => super::id_set::serialize(__v, output),
-        Ty::ClearAllEffects => Ok(()),
-        Ty::TeleportRandomly(__v) => super::super::f32::serialize(__v, output),
-        Ty::PlaySound(__v) => super::item_sound_holder::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::ApplyEffects(__v) => super::super::item_consume_effect_17::serialize(__v, output),
+		Ty::RemoveEffects(__v) => super::id_set::serialize(__v, output),
+		Ty::ClearAllEffects => Ok(()),
+		Ty::TeleportRandomly(__v) => super::super::f32::serialize(__v, output),
+		Ty::PlaySound(__v) => super::item_sound_holder::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::ApplyEffects(super::super::item_consume_effect_17::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::RemoveEffects(super::id_set::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::ClearAllEffects); }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::TeleportRandomly(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::PlaySound(super::item_sound_holder::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::ApplyEffects(
+			super::super::item_consume_effect_17::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::RemoveEffects(super::id_set::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::ClearAllEffects);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::TeleportRandomly(super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::PlaySound(super::item_sound_holder::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::ApplyEffects(__v) => super::super::item_consume_effect_17::size_of(__v),
-        Ty::RemoveEffects(__v) => super::id_set::size_of(__v),
-        Ty::ClearAllEffects => 0,
-        Ty::TeleportRandomly(__v) => super::super::f32::size_of(__v),
-        Ty::PlaySound(__v) => super::item_sound_holder::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::ApplyEffects(__v) => super::super::item_consume_effect_17::size_of(__v),
+			Ty::RemoveEffects(__v) => super::id_set::size_of(__v),
+			Ty::ClearAllEffects => 0,
+			Ty::TeleportRandomly(__v) => super::super::f32::size_of(__v),
+			Ty::PlaySound(__v) => super::item_sound_holder::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::ApplyEffects(_) => "apply_effects",
-        Ty::RemoveEffects(_) => "remove_effects",
-        Ty::ClearAllEffects => "clear_all_effects",
-        Ty::TeleportRandomly(_) => "teleport_randomly",
-        Ty::PlaySound(_) => "play_sound",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::ApplyEffects(_) => "apply_effects",
+		Ty::RemoveEffects(_) => "remove_effects",
+		Ty::ClearAllEffects => "clear_all_effects",
+		Ty::TeleportRandomly(_) => "teleport_randomly",
+		Ty::PlaySound(_) => "play_sound",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::Varint {
-    match _0 {
-        Ty::ApplyEffects(_) => 0_i32,
-        Ty::RemoveEffects(_) => 1_i32,
-        Ty::ClearAllEffects => 2_i32,
-        Ty::TeleportRandomly(_) => 3_i32,
-        Ty::PlaySound(_) => 4_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::ApplyEffects(_) => 0_i32,
+		Ty::RemoveEffects(_) => 1_i32,
+		Ty::ClearAllEffects => 2_i32,
+		Ty::TeleportRandomly(_) => 3_i32,
+		Ty::PlaySound(_) => 4_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::ItemConsumeEffect) -> Ty<'i> {
-    match _0 {
-        super::super::ItemConsumeEffect::ApplyEffects(__v) => Ty::ApplyEffects(::core::clone::Clone::clone(__v)),
-        super::super::ItemConsumeEffect::RemoveEffects(__v) => Ty::RemoveEffects(super::id_set::view(__v)),
-        super::super::ItemConsumeEffect::ClearAllEffects => Ty::ClearAllEffects,
-        super::super::ItemConsumeEffect::TeleportRandomly(__v) => Ty::TeleportRandomly(::core::clone::Clone::clone(__v)),
-        super::super::ItemConsumeEffect::PlaySound(__v) => Ty::PlaySound(super::item_sound_holder::view(__v)),
-        super::super::ItemConsumeEffect::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::ItemConsumeEffect::ApplyEffects(__v) => {
+			Ty::ApplyEffects(::core::clone::Clone::clone(__v))
+		}
+		super::super::ItemConsumeEffect::RemoveEffects(__v) => {
+			Ty::RemoveEffects(super::id_set::view(__v))
+		}
+		super::super::ItemConsumeEffect::ClearAllEffects => Ty::ClearAllEffects,
+		super::super::ItemConsumeEffect::TeleportRandomly(__v) => {
+			Ty::TeleportRandomly(::core::clone::Clone::clone(__v))
+		}
+		super::super::ItemConsumeEffect::PlaySound(__v) => {
+			Ty::PlaySound(super::item_sound_holder::view(__v))
+		}
+		super::super::ItemConsumeEffect::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::ItemConsumeEffect) -> Ty<'i> {
-    match _0 {
-        super::super::ItemConsumeEffect::ApplyEffects(__v) => Ty::ApplyEffects(super::item_consume_effect_17::into_view(__v)),
-        super::super::ItemConsumeEffect::RemoveEffects(__v) => Ty::RemoveEffects(super::id_set::into_view(__v)),
-        super::super::ItemConsumeEffect::ClearAllEffects => Ty::ClearAllEffects,
-        super::super::ItemConsumeEffect::TeleportRandomly(__v) => Ty::TeleportRandomly(::core::clone::Clone::clone(__v)),
-        super::super::ItemConsumeEffect::PlaySound(__v) => Ty::PlaySound(super::item_sound_holder::view(__v)),
-        super::super::ItemConsumeEffect::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::ItemConsumeEffect) -> Ty<'i> {
+	match _0 {
+		super::super::ItemConsumeEffect::ApplyEffects(__v) => {
+			Ty::ApplyEffects(super::item_consume_effect_17::into_view(__v))
+		}
+		super::super::ItemConsumeEffect::RemoveEffects(__v) => {
+			Ty::RemoveEffects(super::id_set::into_view(__v))
+		}
+		super::super::ItemConsumeEffect::ClearAllEffects => Ty::ClearAllEffects,
+		super::super::ItemConsumeEffect::TeleportRandomly(__v) => {
+			Ty::TeleportRandomly(::core::clone::Clone::clone(__v))
+		}
+		super::super::ItemConsumeEffect::PlaySound(__v) => {
+			Ty::PlaySound(super::item_sound_holder::view(__v))
+		}
+		super::super::ItemConsumeEffect::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = ItemConsumeEffect<'i>;
+pub type Ty<'i> = ItemConsumeEffect<'i>;

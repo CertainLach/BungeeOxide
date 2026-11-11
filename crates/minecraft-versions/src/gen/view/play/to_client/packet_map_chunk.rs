@@ -3,148 +3,102 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMapChunk<'i> {
-    pub x: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub heightmaps: super::super::super::super::array::Inline137,
-    pub chunk_data: super::super::super::buffer::Inline3::<'i>,
-    pub block_entities: super::super::super::array::Inline47::<'i>,
-    pub sky_light_mask: super::super::super::super::array::Inline51,
-    pub block_light_mask: super::super::super::super::array::Inline51,
-    pub empty_sky_light_mask: super::super::super::super::array::Inline51,
-    pub empty_block_light_mask: super::super::super::super::array::Inline51,
-    pub sky_light: super::super::super::array::Inline366::<'i>,
-    pub block_light: super::super::super::array::Inline366::<'i>,
+	pub x: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub heightmaps: super::super::super::super::array::Inline137,
+	pub chunk_data: super::super::super::buffer::Inline3<'i>,
+	pub block_entities: super::super::super::array::Inline47<'i>,
+	pub sky_light_mask: super::super::super::super::array::Inline51,
+	pub block_light_mask: super::super::super::super::array::Inline51,
+	pub empty_sky_light_mask: super::super::super::super::array::Inline51,
+	pub empty_block_light_mask: super::super::super::super::array::Inline51,
+	pub sky_light: super::super::super::array::Inline366<'i>,
+	pub block_light: super::super::super::array::Inline366<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::array::inline_137::serialize(
-        &_0.heightmaps,
-        output,
-    )?;
-    super::super::super::buffer::inline_3::serialize(
-        &_0.chunk_data,
-        output,
-    )?;
-    super::super::super::array::inline_47::serialize(
-        &_0.block_entities,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.sky_light_mask,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.block_light_mask,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.empty_sky_light_mask,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.empty_block_light_mask,
-        output,
-    )?;
-    super::super::super::array::inline_366::serialize(
-        &_0.sky_light,
-        output,
-    )?;
-    super::super::super::array::inline_366::serialize(
-        &_0.block_light,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::array::inline_137::serialize(&_0.heightmaps, output)?;
+	super::super::super::buffer::inline_3::serialize(&_0.chunk_data, output)?;
+	super::super::super::array::inline_47::serialize(&_0.block_entities, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.sky_light_mask, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.block_light_mask, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.empty_sky_light_mask, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.empty_block_light_mask, output)?;
+	super::super::super::array::inline_366::serialize(&_0.sky_light, output)?;
+	super::super::super::array::inline_366::serialize(&_0.block_light, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(17)?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_heightmaps = super::super::super::super::array::inline_137::deserialize(
-        input,
-    )?;
-    let f_chunkData = super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_blockEntities = super::super::super::array::inline_47::deserialize(
-        input,
-    )?;
-    let f_skyLightMask = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    let f_blockLightMask = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    let f_emptySkyLightMask = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    let f_emptyBlockLightMask = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    let f_skyLight = super::super::super::array::inline_366::deserialize(
-        input,
-    )?;
-    let f_blockLight = super::super::super::array::inline_366::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,z: f_z,heightmaps: f_heightmaps,chunk_data: f_chunkData,block_entities: f_blockEntities,sky_light_mask: f_skyLightMask,block_light_mask: f_blockLightMask,empty_sky_light_mask: f_emptySkyLightMask,empty_block_light_mask: f_emptyBlockLightMask,sky_light: f_skyLight,block_light: f_blockLight
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(17)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_heightmaps = super::super::super::super::array::inline_137::deserialize(input)?;
+	let f_chunkData = super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_blockEntities = super::super::super::array::inline_47::deserialize(input)?;
+	let f_skyLightMask = super::super::super::super::array::inline_51::deserialize(input)?;
+	let f_blockLightMask = super::super::super::super::array::inline_51::deserialize(input)?;
+	let f_emptySkyLightMask = super::super::super::super::array::inline_51::deserialize(input)?;
+	let f_emptyBlockLightMask = super::super::super::super::array::inline_51::deserialize(input)?;
+	let f_skyLight = super::super::super::array::inline_366::deserialize(input)?;
+	let f_blockLight = super::super::super::array::inline_366::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		z: f_z,
+		heightmaps: f_heightmaps,
+		chunk_data: f_chunkData,
+		block_entities: f_blockEntities,
+		sky_light_mask: f_skyLightMask,
+		block_light_mask: f_blockLightMask,
+		empty_sky_light_mask: f_emptySkyLightMask,
+		empty_block_light_mask: f_emptyBlockLightMask,
+		sky_light: f_skyLight,
+		block_light: f_blockLight,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::array::inline_137::size_of(
-        &_0.heightmaps
-    )
-    + super::super::super::buffer::inline_3::size_of(
-        &_0.chunk_data
-    )
-    + super::super::super::array::inline_47::size_of(
-        &_0.block_entities
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.sky_light_mask
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.block_light_mask
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.empty_sky_light_mask
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.empty_block_light_mask
-    )
-    + super::super::super::array::inline_366::size_of(
-        &_0.sky_light
-    )
-    + super::super::super::array::inline_366::size_of(
-        &_0.block_light
-    )
+	0 + super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::array::inline_137::size_of(&_0.heightmaps)
+		+ super::super::super::buffer::inline_3::size_of(&_0.chunk_data)
+		+ super::super::super::array::inline_47::size_of(&_0.block_entities)
+		+ super::super::super::super::array::inline_51::size_of(&_0.sky_light_mask)
+		+ super::super::super::super::array::inline_51::size_of(&_0.block_light_mask)
+		+ super::super::super::super::array::inline_51::size_of(&_0.empty_sky_light_mask)
+		+ super::super::super::super::array::inline_51::size_of(&_0.empty_block_light_mask)
+		+ super::super::super::array::inline_366::size_of(&_0.sky_light)
+		+ super::super::super::array::inline_366::size_of(&_0.block_light)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketMapChunk) -> Ty<'i> {
-    Ty {
-        x: ::core::clone::Clone::clone(&_0.x),z: ::core::clone::Clone::clone(&_0.z),heightmaps: ::core::clone::Clone::clone(&_0.heightmaps),chunk_data: super::super::super::buffer::inline_3::view(&_0.chunk_data),block_entities: super::super::super::array::inline_47::view(&_0.block_entities),sky_light_mask: ::core::clone::Clone::clone(&_0.sky_light_mask),block_light_mask: ::core::clone::Clone::clone(&_0.block_light_mask),empty_sky_light_mask: ::core::clone::Clone::clone(&_0.empty_sky_light_mask),empty_block_light_mask: ::core::clone::Clone::clone(&_0.empty_block_light_mask),sky_light: super::super::super::array::inline_366::view(&_0.sky_light),block_light: super::super::super::array::inline_366::view(&_0.block_light)
-    }
+	Ty {
+		x: ::core::clone::Clone::clone(&_0.x),
+		z: ::core::clone::Clone::clone(&_0.z),
+		heightmaps: ::core::clone::Clone::clone(&_0.heightmaps),
+		chunk_data: super::super::super::buffer::inline_3::view(&_0.chunk_data),
+		block_entities: super::super::super::array::inline_47::view(&_0.block_entities),
+		sky_light_mask: ::core::clone::Clone::clone(&_0.sky_light_mask),
+		block_light_mask: ::core::clone::Clone::clone(&_0.block_light_mask),
+		empty_sky_light_mask: ::core::clone::Clone::clone(&_0.empty_sky_light_mask),
+		empty_block_light_mask: ::core::clone::Clone::clone(&_0.empty_block_light_mask),
+		sky_light: super::super::super::array::inline_366::view(&_0.sky_light),
+		block_light: super::super::super::array::inline_366::view(&_0.block_light),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketMapChunk) -> Ty<'i> {
-    Ty {
-        x: ::core::clone::Clone::clone(&mut _0.x),z: ::core::clone::Clone::clone(&mut _0.z),heightmaps: ::core::mem::take(&mut _0.heightmaps),chunk_data: super::super::super::buffer::inline_3::view(&mut _0.chunk_data),block_entities: super::super::super::array::inline_47::into_view(&mut _0.block_entities),sky_light_mask: ::core::mem::take(&mut _0.sky_light_mask),block_light_mask: ::core::mem::take(&mut _0.block_light_mask),empty_sky_light_mask: ::core::mem::take(&mut _0.empty_sky_light_mask),empty_block_light_mask: ::core::mem::take(&mut _0.empty_block_light_mask),sky_light: super::super::super::array::inline_366::view(&mut _0.sky_light),block_light: super::super::super::array::inline_366::view(&mut _0.block_light)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketMapChunk,
+) -> Ty<'i> {
+	Ty {
+		x: ::core::clone::Clone::clone(&mut _0.x),
+		z: ::core::clone::Clone::clone(&mut _0.z),
+		heightmaps: ::core::mem::take(&mut _0.heightmaps),
+		chunk_data: super::super::super::buffer::inline_3::view(&mut _0.chunk_data),
+		block_entities: super::super::super::array::inline_47::into_view(&mut _0.block_entities),
+		sky_light_mask: ::core::mem::take(&mut _0.sky_light_mask),
+		block_light_mask: ::core::mem::take(&mut _0.block_light_mask),
+		empty_sky_light_mask: ::core::mem::take(&mut _0.empty_sky_light_mask),
+		empty_block_light_mask: ::core::mem::take(&mut _0.empty_block_light_mask),
+		sky_light: super::super::super::array::inline_366::view(&mut _0.sky_light),
+		block_light: super::super::super::array::inline_366::view(&mut _0.block_light),
+	}
 }
- pub type Ty<'i> = PacketMapChunk<'i>;
+pub type Ty<'i> = PacketMapChunk<'i>;

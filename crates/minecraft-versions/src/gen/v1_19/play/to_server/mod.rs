@@ -9,7 +9,7 @@ pub mod packet_use_item;
 pub use self::packet::Packet;
 pub use self::packet_block_place::PacketBlockPlace;
 pub use self::packet_chat_command::PacketChatCommand;
+pub use self::packet_chat_command_0::PacketChatCommand0;
 pub use self::packet_chat_message::PacketChatMessage;
 pub use self::packet_chat_preview::PacketChatPreview;
 pub use self::packet_use_item::PacketUseItem;
-pub use self::packet_chat_command_0::PacketChatCommand0;

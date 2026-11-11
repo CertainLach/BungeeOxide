@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements11 {
-    pub parent_id: Option<String>,
-    pub display_data: Option<super::PacketAdvancements10>,
-    pub requirements: Vec<Vec<String>>,
-    pub sends_telemtry_data: super::super::super::Bool,
+	pub parent_id: Option<String>,
+	pub display_data: Option<super::PacketAdvancements10>,
+	pub requirements: Vec<Vec<String>>,
+	pub sends_telemtry_data: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::option_18::serialize(
-        &_0.parent_id,
-        output,
-    )?;
-    super::super::super::option_37::serialize(
-        &_0.display_data,
-        output,
-    )?;
-    super::super::super::array::inline_364::serialize(
-        &_0.requirements,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.sends_telemtry_data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::option_18::serialize(&_0.parent_id, output)?;
+	super::super::super::option_37::serialize(&_0.display_data, output)?;
+	super::super::super::array::inline_364::serialize(&_0.requirements, output)?;
+	super::super::super::bool::serialize(&_0.sends_telemtry_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_parentId = super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_displayData = super::super::super::option_37::deserialize(
-        input,
-    )?;
-    let f_requirements = super::super::super::array::inline_364::deserialize(
-        input,
-    )?;
-    let f_sendsTelemtryData = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        parent_id: f_parentId,display_data: f_displayData,requirements: f_requirements,sends_telemtry_data: f_sendsTelemtryData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_parentId = super::super::super::option_18::deserialize(input)?;
+	let f_displayData = super::super::super::option_37::deserialize(input)?;
+	let f_requirements = super::super::super::array::inline_364::deserialize(input)?;
+	let f_sendsTelemtryData = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		parent_id: f_parentId,
+		display_data: f_displayData,
+		requirements: f_requirements,
+		sends_telemtry_data: f_sendsTelemtryData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::option_18::size_of(
-        &_0.parent_id
-    )
-    + super::super::super::option_37::size_of(
-        &_0.display_data
-    )
-    + super::super::super::array::inline_364::size_of(
-        &_0.requirements
-    )
-    + super::super::super::bool::size_of(
-        &_0.sends_telemtry_data
-    )
+	0 + super::super::super::option_18::size_of(&_0.parent_id)
+		+ super::super::super::option_37::size_of(&_0.display_data)
+		+ super::super::super::array::inline_364::size_of(&_0.requirements)
+		+ super::super::super::bool::size_of(&_0.sends_telemtry_data)
 }
- pub type Ty = PacketAdvancements11;
+pub type Ty = PacketAdvancements11;

@@ -3,42 +3,44 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent65<'i> {
-    Id(super::super::Varint),
-    Inline(super::JukeboxSongData::<'i>),
+	Id(super::super::Varint),
+	Inline(super::JukeboxSongData<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::varint::serialize(&0, output)?;
-            super::jukebox_song_data::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::varint::serialize(&0, output)?;
+			super::jukebox_song_data::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let n = super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::jukebox_song_data::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let n = super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::jukebox_song_data::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::varint::size_of(&0) + super::jukebox_song_data::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => super::super::varint::size_of(&0) + super::jukebox_song_data::size_of(v),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::SlotComponent65) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent65::Id(id) => Ty::Id(*id),
-        super::super::SlotComponent65::Inline(v) => Ty::Inline(super::jukebox_song_data::view(v)),
-    }
+	match _0 {
+		super::super::SlotComponent65::Id(id) => Ty::Id(*id),
+		super::super::SlotComponent65::Inline(v) => Ty::Inline(super::jukebox_song_data::view(v)),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent65) -> Ty<'i> {
-    match _0 {
-        super::super::SlotComponent65::Id(id) => Ty::Id(*id),
-        super::super::SlotComponent65::Inline(v) => Ty::Inline(super::jukebox_song_data::into_view(v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent65) -> Ty<'i> {
+	match _0 {
+		super::super::SlotComponent65::Id(id) => Ty::Id(*id),
+		super::super::SlotComponent65::Inline(v) => {
+			Ty::Inline(super::jukebox_song_data::into_view(v))
+		}
+	}
 }
- pub type Ty<'i> = SlotComponent65<'i>;
+pub type Ty<'i> = SlotComponent65<'i>;

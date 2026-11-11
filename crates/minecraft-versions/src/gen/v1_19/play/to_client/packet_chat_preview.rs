@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatPreview {
-    pub query_id: super::super::super::super::I32,
-    pub message: Option<String>,
+	pub query_id: super::super::super::super::I32,
+	pub message: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.query_id,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.query_id, output)?;
+	super::super::super::super::option_18::serialize(&_0.message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_queryId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_message = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        query_id: f_queryId,message: f_message
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_queryId = super::super::super::super::i32::deserialize(input)?;
+	let f_message = super::super::super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		query_id: f_queryId,
+		message: f_message,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.query_id
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.message
-    )
+	0 + super::super::super::super::i32::size_of(&_0.query_id)
+		+ super::super::super::super::option_18::size_of(&_0.message)
 }
- pub type Ty = PacketChatPreview;
+pub type Ty = PacketChatPreview;

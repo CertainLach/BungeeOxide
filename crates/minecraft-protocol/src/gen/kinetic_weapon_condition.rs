@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct KineticWeaponCondition {
-    pub max_duration_ticks: super::Varint,
-    pub min_speed: super::F32,
-    pub min_relative_speed: super::F32,
+	pub max_duration_ticks: super::Varint,
+	pub min_speed: super::F32,
+	pub min_relative_speed: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.max_duration_ticks,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.min_speed,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.min_relative_speed,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.max_duration_ticks, output)?;
+	super::f32::serialize(&_0.min_speed, output)?;
+	super::f32::serialize(&_0.min_relative_speed, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_maxDurationTicks = super::varint::deserialize(
-        input,
-    )?;
-    let f_minSpeed = super::f32::deserialize(
-        input,
-    )?;
-    let f_minRelativeSpeed = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        max_duration_ticks: f_maxDurationTicks,min_speed: f_minSpeed,min_relative_speed: f_minRelativeSpeed
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_maxDurationTicks = super::varint::deserialize(input)?;
+	let f_minSpeed = super::f32::deserialize(input)?;
+	let f_minRelativeSpeed = super::f32::deserialize(input)?;
+	Ok(Ty {
+		max_duration_ticks: f_maxDurationTicks,
+		min_speed: f_minSpeed,
+		min_relative_speed: f_minRelativeSpeed,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.max_duration_ticks
-    )
-    + super::f32::size_of(
-        &_0.min_speed
-    )
-    + super::f32::size_of(
-        &_0.min_relative_speed
-    )
+	0 + super::varint::size_of(&_0.max_duration_ticks)
+		+ super::f32::size_of(&_0.min_speed)
+		+ super::f32::size_of(&_0.min_relative_speed)
 }
- pub type Ty = KineticWeaponCondition;
+pub type Ty = KineticWeaponCondition;

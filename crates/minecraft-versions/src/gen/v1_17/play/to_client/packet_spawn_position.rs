@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnPosition {
-    pub location: super::super::super::super::Position,
-    pub angle: super::super::super::super::F32,
+	pub location: super::super::super::super::Position,
+	pub angle: super::super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.angle,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::f32::serialize(&_0.angle, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(12)?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_angle = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,angle: f_angle
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(12)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_angle = super::super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		angle: f_angle,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.angle
-    )
+	0 + super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::f32::size_of(&_0.angle)
 }
- pub type Ty = PacketSpawnPosition;
+pub type Ty = PacketSpawnPosition;

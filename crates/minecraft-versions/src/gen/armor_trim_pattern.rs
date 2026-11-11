@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimPattern {
-    pub asset_id: String,
-    pub description: super::AnonymousNbt,
-    pub decal: super::Bool,
+	pub asset_id: String,
+	pub description: super::AnonymousNbt,
+	pub decal: super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.asset_id,
-        output,
-    )?;
-    super::anonymous_nbt::serialize(
-        &_0.description,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.decal,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.asset_id, output)?;
+	super::anonymous_nbt::serialize(&_0.description, output)?;
+	super::bool::serialize(&_0.decal, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_assetId = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_description = super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_decal = super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        asset_id: f_assetId,description: f_description,decal: f_decal
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_assetId = super::pstring_96::deserialize(input)?;
+	let f_description = super::anonymous_nbt::deserialize(input)?;
+	let f_decal = super::bool::deserialize(input)?;
+	Ok(Ty {
+		asset_id: f_assetId,
+		description: f_description,
+		decal: f_decal,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.asset_id
-    )
-    + super::anonymous_nbt::size_of(
-        &_0.description
-    )
-    + super::bool::size_of(
-        &_0.decal
-    )
+	0 + super::pstring_96::size_of(&_0.asset_id)
+		+ super::anonymous_nbt::size_of(&_0.description)
+		+ super::bool::size_of(&_0.decal)
 }
- pub type Ty = ArmorTrimPattern;
+pub type Ty = ArmorTrimPattern;

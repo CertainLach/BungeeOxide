@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Particle5 {
-    pub target: super::super::Vec3f64,
-    pub color: super::super::I32,
-    pub duration: super::super::Varint,
+	pub target: super::super::Vec3f64,
+	pub color: super::super::I32,
+	pub duration: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::vec3f64::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::super::i32::serialize(
-        &_0.color,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.duration,
-        output,
-    )?;
-    Ok(())
+	super::super::vec3f64::serialize(&_0.target, output)?;
+	super::super::i32::serialize(&_0.color, output)?;
+	super::super::varint::serialize(&_0.duration, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(29)?;
-    let f_target = super::super::vec3f64::deserialize(
-        input,
-    )?;
-    let f_color = super::super::i32::deserialize(
-        input,
-    )?;
-    let f_duration = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        target: f_target,color: f_color,duration: f_duration
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(29)?;
+	let f_target = super::super::vec3f64::deserialize(input)?;
+	let f_color = super::super::i32::deserialize(input)?;
+	let f_duration = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		target: f_target,
+		color: f_color,
+		duration: f_duration,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::vec3f64::size_of(
-        &_0.target
-    )
-    + super::super::i32::size_of(
-        &_0.color
-    )
-    + super::super::varint::size_of(
-        &_0.duration
-    )
+	0 + super::super::vec3f64::size_of(&_0.target)
+		+ super::super::i32::size_of(&_0.color)
+		+ super::super::varint::size_of(&_0.duration)
 }
- pub type Ty = Particle5;
+pub type Ty = Particle5;

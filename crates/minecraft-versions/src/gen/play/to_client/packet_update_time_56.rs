@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateTime56 {
-    pub id: super::super::super::Varint,
-    pub total_ticks: super::super::super::Varlong,
-    pub partial_tick: super::super::super::F32,
-    pub rate: super::super::super::F32,
+	pub id: super::super::super::Varint,
+	pub total_ticks: super::super::super::Varlong,
+	pub partial_tick: super::super::super::F32,
+	pub rate: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.id,
-        output,
-    )?;
-    super::super::super::varlong::serialize(
-        &_0.total_ticks,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.partial_tick,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.rate,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.id, output)?;
+	super::super::super::varlong::serialize(&_0.total_ticks, output)?;
+	super::super::super::f32::serialize(&_0.partial_tick, output)?;
+	super::super::super::f32::serialize(&_0.rate, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_id = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_totalTicks = super::super::super::varlong::deserialize(
-        input,
-    )?;
-    let f_partialTick = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_rate = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        id: f_id,total_ticks: f_totalTicks,partial_tick: f_partialTick,rate: f_rate
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_id = super::super::super::varint::deserialize(input)?;
+	let f_totalTicks = super::super::super::varlong::deserialize(input)?;
+	let f_partialTick = super::super::super::f32::deserialize(input)?;
+	let f_rate = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		id: f_id,
+		total_ticks: f_totalTicks,
+		partial_tick: f_partialTick,
+		rate: f_rate,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.id
-    )
-    + super::super::super::varlong::size_of(
-        &_0.total_ticks
-    )
-    + super::super::super::f32::size_of(
-        &_0.partial_tick
-    )
-    + super::super::super::f32::size_of(
-        &_0.rate
-    )
+	0 + super::super::super::varint::size_of(&_0.id)
+		+ super::super::super::varlong::size_of(&_0.total_ticks)
+		+ super::super::super::f32::size_of(&_0.partial_tick)
+		+ super::super::super::f32::size_of(&_0.rate)
 }
- pub type Ty = PacketUpdateTime56;
+pub type Ty = PacketUpdateTime56;

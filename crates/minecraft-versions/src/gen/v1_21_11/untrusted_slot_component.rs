@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct UntrustedSlotComponent {
-    pub r#type: super::SlotComponentType,
-    pub data: Vec<u8>,
+	pub r#type: super::SlotComponentType,
+	pub data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_component_type::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::buffer::inline_3::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::slot_component_type::serialize(&_0.r#type, output)?;
+	super::super::buffer::inline_3::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_type = super::slot_component_type::deserialize(
-        input,
-    )?;
-    let f_data = super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_type = super::slot_component_type::deserialize(input)?;
+	let f_data = super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_component_type::size_of(
-        &_0.r#type
-    )
-    + super::super::buffer::inline_3::size_of(
-        &_0.data
-    )
+	0 + super::slot_component_type::size_of(&_0.r#type)
+		+ super::super::buffer::inline_3::size_of(&_0.data)
 }
- pub type Ty = UntrustedSlotComponent;
+pub type Ty = UntrustedSlotComponent;

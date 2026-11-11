@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketServerData {
-    pub motd: super::super::super::AnonymousNbt,
-    pub icon_bytes: Option<Vec<u8>>,
+	pub motd: super::super::super::AnonymousNbt,
+	pub icon_bytes: Option<Vec<u8>>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.motd,
-        output,
-    )?;
-    super::super::super::option_0::serialize(
-        &_0.icon_bytes,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.motd, output)?;
+	super::super::super::option_0::serialize(&_0.icon_bytes, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_motd = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_iconBytes = super::super::super::option_0::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        motd: f_motd,icon_bytes: f_iconBytes
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_motd = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_iconBytes = super::super::super::option_0::deserialize(input)?;
+	Ok(Ty {
+		motd: f_motd,
+		icon_bytes: f_iconBytes,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.motd
-    )
-    + super::super::super::option_0::size_of(
-        &_0.icon_bytes
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.motd)
+		+ super::super::super::option_0::size_of(&_0.icon_bytes)
 }
- pub type Ty = PacketServerData;
+pub type Ty = PacketServerData;

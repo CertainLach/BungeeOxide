@@ -3,31 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet<'i> {
-    CookieRequest(super::super::super::Pstring96::<'i>),
-    CustomPayload(super::PacketCustomPayload::<'i>),
-    Disconnect(super::super::super::AnonymousNbt::<'i>),
-    FinishConfiguration(super::super::super::super::configuration::to_client::PacketFinishConfiguration),
-    KeepAlive(super::super::super::super::I64),
-    Ping(super::super::super::super::I32),
-    ResetChat(super::super::super::super::configuration::to_client::PacketResetChat),
-    RegistryData(super::PacketRegistryData::<'i>),
-    RemoveResourcePack(super::super::super::super::Option8),
-    AddResourcePack(super::super::super::PacketCommonAddResourcePack::<'i>),
-    StoreCookie(super::super::super::PacketCommonStoreCookie::<'i>),
-    Transfer(super::super::super::PacketCommonTransfer::<'i>),
-    FeatureFlags(super::super::super::array::Inline57::<'i>),
-    Tags(super::super::super::array::Inline123::<'i>),
-    SelectKnownPacks(super::super::super::array::Inline126::<'i>),
-    CustomReportDetails(super::super::super::array::Inline125::<'i>),
-    ServerLinks(super::super::super::array::Inline127::<'i>),
-    ClearDialog(super::super::super::super::PacketCommonClearDialog),
-    ShowDialog(super::super::super::AnonymousNbt::<'i>),
-    CodeOfConduct(super::super::super::Pstring96::<'i>),
-    Default(super::super::super::super::Varint),
+	CookieRequest(super::super::super::Pstring96<'i>),
+	CustomPayload(super::PacketCustomPayload<'i>),
+	Disconnect(super::super::super::AnonymousNbt<'i>),
+	FinishConfiguration(
+		super::super::super::super::configuration::to_client::PacketFinishConfiguration,
+	),
+	KeepAlive(super::super::super::super::I64),
+	Ping(super::super::super::super::I32),
+	ResetChat(super::super::super::super::configuration::to_client::PacketResetChat),
+	RegistryData(super::PacketRegistryData<'i>),
+	RemoveResourcePack(super::super::super::super::Option8),
+	AddResourcePack(super::super::super::PacketCommonAddResourcePack<'i>),
+	StoreCookie(super::super::super::PacketCommonStoreCookie<'i>),
+	Transfer(super::super::super::PacketCommonTransfer<'i>),
+	FeatureFlags(super::super::super::array::Inline57<'i>),
+	Tags(super::super::super::array::Inline123<'i>),
+	SelectKnownPacks(super::super::super::array::Inline126<'i>),
+	CustomReportDetails(super::super::super::array::Inline125<'i>),
+	ServerLinks(super::super::super::array::Inline127<'i>),
+	ClearDialog(super::super::super::super::PacketCommonClearDialog),
+	ShowDialog(super::super::super::AnonymousNbt<'i>),
+	CodeOfConduct(super::super::super::Pstring96<'i>),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
         Ty::CookieRequest(__v) => super::super::super::pstring_96::serialize(__v, output),
         Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
         Ty::Disconnect(__v) => super::super::super::anonymous_nbt::serialize(__v, output),
@@ -51,76 +53,114 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         Ty::Default(_) => Ok(()),
     }
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::CookieRequest(super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::CustomPayload(super::packet_custom_payload::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::Disconnect(super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_client::packet_finish_configuration::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::Ping(super::super::super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::ResetChat(super::super::super::super::configuration::to_client::packet_reset_chat::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::RegistryData(super::packet_registry_data::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::RemoveResourcePack(super::super::super::super::option_8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_i32) {
-        return Ok(Ty::AddResourcePack(super::super::super::packet_common_add_resource_pack::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) {
-        return Ok(Ty::StoreCookie(super::super::super::packet_common_store_cookie::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_i32) {
-        return Ok(Ty::Transfer(super::super::super::packet_common_transfer::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_i32) {
-        return Ok(Ty::FeatureFlags(super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 13_i32) {
-        return Ok(Ty::Tags(super::super::super::array::inline_123::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::SelectKnownPacks(super::super::super::array::inline_126::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) {
-        return Ok(Ty::CustomReportDetails(super::super::super::array::inline_125::deserialize(input, )?));
-    }
-    if (__tag.clone() == 16_i32) {
-        return Ok(Ty::ServerLinks(super::super::super::array::inline_127::deserialize(input, )?));
-    }
-    if (__tag.clone() == 17_i32) {
-        return Ok(Ty::ClearDialog(super::super::super::super::packet_common_clear_dialog::deserialize(input, )?));
-    }
-    if (__tag.clone() == 18_i32) {
-        return Ok(Ty::ShowDialog(super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 19_i32) {
-        return Ok(Ty::CodeOfConduct(super::super::super::pstring_96::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::CookieRequest(
+			super::super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::CustomPayload(
+			super::packet_custom_payload::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Disconnect(
+			super::super::super::anonymous_nbt::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_client::packet_finish_configuration::deserialize(input, )?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::Ping(super::super::super::super::i32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::ResetChat(
+			super::super::super::super::configuration::to_client::packet_reset_chat::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::RegistryData(super::packet_registry_data::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::RemoveResourcePack(
+			super::super::super::super::option_8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::AddResourcePack(
+			super::super::super::packet_common_add_resource_pack::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::StoreCookie(
+			super::super::super::packet_common_store_cookie::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::Transfer(
+			super::super::super::packet_common_transfer::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::FeatureFlags(
+			super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::Tags(
+			super::super::super::array::inline_123::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::SelectKnownPacks(
+			super::super::super::array::inline_126::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::CustomReportDetails(
+			super::super::super::array::inline_125::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::ServerLinks(
+			super::super::super::array::inline_127::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::ClearDialog(
+			super::super::super::super::packet_common_clear_dialog::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::ShowDialog(
+			super::super::super::anonymous_nbt::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::CodeOfConduct(
+			super::super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
+	super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
         Ty::CookieRequest(__v) => super::super::super::pstring_96::size_of(__v),
         Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),
         Ty::Disconnect(__v) => super::super::super::anonymous_nbt::size_of(__v),
@@ -145,103 +185,193 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     }
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::CookieRequest(_) => "cookie_request",
-        Ty::CustomPayload(_) => "custom_payload",
-        Ty::Disconnect(_) => "disconnect",
-        Ty::FinishConfiguration(_) => "finish_configuration",
-        Ty::KeepAlive(_) => "keep_alive",
-        Ty::Ping(_) => "ping",
-        Ty::ResetChat(_) => "reset_chat",
-        Ty::RegistryData(_) => "registry_data",
-        Ty::RemoveResourcePack(_) => "remove_resource_pack",
-        Ty::AddResourcePack(_) => "add_resource_pack",
-        Ty::StoreCookie(_) => "store_cookie",
-        Ty::Transfer(_) => "transfer",
-        Ty::FeatureFlags(_) => "feature_flags",
-        Ty::Tags(_) => "tags",
-        Ty::SelectKnownPacks(_) => "select_known_packs",
-        Ty::CustomReportDetails(_) => "custom_report_details",
-        Ty::ServerLinks(_) => "server_links",
-        Ty::ClearDialog(_) => "clear_dialog",
-        Ty::ShowDialog(_) => "show_dialog",
-        Ty::CodeOfConduct(_) => "code_of_conduct",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::CookieRequest(_) => "cookie_request",
+		Ty::CustomPayload(_) => "custom_payload",
+		Ty::Disconnect(_) => "disconnect",
+		Ty::FinishConfiguration(_) => "finish_configuration",
+		Ty::KeepAlive(_) => "keep_alive",
+		Ty::Ping(_) => "ping",
+		Ty::ResetChat(_) => "reset_chat",
+		Ty::RegistryData(_) => "registry_data",
+		Ty::RemoveResourcePack(_) => "remove_resource_pack",
+		Ty::AddResourcePack(_) => "add_resource_pack",
+		Ty::StoreCookie(_) => "store_cookie",
+		Ty::Transfer(_) => "transfer",
+		Ty::FeatureFlags(_) => "feature_flags",
+		Ty::Tags(_) => "tags",
+		Ty::SelectKnownPacks(_) => "select_known_packs",
+		Ty::CustomReportDetails(_) => "custom_report_details",
+		Ty::ServerLinks(_) => "server_links",
+		Ty::ClearDialog(_) => "clear_dialog",
+		Ty::ShowDialog(_) => "show_dialog",
+		Ty::CodeOfConduct(_) => "code_of_conduct",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::CookieRequest(_) => 0_i32,
-        Ty::CustomPayload(_) => 1_i32,
-        Ty::Disconnect(_) => 2_i32,
-        Ty::FinishConfiguration(_) => 3_i32,
-        Ty::KeepAlive(_) => 4_i32,
-        Ty::Ping(_) => 5_i32,
-        Ty::ResetChat(_) => 6_i32,
-        Ty::RegistryData(_) => 7_i32,
-        Ty::RemoveResourcePack(_) => 8_i32,
-        Ty::AddResourcePack(_) => 9_i32,
-        Ty::StoreCookie(_) => 10_i32,
-        Ty::Transfer(_) => 11_i32,
-        Ty::FeatureFlags(_) => 12_i32,
-        Ty::Tags(_) => 13_i32,
-        Ty::SelectKnownPacks(_) => 14_i32,
-        Ty::CustomReportDetails(_) => 15_i32,
-        Ty::ServerLinks(_) => 16_i32,
-        Ty::ClearDialog(_) => 17_i32,
-        Ty::ShowDialog(_) => 18_i32,
-        Ty::CodeOfConduct(_) => 19_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::CookieRequest(_) => 0_i32,
+		Ty::CustomPayload(_) => 1_i32,
+		Ty::Disconnect(_) => 2_i32,
+		Ty::FinishConfiguration(_) => 3_i32,
+		Ty::KeepAlive(_) => 4_i32,
+		Ty::Ping(_) => 5_i32,
+		Ty::ResetChat(_) => 6_i32,
+		Ty::RegistryData(_) => 7_i32,
+		Ty::RemoveResourcePack(_) => 8_i32,
+		Ty::AddResourcePack(_) => 9_i32,
+		Ty::StoreCookie(_) => 10_i32,
+		Ty::Transfer(_) => 11_i32,
+		Ty::FeatureFlags(_) => 12_i32,
+		Ty::Tags(_) => 13_i32,
+		Ty::SelectKnownPacks(_) => 14_i32,
+		Ty::CustomReportDetails(_) => 15_i32,
+		Ty::ServerLinks(_) => 16_i32,
+		Ty::ClearDialog(_) => 17_i32,
+		Ty::ShowDialog(_) => 18_i32,
+		Ty::CodeOfConduct(_) => 19_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::Packet) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::configuration::to_client::Packet::CookieRequest(__v) => Ty::CookieRequest(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CustomPayload(__v) => Ty::CustomPayload(super::packet_custom_payload::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Disconnect(__v) => Ty::Disconnect(super::super::super::anonymous_nbt::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::FinishConfiguration(__v) => Ty::FinishConfiguration(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::KeepAlive(__v) => Ty::KeepAlive(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::Ping(__v) => Ty::Ping(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::ResetChat(__v) => Ty::ResetChat(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::RegistryData(__v) => Ty::RegistryData(super::packet_registry_data::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::RemoveResourcePack(__v) => Ty::RemoveResourcePack(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::AddResourcePack(__v) => Ty::AddResourcePack(super::super::super::packet_common_add_resource_pack::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::StoreCookie(__v) => Ty::StoreCookie(super::super::super::packet_common_store_cookie::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Transfer(__v) => Ty::Transfer(super::super::super::packet_common_transfer::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::FeatureFlags(__v) => Ty::FeatureFlags(super::super::super::array::inline_57::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Tags(__v) => Ty::Tags(super::super::super::array::inline_123::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(super::super::super::array::inline_126::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CustomReportDetails(__v) => Ty::CustomReportDetails(super::super::super::array::inline_125::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::ServerLinks(__v) => Ty::ServerLinks(super::super::super::array::inline_127::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::ClearDialog(__v) => Ty::ClearDialog(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::ShowDialog(__v) => Ty::ShowDialog(super::super::super::anonymous_nbt::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CodeOfConduct(__v) => Ty::CodeOfConduct(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+	match _0 {
+		super::super::super::super::configuration::to_client::Packet::CookieRequest(__v) => {
+			Ty::CookieRequest(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CustomPayload(__v) => {
+			Ty::CustomPayload(super::packet_custom_payload::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Disconnect(__v) => {
+			Ty::Disconnect(super::super::super::anonymous_nbt::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::FinishConfiguration(__v) => {
+			Ty::FinishConfiguration(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::KeepAlive(__v) => {
+			Ty::KeepAlive(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Ping(__v) => {
+			Ty::Ping(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ResetChat(__v) => {
+			Ty::ResetChat(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::RegistryData(__v) => {
+			Ty::RegistryData(super::packet_registry_data::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::RemoveResourcePack(__v) => {
+			Ty::RemoveResourcePack(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::AddResourcePack(__v) => {
+			Ty::AddResourcePack(super::super::super::packet_common_add_resource_pack::view(
+				__v,
+			))
+		}
+		super::super::super::super::configuration::to_client::Packet::StoreCookie(__v) => {
+			Ty::StoreCookie(super::super::super::packet_common_store_cookie::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Transfer(__v) => {
+			Ty::Transfer(super::super::super::packet_common_transfer::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::FeatureFlags(__v) => {
+			Ty::FeatureFlags(super::super::super::array::inline_57::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Tags(__v) => {
+			Ty::Tags(super::super::super::array::inline_123::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::SelectKnownPacks(__v) => {
+			Ty::SelectKnownPacks(super::super::super::array::inline_126::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CustomReportDetails(__v) => {
+			Ty::CustomReportDetails(super::super::super::array::inline_125::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ServerLinks(__v) => {
+			Ty::ServerLinks(super::super::super::array::inline_127::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ClearDialog(__v) => {
+			Ty::ClearDialog(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ShowDialog(__v) => {
+			Ty::ShowDialog(super::super::super::anonymous_nbt::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CodeOfConduct(__v) => {
+			Ty::CodeOfConduct(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::Packet) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::configuration::to_client::Packet::CookieRequest(__v) => Ty::CookieRequest(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CustomPayload(__v) => Ty::CustomPayload(super::packet_custom_payload::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Disconnect(__v) => Ty::Disconnect(super::super::super::anonymous_nbt::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::FinishConfiguration(__v) => Ty::FinishConfiguration(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::KeepAlive(__v) => Ty::KeepAlive(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::Ping(__v) => Ty::Ping(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::ResetChat(__v) => Ty::ResetChat(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::RegistryData(__v) => Ty::RegistryData(super::packet_registry_data::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::RemoveResourcePack(__v) => Ty::RemoveResourcePack(::core::mem::take(__v)),
-        super::super::super::super::configuration::to_client::Packet::AddResourcePack(__v) => Ty::AddResourcePack(super::super::super::packet_common_add_resource_pack::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::StoreCookie(__v) => Ty::StoreCookie(super::super::super::packet_common_store_cookie::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Transfer(__v) => Ty::Transfer(super::super::super::packet_common_transfer::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::FeatureFlags(__v) => Ty::FeatureFlags(super::super::super::array::inline_57::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Tags(__v) => Ty::Tags(super::super::super::array::inline_123::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(super::super::super::array::inline_126::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CustomReportDetails(__v) => Ty::CustomReportDetails(super::super::super::array::inline_125::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::ServerLinks(__v) => Ty::ServerLinks(super::super::super::array::inline_127::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::ClearDialog(__v) => Ty::ClearDialog(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_client::Packet::ShowDialog(__v) => Ty::ShowDialog(super::super::super::anonymous_nbt::into_view(__v)),
-        super::super::super::super::configuration::to_client::Packet::CodeOfConduct(__v) => Ty::CodeOfConduct(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::configuration::to_client::Packet::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::configuration::to_client::Packet,
+) -> Ty<'i> {
+	match _0 {
+		super::super::super::super::configuration::to_client::Packet::CookieRequest(__v) => {
+			Ty::CookieRequest(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CustomPayload(__v) => {
+			Ty::CustomPayload(super::packet_custom_payload::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Disconnect(__v) => {
+			Ty::Disconnect(super::super::super::anonymous_nbt::into_view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::FinishConfiguration(__v) => {
+			Ty::FinishConfiguration(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::KeepAlive(__v) => {
+			Ty::KeepAlive(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Ping(__v) => {
+			Ty::Ping(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ResetChat(__v) => {
+			Ty::ResetChat(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::RegistryData(__v) => {
+			Ty::RegistryData(super::packet_registry_data::into_view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::RemoveResourcePack(__v) => {
+			Ty::RemoveResourcePack(::core::mem::take(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::AddResourcePack(__v) => {
+			Ty::AddResourcePack(
+				super::super::super::packet_common_add_resource_pack::into_view(__v),
+			)
+		}
+		super::super::super::super::configuration::to_client::Packet::StoreCookie(__v) => {
+			Ty::StoreCookie(super::super::super::packet_common_store_cookie::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Transfer(__v) => {
+			Ty::Transfer(super::super::super::packet_common_transfer::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::FeatureFlags(__v) => {
+			Ty::FeatureFlags(super::super::super::array::inline_57::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Tags(__v) => {
+			Ty::Tags(super::super::super::array::inline_123::into_view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::SelectKnownPacks(__v) => {
+			Ty::SelectKnownPacks(super::super::super::array::inline_126::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CustomReportDetails(__v) => {
+			Ty::CustomReportDetails(super::super::super::array::inline_125::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ServerLinks(__v) => {
+			Ty::ServerLinks(super::super::super::array::inline_127::into_view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ClearDialog(__v) => {
+			Ty::ClearDialog(::core::clone::Clone::clone(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::ShowDialog(__v) => {
+			Ty::ShowDialog(super::super::super::anonymous_nbt::into_view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::CodeOfConduct(__v) => {
+			Ty::CodeOfConduct(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::configuration::to_client::Packet::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = Packet<'i>;
+pub type Ty<'i> = Packet<'i>;

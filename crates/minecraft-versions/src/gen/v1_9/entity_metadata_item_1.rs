@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataItem1 {
-    pub pitch: super::super::F32,
-    pub yaw: super::super::F32,
-    pub roll: super::super::F32,
+	pub pitch: super::super::F32,
+	pub yaw: super::super::F32,
+	pub roll: super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.roll,
-        output,
-    )?;
-    Ok(())
+	super::super::f32::serialize(&_0.pitch, output)?;
+	super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::f32::serialize(&_0.roll, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(12)?;
-    let f_pitch = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_roll = super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        pitch: f_pitch,yaw: f_yaw,roll: f_roll
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(12)?;
+	let f_pitch = super::super::f32::deserialize(input)?;
+	let f_yaw = super::super::f32::deserialize(input)?;
+	let f_roll = super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		pitch: f_pitch,
+		yaw: f_yaw,
+		roll: f_roll,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::f32::size_of(
-        &_0.roll
-    )
+	0 + super::super::f32::size_of(&_0.pitch)
+		+ super::super::f32::size_of(&_0.yaw)
+		+ super::super::f32::size_of(&_0.roll)
 }
- pub type Ty = EntityMetadataItem1;
+pub type Ty = EntityMetadataItem1;

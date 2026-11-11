@@ -236,10 +236,10 @@ macro_rules! attributes {
 							.into_iter()
 							.map(|m| {
 								$to::play_to_client_packet_update_attributes_properties_items_modifiers_items::Ty {
-															uuid: m.uuid,
-															amount: m.amount,
-															operation: m.operation,
-														}
+																	uuid: m.uuid,
+																	amount: m.amount,
+																	operation: m.operation,
+																}
 							})
 							.collect(),
 					},

@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent68 {
-    pub flight_duration: super::Varint,
-    pub explosions: Vec<super::ItemFireworkExplosion>,
+	pub flight_duration: super::Varint,
+	pub explosions: Vec<super::ItemFireworkExplosion>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.flight_duration,
-        output,
-    )?;
-    super::array::inline_9::serialize(
-        &_0.explosions,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.flight_duration, output)?;
+	super::array::inline_9::serialize(&_0.explosions, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_flightDuration = super::varint::deserialize(
-        input,
-    )?;
-    let f_explosions = super::array::inline_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        flight_duration: f_flightDuration,explosions: f_explosions
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_flightDuration = super::varint::deserialize(input)?;
+	let f_explosions = super::array::inline_9::deserialize(input)?;
+	Ok(Ty {
+		flight_duration: f_flightDuration,
+		explosions: f_explosions,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.flight_duration
-    )
-    + super::array::inline_9::size_of(
-        &_0.explosions
-    )
+	0 + super::varint::size_of(&_0.flight_duration)
+		+ super::array::inline_9::size_of(&_0.explosions)
 }
- pub type Ty = SlotComponent68;
+pub type Ty = SlotComponent68;

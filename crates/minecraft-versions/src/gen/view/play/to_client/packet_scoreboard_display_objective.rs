@@ -3,44 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardDisplayObjective<'i> {
-    pub position: super::super::super::super::Varint,
-    pub name: super::super::super::Pstring96::<'i>,
+	pub position: super::super::super::super::Varint,
+	pub name: super::super::super::Pstring96<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.position, output)?;
+	super::super::super::pstring_96::serialize(&_0.name, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_position = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_name = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position: f_position,name: f_name
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_position = super::super::super::super::varint::deserialize(input)?;
+	let f_name = super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		position: f_position,
+		name: f_name,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.position
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.name
-    )
+	0 + super::super::super::super::varint::size_of(&_0.position)
+		+ super::super::super::pstring_96::size_of(&_0.name)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScoreboardDisplayObjective) -> Ty<'i> {
-    Ty {
-        position: ::core::clone::Clone::clone(&_0.position),name: super::super::super::pstring_96::view(&_0.name)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketScoreboardDisplayObjective,
+) -> Ty<'i> {
+	Ty {
+		position: ::core::clone::Clone::clone(&_0.position),
+		name: super::super::super::pstring_96::view(&_0.name),
+	}
 }
- pub type Ty<'i> = PacketScoreboardDisplayObjective<'i>;
+pub type Ty<'i> = PacketScoreboardDisplayObjective<'i>;

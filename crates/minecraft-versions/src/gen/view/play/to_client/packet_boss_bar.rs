@@ -3,49 +3,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBossBar<'i> {
-    pub entity_uuid: super::super::super::super::Uuid,
-    pub action: super::PacketBossBar16::<'i>,
+	pub entity_uuid: super::super::super::super::Uuid,
+	pub action: super::PacketBossBar16<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.entity_uuid,
-        output,
-    )?;
-    super::packet_boss_bar_16::serialize(
-        &_0.action,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.entity_uuid, output)?;
+	super::packet_boss_bar_16::serialize(&_0.action, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_entityUUID = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_action = super::packet_boss_bar_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_uuid: f_entityUUID,action: f_action
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_entityUUID = super::super::super::super::uuid::deserialize(input)?;
+	let f_action = super::packet_boss_bar_16::deserialize(input)?;
+	Ok(Ty {
+		entity_uuid: f_entityUUID,
+		action: f_action,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.entity_uuid
-    )
-    + super::packet_boss_bar_16::size_of(
-        &_0.action
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.entity_uuid)
+		+ super::packet_boss_bar_16::size_of(&_0.action)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketBossBar) -> Ty<'i> {
-    Ty {
-        entity_uuid: ::core::clone::Clone::clone(&_0.entity_uuid),action: super::packet_boss_bar_16::view(&_0.action)
-    }
+	Ty {
+		entity_uuid: ::core::clone::Clone::clone(&_0.entity_uuid),
+		action: super::packet_boss_bar_16::view(&_0.action),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketBossBar) -> Ty<'i> {
-    Ty {
-        entity_uuid: ::core::clone::Clone::clone(&mut _0.entity_uuid),action: super::packet_boss_bar_16::into_view(&mut _0.action)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketBossBar,
+) -> Ty<'i> {
+	Ty {
+		entity_uuid: ::core::clone::Clone::clone(&mut _0.entity_uuid),
+		action: super::packet_boss_bar_16::into_view(&mut _0.action),
+	}
 }
- pub type Ty<'i> = PacketBossBar<'i>;
+pub type Ty<'i> = PacketBossBar<'i>;

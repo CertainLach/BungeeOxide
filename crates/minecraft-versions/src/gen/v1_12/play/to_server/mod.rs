@@ -9,7 +9,7 @@ pub mod packet_prepare_crafting_grid_1;
 pub use self::packet::Packet;
 pub use self::packet_client_command::PacketClientCommand;
 pub use self::packet_crafting_book_data::PacketCraftingBookData;
-pub use self::packet_prepare_crafting_grid::PacketPrepareCraftingGrid;
 pub use self::packet_crafting_book_data_0::PacketCraftingBookData0;
+pub use self::packet_prepare_crafting_grid::PacketPrepareCraftingGrid;
 pub use self::packet_prepare_crafting_grid_0::PacketPrepareCraftingGrid0;
 pub use self::packet_prepare_crafting_grid_1::PacketPrepareCraftingGrid1;

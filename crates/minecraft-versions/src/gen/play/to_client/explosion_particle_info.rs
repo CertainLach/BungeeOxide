@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ExplosionParticleInfo {
-    pub particle: super::super::super::Particle,
-    pub scaling: super::super::super::F32,
-    pub speed: super::super::super::F32,
+	pub particle: super::super::super::Particle,
+	pub scaling: super::super::super::F32,
+	pub speed: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::particle::serialize(
-        &_0.particle,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.scaling,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.speed,
-        output,
-    )?;
-    Ok(())
+	super::super::super::particle::serialize(&_0.particle, output)?;
+	super::super::super::f32::serialize(&_0.scaling, output)?;
+	super::super::super::f32::serialize(&_0.speed, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_particle = super::super::super::particle::deserialize(
-        input,
-    )?;
-    let f_scaling = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_speed = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        particle: f_particle,scaling: f_scaling,speed: f_speed
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_particle = super::super::super::particle::deserialize(input)?;
+	let f_scaling = super::super::super::f32::deserialize(input)?;
+	let f_speed = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		particle: f_particle,
+		scaling: f_scaling,
+		speed: f_speed,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::particle::size_of(
-        &_0.particle
-    )
-    + super::super::super::f32::size_of(
-        &_0.scaling
-    )
-    + super::super::super::f32::size_of(
-        &_0.speed
-    )
+	0 + super::super::super::particle::size_of(&_0.particle)
+		+ super::super::super::f32::size_of(&_0.scaling)
+		+ super::super::super::f32::size_of(&_0.speed)
 }
- pub type Ty = ExplosionParticleInfo;
+pub type Ty = ExplosionParticleInfo;

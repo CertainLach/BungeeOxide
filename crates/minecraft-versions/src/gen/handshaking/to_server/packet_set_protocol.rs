@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetProtocol {
-    pub protocol_version: super::super::super::Varint,
-    pub server_host: String,
-    pub server_port: super::super::super::U16,
-    pub next_state: super::super::super::Varint,
+	pub protocol_version: super::super::super::Varint,
+	pub server_host: String,
+	pub server_port: super::super::super::U16,
+	pub next_state: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.protocol_version,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.server_host,
-        output,
-    )?;
-    super::super::super::u16::serialize(
-        &_0.server_port,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.next_state,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.protocol_version, output)?;
+	super::super::super::pstring_96::serialize(&_0.server_host, output)?;
+	super::super::super::u16::serialize(&_0.server_port, output)?;
+	super::super::super::varint::serialize(&_0.next_state, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_protocolVersion = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_serverHost = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_serverPort = super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_nextState = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        protocol_version: f_protocolVersion,server_host: f_serverHost,server_port: f_serverPort,next_state: f_nextState
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_protocolVersion = super::super::super::varint::deserialize(input)?;
+	let f_serverHost = super::super::super::pstring_96::deserialize(input)?;
+	let f_serverPort = super::super::super::u16::deserialize(input)?;
+	let f_nextState = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		protocol_version: f_protocolVersion,
+		server_host: f_serverHost,
+		server_port: f_serverPort,
+		next_state: f_nextState,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.protocol_version
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.server_host
-    )
-    + super::super::super::u16::size_of(
-        &_0.server_port
-    )
-    + super::super::super::varint::size_of(
-        &_0.next_state
-    )
+	0 + super::super::super::varint::size_of(&_0.protocol_version)
+		+ super::super::super::pstring_96::size_of(&_0.server_host)
+		+ super::super::super::u16::size_of(&_0.server_port)
+		+ super::super::super::varint::size_of(&_0.next_state)
 }
- pub type Ty = PacketSetProtocol;
+pub type Ty = PacketSetProtocol;

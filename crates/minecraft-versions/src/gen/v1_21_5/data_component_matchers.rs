@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DataComponentMatchers {
-    pub exact_matchers: Vec<super::SlotComponent>,
-    pub partial_matchers: Vec<super::DataComponentMatchers0>,
+	pub exact_matchers: Vec<super::SlotComponent>,
+	pub partial_matchers: Vec<super::DataComponentMatchers0>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::array::inline_94::serialize(
-        &_0.exact_matchers,
-        output,
-    )?;
-    super::super::array::inline_301::serialize(
-        &_0.partial_matchers,
-        output,
-    )?;
-    Ok(())
+	super::super::array::inline_94::serialize(&_0.exact_matchers, output)?;
+	super::super::array::inline_301::serialize(&_0.partial_matchers, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_exactMatchers = super::super::array::inline_94::deserialize(
-        input,
-    )?;
-    let f_partialMatchers = super::super::array::inline_301::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        exact_matchers: f_exactMatchers,partial_matchers: f_partialMatchers
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_exactMatchers = super::super::array::inline_94::deserialize(input)?;
+	let f_partialMatchers = super::super::array::inline_301::deserialize(input)?;
+	Ok(Ty {
+		exact_matchers: f_exactMatchers,
+		partial_matchers: f_partialMatchers,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::array::inline_94::size_of(
-        &_0.exact_matchers
-    )
-    + super::super::array::inline_301::size_of(
-        &_0.partial_matchers
-    )
+	0 + super::super::array::inline_94::size_of(&_0.exact_matchers)
+		+ super::super::array::inline_301::size_of(&_0.partial_matchers)
 }
- pub type Ty = DataComponentMatchers;
+pub type Ty = DataComponentMatchers;

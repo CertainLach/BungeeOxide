@@ -3,56 +3,48 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Tag<'i> {
-    pub r#type: super::super::U8,
-    pub value: super::Payload::<'i>,
+	pub r#type: super::super::U8,
+	pub value: super::Payload<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::u8::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::payload::debug_assert_tag(
-        &_0.value,
-        {let _0: &super::super::U8 = &_0.r#type;_0},
-    );
-    super::payload::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::u8::serialize(&_0.r#type, output)?;
+	super::payload::debug_assert_tag(&_0.value, {
+		let _0: &super::super::U8 = &_0.r#type;
+		_0
+	});
+	super::payload::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_type = super::super::u8::deserialize(
-        input,
-    )?;
-    let f_value = super::payload::deserialize(
-        input,
-        super::payload::Args {
-            r#type: {let _0: &super::super::U8 = &f_type;_0}
-        },
-    )?;
-    Ok(Ty {
-        r#type: f_type,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_type = super::super::u8::deserialize(input)?;
+	let f_value = super::payload::deserialize(
+		input,
+		super::payload::Args {
+			r#type: {
+				let _0: &super::super::U8 = &f_type;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		r#type: f_type,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::u8::size_of(
-        &_0.r#type
-    )
-    + super::payload::size_of(
-        &_0.value
-    )
+	0 + super::super::u8::size_of(&_0.r#type) + super::payload::size_of(&_0.value)
 }
 pub fn view<'i>(_0: &'i super::super::Tag) -> Ty<'i> {
-    Ty {
-        r#type: ::core::clone::Clone::clone(&_0.r#type),value: super::payload::view(&_0.value)
-    }
+	Ty {
+		r#type: ::core::clone::Clone::clone(&_0.r#type),
+		value: super::payload::view(&_0.value),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::Tag) -> Ty<'i> {
-    Ty {
-        r#type: ::core::clone::Clone::clone(&mut _0.r#type),value: super::payload::into_view(&mut _0.value)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::Tag) -> Ty<'i> {
+	Ty {
+		r#type: ::core::clone::Clone::clone(&mut _0.r#type),
+		value: super::payload::into_view(&mut _0.value),
+	}
 }
- pub type Ty<'i> = Tag<'i>;
+pub type Ty<'i> = Tag<'i>;

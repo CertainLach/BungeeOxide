@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardScore {
-    pub item_name: String,
-    pub action: super::PacketScoreboardScore1,
+	pub item_name: String,
+	pub action: super::PacketScoreboardScore1,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.item_name,
-        output,
-    )?;
-    super::packet_scoreboard_score_1::serialize(
-        &_0.action,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.item_name, output)?;
+	super::packet_scoreboard_score_1::serialize(&_0.action, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_itemName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_action = super::packet_scoreboard_score_1::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_name: f_itemName,action: f_action
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_itemName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_action = super::packet_scoreboard_score_1::deserialize(input)?;
+	Ok(Ty {
+		item_name: f_itemName,
+		action: f_action,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.item_name
-    )
-    + super::packet_scoreboard_score_1::size_of(
-        &_0.action
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.item_name)
+		+ super::packet_scoreboard_score_1::size_of(&_0.action)
 }
- pub type Ty = PacketScoreboardScore;
+pub type Ty = PacketScoreboardScore;

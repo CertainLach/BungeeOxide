@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes13 {
-    pub template: Vec<super::super::super::Slot>,
-    pub base: Vec<super::super::super::Slot>,
-    pub addition: Vec<super::super::super::Slot>,
+	pub template: Vec<super::super::super::Slot>,
+	pub base: Vec<super::super::super::Slot>,
+	pub addition: Vec<super::super::super::Slot>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::array::inline_73::serialize(
-        &_0.template,
-        output,
-    )?;
-    super::super::super::super::array::inline_73::serialize(
-        &_0.base,
-        output,
-    )?;
-    super::super::super::super::array::inline_73::serialize(
-        &_0.addition,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::array::inline_73::serialize(&_0.template, output)?;
+	super::super::super::super::array::inline_73::serialize(&_0.base, output)?;
+	super::super::super::super::array::inline_73::serialize(&_0.addition, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_template = super::super::super::super::array::inline_73::deserialize(
-        input,
-    )?;
-    let f_base = super::super::super::super::array::inline_73::deserialize(
-        input,
-    )?;
-    let f_addition = super::super::super::super::array::inline_73::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        template: f_template,base: f_base,addition: f_addition
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_template = super::super::super::super::array::inline_73::deserialize(input)?;
+	let f_base = super::super::super::super::array::inline_73::deserialize(input)?;
+	let f_addition = super::super::super::super::array::inline_73::deserialize(input)?;
+	Ok(Ty {
+		template: f_template,
+		base: f_base,
+		addition: f_addition,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::array::inline_73::size_of(
-        &_0.template
-    )
-    + super::super::super::super::array::inline_73::size_of(
-        &_0.base
-    )
-    + super::super::super::super::array::inline_73::size_of(
-        &_0.addition
-    )
+	0 + super::super::super::super::array::inline_73::size_of(&_0.template)
+		+ super::super::super::super::array::inline_73::size_of(&_0.base)
+		+ super::super::super::super::array::inline_73::size_of(&_0.addition)
 }
- pub type Ty = PacketDeclareRecipes13;
+pub type Ty = PacketDeclareRecipes13;

@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketGenerateStructure {
-    pub location: super::super::super::Position,
-    pub levels: super::super::super::Varint,
-    pub keep_jigsaws: super::super::super::Bool,
+	pub location: super::super::super::Position,
+	pub levels: super::super::super::Varint,
+	pub keep_jigsaws: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.levels,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.keep_jigsaws,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::varint::serialize(&_0.levels, output)?;
+	super::super::super::bool::serialize(&_0.keep_jigsaws, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_location = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_levels = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_keepJigsaws = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,levels: f_levels,keep_jigsaws: f_keepJigsaws
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_location = super::super::super::position::deserialize(input)?;
+	let f_levels = super::super::super::varint::deserialize(input)?;
+	let f_keepJigsaws = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		levels: f_levels,
+		keep_jigsaws: f_keepJigsaws,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::varint::size_of(
-        &_0.levels
-    )
-    + super::super::super::bool::size_of(
-        &_0.keep_jigsaws
-    )
+	0 + super::super::super::position::size_of(&_0.location)
+		+ super::super::super::varint::size_of(&_0.levels)
+		+ super::super::super::bool::size_of(&_0.keep_jigsaws)
 }
- pub type Ty = PacketGenerateStructure;
+pub type Ty = PacketGenerateStructure;

@@ -3,47 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketClientCommand {
-    InitialSpawn,
-    PerformRespawn,
-    Default(super::super::super::super::I8),
+	InitialSpawn,
+	PerformRespawn,
+	Default(super::super::super::super::I8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::InitialSpawn => Ok(()),
-        Ty::PerformRespawn => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::InitialSpawn => Ok(()),
+		Ty::PerformRespawn => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i8) { return Ok(Ty::InitialSpawn); }
-    if (__tag.clone() == 1_i8) { return Ok(Ty::PerformRespawn); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::i8::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i8) {
+		return Ok(Ty::InitialSpawn);
+	}
+	if (__tag.clone() == 1_i8) {
+		return Ok(Ty::PerformRespawn);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::InitialSpawn => 0,
-        Ty::PerformRespawn => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::i8::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::InitialSpawn => 0,
+			Ty::PerformRespawn => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::InitialSpawn => "initial_spawn",
-        Ty::PerformRespawn => "perform_respawn",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::InitialSpawn => "initial_spawn",
+		Ty::PerformRespawn => "perform_respawn",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::I8 {
-    match _0 {
-        Ty::InitialSpawn => 0_i8,
-        Ty::PerformRespawn => 1_i8,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::InitialSpawn => 0_i8,
+		Ty::PerformRespawn => 1_i8,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketClientCommand;
+pub type Ty = PacketClientCommand;

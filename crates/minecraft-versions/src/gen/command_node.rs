@@ -3,75 +3,68 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode {
-    pub flags: super::CommandNode73,
-    pub children: Vec<super::Varint>,
-    pub redirect_node: super::CommandNode74,
-    pub extra_node_data: super::CommandNode97,
+	pub flags: super::CommandNode73,
+	pub children: Vec<super::Varint>,
+	pub redirect_node: super::CommandNode74,
+	pub extra_node_data: super::CommandNode97,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::command_node_73::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::array::inline_107::serialize(
-        &_0.children,
-        output,
-    )?;
-    super::command_node_74::debug_assert_tag(
-        &_0.redirect_node,
-        {let _0: &super::CommandNode73 = &_0.flags;let _0: &super::U8 = &_0.has_redirect_node;_0},
-    );
-    super::command_node_74::serialize(
-        &_0.redirect_node,
-        output,
-    )?;
-    super::command_node_97::debug_assert_tag(
-        &_0.extra_node_data,
-        {let _0: &super::CommandNode73 = &_0.flags;let _0: &super::U8 = &_0.command_node_type;_0},
-    );
-    super::command_node_97::serialize(
-        &_0.extra_node_data,
-        output,
-    )?;
-    Ok(())
+	super::command_node_73::serialize(&_0.flags, output)?;
+	super::array::inline_107::serialize(&_0.children, output)?;
+	super::command_node_74::debug_assert_tag(&_0.redirect_node, {
+		let _0: &super::CommandNode73 = &_0.flags;
+		let _0: &super::U8 = &_0.has_redirect_node;
+		_0
+	});
+	super::command_node_74::serialize(&_0.redirect_node, output)?;
+	super::command_node_97::debug_assert_tag(&_0.extra_node_data, {
+		let _0: &super::CommandNode73 = &_0.flags;
+		let _0: &super::U8 = &_0.command_node_type;
+		_0
+	});
+	super::command_node_97::serialize(&_0.extra_node_data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_flags = super::command_node_73::deserialize(
-        input,
-    )?;
-    let f_children = super::array::inline_107::deserialize(
-        input,
-    )?;
-    let f_redirectNode = super::command_node_74::deserialize(
-        input,
-        super::command_node_74::Args {
-            flags_has_redirect_node: {let _0: &super::CommandNode73 = &f_flags;let _0: &super::U8 = &_0.has_redirect_node;_0}
-        },
-    )?;
-    let f_extraNodeData = super::command_node_97::deserialize(
-        input,
-        super::command_node_97::Args {
-            flags_has_custom_suggestions: {let _0: &super::CommandNode73 = &f_flags;let _0: &super::U8 = &_0.has_custom_suggestions;_0},flags_command_node_type: {let _0: &super::CommandNode73 = &f_flags;let _0: &super::U8 = &_0.command_node_type;_0}
-        },
-    )?;
-    Ok(Ty {
-        flags: f_flags,children: f_children,redirect_node: f_redirectNode,extra_node_data: f_extraNodeData
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_flags = super::command_node_73::deserialize(input)?;
+	let f_children = super::array::inline_107::deserialize(input)?;
+	let f_redirectNode = super::command_node_74::deserialize(
+		input,
+		super::command_node_74::Args {
+			flags_has_redirect_node: {
+				let _0: &super::CommandNode73 = &f_flags;
+				let _0: &super::U8 = &_0.has_redirect_node;
+				_0
+			},
+		},
+	)?;
+	let f_extraNodeData = super::command_node_97::deserialize(
+		input,
+		super::command_node_97::Args {
+			flags_has_custom_suggestions: {
+				let _0: &super::CommandNode73 = &f_flags;
+				let _0: &super::U8 = &_0.has_custom_suggestions;
+				_0
+			},
+			flags_command_node_type: {
+				let _0: &super::CommandNode73 = &f_flags;
+				let _0: &super::U8 = &_0.command_node_type;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		flags: f_flags,
+		children: f_children,
+		redirect_node: f_redirectNode,
+		extra_node_data: f_extraNodeData,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::command_node_73::size_of(
-        &_0.flags
-    )
-    + super::array::inline_107::size_of(
-        &_0.children
-    )
-    + super::command_node_74::size_of(
-        &_0.redirect_node
-    )
-    + super::command_node_97::size_of(
-        &_0.extra_node_data
-    )
+	0 + super::command_node_73::size_of(&_0.flags)
+		+ super::array::inline_107::size_of(&_0.children)
+		+ super::command_node_74::size_of(&_0.redirect_node)
+		+ super::command_node_97::size_of(&_0.extra_node_data)
 }
- pub type Ty = CommandNode;
+pub type Ty = CommandNode;

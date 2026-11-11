@@ -3,105 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketInitializeWorldBorder {
-    pub x: super::super::super::F64,
-    pub z: super::super::super::F64,
-    pub old_diameter: super::super::super::F64,
-    pub new_diameter: super::super::super::F64,
-    pub speed: super::super::super::Varint,
-    pub portal_teleport_boundary: super::super::super::Varint,
-    pub warning_blocks: super::super::super::Varint,
-    pub warning_time: super::super::super::Varint,
+	pub x: super::super::super::F64,
+	pub z: super::super::super::F64,
+	pub old_diameter: super::super::super::F64,
+	pub new_diameter: super::super::super::F64,
+	pub speed: super::super::super::Varint,
+	pub portal_teleport_boundary: super::super::super::Varint,
+	pub warning_blocks: super::super::super::Varint,
+	pub warning_time: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.old_diameter,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.new_diameter,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.speed,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.portal_teleport_boundary,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.warning_blocks,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.warning_time,
-        output,
-    )?;
-    Ok(())
+	super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::f64::serialize(&_0.old_diameter, output)?;
+	super::super::super::f64::serialize(&_0.new_diameter, output)?;
+	super::super::super::varint::serialize(&_0.speed, output)?;
+	super::super::super::varint::serialize(&_0.portal_teleport_boundary, output)?;
+	super::super::super::varint::serialize(&_0.warning_blocks, output)?;
+	super::super::super::varint::serialize(&_0.warning_time, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(36)?;
-    let f_x = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_oldDiameter = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_newDiameter = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_speed = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_portalTeleportBoundary = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_warningBlocks = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_warningTime = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,z: f_z,old_diameter: f_oldDiameter,new_diameter: f_newDiameter,speed: f_speed,portal_teleport_boundary: f_portalTeleportBoundary,warning_blocks: f_warningBlocks,warning_time: f_warningTime
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(36)?;
+	let f_x = super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::f64::deserialize(input)?;
+	let f_oldDiameter = super::super::super::f64::deserialize(input)?;
+	let f_newDiameter = super::super::super::f64::deserialize(input)?;
+	let f_speed = super::super::super::varint::deserialize(input)?;
+	let f_portalTeleportBoundary = super::super::super::varint::deserialize(input)?;
+	let f_warningBlocks = super::super::super::varint::deserialize(input)?;
+	let f_warningTime = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		z: f_z,
+		old_diameter: f_oldDiameter,
+		new_diameter: f_newDiameter,
+		speed: f_speed,
+		portal_teleport_boundary: f_portalTeleportBoundary,
+		warning_blocks: f_warningBlocks,
+		warning_time: f_warningTime,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::f64::size_of(
-        &_0.old_diameter
-    )
-    + super::super::super::f64::size_of(
-        &_0.new_diameter
-    )
-    + super::super::super::varint::size_of(
-        &_0.speed
-    )
-    + super::super::super::varint::size_of(
-        &_0.portal_teleport_boundary
-    )
-    + super::super::super::varint::size_of(
-        &_0.warning_blocks
-    )
-    + super::super::super::varint::size_of(
-        &_0.warning_time
-    )
+	0 + super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::f64::size_of(&_0.old_diameter)
+		+ super::super::super::f64::size_of(&_0.new_diameter)
+		+ super::super::super::varint::size_of(&_0.speed)
+		+ super::super::super::varint::size_of(&_0.portal_teleport_boundary)
+		+ super::super::super::varint::size_of(&_0.warning_blocks)
+		+ super::super::super::varint::size_of(&_0.warning_time)
 }
- pub type Ty = PacketInitializeWorldBorder;
+pub type Ty = PacketInitializeWorldBorder;

@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardObjective9 {
-    pub display_text: String,
-    pub r#type: String,
+	pub display_text: String,
+	pub r#type: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.display_text,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.display_text, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.r#type, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_displayText = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        display_text: f_displayText,r#type: f_type
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_displayText = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_type = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		display_text: f_displayText,
+		r#type: f_type,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.display_text
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.r#type
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.display_text)
+		+ super::super::super::super::pstring_96::size_of(&_0.r#type)
 }
- pub type Ty = PacketScoreboardObjective9;
+pub type Ty = PacketScoreboardObjective9;

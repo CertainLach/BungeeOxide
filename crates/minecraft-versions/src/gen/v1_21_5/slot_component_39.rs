@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent39 {
-    pub global_position: Option<super::SlotComponent38>,
-    pub tracked: super::super::Bool,
+	pub global_position: Option<super::SlotComponent38>,
+	pub tracked: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::option_79::serialize(
-        &_0.global_position,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.tracked,
-        output,
-    )?;
-    Ok(())
+	super::super::option_79::serialize(&_0.global_position, output)?;
+	super::super::bool::serialize(&_0.tracked, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_globalPosition = super::super::option_79::deserialize(
-        input,
-    )?;
-    let f_tracked = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        global_position: f_globalPosition,tracked: f_tracked
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_globalPosition = super::super::option_79::deserialize(input)?;
+	let f_tracked = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		global_position: f_globalPosition,
+		tracked: f_tracked,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::option_79::size_of(
-        &_0.global_position
-    )
-    + super::super::bool::size_of(
-        &_0.tracked
-    )
+	0 + super::super::option_79::size_of(&_0.global_position)
+		+ super::super::bool::size_of(&_0.tracked)
 }
- pub type Ty = SlotComponent39;
+pub type Ty = SlotComponent39;

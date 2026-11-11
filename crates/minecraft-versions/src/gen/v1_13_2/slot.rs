@@ -3,44 +3,45 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Slot {
-    False,
-    True(super::Slot1),
+	False,
+	True(super::Slot1),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False => Ok(()),
-        Ty::True(__v) => super::slot_1::serialize(__v, output),
-    }
+	super::super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False => Ok(()),
+		Ty::True(__v) => super::slot_1::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) { return Ok(Ty::False); }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::slot_1::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False);
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::slot_1::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False => 0,
-        Ty::True(__v) => super::slot_1::size_of(__v),
-    }
+	super::super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False => 0,
+			Ty::True(__v) => super::slot_1::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Bool {
-    match _0 {
-        Ty::False => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = Slot;
+pub type Ty = Slot;

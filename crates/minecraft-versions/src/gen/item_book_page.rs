@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBookPage {
-    pub content: String,
-    pub filtered_content: Option<String>,
+	pub content: String,
+	pub filtered_content: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.content,
-        output,
-    )?;
-    super::option_18::serialize(
-        &_0.filtered_content,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.content, output)?;
+	super::option_18::serialize(&_0.filtered_content, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_content = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_filteredContent = super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        content: f_content,filtered_content: f_filteredContent
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_content = super::pstring_96::deserialize(input)?;
+	let f_filteredContent = super::option_18::deserialize(input)?;
+	Ok(Ty {
+		content: f_content,
+		filtered_content: f_filteredContent,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.content
-    )
-    + super::option_18::size_of(
-        &_0.filtered_content
-    )
+	0 + super::pstring_96::size_of(&_0.content) + super::option_18::size_of(&_0.filtered_content)
 }
- pub type Ty = ItemBookPage;
+pub type Ty = ItemBookPage;

@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntity2 {
-    pub velocity_x: super::super::super::super::I16,
-    pub velocity_y: super::super::super::super::I16,
-    pub velocity_z: super::super::super::super::I16,
+	pub velocity_x: super::super::super::super::I16,
+	pub velocity_y: super::super::super::super::I16,
+	pub velocity_z: super::super::super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i16::serialize(
-        &_0.velocity_x,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.velocity_y,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.velocity_z,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i16::serialize(&_0.velocity_x, output)?;
+	super::super::super::super::i16::serialize(&_0.velocity_y, output)?;
+	super::super::super::super::i16::serialize(&_0.velocity_z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_velocityX = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_velocityY = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_velocityZ = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        velocity_x: f_velocityX,velocity_y: f_velocityY,velocity_z: f_velocityZ
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_velocityX = super::super::super::super::i16::deserialize(input)?;
+	let f_velocityY = super::super::super::super::i16::deserialize(input)?;
+	let f_velocityZ = super::super::super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		velocity_x: f_velocityX,
+		velocity_y: f_velocityY,
+		velocity_z: f_velocityZ,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i16::size_of(
-        &_0.velocity_x
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.velocity_y
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.velocity_z
-    )
+	0 + super::super::super::super::i16::size_of(&_0.velocity_x)
+		+ super::super::super::super::i16::size_of(&_0.velocity_y)
+		+ super::super::super::super::i16::size_of(&_0.velocity_z)
 }
- pub type Ty = PacketSpawnEntity2;
+pub type Ty = PacketSpawnEntity2;

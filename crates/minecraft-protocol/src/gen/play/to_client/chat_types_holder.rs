@@ -3,30 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ChatTypesHolder {
-    Id(super::super::super::Varint),
-    Inline(super::ChatTypes),
+	Id(super::super::super::Varint),
+	Inline(super::ChatTypes),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::super::varint::serialize(&0, output)?;
-            super::chat_types::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::super::varint::serialize(&0, output)?;
+			super::chat_types::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let n = super::super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::chat_types::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let n = super::super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::chat_types::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::super::varint::size_of(&0) + super::chat_types::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => super::super::super::varint::size_of(&0) + super::chat_types::size_of(v),
+	}
 }
- pub type Ty = ChatTypesHolder;
+pub type Ty = ChatTypesHolder;

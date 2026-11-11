@@ -3,105 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketExplosion {
-    pub x: super::super::super::super::F64,
-    pub y: super::super::super::super::F64,
-    pub z: super::super::super::super::F64,
-    pub radius: super::super::super::super::F32,
-    pub affected_block_offsets: Vec<super::PacketExplosion8>,
-    pub player_motion_x: super::super::super::super::F32,
-    pub player_motion_y: super::super::super::super::F32,
-    pub player_motion_z: super::super::super::super::F32,
+	pub x: super::super::super::super::F64,
+	pub y: super::super::super::super::F64,
+	pub z: super::super::super::super::F64,
+	pub radius: super::super::super::super::F32,
+	pub affected_block_offsets: Vec<super::PacketExplosion8>,
+	pub player_motion_x: super::super::super::super::F32,
+	pub player_motion_y: super::super::super::super::F32,
+	pub player_motion_z: super::super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.radius,
-        output,
-    )?;
-    super::super::super::super::array::inline_185::serialize(
-        &_0.affected_block_offsets,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_z,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::super::f32::serialize(&_0.radius, output)?;
+	super::super::super::super::array::inline_185::serialize(&_0.affected_block_offsets, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_x, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_y, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(41)?;
-    let f_x = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_radius = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_affectedBlockOffsets = super::super::super::super::array::inline_185::deserialize(
-        input,
-    )?;
-    let f_playerMotionX = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_playerMotionY = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_playerMotionZ = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z,radius: f_radius,affected_block_offsets: f_affectedBlockOffsets,player_motion_x: f_playerMotionX,player_motion_y: f_playerMotionY,player_motion_z: f_playerMotionZ
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(41)?;
+	let f_x = super::super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::super::f64::deserialize(input)?;
+	let f_radius = super::super::super::super::f32::deserialize(input)?;
+	let f_affectedBlockOffsets = super::super::super::super::array::inline_185::deserialize(input)?;
+	let f_playerMotionX = super::super::super::super::f32::deserialize(input)?;
+	let f_playerMotionY = super::super::super::super::f32::deserialize(input)?;
+	let f_playerMotionZ = super::super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		radius: f_radius,
+		affected_block_offsets: f_affectedBlockOffsets,
+		player_motion_x: f_playerMotionX,
+		player_motion_y: f_playerMotionY,
+		player_motion_z: f_playerMotionZ,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.radius
-    )
-    + super::super::super::super::array::inline_185::size_of(
-        &_0.affected_block_offsets
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_z
-    )
+	0 + super::super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::super::f32::size_of(&_0.radius)
+		+ super::super::super::super::array::inline_185::size_of(&_0.affected_block_offsets)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_x)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_y)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_z)
 }
- pub type Ty = PacketExplosion;
+pub type Ty = PacketExplosion;

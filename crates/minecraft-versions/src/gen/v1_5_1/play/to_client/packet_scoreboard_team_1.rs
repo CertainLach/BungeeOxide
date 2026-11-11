@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardTeam1 {
-    pub name: super::super::super::super::String16,
-    pub prefix: super::super::super::super::String16,
-    pub suffix: super::super::super::super::String16,
-    pub friendly_fire: super::super::super::super::I8,
-    pub players: Vec<super::super::super::super::String16>,
+	pub name: super::super::super::super::String16,
+	pub prefix: super::super::super::super::String16,
+	pub suffix: super::super::super::super::String16,
+	pub friendly_fire: super::super::super::super::I8,
+	pub players: Vec<super::super::super::super::String16>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::string16::serialize(
-        &_0.prefix,
-        output,
-    )?;
-    super::super::super::super::string16::serialize(
-        &_0.suffix,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.friendly_fire,
-        output,
-    )?;
-    super::super::super::super::array::inline_2::serialize(
-        &_0.players,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.name, output)?;
+	super::super::super::super::string16::serialize(&_0.prefix, output)?;
+	super::super::super::super::string16::serialize(&_0.suffix, output)?;
+	super::super::super::super::i8::serialize(&_0.friendly_fire, output)?;
+	super::super::super::super::array::inline_2::serialize(&_0.players, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_name = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_prefix = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_suffix = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_friendlyFire = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_players = super::super::super::super::array::inline_2::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,prefix: f_prefix,suffix: f_suffix,friendly_fire: f_friendlyFire,players: f_players
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_name = super::super::super::super::string16::deserialize(input)?;
+	let f_prefix = super::super::super::super::string16::deserialize(input)?;
+	let f_suffix = super::super::super::super::string16::deserialize(input)?;
+	let f_friendlyFire = super::super::super::super::i8::deserialize(input)?;
+	let f_players = super::super::super::super::array::inline_2::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		prefix: f_prefix,
+		suffix: f_suffix,
+		friendly_fire: f_friendlyFire,
+		players: f_players,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.name
-    )
-    + super::super::super::super::string16::size_of(
-        &_0.prefix
-    )
-    + super::super::super::super::string16::size_of(
-        &_0.suffix
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.friendly_fire
-    )
-    + super::super::super::super::array::inline_2::size_of(
-        &_0.players
-    )
+	0 + super::super::super::super::string16::size_of(&_0.name)
+		+ super::super::super::super::string16::size_of(&_0.prefix)
+		+ super::super::super::super::string16::size_of(&_0.suffix)
+		+ super::super::super::super::i8::size_of(&_0.friendly_fire)
+		+ super::super::super::super::array::inline_2::size_of(&_0.players)
 }
- pub type Ty = PacketScoreboardTeam1;
+pub type Ty = PacketScoreboardTeam1;

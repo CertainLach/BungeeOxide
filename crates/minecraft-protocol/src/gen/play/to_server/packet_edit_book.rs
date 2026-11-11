@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEditBook {
-    pub hand: super::super::super::Varint,
-    pub pages: Vec<String>,
-    pub title: Option<String>,
+	pub hand: super::super::super::Varint,
+	pub pages: Vec<String>,
+	pub title: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.hand,
-        output,
-    )?;
-    super::super::super::array::inline_29::serialize(
-        &_0.pages,
-        output,
-    )?;
-    super::super::super::option_16::serialize(
-        &_0.title,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.hand, output)?;
+	super::super::super::array::inline_29::serialize(&_0.pages, output)?;
+	super::super::super::option_16::serialize(&_0.title, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_hand = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_pages = super::super::super::array::inline_29::deserialize(
-        input,
-    )?;
-    let f_title = super::super::super::option_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        hand: f_hand,pages: f_pages,title: f_title
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_hand = super::super::super::varint::deserialize(input)?;
+	let f_pages = super::super::super::array::inline_29::deserialize(input)?;
+	let f_title = super::super::super::option_16::deserialize(input)?;
+	Ok(Ty {
+		hand: f_hand,
+		pages: f_pages,
+		title: f_title,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.hand
-    )
-    + super::super::super::array::inline_29::size_of(
-        &_0.pages
-    )
-    + super::super::super::option_16::size_of(
-        &_0.title
-    )
+	0 + super::super::super::varint::size_of(&_0.hand)
+		+ super::super::super::array::inline_29::size_of(&_0.pages)
+		+ super::super::super::option_16::size_of(&_0.title)
 }
- pub type Ty = PacketEditBook;
+pub type Ty = PacketEditBook;

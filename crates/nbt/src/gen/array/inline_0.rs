@@ -3,23 +3,30 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty = Vec<Vec<super::super::Entry>>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i32::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::compound::serialize_guarded(e, output)?;
-    }
-    Ok(())
+	super::super::i32::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::compound::serialize_guarded(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let count: usize = super::super::i32::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count)?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::compound::deserialize_guarded(input, )?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let count: usize = super::super::i32::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(super::super::compound::deserialize_guarded(input)?);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::super::i32::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::compound::size_of(e); }
-    n
+	let mut n = super::super::i32::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::compound::size_of(e);
+	}
+	n
 }

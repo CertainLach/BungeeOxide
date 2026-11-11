@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPositionLook {
-    pub x: super::super::super::F64,
-    pub y: super::super::super::F64,
-    pub z: super::super::super::F64,
-    pub yaw: super::super::super::F32,
-    pub pitch: super::super::super::F32,
-    pub flags: super::MovementFlags,
+	pub x: super::super::super::F64,
+	pub y: super::super::super::F64,
+	pub z: super::super::super::F64,
+	pub yaw: super::super::super::F32,
+	pub pitch: super::super::super::F32,
+	pub flags: super::MovementFlags,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::movement_flags::serialize(
-        &_0.flags,
-        output,
-    )?;
-    Ok(())
+	super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::super::f32::serialize(&_0.pitch, output)?;
+	super::movement_flags::serialize(&_0.flags, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(33)?;
-    let f_x = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_flags = super::movement_flags::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z,yaw: f_yaw,pitch: f_pitch,flags: f_flags
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(33)?;
+	let f_x = super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::f64::deserialize(input)?;
+	let f_yaw = super::super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::super::f32::deserialize(input)?;
+	let f_flags = super::movement_flags::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		yaw: f_yaw,
+		pitch: f_pitch,
+		flags: f_flags,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::movement_flags::size_of(
-        &_0.flags
-    )
+	0 + super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::f32::size_of(&_0.yaw)
+		+ super::super::super::f32::size_of(&_0.pitch)
+		+ super::movement_flags::size_of(&_0.flags)
 }
- pub type Ty = PacketPositionLook;
+pub type Ty = PacketPositionLook;

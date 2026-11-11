@@ -3,55 +3,37 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSuccess0<'i> {
-    pub name: super::super::super::Pstring96::<'i>,
-    pub value: super::super::super::Pstring96::<'i>,
-    pub signature: super::super::super::Option18::<'i>,
+	pub name: super::super::super::Pstring96<'i>,
+	pub value: super::super::super::Pstring96<'i>,
+	pub signature: super::super::super::Option18<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.value,
-        output,
-    )?;
-    super::super::super::option_18::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::pstring_96::serialize(&_0.value, output)?;
+	super::super::super::option_18::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(3)?;
-    let f_name = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value,signature: f_signature
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(3)?;
+	let f_name = super::super::super::pstring_96::deserialize(input)?;
+	let f_value = super::super::super::pstring_96::deserialize(input)?;
+	let f_signature = super::super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+		signature: f_signature,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.value
-    )
-    + super::super::super::option_18::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::pstring_96::size_of(&_0.value)
+		+ super::super::super::option_18::size_of(&_0.signature)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::PacketSuccess0) -> Ty<'i> {
-    Ty {
-        name: super::super::super::pstring_96::view(&_0.name),value: super::super::super::pstring_96::view(&_0.value),signature: super::super::super::option_18::view(&_0.signature)
-    }
+	Ty {
+		name: super::super::super::pstring_96::view(&_0.name),
+		value: super::super::super::pstring_96::view(&_0.value),
+		signature: super::super::super::option_18::view(&_0.signature),
+	}
 }
- pub type Ty<'i> = PacketSuccess0<'i>;
+pub type Ty<'i> = PacketSuccess0<'i>;

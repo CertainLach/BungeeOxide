@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntityPainting {
-    pub entity_id: super::super::super::super::I32,
-    pub title: super::super::super::super::String16,
-    pub location: super::super::super::PositionIii,
-    pub direction: super::super::super::super::I32,
+	pub entity_id: super::super::super::super::I32,
+	pub title: super::super::super::super::String16,
+	pub location: super::super::super::PositionIii,
+	pub direction: super::super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::string16::serialize(
-        &_0.title,
-        output,
-    )?;
-    super::super::super::position_iii::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.direction,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::string16::serialize(&_0.title, output)?;
+	super::super::super::position_iii::serialize(&_0.location, output)?;
+	super::super::super::super::i32::serialize(&_0.direction, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(20)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_title = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::position_iii::deserialize(
-        input,
-    )?;
-    let f_direction = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,title: f_title,location: f_location,direction: f_direction
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(20)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_title = super::super::super::super::string16::deserialize(input)?;
+	let f_location = super::super::super::position_iii::deserialize(input)?;
+	let f_direction = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		title: f_title,
+		location: f_location,
+		direction: f_direction,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::string16::size_of(
-        &_0.title
-    )
-    + super::super::super::position_iii::size_of(
-        &_0.location
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.direction
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::string16::size_of(&_0.title)
+		+ super::super::super::position_iii::size_of(&_0.location)
+		+ super::super::super::super::i32::size_of(&_0.direction)
 }
- pub type Ty = PacketSpawnEntityPainting;
+pub type Ty = PacketSpawnEntityPainting;

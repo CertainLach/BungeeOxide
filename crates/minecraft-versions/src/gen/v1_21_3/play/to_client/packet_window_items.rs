@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWindowItems {
-    pub window_id: super::super::super::super::Varint,
-    pub state_id: super::super::super::super::Varint,
-    pub items: Vec<super::super::super::Slot>,
-    pub carried_item: super::super::super::Slot,
+	pub window_id: super::super::super::super::Varint,
+	pub state_id: super::super::super::super::Varint,
+	pub items: Vec<super::super::super::Slot>,
+	pub carried_item: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.state_id,
-        output,
-    )?;
-    super::super::super::super::array::inline_86::serialize(
-        &_0.items,
-        output,
-    )?;
-    super::super::super::slot::serialize_guarded(
-        &_0.carried_item,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.window_id, output)?;
+	super::super::super::super::varint::serialize(&_0.state_id, output)?;
+	super::super::super::super::array::inline_86::serialize(&_0.items, output)?;
+	super::super::super::slot::serialize_guarded(&_0.carried_item, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_windowId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_stateId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_items = super::super::super::super::array::inline_86::deserialize(
-        input,
-    )?;
-    let f_carriedItem = super::super::super::slot::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,state_id: f_stateId,items: f_items,carried_item: f_carriedItem
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_windowId = super::super::super::super::varint::deserialize(input)?;
+	let f_stateId = super::super::super::super::varint::deserialize(input)?;
+	let f_items = super::super::super::super::array::inline_86::deserialize(input)?;
+	let f_carriedItem = super::super::super::slot::deserialize_guarded(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		state_id: f_stateId,
+		items: f_items,
+		carried_item: f_carriedItem,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.state_id
-    )
-    + super::super::super::super::array::inline_86::size_of(
-        &_0.items
-    )
-    + super::super::super::slot::size_of(
-        &_0.carried_item
-    )
+	0 + super::super::super::super::varint::size_of(&_0.window_id)
+		+ super::super::super::super::varint::size_of(&_0.state_id)
+		+ super::super::super::super::array::inline_86::size_of(&_0.items)
+		+ super::super::super::slot::size_of(&_0.carried_item)
 }
- pub type Ty = PacketWindowItems;
+pub type Ty = PacketWindowItems;

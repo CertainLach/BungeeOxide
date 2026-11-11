@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEffect {
-    pub entity_id: super::super::super::super::I32,
-    pub effect_id: super::super::super::super::I8,
-    pub amplifier: super::super::super::super::I8,
-    pub duration: super::super::super::super::I16,
+	pub entity_id: super::super::super::super::I32,
+	pub effect_id: super::super::super::super::I8,
+	pub amplifier: super::super::super::super::I8,
+	pub duration: super::super::super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.effect_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.amplifier,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.duration,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.effect_id, output)?;
+	super::super::super::super::i8::serialize(&_0.amplifier, output)?;
+	super::super::super::super::i16::serialize(&_0.duration, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_effectId = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_amplifier = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_duration = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,effect_id: f_effectId,amplifier: f_amplifier,duration: f_duration
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_effectId = super::super::super::super::i8::deserialize(input)?;
+	let f_amplifier = super::super::super::super::i8::deserialize(input)?;
+	let f_duration = super::super::super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		effect_id: f_effectId,
+		amplifier: f_amplifier,
+		duration: f_duration,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.effect_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.amplifier
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.duration
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.effect_id)
+		+ super::super::super::super::i8::size_of(&_0.amplifier)
+		+ super::super::super::super::i16::size_of(&_0.duration)
 }
- pub type Ty = PacketEntityEffect;
+pub type Ty = PacketEntityEffect;

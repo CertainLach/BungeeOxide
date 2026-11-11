@@ -3,75 +3,52 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes9 {
-    pub width: super::super::super::super::Varint,
-    pub height: super::super::super::super::Varint,
-    pub group: String,
-    pub ingredients: Vec<Vec<Vec<super::super::super::Slot>>>,
-    pub result: super::super::super::Slot,
+	pub width: super::super::super::super::Varint,
+	pub height: super::super::super::super::Varint,
+	pub group: String,
+	pub ingredients: Vec<Vec<Vec<super::super::super::Slot>>>,
+	pub result: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.width,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.height,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::super::super::array::sized_393::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.width, output)?;
+	super::super::super::super::varint::serialize(&_0.height, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::super::super::array::sized_393::serialize(&_0.ingredients, output)?;
+	super::super::super::slot::serialize(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_width = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_height = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_group = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_ingredients = super::super::super::super::array::sized_393::deserialize(
-        input,
-        super::super::super::super::array::sized_393::Args {
-            count: {let _0: &super::super::super::super::Varint = &f_width;_0},height: {let _0: &super::super::super::super::Varint = &f_height;_0}
-        },
-    )?;
-    let f_result = super::super::super::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        width: f_width,height: f_height,group: f_group,ingredients: f_ingredients,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_width = super::super::super::super::varint::deserialize(input)?;
+	let f_height = super::super::super::super::varint::deserialize(input)?;
+	let f_group = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_ingredients = super::super::super::super::array::sized_393::deserialize(
+		input,
+		super::super::super::super::array::sized_393::Args {
+			count: {
+				let _0: &super::super::super::super::Varint = &f_width;
+				_0
+			},
+			height: {
+				let _0: &super::super::super::super::Varint = &f_height;
+				_0
+			},
+		},
+	)?;
+	let f_result = super::super::super::slot::deserialize(input)?;
+	Ok(Ty {
+		width: f_width,
+		height: f_height,
+		group: f_group,
+		ingredients: f_ingredients,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.width
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.height
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::super::super::array::sized_393::size_of(
-        &_0.ingredients
-    )
-    + super::super::super::slot::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::varint::size_of(&_0.width)
+		+ super::super::super::super::varint::size_of(&_0.height)
+		+ super::super::super::super::pstring_96::size_of(&_0.group)
+		+ super::super::super::super::array::sized_393::size_of(&_0.ingredients)
+		+ super::super::super::slot::size_of(&_0.result)
 }
- pub type Ty = PacketDeclareRecipes9;
+pub type Ty = PacketDeclareRecipes9;

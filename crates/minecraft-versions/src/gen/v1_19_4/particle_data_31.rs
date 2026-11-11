@@ -2,53 +2,57 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub position_type: &'a String,
+	pub position_type: &'a String,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParticleData31 {
-    MinecraftBlock(super::super::Position),
-    MinecraftEntity(super::super::Varint),
-    Default(String),
+	MinecraftBlock(super::super::Position),
+	MinecraftEntity(super::super::Varint),
+	Default(String),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::MinecraftBlock(__v) => super::super::position::serialize(__v, output),
-        Ty::MinecraftEntity(__v) => super::super::varint::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::MinecraftBlock(__v) => super::super::position::serialize(__v, output),
+		Ty::MinecraftEntity(__v) => super::super::varint::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.position_type;
-    if (__tag.clone() == String::from("minecraft:block")) {
-        return Ok(Ty::MinecraftBlock(super::super::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == String::from("minecraft:entity")) {
-        return Ok(Ty::MinecraftEntity(super::super::varint::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.position_type;
+	if (__tag.clone() == String::from("minecraft:block")) {
+		return Ok(Ty::MinecraftBlock(super::super::position::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == String::from("minecraft:entity")) {
+		return Ok(Ty::MinecraftEntity(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::MinecraftBlock(__v) => super::super::position::size_of(__v),
-        Ty::MinecraftEntity(__v) => super::super::varint::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::MinecraftBlock(__v) => super::super::position::size_of(__v),
+		Ty::MinecraftEntity(__v) => super::super::varint::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::MinecraftBlock(_) => "minecraft_block",
-        Ty::MinecraftEntity(_) => "minecraft_entity",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::MinecraftBlock(_) => "minecraft_block",
+		Ty::MinecraftEntity(_) => "minecraft_entity",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &String) {
-    debug_assert!(
-        match _0 {
-            Ty::MinecraftBlock(_) => (__tag.clone() == String::from("minecraft:block")),
-            Ty::MinecraftEntity(_) => (__tag.clone() == String::from("minecraft:entity")),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::MinecraftBlock(_) => (__tag.clone() == String::from("minecraft:block")),
+			Ty::MinecraftEntity(_) => (__tag.clone() == String::from("minecraft:entity")),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = ParticleData31;
+pub type Ty = ParticleData31;

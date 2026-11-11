@@ -2,41 +2,88 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub action_add_player: &'a super::super::super::Bool,
-    pub action_initialize_chat: &'a super::super::super::Bool,
-    pub action_update_display_name: &'a super::super::super::Bool,
-    pub action_update_game_mode: &'a super::super::super::Bool,
-    pub action_update_hat: &'a super::super::super::Bool,
-    pub action_update_latency: &'a super::super::super::Bool,
-    pub action_update_list_order: &'a super::super::super::Bool,
-    pub action_update_listed: &'a super::super::super::Bool,
+	pub action_add_player: &'a super::super::super::Bool,
+	pub action_initialize_chat: &'a super::super::super::Bool,
+	pub action_update_display_name: &'a super::super::super::Bool,
+	pub action_update_game_mode: &'a super::super::super::Bool,
+	pub action_update_hat: &'a super::super::super::Bool,
+	pub action_update_latency: &'a super::super::super::Bool,
+	pub action_update_list_order: &'a super::super::super::Bool,
+	pub action_update_listed: &'a super::super::super::Bool,
 }
-pub type Ty<'i> = Vec<super::super::play::to_client::PacketPlayerInfo32::<'i>>;
+pub type Ty<'i> = Vec<super::super::play::to_client::PacketPlayerInfo32<'i>>;
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::play::to_client::packet_player_info_32::serialize(e, output)?;
-    }
-    Ok(())
+	super::super::super::varint::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::play::to_client::packet_player_info_32::serialize(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
-    let count: usize = super::super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::play::to_client::packet_player_info_32::deserialize(input, super::super::play::to_client::packet_player_info_32::Args {
-            action_add_player: {let _0 = args.action_add_player;_0},action_initialize_chat: {let _0 = args.action_initialize_chat;_0},action_update_game_mode: {let _0 = args.action_update_game_mode;_0},action_update_listed: {let _0 = args.action_update_listed;_0},action_update_latency: {let _0 = args.action_update_latency;_0},action_update_display_name: {let _0 = args.action_update_display_name;_0},action_update_list_order: {let _0 = args.action_update_list_order;_0},action_update_hat: {let _0 = args.action_update_hat;_0}
-        },)?);
-    }
-    Ok(out)
+pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
+	let count: usize = super::super::super::varint::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(
+			super::super::play::to_client::packet_player_info_32::deserialize(
+				input,
+				super::super::play::to_client::packet_player_info_32::Args {
+					action_add_player: {
+						let _0 = args.action_add_player;
+						_0
+					},
+					action_initialize_chat: {
+						let _0 = args.action_initialize_chat;
+						_0
+					},
+					action_update_game_mode: {
+						let _0 = args.action_update_game_mode;
+						_0
+					},
+					action_update_listed: {
+						let _0 = args.action_update_listed;
+						_0
+					},
+					action_update_latency: {
+						let _0 = args.action_update_latency;
+						_0
+					},
+					action_update_display_name: {
+						let _0 = args.action_update_display_name;
+						_0
+					},
+					action_update_list_order: {
+						let _0 = args.action_update_list_order;
+						_0
+					},
+					action_update_hat: {
+						let _0 = args.action_update_hat;
+						_0
+					},
+				},
+			)?,
+		);
+	}
+	Ok(out)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    let mut n = super::super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::play::to_client::packet_player_info_32::size_of(e); }
-    n
+	let mut n = super::super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::play::to_client::packet_player_info_32::size_of(e);
+	}
+	n
 }
 pub fn view<'i>(_0: &'i super::super::super::array::Inline139) -> Ty<'i> {
-    _0.iter().map(|e| super::super::play::to_client::packet_player_info_32::view(e)).collect()
+	_0.iter()
+		.map(|e| super::super::play::to_client::packet_player_info_32::view(e))
+		.collect()
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::array::Inline139) -> Ty<'i> {
-    _0.iter_mut().map(|e| super::super::play::to_client::packet_player_info_32::into_view(e)).collect()
+pub fn into_view<'i>(_0: &'i mut super::super::super::array::Inline139) -> Ty<'i> {
+	_0.iter_mut()
+		.map(|e| super::super::play::to_client::packet_player_info_32::into_view(e))
+		.collect()
 }

@@ -3,44 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent66<'i> {
-    pub global_position: super::Option1::<'i>,
-    pub tracked: super::super::Bool,
+	pub global_position: super::Option1<'i>,
+	pub tracked: super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::option_1::serialize(
-        &_0.global_position,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.tracked,
-        output,
-    )?;
-    Ok(())
+	super::option_1::serialize(&_0.global_position, output)?;
+	super::super::bool::serialize(&_0.tracked, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_globalPosition = super::option_1::deserialize(
-        input,
-    )?;
-    let f_tracked = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        global_position: f_globalPosition,tracked: f_tracked
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_globalPosition = super::option_1::deserialize(input)?;
+	let f_tracked = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		global_position: f_globalPosition,
+		tracked: f_tracked,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::option_1::size_of(
-        &_0.global_position
-    )
-    + super::super::bool::size_of(
-        &_0.tracked
-    )
+	0 + super::option_1::size_of(&_0.global_position) + super::super::bool::size_of(&_0.tracked)
 }
 pub fn view<'i>(_0: &'i super::super::SlotComponent66) -> Ty<'i> {
-    Ty {
-        global_position: super::option_1::view(&_0.global_position),tracked: ::core::clone::Clone::clone(&_0.tracked)
-    }
+	Ty {
+		global_position: super::option_1::view(&_0.global_position),
+		tracked: ::core::clone::Clone::clone(&_0.tracked),
+	}
 }
- pub type Ty<'i> = SlotComponent66<'i>;
+pub type Ty<'i> = SlotComponent66<'i>;

@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimMaterial {
-    pub asset_base: String,
-    pub override_armor_assets: Vec<super::ArmorTrimMaterial0>,
-    pub description: super::AnonymousNbt,
+	pub asset_base: String,
+	pub override_armor_assets: Vec<super::ArmorTrimMaterial0>,
+	pub description: super::AnonymousNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.asset_base,
-        output,
-    )?;
-    super::array::inline_109::serialize(
-        &_0.override_armor_assets,
-        output,
-    )?;
-    super::anonymous_nbt::serialize(
-        &_0.description,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.asset_base, output)?;
+	super::array::inline_109::serialize(&_0.override_armor_assets, output)?;
+	super::anonymous_nbt::serialize(&_0.description, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_assetBase = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_overrideArmorAssets = super::array::inline_109::deserialize(
-        input,
-    )?;
-    let f_description = super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        asset_base: f_assetBase,override_armor_assets: f_overrideArmorAssets,description: f_description
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_assetBase = super::pstring_96::deserialize(input)?;
+	let f_overrideArmorAssets = super::array::inline_109::deserialize(input)?;
+	let f_description = super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		asset_base: f_assetBase,
+		override_armor_assets: f_overrideArmorAssets,
+		description: f_description,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.asset_base
-    )
-    + super::array::inline_109::size_of(
-        &_0.override_armor_assets
-    )
-    + super::anonymous_nbt::size_of(
-        &_0.description
-    )
+	0 + super::pstring_96::size_of(&_0.asset_base)
+		+ super::array::inline_109::size_of(&_0.override_armor_assets)
+		+ super::anonymous_nbt::size_of(&_0.description)
 }
- pub type Ty = ArmorTrimMaterial;
+pub type Ty = ArmorTrimMaterial;

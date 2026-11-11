@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEncryptionBegin {
-    pub server_id: String,
-    pub public_key: Vec<u8>,
-    pub verify_token: Vec<u8>,
+	pub server_id: String,
+	pub public_key: Vec<u8>,
+	pub verify_token: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.server_id,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.public_key,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.verify_token,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.server_id, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.public_key, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.verify_token, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_serverId = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_publicKey = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_verifyToken = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        server_id: f_serverId,public_key: f_publicKey,verify_token: f_verifyToken
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_serverId = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_publicKey = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_verifyToken = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		server_id: f_serverId,
+		public_key: f_publicKey,
+		verify_token: f_verifyToken,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.server_id
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.public_key
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.verify_token
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.server_id)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.public_key)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.verify_token)
 }
- pub type Ty = PacketEncryptionBegin;
+pub type Ty = PacketEncryptionBegin;

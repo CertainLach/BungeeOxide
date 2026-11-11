@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketHurtAnimation {
-    pub entity_id: super::super::super::Varint,
-    pub yaw: super::super::super::F32,
+	pub entity_id: super::super::super::Varint,
+	pub yaw: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::f32::serialize(&_0.yaw, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,yaw: f_yaw
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_yaw = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		yaw: f_yaw,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::f32::size_of(
-        &_0.yaw
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::f32::size_of(&_0.yaw)
 }
- pub type Ty = PacketHurtAnimation;
+pub type Ty = PacketHurtAnimation;

@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes15 {
-    pub name: String,
-    pub data: super::PacketDeclareRecipes14,
+	pub name: String,
+	pub data: super::PacketDeclareRecipes14,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::packet_declare_recipes_14::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::packet_declare_recipes_14::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::packet_declare_recipes_14::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::packet_declare_recipes_14::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::packet_declare_recipes_14::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::packet_declare_recipes_14::size_of(&_0.data)
 }
- pub type Ty = PacketDeclareRecipes15;
+pub type Ty = PacketDeclareRecipes15;

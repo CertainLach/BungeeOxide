@@ -3,93 +3,67 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTradeList<'i> {
-    pub window_id: super::super::super::super::Varint,
-    pub trades: super::super::super::array::Inline144::<'i>,
-    pub villager_level: super::super::super::super::Varint,
-    pub experience: super::super::super::super::Varint,
-    pub is_regular_villager: super::super::super::super::Bool,
-    pub can_restock: super::super::super::super::Bool,
+	pub window_id: super::super::super::super::Varint,
+	pub trades: super::super::super::array::Inline144<'i>,
+	pub villager_level: super::super::super::super::Varint,
+	pub experience: super::super::super::super::Varint,
+	pub is_regular_villager: super::super::super::super::Bool,
+	pub can_restock: super::super::super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::array::inline_144::serialize(
-        &_0.trades,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.villager_level,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.experience,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.is_regular_villager,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.can_restock,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.window_id, output)?;
+	super::super::super::array::inline_144::serialize(&_0.trades, output)?;
+	super::super::super::super::varint::serialize(&_0.villager_level, output)?;
+	super::super::super::super::varint::serialize(&_0.experience, output)?;
+	super::super::super::super::bool::serialize(&_0.is_regular_villager, output)?;
+	super::super::super::super::bool::serialize(&_0.can_restock, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(6)?;
-    let f_windowId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_trades = super::super::super::array::inline_144::deserialize(
-        input,
-    )?;
-    let f_villagerLevel = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_experience = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_isRegularVillager = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_canRestock = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,trades: f_trades,villager_level: f_villagerLevel,experience: f_experience,is_regular_villager: f_isRegularVillager,can_restock: f_canRestock
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(6)?;
+	let f_windowId = super::super::super::super::varint::deserialize(input)?;
+	let f_trades = super::super::super::array::inline_144::deserialize(input)?;
+	let f_villagerLevel = super::super::super::super::varint::deserialize(input)?;
+	let f_experience = super::super::super::super::varint::deserialize(input)?;
+	let f_isRegularVillager = super::super::super::super::bool::deserialize(input)?;
+	let f_canRestock = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		trades: f_trades,
+		villager_level: f_villagerLevel,
+		experience: f_experience,
+		is_regular_villager: f_isRegularVillager,
+		can_restock: f_canRestock,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.window_id
-    )
-    + super::super::super::array::inline_144::size_of(
-        &_0.trades
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.villager_level
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.experience
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.is_regular_villager
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.can_restock
-    )
+	0 + super::super::super::super::varint::size_of(&_0.window_id)
+		+ super::super::super::array::inline_144::size_of(&_0.trades)
+		+ super::super::super::super::varint::size_of(&_0.villager_level)
+		+ super::super::super::super::varint::size_of(&_0.experience)
+		+ super::super::super::super::bool::size_of(&_0.is_regular_villager)
+		+ super::super::super::super::bool::size_of(&_0.can_restock)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTradeList) -> Ty<'i> {
-    Ty {
-        window_id: ::core::clone::Clone::clone(&_0.window_id),trades: super::super::super::array::inline_144::view(&_0.trades),villager_level: ::core::clone::Clone::clone(&_0.villager_level),experience: ::core::clone::Clone::clone(&_0.experience),is_regular_villager: ::core::clone::Clone::clone(&_0.is_regular_villager),can_restock: ::core::clone::Clone::clone(&_0.can_restock)
-    }
+	Ty {
+		window_id: ::core::clone::Clone::clone(&_0.window_id),
+		trades: super::super::super::array::inline_144::view(&_0.trades),
+		villager_level: ::core::clone::Clone::clone(&_0.villager_level),
+		experience: ::core::clone::Clone::clone(&_0.experience),
+		is_regular_villager: ::core::clone::Clone::clone(&_0.is_regular_villager),
+		can_restock: ::core::clone::Clone::clone(&_0.can_restock),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketTradeList) -> Ty<'i> {
-    Ty {
-        window_id: ::core::clone::Clone::clone(&mut _0.window_id),trades: super::super::super::array::inline_144::into_view(&mut _0.trades),villager_level: ::core::clone::Clone::clone(&mut _0.villager_level),experience: ::core::clone::Clone::clone(&mut _0.experience),is_regular_villager: ::core::clone::Clone::clone(&mut _0.is_regular_villager),can_restock: ::core::clone::Clone::clone(&mut _0.can_restock)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketTradeList,
+) -> Ty<'i> {
+	Ty {
+		window_id: ::core::clone::Clone::clone(&mut _0.window_id),
+		trades: super::super::super::array::inline_144::into_view(&mut _0.trades),
+		villager_level: ::core::clone::Clone::clone(&mut _0.villager_level),
+		experience: ::core::clone::Clone::clone(&mut _0.experience),
+		is_regular_villager: ::core::clone::Clone::clone(&mut _0.is_regular_villager),
+		can_restock: ::core::clone::Clone::clone(&mut _0.can_restock),
+	}
 }
- pub type Ty<'i> = PacketTradeList<'i>;
+pub type Ty<'i> = PacketTradeList<'i>;

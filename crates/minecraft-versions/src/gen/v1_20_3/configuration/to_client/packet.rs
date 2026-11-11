@@ -3,21 +3,23 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    CustomPayload(super::super::super::super::configuration::to_client::PacketCustomPayload),
-    Disconnect(super::super::super::super::AnonymousNbt),
-    FinishConfiguration(super::super::super::super::configuration::to_client::PacketFinishConfiguration),
-    KeepAlive(super::super::super::super::I64),
-    Ping(super::super::super::super::I32),
-    RegistryData(super::super::super::super::AnonymousNbt),
-    RemoveResourcePack(Option<super::super::super::super::Uuid>),
-    AddResourcePack(super::PacketAddResourcePack),
-    FeatureFlags(Vec<String>),
-    Tags(Vec<super::super::super::super::configuration::to_client::PacketTags0>),
-    Default(super::super::super::super::Varint),
+	CustomPayload(super::super::super::super::configuration::to_client::PacketCustomPayload),
+	Disconnect(super::super::super::super::AnonymousNbt),
+	FinishConfiguration(
+		super::super::super::super::configuration::to_client::PacketFinishConfiguration,
+	),
+	KeepAlive(super::super::super::super::I64),
+	Ping(super::super::super::super::I32),
+	RegistryData(super::super::super::super::AnonymousNbt),
+	RemoveResourcePack(Option<super::super::super::super::Uuid>),
+	AddResourcePack(super::PacketAddResourcePack),
+	FeatureFlags(Vec<String>),
+	Tags(Vec<super::super::super::super::configuration::to_client::PacketTags0>),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
         Ty::CustomPayload(__v) => super::super::super::super::configuration::to_client::packet_custom_payload::serialize(__v, output),
         Ty::Disconnect(__v) => super::super::super::super::anonymous_nbt::serialize(__v, output),
         Ty::FinishConfiguration(__v) => super::super::super::super::configuration::to_client::packet_finish_configuration::serialize(__v, output),
@@ -31,46 +33,60 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::Default(_) => Ok(()),
     }
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::CustomPayload(super::super::super::super::configuration::to_client::packet_custom_payload::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::Disconnect(super::super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_client::packet_finish_configuration::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::Ping(super::super::super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::RegistryData(super::super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::RemoveResourcePack(super::super::super::super::option_8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::AddResourcePack(super::packet_add_resource_pack::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::FeatureFlags(super::super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_i32) {
-        return Ok(Ty::Tags(super::super::super::super::array::inline_123::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::CustomPayload(super::super::super::super::configuration::to_client::packet_custom_payload::deserialize(input, )?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Disconnect(
+			super::super::super::super::anonymous_nbt::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_client::packet_finish_configuration::deserialize(input, )?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Ping(super::super::super::super::i32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::RegistryData(
+			super::super::super::super::anonymous_nbt::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::RemoveResourcePack(
+			super::super::super::super::option_8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::AddResourcePack(
+			super::packet_add_resource_pack::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::FeatureFlags(
+			super::super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::Tags(
+			super::super::super::super::array::inline_123::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
+	super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
         Ty::CustomPayload(__v) => super::super::super::super::configuration::to_client::packet_custom_payload::size_of(__v),
         Ty::Disconnect(__v) => super::super::super::super::anonymous_nbt::size_of(__v),
         Ty::FinishConfiguration(__v) => super::super::super::super::configuration::to_client::packet_finish_configuration::size_of(__v),
@@ -85,33 +101,33 @@ pub fn size_of(_0: &Ty) -> usize {
     }
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::CustomPayload(_) => "custom_payload",
-        Ty::Disconnect(_) => "disconnect",
-        Ty::FinishConfiguration(_) => "finish_configuration",
-        Ty::KeepAlive(_) => "keep_alive",
-        Ty::Ping(_) => "ping",
-        Ty::RegistryData(_) => "registry_data",
-        Ty::RemoveResourcePack(_) => "remove_resource_pack",
-        Ty::AddResourcePack(_) => "add_resource_pack",
-        Ty::FeatureFlags(_) => "feature_flags",
-        Ty::Tags(_) => "tags",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::CustomPayload(_) => "custom_payload",
+		Ty::Disconnect(_) => "disconnect",
+		Ty::FinishConfiguration(_) => "finish_configuration",
+		Ty::KeepAlive(_) => "keep_alive",
+		Ty::Ping(_) => "ping",
+		Ty::RegistryData(_) => "registry_data",
+		Ty::RemoveResourcePack(_) => "remove_resource_pack",
+		Ty::AddResourcePack(_) => "add_resource_pack",
+		Ty::FeatureFlags(_) => "feature_flags",
+		Ty::Tags(_) => "tags",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::CustomPayload(_) => 0_i32,
-        Ty::Disconnect(_) => 1_i32,
-        Ty::FinishConfiguration(_) => 2_i32,
-        Ty::KeepAlive(_) => 3_i32,
-        Ty::Ping(_) => 4_i32,
-        Ty::RegistryData(_) => 5_i32,
-        Ty::RemoveResourcePack(_) => 6_i32,
-        Ty::AddResourcePack(_) => 7_i32,
-        Ty::FeatureFlags(_) => 8_i32,
-        Ty::Tags(_) => 9_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::CustomPayload(_) => 0_i32,
+		Ty::Disconnect(_) => 1_i32,
+		Ty::FinishConfiguration(_) => 2_i32,
+		Ty::KeepAlive(_) => 3_i32,
+		Ty::Ping(_) => 4_i32,
+		Ty::RegistryData(_) => 5_i32,
+		Ty::RemoveResourcePack(_) => 6_i32,
+		Ty::AddResourcePack(_) => 7_i32,
+		Ty::FeatureFlags(_) => 8_i32,
+		Ty::Tags(_) => 9_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

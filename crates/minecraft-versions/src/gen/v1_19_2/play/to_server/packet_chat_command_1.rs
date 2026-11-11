@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommand1 {
-    pub sender: super::super::super::super::Uuid,
-    pub signature: Vec<u8>,
+	pub sender: super::super::super::super::Uuid,
+	pub signature: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.sender,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.sender, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_sender = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        sender: f_sender,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_sender = super::super::super::super::uuid::deserialize(input)?;
+	let f_signature = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		sender: f_sender,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.sender
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.sender)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.signature)
 }
- pub type Ty = PacketChatCommand1;
+pub type Ty = PacketChatCommand1;

@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct MinecraftSmeltingFormat {
-    pub group: String,
-    pub category: super::super::Varint,
-    pub ingredient: Vec<super::Slot>,
-    pub result: super::Slot,
-    pub experience: super::super::F32,
-    pub cook_time: super::super::Varint,
+	pub group: String,
+	pub category: super::super::Varint,
+	pub ingredient: Vec<super::Slot>,
+	pub result: super::Slot,
+	pub experience: super::super::F32,
+	pub cook_time: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.category,
-        output,
-    )?;
-    super::super::array::inline_73::serialize(
-        &_0.ingredient,
-        output,
-    )?;
-    super::slot::serialize_guarded(
-        &_0.result,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.experience,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.cook_time,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::varint::serialize(&_0.category, output)?;
+	super::super::array::inline_73::serialize(&_0.ingredient, output)?;
+	super::slot::serialize_guarded(&_0.result, output)?;
+	super::super::f32::serialize(&_0.experience, output)?;
+	super::super::varint::serialize(&_0.cook_time, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_group = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_category = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ingredient = super::super::array::inline_73::deserialize(
-        input,
-    )?;
-    let f_result = super::slot::deserialize_guarded(
-        input,
-    )?;
-    let f_experience = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_cookTime = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        group: f_group,category: f_category,ingredient: f_ingredient,result: f_result,experience: f_experience,cook_time: f_cookTime
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_group = super::super::pstring_96::deserialize(input)?;
+	let f_category = super::super::varint::deserialize(input)?;
+	let f_ingredient = super::super::array::inline_73::deserialize(input)?;
+	let f_result = super::slot::deserialize_guarded(input)?;
+	let f_experience = super::super::f32::deserialize(input)?;
+	let f_cookTime = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		group: f_group,
+		category: f_category,
+		ingredient: f_ingredient,
+		result: f_result,
+		experience: f_experience,
+		cook_time: f_cookTime,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::varint::size_of(
-        &_0.category
-    )
-    + super::super::array::inline_73::size_of(
-        &_0.ingredient
-    )
-    + super::slot::size_of(
-        &_0.result
-    )
-    + super::super::f32::size_of(
-        &_0.experience
-    )
-    + super::super::varint::size_of(
-        &_0.cook_time
-    )
+	0 + super::super::pstring_96::size_of(&_0.group)
+		+ super::super::varint::size_of(&_0.category)
+		+ super::super::array::inline_73::size_of(&_0.ingredient)
+		+ super::slot::size_of(&_0.result)
+		+ super::super::f32::size_of(&_0.experience)
+		+ super::super::varint::size_of(&_0.cook_time)
 }
- pub type Ty = MinecraftSmeltingFormat;
+pub type Ty = MinecraftSmeltingFormat;

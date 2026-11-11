@@ -3,60 +3,44 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatType<'i> {
-    pub translation_key: super::super::super::Pstring96::<'i>,
-    pub parameters: super::super::super::super::array::Inline53,
-    pub style: super::super::super::AnonymousNbt::<'i>,
+	pub translation_key: super::super::super::Pstring96<'i>,
+	pub parameters: super::super::super::super::array::Inline53,
+	pub style: super::super::super::AnonymousNbt<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.translation_key,
-        output,
-    )?;
-    super::super::super::super::array::inline_53::serialize(
-        &_0.parameters,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.style,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.translation_key, output)?;
+	super::super::super::super::array::inline_53::serialize(&_0.parameters, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.style, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_translationKey = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_parameters = super::super::super::super::array::inline_53::deserialize(
-        input,
-    )?;
-    let f_style = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        translation_key: f_translationKey,parameters: f_parameters,style: f_style
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_translationKey = super::super::super::pstring_96::deserialize(input)?;
+	let f_parameters = super::super::super::super::array::inline_53::deserialize(input)?;
+	let f_style = super::super::super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		translation_key: f_translationKey,
+		parameters: f_parameters,
+		style: f_style,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.translation_key
-    )
-    + super::super::super::super::array::inline_53::size_of(
-        &_0.parameters
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.style
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.translation_key)
+		+ super::super::super::super::array::inline_53::size_of(&_0.parameters)
+		+ super::super::super::anonymous_nbt::size_of(&_0.style)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::ChatType) -> Ty<'i> {
-    Ty {
-        translation_key: super::super::super::pstring_96::view(&_0.translation_key),parameters: ::core::clone::Clone::clone(&_0.parameters),style: super::super::super::anonymous_nbt::view(&_0.style)
-    }
+	Ty {
+		translation_key: super::super::super::pstring_96::view(&_0.translation_key),
+		parameters: ::core::clone::Clone::clone(&_0.parameters),
+		style: super::super::super::anonymous_nbt::view(&_0.style),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ChatType) -> Ty<'i> {
-    Ty {
-        translation_key: super::super::super::pstring_96::view(&mut _0.translation_key),parameters: ::core::mem::take(&mut _0.parameters),style: super::super::super::anonymous_nbt::into_view(&mut _0.style)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ChatType) -> Ty<'i> {
+	Ty {
+		translation_key: super::super::super::pstring_96::view(&mut _0.translation_key),
+		parameters: ::core::mem::take(&mut _0.parameters),
+		style: super::super::super::anonymous_nbt::into_view(&mut _0.style),
+	}
 }
- pub type Ty<'i> = ChatType<'i>;
+pub type Ty<'i> = ChatType<'i>;

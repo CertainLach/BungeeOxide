@@ -4,12 +4,12 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketStartConfiguration {}
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    Ok(())
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    Ok(Ty {})
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	Ok(Ty {})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
+	0
 }
- pub type Ty = PacketStartConfiguration;
+pub type Ty = PacketStartConfiguration;

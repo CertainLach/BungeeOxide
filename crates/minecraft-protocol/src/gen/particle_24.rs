@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Particle24 {
-    pub target: super::Vec3f64,
-    pub color: super::U8,
+	pub target: super::Vec3f64,
+	pub color: super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::vec3f64::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::u8::serialize(
-        &_0.color,
-        output,
-    )?;
-    Ok(())
+	super::vec3f64::serialize(&_0.target, output)?;
+	super::u8::serialize(&_0.color, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(25)?;
-    let f_target = super::vec3f64::deserialize(
-        input,
-    )?;
-    let f_color = super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        target: f_target,color: f_color
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(25)?;
+	let f_target = super::vec3f64::deserialize(input)?;
+	let f_color = super::u8::deserialize(input)?;
+	Ok(Ty {
+		target: f_target,
+		color: f_color,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::vec3f64::size_of(
-        &_0.target
-    )
-    + super::u8::size_of(
-        &_0.color
-    )
+	0 + super::vec3f64::size_of(&_0.target) + super::u8::size_of(&_0.color)
 }
- pub type Ty = Particle24;
+pub type Ty = Particle24;

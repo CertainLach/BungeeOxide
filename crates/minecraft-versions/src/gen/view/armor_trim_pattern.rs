@@ -3,60 +3,44 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimPattern<'i> {
-    pub asset_id: super::Pstring96::<'i>,
-    pub description: super::AnonymousNbt::<'i>,
-    pub decal: super::super::Bool,
+	pub asset_id: super::Pstring96<'i>,
+	pub description: super::AnonymousNbt<'i>,
+	pub decal: super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.asset_id,
-        output,
-    )?;
-    super::anonymous_nbt::serialize(
-        &_0.description,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.decal,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.asset_id, output)?;
+	super::anonymous_nbt::serialize(&_0.description, output)?;
+	super::super::bool::serialize(&_0.decal, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_assetId = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_description = super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_decal = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        asset_id: f_assetId,description: f_description,decal: f_decal
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_assetId = super::pstring_96::deserialize(input)?;
+	let f_description = super::anonymous_nbt::deserialize(input)?;
+	let f_decal = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		asset_id: f_assetId,
+		description: f_description,
+		decal: f_decal,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.asset_id
-    )
-    + super::anonymous_nbt::size_of(
-        &_0.description
-    )
-    + super::super::bool::size_of(
-        &_0.decal
-    )
+	0 + super::pstring_96::size_of(&_0.asset_id)
+		+ super::anonymous_nbt::size_of(&_0.description)
+		+ super::super::bool::size_of(&_0.decal)
 }
 pub fn view<'i>(_0: &'i super::super::ArmorTrimPattern) -> Ty<'i> {
-    Ty {
-        asset_id: super::pstring_96::view(&_0.asset_id),description: super::anonymous_nbt::view(&_0.description),decal: ::core::clone::Clone::clone(&_0.decal)
-    }
+	Ty {
+		asset_id: super::pstring_96::view(&_0.asset_id),
+		description: super::anonymous_nbt::view(&_0.description),
+		decal: ::core::clone::Clone::clone(&_0.decal),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::ArmorTrimPattern) -> Ty<'i> {
-    Ty {
-        asset_id: super::pstring_96::view(&mut _0.asset_id),description: super::anonymous_nbt::into_view(&mut _0.description),decal: ::core::clone::Clone::clone(&mut _0.decal)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::ArmorTrimPattern) -> Ty<'i> {
+	Ty {
+		asset_id: super::pstring_96::view(&mut _0.asset_id),
+		description: super::anonymous_nbt::into_view(&mut _0.description),
+		decal: ::core::clone::Clone::clone(&mut _0.decal),
+	}
 }
- pub type Ty<'i> = ArmorTrimPattern<'i>;
+pub type Ty<'i> = ArmorTrimPattern<'i>;

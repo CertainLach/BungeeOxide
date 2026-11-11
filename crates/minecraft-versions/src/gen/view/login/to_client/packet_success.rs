@@ -3,55 +3,37 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSuccess<'i> {
-    pub uuid: super::super::super::super::Uuid,
-    pub username: super::super::super::Pstring96::<'i>,
-    pub properties: super::super::super::array::Inline124::<'i>,
+	pub uuid: super::super::super::super::Uuid,
+	pub username: super::super::super::Pstring96<'i>,
+	pub properties: super::super::super::array::Inline124<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.username,
-        output,
-    )?;
-    super::super::super::array::inline_124::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.uuid, output)?;
+	super::super::super::pstring_96::serialize(&_0.username, output)?;
+	super::super::super::array::inline_124::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_uuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_username = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::super::array::inline_124::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,username: f_username,properties: f_properties
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_uuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_username = super::super::super::pstring_96::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_124::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		username: f_username,
+		properties: f_properties,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.username
-    )
-    + super::super::super::array::inline_124::size_of(
-        &_0.properties
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.uuid)
+		+ super::super::super::pstring_96::size_of(&_0.username)
+		+ super::super::super::array::inline_124::size_of(&_0.properties)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::PacketSuccess) -> Ty<'i> {
-    Ty {
-        uuid: ::core::clone::Clone::clone(&_0.uuid),username: super::super::super::pstring_96::view(&_0.username),properties: super::super::super::array::inline_124::view(&_0.properties)
-    }
+	Ty {
+		uuid: ::core::clone::Clone::clone(&_0.uuid),
+		username: super::super::super::pstring_96::view(&_0.username),
+		properties: super::super::super::array::inline_124::view(&_0.properties),
+	}
 }
- pub type Ty<'i> = PacketSuccess<'i>;
+pub type Ty<'i> = PacketSuccess<'i>;

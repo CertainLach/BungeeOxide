@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetTitleTime {
-    pub fade_in: super::super::super::I32,
-    pub stay: super::super::super::I32,
-    pub fade_out: super::super::super::I32,
+	pub fade_in: super::super::super::I32,
+	pub stay: super::super::super::I32,
+	pub fade_out: super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i32::serialize(
-        &_0.fade_in,
-        output,
-    )?;
-    super::super::super::i32::serialize(
-        &_0.stay,
-        output,
-    )?;
-    super::super::super::i32::serialize(
-        &_0.fade_out,
-        output,
-    )?;
-    Ok(())
+	super::super::super::i32::serialize(&_0.fade_in, output)?;
+	super::super::super::i32::serialize(&_0.stay, output)?;
+	super::super::super::i32::serialize(&_0.fade_out, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(12)?;
-    let f_fadeIn = super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_stay = super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_fadeOut = super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        fade_in: f_fadeIn,stay: f_stay,fade_out: f_fadeOut
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(12)?;
+	let f_fadeIn = super::super::super::i32::deserialize(input)?;
+	let f_stay = super::super::super::i32::deserialize(input)?;
+	let f_fadeOut = super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		fade_in: f_fadeIn,
+		stay: f_stay,
+		fade_out: f_fadeOut,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::i32::size_of(
-        &_0.fade_in
-    )
-    + super::super::super::i32::size_of(
-        &_0.stay
-    )
-    + super::super::super::i32::size_of(
-        &_0.fade_out
-    )
+	0 + super::super::super::i32::size_of(&_0.fade_in)
+		+ super::super::super::i32::size_of(&_0.stay)
+		+ super::super::super::i32::size_of(&_0.fade_out)
 }
- pub type Ty = PacketSetTitleTime;
+pub type Ty = PacketSetTitleTime;

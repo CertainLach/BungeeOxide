@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLook {
-    pub yaw: super::super::super::F32,
-    pub pitch: super::super::super::F32,
-    pub flags: super::MovementFlags,
+	pub yaw: super::super::super::F32,
+	pub pitch: super::super::super::F32,
+	pub flags: super::MovementFlags,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::movement_flags::serialize(
-        &_0.flags,
-        output,
-    )?;
-    Ok(())
+	super::super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::super::f32::serialize(&_0.pitch, output)?;
+	super::movement_flags::serialize(&_0.flags, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_yaw = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_flags = super::movement_flags::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        yaw: f_yaw,pitch: f_pitch,flags: f_flags
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_yaw = super::super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::super::f32::deserialize(input)?;
+	let f_flags = super::movement_flags::deserialize(input)?;
+	Ok(Ty {
+		yaw: f_yaw,
+		pitch: f_pitch,
+		flags: f_flags,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::movement_flags::size_of(
-        &_0.flags
-    )
+	0 + super::super::super::f32::size_of(&_0.yaw)
+		+ super::super::super::f32::size_of(&_0.pitch)
+		+ super::movement_flags::size_of(&_0.flags)
 }
- pub type Ty = PacketLook;
+pub type Ty = PacketLook;

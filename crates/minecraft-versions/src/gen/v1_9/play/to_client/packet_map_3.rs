@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMap3 {
-    pub direction_and_type: super::super::super::super::I8,
-    pub x: super::super::super::super::I8,
-    pub z: super::super::super::super::I8,
+	pub direction_and_type: super::super::super::super::I8,
+	pub x: super::super::super::super::I8,
+	pub z: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.direction_and_type,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.direction_and_type, output)?;
+	super::super::super::super::i8::serialize(&_0.x, output)?;
+	super::super::super::super::i8::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_directionAndType = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        direction_and_type: f_directionAndType,x: f_x,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_directionAndType = super::super::super::super::i8::deserialize(input)?;
+	let f_x = super::super::super::super::i8::deserialize(input)?;
+	let f_z = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		direction_and_type: f_directionAndType,
+		x: f_x,
+		z: f_z,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.direction_and_type
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.z
-    )
+	0 + super::super::super::super::i8::size_of(&_0.direction_and_type)
+		+ super::super::super::super::i8::size_of(&_0.x)
+		+ super::super::super::super::i8::size_of(&_0.z)
 }
- pub type Ty = PacketMap3;
+pub type Ty = PacketMap3;

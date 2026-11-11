@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSteerBoat {
-    pub left_paddle: super::super::super::Bool,
-    pub right_paddle: super::super::super::Bool,
+	pub left_paddle: super::super::super::Bool,
+	pub right_paddle: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::bool::serialize(
-        &_0.left_paddle,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.right_paddle,
-        output,
-    )?;
-    Ok(())
+	super::super::super::bool::serialize(&_0.left_paddle, output)?;
+	super::super::super::bool::serialize(&_0.right_paddle, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_leftPaddle = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_rightPaddle = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        left_paddle: f_leftPaddle,right_paddle: f_rightPaddle
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_leftPaddle = super::super::super::bool::deserialize(input)?;
+	let f_rightPaddle = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		left_paddle: f_leftPaddle,
+		right_paddle: f_rightPaddle,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::bool::size_of(
-        &_0.left_paddle
-    )
-    + super::super::super::bool::size_of(
-        &_0.right_paddle
-    )
+	0 + super::super::super::bool::size_of(&_0.left_paddle)
+		+ super::super::super::bool::size_of(&_0.right_paddle)
 }
- pub type Ty = PacketSteerBoat;
+pub type Ty = PacketSteerBoat;

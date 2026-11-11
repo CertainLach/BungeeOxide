@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRemoveEntityEffect {
-    pub entity_id: super::super::super::Varint,
-    pub effect_id: super::super::super::Varint,
+	pub entity_id: super::super::super::Varint,
+	pub effect_id: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.effect_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::varint::serialize(&_0.effect_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_effectId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,effect_id: f_effectId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_effectId = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		effect_id: f_effectId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.effect_id
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::varint::size_of(&_0.effect_id)
 }
- pub type Ty = PacketRemoveEntityEffect;
+pub type Ty = PacketRemoveEntityEffect;

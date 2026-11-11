@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataWolfVariant {
-    pub wild_texture: String,
-    pub tame_texture: String,
-    pub angry_texture: String,
-    pub biome: super::super::IdSet,
+	pub wild_texture: String,
+	pub tame_texture: String,
+	pub angry_texture: String,
+	pub biome: super::super::IdSet,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.wild_texture,
-        output,
-    )?;
-    super::super::pstring_96::serialize(
-        &_0.tame_texture,
-        output,
-    )?;
-    super::super::pstring_96::serialize(
-        &_0.angry_texture,
-        output,
-    )?;
-    super::super::id_set::serialize(
-        &_0.biome,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.wild_texture, output)?;
+	super::super::pstring_96::serialize(&_0.tame_texture, output)?;
+	super::super::pstring_96::serialize(&_0.angry_texture, output)?;
+	super::super::id_set::serialize(&_0.biome, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_wildTexture = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_tameTexture = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_angryTexture = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_biome = super::super::id_set::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        wild_texture: f_wildTexture,tame_texture: f_tameTexture,angry_texture: f_angryTexture,biome: f_biome
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_wildTexture = super::super::pstring_96::deserialize(input)?;
+	let f_tameTexture = super::super::pstring_96::deserialize(input)?;
+	let f_angryTexture = super::super::pstring_96::deserialize(input)?;
+	let f_biome = super::super::id_set::deserialize(input)?;
+	Ok(Ty {
+		wild_texture: f_wildTexture,
+		tame_texture: f_tameTexture,
+		angry_texture: f_angryTexture,
+		biome: f_biome,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.wild_texture
-    )
-    + super::super::pstring_96::size_of(
-        &_0.tame_texture
-    )
-    + super::super::pstring_96::size_of(
-        &_0.angry_texture
-    )
-    + super::super::id_set::size_of(
-        &_0.biome
-    )
+	0 + super::super::pstring_96::size_of(&_0.wild_texture)
+		+ super::super::pstring_96::size_of(&_0.tame_texture)
+		+ super::super::pstring_96::size_of(&_0.angry_texture)
+		+ super::super::id_set::size_of(&_0.biome)
 }
- pub type Ty = EntityMetadataWolfVariant;
+pub type Ty = EntityMetadataWolfVariant;

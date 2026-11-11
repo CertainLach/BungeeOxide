@@ -2,45 +2,45 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub flags_has_custom_suggestions: &'a super::U8,
+	pub flags_has_custom_suggestions: &'a super::U8,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum CommandNode100 {
-    V1(String),
-    Default(super::U8),
+	V1(String),
+	Default(super::U8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::V1(__v) => super::pstring_39::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::V1(__v) => super::pstring_39::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.flags_has_custom_suggestions;
-    if (__tag.clone() == 1_u8) {
-        return Ok(Ty::V1(super::pstring_39::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.flags_has_custom_suggestions;
+	if (__tag.clone() == 1_u8) {
+		return Ok(Ty::V1(super::pstring_39::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::V1(__v) => super::pstring_39::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::V1(__v) => super::pstring_39::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V1(_) => "v1",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V1(_) => "v1",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::U8) {
-    debug_assert!(
-        match _0 {
-            Ty::V1(_) => (__tag.clone() == 1_u8),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::V1(_) => (__tag.clone() == 1_u8),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = CommandNode100;
+pub type Ty = CommandNode100;

@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardTeam11 {
-    pub name: String,
-    pub prefix: String,
-    pub suffix: String,
-    pub friendly_fire: super::super::super::super::I8,
-    pub name_tag_visibility: String,
-    pub color: super::super::super::super::I8,
+	pub name: String,
+	pub prefix: String,
+	pub suffix: String,
+	pub friendly_fire: super::super::super::super::I8,
+	pub name_tag_visibility: String,
+	pub color: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.prefix,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.suffix,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.friendly_fire,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.name_tag_visibility,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.color,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.prefix, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.suffix, output)?;
+	super::super::super::super::i8::serialize(&_0.friendly_fire, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.name_tag_visibility, output)?;
+	super::super::super::super::i8::serialize(&_0.color, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_prefix = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_suffix = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_friendlyFire = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_nameTagVisibility = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_color = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,prefix: f_prefix,suffix: f_suffix,friendly_fire: f_friendlyFire,name_tag_visibility: f_nameTagVisibility,color: f_color
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_prefix = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_suffix = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_friendlyFire = super::super::super::super::i8::deserialize(input)?;
+	let f_nameTagVisibility = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_color = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		prefix: f_prefix,
+		suffix: f_suffix,
+		friendly_fire: f_friendlyFire,
+		name_tag_visibility: f_nameTagVisibility,
+		color: f_color,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.prefix
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.suffix
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.friendly_fire
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name_tag_visibility
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.color
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::pstring_96::size_of(&_0.prefix)
+		+ super::super::super::super::pstring_96::size_of(&_0.suffix)
+		+ super::super::super::super::i8::size_of(&_0.friendly_fire)
+		+ super::super::super::super::pstring_96::size_of(&_0.name_tag_visibility)
+		+ super::super::super::super::i8::size_of(&_0.color)
 }
- pub type Ty = PacketScoreboardTeam11;
+pub type Ty = PacketScoreboardTeam11;

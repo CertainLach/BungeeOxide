@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketGameTestHighlightPos {
-    pub absolute_pos: super::super::super::Position,
-    pub relative_pos: super::super::super::Position,
+	pub absolute_pos: super::super::super::Position,
+	pub relative_pos: super::super::super::Position,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.absolute_pos,
-        output,
-    )?;
-    super::super::super::position::serialize(
-        &_0.relative_pos,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.absolute_pos, output)?;
+	super::super::super::position::serialize(&_0.relative_pos, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(16)?;
-    let f_absolutePos = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_relativePos = super::super::super::position::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        absolute_pos: f_absolutePos,relative_pos: f_relativePos
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(16)?;
+	let f_absolutePos = super::super::super::position::deserialize(input)?;
+	let f_relativePos = super::super::super::position::deserialize(input)?;
+	Ok(Ty {
+		absolute_pos: f_absolutePos,
+		relative_pos: f_relativePos,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.absolute_pos
-    )
-    + super::super::super::position::size_of(
-        &_0.relative_pos
-    )
+	0 + super::super::super::position::size_of(&_0.absolute_pos)
+		+ super::super::super::position::size_of(&_0.relative_pos)
 }
- pub type Ty = PacketGameTestHighlightPos;
+pub type Ty = PacketGameTestHighlightPos;

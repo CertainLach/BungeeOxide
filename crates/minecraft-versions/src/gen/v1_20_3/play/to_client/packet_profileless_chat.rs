@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketProfilelessChat {
-    pub message: super::super::super::super::AnonymousNbt,
-    pub r#type: super::super::super::super::Varint,
-    pub name: super::super::super::super::AnonymousNbt,
-    pub target: Option<super::super::super::super::AnonymousNbt>,
+	pub message: super::super::super::super::AnonymousNbt,
+	pub r#type: super::super::super::super::Varint,
+	pub name: super::super::super::super::AnonymousNbt,
+	pub target: Option<super::super::super::super::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::anonymous_nbt::serialize(
-        &_0.message,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::anonymous_nbt::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::option_9::serialize(
-        &_0.target,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::anonymous_nbt::serialize(&_0.message, output)?;
+	super::super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::super::anonymous_nbt::serialize(&_0.name, output)?;
+	super::super::super::super::option_9::serialize(&_0.target, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_message = super::super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_name = super::super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_target = super::super::super::super::option_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message: f_message,r#type: f_type,name: f_name,target: f_target
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_message = super::super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_type = super::super::super::super::varint::deserialize(input)?;
+	let f_name = super::super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_target = super::super::super::super::option_9::deserialize(input)?;
+	Ok(Ty {
+		message: f_message,
+		r#type: f_type,
+		name: f_name,
+		target: f_target,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::anonymous_nbt::size_of(
-        &_0.message
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::anonymous_nbt::size_of(
-        &_0.name
-    )
-    + super::super::super::super::option_9::size_of(
-        &_0.target
-    )
+	0 + super::super::super::super::anonymous_nbt::size_of(&_0.message)
+		+ super::super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::super::anonymous_nbt::size_of(&_0.name)
+		+ super::super::super::super::option_9::size_of(&_0.target)
 }
- pub type Ty = PacketProfilelessChat;
+pub type Ty = PacketProfilelessChat;

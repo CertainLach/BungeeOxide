@@ -3,102 +3,66 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatMessage<'i> {
-    pub message: super::super::super::Pstring96::<'i>,
-    pub timestamp: super::super::super::super::I64,
-    pub salt: super::super::super::super::I64,
-    pub signature: super::super::super::Option11::<'i>,
-    pub offset: super::super::super::super::Varint,
-    pub acknowledged: super::super::super::buffer::Sized::<'i>,
-    pub checksum: super::super::super::super::U8,
+	pub message: super::super::super::Pstring96<'i>,
+	pub timestamp: super::super::super::super::I64,
+	pub salt: super::super::super::super::I64,
+	pub signature: super::super::super::Option11<'i>,
+	pub offset: super::super::super::super::Varint,
+	pub acknowledged: super::super::super::buffer::Sized<'i>,
+	pub checksum: super::super::super::super::U8,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.message,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.salt,
-        output,
-    )?;
-    super::super::super::option_11::serialize(
-        &_0.signature,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.offset,
-        output,
-    )?;
-    super::super::super::buffer::sized::serialize(
-        &_0.acknowledged,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.checksum,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.message, output)?;
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::i64::serialize(&_0.salt, output)?;
+	super::super::super::option_11::serialize(&_0.signature, output)?;
+	super::super::super::super::varint::serialize(&_0.offset, output)?;
+	super::super::super::buffer::sized::serialize(&_0.acknowledged, output)?;
+	super::super::super::super::u8::serialize(&_0.checksum, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(20)?;
-    let f_message = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_salt = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::option_11::deserialize(
-        input,
-    )?;
-    let f_offset = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_acknowledged = super::super::super::buffer::sized::deserialize(
-        input,
-        super::super::super::buffer::sized::Args {
-            count: &(3).try_into().expect("constant fits")
-        },
-    )?;
-    let f_checksum = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message: f_message,timestamp: f_timestamp,salt: f_salt,signature: f_signature,offset: f_offset,acknowledged: f_acknowledged,checksum: f_checksum
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(20)?;
+	let f_message = super::super::super::pstring_96::deserialize(input)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_salt = super::super::super::super::i64::deserialize(input)?;
+	let f_signature = super::super::super::option_11::deserialize(input)?;
+	let f_offset = super::super::super::super::varint::deserialize(input)?;
+	let f_acknowledged = super::super::super::buffer::sized::deserialize(
+		input,
+		super::super::super::buffer::sized::Args {
+			count: &(3).try_into().expect("constant fits"),
+		},
+	)?;
+	let f_checksum = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		message: f_message,
+		timestamp: f_timestamp,
+		salt: f_salt,
+		signature: f_signature,
+		offset: f_offset,
+		acknowledged: f_acknowledged,
+		checksum: f_checksum,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.message
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.salt
-    )
-    + super::super::super::option_11::size_of(
-        &_0.signature
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.offset
-    )
-    + super::super::super::buffer::sized::size_of(
-        &_0.acknowledged
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.checksum
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.message)
+		+ super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::i64::size_of(&_0.salt)
+		+ super::super::super::option_11::size_of(&_0.signature)
+		+ super::super::super::super::varint::size_of(&_0.offset)
+		+ super::super::super::buffer::sized::size_of(&_0.acknowledged)
+		+ super::super::super::super::u8::size_of(&_0.checksum)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketChatMessage) -> Ty<'i> {
-    Ty {
-        message: super::super::super::pstring_96::view(&_0.message),timestamp: ::core::clone::Clone::clone(&_0.timestamp),salt: ::core::clone::Clone::clone(&_0.salt),signature: super::super::super::option_11::view(&_0.signature),offset: ::core::clone::Clone::clone(&_0.offset),acknowledged: super::super::super::buffer::sized::view(&_0.acknowledged),checksum: ::core::clone::Clone::clone(&_0.checksum)
-    }
+	Ty {
+		message: super::super::super::pstring_96::view(&_0.message),
+		timestamp: ::core::clone::Clone::clone(&_0.timestamp),
+		salt: ::core::clone::Clone::clone(&_0.salt),
+		signature: super::super::super::option_11::view(&_0.signature),
+		offset: ::core::clone::Clone::clone(&_0.offset),
+		acknowledged: super::super::super::buffer::sized::view(&_0.acknowledged),
+		checksum: ::core::clone::Clone::clone(&_0.checksum),
+	}
 }
- pub type Ty<'i> = PacketChatMessage<'i>;
+pub type Ty<'i> = PacketChatMessage<'i>;

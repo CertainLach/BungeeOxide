@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketGameStateChange {
-    pub reason: super::PacketGameStateChange20,
-    pub game_mode: super::super::super::F32,
+	pub reason: super::PacketGameStateChange20,
+	pub game_mode: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::packet_game_state_change_20::serialize(
-        &_0.reason,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.game_mode,
-        output,
-    )?;
-    Ok(())
+	super::packet_game_state_change_20::serialize(&_0.reason, output)?;
+	super::super::super::f32::serialize(&_0.game_mode, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_reason = super::packet_game_state_change_20::deserialize(
-        input,
-    )?;
-    let f_gameMode = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        reason: f_reason,game_mode: f_gameMode
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_reason = super::packet_game_state_change_20::deserialize(input)?;
+	let f_gameMode = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		reason: f_reason,
+		game_mode: f_gameMode,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::packet_game_state_change_20::size_of(
-        &_0.reason
-    )
-    + super::super::super::f32::size_of(
-        &_0.game_mode
-    )
+	0 + super::packet_game_state_change_20::size_of(&_0.reason)
+		+ super::super::super::f32::size_of(&_0.game_mode)
 }
- pub type Ty = PacketGameStateChange;
+pub type Ty = PacketGameStateChange;

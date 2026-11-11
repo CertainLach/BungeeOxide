@@ -3,53 +3,58 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent32 {
-    None,
-    Whack,
-    Stab,
-    Default(super::super::Varint),
+	None,
+	Whack,
+	Stab,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::None => Ok(()),
-        Ty::Whack => Ok(()),
-        Ty::Stab => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::None => Ok(()),
+		Ty::Whack => Ok(()),
+		Ty::Stab => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::None); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Whack); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Stab); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::None);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Whack);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Stab);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::None => 0,
-        Ty::Whack => 0,
-        Ty::Stab => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::None => 0,
+			Ty::Whack => 0,
+			Ty::Stab => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::None => "none",
-        Ty::Whack => "whack",
-        Ty::Stab => "stab",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::None => "none",
+		Ty::Whack => "whack",
+		Ty::Stab => "stab",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::None => 0_i32,
-        Ty::Whack => 1_i32,
-        Ty::Stab => 2_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::None => 0_i32,
+		Ty::Whack => 1_i32,
+		Ty::Stab => 2_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = SlotComponent32;
+pub type Ty = SlotComponent32;

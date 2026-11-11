@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataPaintingVariant {
-    pub width: super::super::Varint,
-    pub height: super::super::Varint,
-    pub asset_id: String,
+	pub width: super::super::Varint,
+	pub height: super::super::Varint,
+	pub asset_id: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.width,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.height,
-        output,
-    )?;
-    super::super::pstring_96::serialize(
-        &_0.asset_id,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.width, output)?;
+	super::super::varint::serialize(&_0.height, output)?;
+	super::super::pstring_96::serialize(&_0.asset_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_width = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_height = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_assetId = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        width: f_width,height: f_height,asset_id: f_assetId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_width = super::super::varint::deserialize(input)?;
+	let f_height = super::super::varint::deserialize(input)?;
+	let f_assetId = super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		width: f_width,
+		height: f_height,
+		asset_id: f_assetId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.width
-    )
-    + super::super::varint::size_of(
-        &_0.height
-    )
-    + super::super::pstring_96::size_of(
-        &_0.asset_id
-    )
+	0 + super::super::varint::size_of(&_0.width)
+		+ super::super::varint::size_of(&_0.height)
+		+ super::super::pstring_96::size_of(&_0.asset_id)
 }
- pub type Ty = EntityMetadataPaintingVariant;
+pub type Ty = EntityMetadataPaintingVariant;

@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityMoveLook {
-    pub entity_id: super::super::super::super::I32,
-    pub d_x: super::super::super::super::I8,
-    pub d_y: super::super::super::super::I8,
-    pub d_z: super::super::super::super::I8,
-    pub yaw: super::super::super::super::I8,
-    pub pitch: super::super::super::super::I8,
+	pub entity_id: super::super::super::super::I32,
+	pub d_x: super::super::super::super::I8,
+	pub d_y: super::super::super::super::I8,
+	pub d_z: super::super::super::super::I8,
+	pub yaw: super::super::super::super::I8,
+	pub pitch: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.d_x,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.d_y,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.d_z,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.d_x, output)?;
+	super::super::super::super::i8::serialize(&_0.d_y, output)?;
+	super::super::super::super::i8::serialize(&_0.d_z, output)?;
+	super::super::super::super::i8::serialize(&_0.yaw, output)?;
+	super::super::super::super::i8::serialize(&_0.pitch, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_dX = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_dY = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_dZ = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,d_x: f_dX,d_y: f_dY,d_z: f_dZ,yaw: f_yaw,pitch: f_pitch
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_dX = super::super::super::super::i8::deserialize(input)?;
+	let f_dY = super::super::super::super::i8::deserialize(input)?;
+	let f_dZ = super::super::super::super::i8::deserialize(input)?;
+	let f_yaw = super::super::super::super::i8::deserialize(input)?;
+	let f_pitch = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		d_x: f_dX,
+		d_y: f_dY,
+		d_z: f_dZ,
+		yaw: f_yaw,
+		pitch: f_pitch,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.d_x
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.d_y
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.d_z
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.yaw
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.pitch
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.d_x)
+		+ super::super::super::super::i8::size_of(&_0.d_y)
+		+ super::super::super::super::i8::size_of(&_0.d_z)
+		+ super::super::super::super::i8::size_of(&_0.yaw)
+		+ super::super::super::super::i8::size_of(&_0.pitch)
 }
- pub type Ty = PacketEntityMoveLook;
+pub type Ty = PacketEntityMoveLook;

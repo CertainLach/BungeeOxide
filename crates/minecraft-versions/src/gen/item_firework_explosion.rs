@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemFireworkExplosion {
-    pub shape: super::ItemFireworkExplosion17,
-    pub colors: Vec<super::I32>,
-    pub fade_colors: Vec<super::I32>,
-    pub has_trail: super::Bool,
-    pub has_twinkle: super::Bool,
+	pub shape: super::ItemFireworkExplosion17,
+	pub colors: Vec<super::I32>,
+	pub fade_colors: Vec<super::I32>,
+	pub has_trail: super::Bool,
+	pub has_twinkle: super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::item_firework_explosion_17::serialize(
-        &_0.shape,
-        output,
-    )?;
-    super::array::inline_50::serialize(
-        &_0.colors,
-        output,
-    )?;
-    super::array::inline_50::serialize(
-        &_0.fade_colors,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.has_trail,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.has_twinkle,
-        output,
-    )?;
-    Ok(())
+	super::item_firework_explosion_17::serialize(&_0.shape, output)?;
+	super::array::inline_50::serialize(&_0.colors, output)?;
+	super::array::inline_50::serialize(&_0.fade_colors, output)?;
+	super::bool::serialize(&_0.has_trail, output)?;
+	super::bool::serialize(&_0.has_twinkle, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_shape = super::item_firework_explosion_17::deserialize(
-        input,
-    )?;
-    let f_colors = super::array::inline_50::deserialize(
-        input,
-    )?;
-    let f_fadeColors = super::array::inline_50::deserialize(
-        input,
-    )?;
-    let f_hasTrail = super::bool::deserialize(
-        input,
-    )?;
-    let f_hasTwinkle = super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        shape: f_shape,colors: f_colors,fade_colors: f_fadeColors,has_trail: f_hasTrail,has_twinkle: f_hasTwinkle
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_shape = super::item_firework_explosion_17::deserialize(input)?;
+	let f_colors = super::array::inline_50::deserialize(input)?;
+	let f_fadeColors = super::array::inline_50::deserialize(input)?;
+	let f_hasTrail = super::bool::deserialize(input)?;
+	let f_hasTwinkle = super::bool::deserialize(input)?;
+	Ok(Ty {
+		shape: f_shape,
+		colors: f_colors,
+		fade_colors: f_fadeColors,
+		has_trail: f_hasTrail,
+		has_twinkle: f_hasTwinkle,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::item_firework_explosion_17::size_of(
-        &_0.shape
-    )
-    + super::array::inline_50::size_of(
-        &_0.colors
-    )
-    + super::array::inline_50::size_of(
-        &_0.fade_colors
-    )
-    + super::bool::size_of(
-        &_0.has_trail
-    )
-    + super::bool::size_of(
-        &_0.has_twinkle
-    )
+	0 + super::item_firework_explosion_17::size_of(&_0.shape)
+		+ super::array::inline_50::size_of(&_0.colors)
+		+ super::array::inline_50::size_of(&_0.fade_colors)
+		+ super::bool::size_of(&_0.has_trail)
+		+ super::bool::size_of(&_0.has_twinkle)
 }
- pub type Ty = ItemFireworkExplosion;
+pub type Ty = ItemFireworkExplosion;

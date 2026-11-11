@@ -3,44 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockProperty<'i> {
-    pub name: super::Pstring96::<'i>,
-    pub value: super::ItemBlockProperty17::<'i>,
+	pub name: super::Pstring96<'i>,
+	pub value: super::ItemBlockProperty17<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::item_block_property_17::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.name, output)?;
+	super::item_block_property_17::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(3)?;
-    let f_name = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::item_block_property_17::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(3)?;
+	let f_name = super::pstring_96::deserialize(input)?;
+	let f_value = super::item_block_property_17::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::item_block_property_17::size_of(
-        &_0.value
-    )
+	0 + super::pstring_96::size_of(&_0.name) + super::item_block_property_17::size_of(&_0.value)
 }
 pub fn view<'i>(_0: &'i super::super::ItemBlockProperty) -> Ty<'i> {
-    Ty {
-        name: super::pstring_96::view(&_0.name),value: super::item_block_property_17::view(&_0.value)
-    }
+	Ty {
+		name: super::pstring_96::view(&_0.name),
+		value: super::item_block_property_17::view(&_0.value),
+	}
 }
- pub type Ty<'i> = ItemBlockProperty<'i>;
+pub type Ty<'i> = ItemBlockProperty<'i>;

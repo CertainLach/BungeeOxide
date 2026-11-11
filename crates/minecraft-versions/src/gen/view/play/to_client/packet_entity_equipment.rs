@@ -3,49 +3,43 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment<'i> {
-    pub entity_id: super::super::super::super::Varint,
-    pub equipments: super::super::super::TopBitSetTerminatedArray96::<'i>,
+	pub entity_id: super::super::super::super::Varint,
+	pub equipments: super::super::super::TopBitSetTerminatedArray96<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::top_bit_set_terminated_array_96::serialize(
-        &_0.equipments,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::top_bit_set_terminated_array_96::serialize(&_0.equipments, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_equipments = super::super::super::top_bit_set_terminated_array_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,equipments: f_equipments
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_equipments = super::super::super::top_bit_set_terminated_array_96::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		equipments: f_equipments,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::top_bit_set_terminated_array_96::size_of(
-        &_0.equipments
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::top_bit_set_terminated_array_96::size_of(&_0.equipments)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityEquipment) -> Ty<'i> {
-    Ty {
-        entity_id: ::core::clone::Clone::clone(&_0.entity_id),equipments: super::super::super::top_bit_set_terminated_array_96::view(&_0.equipments)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketEntityEquipment,
+) -> Ty<'i> {
+	Ty {
+		entity_id: ::core::clone::Clone::clone(&_0.entity_id),
+		equipments: super::super::super::top_bit_set_terminated_array_96::view(&_0.equipments),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketEntityEquipment) -> Ty<'i> {
-    Ty {
-        entity_id: ::core::clone::Clone::clone(&mut _0.entity_id),equipments: super::super::super::top_bit_set_terminated_array_96::into_view(&mut _0.equipments)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketEntityEquipment,
+) -> Ty<'i> {
+	Ty {
+		entity_id: ::core::clone::Clone::clone(&mut _0.entity_id),
+		equipments: super::super::super::top_bit_set_terminated_array_96::into_view(
+			&mut _0.equipments,
+		),
+	}
 }
- pub type Ty<'i> = PacketEntityEquipment<'i>;
+pub type Ty<'i> = PacketEntityEquipment<'i>;

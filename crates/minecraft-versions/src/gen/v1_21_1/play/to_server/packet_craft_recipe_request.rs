@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCraftRecipeRequest {
-    pub window_id: super::super::super::super::U8,
-    pub recipe: String,
-    pub make_all: super::super::super::super::Bool,
+	pub window_id: super::super::super::super::U8,
+	pub recipe: String,
+	pub make_all: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::u8::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.recipe,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.make_all,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::u8::serialize(&_0.window_id, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.recipe, output)?;
+	super::super::super::super::bool::serialize(&_0.make_all, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_windowId = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_recipe = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_makeAll = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,recipe: f_recipe,make_all: f_makeAll
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_windowId = super::super::super::super::u8::deserialize(input)?;
+	let f_recipe = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_makeAll = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		recipe: f_recipe,
+		make_all: f_makeAll,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::u8::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.recipe
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.make_all
-    )
+	0 + super::super::super::super::u8::size_of(&_0.window_id)
+		+ super::super::super::super::pstring_96::size_of(&_0.recipe)
+		+ super::super::super::super::bool::size_of(&_0.make_all)
 }
- pub type Ty = PacketCraftRecipeRequest;
+pub type Ty = PacketCraftRecipeRequest;

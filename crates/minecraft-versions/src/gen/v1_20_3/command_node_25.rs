@@ -3,359 +3,456 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum CommandNode25 {
-    BrigadierBool,
-    BrigadierFloat(super::CommandNode9),
-    MinecraftVec3,
-    MinecraftVec2,
-    MinecraftBlockState,
-    MinecraftBlockPredicate,
-    MinecraftItemStack,
-    MinecraftItemPredicate,
-    MinecraftColor,
-    MinecraftComponent,
-    MinecraftStyle,
-    MinecraftMessage,
-    BrigadierDouble(super::CommandNode13),
-    MinecraftNbt,
-    MinecraftNbtTag,
-    MinecraftNbtPath,
-    MinecraftObjective,
-    MinecraftObjectiveCriteria,
-    MinecraftOperation,
-    MinecraftParticle,
-    MinecraftAngle,
-    MinecraftRotation,
-    MinecraftScoreboardSlot,
-    BrigadierInteger(super::CommandNode17),
-    MinecraftScoreHolder(super::CommandNode18),
-    MinecraftSwizzle,
-    MinecraftTeam,
-    MinecraftItemSlot,
-    MinecraftResourceLocation,
-    MinecraftFunction,
-    MinecraftEntityAnchor,
-    MinecraftIntRange,
-    MinecraftFloatRange,
-    MinecraftDimension,
-    BrigadierLong(super::CommandNode22),
-    MinecraftGamemode,
-    MinecraftTime(super::super::I32),
-    MinecraftResourceOrTag(String),
-    MinecraftResourceOrTagKey(String),
-    MinecraftResource(String),
-    MinecraftResourceKey(String),
-    MinecraftTemplateMirror,
-    MinecraftTemplateRotation,
-    MinecraftHeightmap,
-    MinecraftUuid,
-    BrigadierString(super::CommandNode23),
-    MinecraftEntity(super::CommandNode24),
-    MinecraftGameProfile,
-    MinecraftBlockPos,
-    MinecraftColumnPos,
-    Default(super::super::Varint),
+	BrigadierBool,
+	BrigadierFloat(super::CommandNode9),
+	MinecraftVec3,
+	MinecraftVec2,
+	MinecraftBlockState,
+	MinecraftBlockPredicate,
+	MinecraftItemStack,
+	MinecraftItemPredicate,
+	MinecraftColor,
+	MinecraftComponent,
+	MinecraftStyle,
+	MinecraftMessage,
+	BrigadierDouble(super::CommandNode13),
+	MinecraftNbt,
+	MinecraftNbtTag,
+	MinecraftNbtPath,
+	MinecraftObjective,
+	MinecraftObjectiveCriteria,
+	MinecraftOperation,
+	MinecraftParticle,
+	MinecraftAngle,
+	MinecraftRotation,
+	MinecraftScoreboardSlot,
+	BrigadierInteger(super::CommandNode17),
+	MinecraftScoreHolder(super::CommandNode18),
+	MinecraftSwizzle,
+	MinecraftTeam,
+	MinecraftItemSlot,
+	MinecraftResourceLocation,
+	MinecraftFunction,
+	MinecraftEntityAnchor,
+	MinecraftIntRange,
+	MinecraftFloatRange,
+	MinecraftDimension,
+	BrigadierLong(super::CommandNode22),
+	MinecraftGamemode,
+	MinecraftTime(super::super::I32),
+	MinecraftResourceOrTag(String),
+	MinecraftResourceOrTagKey(String),
+	MinecraftResource(String),
+	MinecraftResourceKey(String),
+	MinecraftTemplateMirror,
+	MinecraftTemplateRotation,
+	MinecraftHeightmap,
+	MinecraftUuid,
+	BrigadierString(super::CommandNode23),
+	MinecraftEntity(super::CommandNode24),
+	MinecraftGameProfile,
+	MinecraftBlockPos,
+	MinecraftColumnPos,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::BrigadierBool => Ok(()),
-        Ty::BrigadierFloat(__v) => super::command_node_9::serialize(__v, output),
-        Ty::MinecraftVec3 => Ok(()),
-        Ty::MinecraftVec2 => Ok(()),
-        Ty::MinecraftBlockState => Ok(()),
-        Ty::MinecraftBlockPredicate => Ok(()),
-        Ty::MinecraftItemStack => Ok(()),
-        Ty::MinecraftItemPredicate => Ok(()),
-        Ty::MinecraftColor => Ok(()),
-        Ty::MinecraftComponent => Ok(()),
-        Ty::MinecraftStyle => Ok(()),
-        Ty::MinecraftMessage => Ok(()),
-        Ty::BrigadierDouble(__v) => super::command_node_13::serialize(__v, output),
-        Ty::MinecraftNbt => Ok(()),
-        Ty::MinecraftNbtTag => Ok(()),
-        Ty::MinecraftNbtPath => Ok(()),
-        Ty::MinecraftObjective => Ok(()),
-        Ty::MinecraftObjectiveCriteria => Ok(()),
-        Ty::MinecraftOperation => Ok(()),
-        Ty::MinecraftParticle => Ok(()),
-        Ty::MinecraftAngle => Ok(()),
-        Ty::MinecraftRotation => Ok(()),
-        Ty::MinecraftScoreboardSlot => Ok(()),
-        Ty::BrigadierInteger(__v) => super::command_node_17::serialize(__v, output),
-        Ty::MinecraftScoreHolder(__v) => super::command_node_18::serialize(__v, output),
-        Ty::MinecraftSwizzle => Ok(()),
-        Ty::MinecraftTeam => Ok(()),
-        Ty::MinecraftItemSlot => Ok(()),
-        Ty::MinecraftResourceLocation => Ok(()),
-        Ty::MinecraftFunction => Ok(()),
-        Ty::MinecraftEntityAnchor => Ok(()),
-        Ty::MinecraftIntRange => Ok(()),
-        Ty::MinecraftFloatRange => Ok(()),
-        Ty::MinecraftDimension => Ok(()),
-        Ty::BrigadierLong(__v) => super::command_node_22::serialize(__v, output),
-        Ty::MinecraftGamemode => Ok(()),
-        Ty::MinecraftTime(__v) => super::super::i32::serialize(__v, output),
-        Ty::MinecraftResourceOrTag(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::MinecraftResourceOrTagKey(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::MinecraftResource(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::MinecraftResourceKey(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::MinecraftTemplateMirror => Ok(()),
-        Ty::MinecraftTemplateRotation => Ok(()),
-        Ty::MinecraftHeightmap => Ok(()),
-        Ty::MinecraftUuid => Ok(()),
-        Ty::BrigadierString(__v) => super::command_node_23::serialize(__v, output),
-        Ty::MinecraftEntity(__v) => super::command_node_24::serialize(__v, output),
-        Ty::MinecraftGameProfile => Ok(()),
-        Ty::MinecraftBlockPos => Ok(()),
-        Ty::MinecraftColumnPos => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::BrigadierBool => Ok(()),
+		Ty::BrigadierFloat(__v) => super::command_node_9::serialize(__v, output),
+		Ty::MinecraftVec3 => Ok(()),
+		Ty::MinecraftVec2 => Ok(()),
+		Ty::MinecraftBlockState => Ok(()),
+		Ty::MinecraftBlockPredicate => Ok(()),
+		Ty::MinecraftItemStack => Ok(()),
+		Ty::MinecraftItemPredicate => Ok(()),
+		Ty::MinecraftColor => Ok(()),
+		Ty::MinecraftComponent => Ok(()),
+		Ty::MinecraftStyle => Ok(()),
+		Ty::MinecraftMessage => Ok(()),
+		Ty::BrigadierDouble(__v) => super::command_node_13::serialize(__v, output),
+		Ty::MinecraftNbt => Ok(()),
+		Ty::MinecraftNbtTag => Ok(()),
+		Ty::MinecraftNbtPath => Ok(()),
+		Ty::MinecraftObjective => Ok(()),
+		Ty::MinecraftObjectiveCriteria => Ok(()),
+		Ty::MinecraftOperation => Ok(()),
+		Ty::MinecraftParticle => Ok(()),
+		Ty::MinecraftAngle => Ok(()),
+		Ty::MinecraftRotation => Ok(()),
+		Ty::MinecraftScoreboardSlot => Ok(()),
+		Ty::BrigadierInteger(__v) => super::command_node_17::serialize(__v, output),
+		Ty::MinecraftScoreHolder(__v) => super::command_node_18::serialize(__v, output),
+		Ty::MinecraftSwizzle => Ok(()),
+		Ty::MinecraftTeam => Ok(()),
+		Ty::MinecraftItemSlot => Ok(()),
+		Ty::MinecraftResourceLocation => Ok(()),
+		Ty::MinecraftFunction => Ok(()),
+		Ty::MinecraftEntityAnchor => Ok(()),
+		Ty::MinecraftIntRange => Ok(()),
+		Ty::MinecraftFloatRange => Ok(()),
+		Ty::MinecraftDimension => Ok(()),
+		Ty::BrigadierLong(__v) => super::command_node_22::serialize(__v, output),
+		Ty::MinecraftGamemode => Ok(()),
+		Ty::MinecraftTime(__v) => super::super::i32::serialize(__v, output),
+		Ty::MinecraftResourceOrTag(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::MinecraftResourceOrTagKey(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::MinecraftResource(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::MinecraftResourceKey(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::MinecraftTemplateMirror => Ok(()),
+		Ty::MinecraftTemplateRotation => Ok(()),
+		Ty::MinecraftHeightmap => Ok(()),
+		Ty::MinecraftUuid => Ok(()),
+		Ty::BrigadierString(__v) => super::command_node_23::serialize(__v, output),
+		Ty::MinecraftEntity(__v) => super::command_node_24::serialize(__v, output),
+		Ty::MinecraftGameProfile => Ok(()),
+		Ty::MinecraftBlockPos => Ok(()),
+		Ty::MinecraftColumnPos => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::BrigadierBool); }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::BrigadierFloat(super::command_node_9::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) { return Ok(Ty::MinecraftVec3); }
-    if (__tag.clone() == 11_i32) { return Ok(Ty::MinecraftVec2); }
-    if (__tag.clone() == 12_i32) { return Ok(Ty::MinecraftBlockState); }
-    if (__tag.clone() == 13_i32) { return Ok(Ty::MinecraftBlockPredicate); }
-    if (__tag.clone() == 14_i32) { return Ok(Ty::MinecraftItemStack); }
-    if (__tag.clone() == 15_i32) { return Ok(Ty::MinecraftItemPredicate); }
-    if (__tag.clone() == 16_i32) { return Ok(Ty::MinecraftColor); }
-    if (__tag.clone() == 17_i32) { return Ok(Ty::MinecraftComponent); }
-    if (__tag.clone() == 18_i32) { return Ok(Ty::MinecraftStyle); }
-    if (__tag.clone() == 19_i32) { return Ok(Ty::MinecraftMessage); }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::BrigadierDouble(super::command_node_13::deserialize(input, )?));
-    }
-    if (__tag.clone() == 20_i32) { return Ok(Ty::MinecraftNbt); }
-    if (__tag.clone() == 21_i32) { return Ok(Ty::MinecraftNbtTag); }
-    if (__tag.clone() == 22_i32) { return Ok(Ty::MinecraftNbtPath); }
-    if (__tag.clone() == 23_i32) { return Ok(Ty::MinecraftObjective); }
-    if (__tag.clone() == 24_i32) { return Ok(Ty::MinecraftObjectiveCriteria); }
-    if (__tag.clone() == 25_i32) { return Ok(Ty::MinecraftOperation); }
-    if (__tag.clone() == 26_i32) { return Ok(Ty::MinecraftParticle); }
-    if (__tag.clone() == 27_i32) { return Ok(Ty::MinecraftAngle); }
-    if (__tag.clone() == 28_i32) { return Ok(Ty::MinecraftRotation); }
-    if (__tag.clone() == 29_i32) { return Ok(Ty::MinecraftScoreboardSlot); }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::BrigadierInteger(super::command_node_17::deserialize(input, )?));
-    }
-    if (__tag.clone() == 30_i32) {
-        return Ok(Ty::MinecraftScoreHolder(super::command_node_18::deserialize(input, )?));
-    }
-    if (__tag.clone() == 31_i32) { return Ok(Ty::MinecraftSwizzle); }
-    if (__tag.clone() == 32_i32) { return Ok(Ty::MinecraftTeam); }
-    if (__tag.clone() == 33_i32) { return Ok(Ty::MinecraftItemSlot); }
-    if (__tag.clone() == 34_i32) { return Ok(Ty::MinecraftResourceLocation); }
-    if (__tag.clone() == 35_i32) { return Ok(Ty::MinecraftFunction); }
-    if (__tag.clone() == 36_i32) { return Ok(Ty::MinecraftEntityAnchor); }
-    if (__tag.clone() == 37_i32) { return Ok(Ty::MinecraftIntRange); }
-    if (__tag.clone() == 38_i32) { return Ok(Ty::MinecraftFloatRange); }
-    if (__tag.clone() == 39_i32) { return Ok(Ty::MinecraftDimension); }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::BrigadierLong(super::command_node_22::deserialize(input, )?));
-    }
-    if (__tag.clone() == 40_i32) { return Ok(Ty::MinecraftGamemode); }
-    if (__tag.clone() == 41_i32) {
-        return Ok(Ty::MinecraftTime(super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 42_i32) {
-        return Ok(Ty::MinecraftResourceOrTag(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 43_i32) {
-        return Ok(Ty::MinecraftResourceOrTagKey(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 44_i32) {
-        return Ok(Ty::MinecraftResource(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 45_i32) {
-        return Ok(Ty::MinecraftResourceKey(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 46_i32) { return Ok(Ty::MinecraftTemplateMirror); }
-    if (__tag.clone() == 47_i32) { return Ok(Ty::MinecraftTemplateRotation); }
-    if (__tag.clone() == 48_i32) { return Ok(Ty::MinecraftHeightmap); }
-    if (__tag.clone() == 49_i32) { return Ok(Ty::MinecraftUuid); }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::BrigadierString(super::command_node_23::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::MinecraftEntity(super::command_node_24::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::MinecraftGameProfile); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::MinecraftBlockPos); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::MinecraftColumnPos); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::BrigadierBool);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::BrigadierFloat(super::command_node_9::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::MinecraftVec3);
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::MinecraftVec2);
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::MinecraftBlockState);
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::MinecraftBlockPredicate);
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::MinecraftItemStack);
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::MinecraftItemPredicate);
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::MinecraftColor);
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::MinecraftComponent);
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::MinecraftStyle);
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::MinecraftMessage);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::BrigadierDouble(super::command_node_13::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::MinecraftNbt);
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::MinecraftNbtTag);
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::MinecraftNbtPath);
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::MinecraftObjective);
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::MinecraftObjectiveCriteria);
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::MinecraftOperation);
+	}
+	if (__tag.clone() == 26_i32) {
+		return Ok(Ty::MinecraftParticle);
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::MinecraftAngle);
+	}
+	if (__tag.clone() == 28_i32) {
+		return Ok(Ty::MinecraftRotation);
+	}
+	if (__tag.clone() == 29_i32) {
+		return Ok(Ty::MinecraftScoreboardSlot);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::BrigadierInteger(super::command_node_17::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::MinecraftScoreHolder(
+			super::command_node_18::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 31_i32) {
+		return Ok(Ty::MinecraftSwizzle);
+	}
+	if (__tag.clone() == 32_i32) {
+		return Ok(Ty::MinecraftTeam);
+	}
+	if (__tag.clone() == 33_i32) {
+		return Ok(Ty::MinecraftItemSlot);
+	}
+	if (__tag.clone() == 34_i32) {
+		return Ok(Ty::MinecraftResourceLocation);
+	}
+	if (__tag.clone() == 35_i32) {
+		return Ok(Ty::MinecraftFunction);
+	}
+	if (__tag.clone() == 36_i32) {
+		return Ok(Ty::MinecraftEntityAnchor);
+	}
+	if (__tag.clone() == 37_i32) {
+		return Ok(Ty::MinecraftIntRange);
+	}
+	if (__tag.clone() == 38_i32) {
+		return Ok(Ty::MinecraftFloatRange);
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::MinecraftDimension);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::BrigadierLong(super::command_node_22::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::MinecraftGamemode);
+	}
+	if (__tag.clone() == 41_i32) {
+		return Ok(Ty::MinecraftTime(super::super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 42_i32) {
+		return Ok(Ty::MinecraftResourceOrTag(
+			super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 43_i32) {
+		return Ok(Ty::MinecraftResourceOrTagKey(
+			super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 44_i32) {
+		return Ok(Ty::MinecraftResource(
+			super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 45_i32) {
+		return Ok(Ty::MinecraftResourceKey(
+			super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 46_i32) {
+		return Ok(Ty::MinecraftTemplateMirror);
+	}
+	if (__tag.clone() == 47_i32) {
+		return Ok(Ty::MinecraftTemplateRotation);
+	}
+	if (__tag.clone() == 48_i32) {
+		return Ok(Ty::MinecraftHeightmap);
+	}
+	if (__tag.clone() == 49_i32) {
+		return Ok(Ty::MinecraftUuid);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::BrigadierString(super::command_node_23::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::MinecraftEntity(super::command_node_24::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::MinecraftGameProfile);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::MinecraftBlockPos);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::MinecraftColumnPos);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::BrigadierBool => 0,
-        Ty::BrigadierFloat(__v) => super::command_node_9::size_of(__v),
-        Ty::MinecraftVec3 => 0,
-        Ty::MinecraftVec2 => 0,
-        Ty::MinecraftBlockState => 0,
-        Ty::MinecraftBlockPredicate => 0,
-        Ty::MinecraftItemStack => 0,
-        Ty::MinecraftItemPredicate => 0,
-        Ty::MinecraftColor => 0,
-        Ty::MinecraftComponent => 0,
-        Ty::MinecraftStyle => 0,
-        Ty::MinecraftMessage => 0,
-        Ty::BrigadierDouble(__v) => super::command_node_13::size_of(__v),
-        Ty::MinecraftNbt => 0,
-        Ty::MinecraftNbtTag => 0,
-        Ty::MinecraftNbtPath => 0,
-        Ty::MinecraftObjective => 0,
-        Ty::MinecraftObjectiveCriteria => 0,
-        Ty::MinecraftOperation => 0,
-        Ty::MinecraftParticle => 0,
-        Ty::MinecraftAngle => 0,
-        Ty::MinecraftRotation => 0,
-        Ty::MinecraftScoreboardSlot => 0,
-        Ty::BrigadierInteger(__v) => super::command_node_17::size_of(__v),
-        Ty::MinecraftScoreHolder(__v) => super::command_node_18::size_of(__v),
-        Ty::MinecraftSwizzle => 0,
-        Ty::MinecraftTeam => 0,
-        Ty::MinecraftItemSlot => 0,
-        Ty::MinecraftResourceLocation => 0,
-        Ty::MinecraftFunction => 0,
-        Ty::MinecraftEntityAnchor => 0,
-        Ty::MinecraftIntRange => 0,
-        Ty::MinecraftFloatRange => 0,
-        Ty::MinecraftDimension => 0,
-        Ty::BrigadierLong(__v) => super::command_node_22::size_of(__v),
-        Ty::MinecraftGamemode => 0,
-        Ty::MinecraftTime(__v) => super::super::i32::size_of(__v),
-        Ty::MinecraftResourceOrTag(__v) => super::super::pstring_96::size_of(__v),
-        Ty::MinecraftResourceOrTagKey(__v) => super::super::pstring_96::size_of(__v),
-        Ty::MinecraftResource(__v) => super::super::pstring_96::size_of(__v),
-        Ty::MinecraftResourceKey(__v) => super::super::pstring_96::size_of(__v),
-        Ty::MinecraftTemplateMirror => 0,
-        Ty::MinecraftTemplateRotation => 0,
-        Ty::MinecraftHeightmap => 0,
-        Ty::MinecraftUuid => 0,
-        Ty::BrigadierString(__v) => super::command_node_23::size_of(__v),
-        Ty::MinecraftEntity(__v) => super::command_node_24::size_of(__v),
-        Ty::MinecraftGameProfile => 0,
-        Ty::MinecraftBlockPos => 0,
-        Ty::MinecraftColumnPos => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::BrigadierBool => 0,
+			Ty::BrigadierFloat(__v) => super::command_node_9::size_of(__v),
+			Ty::MinecraftVec3 => 0,
+			Ty::MinecraftVec2 => 0,
+			Ty::MinecraftBlockState => 0,
+			Ty::MinecraftBlockPredicate => 0,
+			Ty::MinecraftItemStack => 0,
+			Ty::MinecraftItemPredicate => 0,
+			Ty::MinecraftColor => 0,
+			Ty::MinecraftComponent => 0,
+			Ty::MinecraftStyle => 0,
+			Ty::MinecraftMessage => 0,
+			Ty::BrigadierDouble(__v) => super::command_node_13::size_of(__v),
+			Ty::MinecraftNbt => 0,
+			Ty::MinecraftNbtTag => 0,
+			Ty::MinecraftNbtPath => 0,
+			Ty::MinecraftObjective => 0,
+			Ty::MinecraftObjectiveCriteria => 0,
+			Ty::MinecraftOperation => 0,
+			Ty::MinecraftParticle => 0,
+			Ty::MinecraftAngle => 0,
+			Ty::MinecraftRotation => 0,
+			Ty::MinecraftScoreboardSlot => 0,
+			Ty::BrigadierInteger(__v) => super::command_node_17::size_of(__v),
+			Ty::MinecraftScoreHolder(__v) => super::command_node_18::size_of(__v),
+			Ty::MinecraftSwizzle => 0,
+			Ty::MinecraftTeam => 0,
+			Ty::MinecraftItemSlot => 0,
+			Ty::MinecraftResourceLocation => 0,
+			Ty::MinecraftFunction => 0,
+			Ty::MinecraftEntityAnchor => 0,
+			Ty::MinecraftIntRange => 0,
+			Ty::MinecraftFloatRange => 0,
+			Ty::MinecraftDimension => 0,
+			Ty::BrigadierLong(__v) => super::command_node_22::size_of(__v),
+			Ty::MinecraftGamemode => 0,
+			Ty::MinecraftTime(__v) => super::super::i32::size_of(__v),
+			Ty::MinecraftResourceOrTag(__v) => super::super::pstring_96::size_of(__v),
+			Ty::MinecraftResourceOrTagKey(__v) => super::super::pstring_96::size_of(__v),
+			Ty::MinecraftResource(__v) => super::super::pstring_96::size_of(__v),
+			Ty::MinecraftResourceKey(__v) => super::super::pstring_96::size_of(__v),
+			Ty::MinecraftTemplateMirror => 0,
+			Ty::MinecraftTemplateRotation => 0,
+			Ty::MinecraftHeightmap => 0,
+			Ty::MinecraftUuid => 0,
+			Ty::BrigadierString(__v) => super::command_node_23::size_of(__v),
+			Ty::MinecraftEntity(__v) => super::command_node_24::size_of(__v),
+			Ty::MinecraftGameProfile => 0,
+			Ty::MinecraftBlockPos => 0,
+			Ty::MinecraftColumnPos => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::BrigadierBool => "brigadier_bool",
-        Ty::BrigadierFloat(_) => "brigadier_float",
-        Ty::MinecraftVec3 => "minecraft_vec3",
-        Ty::MinecraftVec2 => "minecraft_vec2",
-        Ty::MinecraftBlockState => "minecraft_block_state",
-        Ty::MinecraftBlockPredicate => "minecraft_block_predicate",
-        Ty::MinecraftItemStack => "minecraft_item_stack",
-        Ty::MinecraftItemPredicate => "minecraft_item_predicate",
-        Ty::MinecraftColor => "minecraft_color",
-        Ty::MinecraftComponent => "minecraft_component",
-        Ty::MinecraftStyle => "minecraft_style",
-        Ty::MinecraftMessage => "minecraft_message",
-        Ty::BrigadierDouble(_) => "brigadier_double",
-        Ty::MinecraftNbt => "minecraft_nbt",
-        Ty::MinecraftNbtTag => "minecraft_nbt_tag",
-        Ty::MinecraftNbtPath => "minecraft_nbt_path",
-        Ty::MinecraftObjective => "minecraft_objective",
-        Ty::MinecraftObjectiveCriteria => "minecraft_objective_criteria",
-        Ty::MinecraftOperation => "minecraft_operation",
-        Ty::MinecraftParticle => "minecraft_particle",
-        Ty::MinecraftAngle => "minecraft_angle",
-        Ty::MinecraftRotation => "minecraft_rotation",
-        Ty::MinecraftScoreboardSlot => "minecraft_scoreboard_slot",
-        Ty::BrigadierInteger(_) => "brigadier_integer",
-        Ty::MinecraftScoreHolder(_) => "minecraft_score_holder",
-        Ty::MinecraftSwizzle => "minecraft_swizzle",
-        Ty::MinecraftTeam => "minecraft_team",
-        Ty::MinecraftItemSlot => "minecraft_item_slot",
-        Ty::MinecraftResourceLocation => "minecraft_resource_location",
-        Ty::MinecraftFunction => "minecraft_function",
-        Ty::MinecraftEntityAnchor => "minecraft_entity_anchor",
-        Ty::MinecraftIntRange => "minecraft_int_range",
-        Ty::MinecraftFloatRange => "minecraft_float_range",
-        Ty::MinecraftDimension => "minecraft_dimension",
-        Ty::BrigadierLong(_) => "brigadier_long",
-        Ty::MinecraftGamemode => "minecraft_gamemode",
-        Ty::MinecraftTime(_) => "minecraft_time",
-        Ty::MinecraftResourceOrTag(_) => "minecraft_resource_or_tag",
-        Ty::MinecraftResourceOrTagKey(_) => "minecraft_resource_or_tag_key",
-        Ty::MinecraftResource(_) => "minecraft_resource",
-        Ty::MinecraftResourceKey(_) => "minecraft_resource_key",
-        Ty::MinecraftTemplateMirror => "minecraft_template_mirror",
-        Ty::MinecraftTemplateRotation => "minecraft_template_rotation",
-        Ty::MinecraftHeightmap => "minecraft_heightmap",
-        Ty::MinecraftUuid => "minecraft_uuid",
-        Ty::BrigadierString(_) => "brigadier_string",
-        Ty::MinecraftEntity(_) => "minecraft_entity",
-        Ty::MinecraftGameProfile => "minecraft_game_profile",
-        Ty::MinecraftBlockPos => "minecraft_block_pos",
-        Ty::MinecraftColumnPos => "minecraft_column_pos",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::BrigadierBool => "brigadier_bool",
+		Ty::BrigadierFloat(_) => "brigadier_float",
+		Ty::MinecraftVec3 => "minecraft_vec3",
+		Ty::MinecraftVec2 => "minecraft_vec2",
+		Ty::MinecraftBlockState => "minecraft_block_state",
+		Ty::MinecraftBlockPredicate => "minecraft_block_predicate",
+		Ty::MinecraftItemStack => "minecraft_item_stack",
+		Ty::MinecraftItemPredicate => "minecraft_item_predicate",
+		Ty::MinecraftColor => "minecraft_color",
+		Ty::MinecraftComponent => "minecraft_component",
+		Ty::MinecraftStyle => "minecraft_style",
+		Ty::MinecraftMessage => "minecraft_message",
+		Ty::BrigadierDouble(_) => "brigadier_double",
+		Ty::MinecraftNbt => "minecraft_nbt",
+		Ty::MinecraftNbtTag => "minecraft_nbt_tag",
+		Ty::MinecraftNbtPath => "minecraft_nbt_path",
+		Ty::MinecraftObjective => "minecraft_objective",
+		Ty::MinecraftObjectiveCriteria => "minecraft_objective_criteria",
+		Ty::MinecraftOperation => "minecraft_operation",
+		Ty::MinecraftParticle => "minecraft_particle",
+		Ty::MinecraftAngle => "minecraft_angle",
+		Ty::MinecraftRotation => "minecraft_rotation",
+		Ty::MinecraftScoreboardSlot => "minecraft_scoreboard_slot",
+		Ty::BrigadierInteger(_) => "brigadier_integer",
+		Ty::MinecraftScoreHolder(_) => "minecraft_score_holder",
+		Ty::MinecraftSwizzle => "minecraft_swizzle",
+		Ty::MinecraftTeam => "minecraft_team",
+		Ty::MinecraftItemSlot => "minecraft_item_slot",
+		Ty::MinecraftResourceLocation => "minecraft_resource_location",
+		Ty::MinecraftFunction => "minecraft_function",
+		Ty::MinecraftEntityAnchor => "minecraft_entity_anchor",
+		Ty::MinecraftIntRange => "minecraft_int_range",
+		Ty::MinecraftFloatRange => "minecraft_float_range",
+		Ty::MinecraftDimension => "minecraft_dimension",
+		Ty::BrigadierLong(_) => "brigadier_long",
+		Ty::MinecraftGamemode => "minecraft_gamemode",
+		Ty::MinecraftTime(_) => "minecraft_time",
+		Ty::MinecraftResourceOrTag(_) => "minecraft_resource_or_tag",
+		Ty::MinecraftResourceOrTagKey(_) => "minecraft_resource_or_tag_key",
+		Ty::MinecraftResource(_) => "minecraft_resource",
+		Ty::MinecraftResourceKey(_) => "minecraft_resource_key",
+		Ty::MinecraftTemplateMirror => "minecraft_template_mirror",
+		Ty::MinecraftTemplateRotation => "minecraft_template_rotation",
+		Ty::MinecraftHeightmap => "minecraft_heightmap",
+		Ty::MinecraftUuid => "minecraft_uuid",
+		Ty::BrigadierString(_) => "brigadier_string",
+		Ty::MinecraftEntity(_) => "minecraft_entity",
+		Ty::MinecraftGameProfile => "minecraft_game_profile",
+		Ty::MinecraftBlockPos => "minecraft_block_pos",
+		Ty::MinecraftColumnPos => "minecraft_column_pos",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::BrigadierBool => 0_i32,
-        Ty::BrigadierFloat(_) => 1_i32,
-        Ty::MinecraftVec3 => 10_i32,
-        Ty::MinecraftVec2 => 11_i32,
-        Ty::MinecraftBlockState => 12_i32,
-        Ty::MinecraftBlockPredicate => 13_i32,
-        Ty::MinecraftItemStack => 14_i32,
-        Ty::MinecraftItemPredicate => 15_i32,
-        Ty::MinecraftColor => 16_i32,
-        Ty::MinecraftComponent => 17_i32,
-        Ty::MinecraftStyle => 18_i32,
-        Ty::MinecraftMessage => 19_i32,
-        Ty::BrigadierDouble(_) => 2_i32,
-        Ty::MinecraftNbt => 20_i32,
-        Ty::MinecraftNbtTag => 21_i32,
-        Ty::MinecraftNbtPath => 22_i32,
-        Ty::MinecraftObjective => 23_i32,
-        Ty::MinecraftObjectiveCriteria => 24_i32,
-        Ty::MinecraftOperation => 25_i32,
-        Ty::MinecraftParticle => 26_i32,
-        Ty::MinecraftAngle => 27_i32,
-        Ty::MinecraftRotation => 28_i32,
-        Ty::MinecraftScoreboardSlot => 29_i32,
-        Ty::BrigadierInteger(_) => 3_i32,
-        Ty::MinecraftScoreHolder(_) => 30_i32,
-        Ty::MinecraftSwizzle => 31_i32,
-        Ty::MinecraftTeam => 32_i32,
-        Ty::MinecraftItemSlot => 33_i32,
-        Ty::MinecraftResourceLocation => 34_i32,
-        Ty::MinecraftFunction => 35_i32,
-        Ty::MinecraftEntityAnchor => 36_i32,
-        Ty::MinecraftIntRange => 37_i32,
-        Ty::MinecraftFloatRange => 38_i32,
-        Ty::MinecraftDimension => 39_i32,
-        Ty::BrigadierLong(_) => 4_i32,
-        Ty::MinecraftGamemode => 40_i32,
-        Ty::MinecraftTime(_) => 41_i32,
-        Ty::MinecraftResourceOrTag(_) => 42_i32,
-        Ty::MinecraftResourceOrTagKey(_) => 43_i32,
-        Ty::MinecraftResource(_) => 44_i32,
-        Ty::MinecraftResourceKey(_) => 45_i32,
-        Ty::MinecraftTemplateMirror => 46_i32,
-        Ty::MinecraftTemplateRotation => 47_i32,
-        Ty::MinecraftHeightmap => 48_i32,
-        Ty::MinecraftUuid => 49_i32,
-        Ty::BrigadierString(_) => 5_i32,
-        Ty::MinecraftEntity(_) => 6_i32,
-        Ty::MinecraftGameProfile => 7_i32,
-        Ty::MinecraftBlockPos => 8_i32,
-        Ty::MinecraftColumnPos => 9_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::BrigadierBool => 0_i32,
+		Ty::BrigadierFloat(_) => 1_i32,
+		Ty::MinecraftVec3 => 10_i32,
+		Ty::MinecraftVec2 => 11_i32,
+		Ty::MinecraftBlockState => 12_i32,
+		Ty::MinecraftBlockPredicate => 13_i32,
+		Ty::MinecraftItemStack => 14_i32,
+		Ty::MinecraftItemPredicate => 15_i32,
+		Ty::MinecraftColor => 16_i32,
+		Ty::MinecraftComponent => 17_i32,
+		Ty::MinecraftStyle => 18_i32,
+		Ty::MinecraftMessage => 19_i32,
+		Ty::BrigadierDouble(_) => 2_i32,
+		Ty::MinecraftNbt => 20_i32,
+		Ty::MinecraftNbtTag => 21_i32,
+		Ty::MinecraftNbtPath => 22_i32,
+		Ty::MinecraftObjective => 23_i32,
+		Ty::MinecraftObjectiveCriteria => 24_i32,
+		Ty::MinecraftOperation => 25_i32,
+		Ty::MinecraftParticle => 26_i32,
+		Ty::MinecraftAngle => 27_i32,
+		Ty::MinecraftRotation => 28_i32,
+		Ty::MinecraftScoreboardSlot => 29_i32,
+		Ty::BrigadierInteger(_) => 3_i32,
+		Ty::MinecraftScoreHolder(_) => 30_i32,
+		Ty::MinecraftSwizzle => 31_i32,
+		Ty::MinecraftTeam => 32_i32,
+		Ty::MinecraftItemSlot => 33_i32,
+		Ty::MinecraftResourceLocation => 34_i32,
+		Ty::MinecraftFunction => 35_i32,
+		Ty::MinecraftEntityAnchor => 36_i32,
+		Ty::MinecraftIntRange => 37_i32,
+		Ty::MinecraftFloatRange => 38_i32,
+		Ty::MinecraftDimension => 39_i32,
+		Ty::BrigadierLong(_) => 4_i32,
+		Ty::MinecraftGamemode => 40_i32,
+		Ty::MinecraftTime(_) => 41_i32,
+		Ty::MinecraftResourceOrTag(_) => 42_i32,
+		Ty::MinecraftResourceOrTagKey(_) => 43_i32,
+		Ty::MinecraftResource(_) => 44_i32,
+		Ty::MinecraftResourceKey(_) => 45_i32,
+		Ty::MinecraftTemplateMirror => 46_i32,
+		Ty::MinecraftTemplateRotation => 47_i32,
+		Ty::MinecraftHeightmap => 48_i32,
+		Ty::MinecraftUuid => 49_i32,
+		Ty::BrigadierString(_) => 5_i32,
+		Ty::MinecraftEntity(_) => 6_i32,
+		Ty::MinecraftGameProfile => 7_i32,
+		Ty::MinecraftBlockPos => 8_i32,
+		Ty::MinecraftColumnPos => 9_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = CommandNode25;
+pub type Ty = CommandNode25;

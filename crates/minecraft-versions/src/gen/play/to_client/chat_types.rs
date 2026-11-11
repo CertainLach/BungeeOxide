@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatTypes {
-    pub chat: super::ChatType,
-    pub narration: super::ChatType,
+	pub chat: super::ChatType,
+	pub narration: super::ChatType,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::chat_type::serialize(
-        &_0.chat,
-        output,
-    )?;
-    super::chat_type::serialize(
-        &_0.narration,
-        output,
-    )?;
-    Ok(())
+	super::chat_type::serialize(&_0.chat, output)?;
+	super::chat_type::serialize(&_0.narration, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_chat = super::chat_type::deserialize(
-        input,
-    )?;
-    let f_narration = super::chat_type::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        chat: f_chat,narration: f_narration
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_chat = super::chat_type::deserialize(input)?;
+	let f_narration = super::chat_type::deserialize(input)?;
+	Ok(Ty {
+		chat: f_chat,
+		narration: f_narration,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::chat_type::size_of(
-        &_0.chat
-    )
-    + super::chat_type::size_of(
-        &_0.narration
-    )
+	0 + super::chat_type::size_of(&_0.chat) + super::chat_type::size_of(&_0.narration)
 }
- pub type Ty = ChatTypes;
+pub type Ty = ChatTypes;

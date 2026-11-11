@@ -3,48 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerlistHeader<'i> {
-    pub header: super::super::super::AnonymousNbt::<'i>,
-    pub footer: super::super::super::AnonymousNbt::<'i>,
+	pub header: super::super::super::AnonymousNbt<'i>,
+	pub footer: super::super::super::AnonymousNbt<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.header,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.footer,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.header, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.footer, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_header = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_footer = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        header: f_header,footer: f_footer
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let f_header = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_footer = super::super::super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		header: f_header,
+		footer: f_footer,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.header
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.footer
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.header)
+		+ super::super::super::anonymous_nbt::size_of(&_0.footer)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerlistHeader) -> Ty<'i> {
-    Ty {
-        header: super::super::super::anonymous_nbt::view(&_0.header),footer: super::super::super::anonymous_nbt::view(&_0.footer)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketPlayerlistHeader,
+) -> Ty<'i> {
+	Ty {
+		header: super::super::super::anonymous_nbt::view(&_0.header),
+		footer: super::super::super::anonymous_nbt::view(&_0.footer),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketPlayerlistHeader) -> Ty<'i> {
-    Ty {
-        header: super::super::super::anonymous_nbt::into_view(&mut _0.header),footer: super::super::super::anonymous_nbt::into_view(&mut _0.footer)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketPlayerlistHeader,
+) -> Ty<'i> {
+	Ty {
+		header: super::super::super::anonymous_nbt::into_view(&mut _0.header),
+		footer: super::super::super::anonymous_nbt::into_view(&mut _0.footer),
+	}
 }
- pub type Ty<'i> = PacketPlayerlistHeader<'i>;
+pub type Ty<'i> = PacketPlayerlistHeader<'i>;

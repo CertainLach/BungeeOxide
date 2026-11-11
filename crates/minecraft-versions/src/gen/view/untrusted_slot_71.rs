@@ -3,88 +3,74 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct UntrustedSlot71<'i> {
-    pub item_id: super::super::Varint,
-    pub added_component_count: super::super::Varint,
-    pub removed_component_count: super::super::Varint,
-    pub components: super::array::Sized368::<'i>,
-    pub remove_components: super::super::array::Sized367,
+	pub item_id: super::super::Varint,
+	pub added_component_count: super::super::Varint,
+	pub removed_component_count: super::super::Varint,
+	pub components: super::array::Sized368<'i>,
+	pub remove_components: super::super::array::Sized367,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.item_id,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.added_component_count,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.removed_component_count,
-        output,
-    )?;
-    super::array::sized_368::serialize(
-        &_0.components,
-        output,
-    )?;
-    super::super::array::sized_367::serialize(
-        &_0.remove_components,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.item_id, output)?;
+	super::super::varint::serialize(&_0.added_component_count, output)?;
+	super::super::varint::serialize(&_0.removed_component_count, output)?;
+	super::array::sized_368::serialize(&_0.components, output)?;
+	super::super::array::sized_367::serialize(&_0.remove_components, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(3)?;
-    let f_itemId = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_addedComponentCount = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_removedComponentCount = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_components = super::array::sized_368::deserialize(
-        input,
-        super::array::sized_368::Args {
-            count: {let _0: &super::super::Varint = &f_addedComponentCount;_0}
-        },
-    )?;
-    let f_removeComponents = super::super::array::sized_367::deserialize(
-        input,
-        super::super::array::sized_367::Args {
-            count: {let _0: &super::super::Varint = &f_removedComponentCount;_0}
-        },
-    )?;
-    Ok(Ty {
-        item_id: f_itemId,added_component_count: f_addedComponentCount,removed_component_count: f_removedComponentCount,components: f_components,remove_components: f_removeComponents
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(3)?;
+	let f_itemId = super::super::varint::deserialize(input)?;
+	let f_addedComponentCount = super::super::varint::deserialize(input)?;
+	let f_removedComponentCount = super::super::varint::deserialize(input)?;
+	let f_components = super::array::sized_368::deserialize(
+		input,
+		super::array::sized_368::Args {
+			count: {
+				let _0: &super::super::Varint = &f_addedComponentCount;
+				_0
+			},
+		},
+	)?;
+	let f_removeComponents = super::super::array::sized_367::deserialize(
+		input,
+		super::super::array::sized_367::Args {
+			count: {
+				let _0: &super::super::Varint = &f_removedComponentCount;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		item_id: f_itemId,
+		added_component_count: f_addedComponentCount,
+		removed_component_count: f_removedComponentCount,
+		components: f_components,
+		remove_components: f_removeComponents,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.item_id
-    )
-    + super::super::varint::size_of(
-        &_0.added_component_count
-    )
-    + super::super::varint::size_of(
-        &_0.removed_component_count
-    )
-    + super::array::sized_368::size_of(
-        &_0.components
-    )
-    + super::super::array::sized_367::size_of(
-        &_0.remove_components
-    )
+	0 + super::super::varint::size_of(&_0.item_id)
+		+ super::super::varint::size_of(&_0.added_component_count)
+		+ super::super::varint::size_of(&_0.removed_component_count)
+		+ super::array::sized_368::size_of(&_0.components)
+		+ super::super::array::sized_367::size_of(&_0.remove_components)
 }
 pub fn view<'i>(_0: &'i super::super::UntrustedSlot71) -> Ty<'i> {
-    Ty {
-        item_id: ::core::clone::Clone::clone(&_0.item_id),added_component_count: ::core::clone::Clone::clone(&_0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&_0.removed_component_count),components: super::array::sized_368::view(&_0.components),remove_components: ::core::clone::Clone::clone(&_0.remove_components)
-    }
+	Ty {
+		item_id: ::core::clone::Clone::clone(&_0.item_id),
+		added_component_count: ::core::clone::Clone::clone(&_0.added_component_count),
+		removed_component_count: ::core::clone::Clone::clone(&_0.removed_component_count),
+		components: super::array::sized_368::view(&_0.components),
+		remove_components: ::core::clone::Clone::clone(&_0.remove_components),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::UntrustedSlot71) -> Ty<'i> {
-    Ty {
-        item_id: ::core::clone::Clone::clone(&mut _0.item_id),added_component_count: ::core::clone::Clone::clone(&mut _0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&mut _0.removed_component_count),components: super::array::sized_368::view(&mut _0.components),remove_components: ::core::mem::take(&mut _0.remove_components)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::UntrustedSlot71) -> Ty<'i> {
+	Ty {
+		item_id: ::core::clone::Clone::clone(&mut _0.item_id),
+		added_component_count: ::core::clone::Clone::clone(&mut _0.added_component_count),
+		removed_component_count: ::core::clone::Clone::clone(&mut _0.removed_component_count),
+		components: super::array::sized_368::view(&mut _0.components),
+		remove_components: ::core::mem::take(&mut _0.remove_components),
+	}
 }
- pub type Ty<'i> = UntrustedSlot71<'i>;
+pub type Ty<'i> = UntrustedSlot71<'i>;

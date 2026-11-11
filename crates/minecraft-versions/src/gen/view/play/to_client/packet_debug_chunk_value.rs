@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDebugChunkValue<'i> {
-    pub chunk_pos: super::super::super::super::PackedChunkPos,
-    pub update: super::super::super::DebugSubscriptionUpdate::<'i>,
+	pub chunk_pos: super::super::super::super::PackedChunkPos,
+	pub update: super::super::super::DebugSubscriptionUpdate<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::packed_chunk_pos::serialize(
-        &_0.chunk_pos,
-        output,
-    )?;
-    super::super::super::debug_subscription_update::serialize(
-        &_0.update,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::packed_chunk_pos::serialize(&_0.chunk_pos, output)?;
+	super::super::super::debug_subscription_update::serialize(&_0.update, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(9)?;
-    let f_chunkPos = super::super::super::super::packed_chunk_pos::deserialize(
-        input,
-    )?;
-    let f_update = super::super::super::debug_subscription_update::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        chunk_pos: f_chunkPos,update: f_update
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(9)?;
+	let f_chunkPos = super::super::super::super::packed_chunk_pos::deserialize(input)?;
+	let f_update = super::super::super::debug_subscription_update::deserialize(input)?;
+	Ok(Ty {
+		chunk_pos: f_chunkPos,
+		update: f_update,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::packed_chunk_pos::size_of(
-        &_0.chunk_pos
-    )
-    + super::super::super::debug_subscription_update::size_of(
-        &_0.update
-    )
+	0 + super::super::super::super::packed_chunk_pos::size_of(&_0.chunk_pos)
+		+ super::super::super::debug_subscription_update::size_of(&_0.update)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketDebugChunkValue) -> Ty<'i> {
-    Ty {
-        chunk_pos: ::core::clone::Clone::clone(&_0.chunk_pos),update: super::super::super::debug_subscription_update::view(&_0.update)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketDebugChunkValue,
+) -> Ty<'i> {
+	Ty {
+		chunk_pos: ::core::clone::Clone::clone(&_0.chunk_pos),
+		update: super::super::super::debug_subscription_update::view(&_0.update),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketDebugChunkValue) -> Ty<'i> {
-    Ty {
-        chunk_pos: ::core::clone::Clone::clone(&mut _0.chunk_pos),update: super::super::super::debug_subscription_update::into_view(&mut _0.update)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketDebugChunkValue,
+) -> Ty<'i> {
+	Ty {
+		chunk_pos: ::core::clone::Clone::clone(&mut _0.chunk_pos),
+		update: super::super::super::debug_subscription_update::into_view(&mut _0.update),
+	}
 }
- pub type Ty<'i> = PacketDebugChunkValue<'i>;
+pub type Ty<'i> = PacketDebugChunkValue<'i>;

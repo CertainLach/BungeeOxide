@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardObjective<'i> {
-    pub name: super::super::super::Pstring96::<'i>,
-    pub action: super::PacketScoreboardObjective40::<'i>,
+	pub name: super::super::super::Pstring96<'i>,
+	pub action: super::PacketScoreboardObjective40<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::packet_scoreboard_objective_40::serialize(
-        &_0.action,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::packet_scoreboard_objective_40::serialize(&_0.action, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_name = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_action = super::packet_scoreboard_objective_40::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,action: f_action
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_name = super::super::super::pstring_96::deserialize(input)?;
+	let f_action = super::packet_scoreboard_objective_40::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		action: f_action,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::packet_scoreboard_objective_40::size_of(
-        &_0.action
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.name)
+		+ super::packet_scoreboard_objective_40::size_of(&_0.action)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScoreboardObjective) -> Ty<'i> {
-    Ty {
-        name: super::super::super::pstring_96::view(&_0.name),action: super::packet_scoreboard_objective_40::view(&_0.action)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketScoreboardObjective,
+) -> Ty<'i> {
+	Ty {
+		name: super::super::super::pstring_96::view(&_0.name),
+		action: super::packet_scoreboard_objective_40::view(&_0.action),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardObjective) -> Ty<'i> {
-    Ty {
-        name: super::super::super::pstring_96::view(&mut _0.name),action: super::packet_scoreboard_objective_40::into_view(&mut _0.action)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardObjective,
+) -> Ty<'i> {
+	Ty {
+		name: super::super::super::pstring_96::view(&mut _0.name),
+		action: super::packet_scoreboard_objective_40::into_view(&mut _0.action),
+	}
 }
- pub type Ty<'i> = PacketScoreboardObjective<'i>;
+pub type Ty<'i> = PacketScoreboardObjective<'i>;

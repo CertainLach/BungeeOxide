@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionEvent6 {
-    pub priority: super::Varint,
-    pub running: super::Bool,
-    pub name: String,
+	pub priority: super::Varint,
+	pub running: super::Bool,
+	pub name: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.priority,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.running,
-        output,
-    )?;
-    super::pstring_39::serialize(
-        &_0.name,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.priority, output)?;
+	super::bool::serialize(&_0.running, output)?;
+	super::pstring_39::serialize(&_0.name, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_priority = super::varint::deserialize(
-        input,
-    )?;
-    let f_running = super::bool::deserialize(
-        input,
-    )?;
-    let f_name = super::pstring_39::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        priority: f_priority,running: f_running,name: f_name
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_priority = super::varint::deserialize(input)?;
+	let f_running = super::bool::deserialize(input)?;
+	let f_name = super::pstring_39::deserialize(input)?;
+	Ok(Ty {
+		priority: f_priority,
+		running: f_running,
+		name: f_name,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.priority
-    )
-    + super::bool::size_of(
-        &_0.running
-    )
-    + super::pstring_39::size_of(
-        &_0.name
-    )
+	0 + super::varint::size_of(&_0.priority)
+		+ super::bool::size_of(&_0.running)
+		+ super::pstring_39::size_of(&_0.name)
 }
- pub type Ty = DebugSubscriptionEvent6;
+pub type Ty = DebugSubscriptionEvent6;

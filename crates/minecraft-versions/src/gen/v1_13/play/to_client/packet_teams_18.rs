@@ -3,105 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTeams18 {
-    pub name: String,
-    pub friendly_fire: super::super::super::super::I8,
-    pub name_tag_visibility: String,
-    pub collision_rule: String,
-    pub formatting: super::super::super::super::Varint,
-    pub prefix: String,
-    pub suffix: String,
-    pub players: Vec<String>,
+	pub name: String,
+	pub friendly_fire: super::super::super::super::I8,
+	pub name_tag_visibility: String,
+	pub collision_rule: String,
+	pub formatting: super::super::super::super::Varint,
+	pub prefix: String,
+	pub suffix: String,
+	pub players: Vec<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.friendly_fire,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.name_tag_visibility,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.collision_rule,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.formatting,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.prefix,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.suffix,
-        output,
-    )?;
-    super::super::super::super::array::inline_57::serialize(
-        &_0.players,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::i8::serialize(&_0.friendly_fire, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.name_tag_visibility, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.collision_rule, output)?;
+	super::super::super::super::varint::serialize(&_0.formatting, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.prefix, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.suffix, output)?;
+	super::super::super::super::array::inline_57::serialize(&_0.players, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_friendlyFire = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_nameTagVisibility = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_collisionRule = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_formatting = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_prefix = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_suffix = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_players = super::super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,friendly_fire: f_friendlyFire,name_tag_visibility: f_nameTagVisibility,collision_rule: f_collisionRule,formatting: f_formatting,prefix: f_prefix,suffix: f_suffix,players: f_players
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_friendlyFire = super::super::super::super::i8::deserialize(input)?;
+	let f_nameTagVisibility = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_collisionRule = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_formatting = super::super::super::super::varint::deserialize(input)?;
+	let f_prefix = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_suffix = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_players = super::super::super::super::array::inline_57::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		friendly_fire: f_friendlyFire,
+		name_tag_visibility: f_nameTagVisibility,
+		collision_rule: f_collisionRule,
+		formatting: f_formatting,
+		prefix: f_prefix,
+		suffix: f_suffix,
+		players: f_players,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.friendly_fire
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name_tag_visibility
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.collision_rule
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.formatting
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.prefix
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.suffix
-    )
-    + super::super::super::super::array::inline_57::size_of(
-        &_0.players
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::i8::size_of(&_0.friendly_fire)
+		+ super::super::super::super::pstring_96::size_of(&_0.name_tag_visibility)
+		+ super::super::super::super::pstring_96::size_of(&_0.collision_rule)
+		+ super::super::super::super::varint::size_of(&_0.formatting)
+		+ super::super::super::super::pstring_96::size_of(&_0.prefix)
+		+ super::super::super::super::pstring_96::size_of(&_0.suffix)
+		+ super::super::super::super::array::inline_57::size_of(&_0.players)
 }
- pub type Ty = PacketTeams18;
+pub type Ty = PacketTeams18;

@@ -3,30 +3,32 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent33 {
-    Id(super::super::Varint),
-    Inline(super::super::JukeboxSongData),
+	Id(super::super::Varint),
+	Inline(super::super::JukeboxSongData),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::varint::serialize(&0, output)?;
-            super::super::jukebox_song_data::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::varint::serialize(&0, output)?;
+			super::super::jukebox_song_data::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let n = super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::super::jukebox_song_data::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let n = super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::super::jukebox_song_data::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::varint::size_of(&0) + super::super::jukebox_song_data::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => {
+			super::super::varint::size_of(&0) + super::super::jukebox_song_data::size_of(v)
+		}
+	}
 }
- pub type Ty = SlotComponent33;
+pub type Ty = SlotComponent33;

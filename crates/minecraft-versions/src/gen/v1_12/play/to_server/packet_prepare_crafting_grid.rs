@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPrepareCraftingGrid {
-    pub window_id: super::super::super::super::U8,
-    pub action_number: super::super::super::super::U16,
-    pub return_entry: Vec<super::PacketPrepareCraftingGrid0>,
-    pub prepare_entry: Vec<super::PacketPrepareCraftingGrid1>,
+	pub window_id: super::super::super::super::U8,
+	pub action_number: super::super::super::super::U16,
+	pub return_entry: Vec<super::PacketPrepareCraftingGrid0>,
+	pub prepare_entry: Vec<super::PacketPrepareCraftingGrid1>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::u8::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.action_number,
-        output,
-    )?;
-    super::super::super::super::array::inline_18::serialize(
-        &_0.return_entry,
-        output,
-    )?;
-    super::super::super::super::array::inline_19::serialize(
-        &_0.prepare_entry,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::u8::serialize(&_0.window_id, output)?;
+	super::super::super::super::u16::serialize(&_0.action_number, output)?;
+	super::super::super::super::array::inline_18::serialize(&_0.return_entry, output)?;
+	super::super::super::super::array::inline_19::serialize(&_0.prepare_entry, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(7)?;
-    let f_windowId = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_actionNumber = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_returnEntry = super::super::super::super::array::inline_18::deserialize(
-        input,
-    )?;
-    let f_prepareEntry = super::super::super::super::array::inline_19::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,action_number: f_actionNumber,return_entry: f_returnEntry,prepare_entry: f_prepareEntry
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(7)?;
+	let f_windowId = super::super::super::super::u8::deserialize(input)?;
+	let f_actionNumber = super::super::super::super::u16::deserialize(input)?;
+	let f_returnEntry = super::super::super::super::array::inline_18::deserialize(input)?;
+	let f_prepareEntry = super::super::super::super::array::inline_19::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		action_number: f_actionNumber,
+		return_entry: f_returnEntry,
+		prepare_entry: f_prepareEntry,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::u8::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.action_number
-    )
-    + super::super::super::super::array::inline_18::size_of(
-        &_0.return_entry
-    )
-    + super::super::super::super::array::inline_19::size_of(
-        &_0.prepare_entry
-    )
+	0 + super::super::super::super::u8::size_of(&_0.window_id)
+		+ super::super::super::super::u16::size_of(&_0.action_number)
+		+ super::super::super::super::array::inline_18::size_of(&_0.return_entry)
+		+ super::super::super::super::array::inline_19::size_of(&_0.prepare_entry)
 }
- pub type Ty = PacketPrepareCraftingGrid;
+pub type Ty = PacketPrepareCraftingGrid;

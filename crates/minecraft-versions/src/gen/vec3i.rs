@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vec3i {
-    pub x: super::Varint,
-    pub y: super::Varint,
-    pub z: super::Varint,
+	pub x: super::Varint,
+	pub y: super::Varint,
+	pub z: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.x, output)?;
+	super::varint::serialize(&_0.y, output)?;
+	super::varint::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_x = super::varint::deserialize(
-        input,
-    )?;
-    let f_y = super::varint::deserialize(
-        input,
-    )?;
-    let f_z = super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_x = super::varint::deserialize(input)?;
+	let f_y = super::varint::deserialize(input)?;
+	let f_z = super::varint::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.x
-    )
-    + super::varint::size_of(
-        &_0.y
-    )
-    + super::varint::size_of(
-        &_0.z
-    )
+	0 + super::varint::size_of(&_0.x)
+		+ super::varint::size_of(&_0.y)
+		+ super::varint::size_of(&_0.z)
 }
- pub type Ty = Vec3i;
+pub type Ty = Vec3i;

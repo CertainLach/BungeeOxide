@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent32 {
-    pub name: String,
-    pub value: String,
-    pub signature: Option<String>,
+	pub name: String,
+	pub value: String,
+	pub signature: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::pstring_96::serialize(
-        &_0.value,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::pstring_96::serialize(&_0.value, output)?;
+	super::super::option_18::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_name = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_name = super::super::pstring_96::deserialize(input)?;
+	let f_value = super::super::pstring_96::deserialize(input)?;
+	let f_signature = super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::pstring_96::size_of(
-        &_0.value
-    )
-    + super::super::option_18::size_of(
-        &_0.signature
-    )
+	0 + super::super::pstring_96::size_of(&_0.name)
+		+ super::super::pstring_96::size_of(&_0.value)
+		+ super::super::option_18::size_of(&_0.signature)
 }
- pub type Ty = SlotComponent32;
+pub type Ty = SlotComponent32;

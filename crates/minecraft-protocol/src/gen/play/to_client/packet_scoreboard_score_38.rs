@@ -2,60 +2,64 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub number_format: &'a Option<super::super::super::Varint>,
+	pub number_format: &'a Option<super::super::super::Varint>,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketScoreboardScore38 {
-    V1(super::super::super::AnonymousNbt),
-    V2(super::super::super::AnonymousNbt),
-    Default(Option<super::super::super::Varint>),
+	V1(super::super::super::AnonymousNbt),
+	V2(super::super::super::AnonymousNbt),
+	Default(Option<super::super::super::Varint>),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::V1(__v) => super::super::super::anonymous_nbt::serialize(__v, output),
-        Ty::V2(__v) => super::super::super::anonymous_nbt::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::V1(__v) => super::super::super::anonymous_nbt::serialize(__v, output),
+		Ty::V2(__v) => super::super::super::anonymous_nbt::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.number_format;
-    if (__tag.clone() == Some(1_i32)) {
-        return Ok(Ty::V1(super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == Some(2_i32)) {
-        return Ok(Ty::V2(super::super::super::anonymous_nbt::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.number_format;
+	if (__tag.clone() == Some(1_i32)) {
+		return Ok(Ty::V1(super::super::super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == Some(2_i32)) {
+		return Ok(Ty::V2(super::super::super::anonymous_nbt::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::V1(__v) => super::super::super::anonymous_nbt::size_of(__v),
-        Ty::V2(__v) => super::super::super::anonymous_nbt::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::V1(__v) => super::super::super::anonymous_nbt::size_of(__v),
+		Ty::V2(__v) => super::super::super::anonymous_nbt::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V1(_) => "v1",
-        Ty::V2(_) => "v2",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V1(_) => "v1",
+		Ty::V2(_) => "v2",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &Option<super::super::super::Varint>) {
-    debug_assert!(
-        match _0 {
-            Ty::V1(_) => (__tag.clone() == Some(1_i32)),
-            Ty::V2(_) => (__tag.clone() == Some(2_i32)),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::V1(_) => (__tag.clone() == Some(1_i32)),
+			Ty::V2(_) => (__tag.clone() == Some(2_i32)),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
 pub fn virtual_tag(_0: &Ty) -> Option<super::super::super::Varint> {
-    match _0 {
-        Ty::V1(_) => Some(1_i32),
-        Ty::V2(_) => Some(2_i32),
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V1(_) => Some(1_i32),
+		Ty::V2(_) => Some(2_i32),
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketScoreboardScore38;
+pub type Ty = PacketScoreboardScore38;

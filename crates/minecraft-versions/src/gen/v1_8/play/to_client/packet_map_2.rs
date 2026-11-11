@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMap2 {
-    pub rows: super::super::super::super::I8,
-    pub x: super::super::super::super::I8,
-    pub y: super::super::super::super::I8,
-    pub data: Vec<u8>,
+	pub rows: super::super::super::super::I8,
+	pub x: super::super::super::super::I8,
+	pub y: super::super::super::super::I8,
+	pub data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.rows,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.rows, output)?;
+	super::super::super::super::i8::serialize(&_0.x, output)?;
+	super::super::super::super::i8::serialize(&_0.y, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_rows = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        rows: f_rows,x: f_x,y: f_y,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_rows = super::super::super::super::i8::deserialize(input)?;
+	let f_x = super::super::super::super::i8::deserialize(input)?;
+	let f_y = super::super::super::super::i8::deserialize(input)?;
+	let f_data = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		rows: f_rows,
+		x: f_x,
+		y: f_y,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.rows
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.y
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::i8::size_of(&_0.rows)
+		+ super::super::super::super::i8::size_of(&_0.x)
+		+ super::super::super::super::i8::size_of(&_0.y)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.data)
 }
- pub type Ty = PacketMap2;
+pub type Ty = PacketMap2;

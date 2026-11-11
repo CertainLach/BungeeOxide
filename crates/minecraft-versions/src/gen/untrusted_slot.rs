@@ -3,46 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct UntrustedSlot {
-    pub item_count: super::Varint,
-    pub anon: super::UntrustedSlot72,
+	pub item_count: super::Varint,
+	pub anon: super::UntrustedSlot72,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::untrusted_slot_72::debug_assert_tag(
-        &_0.anon,
-        {let _0: &super::Varint = &_0.item_count;_0},
-    );
-    super::untrusted_slot_72::serialize(
-        &_0.anon,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.item_count, output)?;
+	super::untrusted_slot_72::debug_assert_tag(&_0.anon, {
+		let _0: &super::Varint = &_0.item_count;
+		_0
+	});
+	super::untrusted_slot_72::serialize(&_0.anon, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_itemCount = super::varint::deserialize(
-        input,
-    )?;
-    let f_ANON = super::untrusted_slot_72::deserialize(
-        input,
-        super::untrusted_slot_72::Args {
-            item_count: {let _0: &super::Varint = &f_itemCount;_0}
-        },
-    )?;
-    Ok(Ty {
-        item_count: f_itemCount,anon: f_ANON
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_itemCount = super::varint::deserialize(input)?;
+	let f_ANON = super::untrusted_slot_72::deserialize(
+		input,
+		super::untrusted_slot_72::Args {
+			item_count: {
+				let _0: &super::Varint = &f_itemCount;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		item_count: f_itemCount,
+		anon: f_ANON,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.item_count
-    )
-    + super::untrusted_slot_72::size_of(
-        &_0.anon
-    )
+	0 + super::varint::size_of(&_0.item_count) + super::untrusted_slot_72::size_of(&_0.anon)
 }
- pub type Ty = UntrustedSlot;
+pub type Ty = UntrustedSlot;

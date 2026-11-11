@@ -3,38 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemWrittenBookPage {
-    pub content: super::AnonymousNbt,
-    pub filtered_content: super::AnonOptionalNbt,
+	pub content: super::AnonymousNbt,
+	pub filtered_content: super::AnonOptionalNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::anonymous_nbt::serialize(
-        &_0.content,
-        output,
-    )?;
-    super::anon_optional_nbt::serialize(
-        &_0.filtered_content,
-        output,
-    )?;
-    Ok(())
+	super::anonymous_nbt::serialize(&_0.content, output)?;
+	super::anon_optional_nbt::serialize(&_0.filtered_content, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_content = super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_filteredContent = super::anon_optional_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        content: f_content,filtered_content: f_filteredContent
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let f_content = super::anonymous_nbt::deserialize(input)?;
+	let f_filteredContent = super::anon_optional_nbt::deserialize(input)?;
+	Ok(Ty {
+		content: f_content,
+		filtered_content: f_filteredContent,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::anonymous_nbt::size_of(
-        &_0.content
-    )
-    + super::anon_optional_nbt::size_of(
-        &_0.filtered_content
-    )
+	0 + super::anonymous_nbt::size_of(&_0.content)
+		+ super::anon_optional_nbt::size_of(&_0.filtered_content)
 }
- pub type Ty = ItemWrittenBookPage;
+pub type Ty = ItemWrittenBookPage;

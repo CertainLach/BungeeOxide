@@ -3,55 +3,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginPluginRequest<'i> {
-    pub message_id: super::super::super::super::Varint,
-    pub channel: super::super::super::Pstring96::<'i>,
-    pub data: super::super::super::RestBuffer::<'i>,
+	pub message_id: super::super::super::super::Varint,
+	pub channel: super::super::super::Pstring96<'i>,
+	pub data: super::super::super::RestBuffer<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.message_id,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.channel,
-        output,
-    )?;
-    super::super::super::rest_buffer::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.message_id, output)?;
+	super::super::super::pstring_96::serialize(&_0.channel, output)?;
+	super::super::super::rest_buffer::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_messageId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_channel = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::rest_buffer::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message_id: f_messageId,channel: f_channel,data: f_data
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_messageId = super::super::super::super::varint::deserialize(input)?;
+	let f_channel = super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::super::super::rest_buffer::deserialize(input)?;
+	Ok(Ty {
+		message_id: f_messageId,
+		channel: f_channel,
+		data: f_data,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.message_id
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.channel
-    )
-    + super::super::super::rest_buffer::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::varint::size_of(&_0.message_id)
+		+ super::super::super::pstring_96::size_of(&_0.channel)
+		+ super::super::super::rest_buffer::size_of(&_0.data)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::PacketLoginPluginRequest) -> Ty<'i> {
-    Ty {
-        message_id: ::core::clone::Clone::clone(&_0.message_id),channel: super::super::super::pstring_96::view(&_0.channel),data: super::super::super::rest_buffer::view(&_0.data)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::login::to_client::PacketLoginPluginRequest,
+) -> Ty<'i> {
+	Ty {
+		message_id: ::core::clone::Clone::clone(&_0.message_id),
+		channel: super::super::super::pstring_96::view(&_0.channel),
+		data: super::super::super::rest_buffer::view(&_0.data),
+	}
 }
- pub type Ty<'i> = PacketLoginPluginRequest<'i>;
+pub type Ty<'i> = PacketLoginPluginRequest<'i>;

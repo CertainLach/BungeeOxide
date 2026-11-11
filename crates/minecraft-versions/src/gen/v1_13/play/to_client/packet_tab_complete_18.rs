@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTabComplete18 {
-    pub r#match: String,
-    pub tooltip: Option<String>,
+	pub r#match: String,
+	pub tooltip: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.r#match,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.tooltip,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.r#match, output)?;
+	super::super::super::super::option_18::serialize(&_0.tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_match = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_tooltip = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#match: f_match,tooltip: f_tooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_match = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_tooltip = super::super::super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		r#match: f_match,
+		tooltip: f_tooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.r#match
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.tooltip
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.r#match)
+		+ super::super::super::super::option_18::size_of(&_0.tooltip)
 }
- pub type Ty = PacketTabComplete18;
+pub type Ty = PacketTabComplete18;

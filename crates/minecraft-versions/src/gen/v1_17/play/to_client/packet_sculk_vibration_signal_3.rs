@@ -2,53 +2,57 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub destination_identifier: &'a String,
+	pub destination_identifier: &'a String,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketSculkVibrationSignal3 {
-    Block(super::super::super::super::Position),
-    EntityId(super::super::super::super::Varint),
-    Default(String),
+	Block(super::super::super::super::Position),
+	EntityId(super::super::super::super::Varint),
+	Default(String),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Block(__v) => super::super::super::super::position::serialize(__v, output),
-        Ty::EntityId(__v) => super::super::super::super::varint::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::Block(__v) => super::super::super::super::position::serialize(__v, output),
+		Ty::EntityId(__v) => super::super::super::super::varint::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.destination_identifier;
-    if (__tag.clone() == String::from("block")) {
-        return Ok(Ty::Block(super::super::super::super::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == String::from("entityId")) {
-        return Ok(Ty::EntityId(super::super::super::super::varint::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.destination_identifier;
+	if (__tag.clone() == String::from("block")) {
+		return Ok(Ty::Block(
+			super::super::super::super::position::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == String::from("entityId")) {
+		return Ok(Ty::EntityId(
+			super::super::super::super::varint::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::Block(__v) => super::super::super::super::position::size_of(__v),
-        Ty::EntityId(__v) => super::super::super::super::varint::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::Block(__v) => super::super::super::super::position::size_of(__v),
+		Ty::EntityId(__v) => super::super::super::super::varint::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Block(_) => "block",
-        Ty::EntityId(_) => "entityId",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Block(_) => "block",
+		Ty::EntityId(_) => "entityId",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &String) {
-    debug_assert!(
-        match _0 {
-            Ty::Block(_) => (__tag.clone() == String::from("block")),
-            Ty::EntityId(_) => (__tag.clone() == String::from("entityId")),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::Block(_) => (__tag.clone() == String::from("block")),
+			Ty::EntityId(_) => (__tag.clone() == String::from("entityId")),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = PacketSculkVibrationSignal3;
+pub type Ty = PacketSculkVibrationSignal3;

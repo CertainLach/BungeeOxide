@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonStoreCookie {
-    pub key: String,
-    pub value: Vec<u8>,
+	pub key: String,
+	pub value: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::buffer::inline_3::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.key, output)?;
+	super::buffer::inline_3::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_key = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_key = super::pstring_96::deserialize(input)?;
+	let f_value = super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::buffer::inline_3::size_of(
-        &_0.value
-    )
+	0 + super::pstring_96::size_of(&_0.key) + super::buffer::inline_3::size_of(&_0.value)
 }
- pub type Ty = PacketCommonStoreCookie;
+pub type Ty = PacketCommonStoreCookie;

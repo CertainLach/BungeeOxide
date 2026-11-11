@@ -3,42 +3,48 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent44<'i> {
-    Id(super::super::super::Varint),
-    Inline(super::super::InstrumentData::<'i>),
+	Id(super::super::super::Varint),
+	Inline(super::super::InstrumentData<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::super::super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::super::super::varint::serialize(&0, output)?;
-            super::super::instrument_data::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::super::super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::super::super::varint::serialize(&0, output)?;
+			super::super::instrument_data::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let n = super::super::super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::super::instrument_data::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let n = super::super::super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::super::instrument_data::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    match _0 {
-        Ty::Id(id) => super::super::super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::super::super::varint::size_of(&0) + super::super::instrument_data::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::super::super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => {
+			super::super::super::varint::size_of(&0) + super::super::instrument_data::size_of(v)
+		}
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent44) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::SlotComponent44::Id(id) => Ty::Id(*id),
-        super::super::super::v1_21_11::SlotComponent44::Inline(v) => Ty::Inline(super::super::instrument_data::view(v)),
-    }
+	match _0 {
+		super::super::super::v1_21_11::SlotComponent44::Id(id) => Ty::Id(*id),
+		super::super::super::v1_21_11::SlotComponent44::Inline(v) => {
+			Ty::Inline(super::super::instrument_data::view(v))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent44) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::SlotComponent44::Id(id) => Ty::Id(*id),
-        super::super::super::v1_21_11::SlotComponent44::Inline(v) => Ty::Inline(super::super::instrument_data::into_view(v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent44) -> Ty<'i> {
+	match _0 {
+		super::super::super::v1_21_11::SlotComponent44::Id(id) => Ty::Id(*id),
+		super::super::super::v1_21_11::SlotComponent44::Inline(v) => {
+			Ty::Inline(super::super::instrument_data::into_view(v))
+		}
+	}
 }
- pub type Ty<'i> = SlotComponent44<'i>;
+pub type Ty<'i> = SlotComponent44<'i>;

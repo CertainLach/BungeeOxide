@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDebugBlockValue {
-    pub block_pos: super::super::super::Position,
-    pub update: super::super::super::DebugSubscriptionUpdate,
+	pub block_pos: super::super::super::Position,
+	pub update: super::super::super::DebugSubscriptionUpdate,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.block_pos,
-        output,
-    )?;
-    super::super::super::debug_subscription_update::serialize(
-        &_0.update,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.block_pos, output)?;
+	super::super::super::debug_subscription_update::serialize(&_0.update, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_blockPos = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_update = super::super::super::debug_subscription_update::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        block_pos: f_blockPos,update: f_update
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_blockPos = super::super::super::position::deserialize(input)?;
+	let f_update = super::super::super::debug_subscription_update::deserialize(input)?;
+	Ok(Ty {
+		block_pos: f_blockPos,
+		update: f_update,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.block_pos
-    )
-    + super::super::super::debug_subscription_update::size_of(
-        &_0.update
-    )
+	0 + super::super::super::position::size_of(&_0.block_pos)
+		+ super::super::super::debug_subscription_update::size_of(&_0.update)
 }
- pub type Ty = PacketDebugBlockValue;
+pub type Ty = PacketDebugBlockValue;

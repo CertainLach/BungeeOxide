@@ -3,161 +3,168 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum DebugSubscriptionUpdate {
-    DedicatedServerTickTime,
-    Bees(Option<super::DebugSubscriptionUpdate9>),
-    VillageSections(Option<super::Void>),
-    Raids(Option<Vec<super::Position>>),
-    Structures(Option<Vec<super::DebugStructureInfo>>),
-    GameEventListeners(Option<super::Varint>),
-    NeighborUpdates(Option<super::Position>),
-    GameEvents(Option<super::DebugSubscriptionUpdate10>),
-    Brains(Option<super::DebugSubscriptionUpdate11>),
-    Breezes(Option<super::DebugSubscriptionUpdate12>),
-    GoalSelectors(Option<Vec<super::DebugSubscriptionUpdate13>>),
-    EntityPaths(Option<super::DebugSubscriptionUpdate14>),
-    EntityBlockIntersections(Option<super::Varint>),
-    BeeHives(Option<super::DebugSubscriptionUpdate15>),
-    Pois(Option<super::DebugSubscriptionUpdate16>),
-    RedstoneWireOrientations(Option<super::Varint>),
-    Default(super::Varint, Option<super::Void>),
+	DedicatedServerTickTime,
+	Bees(Option<super::DebugSubscriptionUpdate9>),
+	VillageSections(Option<super::Void>),
+	Raids(Option<Vec<super::Position>>),
+	Structures(Option<Vec<super::DebugStructureInfo>>),
+	GameEventListeners(Option<super::Varint>),
+	NeighborUpdates(Option<super::Position>),
+	GameEvents(Option<super::DebugSubscriptionUpdate10>),
+	Brains(Option<super::DebugSubscriptionUpdate11>),
+	Breezes(Option<super::DebugSubscriptionUpdate12>),
+	GoalSelectors(Option<Vec<super::DebugSubscriptionUpdate13>>),
+	EntityPaths(Option<super::DebugSubscriptionUpdate14>),
+	EntityBlockIntersections(Option<super::Varint>),
+	BeeHives(Option<super::DebugSubscriptionUpdate15>),
+	Pois(Option<super::DebugSubscriptionUpdate16>),
+	RedstoneWireOrientations(Option<super::Varint>),
+	Default(super::Varint, Option<super::Void>),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::DedicatedServerTickTime => Ok(()),
-        Ty::Bees(__v) => super::option_21::serialize(__v, output),
-        Ty::VillageSections(__v) => super::option_20::serialize(__v, output),
-        Ty::Raids(__v) => super::option_34::serialize(__v, output),
-        Ty::Structures(__v) => super::option_35::serialize(__v, output),
-        Ty::GameEventListeners(__v) => super::option_17::serialize(__v, output),
-        Ty::NeighborUpdates(__v) => super::option_14::serialize(__v, output),
-        Ty::GameEvents(__v) => super::option_22::serialize(__v, output),
-        Ty::Brains(__v) => super::option_23::serialize(__v, output),
-        Ty::Breezes(__v) => super::option_24::serialize(__v, output),
-        Ty::GoalSelectors(__v) => super::option_36::serialize(__v, output),
-        Ty::EntityPaths(__v) => super::option_25::serialize(__v, output),
-        Ty::EntityBlockIntersections(__v) => super::option_17::serialize(__v, output),
-        Ty::BeeHives(__v) => super::option_26::serialize(__v, output),
-        Ty::Pois(__v) => super::option_27::serialize(__v, output),
-        Ty::RedstoneWireOrientations(__v) => super::option_17::serialize(__v, output),
-        Ty::Default(_, __v) => super::option_20::serialize(__v, output),
-    }
+	super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::DedicatedServerTickTime => Ok(()),
+		Ty::Bees(__v) => super::option_21::serialize(__v, output),
+		Ty::VillageSections(__v) => super::option_20::serialize(__v, output),
+		Ty::Raids(__v) => super::option_34::serialize(__v, output),
+		Ty::Structures(__v) => super::option_35::serialize(__v, output),
+		Ty::GameEventListeners(__v) => super::option_17::serialize(__v, output),
+		Ty::NeighborUpdates(__v) => super::option_14::serialize(__v, output),
+		Ty::GameEvents(__v) => super::option_22::serialize(__v, output),
+		Ty::Brains(__v) => super::option_23::serialize(__v, output),
+		Ty::Breezes(__v) => super::option_24::serialize(__v, output),
+		Ty::GoalSelectors(__v) => super::option_36::serialize(__v, output),
+		Ty::EntityPaths(__v) => super::option_25::serialize(__v, output),
+		Ty::EntityBlockIntersections(__v) => super::option_17::serialize(__v, output),
+		Ty::BeeHives(__v) => super::option_26::serialize(__v, output),
+		Ty::Pois(__v) => super::option_27::serialize(__v, output),
+		Ty::RedstoneWireOrientations(__v) => super::option_17::serialize(__v, output),
+		Ty::Default(_, __v) => super::option_20::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::DedicatedServerTickTime); }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::Bees(super::option_21::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) {
-        return Ok(Ty::VillageSections(super::option_20::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_i32) {
-        return Ok(Ty::Raids(super::option_34::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_i32) {
-        return Ok(Ty::Structures(super::option_35::deserialize(input, )?));
-    }
-    if (__tag.clone() == 13_i32) {
-        return Ok(Ty::GameEventListeners(super::option_17::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::NeighborUpdates(super::option_14::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) {
-        return Ok(Ty::GameEvents(super::option_22::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::Brains(super::option_23::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::Breezes(super::option_24::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::GoalSelectors(super::option_36::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::EntityPaths(super::option_25::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::EntityBlockIntersections(super::option_17::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::BeeHives(super::option_26::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::Pois(super::option_27::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_i32) {
-        return Ok(Ty::RedstoneWireOrientations(super::option_17::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv, super::option_20::deserialize(input, )?))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::DedicatedServerTickTime);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Bees(super::option_21::deserialize(input)?));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::VillageSections(super::option_20::deserialize(input)?));
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::Raids(super::option_34::deserialize(input)?));
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::Structures(super::option_35::deserialize(input)?));
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::GameEventListeners(super::option_17::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::NeighborUpdates(super::option_14::deserialize(input)?));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::GameEvents(super::option_22::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Brains(super::option_23::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Breezes(super::option_24::deserialize(input)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::GoalSelectors(super::option_36::deserialize(input)?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::EntityPaths(super::option_25::deserialize(input)?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::EntityBlockIntersections(super::option_17::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::BeeHives(super::option_26::deserialize(input)?));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::Pois(super::option_27::deserialize(input)?));
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::RedstoneWireOrientations(super::option_17::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tagv, super::option_20::deserialize(input)?))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::DedicatedServerTickTime => 0,
-        Ty::Bees(__v) => super::option_21::size_of(__v),
-        Ty::VillageSections(__v) => super::option_20::size_of(__v),
-        Ty::Raids(__v) => super::option_34::size_of(__v),
-        Ty::Structures(__v) => super::option_35::size_of(__v),
-        Ty::GameEventListeners(__v) => super::option_17::size_of(__v),
-        Ty::NeighborUpdates(__v) => super::option_14::size_of(__v),
-        Ty::GameEvents(__v) => super::option_22::size_of(__v),
-        Ty::Brains(__v) => super::option_23::size_of(__v),
-        Ty::Breezes(__v) => super::option_24::size_of(__v),
-        Ty::GoalSelectors(__v) => super::option_36::size_of(__v),
-        Ty::EntityPaths(__v) => super::option_25::size_of(__v),
-        Ty::EntityBlockIntersections(__v) => super::option_17::size_of(__v),
-        Ty::BeeHives(__v) => super::option_26::size_of(__v),
-        Ty::Pois(__v) => super::option_27::size_of(__v),
-        Ty::RedstoneWireOrientations(__v) => super::option_17::size_of(__v),
-        Ty::Default(_, __v) => super::option_20::size_of(__v),
-    }
+	super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::DedicatedServerTickTime => 0,
+			Ty::Bees(__v) => super::option_21::size_of(__v),
+			Ty::VillageSections(__v) => super::option_20::size_of(__v),
+			Ty::Raids(__v) => super::option_34::size_of(__v),
+			Ty::Structures(__v) => super::option_35::size_of(__v),
+			Ty::GameEventListeners(__v) => super::option_17::size_of(__v),
+			Ty::NeighborUpdates(__v) => super::option_14::size_of(__v),
+			Ty::GameEvents(__v) => super::option_22::size_of(__v),
+			Ty::Brains(__v) => super::option_23::size_of(__v),
+			Ty::Breezes(__v) => super::option_24::size_of(__v),
+			Ty::GoalSelectors(__v) => super::option_36::size_of(__v),
+			Ty::EntityPaths(__v) => super::option_25::size_of(__v),
+			Ty::EntityBlockIntersections(__v) => super::option_17::size_of(__v),
+			Ty::BeeHives(__v) => super::option_26::size_of(__v),
+			Ty::Pois(__v) => super::option_27::size_of(__v),
+			Ty::RedstoneWireOrientations(__v) => super::option_17::size_of(__v),
+			Ty::Default(_, __v) => super::option_20::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::DedicatedServerTickTime => "DedicatedServerTickTime",
-        Ty::Bees(_) => "Bees",
-        Ty::VillageSections(_) => "VillageSections",
-        Ty::Raids(_) => "Raids",
-        Ty::Structures(_) => "Structures",
-        Ty::GameEventListeners(_) => "GameEventListeners",
-        Ty::NeighborUpdates(_) => "NeighborUpdates",
-        Ty::GameEvents(_) => "GameEvents",
-        Ty::Brains(_) => "Brains",
-        Ty::Breezes(_) => "Breezes",
-        Ty::GoalSelectors(_) => "GoalSelectors",
-        Ty::EntityPaths(_) => "EntityPaths",
-        Ty::EntityBlockIntersections(_) => "EntityBlockIntersections",
-        Ty::BeeHives(_) => "BeeHives",
-        Ty::Pois(_) => "Pois",
-        Ty::RedstoneWireOrientations(_) => "RedstoneWireOrientations",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::DedicatedServerTickTime => "DedicatedServerTickTime",
+		Ty::Bees(_) => "Bees",
+		Ty::VillageSections(_) => "VillageSections",
+		Ty::Raids(_) => "Raids",
+		Ty::Structures(_) => "Structures",
+		Ty::GameEventListeners(_) => "GameEventListeners",
+		Ty::NeighborUpdates(_) => "NeighborUpdates",
+		Ty::GameEvents(_) => "GameEvents",
+		Ty::Brains(_) => "Brains",
+		Ty::Breezes(_) => "Breezes",
+		Ty::GoalSelectors(_) => "GoalSelectors",
+		Ty::EntityPaths(_) => "EntityPaths",
+		Ty::EntityBlockIntersections(_) => "EntityBlockIntersections",
+		Ty::BeeHives(_) => "BeeHives",
+		Ty::Pois(_) => "Pois",
+		Ty::RedstoneWireOrientations(_) => "RedstoneWireOrientations",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Varint {
-    match _0 {
-        Ty::DedicatedServerTickTime => 0_i32,
-        Ty::Bees(_) => 1_i32,
-        Ty::VillageSections(_) => 10_i32,
-        Ty::Raids(_) => 11_i32,
-        Ty::Structures(_) => 12_i32,
-        Ty::GameEventListeners(_) => 13_i32,
-        Ty::NeighborUpdates(_) => 14_i32,
-        Ty::GameEvents(_) => 15_i32,
-        Ty::Brains(_) => 2_i32,
-        Ty::Breezes(_) => 3_i32,
-        Ty::GoalSelectors(_) => 4_i32,
-        Ty::EntityPaths(_) => 5_i32,
-        Ty::EntityBlockIntersections(_) => 6_i32,
-        Ty::BeeHives(_) => 7_i32,
-        Ty::Pois(_) => 8_i32,
-        Ty::RedstoneWireOrientations(_) => 9_i32,
-        Ty::Default(__t, _) => __t.clone(),
-    }
+	match _0 {
+		Ty::DedicatedServerTickTime => 0_i32,
+		Ty::Bees(_) => 1_i32,
+		Ty::VillageSections(_) => 10_i32,
+		Ty::Raids(_) => 11_i32,
+		Ty::Structures(_) => 12_i32,
+		Ty::GameEventListeners(_) => 13_i32,
+		Ty::NeighborUpdates(_) => 14_i32,
+		Ty::GameEvents(_) => 15_i32,
+		Ty::Brains(_) => 2_i32,
+		Ty::Breezes(_) => 3_i32,
+		Ty::GoalSelectors(_) => 4_i32,
+		Ty::EntityPaths(_) => 5_i32,
+		Ty::EntityBlockIntersections(_) => 6_i32,
+		Ty::BeeHives(_) => 7_i32,
+		Ty::Pois(_) => 8_i32,
+		Ty::RedstoneWireOrientations(_) => 9_i32,
+		Ty::Default(__t, _) => __t.clone(),
+	}
 }
- pub type Ty = DebugSubscriptionUpdate;
+pub type Ty = DebugSubscriptionUpdate;

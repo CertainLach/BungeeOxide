@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityUpdateAttributes1 {
-    pub name: String,
-    pub value: super::super::super::super::F64,
-    pub modifiers: Vec<super::PacketEntityUpdateAttributes0>,
+	pub name: String,
+	pub value: super::super::super::super::F64,
+	pub modifiers: Vec<super::PacketEntityUpdateAttributes0>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.value,
-        output,
-    )?;
-    super::super::super::super::array::inline_171::serialize(
-        &_0.modifiers,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::f64::serialize(&_0.value, output)?;
+	super::super::super::super::array::inline_171::serialize(&_0.modifiers, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_modifiers = super::super::super::super::array::inline_171::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value,modifiers: f_modifiers
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_value = super::super::super::super::f64::deserialize(input)?;
+	let f_modifiers = super::super::super::super::array::inline_171::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+		modifiers: f_modifiers,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.value
-    )
-    + super::super::super::super::array::inline_171::size_of(
-        &_0.modifiers
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::f64::size_of(&_0.value)
+		+ super::super::super::super::array::inline_171::size_of(&_0.modifiers)
 }
- pub type Ty = PacketEntityUpdateAttributes1;
+pub type Ty = PacketEntityUpdateAttributes1;

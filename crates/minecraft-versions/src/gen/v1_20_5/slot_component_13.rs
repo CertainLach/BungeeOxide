@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent13 {
-    pub nutrition: super::super::Varint,
-    pub saturation_modifier: super::super::F32,
-    pub can_always_eat: super::super::Bool,
-    pub seconds_to_eat: super::super::F32,
-    pub effects: Vec<super::SlotComponent12>,
+	pub nutrition: super::super::Varint,
+	pub saturation_modifier: super::super::F32,
+	pub can_always_eat: super::super::Bool,
+	pub seconds_to_eat: super::super::F32,
+	pub effects: Vec<super::SlotComponent12>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.nutrition,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.saturation_modifier,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.can_always_eat,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.seconds_to_eat,
-        output,
-    )?;
-    super::super::array::inline_209::serialize(
-        &_0.effects,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.nutrition, output)?;
+	super::super::f32::serialize(&_0.saturation_modifier, output)?;
+	super::super::bool::serialize(&_0.can_always_eat, output)?;
+	super::super::f32::serialize(&_0.seconds_to_eat, output)?;
+	super::super::array::inline_209::serialize(&_0.effects, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(11)?;
-    let f_nutrition = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_saturationModifier = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_canAlwaysEat = super::super::bool::deserialize(
-        input,
-    )?;
-    let f_secondsToEat = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_effects = super::super::array::inline_209::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        nutrition: f_nutrition,saturation_modifier: f_saturationModifier,can_always_eat: f_canAlwaysEat,seconds_to_eat: f_secondsToEat,effects: f_effects
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(11)?;
+	let f_nutrition = super::super::varint::deserialize(input)?;
+	let f_saturationModifier = super::super::f32::deserialize(input)?;
+	let f_canAlwaysEat = super::super::bool::deserialize(input)?;
+	let f_secondsToEat = super::super::f32::deserialize(input)?;
+	let f_effects = super::super::array::inline_209::deserialize(input)?;
+	Ok(Ty {
+		nutrition: f_nutrition,
+		saturation_modifier: f_saturationModifier,
+		can_always_eat: f_canAlwaysEat,
+		seconds_to_eat: f_secondsToEat,
+		effects: f_effects,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.nutrition
-    )
-    + super::super::f32::size_of(
-        &_0.saturation_modifier
-    )
-    + super::super::bool::size_of(
-        &_0.can_always_eat
-    )
-    + super::super::f32::size_of(
-        &_0.seconds_to_eat
-    )
-    + super::super::array::inline_209::size_of(
-        &_0.effects
-    )
+	0 + super::super::varint::size_of(&_0.nutrition)
+		+ super::super::f32::size_of(&_0.saturation_modifier)
+		+ super::super::bool::size_of(&_0.can_always_eat)
+		+ super::super::f32::size_of(&_0.seconds_to_eat)
+		+ super::super::array::inline_209::size_of(&_0.effects)
 }
- pub type Ty = SlotComponent13;
+pub type Ty = SlotComponent13;

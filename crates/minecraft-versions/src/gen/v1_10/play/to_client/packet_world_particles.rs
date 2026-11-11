@@ -3,148 +3,102 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWorldParticles {
-    //  particleId - virtual field
-    pub long_distance: super::super::super::super::Bool,
-    pub x: super::super::super::super::F32,
-    pub y: super::super::super::super::F32,
-    pub z: super::super::super::super::F32,
-    pub offset_x: super::super::super::super::F32,
-    pub offset_y: super::super::super::super::F32,
-    pub offset_z: super::super::super::super::F32,
-    pub particle_data: super::super::super::super::F32,
-    pub particles: super::super::super::super::I32,
-    pub data: super::PacketWorldParticles0,
+	//  particleId - virtual field
+	pub long_distance: super::super::super::super::Bool,
+	pub x: super::super::super::super::F32,
+	pub y: super::super::super::super::F32,
+	pub z: super::super::super::super::F32,
+	pub offset_x: super::super::super::super::F32,
+	pub offset_y: super::super::super::super::F32,
+	pub offset_z: super::super::super::super::F32,
+	pub particle_data: super::super::super::super::F32,
+	pub particles: super::super::super::super::I32,
+	pub data: super::PacketWorldParticles0,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &{let _0: &super::PacketWorldParticles0 = &_0.data;let __v1: super::super::super::super::I32 = super::packet_world_particles_0::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.long_distance,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.particle_data,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.particles,
-        output,
-    )?;
-    super::packet_world_particles_0::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(
+		&{
+			let _0: &super::PacketWorldParticles0 = &_0.data;
+			let __v1: super::super::super::super::I32 =
+				super::packet_world_particles_0::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		},
+		output,
+	)?;
+	super::super::super::super::bool::serialize(&_0.long_distance, output)?;
+	super::super::super::super::f32::serialize(&_0.x, output)?;
+	super::super::super::super::f32::serialize(&_0.y, output)?;
+	super::super::super::super::f32::serialize(&_0.z, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_x, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_y, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_z, output)?;
+	super::super::super::super::f32::serialize(&_0.particle_data, output)?;
+	super::super::super::super::i32::serialize(&_0.particles, output)?;
+	super::packet_world_particles_0::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(37)?;
-    let f_particleId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_longDistance = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetX = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetY = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetZ = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_particleData = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_particles = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_data = super::packet_world_particles_0::deserialize(
-        input,
-        super::packet_world_particles_0::Args {
-            particle_id: {let _0: &super::super::super::super::I32 = &f_particleId;_0}
-        },
-    )?;
-    debug_assert!(
-        &f_particleId == &{let _0: &super::PacketWorldParticles0 = &f_data;let __v1: super::super::super::super::I32 = super::packet_world_particles_0::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        "virtual field particleId does not match its value source"
-    );
-    Ok(Ty {
-        long_distance: f_longDistance,x: f_x,y: f_y,z: f_z,offset_x: f_offsetX,offset_y: f_offsetY,offset_z: f_offsetZ,particle_data: f_particleData,particles: f_particles,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(37)?;
+	let f_particleId = super::super::super::super::i32::deserialize(input)?;
+	let f_longDistance = super::super::super::super::bool::deserialize(input)?;
+	let f_x = super::super::super::super::f32::deserialize(input)?;
+	let f_y = super::super::super::super::f32::deserialize(input)?;
+	let f_z = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetX = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetY = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetZ = super::super::super::super::f32::deserialize(input)?;
+	let f_particleData = super::super::super::super::f32::deserialize(input)?;
+	let f_particles = super::super::super::super::i32::deserialize(input)?;
+	let f_data = super::packet_world_particles_0::deserialize(
+		input,
+		super::packet_world_particles_0::Args {
+			particle_id: {
+				let _0: &super::super::super::super::I32 = &f_particleId;
+				_0
+			},
+		},
+	)?;
+	debug_assert!(
+		&f_particleId
+			== &{
+				let _0: &super::PacketWorldParticles0 = &f_data;
+				let __v1: super::super::super::super::I32 =
+					super::packet_world_particles_0::virtual_tag(_0);
+				let _0 = &__v1;
+				_0.clone()
+			},
+		"virtual field particleId does not match its value source"
+	);
+	Ok(Ty {
+		long_distance: f_longDistance,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		offset_x: f_offsetX,
+		offset_y: f_offsetY,
+		offset_z: f_offsetZ,
+		particle_data: f_particleData,
+		particles: f_particles,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &{let _0: &super::PacketWorldParticles0 = &_0.data;let __v1: super::super::super::super::I32 = super::packet_world_particles_0::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()}
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.long_distance
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.particle_data
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.particles
-    )
-    + super::packet_world_particles_0::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::i32::size_of(&{
+		let _0: &super::PacketWorldParticles0 = &_0.data;
+		let __v1: super::super::super::super::I32 =
+			super::packet_world_particles_0::virtual_tag(_0);
+		let _0 = &__v1;
+		_0.clone()
+	}) + super::super::super::super::bool::size_of(&_0.long_distance)
+		+ super::super::super::super::f32::size_of(&_0.x)
+		+ super::super::super::super::f32::size_of(&_0.y)
+		+ super::super::super::super::f32::size_of(&_0.z)
+		+ super::super::super::super::f32::size_of(&_0.offset_x)
+		+ super::super::super::super::f32::size_of(&_0.offset_y)
+		+ super::super::super::super::f32::size_of(&_0.offset_z)
+		+ super::super::super::super::f32::size_of(&_0.particle_data)
+		+ super::super::super::super::i32::size_of(&_0.particles)
+		+ super::packet_world_particles_0::size_of(&_0.data)
 }
- pub type Ty = PacketWorldParticles;
+pub type Ty = PacketWorldParticles;

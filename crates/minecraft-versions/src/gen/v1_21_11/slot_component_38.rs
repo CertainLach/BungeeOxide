@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent38 {
-    pub raw_title: String,
-    pub filtered_title: Option<String>,
-    pub author: String,
-    pub generation: super::super::Varint,
-    pub pages: Vec<super::super::ItemWrittenBookPage>,
-    pub resolved: super::super::Bool,
+	pub raw_title: String,
+	pub filtered_title: Option<String>,
+	pub author: String,
+	pub generation: super::super::Varint,
+	pub pages: Vec<super::super::ItemWrittenBookPage>,
+	pub resolved: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.raw_title,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.filtered_title,
-        output,
-    )?;
-    super::super::pstring_96::serialize(
-        &_0.author,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.generation,
-        output,
-    )?;
-    super::super::array::inline_37::serialize(
-        &_0.pages,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.resolved,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.raw_title, output)?;
+	super::super::option_18::serialize(&_0.filtered_title, output)?;
+	super::super::pstring_96::serialize(&_0.author, output)?;
+	super::super::varint::serialize(&_0.generation, output)?;
+	super::super::array::inline_37::serialize(&_0.pages, output)?;
+	super::super::bool::serialize(&_0.resolved, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_rawTitle = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_filteredTitle = super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_author = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_generation = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_pages = super::super::array::inline_37::deserialize(
-        input,
-    )?;
-    let f_resolved = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        raw_title: f_rawTitle,filtered_title: f_filteredTitle,author: f_author,generation: f_generation,pages: f_pages,resolved: f_resolved
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_rawTitle = super::super::pstring_96::deserialize(input)?;
+	let f_filteredTitle = super::super::option_18::deserialize(input)?;
+	let f_author = super::super::pstring_96::deserialize(input)?;
+	let f_generation = super::super::varint::deserialize(input)?;
+	let f_pages = super::super::array::inline_37::deserialize(input)?;
+	let f_resolved = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		raw_title: f_rawTitle,
+		filtered_title: f_filteredTitle,
+		author: f_author,
+		generation: f_generation,
+		pages: f_pages,
+		resolved: f_resolved,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.raw_title
-    )
-    + super::super::option_18::size_of(
-        &_0.filtered_title
-    )
-    + super::super::pstring_96::size_of(
-        &_0.author
-    )
-    + super::super::varint::size_of(
-        &_0.generation
-    )
-    + super::super::array::inline_37::size_of(
-        &_0.pages
-    )
-    + super::super::bool::size_of(
-        &_0.resolved
-    )
+	0 + super::super::pstring_96::size_of(&_0.raw_title)
+		+ super::super::option_18::size_of(&_0.filtered_title)
+		+ super::super::pstring_96::size_of(&_0.author)
+		+ super::super::varint::size_of(&_0.generation)
+		+ super::super::array::inline_37::size_of(&_0.pages)
+		+ super::super::bool::size_of(&_0.resolved)
 }
- pub type Ty = SlotComponent38;
+pub type Ty = SlotComponent38;

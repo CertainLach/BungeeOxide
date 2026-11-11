@@ -3,138 +3,70 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketNamedEntitySpawn {
-    pub entity_id: super::super::super::super::Varint,
-    pub player_uuid: String,
-    pub player_name: String,
-    pub data: Vec<super::PacketNamedEntitySpawn0>,
-    pub x: super::super::super::super::I32,
-    pub y: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub yaw: super::super::super::super::I8,
-    pub pitch: super::super::super::super::I8,
-    pub current_item: super::super::super::super::I16,
-    pub metadata: Vec<super::super::super::EntityMetadata2>,
+	pub entity_id: super::super::super::super::Varint,
+	pub player_uuid: String,
+	pub player_name: String,
+	pub data: Vec<super::PacketNamedEntitySpawn0>,
+	pub x: super::super::super::super::I32,
+	pub y: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub yaw: super::super::super::super::I8,
+	pub pitch: super::super::super::super::I8,
+	pub current_item: super::super::super::super::I16,
+	pub metadata: Vec<super::super::super::EntityMetadata2>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.player_uuid,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.player_name,
-        output,
-    )?;
-    super::super::super::super::array::inline_354::serialize(
-        &_0.data,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.current_item,
-        output,
-    )?;
-    super::super::super::entity_metadata::serialize(
-        &_0.metadata,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.player_uuid, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.player_name, output)?;
+	super::super::super::super::array::inline_354::serialize(&_0.data, output)?;
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.y, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::i8::serialize(&_0.yaw, output)?;
+	super::super::super::super::i8::serialize(&_0.pitch, output)?;
+	super::super::super::super::i16::serialize(&_0.current_item, output)?;
+	super::super::super::entity_metadata::serialize(&_0.metadata, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(21)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_playerUUID = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_playerName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::super::array::inline_354::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_currentItem = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_metadata = super::super::super::entity_metadata::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,player_uuid: f_playerUUID,player_name: f_playerName,data: f_data,x: f_x,y: f_y,z: f_z,yaw: f_yaw,pitch: f_pitch,current_item: f_currentItem,metadata: f_metadata
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(21)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_playerUUID = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_playerName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::super::super::super::array::inline_354::deserialize(input)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_y = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_yaw = super::super::super::super::i8::deserialize(input)?;
+	let f_pitch = super::super::super::super::i8::deserialize(input)?;
+	let f_currentItem = super::super::super::super::i16::deserialize(input)?;
+	let f_metadata = super::super::super::entity_metadata::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		player_uuid: f_playerUUID,
+		player_name: f_playerName,
+		data: f_data,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		yaw: f_yaw,
+		pitch: f_pitch,
+		current_item: f_currentItem,
+		metadata: f_metadata,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.player_uuid
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.player_name
-    )
-    + super::super::super::super::array::inline_354::size_of(
-        &_0.data
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.y
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.yaw
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.pitch
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.current_item
-    )
-    + super::super::super::entity_metadata::size_of(
-        &_0.metadata
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::pstring_96::size_of(&_0.player_uuid)
+		+ super::super::super::super::pstring_96::size_of(&_0.player_name)
+		+ super::super::super::super::array::inline_354::size_of(&_0.data)
+		+ super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.y)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::i8::size_of(&_0.yaw)
+		+ super::super::super::super::i8::size_of(&_0.pitch)
+		+ super::super::super::super::i16::size_of(&_0.current_item)
+		+ super::super::super::entity_metadata::size_of(&_0.metadata)
 }
- pub type Ty = PacketNamedEntitySpawn;
+pub type Ty = PacketNamedEntitySpawn;

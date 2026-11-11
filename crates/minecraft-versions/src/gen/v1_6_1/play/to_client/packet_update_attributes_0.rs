@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateAttributes0 {
-    pub key: super::super::super::super::String16,
-    pub value: super::super::super::super::F64,
+	pub key: super::super::super::super::String16,
+	pub value: super::super::super::super::F64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.key, output)?;
+	super::super::super::super::f64::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_key = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_key = super::super::super::super::string16::deserialize(input)?;
+	let f_value = super::super::super::super::f64::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.key
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.value
-    )
+	0 + super::super::super::super::string16::size_of(&_0.key)
+		+ super::super::super::super::f64::size_of(&_0.value)
 }
- pub type Ty = PacketUpdateAttributes0;
+pub type Ty = PacketUpdateAttributes0;

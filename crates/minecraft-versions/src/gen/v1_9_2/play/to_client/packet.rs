@@ -3,88 +3,100 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    SpawnEntity(super::super::super::super::v1_9::play::to_client::PacketSpawnEntity),
-    SpawnEntityExperienceOrb(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityExperienceOrb),
-    SpawnEntityWeather(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityWeather),
-    SpawnEntityLiving(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityLiving),
-    SpawnEntityPainting(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityPainting),
-    NamedEntitySpawn(super::super::super::super::v1_9::play::to_client::PacketNamedEntitySpawn),
-    Animation(super::super::super::super::play::to_client::PacketAnimation),
-    Statistics(Vec<super::super::super::super::v1_7::play::to_client::PacketStatistics4>),
-    BlockBreakAnimation(super::super::super::super::v1_8::play::to_client::PacketBlockBreakAnimation),
-    TileEntityData(super::super::super::super::v1_8::play::to_client::PacketTileEntityData),
-    BlockAction(super::super::super::super::v1_8::play::to_client::PacketBlockAction),
-    BlockChange(super::super::super::super::v1_8::play::to_client::PacketBlockChange),
-    BossBar(super::super::super::super::v1_9::play::to_client::PacketBossBar),
-    Difficulty(super::super::super::super::v1_8::play::to_client::PacketDifficulty),
-    TabComplete(Vec<String>),
-    Chat(super::super::super::super::v1_8::play::to_client::PacketChat),
-    MultiBlockChange(super::super::super::super::v1_8::play::to_client::PacketMultiBlockChange),
-    Transaction(super::super::super::super::v1_8::play::to_client::PacketTransaction),
-    CloseWindow(super::super::super::super::U8),
-    OpenWindow(super::super::super::super::v1_8::play::to_client::PacketOpenWindow),
-    WindowItems(super::super::super::super::v1_8::play::to_client::PacketWindowItems),
-    CraftProgressBar(super::super::super::super::v1_0_1::play::to_client::PacketCraftProgressBar),
-    SetSlot(super::super::super::super::v1_8::play::to_client::PacketSetSlot),
-    SetCooldown(super::super::super::super::v1_9::play::to_client::PacketSetCooldown),
-    CustomPayload(super::super::super::super::play::to_client::PacketCustomPayload),
-    NamedSoundEffect(super::super::super::super::v1_9::play::to_client::PacketNamedSoundEffect),
-    KickDisconnect(String),
-    EntityStatus(super::super::super::super::play::to_client::PacketEntityStatus),
-    Explosion(super::super::super::super::v1_7::play::to_client::PacketExplosion),
-    UnloadChunk(super::super::super::super::v1_9::play::to_client::PacketUnloadChunk),
-    GameStateChange(super::super::super::super::v1_8::play::to_client::PacketGameStateChange),
-    KeepAlive(super::super::super::super::Varint),
-    MapChunk(super::super::super::super::v1_9::play::to_client::PacketMapChunk),
-    WorldEvent(super::super::super::super::v1_8::play::to_client::PacketWorldEvent),
-    WorldParticles(super::super::super::super::v1_8::play::to_client::PacketWorldParticles),
-    Login(super::PacketLogin),
-    Map(super::super::super::super::v1_9::play::to_client::PacketMap),
-    RelEntityMove(super::super::super::super::play::to_client::PacketRelEntityMove),
-    EntityMoveLook(super::super::super::super::play::to_client::PacketEntityMoveLook),
-    EntityLook(super::super::super::super::play::to_client::PacketEntityLook),
-    Entity(super::super::super::super::Varint),
-    VehicleMove(super::super::super::super::play::to_client::PacketVehicleMove),
-    OpenSignEntity(super::super::super::super::v1_8::Position),
-    Abilities(super::super::super::super::play::to_client::PacketAbilities),
-    CombatEvent(super::super::super::super::v1_8::play::to_client::PacketCombatEvent),
-    PlayerInfo(super::super::super::super::v1_8::play::to_client::PacketPlayerInfo),
-    Position(super::super::super::super::v1_9::play::to_client::PacketPosition),
-    Bed(super::super::super::super::v1_8::play::to_client::PacketBed),
-    EntityDestroy(Vec<super::super::super::super::Varint>),
-    RemoveEntityEffect(super::super::super::super::v1_8::play::to_client::PacketRemoveEntityEffect),
-    ResourcePackSend(super::super::super::super::v1_8::play::to_client::PacketResourcePackSend),
-    Respawn(super::super::super::super::v1_7::play::to_client::PacketRespawn),
-    EntityHeadRotation(super::super::super::super::play::to_client::PacketEntityHeadRotation),
-    WorldBorder(super::super::super::super::v1_8::play::to_client::PacketWorldBorder),
-    Camera(super::super::super::super::Varint),
-    HeldItemSlot(super::super::super::super::I8),
-    ScoreboardDisplayObjective(super::super::super::super::v1_8::play::to_client::PacketScoreboardDisplayObjective),
-    EntityMetadata(super::super::super::super::v1_9::play::to_client::PacketEntityMetadata),
-    AttachEntity(super::super::super::super::play::to_client::PacketAttachEntity),
-    EntityVelocity(super::super::super::super::v1_8::play::to_client::PacketEntityVelocity),
-    EntityEquipment(super::super::super::super::v1_9::play::to_client::PacketEntityEquipment),
-    Experience(super::super::super::super::play::to_client::PacketExperience),
-    UpdateHealth(super::super::super::super::play::to_client::PacketUpdateHealth),
-    ScoreboardObjective(super::super::super::super::v1_8::play::to_client::PacketScoreboardObjective),
-    SetPassengers(super::super::super::super::play::to_client::PacketSetPassengers),
-    Teams(super::super::super::super::v1_9::play::to_client::PacketTeams),
-    ScoreboardScore(super::super::super::super::v1_8::play::to_client::PacketScoreboardScore),
-    SpawnPosition(super::super::super::super::v1_8::Position),
-    UpdateTime(super::super::super::super::v1_4_2::play::to_client::PacketUpdateTime),
-    Title(super::super::super::super::v1_8::play::to_client::PacketTitle),
-    UpdateSign(super::super::super::super::v1_8::play::to_client::PacketUpdateSign),
-    SoundEffect(super::super::super::super::v1_9::play::to_client::PacketSoundEffect),
-    PlayerlistHeader(super::super::super::super::v1_8::play::to_client::PacketPlayerlistHeader),
-    Collect(super::super::super::super::v1_8::play::to_client::PacketCollect),
-    EntityTeleport(super::super::super::super::v1_9::play::to_client::PacketEntityTeleport),
-    EntityUpdateAttributes(super::super::super::super::v1_9::play::to_client::PacketEntityUpdateAttributes),
-    EntityEffect(super::super::super::super::v1_9::play::to_client::PacketEntityEffect),
-    Default(super::super::super::super::Varint),
+	SpawnEntity(super::super::super::super::v1_9::play::to_client::PacketSpawnEntity),
+	SpawnEntityExperienceOrb(
+		super::super::super::super::v1_9::play::to_client::PacketSpawnEntityExperienceOrb,
+	),
+	SpawnEntityWeather(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityWeather),
+	SpawnEntityLiving(super::super::super::super::v1_9::play::to_client::PacketSpawnEntityLiving),
+	SpawnEntityPainting(
+		super::super::super::super::v1_9::play::to_client::PacketSpawnEntityPainting,
+	),
+	NamedEntitySpawn(super::super::super::super::v1_9::play::to_client::PacketNamedEntitySpawn),
+	Animation(super::super::super::super::play::to_client::PacketAnimation),
+	Statistics(Vec<super::super::super::super::v1_7::play::to_client::PacketStatistics4>),
+	BlockBreakAnimation(
+		super::super::super::super::v1_8::play::to_client::PacketBlockBreakAnimation,
+	),
+	TileEntityData(super::super::super::super::v1_8::play::to_client::PacketTileEntityData),
+	BlockAction(super::super::super::super::v1_8::play::to_client::PacketBlockAction),
+	BlockChange(super::super::super::super::v1_8::play::to_client::PacketBlockChange),
+	BossBar(super::super::super::super::v1_9::play::to_client::PacketBossBar),
+	Difficulty(super::super::super::super::v1_8::play::to_client::PacketDifficulty),
+	TabComplete(Vec<String>),
+	Chat(super::super::super::super::v1_8::play::to_client::PacketChat),
+	MultiBlockChange(super::super::super::super::v1_8::play::to_client::PacketMultiBlockChange),
+	Transaction(super::super::super::super::v1_8::play::to_client::PacketTransaction),
+	CloseWindow(super::super::super::super::U8),
+	OpenWindow(super::super::super::super::v1_8::play::to_client::PacketOpenWindow),
+	WindowItems(super::super::super::super::v1_8::play::to_client::PacketWindowItems),
+	CraftProgressBar(super::super::super::super::v1_0_1::play::to_client::PacketCraftProgressBar),
+	SetSlot(super::super::super::super::v1_8::play::to_client::PacketSetSlot),
+	SetCooldown(super::super::super::super::v1_9::play::to_client::PacketSetCooldown),
+	CustomPayload(super::super::super::super::play::to_client::PacketCustomPayload),
+	NamedSoundEffect(super::super::super::super::v1_9::play::to_client::PacketNamedSoundEffect),
+	KickDisconnect(String),
+	EntityStatus(super::super::super::super::play::to_client::PacketEntityStatus),
+	Explosion(super::super::super::super::v1_7::play::to_client::PacketExplosion),
+	UnloadChunk(super::super::super::super::v1_9::play::to_client::PacketUnloadChunk),
+	GameStateChange(super::super::super::super::v1_8::play::to_client::PacketGameStateChange),
+	KeepAlive(super::super::super::super::Varint),
+	MapChunk(super::super::super::super::v1_9::play::to_client::PacketMapChunk),
+	WorldEvent(super::super::super::super::v1_8::play::to_client::PacketWorldEvent),
+	WorldParticles(super::super::super::super::v1_8::play::to_client::PacketWorldParticles),
+	Login(super::PacketLogin),
+	Map(super::super::super::super::v1_9::play::to_client::PacketMap),
+	RelEntityMove(super::super::super::super::play::to_client::PacketRelEntityMove),
+	EntityMoveLook(super::super::super::super::play::to_client::PacketEntityMoveLook),
+	EntityLook(super::super::super::super::play::to_client::PacketEntityLook),
+	Entity(super::super::super::super::Varint),
+	VehicleMove(super::super::super::super::play::to_client::PacketVehicleMove),
+	OpenSignEntity(super::super::super::super::v1_8::Position),
+	Abilities(super::super::super::super::play::to_client::PacketAbilities),
+	CombatEvent(super::super::super::super::v1_8::play::to_client::PacketCombatEvent),
+	PlayerInfo(super::super::super::super::v1_8::play::to_client::PacketPlayerInfo),
+	Position(super::super::super::super::v1_9::play::to_client::PacketPosition),
+	Bed(super::super::super::super::v1_8::play::to_client::PacketBed),
+	EntityDestroy(Vec<super::super::super::super::Varint>),
+	RemoveEntityEffect(super::super::super::super::v1_8::play::to_client::PacketRemoveEntityEffect),
+	ResourcePackSend(super::super::super::super::v1_8::play::to_client::PacketResourcePackSend),
+	Respawn(super::super::super::super::v1_7::play::to_client::PacketRespawn),
+	EntityHeadRotation(super::super::super::super::play::to_client::PacketEntityHeadRotation),
+	WorldBorder(super::super::super::super::v1_8::play::to_client::PacketWorldBorder),
+	Camera(super::super::super::super::Varint),
+	HeldItemSlot(super::super::super::super::I8),
+	ScoreboardDisplayObjective(
+		super::super::super::super::v1_8::play::to_client::PacketScoreboardDisplayObjective,
+	),
+	EntityMetadata(super::super::super::super::v1_9::play::to_client::PacketEntityMetadata),
+	AttachEntity(super::super::super::super::play::to_client::PacketAttachEntity),
+	EntityVelocity(super::super::super::super::v1_8::play::to_client::PacketEntityVelocity),
+	EntityEquipment(super::super::super::super::v1_9::play::to_client::PacketEntityEquipment),
+	Experience(super::super::super::super::play::to_client::PacketExperience),
+	UpdateHealth(super::super::super::super::play::to_client::PacketUpdateHealth),
+	ScoreboardObjective(
+		super::super::super::super::v1_8::play::to_client::PacketScoreboardObjective,
+	),
+	SetPassengers(super::super::super::super::play::to_client::PacketSetPassengers),
+	Teams(super::super::super::super::v1_9::play::to_client::PacketTeams),
+	ScoreboardScore(super::super::super::super::v1_8::play::to_client::PacketScoreboardScore),
+	SpawnPosition(super::super::super::super::v1_8::Position),
+	UpdateTime(super::super::super::super::v1_4_2::play::to_client::PacketUpdateTime),
+	Title(super::super::super::super::v1_8::play::to_client::PacketTitle),
+	UpdateSign(super::super::super::super::v1_8::play::to_client::PacketUpdateSign),
+	SoundEffect(super::super::super::super::v1_9::play::to_client::PacketSoundEffect),
+	PlayerlistHeader(super::super::super::super::v1_8::play::to_client::PacketPlayerlistHeader),
+	Collect(super::super::super::super::v1_8::play::to_client::PacketCollect),
+	EntityTeleport(super::super::super::super::v1_9::play::to_client::PacketEntityTeleport),
+	EntityUpdateAttributes(
+		super::super::super::super::v1_9::play::to_client::PacketEntityUpdateAttributes,
+	),
+	EntityEffect(super::super::super::super::v1_9::play::to_client::PacketEntityEffect),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
         Ty::SpawnEntity(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity::serialize(__v, output),
         Ty::SpawnEntityExperienceOrb(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity_experience_orb::serialize(__v, output),
         Ty::SpawnEntityWeather(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity_weather::serialize(__v, output),
@@ -165,247 +177,411 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::Default(_) => Ok(()),
     }
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::SpawnEntity(super::super::super::super::v1_9::play::to_client::packet_spawn_entity::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::SpawnEntityExperienceOrb(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_experience_orb::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::SpawnEntityWeather(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_weather::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::SpawnEntityLiving(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_living::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::SpawnEntityPainting(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_painting::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::NamedEntitySpawn(super::super::super::super::v1_9::play::to_client::packet_named_entity_spawn::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::Animation(super::super::super::super::play::to_client::packet_animation::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::Statistics(super::super::super::super::array::inline_355::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::BlockBreakAnimation(super::super::super::super::v1_8::play::to_client::packet_block_break_animation::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_i32) {
-        return Ok(Ty::TileEntityData(super::super::super::super::v1_8::play::to_client::packet_tile_entity_data::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) {
-        return Ok(Ty::BlockAction(super::super::super::super::v1_8::play::to_client::packet_block_action::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_i32) {
-        return Ok(Ty::BlockChange(super::super::super::super::v1_8::play::to_client::packet_block_change::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_i32) {
-        return Ok(Ty::BossBar(super::super::super::super::v1_9::play::to_client::packet_boss_bar::deserialize(input, )?));
-    }
-    if (__tag.clone() == 13_i32) {
-        return Ok(Ty::Difficulty(super::super::super::super::v1_8::play::to_client::packet_difficulty::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::TabComplete(super::super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) {
-        return Ok(Ty::Chat(super::super::super::super::v1_8::play::to_client::packet_chat::deserialize(input, )?));
-    }
-    if (__tag.clone() == 16_i32) {
-        return Ok(Ty::MultiBlockChange(super::super::super::super::v1_8::play::to_client::packet_multi_block_change::deserialize(input, )?));
-    }
-    if (__tag.clone() == 17_i32) {
-        return Ok(Ty::Transaction(super::super::super::super::v1_8::play::to_client::packet_transaction::deserialize(input, )?));
-    }
-    if (__tag.clone() == 18_i32) {
-        return Ok(Ty::CloseWindow(super::super::super::super::u8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 19_i32) {
-        return Ok(Ty::OpenWindow(super::super::super::super::v1_8::play::to_client::packet_open_window::deserialize(input, )?));
-    }
-    if (__tag.clone() == 20_i32) {
-        return Ok(Ty::WindowItems(super::super::super::super::v1_8::play::to_client::packet_window_items::deserialize(input, )?));
-    }
-    if (__tag.clone() == 21_i32) {
-        return Ok(Ty::CraftProgressBar(super::super::super::super::v1_0_1::play::to_client::packet_craft_progress_bar::deserialize(input, )?));
-    }
-    if (__tag.clone() == 22_i32) {
-        return Ok(Ty::SetSlot(super::super::super::super::v1_8::play::to_client::packet_set_slot::deserialize(input, )?));
-    }
-    if (__tag.clone() == 23_i32) {
-        return Ok(Ty::SetCooldown(super::super::super::super::v1_9::play::to_client::packet_set_cooldown::deserialize(input, )?));
-    }
-    if (__tag.clone() == 24_i32) {
-        return Ok(Ty::CustomPayload(super::super::super::super::play::to_client::packet_custom_payload::deserialize(input, )?));
-    }
-    if (__tag.clone() == 25_i32) {
-        return Ok(Ty::NamedSoundEffect(super::super::super::super::v1_9::play::to_client::packet_named_sound_effect::deserialize(input, )?));
-    }
-    if (__tag.clone() == 26_i32) {
-        return Ok(Ty::KickDisconnect(super::super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 27_i32) {
-        return Ok(Ty::EntityStatus(super::super::super::super::play::to_client::packet_entity_status::deserialize(input, )?));
-    }
-    if (__tag.clone() == 28_i32) {
-        return Ok(Ty::Explosion(super::super::super::super::v1_7::play::to_client::packet_explosion::deserialize(input, )?));
-    }
-    if (__tag.clone() == 29_i32) {
-        return Ok(Ty::UnloadChunk(super::super::super::super::v1_9::play::to_client::packet_unload_chunk::deserialize(input, )?));
-    }
-    if (__tag.clone() == 30_i32) {
-        return Ok(Ty::GameStateChange(super::super::super::super::v1_8::play::to_client::packet_game_state_change::deserialize(input, )?));
-    }
-    if (__tag.clone() == 31_i32) {
-        return Ok(Ty::KeepAlive(super::super::super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 32_i32) {
-        return Ok(Ty::MapChunk(super::super::super::super::v1_9::play::to_client::packet_map_chunk::deserialize(input, )?));
-    }
-    if (__tag.clone() == 33_i32) {
-        return Ok(Ty::WorldEvent(super::super::super::super::v1_8::play::to_client::packet_world_event::deserialize(input, )?));
-    }
-    if (__tag.clone() == 34_i32) {
-        return Ok(Ty::WorldParticles(super::super::super::super::v1_8::play::to_client::packet_world_particles::deserialize(input, )?));
-    }
-    if (__tag.clone() == 35_i32) {
-        return Ok(Ty::Login(super::packet_login::deserialize(input, )?));
-    }
-    if (__tag.clone() == 36_i32) {
-        return Ok(Ty::Map(super::super::super::super::v1_9::play::to_client::packet_map::deserialize(input, )?));
-    }
-    if (__tag.clone() == 37_i32) {
-        return Ok(Ty::RelEntityMove(super::super::super::super::play::to_client::packet_rel_entity_move::deserialize(input, )?));
-    }
-    if (__tag.clone() == 38_i32) {
-        return Ok(Ty::EntityMoveLook(super::super::super::super::play::to_client::packet_entity_move_look::deserialize(input, )?));
-    }
-    if (__tag.clone() == 39_i32) {
-        return Ok(Ty::EntityLook(super::super::super::super::play::to_client::packet_entity_look::deserialize(input, )?));
-    }
-    if (__tag.clone() == 40_i32) {
-        return Ok(Ty::Entity(super::super::super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 41_i32) {
-        return Ok(Ty::VehicleMove(super::super::super::super::play::to_client::packet_vehicle_move::deserialize(input, )?));
-    }
-    if (__tag.clone() == 42_i32) {
-        return Ok(Ty::OpenSignEntity(super::super::super::super::v1_8::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == 43_i32) {
-        return Ok(Ty::Abilities(super::super::super::super::play::to_client::packet_abilities::deserialize(input, )?));
-    }
-    if (__tag.clone() == 44_i32) {
-        return Ok(Ty::CombatEvent(super::super::super::super::v1_8::play::to_client::packet_combat_event::deserialize(input, )?));
-    }
-    if (__tag.clone() == 45_i32) {
-        return Ok(Ty::PlayerInfo(super::super::super::super::v1_8::play::to_client::packet_player_info::deserialize(input, )?));
-    }
-    if (__tag.clone() == 46_i32) {
-        return Ok(Ty::Position(super::super::super::super::v1_9::play::to_client::packet_position::deserialize(input, )?));
-    }
-    if (__tag.clone() == 47_i32) {
-        return Ok(Ty::Bed(super::super::super::super::v1_8::play::to_client::packet_bed::deserialize(input, )?));
-    }
-    if (__tag.clone() == 48_i32) {
-        return Ok(Ty::EntityDestroy(super::super::super::super::array::inline_107::deserialize(input, )?));
-    }
-    if (__tag.clone() == 49_i32) {
-        return Ok(Ty::RemoveEntityEffect(super::super::super::super::v1_8::play::to_client::packet_remove_entity_effect::deserialize(input, )?));
-    }
-    if (__tag.clone() == 50_i32) {
-        return Ok(Ty::ResourcePackSend(super::super::super::super::v1_8::play::to_client::packet_resource_pack_send::deserialize(input, )?));
-    }
-    if (__tag.clone() == 51_i32) {
-        return Ok(Ty::Respawn(super::super::super::super::v1_7::play::to_client::packet_respawn::deserialize(input, )?));
-    }
-    if (__tag.clone() == 52_i32) {
-        return Ok(Ty::EntityHeadRotation(super::super::super::super::play::to_client::packet_entity_head_rotation::deserialize(input, )?));
-    }
-    if (__tag.clone() == 53_i32) {
-        return Ok(Ty::WorldBorder(super::super::super::super::v1_8::play::to_client::packet_world_border::deserialize(input, )?));
-    }
-    if (__tag.clone() == 54_i32) {
-        return Ok(Ty::Camera(super::super::super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 55_i32) {
-        return Ok(Ty::HeldItemSlot(super::super::super::super::i8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 56_i32) {
-        return Ok(Ty::ScoreboardDisplayObjective(super::super::super::super::v1_8::play::to_client::packet_scoreboard_display_objective::deserialize(input, )?));
-    }
-    if (__tag.clone() == 57_i32) {
-        return Ok(Ty::EntityMetadata(super::super::super::super::v1_9::play::to_client::packet_entity_metadata::deserialize(input, )?));
-    }
-    if (__tag.clone() == 58_i32) {
-        return Ok(Ty::AttachEntity(super::super::super::super::play::to_client::packet_attach_entity::deserialize(input, )?));
-    }
-    if (__tag.clone() == 59_i32) {
-        return Ok(Ty::EntityVelocity(super::super::super::super::v1_8::play::to_client::packet_entity_velocity::deserialize(input, )?));
-    }
-    if (__tag.clone() == 60_i32) {
-        return Ok(Ty::EntityEquipment(super::super::super::super::v1_9::play::to_client::packet_entity_equipment::deserialize(input, )?));
-    }
-    if (__tag.clone() == 61_i32) {
-        return Ok(Ty::Experience(super::super::super::super::play::to_client::packet_experience::deserialize(input, )?));
-    }
-    if (__tag.clone() == 62_i32) {
-        return Ok(Ty::UpdateHealth(super::super::super::super::play::to_client::packet_update_health::deserialize(input, )?));
-    }
-    if (__tag.clone() == 63_i32) {
-        return Ok(Ty::ScoreboardObjective(super::super::super::super::v1_8::play::to_client::packet_scoreboard_objective::deserialize(input, )?));
-    }
-    if (__tag.clone() == 64_i32) {
-        return Ok(Ty::SetPassengers(super::super::super::super::play::to_client::packet_set_passengers::deserialize(input, )?));
-    }
-    if (__tag.clone() == 65_i32) {
-        return Ok(Ty::Teams(super::super::super::super::v1_9::play::to_client::packet_teams::deserialize(input, )?));
-    }
-    if (__tag.clone() == 66_i32) {
-        return Ok(Ty::ScoreboardScore(super::super::super::super::v1_8::play::to_client::packet_scoreboard_score::deserialize(input, )?));
-    }
-    if (__tag.clone() == 67_i32) {
-        return Ok(Ty::SpawnPosition(super::super::super::super::v1_8::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == 68_i32) {
-        return Ok(Ty::UpdateTime(super::super::super::super::v1_4_2::play::to_client::packet_update_time::deserialize(input, )?));
-    }
-    if (__tag.clone() == 69_i32) {
-        return Ok(Ty::Title(super::super::super::super::v1_8::play::to_client::packet_title::deserialize(input, )?));
-    }
-    if (__tag.clone() == 70_i32) {
-        return Ok(Ty::UpdateSign(super::super::super::super::v1_8::play::to_client::packet_update_sign::deserialize(input, )?));
-    }
-    if (__tag.clone() == 71_i32) {
-        return Ok(Ty::SoundEffect(super::super::super::super::v1_9::play::to_client::packet_sound_effect::deserialize(input, )?));
-    }
-    if (__tag.clone() == 72_i32) {
-        return Ok(Ty::PlayerlistHeader(super::super::super::super::v1_8::play::to_client::packet_playerlist_header::deserialize(input, )?));
-    }
-    if (__tag.clone() == 73_i32) {
-        return Ok(Ty::Collect(super::super::super::super::v1_8::play::to_client::packet_collect::deserialize(input, )?));
-    }
-    if (__tag.clone() == 74_i32) {
-        return Ok(Ty::EntityTeleport(super::super::super::super::v1_9::play::to_client::packet_entity_teleport::deserialize(input, )?));
-    }
-    if (__tag.clone() == 75_i32) {
-        return Ok(Ty::EntityUpdateAttributes(super::super::super::super::v1_9::play::to_client::packet_entity_update_attributes::deserialize(input, )?));
-    }
-    if (__tag.clone() == 76_i32) {
-        return Ok(Ty::EntityEffect(super::super::super::super::v1_9::play::to_client::packet_entity_effect::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::SpawnEntity(
+			super::super::super::super::v1_9::play::to_client::packet_spawn_entity::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::SpawnEntityExperienceOrb(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_experience_orb::deserialize(input, )?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::SpawnEntityWeather(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_weather::deserialize(input, )?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::SpawnEntityLiving(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_living::deserialize(input, )?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::SpawnEntityPainting(super::super::super::super::v1_9::play::to_client::packet_spawn_entity_painting::deserialize(input, )?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::NamedEntitySpawn(super::super::super::super::v1_9::play::to_client::packet_named_entity_spawn::deserialize(input, )?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::Animation(
+			super::super::super::super::play::to_client::packet_animation::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::Statistics(
+			super::super::super::super::array::inline_355::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::BlockBreakAnimation(super::super::super::super::v1_8::play::to_client::packet_block_break_animation::deserialize(input, )?));
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::TileEntityData(super::super::super::super::v1_8::play::to_client::packet_tile_entity_data::deserialize(input, )?));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::BlockAction(
+			super::super::super::super::v1_8::play::to_client::packet_block_action::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::BlockChange(
+			super::super::super::super::v1_8::play::to_client::packet_block_change::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::BossBar(
+			super::super::super::super::v1_9::play::to_client::packet_boss_bar::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::Difficulty(
+			super::super::super::super::v1_8::play::to_client::packet_difficulty::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::TabComplete(
+			super::super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::Chat(
+			super::super::super::super::v1_8::play::to_client::packet_chat::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::MultiBlockChange(super::super::super::super::v1_8::play::to_client::packet_multi_block_change::deserialize(input, )?));
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::Transaction(
+			super::super::super::super::v1_8::play::to_client::packet_transaction::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::CloseWindow(
+			super::super::super::super::u8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::OpenWindow(
+			super::super::super::super::v1_8::play::to_client::packet_open_window::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::WindowItems(
+			super::super::super::super::v1_8::play::to_client::packet_window_items::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::CraftProgressBar(super::super::super::super::v1_0_1::play::to_client::packet_craft_progress_bar::deserialize(input, )?));
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::SetSlot(
+			super::super::super::super::v1_8::play::to_client::packet_set_slot::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::SetCooldown(
+			super::super::super::super::v1_9::play::to_client::packet_set_cooldown::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::CustomPayload(
+			super::super::super::super::play::to_client::packet_custom_payload::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::NamedSoundEffect(super::super::super::super::v1_9::play::to_client::packet_named_sound_effect::deserialize(input, )?));
+	}
+	if (__tag.clone() == 26_i32) {
+		return Ok(Ty::KickDisconnect(
+			super::super::super::super::pstring_96::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::EntityStatus(
+			super::super::super::super::play::to_client::packet_entity_status::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 28_i32) {
+		return Ok(Ty::Explosion(
+			super::super::super::super::v1_7::play::to_client::packet_explosion::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 29_i32) {
+		return Ok(Ty::UnloadChunk(
+			super::super::super::super::v1_9::play::to_client::packet_unload_chunk::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::GameStateChange(super::super::super::super::v1_8::play::to_client::packet_game_state_change::deserialize(input, )?));
+	}
+	if (__tag.clone() == 31_i32) {
+		return Ok(Ty::KeepAlive(
+			super::super::super::super::varint::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 32_i32) {
+		return Ok(Ty::MapChunk(
+			super::super::super::super::v1_9::play::to_client::packet_map_chunk::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 33_i32) {
+		return Ok(Ty::WorldEvent(
+			super::super::super::super::v1_8::play::to_client::packet_world_event::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 34_i32) {
+		return Ok(Ty::WorldParticles(
+			super::super::super::super::v1_8::play::to_client::packet_world_particles::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 35_i32) {
+		return Ok(Ty::Login(super::packet_login::deserialize(input)?));
+	}
+	if (__tag.clone() == 36_i32) {
+		return Ok(Ty::Map(
+			super::super::super::super::v1_9::play::to_client::packet_map::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 37_i32) {
+		return Ok(Ty::RelEntityMove(
+			super::super::super::super::play::to_client::packet_rel_entity_move::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 38_i32) {
+		return Ok(Ty::EntityMoveLook(
+			super::super::super::super::play::to_client::packet_entity_move_look::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::EntityLook(
+			super::super::super::super::play::to_client::packet_entity_look::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::Entity(super::super::super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 41_i32) {
+		return Ok(Ty::VehicleMove(
+			super::super::super::super::play::to_client::packet_vehicle_move::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 42_i32) {
+		return Ok(Ty::OpenSignEntity(
+			super::super::super::super::v1_8::position::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 43_i32) {
+		return Ok(Ty::Abilities(
+			super::super::super::super::play::to_client::packet_abilities::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 44_i32) {
+		return Ok(Ty::CombatEvent(
+			super::super::super::super::v1_8::play::to_client::packet_combat_event::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 45_i32) {
+		return Ok(Ty::PlayerInfo(
+			super::super::super::super::v1_8::play::to_client::packet_player_info::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 46_i32) {
+		return Ok(Ty::Position(
+			super::super::super::super::v1_9::play::to_client::packet_position::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 47_i32) {
+		return Ok(Ty::Bed(
+			super::super::super::super::v1_8::play::to_client::packet_bed::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 48_i32) {
+		return Ok(Ty::EntityDestroy(
+			super::super::super::super::array::inline_107::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 49_i32) {
+		return Ok(Ty::RemoveEntityEffect(super::super::super::super::v1_8::play::to_client::packet_remove_entity_effect::deserialize(input, )?));
+	}
+	if (__tag.clone() == 50_i32) {
+		return Ok(Ty::ResourcePackSend(super::super::super::super::v1_8::play::to_client::packet_resource_pack_send::deserialize(input, )?));
+	}
+	if (__tag.clone() == 51_i32) {
+		return Ok(Ty::Respawn(
+			super::super::super::super::v1_7::play::to_client::packet_respawn::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 52_i32) {
+		return Ok(Ty::EntityHeadRotation(
+			super::super::super::super::play::to_client::packet_entity_head_rotation::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 53_i32) {
+		return Ok(Ty::WorldBorder(
+			super::super::super::super::v1_8::play::to_client::packet_world_border::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 54_i32) {
+		return Ok(Ty::Camera(super::super::super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 55_i32) {
+		return Ok(Ty::HeldItemSlot(
+			super::super::super::super::i8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 56_i32) {
+		return Ok(Ty::ScoreboardDisplayObjective(super::super::super::super::v1_8::play::to_client::packet_scoreboard_display_objective::deserialize(input, )?));
+	}
+	if (__tag.clone() == 57_i32) {
+		return Ok(Ty::EntityMetadata(
+			super::super::super::super::v1_9::play::to_client::packet_entity_metadata::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 58_i32) {
+		return Ok(Ty::AttachEntity(
+			super::super::super::super::play::to_client::packet_attach_entity::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 59_i32) {
+		return Ok(Ty::EntityVelocity(
+			super::super::super::super::v1_8::play::to_client::packet_entity_velocity::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 60_i32) {
+		return Ok(Ty::EntityEquipment(super::super::super::super::v1_9::play::to_client::packet_entity_equipment::deserialize(input, )?));
+	}
+	if (__tag.clone() == 61_i32) {
+		return Ok(Ty::Experience(
+			super::super::super::super::play::to_client::packet_experience::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 62_i32) {
+		return Ok(Ty::UpdateHealth(
+			super::super::super::super::play::to_client::packet_update_health::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 63_i32) {
+		return Ok(Ty::ScoreboardObjective(super::super::super::super::v1_8::play::to_client::packet_scoreboard_objective::deserialize(input, )?));
+	}
+	if (__tag.clone() == 64_i32) {
+		return Ok(Ty::SetPassengers(
+			super::super::super::super::play::to_client::packet_set_passengers::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 65_i32) {
+		return Ok(Ty::Teams(
+			super::super::super::super::v1_9::play::to_client::packet_teams::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 66_i32) {
+		return Ok(Ty::ScoreboardScore(super::super::super::super::v1_8::play::to_client::packet_scoreboard_score::deserialize(input, )?));
+	}
+	if (__tag.clone() == 67_i32) {
+		return Ok(Ty::SpawnPosition(
+			super::super::super::super::v1_8::position::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 68_i32) {
+		return Ok(Ty::UpdateTime(
+			super::super::super::super::v1_4_2::play::to_client::packet_update_time::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 69_i32) {
+		return Ok(Ty::Title(
+			super::super::super::super::v1_8::play::to_client::packet_title::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 70_i32) {
+		return Ok(Ty::UpdateSign(
+			super::super::super::super::v1_8::play::to_client::packet_update_sign::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 71_i32) {
+		return Ok(Ty::SoundEffect(
+			super::super::super::super::v1_9::play::to_client::packet_sound_effect::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 72_i32) {
+		return Ok(Ty::PlayerlistHeader(super::super::super::super::v1_8::play::to_client::packet_playerlist_header::deserialize(input, )?));
+	}
+	if (__tag.clone() == 73_i32) {
+		return Ok(Ty::Collect(
+			super::super::super::super::v1_8::play::to_client::packet_collect::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 74_i32) {
+		return Ok(Ty::EntityTeleport(
+			super::super::super::super::v1_9::play::to_client::packet_entity_teleport::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 75_i32) {
+		return Ok(Ty::EntityUpdateAttributes(super::super::super::super::v1_9::play::to_client::packet_entity_update_attributes::deserialize(input, )?));
+	}
+	if (__tag.clone() == 76_i32) {
+		return Ok(Ty::EntityEffect(
+			super::super::super::super::v1_9::play::to_client::packet_entity_effect::deserialize(
+				input,
+			)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
+	super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
         Ty::SpawnEntity(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity::size_of(__v),
         Ty::SpawnEntityExperienceOrb(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity_experience_orb::size_of(__v),
         Ty::SpawnEntityWeather(__v) => super::super::super::super::v1_9::play::to_client::packet_spawn_entity_weather::size_of(__v),
@@ -487,167 +663,167 @@ pub fn size_of(_0: &Ty) -> usize {
     }
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::SpawnEntity(_) => "spawn_entity",
-        Ty::SpawnEntityExperienceOrb(_) => "spawn_entity_experience_orb",
-        Ty::SpawnEntityWeather(_) => "spawn_entity_weather",
-        Ty::SpawnEntityLiving(_) => "spawn_entity_living",
-        Ty::SpawnEntityPainting(_) => "spawn_entity_painting",
-        Ty::NamedEntitySpawn(_) => "named_entity_spawn",
-        Ty::Animation(_) => "animation",
-        Ty::Statistics(_) => "statistics",
-        Ty::BlockBreakAnimation(_) => "block_break_animation",
-        Ty::TileEntityData(_) => "tile_entity_data",
-        Ty::BlockAction(_) => "block_action",
-        Ty::BlockChange(_) => "block_change",
-        Ty::BossBar(_) => "boss_bar",
-        Ty::Difficulty(_) => "difficulty",
-        Ty::TabComplete(_) => "tab_complete",
-        Ty::Chat(_) => "chat",
-        Ty::MultiBlockChange(_) => "multi_block_change",
-        Ty::Transaction(_) => "transaction",
-        Ty::CloseWindow(_) => "close_window",
-        Ty::OpenWindow(_) => "open_window",
-        Ty::WindowItems(_) => "window_items",
-        Ty::CraftProgressBar(_) => "craft_progress_bar",
-        Ty::SetSlot(_) => "set_slot",
-        Ty::SetCooldown(_) => "set_cooldown",
-        Ty::CustomPayload(_) => "custom_payload",
-        Ty::NamedSoundEffect(_) => "named_sound_effect",
-        Ty::KickDisconnect(_) => "kick_disconnect",
-        Ty::EntityStatus(_) => "entity_status",
-        Ty::Explosion(_) => "explosion",
-        Ty::UnloadChunk(_) => "unload_chunk",
-        Ty::GameStateChange(_) => "game_state_change",
-        Ty::KeepAlive(_) => "keep_alive",
-        Ty::MapChunk(_) => "map_chunk",
-        Ty::WorldEvent(_) => "world_event",
-        Ty::WorldParticles(_) => "world_particles",
-        Ty::Login(_) => "login",
-        Ty::Map(_) => "map",
-        Ty::RelEntityMove(_) => "rel_entity_move",
-        Ty::EntityMoveLook(_) => "entity_move_look",
-        Ty::EntityLook(_) => "entity_look",
-        Ty::Entity(_) => "entity",
-        Ty::VehicleMove(_) => "vehicle_move",
-        Ty::OpenSignEntity(_) => "open_sign_entity",
-        Ty::Abilities(_) => "abilities",
-        Ty::CombatEvent(_) => "combat_event",
-        Ty::PlayerInfo(_) => "player_info",
-        Ty::Position(_) => "position",
-        Ty::Bed(_) => "bed",
-        Ty::EntityDestroy(_) => "entity_destroy",
-        Ty::RemoveEntityEffect(_) => "remove_entity_effect",
-        Ty::ResourcePackSend(_) => "resource_pack_send",
-        Ty::Respawn(_) => "respawn",
-        Ty::EntityHeadRotation(_) => "entity_head_rotation",
-        Ty::WorldBorder(_) => "world_border",
-        Ty::Camera(_) => "camera",
-        Ty::HeldItemSlot(_) => "held_item_slot",
-        Ty::ScoreboardDisplayObjective(_) => "scoreboard_display_objective",
-        Ty::EntityMetadata(_) => "entity_metadata",
-        Ty::AttachEntity(_) => "attach_entity",
-        Ty::EntityVelocity(_) => "entity_velocity",
-        Ty::EntityEquipment(_) => "entity_equipment",
-        Ty::Experience(_) => "experience",
-        Ty::UpdateHealth(_) => "update_health",
-        Ty::ScoreboardObjective(_) => "scoreboard_objective",
-        Ty::SetPassengers(_) => "set_passengers",
-        Ty::Teams(_) => "teams",
-        Ty::ScoreboardScore(_) => "scoreboard_score",
-        Ty::SpawnPosition(_) => "spawn_position",
-        Ty::UpdateTime(_) => "update_time",
-        Ty::Title(_) => "title",
-        Ty::UpdateSign(_) => "update_sign",
-        Ty::SoundEffect(_) => "sound_effect",
-        Ty::PlayerlistHeader(_) => "playerlist_header",
-        Ty::Collect(_) => "collect",
-        Ty::EntityTeleport(_) => "entity_teleport",
-        Ty::EntityUpdateAttributes(_) => "entity_update_attributes",
-        Ty::EntityEffect(_) => "entity_effect",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::SpawnEntity(_) => "spawn_entity",
+		Ty::SpawnEntityExperienceOrb(_) => "spawn_entity_experience_orb",
+		Ty::SpawnEntityWeather(_) => "spawn_entity_weather",
+		Ty::SpawnEntityLiving(_) => "spawn_entity_living",
+		Ty::SpawnEntityPainting(_) => "spawn_entity_painting",
+		Ty::NamedEntitySpawn(_) => "named_entity_spawn",
+		Ty::Animation(_) => "animation",
+		Ty::Statistics(_) => "statistics",
+		Ty::BlockBreakAnimation(_) => "block_break_animation",
+		Ty::TileEntityData(_) => "tile_entity_data",
+		Ty::BlockAction(_) => "block_action",
+		Ty::BlockChange(_) => "block_change",
+		Ty::BossBar(_) => "boss_bar",
+		Ty::Difficulty(_) => "difficulty",
+		Ty::TabComplete(_) => "tab_complete",
+		Ty::Chat(_) => "chat",
+		Ty::MultiBlockChange(_) => "multi_block_change",
+		Ty::Transaction(_) => "transaction",
+		Ty::CloseWindow(_) => "close_window",
+		Ty::OpenWindow(_) => "open_window",
+		Ty::WindowItems(_) => "window_items",
+		Ty::CraftProgressBar(_) => "craft_progress_bar",
+		Ty::SetSlot(_) => "set_slot",
+		Ty::SetCooldown(_) => "set_cooldown",
+		Ty::CustomPayload(_) => "custom_payload",
+		Ty::NamedSoundEffect(_) => "named_sound_effect",
+		Ty::KickDisconnect(_) => "kick_disconnect",
+		Ty::EntityStatus(_) => "entity_status",
+		Ty::Explosion(_) => "explosion",
+		Ty::UnloadChunk(_) => "unload_chunk",
+		Ty::GameStateChange(_) => "game_state_change",
+		Ty::KeepAlive(_) => "keep_alive",
+		Ty::MapChunk(_) => "map_chunk",
+		Ty::WorldEvent(_) => "world_event",
+		Ty::WorldParticles(_) => "world_particles",
+		Ty::Login(_) => "login",
+		Ty::Map(_) => "map",
+		Ty::RelEntityMove(_) => "rel_entity_move",
+		Ty::EntityMoveLook(_) => "entity_move_look",
+		Ty::EntityLook(_) => "entity_look",
+		Ty::Entity(_) => "entity",
+		Ty::VehicleMove(_) => "vehicle_move",
+		Ty::OpenSignEntity(_) => "open_sign_entity",
+		Ty::Abilities(_) => "abilities",
+		Ty::CombatEvent(_) => "combat_event",
+		Ty::PlayerInfo(_) => "player_info",
+		Ty::Position(_) => "position",
+		Ty::Bed(_) => "bed",
+		Ty::EntityDestroy(_) => "entity_destroy",
+		Ty::RemoveEntityEffect(_) => "remove_entity_effect",
+		Ty::ResourcePackSend(_) => "resource_pack_send",
+		Ty::Respawn(_) => "respawn",
+		Ty::EntityHeadRotation(_) => "entity_head_rotation",
+		Ty::WorldBorder(_) => "world_border",
+		Ty::Camera(_) => "camera",
+		Ty::HeldItemSlot(_) => "held_item_slot",
+		Ty::ScoreboardDisplayObjective(_) => "scoreboard_display_objective",
+		Ty::EntityMetadata(_) => "entity_metadata",
+		Ty::AttachEntity(_) => "attach_entity",
+		Ty::EntityVelocity(_) => "entity_velocity",
+		Ty::EntityEquipment(_) => "entity_equipment",
+		Ty::Experience(_) => "experience",
+		Ty::UpdateHealth(_) => "update_health",
+		Ty::ScoreboardObjective(_) => "scoreboard_objective",
+		Ty::SetPassengers(_) => "set_passengers",
+		Ty::Teams(_) => "teams",
+		Ty::ScoreboardScore(_) => "scoreboard_score",
+		Ty::SpawnPosition(_) => "spawn_position",
+		Ty::UpdateTime(_) => "update_time",
+		Ty::Title(_) => "title",
+		Ty::UpdateSign(_) => "update_sign",
+		Ty::SoundEffect(_) => "sound_effect",
+		Ty::PlayerlistHeader(_) => "playerlist_header",
+		Ty::Collect(_) => "collect",
+		Ty::EntityTeleport(_) => "entity_teleport",
+		Ty::EntityUpdateAttributes(_) => "entity_update_attributes",
+		Ty::EntityEffect(_) => "entity_effect",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::SpawnEntity(_) => 0_i32,
-        Ty::SpawnEntityExperienceOrb(_) => 1_i32,
-        Ty::SpawnEntityWeather(_) => 2_i32,
-        Ty::SpawnEntityLiving(_) => 3_i32,
-        Ty::SpawnEntityPainting(_) => 4_i32,
-        Ty::NamedEntitySpawn(_) => 5_i32,
-        Ty::Animation(_) => 6_i32,
-        Ty::Statistics(_) => 7_i32,
-        Ty::BlockBreakAnimation(_) => 8_i32,
-        Ty::TileEntityData(_) => 9_i32,
-        Ty::BlockAction(_) => 10_i32,
-        Ty::BlockChange(_) => 11_i32,
-        Ty::BossBar(_) => 12_i32,
-        Ty::Difficulty(_) => 13_i32,
-        Ty::TabComplete(_) => 14_i32,
-        Ty::Chat(_) => 15_i32,
-        Ty::MultiBlockChange(_) => 16_i32,
-        Ty::Transaction(_) => 17_i32,
-        Ty::CloseWindow(_) => 18_i32,
-        Ty::OpenWindow(_) => 19_i32,
-        Ty::WindowItems(_) => 20_i32,
-        Ty::CraftProgressBar(_) => 21_i32,
-        Ty::SetSlot(_) => 22_i32,
-        Ty::SetCooldown(_) => 23_i32,
-        Ty::CustomPayload(_) => 24_i32,
-        Ty::NamedSoundEffect(_) => 25_i32,
-        Ty::KickDisconnect(_) => 26_i32,
-        Ty::EntityStatus(_) => 27_i32,
-        Ty::Explosion(_) => 28_i32,
-        Ty::UnloadChunk(_) => 29_i32,
-        Ty::GameStateChange(_) => 30_i32,
-        Ty::KeepAlive(_) => 31_i32,
-        Ty::MapChunk(_) => 32_i32,
-        Ty::WorldEvent(_) => 33_i32,
-        Ty::WorldParticles(_) => 34_i32,
-        Ty::Login(_) => 35_i32,
-        Ty::Map(_) => 36_i32,
-        Ty::RelEntityMove(_) => 37_i32,
-        Ty::EntityMoveLook(_) => 38_i32,
-        Ty::EntityLook(_) => 39_i32,
-        Ty::Entity(_) => 40_i32,
-        Ty::VehicleMove(_) => 41_i32,
-        Ty::OpenSignEntity(_) => 42_i32,
-        Ty::Abilities(_) => 43_i32,
-        Ty::CombatEvent(_) => 44_i32,
-        Ty::PlayerInfo(_) => 45_i32,
-        Ty::Position(_) => 46_i32,
-        Ty::Bed(_) => 47_i32,
-        Ty::EntityDestroy(_) => 48_i32,
-        Ty::RemoveEntityEffect(_) => 49_i32,
-        Ty::ResourcePackSend(_) => 50_i32,
-        Ty::Respawn(_) => 51_i32,
-        Ty::EntityHeadRotation(_) => 52_i32,
-        Ty::WorldBorder(_) => 53_i32,
-        Ty::Camera(_) => 54_i32,
-        Ty::HeldItemSlot(_) => 55_i32,
-        Ty::ScoreboardDisplayObjective(_) => 56_i32,
-        Ty::EntityMetadata(_) => 57_i32,
-        Ty::AttachEntity(_) => 58_i32,
-        Ty::EntityVelocity(_) => 59_i32,
-        Ty::EntityEquipment(_) => 60_i32,
-        Ty::Experience(_) => 61_i32,
-        Ty::UpdateHealth(_) => 62_i32,
-        Ty::ScoreboardObjective(_) => 63_i32,
-        Ty::SetPassengers(_) => 64_i32,
-        Ty::Teams(_) => 65_i32,
-        Ty::ScoreboardScore(_) => 66_i32,
-        Ty::SpawnPosition(_) => 67_i32,
-        Ty::UpdateTime(_) => 68_i32,
-        Ty::Title(_) => 69_i32,
-        Ty::UpdateSign(_) => 70_i32,
-        Ty::SoundEffect(_) => 71_i32,
-        Ty::PlayerlistHeader(_) => 72_i32,
-        Ty::Collect(_) => 73_i32,
-        Ty::EntityTeleport(_) => 74_i32,
-        Ty::EntityUpdateAttributes(_) => 75_i32,
-        Ty::EntityEffect(_) => 76_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::SpawnEntity(_) => 0_i32,
+		Ty::SpawnEntityExperienceOrb(_) => 1_i32,
+		Ty::SpawnEntityWeather(_) => 2_i32,
+		Ty::SpawnEntityLiving(_) => 3_i32,
+		Ty::SpawnEntityPainting(_) => 4_i32,
+		Ty::NamedEntitySpawn(_) => 5_i32,
+		Ty::Animation(_) => 6_i32,
+		Ty::Statistics(_) => 7_i32,
+		Ty::BlockBreakAnimation(_) => 8_i32,
+		Ty::TileEntityData(_) => 9_i32,
+		Ty::BlockAction(_) => 10_i32,
+		Ty::BlockChange(_) => 11_i32,
+		Ty::BossBar(_) => 12_i32,
+		Ty::Difficulty(_) => 13_i32,
+		Ty::TabComplete(_) => 14_i32,
+		Ty::Chat(_) => 15_i32,
+		Ty::MultiBlockChange(_) => 16_i32,
+		Ty::Transaction(_) => 17_i32,
+		Ty::CloseWindow(_) => 18_i32,
+		Ty::OpenWindow(_) => 19_i32,
+		Ty::WindowItems(_) => 20_i32,
+		Ty::CraftProgressBar(_) => 21_i32,
+		Ty::SetSlot(_) => 22_i32,
+		Ty::SetCooldown(_) => 23_i32,
+		Ty::CustomPayload(_) => 24_i32,
+		Ty::NamedSoundEffect(_) => 25_i32,
+		Ty::KickDisconnect(_) => 26_i32,
+		Ty::EntityStatus(_) => 27_i32,
+		Ty::Explosion(_) => 28_i32,
+		Ty::UnloadChunk(_) => 29_i32,
+		Ty::GameStateChange(_) => 30_i32,
+		Ty::KeepAlive(_) => 31_i32,
+		Ty::MapChunk(_) => 32_i32,
+		Ty::WorldEvent(_) => 33_i32,
+		Ty::WorldParticles(_) => 34_i32,
+		Ty::Login(_) => 35_i32,
+		Ty::Map(_) => 36_i32,
+		Ty::RelEntityMove(_) => 37_i32,
+		Ty::EntityMoveLook(_) => 38_i32,
+		Ty::EntityLook(_) => 39_i32,
+		Ty::Entity(_) => 40_i32,
+		Ty::VehicleMove(_) => 41_i32,
+		Ty::OpenSignEntity(_) => 42_i32,
+		Ty::Abilities(_) => 43_i32,
+		Ty::CombatEvent(_) => 44_i32,
+		Ty::PlayerInfo(_) => 45_i32,
+		Ty::Position(_) => 46_i32,
+		Ty::Bed(_) => 47_i32,
+		Ty::EntityDestroy(_) => 48_i32,
+		Ty::RemoveEntityEffect(_) => 49_i32,
+		Ty::ResourcePackSend(_) => 50_i32,
+		Ty::Respawn(_) => 51_i32,
+		Ty::EntityHeadRotation(_) => 52_i32,
+		Ty::WorldBorder(_) => 53_i32,
+		Ty::Camera(_) => 54_i32,
+		Ty::HeldItemSlot(_) => 55_i32,
+		Ty::ScoreboardDisplayObjective(_) => 56_i32,
+		Ty::EntityMetadata(_) => 57_i32,
+		Ty::AttachEntity(_) => 58_i32,
+		Ty::EntityVelocity(_) => 59_i32,
+		Ty::EntityEquipment(_) => 60_i32,
+		Ty::Experience(_) => 61_i32,
+		Ty::UpdateHealth(_) => 62_i32,
+		Ty::ScoreboardObjective(_) => 63_i32,
+		Ty::SetPassengers(_) => 64_i32,
+		Ty::Teams(_) => 65_i32,
+		Ty::ScoreboardScore(_) => 66_i32,
+		Ty::SpawnPosition(_) => 67_i32,
+		Ty::UpdateTime(_) => 68_i32,
+		Ty::Title(_) => 69_i32,
+		Ty::UpdateSign(_) => 70_i32,
+		Ty::SoundEffect(_) => 71_i32,
+		Ty::PlayerlistHeader(_) => 72_i32,
+		Ty::Collect(_) => 73_i32,
+		Ty::EntityTeleport(_) => 74_i32,
+		Ty::EntityUpdateAttributes(_) => 75_i32,
+		Ty::EntityEffect(_) => 76_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

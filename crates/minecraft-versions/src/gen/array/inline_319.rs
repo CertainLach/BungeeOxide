@@ -3,23 +3,30 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty = Vec<super::super::v1_21_5::play::to_client::PacketTradeList20>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::v1_21_5::play::to_client::packet_trade_list_20::serialize(e, output)?;
-    }
-    Ok(())
+	super::super::varint::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::v1_21_5::play::to_client::packet_trade_list_20::serialize(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let count: usize = super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count.saturating_mul(30))?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::v1_21_5::play::to_client::packet_trade_list_20::deserialize(input, )?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let count: usize = super::super::varint::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count.saturating_mul(30))?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(super::super::v1_21_5::play::to_client::packet_trade_list_20::deserialize(input)?);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::v1_21_5::play::to_client::packet_trade_list_20::size_of(e); }
-    n
+	let mut n = super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::v1_21_5::play::to_client::packet_trade_list_20::size_of(e);
+	}
+	n
 }

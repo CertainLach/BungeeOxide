@@ -3,71 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements11<'i> {
-    pub parent_id: super::super::super::Option18::<'i>,
-    pub display_data: super::super::super::Option37::<'i>,
-    pub requirements: super::super::super::array::Inline364::<'i>,
-    pub sends_telemtry_data: super::super::super::super::Bool,
+	pub parent_id: super::super::super::Option18<'i>,
+	pub display_data: super::super::super::Option37<'i>,
+	pub requirements: super::super::super::array::Inline364<'i>,
+	pub sends_telemtry_data: super::super::super::super::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::option_18::serialize(
-        &_0.parent_id,
-        output,
-    )?;
-    super::super::super::option_37::serialize(
-        &_0.display_data,
-        output,
-    )?;
-    super::super::super::array::inline_364::serialize(
-        &_0.requirements,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.sends_telemtry_data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::option_18::serialize(&_0.parent_id, output)?;
+	super::super::super::option_37::serialize(&_0.display_data, output)?;
+	super::super::super::array::inline_364::serialize(&_0.requirements, output)?;
+	super::super::super::super::bool::serialize(&_0.sends_telemtry_data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_parentId = super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_displayData = super::super::super::option_37::deserialize(
-        input,
-    )?;
-    let f_requirements = super::super::super::array::inline_364::deserialize(
-        input,
-    )?;
-    let f_sendsTelemtryData = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        parent_id: f_parentId,display_data: f_displayData,requirements: f_requirements,sends_telemtry_data: f_sendsTelemtryData
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_parentId = super::super::super::option_18::deserialize(input)?;
+	let f_displayData = super::super::super::option_37::deserialize(input)?;
+	let f_requirements = super::super::super::array::inline_364::deserialize(input)?;
+	let f_sendsTelemtryData = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		parent_id: f_parentId,
+		display_data: f_displayData,
+		requirements: f_requirements,
+		sends_telemtry_data: f_sendsTelemtryData,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::option_18::size_of(
-        &_0.parent_id
-    )
-    + super::super::super::option_37::size_of(
-        &_0.display_data
-    )
-    + super::super::super::array::inline_364::size_of(
-        &_0.requirements
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.sends_telemtry_data
-    )
+	0 + super::super::super::option_18::size_of(&_0.parent_id)
+		+ super::super::super::option_37::size_of(&_0.display_data)
+		+ super::super::super::array::inline_364::size_of(&_0.requirements)
+		+ super::super::super::super::bool::size_of(&_0.sends_telemtry_data)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements11) -> Ty<'i> {
-    Ty {
-        parent_id: super::super::super::option_18::view(&_0.parent_id),display_data: super::super::super::option_37::view(&_0.display_data),requirements: super::super::super::array::inline_364::view(&_0.requirements),sends_telemtry_data: ::core::clone::Clone::clone(&_0.sends_telemtry_data)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketAdvancements11,
+) -> Ty<'i> {
+	Ty {
+		parent_id: super::super::super::option_18::view(&_0.parent_id),
+		display_data: super::super::super::option_37::view(&_0.display_data),
+		requirements: super::super::super::array::inline_364::view(&_0.requirements),
+		sends_telemtry_data: ::core::clone::Clone::clone(&_0.sends_telemtry_data),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements11) -> Ty<'i> {
-    Ty {
-        parent_id: super::super::super::option_18::view(&mut _0.parent_id),display_data: super::super::super::option_37::into_view(&mut _0.display_data),requirements: super::super::super::array::inline_364::view(&mut _0.requirements),sends_telemtry_data: ::core::clone::Clone::clone(&mut _0.sends_telemtry_data)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements11,
+) -> Ty<'i> {
+	Ty {
+		parent_id: super::super::super::option_18::view(&mut _0.parent_id),
+		display_data: super::super::super::option_37::into_view(&mut _0.display_data),
+		requirements: super::super::super::array::inline_364::view(&mut _0.requirements),
+		sends_telemtry_data: ::core::clone::Clone::clone(&mut _0.sends_telemtry_data),
+	}
 }
- pub type Ty<'i> = PacketAdvancements11<'i>;
+pub type Ty<'i> = PacketAdvancements11<'i>;

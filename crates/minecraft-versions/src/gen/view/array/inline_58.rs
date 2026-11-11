@@ -3,21 +3,28 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty<'i> = &'i [u8];
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::super::u8::serialize(e, output)?;
-    }
-    Ok(())
+	super::super::super::varint::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::super::u8::serialize(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let count: usize = super::super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.bytes(count)
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	let count: usize = super::super::super::varint::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.bytes(count)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    let mut n = super::super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::super::u8::size_of(e); }
-    n
+	let mut n = super::super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::super::u8::size_of(e);
+	}
+	n
 }
 pub fn view<'i>(_0: &'i super::super::super::array::Inline58) -> Ty<'i> {
-    _0.as_slice()
+	_0.as_slice()
 }

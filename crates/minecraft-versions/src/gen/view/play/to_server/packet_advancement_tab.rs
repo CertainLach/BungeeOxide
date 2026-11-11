@@ -3,56 +3,63 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketAdvancementTab<'i> {
-    V0(super::super::super::Pstring96::<'i>),
-    V1,
-    Default(super::super::super::super::Varint),
+	V0(super::super::super::Pstring96<'i>),
+	V1,
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0(__v) => super::super::super::pstring_96::serialize(__v, output),
-        Ty::V1 => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0(__v) => super::super::super::pstring_96::serialize(__v, output),
+		Ty::V1 => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::V0(super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::V1); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0(super::super::super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::V1);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0(__v) => super::super::super::pstring_96::size_of(__v),
-        Ty::V1 => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0(__v) => super::super::super::pstring_96::size_of(__v),
+			Ty::V1 => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::V0(_) => "v0",
-        Ty::V1 => "v1",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0(_) => "v0",
+		Ty::V1 => "v1",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::V0(_) => 0_i32,
-        Ty::V1 => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0(_) => 0_i32,
+		Ty::V1 => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketAdvancementTab) -> Ty<'i> {
-    match _0 {
-        super::super::super::super::play::to_server::PacketAdvancementTab::V0(__v) => Ty::V0(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::play::to_server::PacketAdvancementTab::V1 => Ty::V1,
-        super::super::super::super::play::to_server::PacketAdvancementTab::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_server::PacketAdvancementTab,
+) -> Ty<'i> {
+	match _0 {
+		super::super::super::super::play::to_server::PacketAdvancementTab::V0(__v) => {
+			Ty::V0(super::super::super::pstring_96::view(__v))
+		}
+		super::super::super::super::play::to_server::PacketAdvancementTab::V1 => Ty::V1,
+		super::super::super::super::play::to_server::PacketAdvancementTab::Default(__t) => {
+			Ty::Default(::core::clone::Clone::clone(__t))
+		}
+	}
 }
- pub type Ty<'i> = PacketAdvancementTab<'i>;
+pub type Ty<'i> = PacketAdvancementTab<'i>;

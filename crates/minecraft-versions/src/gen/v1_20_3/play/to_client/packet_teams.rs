@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTeams {
-    pub team: String,
-    pub mode: super::PacketTeams24,
+	pub team: String,
+	pub mode: super::PacketTeams24,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.team,
-        output,
-    )?;
-    super::packet_teams_24::serialize(
-        &_0.mode,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.team, output)?;
+	super::packet_teams_24::serialize(&_0.mode, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_team = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_mode = super::packet_teams_24::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        team: f_team,mode: f_mode
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_team = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_mode = super::packet_teams_24::deserialize(input)?;
+	Ok(Ty {
+		team: f_team,
+		mode: f_mode,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.team
-    )
-    + super::packet_teams_24::size_of(
-        &_0.mode
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.team)
+		+ super::packet_teams_24::size_of(&_0.mode)
 }
- pub type Ty = PacketTeams;
+pub type Ty = PacketTeams;

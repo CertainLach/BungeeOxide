@@ -3,21 +3,26 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty = Vec<u8>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i16::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for b in _0.iter() {
-        super::super::u8::serialize(b, output)?;
-    }
-    Ok(())
+	super::super::i16::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for b in _0.iter() {
+		super::super::u8::serialize(b, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let count: usize = super::super::i16::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count)?;
-    let mut out = Vec::with_capacity(count);
-    for _ in 0..count {
-        out.push(super::super::u8::deserialize(input)?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let count: usize = super::super::i16::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
+	let mut out = Vec::with_capacity(count);
+	for _ in 0..count {
+		out.push(super::super::u8::deserialize(input)?);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::i16::size_of(&_0.len().try_into().unwrap_or_default()) + _0.len()
+	super::super::i16::size_of(&_0.len().try_into().unwrap_or_default()) + _0.len()
 }

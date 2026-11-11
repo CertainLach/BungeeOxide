@@ -3,71 +3,51 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockPredicate<'i> {
-    pub block_set: super::Option34::<'i>,
-    pub properties: super::Option93::<'i>,
-    pub nbt: super::AnonOptionalNbt::<'i>,
-    pub components: super::v1_21_11::DataComponentMatchers::<'i>,
+	pub block_set: super::Option34<'i>,
+	pub properties: super::Option93<'i>,
+	pub nbt: super::AnonOptionalNbt<'i>,
+	pub components: super::v1_21_11::DataComponentMatchers<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::option_34::serialize(
-        &_0.block_set,
-        output,
-    )?;
-    super::option_93::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::anon_optional_nbt::serialize(
-        &_0.nbt,
-        output,
-    )?;
-    super::v1_21_11::data_component_matchers::serialize(
-        &_0.components,
-        output,
-    )?;
-    Ok(())
+	super::option_34::serialize(&_0.block_set, output)?;
+	super::option_93::serialize(&_0.properties, output)?;
+	super::anon_optional_nbt::serialize(&_0.nbt, output)?;
+	super::v1_21_11::data_component_matchers::serialize(&_0.components, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_blockSet = super::option_34::deserialize(
-        input,
-    )?;
-    let f_properties = super::option_93::deserialize(
-        input,
-    )?;
-    let f_nbt = super::anon_optional_nbt::deserialize(
-        input,
-    )?;
-    let f_components = super::v1_21_11::data_component_matchers::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        block_set: f_blockSet,properties: f_properties,nbt: f_nbt,components: f_components
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_blockSet = super::option_34::deserialize(input)?;
+	let f_properties = super::option_93::deserialize(input)?;
+	let f_nbt = super::anon_optional_nbt::deserialize(input)?;
+	let f_components = super::v1_21_11::data_component_matchers::deserialize(input)?;
+	Ok(Ty {
+		block_set: f_blockSet,
+		properties: f_properties,
+		nbt: f_nbt,
+		components: f_components,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::option_34::size_of(
-        &_0.block_set
-    )
-    + super::option_93::size_of(
-        &_0.properties
-    )
-    + super::anon_optional_nbt::size_of(
-        &_0.nbt
-    )
-    + super::v1_21_11::data_component_matchers::size_of(
-        &_0.components
-    )
+	0 + super::option_34::size_of(&_0.block_set)
+		+ super::option_93::size_of(&_0.properties)
+		+ super::anon_optional_nbt::size_of(&_0.nbt)
+		+ super::v1_21_11::data_component_matchers::size_of(&_0.components)
 }
 pub fn view<'i>(_0: &'i super::super::ItemBlockPredicate) -> Ty<'i> {
-    Ty {
-        block_set: super::option_34::view(&_0.block_set),properties: super::option_93::view(&_0.properties),nbt: super::anon_optional_nbt::view(&_0.nbt),components: super::v1_21_11::data_component_matchers::view(&_0.components)
-    }
+	Ty {
+		block_set: super::option_34::view(&_0.block_set),
+		properties: super::option_93::view(&_0.properties),
+		nbt: super::anon_optional_nbt::view(&_0.nbt),
+		components: super::v1_21_11::data_component_matchers::view(&_0.components),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::ItemBlockPredicate) -> Ty<'i> {
-    Ty {
-        block_set: super::option_34::into_view(&mut _0.block_set),properties: super::option_93::view(&mut _0.properties),nbt: super::anon_optional_nbt::into_view(&mut _0.nbt),components: super::v1_21_11::data_component_matchers::into_view(&mut _0.components)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::ItemBlockPredicate) -> Ty<'i> {
+	Ty {
+		block_set: super::option_34::into_view(&mut _0.block_set),
+		properties: super::option_93::view(&mut _0.properties),
+		nbt: super::anon_optional_nbt::into_view(&mut _0.nbt),
+		components: super::v1_21_11::data_component_matchers::into_view(&mut _0.components),
+	}
 }
- pub type Ty<'i> = ItemBlockPredicate<'i>;
+pub type Ty<'i> = ItemBlockPredicate<'i>;

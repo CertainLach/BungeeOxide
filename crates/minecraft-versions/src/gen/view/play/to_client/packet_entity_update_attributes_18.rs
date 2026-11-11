@@ -3,55 +3,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityUpdateAttributes18<'i> {
-    pub uuid: super::super::super::Pstring96::<'i>,
-    pub amount: super::super::super::super::F64,
-    pub operation: super::super::super::super::I8,
+	pub uuid: super::super::super::Pstring96<'i>,
+	pub amount: super::super::super::super::F64,
+	pub operation: super::super::super::super::I8,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.amount,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.operation,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.uuid, output)?;
+	super::super::super::super::f64::serialize(&_0.amount, output)?;
+	super::super::super::super::i8::serialize(&_0.operation, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(10)?;
-    let f_uuid = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_amount = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_operation = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,amount: f_amount,operation: f_operation
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(10)?;
+	let f_uuid = super::super::super::pstring_96::deserialize(input)?;
+	let f_amount = super::super::super::super::f64::deserialize(input)?;
+	let f_operation = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		amount: f_amount,
+		operation: f_operation,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.uuid
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.amount
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.operation
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.uuid)
+		+ super::super::super::super::f64::size_of(&_0.amount)
+		+ super::super::super::super::i8::size_of(&_0.operation)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes18) -> Ty<'i> {
-    Ty {
-        uuid: super::super::super::pstring_96::view(&_0.uuid),amount: ::core::clone::Clone::clone(&_0.amount),operation: ::core::clone::Clone::clone(&_0.operation)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes18,
+) -> Ty<'i> {
+	Ty {
+		uuid: super::super::super::pstring_96::view(&_0.uuid),
+		amount: ::core::clone::Clone::clone(&_0.amount),
+		operation: ::core::clone::Clone::clone(&_0.operation),
+	}
 }
- pub type Ty<'i> = PacketEntityUpdateAttributes18<'i>;
+pub type Ty<'i> = PacketEntityUpdateAttributes18<'i>;

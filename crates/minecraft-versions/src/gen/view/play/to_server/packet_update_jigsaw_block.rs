@@ -3,110 +3,69 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateJigsawBlock<'i> {
-    pub location: super::super::super::super::Position,
-    pub name: super::super::super::Pstring96::<'i>,
-    pub target: super::super::super::Pstring96::<'i>,
-    pub pool: super::super::super::Pstring96::<'i>,
-    pub final_state: super::super::super::Pstring96::<'i>,
-    pub joint_type: super::super::super::Pstring96::<'i>,
-    pub selection_priority: super::super::super::super::Varint,
-    pub placement_priority: super::super::super::super::Varint,
+	pub location: super::super::super::super::Position,
+	pub name: super::super::super::Pstring96<'i>,
+	pub target: super::super::super::Pstring96<'i>,
+	pub pool: super::super::super::Pstring96<'i>,
+	pub final_state: super::super::super::Pstring96<'i>,
+	pub joint_type: super::super::super::Pstring96<'i>,
+	pub selection_priority: super::super::super::super::Varint,
+	pub placement_priority: super::super::super::super::Varint,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.pool,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.final_state,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.joint_type,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.selection_priority,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.placement_priority,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::pstring_96::serialize(&_0.target, output)?;
+	super::super::super::pstring_96::serialize(&_0.pool, output)?;
+	super::super::super::pstring_96::serialize(&_0.final_state, output)?;
+	super::super::super::pstring_96::serialize(&_0.joint_type, output)?;
+	super::super::super::super::varint::serialize(&_0.selection_priority, output)?;
+	super::super::super::super::varint::serialize(&_0.placement_priority, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(15)?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_name = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_target = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_pool = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_finalState = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_jointType = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_selection_priority = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_placement_priority = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,name: f_name,target: f_target,pool: f_pool,final_state: f_finalState,joint_type: f_jointType,selection_priority: f_selection_priority,placement_priority: f_placement_priority
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(15)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_name = super::super::super::pstring_96::deserialize(input)?;
+	let f_target = super::super::super::pstring_96::deserialize(input)?;
+	let f_pool = super::super::super::pstring_96::deserialize(input)?;
+	let f_finalState = super::super::super::pstring_96::deserialize(input)?;
+	let f_jointType = super::super::super::pstring_96::deserialize(input)?;
+	let f_selection_priority = super::super::super::super::varint::deserialize(input)?;
+	let f_placement_priority = super::super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		name: f_name,
+		target: f_target,
+		pool: f_pool,
+		final_state: f_finalState,
+		joint_type: f_jointType,
+		selection_priority: f_selection_priority,
+		placement_priority: f_placement_priority,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.target
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.pool
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.final_state
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.joint_type
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.selection_priority
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.placement_priority
-    )
+	0 + super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::pstring_96::size_of(&_0.target)
+		+ super::super::super::pstring_96::size_of(&_0.pool)
+		+ super::super::super::pstring_96::size_of(&_0.final_state)
+		+ super::super::super::pstring_96::size_of(&_0.joint_type)
+		+ super::super::super::super::varint::size_of(&_0.selection_priority)
+		+ super::super::super::super::varint::size_of(&_0.placement_priority)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketUpdateJigsawBlock) -> Ty<'i> {
-    Ty {
-        location: ::core::clone::Clone::clone(&_0.location),name: super::super::super::pstring_96::view(&_0.name),target: super::super::super::pstring_96::view(&_0.target),pool: super::super::super::pstring_96::view(&_0.pool),final_state: super::super::super::pstring_96::view(&_0.final_state),joint_type: super::super::super::pstring_96::view(&_0.joint_type),selection_priority: ::core::clone::Clone::clone(&_0.selection_priority),placement_priority: ::core::clone::Clone::clone(&_0.placement_priority)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_server::PacketUpdateJigsawBlock,
+) -> Ty<'i> {
+	Ty {
+		location: ::core::clone::Clone::clone(&_0.location),
+		name: super::super::super::pstring_96::view(&_0.name),
+		target: super::super::super::pstring_96::view(&_0.target),
+		pool: super::super::super::pstring_96::view(&_0.pool),
+		final_state: super::super::super::pstring_96::view(&_0.final_state),
+		joint_type: super::super::super::pstring_96::view(&_0.joint_type),
+		selection_priority: ::core::clone::Clone::clone(&_0.selection_priority),
+		placement_priority: ::core::clone::Clone::clone(&_0.placement_priority),
+	}
 }
- pub type Ty<'i> = PacketUpdateJigsawBlock<'i>;
+pub type Ty<'i> = PacketUpdateJigsawBlock<'i>;

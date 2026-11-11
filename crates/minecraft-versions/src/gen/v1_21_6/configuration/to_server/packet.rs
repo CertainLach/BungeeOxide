@@ -3,20 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    Settings(super::super::super::super::PacketCommonSettings),
-    CookieResponse(super::super::super::super::PacketCommonCookieResponse),
-    CustomPayload(super::super::super::super::configuration::to_server::PacketCustomPayload),
-    FinishConfiguration(super::super::super::super::configuration::to_server::PacketFinishConfiguration),
-    KeepAlive(super::super::super::super::I64),
-    Pong(super::super::super::super::I32),
-    ResourcePackReceive(super::super::super::super::configuration::to_server::PacketResourcePackReceive),
-    SelectKnownPacks(Vec<super::super::super::super::PacketCommonSelectKnownPacks101>),
-    CustomClickAction(super::super::super::super::PacketCommonCustomClickAction),
-    Default(super::super::super::super::Varint),
+	Settings(super::super::super::super::PacketCommonSettings),
+	CookieResponse(super::super::super::super::PacketCommonCookieResponse),
+	CustomPayload(super::super::super::super::configuration::to_server::PacketCustomPayload),
+	FinishConfiguration(
+		super::super::super::super::configuration::to_server::PacketFinishConfiguration,
+	),
+	KeepAlive(super::super::super::super::I64),
+	Pong(super::super::super::super::I32),
+	ResourcePackReceive(
+		super::super::super::super::configuration::to_server::PacketResourcePackReceive,
+	),
+	SelectKnownPacks(Vec<super::super::super::super::PacketCommonSelectKnownPacks101>),
+	CustomClickAction(super::super::super::super::PacketCommonCustomClickAction),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
         Ty::Settings(__v) => super::super::super::super::packet_common_settings::serialize(__v, output),
         Ty::CookieResponse(__v) => super::super::super::super::packet_common_cookie_response::serialize(__v, output),
         Ty::CustomPayload(__v) => super::super::super::super::configuration::to_server::packet_custom_payload::serialize(__v, output),
@@ -29,43 +33,53 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::Default(_) => Ok(()),
     }
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::Settings(super::super::super::super::packet_common_settings::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::CookieResponse(super::super::super::super::packet_common_cookie_response::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::CustomPayload(super::super::super::super::configuration::to_server::packet_custom_payload::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_server::packet_finish_configuration::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::Pong(super::super::super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 6_i32) {
-        return Ok(Ty::ResourcePackReceive(super::super::super::super::configuration::to_server::packet_resource_pack_receive::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_i32) {
-        return Ok(Ty::SelectKnownPacks(super::super::super::super::array::inline_126::deserialize(input, )?));
-    }
-    if (__tag.clone() == 8_i32) {
-        return Ok(Ty::CustomClickAction(super::super::super::super::packet_common_custom_click_action::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Settings(
+			super::super::super::super::packet_common_settings::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::CookieResponse(
+			super::super::super::super::packet_common_cookie_response::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::CustomPayload(super::super::super::super::configuration::to_server::packet_custom_payload::deserialize(input, )?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::FinishConfiguration(super::super::super::super::configuration::to_server::packet_finish_configuration::deserialize(input, )?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::KeepAlive(super::super::super::super::i64::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::Pong(super::super::super::super::i32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::ResourcePackReceive(super::super::super::super::configuration::to_server::packet_resource_pack_receive::deserialize(input, )?));
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::SelectKnownPacks(
+			super::super::super::super::array::inline_126::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::CustomClickAction(
+			super::super::super::super::packet_common_custom_click_action::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
+	super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
         Ty::Settings(__v) => super::super::super::super::packet_common_settings::size_of(__v),
         Ty::CookieResponse(__v) => super::super::super::super::packet_common_cookie_response::size_of(__v),
         Ty::CustomPayload(__v) => super::super::super::super::configuration::to_server::packet_custom_payload::size_of(__v),
@@ -79,31 +93,31 @@ pub fn size_of(_0: &Ty) -> usize {
     }
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Settings(_) => "settings",
-        Ty::CookieResponse(_) => "cookie_response",
-        Ty::CustomPayload(_) => "custom_payload",
-        Ty::FinishConfiguration(_) => "finish_configuration",
-        Ty::KeepAlive(_) => "keep_alive",
-        Ty::Pong(_) => "pong",
-        Ty::ResourcePackReceive(_) => "resource_pack_receive",
-        Ty::SelectKnownPacks(_) => "select_known_packs",
-        Ty::CustomClickAction(_) => "custom_click_action",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Settings(_) => "settings",
+		Ty::CookieResponse(_) => "cookie_response",
+		Ty::CustomPayload(_) => "custom_payload",
+		Ty::FinishConfiguration(_) => "finish_configuration",
+		Ty::KeepAlive(_) => "keep_alive",
+		Ty::Pong(_) => "pong",
+		Ty::ResourcePackReceive(_) => "resource_pack_receive",
+		Ty::SelectKnownPacks(_) => "select_known_packs",
+		Ty::CustomClickAction(_) => "custom_click_action",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::Settings(_) => 0_i32,
-        Ty::CookieResponse(_) => 1_i32,
-        Ty::CustomPayload(_) => 2_i32,
-        Ty::FinishConfiguration(_) => 3_i32,
-        Ty::KeepAlive(_) => 4_i32,
-        Ty::Pong(_) => 5_i32,
-        Ty::ResourcePackReceive(_) => 6_i32,
-        Ty::SelectKnownPacks(_) => 7_i32,
-        Ty::CustomClickAction(_) => 8_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Settings(_) => 0_i32,
+		Ty::CookieResponse(_) => 1_i32,
+		Ty::CustomPayload(_) => 2_i32,
+		Ty::FinishConfiguration(_) => 3_i32,
+		Ty::KeepAlive(_) => 4_i32,
+		Ty::Pong(_) => 5_i32,
+		Ty::ResourcePackReceive(_) => 6_i32,
+		Ty::SelectKnownPacks(_) => 7_i32,
+		Ty::CustomClickAction(_) => 8_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

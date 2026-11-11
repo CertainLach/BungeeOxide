@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginStart {
-    pub username: String,
-    pub signature: Option<super::PacketLoginStart0>,
-    pub player_uuid: Option<super::super::super::super::Uuid>,
+	pub username: String,
+	pub signature: Option<super::PacketLoginStart0>,
+	pub player_uuid: Option<super::super::super::super::Uuid>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.username,
-        output,
-    )?;
-    super::super::super::super::option_48::serialize(
-        &_0.signature,
-        output,
-    )?;
-    super::super::super::super::option_8::serialize(
-        &_0.player_uuid,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.username, output)?;
+	super::super::super::super::option_48::serialize(&_0.signature, output)?;
+	super::super::super::super::option_8::serialize(&_0.player_uuid, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_username = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::option_48::deserialize(
-        input,
-    )?;
-    let f_playerUUID = super::super::super::super::option_8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        username: f_username,signature: f_signature,player_uuid: f_playerUUID
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_username = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_signature = super::super::super::super::option_48::deserialize(input)?;
+	let f_playerUUID = super::super::super::super::option_8::deserialize(input)?;
+	Ok(Ty {
+		username: f_username,
+		signature: f_signature,
+		player_uuid: f_playerUUID,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.username
-    )
-    + super::super::super::super::option_48::size_of(
-        &_0.signature
-    )
-    + super::super::super::super::option_8::size_of(
-        &_0.player_uuid
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.username)
+		+ super::super::super::super::option_48::size_of(&_0.signature)
+		+ super::super::super::super::option_8::size_of(&_0.player_uuid)
 }
- pub type Ty = PacketLoginStart;
+pub type Ty = PacketLoginStart;

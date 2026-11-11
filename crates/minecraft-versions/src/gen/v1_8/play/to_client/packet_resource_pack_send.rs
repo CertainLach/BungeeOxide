@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResourcePackSend {
-    pub url: String,
-    pub hash: String,
+	pub url: String,
+	pub hash: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.url,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.hash,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.url, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.hash, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_url = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_hash = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        url: f_url,hash: f_hash
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_url = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_hash = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		url: f_url,
+		hash: f_hash,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.url
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.hash
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.url)
+		+ super::super::super::super::pstring_96::size_of(&_0.hash)
 }
- pub type Ty = PacketResourcePackSend;
+pub type Ty = PacketResourcePackSend;

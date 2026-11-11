@@ -3,24 +3,26 @@ use crate::pds::{Input, Output, Result};
 
 pub type Ty = Vec<super::EntityMetadata30>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    for e in _0.iter() {
-        super::entity_metadata_30::serialize(e, output)?;
-    }
-    super::super::u8::serialize(&255_u8, output)
+	for e in _0.iter() {
+		super::entity_metadata_30::serialize(e, output)?;
+	}
+	super::super::u8::serialize(&255_u8, output)
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let mut out = Vec::new();
-    loop {
-        let at = input.offset();
-        if super::super::u8::deserialize(input)? == 255_u8 {
-            return Ok(out);
-        }
-        input.rewind(at);
-        out.push(super::entity_metadata_30::deserialize(input, )?);
-    }
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let mut out = Vec::new();
+	loop {
+		let at = input.offset();
+		if super::super::u8::deserialize(input)? == 255_u8 {
+			return Ok(out);
+		}
+		input.rewind(at);
+		out.push(super::entity_metadata_30::deserialize(input)?);
+	}
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::super::u8::size_of(&255_u8);
-    for e in _0.iter() { n += super::entity_metadata_30::size_of(e); }
-    n
+	let mut n = super::super::u8::size_of(&255_u8);
+	for e in _0.iter() {
+		n += super::entity_metadata_30::size_of(e);
+	}
+	n
 }

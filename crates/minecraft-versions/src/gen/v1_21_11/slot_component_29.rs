@@ -3,94 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent29 {
-    pub block_delay_seconds: super::super::F32,
-    pub disable_cooldown_scale: super::super::F32,
-    pub damage_reductions: Vec<super::SlotComponent27>,
-    pub item_damage: super::SlotComponent28,
-    pub bypassed_by: Option<String>,
-    pub block_sound: Option<super::super::ItemSoundHolder>,
-    pub disable_sound: Option<super::super::ItemSoundHolder>,
+	pub block_delay_seconds: super::super::F32,
+	pub disable_cooldown_scale: super::super::F32,
+	pub damage_reductions: Vec<super::SlotComponent27>,
+	pub item_damage: super::SlotComponent28,
+	pub bypassed_by: Option<String>,
+	pub block_sound: Option<super::super::ItemSoundHolder>,
+	pub disable_sound: Option<super::super::ItemSoundHolder>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::f32::serialize(
-        &_0.block_delay_seconds,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.disable_cooldown_scale,
-        output,
-    )?;
-    super::super::array::inline_251::serialize(
-        &_0.damage_reductions,
-        output,
-    )?;
-    super::slot_component_28::serialize(
-        &_0.item_damage,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.bypassed_by,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.block_sound,
-        output,
-    )?;
-    super::super::option_5::serialize(
-        &_0.disable_sound,
-        output,
-    )?;
-    Ok(())
+	super::super::f32::serialize(&_0.block_delay_seconds, output)?;
+	super::super::f32::serialize(&_0.disable_cooldown_scale, output)?;
+	super::super::array::inline_251::serialize(&_0.damage_reductions, output)?;
+	super::slot_component_28::serialize(&_0.item_damage, output)?;
+	super::super::option_18::serialize(&_0.bypassed_by, output)?;
+	super::super::option_5::serialize(&_0.block_sound, output)?;
+	super::super::option_5::serialize(&_0.disable_sound, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(24)?;
-    let f_blockDelaySeconds = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_disableCooldownScale = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_damageReductions = super::super::array::inline_251::deserialize(
-        input,
-    )?;
-    let f_itemDamage = super::slot_component_28::deserialize(
-        input,
-    )?;
-    let f_bypassedBy = super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_blockSound = super::super::option_5::deserialize(
-        input,
-    )?;
-    let f_disableSound = super::super::option_5::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        block_delay_seconds: f_blockDelaySeconds,disable_cooldown_scale: f_disableCooldownScale,damage_reductions: f_damageReductions,item_damage: f_itemDamage,bypassed_by: f_bypassedBy,block_sound: f_blockSound,disable_sound: f_disableSound
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(24)?;
+	let f_blockDelaySeconds = super::super::f32::deserialize(input)?;
+	let f_disableCooldownScale = super::super::f32::deserialize(input)?;
+	let f_damageReductions = super::super::array::inline_251::deserialize(input)?;
+	let f_itemDamage = super::slot_component_28::deserialize(input)?;
+	let f_bypassedBy = super::super::option_18::deserialize(input)?;
+	let f_blockSound = super::super::option_5::deserialize(input)?;
+	let f_disableSound = super::super::option_5::deserialize(input)?;
+	Ok(Ty {
+		block_delay_seconds: f_blockDelaySeconds,
+		disable_cooldown_scale: f_disableCooldownScale,
+		damage_reductions: f_damageReductions,
+		item_damage: f_itemDamage,
+		bypassed_by: f_bypassedBy,
+		block_sound: f_blockSound,
+		disable_sound: f_disableSound,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::f32::size_of(
-        &_0.block_delay_seconds
-    )
-    + super::super::f32::size_of(
-        &_0.disable_cooldown_scale
-    )
-    + super::super::array::inline_251::size_of(
-        &_0.damage_reductions
-    )
-    + super::slot_component_28::size_of(
-        &_0.item_damage
-    )
-    + super::super::option_18::size_of(
-        &_0.bypassed_by
-    )
-    + super::super::option_5::size_of(
-        &_0.block_sound
-    )
-    + super::super::option_5::size_of(
-        &_0.disable_sound
-    )
+	0 + super::super::f32::size_of(&_0.block_delay_seconds)
+		+ super::super::f32::size_of(&_0.disable_cooldown_scale)
+		+ super::super::array::inline_251::size_of(&_0.damage_reductions)
+		+ super::slot_component_28::size_of(&_0.item_damage)
+		+ super::super::option_18::size_of(&_0.bypassed_by)
+		+ super::super::option_5::size_of(&_0.block_sound)
+		+ super::super::option_5::size_of(&_0.disable_sound)
 }
- pub type Ty = SlotComponent29;
+pub type Ty = SlotComponent29;

@@ -3,138 +3,70 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLogin {
-    pub entity_id: super::super::super::I32,
-    pub is_hardcore: super::super::super::Bool,
-    pub world_names: Vec<String>,
-    pub max_players: super::super::super::Varint,
-    pub view_distance: super::super::super::Varint,
-    pub simulation_distance: super::super::super::Varint,
-    pub reduced_debug_info: super::super::super::Bool,
-    pub enable_respawn_screen: super::super::super::Bool,
-    pub do_limited_crafting: super::super::super::Bool,
-    pub world_state: super::SpawnInfo,
-    pub enforces_secure_chat: super::super::super::Bool,
+	pub entity_id: super::super::super::I32,
+	pub is_hardcore: super::super::super::Bool,
+	pub world_names: Vec<String>,
+	pub max_players: super::super::super::Varint,
+	pub view_distance: super::super::super::Varint,
+	pub simulation_distance: super::super::super::Varint,
+	pub reduced_debug_info: super::super::super::Bool,
+	pub enable_respawn_screen: super::super::super::Bool,
+	pub do_limited_crafting: super::super::super::Bool,
+	pub world_state: super::SpawnInfo,
+	pub enforces_secure_chat: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.is_hardcore,
-        output,
-    )?;
-    super::super::super::array::inline_57::serialize(
-        &_0.world_names,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.max_players,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.view_distance,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.simulation_distance,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.reduced_debug_info,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.enable_respawn_screen,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.do_limited_crafting,
-        output,
-    )?;
-    super::spawn_info::serialize(
-        &_0.world_state,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.enforces_secure_chat,
-        output,
-    )?;
-    Ok(())
+	super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::bool::serialize(&_0.is_hardcore, output)?;
+	super::super::super::array::inline_57::serialize(&_0.world_names, output)?;
+	super::super::super::varint::serialize(&_0.max_players, output)?;
+	super::super::super::varint::serialize(&_0.view_distance, output)?;
+	super::super::super::varint::serialize(&_0.simulation_distance, output)?;
+	super::super::super::bool::serialize(&_0.reduced_debug_info, output)?;
+	super::super::super::bool::serialize(&_0.enable_respawn_screen, output)?;
+	super::super::super::bool::serialize(&_0.do_limited_crafting, output)?;
+	super::spawn_info::serialize(&_0.world_state, output)?;
+	super::super::super::bool::serialize(&_0.enforces_secure_chat, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(30)?;
-    let f_entityId = super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_isHardcore = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_worldNames = super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_maxPlayers = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_viewDistance = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_simulationDistance = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_reducedDebugInfo = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_enableRespawnScreen = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_doLimitedCrafting = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_worldState = super::spawn_info::deserialize(
-        input,
-    )?;
-    let f_enforcesSecureChat = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,is_hardcore: f_isHardcore,world_names: f_worldNames,max_players: f_maxPlayers,view_distance: f_viewDistance,simulation_distance: f_simulationDistance,reduced_debug_info: f_reducedDebugInfo,enable_respawn_screen: f_enableRespawnScreen,do_limited_crafting: f_doLimitedCrafting,world_state: f_worldState,enforces_secure_chat: f_enforcesSecureChat
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(30)?;
+	let f_entityId = super::super::super::i32::deserialize(input)?;
+	let f_isHardcore = super::super::super::bool::deserialize(input)?;
+	let f_worldNames = super::super::super::array::inline_57::deserialize(input)?;
+	let f_maxPlayers = super::super::super::varint::deserialize(input)?;
+	let f_viewDistance = super::super::super::varint::deserialize(input)?;
+	let f_simulationDistance = super::super::super::varint::deserialize(input)?;
+	let f_reducedDebugInfo = super::super::super::bool::deserialize(input)?;
+	let f_enableRespawnScreen = super::super::super::bool::deserialize(input)?;
+	let f_doLimitedCrafting = super::super::super::bool::deserialize(input)?;
+	let f_worldState = super::spawn_info::deserialize(input)?;
+	let f_enforcesSecureChat = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		is_hardcore: f_isHardcore,
+		world_names: f_worldNames,
+		max_players: f_maxPlayers,
+		view_distance: f_viewDistance,
+		simulation_distance: f_simulationDistance,
+		reduced_debug_info: f_reducedDebugInfo,
+		enable_respawn_screen: f_enableRespawnScreen,
+		do_limited_crafting: f_doLimitedCrafting,
+		world_state: f_worldState,
+		enforces_secure_chat: f_enforcesSecureChat,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::bool::size_of(
-        &_0.is_hardcore
-    )
-    + super::super::super::array::inline_57::size_of(
-        &_0.world_names
-    )
-    + super::super::super::varint::size_of(
-        &_0.max_players
-    )
-    + super::super::super::varint::size_of(
-        &_0.view_distance
-    )
-    + super::super::super::varint::size_of(
-        &_0.simulation_distance
-    )
-    + super::super::super::bool::size_of(
-        &_0.reduced_debug_info
-    )
-    + super::super::super::bool::size_of(
-        &_0.enable_respawn_screen
-    )
-    + super::super::super::bool::size_of(
-        &_0.do_limited_crafting
-    )
-    + super::spawn_info::size_of(
-        &_0.world_state
-    )
-    + super::super::super::bool::size_of(
-        &_0.enforces_secure_chat
-    )
+	0 + super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::bool::size_of(&_0.is_hardcore)
+		+ super::super::super::array::inline_57::size_of(&_0.world_names)
+		+ super::super::super::varint::size_of(&_0.max_players)
+		+ super::super::super::varint::size_of(&_0.view_distance)
+		+ super::super::super::varint::size_of(&_0.simulation_distance)
+		+ super::super::super::bool::size_of(&_0.reduced_debug_info)
+		+ super::super::super::bool::size_of(&_0.enable_respawn_screen)
+		+ super::super::super::bool::size_of(&_0.do_limited_crafting)
+		+ super::spawn_info::size_of(&_0.world_state)
+		+ super::super::super::bool::size_of(&_0.enforces_secure_chat)
 }
- pub type Ty = PacketLogin;
+pub type Ty = PacketLogin;

@@ -3,71 +3,51 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChunkBlockEntity<'i> {
-    pub anon: super::super::ChunkBlockEntity73,
-    pub y: super::super::I16,
-    pub r#type: super::super::Varint,
-    pub nbt_data: super::AnonOptionalNbt::<'i>,
+	pub anon: super::super::ChunkBlockEntity73,
+	pub y: super::super::I16,
+	pub r#type: super::super::Varint,
+	pub nbt_data: super::AnonOptionalNbt<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::chunk_block_entity_73::serialize(
-        &_0.anon,
-        output,
-    )?;
-    super::super::i16::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::anon_optional_nbt::serialize(
-        &_0.nbt_data,
-        output,
-    )?;
-    Ok(())
+	super::super::chunk_block_entity_73::serialize(&_0.anon, output)?;
+	super::super::i16::serialize(&_0.y, output)?;
+	super::super::varint::serialize(&_0.r#type, output)?;
+	super::anon_optional_nbt::serialize(&_0.nbt_data, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_ANON = super::super::chunk_block_entity_73::deserialize(
-        input,
-    )?;
-    let f_y = super::super::i16::deserialize(
-        input,
-    )?;
-    let f_type = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_nbtData = super::anon_optional_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        anon: f_ANON,y: f_y,r#type: f_type,nbt_data: f_nbtData
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_ANON = super::super::chunk_block_entity_73::deserialize(input)?;
+	let f_y = super::super::i16::deserialize(input)?;
+	let f_type = super::super::varint::deserialize(input)?;
+	let f_nbtData = super::anon_optional_nbt::deserialize(input)?;
+	Ok(Ty {
+		anon: f_ANON,
+		y: f_y,
+		r#type: f_type,
+		nbt_data: f_nbtData,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::chunk_block_entity_73::size_of(
-        &_0.anon
-    )
-    + super::super::i16::size_of(
-        &_0.y
-    )
-    + super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::anon_optional_nbt::size_of(
-        &_0.nbt_data
-    )
+	0 + super::super::chunk_block_entity_73::size_of(&_0.anon)
+		+ super::super::i16::size_of(&_0.y)
+		+ super::super::varint::size_of(&_0.r#type)
+		+ super::anon_optional_nbt::size_of(&_0.nbt_data)
 }
 pub fn view<'i>(_0: &'i super::super::ChunkBlockEntity) -> Ty<'i> {
-    Ty {
-        anon: ::core::clone::Clone::clone(&_0.anon),y: ::core::clone::Clone::clone(&_0.y),r#type: ::core::clone::Clone::clone(&_0.r#type),nbt_data: super::anon_optional_nbt::view(&_0.nbt_data)
-    }
+	Ty {
+		anon: ::core::clone::Clone::clone(&_0.anon),
+		y: ::core::clone::Clone::clone(&_0.y),
+		r#type: ::core::clone::Clone::clone(&_0.r#type),
+		nbt_data: super::anon_optional_nbt::view(&_0.nbt_data),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::ChunkBlockEntity) -> Ty<'i> {
-    Ty {
-        anon: ::core::clone::Clone::clone(&mut _0.anon),y: ::core::clone::Clone::clone(&mut _0.y),r#type: ::core::clone::Clone::clone(&mut _0.r#type),nbt_data: super::anon_optional_nbt::into_view(&mut _0.nbt_data)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::ChunkBlockEntity) -> Ty<'i> {
+	Ty {
+		anon: ::core::clone::Clone::clone(&mut _0.anon),
+		y: ::core::clone::Clone::clone(&mut _0.y),
+		r#type: ::core::clone::Clone::clone(&mut _0.r#type),
+		nbt_data: super::anon_optional_nbt::into_view(&mut _0.nbt_data),
+	}
 }
- pub type Ty<'i> = ChunkBlockEntity<'i>;
+pub type Ty<'i> = ChunkBlockEntity<'i>;

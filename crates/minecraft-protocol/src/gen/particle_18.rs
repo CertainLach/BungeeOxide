@@ -3,94 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Particle18 {
-    pub from_red: super::F32,
-    pub from_green: super::F32,
-    pub from_blue: super::F32,
-    pub scale: super::F32,
-    pub to_red: super::F32,
-    pub to_green: super::F32,
-    pub to_blue: super::F32,
+	pub from_red: super::F32,
+	pub from_green: super::F32,
+	pub from_blue: super::F32,
+	pub scale: super::F32,
+	pub to_red: super::F32,
+	pub to_green: super::F32,
+	pub to_blue: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.from_red,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.from_green,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.from_blue,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.scale,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.to_red,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.to_green,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.to_blue,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.from_red, output)?;
+	super::f32::serialize(&_0.from_green, output)?;
+	super::f32::serialize(&_0.from_blue, output)?;
+	super::f32::serialize(&_0.scale, output)?;
+	super::f32::serialize(&_0.to_red, output)?;
+	super::f32::serialize(&_0.to_green, output)?;
+	super::f32::serialize(&_0.to_blue, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(28)?;
-    let f_fromRed = super::f32::deserialize(
-        input,
-    )?;
-    let f_fromGreen = super::f32::deserialize(
-        input,
-    )?;
-    let f_fromBlue = super::f32::deserialize(
-        input,
-    )?;
-    let f_scale = super::f32::deserialize(
-        input,
-    )?;
-    let f_toRed = super::f32::deserialize(
-        input,
-    )?;
-    let f_toGreen = super::f32::deserialize(
-        input,
-    )?;
-    let f_toBlue = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        from_red: f_fromRed,from_green: f_fromGreen,from_blue: f_fromBlue,scale: f_scale,to_red: f_toRed,to_green: f_toGreen,to_blue: f_toBlue
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(28)?;
+	let f_fromRed = super::f32::deserialize(input)?;
+	let f_fromGreen = super::f32::deserialize(input)?;
+	let f_fromBlue = super::f32::deserialize(input)?;
+	let f_scale = super::f32::deserialize(input)?;
+	let f_toRed = super::f32::deserialize(input)?;
+	let f_toGreen = super::f32::deserialize(input)?;
+	let f_toBlue = super::f32::deserialize(input)?;
+	Ok(Ty {
+		from_red: f_fromRed,
+		from_green: f_fromGreen,
+		from_blue: f_fromBlue,
+		scale: f_scale,
+		to_red: f_toRed,
+		to_green: f_toGreen,
+		to_blue: f_toBlue,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.from_red
-    )
-    + super::f32::size_of(
-        &_0.from_green
-    )
-    + super::f32::size_of(
-        &_0.from_blue
-    )
-    + super::f32::size_of(
-        &_0.scale
-    )
-    + super::f32::size_of(
-        &_0.to_red
-    )
-    + super::f32::size_of(
-        &_0.to_green
-    )
-    + super::f32::size_of(
-        &_0.to_blue
-    )
+	0 + super::f32::size_of(&_0.from_red)
+		+ super::f32::size_of(&_0.from_green)
+		+ super::f32::size_of(&_0.from_blue)
+		+ super::f32::size_of(&_0.scale)
+		+ super::f32::size_of(&_0.to_red)
+		+ super::f32::size_of(&_0.to_green)
+		+ super::f32::size_of(&_0.to_blue)
 }
- pub type Ty = Particle18;
+pub type Ty = Particle18;

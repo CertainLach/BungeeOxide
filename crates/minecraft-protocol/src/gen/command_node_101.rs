@@ -2,57 +2,42 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub flags_has_custom_suggestions: &'a super::U8,
+	pub flags_has_custom_suggestions: &'a super::U8,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode101 {
-    pub name: String,
-    pub properties: super::CommandNode99,
-    pub suggestion_type: super::CommandNode100,
+	pub name: String,
+	pub properties: super::CommandNode99,
+	pub suggestion_type: super::CommandNode100,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_39::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::command_node_99::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::command_node_100::serialize(
-        &_0.suggestion_type,
-        output,
-    )?;
-    Ok(())
+	super::pstring_39::serialize(&_0.name, output)?;
+	super::command_node_99::serialize(&_0.properties, output)?;
+	super::command_node_100::serialize(&_0.suggestion_type, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    input.expect(2)?;
-    let f_name = super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_properties = super::command_node_99::deserialize(
-        input,
-    )?;
-    let f_suggestionType = super::command_node_100::deserialize(
-        input,
-        super::command_node_100::Args {
-            flags_has_custom_suggestions: {let _0 = args.flags_has_custom_suggestions;_0}
-        },
-    )?;
-    Ok(Ty {
-        name: f_name,properties: f_properties,suggestion_type: f_suggestionType
-    })
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	input.expect(2)?;
+	let f_name = super::pstring_39::deserialize(input)?;
+	let f_properties = super::command_node_99::deserialize(input)?;
+	let f_suggestionType = super::command_node_100::deserialize(
+		input,
+		super::command_node_100::Args {
+			flags_has_custom_suggestions: {
+				let _0 = args.flags_has_custom_suggestions;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		name: f_name,
+		properties: f_properties,
+		suggestion_type: f_suggestionType,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_39::size_of(
-        &_0.name
-    )
-    + super::command_node_99::size_of(
-        &_0.properties
-    )
-    + super::command_node_100::size_of(
-        &_0.suggestion_type
-    )
+	0 + super::pstring_39::size_of(&_0.name)
+		+ super::command_node_99::size_of(&_0.properties)
+		+ super::command_node_100::size_of(&_0.suggestion_type)
 }
- pub type Ty = CommandNode101;
+pub type Ty = CommandNode101;

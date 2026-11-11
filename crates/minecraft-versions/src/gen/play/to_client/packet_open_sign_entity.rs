@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketOpenSignEntity {
-    pub location: super::super::super::Position,
-    pub is_front_text: super::super::super::Bool,
+	pub location: super::super::super::Position,
+	pub is_front_text: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.is_front_text,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::bool::serialize(&_0.is_front_text, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_location = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_isFrontText = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,is_front_text: f_isFrontText
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_location = super::super::super::position::deserialize(input)?;
+	let f_isFrontText = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		is_front_text: f_isFrontText,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::bool::size_of(
-        &_0.is_front_text
-    )
+	0 + super::super::super::position::size_of(&_0.location)
+		+ super::super::super::bool::size_of(&_0.is_front_text)
 }
- pub type Ty = PacketOpenSignEntity;
+pub type Ty = PacketOpenSignEntity;

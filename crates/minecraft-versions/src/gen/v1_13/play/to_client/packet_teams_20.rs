@@ -3,67 +3,70 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketTeams20 {
-    V0(super::PacketTeams18),
-    V2(super::PacketTeams19),
-    V3(Vec<String>),
-    V4(Vec<String>),
-    Default(super::super::super::super::I8),
+	V0(super::PacketTeams18),
+	V2(super::PacketTeams19),
+	V3(Vec<String>),
+	V4(Vec<String>),
+	Default(super::super::super::super::I8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0(__v) => super::packet_teams_18::serialize(__v, output),
-        Ty::V2(__v) => super::packet_teams_19::serialize(__v, output),
-        Ty::V3(__v) => super::super::super::super::array::inline_57::serialize(__v, output),
-        Ty::V4(__v) => super::super::super::super::array::inline_57::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::i8::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0(__v) => super::packet_teams_18::serialize(__v, output),
+		Ty::V2(__v) => super::packet_teams_19::serialize(__v, output),
+		Ty::V3(__v) => super::super::super::super::array::inline_57::serialize(__v, output),
+		Ty::V4(__v) => super::super::super::super::array::inline_57::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i8) {
-        return Ok(Ty::V0(super::packet_teams_18::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i8) {
-        return Ok(Ty::V2(super::packet_teams_19::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i8) {
-        return Ok(Ty::V3(super::super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i8) {
-        return Ok(Ty::V4(super::super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::i8::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i8) {
+		return Ok(Ty::V0(super::packet_teams_18::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i8) {
+		return Ok(Ty::V2(super::packet_teams_19::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i8) {
+		return Ok(Ty::V3(
+			super::super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 4_i8) {
+		return Ok(Ty::V4(
+			super::super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0(__v) => super::packet_teams_18::size_of(__v),
-        Ty::V2(__v) => super::packet_teams_19::size_of(__v),
-        Ty::V3(__v) => super::super::super::super::array::inline_57::size_of(__v),
-        Ty::V4(__v) => super::super::super::super::array::inline_57::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::i8::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0(__v) => super::packet_teams_18::size_of(__v),
+			Ty::V2(__v) => super::packet_teams_19::size_of(__v),
+			Ty::V3(__v) => super::super::super::super::array::inline_57::size_of(__v),
+			Ty::V4(__v) => super::super::super::super::array::inline_57::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V0(_) => "v0",
-        Ty::V2(_) => "v2",
-        Ty::V3(_) => "v3",
-        Ty::V4(_) => "v4",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0(_) => "v0",
+		Ty::V2(_) => "v2",
+		Ty::V3(_) => "v3",
+		Ty::V4(_) => "v4",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::I8 {
-    match _0 {
-        Ty::V0(_) => 0_i8,
-        Ty::V2(_) => 2_i8,
-        Ty::V3(_) => 3_i8,
-        Ty::V4(_) => 4_i8,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0(_) => 0_i8,
+		Ty::V2(_) => 2_i8,
+		Ty::V3(_) => 3_i8,
+		Ty::V4(_) => 4_i8,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketTeams20;
+pub type Ty = PacketTeams20;

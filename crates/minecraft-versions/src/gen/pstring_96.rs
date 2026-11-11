@@ -3,21 +3,26 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty = String;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for b in _0.as_bytes() {
-        super::u8::serialize(b, output)?;
-    }
-    Ok(())
+	super::varint::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for b in _0.as_bytes() {
+		super::u8::serialize(b, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let count: usize = super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count)?;
-    let mut out = Vec::with_capacity(count);
-    for _ in 0..count {
-        out.push(super::u8::deserialize(input)?);
-    }
-    String::from_utf8(out).map_err(|_| Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let count: usize = super::varint::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
+	let mut out = Vec::with_capacity(count);
+	for _ in 0..count {
+		out.push(super::u8::deserialize(input)?);
+	}
+	String::from_utf8(out).map_err(|_| Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::varint::size_of(&_0.len().try_into().unwrap_or_default()) + _0.len()
+	super::varint::size_of(&_0.len().try_into().unwrap_or_default()) + _0.len()
 }

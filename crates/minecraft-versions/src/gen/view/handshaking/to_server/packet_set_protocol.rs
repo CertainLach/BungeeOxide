@@ -3,66 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetProtocol<'i> {
-    pub protocol_version: super::super::super::super::Varint,
-    pub server_host: super::super::super::Pstring96::<'i>,
-    pub server_port: super::super::super::super::U16,
-    pub next_state: super::super::super::super::Varint,
+	pub protocol_version: super::super::super::super::Varint,
+	pub server_host: super::super::super::Pstring96<'i>,
+	pub server_port: super::super::super::super::U16,
+	pub next_state: super::super::super::super::Varint,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.protocol_version,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.server_host,
-        output,
-    )?;
-    super::super::super::super::u16::serialize(
-        &_0.server_port,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.next_state,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.protocol_version, output)?;
+	super::super::super::pstring_96::serialize(&_0.server_host, output)?;
+	super::super::super::super::u16::serialize(&_0.server_port, output)?;
+	super::super::super::super::varint::serialize(&_0.next_state, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(5)?;
-    let f_protocolVersion = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_serverHost = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_serverPort = super::super::super::super::u16::deserialize(
-        input,
-    )?;
-    let f_nextState = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        protocol_version: f_protocolVersion,server_host: f_serverHost,server_port: f_serverPort,next_state: f_nextState
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(5)?;
+	let f_protocolVersion = super::super::super::super::varint::deserialize(input)?;
+	let f_serverHost = super::super::super::pstring_96::deserialize(input)?;
+	let f_serverPort = super::super::super::super::u16::deserialize(input)?;
+	let f_nextState = super::super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		protocol_version: f_protocolVersion,
+		server_host: f_serverHost,
+		server_port: f_serverPort,
+		next_state: f_nextState,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.protocol_version
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.server_host
-    )
-    + super::super::super::super::u16::size_of(
-        &_0.server_port
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.next_state
-    )
+	0 + super::super::super::super::varint::size_of(&_0.protocol_version)
+		+ super::super::super::pstring_96::size_of(&_0.server_host)
+		+ super::super::super::super::u16::size_of(&_0.server_port)
+		+ super::super::super::super::varint::size_of(&_0.next_state)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::handshaking::to_server::PacketSetProtocol) -> Ty<'i> {
-    Ty {
-        protocol_version: ::core::clone::Clone::clone(&_0.protocol_version),server_host: super::super::super::pstring_96::view(&_0.server_host),server_port: ::core::clone::Clone::clone(&_0.server_port),next_state: ::core::clone::Clone::clone(&_0.next_state)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::handshaking::to_server::PacketSetProtocol,
+) -> Ty<'i> {
+	Ty {
+		protocol_version: ::core::clone::Clone::clone(&_0.protocol_version),
+		server_host: super::super::super::pstring_96::view(&_0.server_host),
+		server_port: ::core::clone::Clone::clone(&_0.server_port),
+		next_state: ::core::clone::Clone::clone(&_0.next_state),
+	}
 }
- pub type Ty<'i> = PacketSetProtocol<'i>;
+pub type Ty<'i> = PacketSetProtocol<'i>;

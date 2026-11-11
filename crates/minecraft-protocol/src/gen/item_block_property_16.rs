@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockProperty16 {
-    pub min_value: String,
-    pub max_value: String,
+	pub min_value: String,
+	pub max_value: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_39::serialize(
-        &_0.min_value,
-        output,
-    )?;
-    super::pstring_39::serialize(
-        &_0.max_value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_39::serialize(&_0.min_value, output)?;
+	super::pstring_39::serialize(&_0.max_value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_minValue = super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_maxValue = super::pstring_39::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        min_value: f_minValue,max_value: f_maxValue
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_minValue = super::pstring_39::deserialize(input)?;
+	let f_maxValue = super::pstring_39::deserialize(input)?;
+	Ok(Ty {
+		min_value: f_minValue,
+		max_value: f_maxValue,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_39::size_of(
-        &_0.min_value
-    )
-    + super::pstring_39::size_of(
-        &_0.max_value
-    )
+	0 + super::pstring_39::size_of(&_0.min_value) + super::pstring_39::size_of(&_0.max_value)
 }
- pub type Ty = ItemBlockProperty16;
+pub type Ty = ItemBlockProperty16;

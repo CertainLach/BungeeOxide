@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateEntityNbt {
-    pub entity_id: super::super::super::super::Varint,
-    pub tag: super::super::super::super::Nbt,
+	pub entity_id: super::super::super::super::Varint,
+	pub tag: super::super::super::super::Nbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::nbt::serialize(
-        &_0.tag,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::nbt::serialize(&_0.tag, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_tag = super::super::super::super::nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,tag: f_tag
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_tag = super::super::super::super::nbt::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		tag: f_tag,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::nbt::size_of(
-        &_0.tag
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::nbt::size_of(&_0.tag)
 }
- pub type Ty = PacketUpdateEntityNbt;
+pub type Ty = PacketUpdateEntityNbt;

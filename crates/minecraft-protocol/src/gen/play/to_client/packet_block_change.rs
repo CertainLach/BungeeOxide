@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockChange {
-    pub location: super::super::super::Position,
-    pub r#type: super::super::super::Varint,
+	pub location: super::super::super::Position,
+	pub r#type: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::varint::serialize(&_0.r#type, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_location = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,r#type: f_type
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_location = super::super::super::position::deserialize(input)?;
+	let f_type = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		r#type: f_type,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::varint::size_of(
-        &_0.r#type
-    )
+	0 + super::super::super::position::size_of(&_0.location)
+		+ super::super::super::varint::size_of(&_0.r#type)
 }
- pub type Ty = PacketBlockChange;
+pub type Ty = PacketBlockChange;

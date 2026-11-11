@@ -6,7 +6,7 @@ pub mod entity_metadata_item;
 pub mod entity_metadata_item_2;
 pub mod play;
 pub use self::entity_metadata::Ty as EntityMetadata;
-pub use self::entity_metadata_item::EntityMetadataItem;
 pub use self::entity_metadata_0::EntityMetadata0;
 pub use self::entity_metadata_2::EntityMetadata2;
+pub use self::entity_metadata_item::EntityMetadataItem;
 pub use self::entity_metadata_item_2::EntityMetadataItem2;

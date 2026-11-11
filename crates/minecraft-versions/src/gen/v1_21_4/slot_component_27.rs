@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent27 {
-    pub potion_id: Option<super::super::Varint>,
-    pub custom_color: Option<super::super::I32>,
-    pub custom_effects: Vec<super::super::ItemPotionEffect>,
-    pub custom_name: Option<String>,
+	pub potion_id: Option<super::super::Varint>,
+	pub custom_color: Option<super::super::I32>,
+	pub custom_effects: Vec<super::super::ItemPotionEffect>,
+	pub custom_name: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::option_23::serialize(
-        &_0.potion_id,
-        output,
-    )?;
-    super::super::option_13::serialize(
-        &_0.custom_color,
-        output,
-    )?;
-    super::super::array::inline_35::serialize(
-        &_0.custom_effects,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.custom_name,
-        output,
-    )?;
-    Ok(())
+	super::super::option_23::serialize(&_0.potion_id, output)?;
+	super::super::option_13::serialize(&_0.custom_color, output)?;
+	super::super::array::inline_35::serialize(&_0.custom_effects, output)?;
+	super::super::option_18::serialize(&_0.custom_name, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_potionId = super::super::option_23::deserialize(
-        input,
-    )?;
-    let f_customColor = super::super::option_13::deserialize(
-        input,
-    )?;
-    let f_customEffects = super::super::array::inline_35::deserialize(
-        input,
-    )?;
-    let f_customName = super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        potion_id: f_potionId,custom_color: f_customColor,custom_effects: f_customEffects,custom_name: f_customName
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_potionId = super::super::option_23::deserialize(input)?;
+	let f_customColor = super::super::option_13::deserialize(input)?;
+	let f_customEffects = super::super::array::inline_35::deserialize(input)?;
+	let f_customName = super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		potion_id: f_potionId,
+		custom_color: f_customColor,
+		custom_effects: f_customEffects,
+		custom_name: f_customName,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::option_23::size_of(
-        &_0.potion_id
-    )
-    + super::super::option_13::size_of(
-        &_0.custom_color
-    )
-    + super::super::array::inline_35::size_of(
-        &_0.custom_effects
-    )
-    + super::super::option_18::size_of(
-        &_0.custom_name
-    )
+	0 + super::super::option_23::size_of(&_0.potion_id)
+		+ super::super::option_13::size_of(&_0.custom_color)
+		+ super::super::array::inline_35::size_of(&_0.custom_effects)
+		+ super::super::option_18::size_of(&_0.custom_name)
 }
- pub type Ty = SlotComponent27;
+pub type Ty = SlotComponent27;

@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRespawn {
-    pub dimension: super::super::super::super::I8,
-    pub difficulty: super::super::super::super::U8,
-    pub gamemode: super::super::super::super::U8,
-    pub world_height: super::super::super::super::I16,
-    pub seed: super::super::super::super::I64,
+	pub dimension: super::super::super::super::I8,
+	pub difficulty: super::super::super::super::U8,
+	pub gamemode: super::super::super::super::U8,
+	pub world_height: super::super::super::super::I16,
+	pub seed: super::super::super::super::I64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.dimension,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.difficulty,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.gamemode,
-        output,
-    )?;
-    super::super::super::super::i16::serialize(
-        &_0.world_height,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.seed,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.dimension, output)?;
+	super::super::super::super::u8::serialize(&_0.difficulty, output)?;
+	super::super::super::super::u8::serialize(&_0.gamemode, output)?;
+	super::super::super::super::i16::serialize(&_0.world_height, output)?;
+	super::super::super::super::i64::serialize(&_0.seed, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_dimension = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_difficulty = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_gamemode = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_worldHeight = super::super::super::super::i16::deserialize(
-        input,
-    )?;
-    let f_seed = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        dimension: f_dimension,difficulty: f_difficulty,gamemode: f_gamemode,world_height: f_worldHeight,seed: f_seed
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_dimension = super::super::super::super::i8::deserialize(input)?;
+	let f_difficulty = super::super::super::super::u8::deserialize(input)?;
+	let f_gamemode = super::super::super::super::u8::deserialize(input)?;
+	let f_worldHeight = super::super::super::super::i16::deserialize(input)?;
+	let f_seed = super::super::super::super::i64::deserialize(input)?;
+	Ok(Ty {
+		dimension: f_dimension,
+		difficulty: f_difficulty,
+		gamemode: f_gamemode,
+		world_height: f_worldHeight,
+		seed: f_seed,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.dimension
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.difficulty
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.gamemode
-    )
-    + super::super::super::super::i16::size_of(
-        &_0.world_height
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.seed
-    )
+	0 + super::super::super::super::i8::size_of(&_0.dimension)
+		+ super::super::super::super::u8::size_of(&_0.difficulty)
+		+ super::super::super::super::u8::size_of(&_0.gamemode)
+		+ super::super::super::super::i16::size_of(&_0.world_height)
+		+ super::super::super::super::i64::size_of(&_0.seed)
 }
- pub type Ty = PacketRespawn;
+pub type Ty = PacketRespawn;

@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEnchantItem {
-    pub window_id: super::super::super::super::I8,
-    pub enchantment: super::super::super::super::I8,
+	pub window_id: super::super::super::super::I8,
+	pub enchantment: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.enchantment,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.window_id, output)?;
+	super::super::super::super::i8::serialize(&_0.enchantment, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_windowId = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_enchantment = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,enchantment: f_enchantment
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_windowId = super::super::super::super::i8::deserialize(input)?;
+	let f_enchantment = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		enchantment: f_enchantment,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.enchantment
-    )
+	0 + super::super::super::super::i8::size_of(&_0.window_id)
+		+ super::super::super::super::i8::size_of(&_0.enchantment)
 }
- pub type Ty = PacketEnchantItem;
+pub type Ty = PacketEnchantItem;

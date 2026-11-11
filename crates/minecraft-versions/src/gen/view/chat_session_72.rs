@@ -3,55 +3,37 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatSession72<'i> {
-    pub expire_time: super::super::I64,
-    pub key_bytes: super::buffer::Inline3::<'i>,
-    pub key_signature: super::buffer::Inline3::<'i>,
+	pub expire_time: super::super::I64,
+	pub key_bytes: super::buffer::Inline3<'i>,
+	pub key_signature: super::buffer::Inline3<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::i64::serialize(
-        &_0.expire_time,
-        output,
-    )?;
-    super::buffer::inline_3::serialize(
-        &_0.key_bytes,
-        output,
-    )?;
-    super::buffer::inline_3::serialize(
-        &_0.key_signature,
-        output,
-    )?;
-    Ok(())
+	super::super::i64::serialize(&_0.expire_time, output)?;
+	super::buffer::inline_3::serialize(&_0.key_bytes, output)?;
+	super::buffer::inline_3::serialize(&_0.key_signature, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(10)?;
-    let f_expireTime = super::super::i64::deserialize(
-        input,
-    )?;
-    let f_keyBytes = super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_keySignature = super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        expire_time: f_expireTime,key_bytes: f_keyBytes,key_signature: f_keySignature
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(10)?;
+	let f_expireTime = super::super::i64::deserialize(input)?;
+	let f_keyBytes = super::buffer::inline_3::deserialize(input)?;
+	let f_keySignature = super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		expire_time: f_expireTime,
+		key_bytes: f_keyBytes,
+		key_signature: f_keySignature,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::i64::size_of(
-        &_0.expire_time
-    )
-    + super::buffer::inline_3::size_of(
-        &_0.key_bytes
-    )
-    + super::buffer::inline_3::size_of(
-        &_0.key_signature
-    )
+	0 + super::super::i64::size_of(&_0.expire_time)
+		+ super::buffer::inline_3::size_of(&_0.key_bytes)
+		+ super::buffer::inline_3::size_of(&_0.key_signature)
 }
 pub fn view<'i>(_0: &'i super::super::ChatSession72) -> Ty<'i> {
-    Ty {
-        expire_time: ::core::clone::Clone::clone(&_0.expire_time),key_bytes: super::buffer::inline_3::view(&_0.key_bytes),key_signature: super::buffer::inline_3::view(&_0.key_signature)
-    }
+	Ty {
+		expire_time: ::core::clone::Clone::clone(&_0.expire_time),
+		key_bytes: super::buffer::inline_3::view(&_0.key_bytes),
+		key_signature: super::buffer::inline_3::view(&_0.key_signature),
+	}
 }
- pub type Ty<'i> = ChatSession72<'i>;
+pub type Ty<'i> = ChatSession72<'i>;

@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemPotionEffect {
-    pub id: super::Varint,
-    pub details: super::ItemEffectDetail,
+	pub id: super::Varint,
+	pub details: super::ItemEffectDetail,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.id,
-        output,
-    )?;
-    super::item_effect_detail::serialize_guarded(
-        &_0.details,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.id, output)?;
+	super::item_effect_detail::serialize_guarded(&_0.details, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(7)?;
-    let f_id = super::varint::deserialize(
-        input,
-    )?;
-    let f_details = super::item_effect_detail::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        id: f_id,details: f_details
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(7)?;
+	let f_id = super::varint::deserialize(input)?;
+	let f_details = super::item_effect_detail::deserialize_guarded(input)?;
+	Ok(Ty {
+		id: f_id,
+		details: f_details,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.id
-    )
-    + super::item_effect_detail::size_of(
-        &_0.details
-    )
+	0 + super::varint::size_of(&_0.id) + super::item_effect_detail::size_of(&_0.details)
 }
- pub type Ty = ItemPotionEffect;
+pub type Ty = ItemPotionEffect;

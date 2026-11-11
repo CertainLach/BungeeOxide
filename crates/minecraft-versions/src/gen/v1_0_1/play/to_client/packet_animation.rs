@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAnimation {
-    pub entity_id: super::super::super::super::I32,
-    pub animation: super::super::super::super::U8,
+	pub entity_id: super::super::super::super::I32,
+	pub animation: super::super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.animation,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::u8::serialize(&_0.animation, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_animation = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,animation: f_animation
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_animation = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		animation: f_animation,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.animation
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::u8::size_of(&_0.animation)
 }
- pub type Ty = PacketAnimation;
+pub type Ty = PacketAnimation;

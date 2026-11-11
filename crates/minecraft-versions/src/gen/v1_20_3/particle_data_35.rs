@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParticleData35 {
-    pub position: super::ParticleData34,
-    pub ticks: super::super::Varint,
+	pub position: super::ParticleData34,
+	pub ticks: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::particle_data_34::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.ticks,
-        output,
-    )?;
-    Ok(())
+	super::particle_data_34::serialize(&_0.position, output)?;
+	super::super::varint::serialize(&_0.ticks, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_position = super::particle_data_34::deserialize(
-        input,
-    )?;
-    let f_ticks = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position: f_position,ticks: f_ticks
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_position = super::particle_data_34::deserialize(input)?;
+	let f_ticks = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		position: f_position,
+		ticks: f_ticks,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::particle_data_34::size_of(
-        &_0.position
-    )
-    + super::super::varint::size_of(
-        &_0.ticks
-    )
+	0 + super::particle_data_34::size_of(&_0.position) + super::super::varint::size_of(&_0.ticks)
 }
- pub type Ty = ParticleData35;
+pub type Ty = ParticleData35;

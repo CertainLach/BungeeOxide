@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatSession73 {
-    pub uuid: super::Uuid,
-    pub public_key: super::ChatSession72,
+	pub uuid: super::Uuid,
+	pub public_key: super::ChatSession72,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::chat_session_72::serialize(
-        &_0.public_key,
-        output,
-    )?;
-    Ok(())
+	super::uuid::serialize(&_0.uuid, output)?;
+	super::chat_session_72::serialize(&_0.public_key, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_uuid = super::uuid::deserialize(
-        input,
-    )?;
-    let f_publicKey = super::chat_session_72::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,public_key: f_publicKey
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_uuid = super::uuid::deserialize(input)?;
+	let f_publicKey = super::chat_session_72::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		public_key: f_publicKey,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::chat_session_72::size_of(
-        &_0.public_key
-    )
+	0 + super::uuid::size_of(&_0.uuid) + super::chat_session_72::size_of(&_0.public_key)
 }
- pub type Ty = ChatSession73;
+pub type Ty = ChatSession73;

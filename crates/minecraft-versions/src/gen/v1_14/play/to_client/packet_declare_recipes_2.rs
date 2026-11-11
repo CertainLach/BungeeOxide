@@ -3,75 +3,52 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes2 {
-    pub width: super::super::super::super::Varint,
-    pub height: super::super::super::super::Varint,
-    pub group: String,
-    pub ingredients: Vec<Vec<Vec<super::super::super::super::v1_13_2::Slot>>>,
-    pub result: super::super::super::super::v1_13_2::Slot,
+	pub width: super::super::super::super::Varint,
+	pub height: super::super::super::super::Varint,
+	pub group: String,
+	pub ingredients: Vec<Vec<Vec<super::super::super::super::v1_13_2::Slot>>>,
+	pub result: super::super::super::super::v1_13_2::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.width,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.height,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::super::super::array::sized_395::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::super::super::super::v1_13_2::slot::serialize(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.width, output)?;
+	super::super::super::super::varint::serialize(&_0.height, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::super::super::array::sized_395::serialize(&_0.ingredients, output)?;
+	super::super::super::super::v1_13_2::slot::serialize(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_width = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_height = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_group = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_ingredients = super::super::super::super::array::sized_395::deserialize(
-        input,
-        super::super::super::super::array::sized_395::Args {
-            count: {let _0: &super::super::super::super::Varint = &f_width;_0},height: {let _0: &super::super::super::super::Varint = &f_height;_0}
-        },
-    )?;
-    let f_result = super::super::super::super::v1_13_2::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        width: f_width,height: f_height,group: f_group,ingredients: f_ingredients,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_width = super::super::super::super::varint::deserialize(input)?;
+	let f_height = super::super::super::super::varint::deserialize(input)?;
+	let f_group = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_ingredients = super::super::super::super::array::sized_395::deserialize(
+		input,
+		super::super::super::super::array::sized_395::Args {
+			count: {
+				let _0: &super::super::super::super::Varint = &f_width;
+				_0
+			},
+			height: {
+				let _0: &super::super::super::super::Varint = &f_height;
+				_0
+			},
+		},
+	)?;
+	let f_result = super::super::super::super::v1_13_2::slot::deserialize(input)?;
+	Ok(Ty {
+		width: f_width,
+		height: f_height,
+		group: f_group,
+		ingredients: f_ingredients,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.width
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.height
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::super::super::array::sized_395::size_of(
-        &_0.ingredients
-    )
-    + super::super::super::super::v1_13_2::slot::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::varint::size_of(&_0.width)
+		+ super::super::super::super::varint::size_of(&_0.height)
+		+ super::super::super::super::pstring_96::size_of(&_0.group)
+		+ super::super::super::super::array::sized_395::size_of(&_0.ingredients)
+		+ super::super::super::super::v1_13_2::slot::size_of(&_0.result)
 }
- pub type Ty = PacketDeclareRecipes2;
+pub type Ty = PacketDeclareRecipes2;

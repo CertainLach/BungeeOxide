@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent32 {
-    pub nbt_data: super::super::AnonymousNbt,
-    pub ticks_in_hive: super::super::Varint,
-    pub min_ticks_in_hive: super::super::Varint,
+	pub nbt_data: super::super::AnonymousNbt,
+	pub ticks_in_hive: super::super::Varint,
+	pub min_ticks_in_hive: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::anonymous_nbt::serialize(
-        &_0.nbt_data,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.ticks_in_hive,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.min_ticks_in_hive,
-        output,
-    )?;
-    Ok(())
+	super::super::anonymous_nbt::serialize(&_0.nbt_data, output)?;
+	super::super::varint::serialize(&_0.ticks_in_hive, output)?;
+	super::super::varint::serialize(&_0.min_ticks_in_hive, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_nbtData = super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_ticksInHive = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_minTicksInHive = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        nbt_data: f_nbtData,ticks_in_hive: f_ticksInHive,min_ticks_in_hive: f_minTicksInHive
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_nbtData = super::super::anonymous_nbt::deserialize(input)?;
+	let f_ticksInHive = super::super::varint::deserialize(input)?;
+	let f_minTicksInHive = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		nbt_data: f_nbtData,
+		ticks_in_hive: f_ticksInHive,
+		min_ticks_in_hive: f_minTicksInHive,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::anonymous_nbt::size_of(
-        &_0.nbt_data
-    )
-    + super::super::varint::size_of(
-        &_0.ticks_in_hive
-    )
-    + super::super::varint::size_of(
-        &_0.min_ticks_in_hive
-    )
+	0 + super::super::anonymous_nbt::size_of(&_0.nbt_data)
+		+ super::super::varint::size_of(&_0.ticks_in_hive)
+		+ super::super::varint::size_of(&_0.min_ticks_in_hive)
 }
- pub type Ty = SlotComponent32;
+pub type Ty = SlotComponent32;

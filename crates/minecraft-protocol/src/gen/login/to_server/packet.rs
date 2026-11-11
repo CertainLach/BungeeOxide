@@ -3,75 +3,88 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    LoginStart(super::PacketLoginStart),
-    EncryptionBegin(super::PacketEncryptionBegin),
-    LoginPluginResponse(super::PacketLoginPluginResponse),
-    LoginAcknowledged(super::PacketLoginAcknowledged),
-    CookieResponse(super::super::super::PacketCommonCookieResponse),
-    Default(super::super::super::Varint),
+	LoginStart(super::PacketLoginStart),
+	EncryptionBegin(super::PacketEncryptionBegin),
+	LoginPluginResponse(super::PacketLoginPluginResponse),
+	LoginAcknowledged(super::PacketLoginAcknowledged),
+	CookieResponse(super::super::super::PacketCommonCookieResponse),
+	Default(super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::LoginStart(__v) => super::packet_login_start::serialize(__v, output),
-        Ty::EncryptionBegin(__v) => super::packet_encryption_begin::serialize(__v, output),
-        Ty::LoginPluginResponse(__v) => super::packet_login_plugin_response::serialize(__v, output),
-        Ty::LoginAcknowledged(__v) => super::packet_login_acknowledged::serialize(__v, output),
-        Ty::CookieResponse(__v) => super::super::super::packet_common_cookie_response::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::LoginStart(__v) => super::packet_login_start::serialize(__v, output),
+		Ty::EncryptionBegin(__v) => super::packet_encryption_begin::serialize(__v, output),
+		Ty::LoginPluginResponse(__v) => super::packet_login_plugin_response::serialize(__v, output),
+		Ty::LoginAcknowledged(__v) => super::packet_login_acknowledged::serialize(__v, output),
+		Ty::CookieResponse(__v) => {
+			super::super::super::packet_common_cookie_response::serialize(__v, output)
+		}
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::LoginStart(super::packet_login_start::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::EncryptionBegin(super::packet_encryption_begin::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::LoginPluginResponse(super::packet_login_plugin_response::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::LoginAcknowledged(super::packet_login_acknowledged::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::CookieResponse(super::super::super::packet_common_cookie_response::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::LoginStart(super::packet_login_start::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::EncryptionBegin(
+			super::packet_encryption_begin::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::LoginPluginResponse(
+			super::packet_login_plugin_response::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::LoginAcknowledged(
+			super::packet_login_acknowledged::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::CookieResponse(
+			super::super::super::packet_common_cookie_response::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::LoginStart(__v) => super::packet_login_start::size_of(__v),
-        Ty::EncryptionBegin(__v) => super::packet_encryption_begin::size_of(__v),
-        Ty::LoginPluginResponse(__v) => super::packet_login_plugin_response::size_of(__v),
-        Ty::LoginAcknowledged(__v) => super::packet_login_acknowledged::size_of(__v),
-        Ty::CookieResponse(__v) => super::super::super::packet_common_cookie_response::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::LoginStart(__v) => super::packet_login_start::size_of(__v),
+			Ty::EncryptionBegin(__v) => super::packet_encryption_begin::size_of(__v),
+			Ty::LoginPluginResponse(__v) => super::packet_login_plugin_response::size_of(__v),
+			Ty::LoginAcknowledged(__v) => super::packet_login_acknowledged::size_of(__v),
+			Ty::CookieResponse(__v) => {
+				super::super::super::packet_common_cookie_response::size_of(__v)
+			}
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::LoginStart(_) => "login_start",
-        Ty::EncryptionBegin(_) => "encryption_begin",
-        Ty::LoginPluginResponse(_) => "login_plugin_response",
-        Ty::LoginAcknowledged(_) => "login_acknowledged",
-        Ty::CookieResponse(_) => "cookie_response",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::LoginStart(_) => "login_start",
+		Ty::EncryptionBegin(_) => "encryption_begin",
+		Ty::LoginPluginResponse(_) => "login_plugin_response",
+		Ty::LoginAcknowledged(_) => "login_acknowledged",
+		Ty::CookieResponse(_) => "cookie_response",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::Varint {
-    match _0 {
-        Ty::LoginStart(_) => 0_i32,
-        Ty::EncryptionBegin(_) => 1_i32,
-        Ty::LoginPluginResponse(_) => 2_i32,
-        Ty::LoginAcknowledged(_) => 3_i32,
-        Ty::CookieResponse(_) => 4_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::LoginStart(_) => 0_i32,
+		Ty::EncryptionBegin(_) => 1_i32,
+		Ty::LoginPluginResponse(_) => 2_i32,
+		Ty::LoginAcknowledged(_) => 3_i32,
+		Ty::CookieResponse(_) => 4_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

@@ -3,86 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommand {
-    pub command: String,
-    pub timestamp: super::super::super::super::I64,
-    pub salt: super::super::super::super::I64,
-    pub argument_signatures: Vec<super::PacketChatCommand0>,
-    pub message_count: super::super::super::super::Varint,
-    pub acknowledged: Vec<u8>,
+	pub command: String,
+	pub timestamp: super::super::super::super::I64,
+	pub salt: super::super::super::super::I64,
+	pub argument_signatures: Vec<super::PacketChatCommand0>,
+	pub message_count: super::super::super::super::Varint,
+	pub acknowledged: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.command,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.salt,
-        output,
-    )?;
-    super::super::super::super::array::inline_187::serialize(
-        &_0.argument_signatures,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.message_count,
-        output,
-    )?;
-    super::super::super::super::buffer::sized::serialize(
-        &_0.acknowledged,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.command, output)?;
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::i64::serialize(&_0.salt, output)?;
+	super::super::super::super::array::inline_187::serialize(&_0.argument_signatures, output)?;
+	super::super::super::super::varint::serialize(&_0.message_count, output)?;
+	super::super::super::super::buffer::sized::serialize(&_0.acknowledged, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(19)?;
-    let f_command = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_salt = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_argumentSignatures = super::super::super::super::array::inline_187::deserialize(
-        input,
-    )?;
-    let f_messageCount = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_acknowledged = super::super::super::super::buffer::sized::deserialize(
-        input,
-        super::super::super::super::buffer::sized::Args {
-            count: &(3).try_into().expect("constant fits")
-        },
-    )?;
-    Ok(Ty {
-        command: f_command,timestamp: f_timestamp,salt: f_salt,argument_signatures: f_argumentSignatures,message_count: f_messageCount,acknowledged: f_acknowledged
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(19)?;
+	let f_command = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_salt = super::super::super::super::i64::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::super::array::inline_187::deserialize(input)?;
+	let f_messageCount = super::super::super::super::varint::deserialize(input)?;
+	let f_acknowledged = super::super::super::super::buffer::sized::deserialize(
+		input,
+		super::super::super::super::buffer::sized::Args {
+			count: &(3).try_into().expect("constant fits"),
+		},
+	)?;
+	Ok(Ty {
+		command: f_command,
+		timestamp: f_timestamp,
+		salt: f_salt,
+		argument_signatures: f_argumentSignatures,
+		message_count: f_messageCount,
+		acknowledged: f_acknowledged,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.command
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.salt
-    )
-    + super::super::super::super::array::inline_187::size_of(
-        &_0.argument_signatures
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.message_count
-    )
-    + super::super::super::super::buffer::sized::size_of(
-        &_0.acknowledged
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.command)
+		+ super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::i64::size_of(&_0.salt)
+		+ super::super::super::super::array::inline_187::size_of(&_0.argument_signatures)
+		+ super::super::super::super::varint::size_of(&_0.message_count)
+		+ super::super::super::super::buffer::sized::size_of(&_0.acknowledged)
 }
- pub type Ty = PacketChatCommand;
+pub type Ty = PacketChatCommand;

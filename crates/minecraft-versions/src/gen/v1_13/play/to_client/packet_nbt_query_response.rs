@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketNbtQueryResponse {
-    pub transaction_id: super::super::super::super::Varint,
-    pub nbt: super::super::super::super::OptionalNbt,
+	pub transaction_id: super::super::super::super::Varint,
+	pub nbt: super::super::super::super::OptionalNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.transaction_id,
-        output,
-    )?;
-    super::super::super::super::optional_nbt::serialize(
-        &_0.nbt,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.transaction_id, output)?;
+	super::super::super::super::optional_nbt::serialize(&_0.nbt, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_transactionId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_nbt = super::super::super::super::optional_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        transaction_id: f_transactionId,nbt: f_nbt
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_transactionId = super::super::super::super::varint::deserialize(input)?;
+	let f_nbt = super::super::super::super::optional_nbt::deserialize(input)?;
+	Ok(Ty {
+		transaction_id: f_transactionId,
+		nbt: f_nbt,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.transaction_id
-    )
-    + super::super::super::super::optional_nbt::size_of(
-        &_0.nbt
-    )
+	0 + super::super::super::super::varint::size_of(&_0.transaction_id)
+		+ super::super::super::super::optional_nbt::size_of(&_0.nbt)
 }
- pub type Ty = PacketNbtQueryResponse;
+pub type Ty = PacketNbtQueryResponse;

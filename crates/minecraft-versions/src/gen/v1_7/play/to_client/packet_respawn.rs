@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRespawn {
-    pub dimension: super::super::super::super::I32,
-    pub difficulty: super::super::super::super::U8,
-    pub gamemode: super::super::super::super::U8,
-    pub level_type: String,
+	pub dimension: super::super::super::super::I32,
+	pub difficulty: super::super::super::super::U8,
+	pub gamemode: super::super::super::super::U8,
+	pub level_type: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.dimension,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.difficulty,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.gamemode,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.level_type,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.dimension, output)?;
+	super::super::super::super::u8::serialize(&_0.difficulty, output)?;
+	super::super::super::super::u8::serialize(&_0.gamemode, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.level_type, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(7)?;
-    let f_dimension = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_difficulty = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_gamemode = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_levelType = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        dimension: f_dimension,difficulty: f_difficulty,gamemode: f_gamemode,level_type: f_levelType
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(7)?;
+	let f_dimension = super::super::super::super::i32::deserialize(input)?;
+	let f_difficulty = super::super::super::super::u8::deserialize(input)?;
+	let f_gamemode = super::super::super::super::u8::deserialize(input)?;
+	let f_levelType = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		dimension: f_dimension,
+		difficulty: f_difficulty,
+		gamemode: f_gamemode,
+		level_type: f_levelType,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.dimension
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.difficulty
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.gamemode
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.level_type
-    )
+	0 + super::super::super::super::i32::size_of(&_0.dimension)
+		+ super::super::super::super::u8::size_of(&_0.difficulty)
+		+ super::super::super::super::u8::size_of(&_0.gamemode)
+		+ super::super::super::super::pstring_96::size_of(&_0.level_type)
 }
- pub type Ty = PacketRespawn;
+pub type Ty = PacketRespawn;

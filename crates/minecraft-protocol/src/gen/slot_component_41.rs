@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent41 {
-    pub min_range: super::F32,
-    pub max_range: super::F32,
-    pub min_creative_range: super::F32,
-    pub max_creative_range: super::F32,
-    pub hitbox_margin: super::F32,
-    pub mob_factor: super::F32,
+	pub min_range: super::F32,
+	pub max_range: super::F32,
+	pub min_creative_range: super::F32,
+	pub max_creative_range: super::F32,
+	pub hitbox_margin: super::F32,
+	pub mob_factor: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.min_range,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.max_range,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.min_creative_range,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.max_creative_range,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.hitbox_margin,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.mob_factor,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.min_range, output)?;
+	super::f32::serialize(&_0.max_range, output)?;
+	super::f32::serialize(&_0.min_creative_range, output)?;
+	super::f32::serialize(&_0.max_creative_range, output)?;
+	super::f32::serialize(&_0.hitbox_margin, output)?;
+	super::f32::serialize(&_0.mob_factor, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(24)?;
-    let f_minRange = super::f32::deserialize(
-        input,
-    )?;
-    let f_maxRange = super::f32::deserialize(
-        input,
-    )?;
-    let f_minCreativeRange = super::f32::deserialize(
-        input,
-    )?;
-    let f_maxCreativeRange = super::f32::deserialize(
-        input,
-    )?;
-    let f_hitboxMargin = super::f32::deserialize(
-        input,
-    )?;
-    let f_mobFactor = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        min_range: f_minRange,max_range: f_maxRange,min_creative_range: f_minCreativeRange,max_creative_range: f_maxCreativeRange,hitbox_margin: f_hitboxMargin,mob_factor: f_mobFactor
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(24)?;
+	let f_minRange = super::f32::deserialize(input)?;
+	let f_maxRange = super::f32::deserialize(input)?;
+	let f_minCreativeRange = super::f32::deserialize(input)?;
+	let f_maxCreativeRange = super::f32::deserialize(input)?;
+	let f_hitboxMargin = super::f32::deserialize(input)?;
+	let f_mobFactor = super::f32::deserialize(input)?;
+	Ok(Ty {
+		min_range: f_minRange,
+		max_range: f_maxRange,
+		min_creative_range: f_minCreativeRange,
+		max_creative_range: f_maxCreativeRange,
+		hitbox_margin: f_hitboxMargin,
+		mob_factor: f_mobFactor,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.min_range
-    )
-    + super::f32::size_of(
-        &_0.max_range
-    )
-    + super::f32::size_of(
-        &_0.min_creative_range
-    )
-    + super::f32::size_of(
-        &_0.max_creative_range
-    )
-    + super::f32::size_of(
-        &_0.hitbox_margin
-    )
-    + super::f32::size_of(
-        &_0.mob_factor
-    )
+	0 + super::f32::size_of(&_0.min_range)
+		+ super::f32::size_of(&_0.max_range)
+		+ super::f32::size_of(&_0.min_creative_range)
+		+ super::f32::size_of(&_0.max_creative_range)
+		+ super::f32::size_of(&_0.hitbox_margin)
+		+ super::f32::size_of(&_0.mob_factor)
 }
- pub type Ty = SlotComponent41;
+pub type Ty = SlotComponent41;

@@ -3,73 +3,78 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketTeams48 {
-    Add(super::PacketTeams43),
-    Remove,
-    Change(super::PacketTeams47),
-    Join(Vec<String>),
-    Leave(Vec<String>),
-    Default(super::super::super::I8),
+	Add(super::PacketTeams43),
+	Remove,
+	Change(super::PacketTeams47),
+	Join(Vec<String>),
+	Leave(Vec<String>),
+	Default(super::super::super::I8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i8::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Add(__v) => super::packet_teams_43::serialize(__v, output),
-        Ty::Remove => Ok(()),
-        Ty::Change(__v) => super::packet_teams_47::serialize(__v, output),
-        Ty::Join(__v) => super::super::super::array::inline_57::serialize(__v, output),
-        Ty::Leave(__v) => super::super::super::array::inline_57::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::i8::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Add(__v) => super::packet_teams_43::serialize(__v, output),
+		Ty::Remove => Ok(()),
+		Ty::Change(__v) => super::packet_teams_47::serialize(__v, output),
+		Ty::Join(__v) => super::super::super::array::inline_57::serialize(__v, output),
+		Ty::Leave(__v) => super::super::super::array::inline_57::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::i8::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i8) {
-        return Ok(Ty::Add(super::packet_teams_43::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i8) { return Ok(Ty::Remove); }
-    if (__tag.clone() == 2_i8) {
-        return Ok(Ty::Change(super::packet_teams_47::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i8) {
-        return Ok(Ty::Join(super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i8) {
-        return Ok(Ty::Leave(super::super::super::array::inline_57::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::i8::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i8) {
+		return Ok(Ty::Add(super::packet_teams_43::deserialize(input)?));
+	}
+	if (__tag.clone() == 1_i8) {
+		return Ok(Ty::Remove);
+	}
+	if (__tag.clone() == 2_i8) {
+		return Ok(Ty::Change(super::packet_teams_47::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i8) {
+		return Ok(Ty::Join(
+			super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 4_i8) {
+		return Ok(Ty::Leave(
+			super::super::super::array::inline_57::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Add(__v) => super::packet_teams_43::size_of(__v),
-        Ty::Remove => 0,
-        Ty::Change(__v) => super::packet_teams_47::size_of(__v),
-        Ty::Join(__v) => super::super::super::array::inline_57::size_of(__v),
-        Ty::Leave(__v) => super::super::super::array::inline_57::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::i8::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Add(__v) => super::packet_teams_43::size_of(__v),
+			Ty::Remove => 0,
+			Ty::Change(__v) => super::packet_teams_47::size_of(__v),
+			Ty::Join(__v) => super::super::super::array::inline_57::size_of(__v),
+			Ty::Leave(__v) => super::super::super::array::inline_57::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Add(_) => "add",
-        Ty::Remove => "remove",
-        Ty::Change(_) => "change",
-        Ty::Join(_) => "join",
-        Ty::Leave(_) => "leave",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Add(_) => "add",
+		Ty::Remove => "remove",
+		Ty::Change(_) => "change",
+		Ty::Join(_) => "join",
+		Ty::Leave(_) => "leave",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::I8 {
-    match _0 {
-        Ty::Add(_) => 0_i8,
-        Ty::Remove => 1_i8,
-        Ty::Change(_) => 2_i8,
-        Ty::Join(_) => 3_i8,
-        Ty::Leave(_) => 4_i8,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Add(_) => 0_i8,
+		Ty::Remove => 1_i8,
+		Ty::Change(_) => 2_i8,
+		Ty::Join(_) => 3_i8,
+		Ty::Leave(_) => 4_i8,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketTeams48;
+pub type Ty = PacketTeams48;

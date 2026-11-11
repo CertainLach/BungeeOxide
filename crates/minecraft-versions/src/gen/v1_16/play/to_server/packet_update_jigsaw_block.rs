@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateJigsawBlock {
-    pub location: super::super::super::super::Position,
-    pub name: String,
-    pub target: String,
-    pub pool: String,
-    pub final_state: String,
-    pub joint_type: String,
+	pub location: super::super::super::super::Position,
+	pub name: String,
+	pub target: String,
+	pub pool: String,
+	pub final_state: String,
+	pub joint_type: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.pool,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.final_state,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.joint_type,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.target, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.pool, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.final_state, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.joint_type, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_target = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_pool = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_finalState = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_jointType = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,name: f_name,target: f_target,pool: f_pool,final_state: f_finalState,joint_type: f_jointType
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_target = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_pool = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_finalState = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_jointType = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		name: f_name,
+		target: f_target,
+		pool: f_pool,
+		final_state: f_finalState,
+		joint_type: f_jointType,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.target
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.pool
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.final_state
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.joint_type
-    )
+	0 + super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::pstring_96::size_of(&_0.target)
+		+ super::super::super::super::pstring_96::size_of(&_0.pool)
+		+ super::super::super::super::pstring_96::size_of(&_0.final_state)
+		+ super::super::super::super::pstring_96::size_of(&_0.joint_type)
 }
- pub type Ty = PacketUpdateJigsawBlock;
+pub type Ty = PacketUpdateJigsawBlock;

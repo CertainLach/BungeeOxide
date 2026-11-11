@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUseEntity {
-    pub target: super::super::super::Varint,
-    pub hand: super::PacketUseEntity0,
-    pub location: super::super::super::LpVec3,
-    pub sneaking: super::super::super::Bool,
+	pub target: super::super::super::Varint,
+	pub hand: super::PacketUseEntity0,
+	pub location: super::super::super::LpVec3,
+	pub sneaking: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.target,
-        output,
-    )?;
-    super::packet_use_entity_0::serialize(
-        &_0.hand,
-        output,
-    )?;
-    super::super::super::lp_vec3::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.sneaking,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.target, output)?;
+	super::packet_use_entity_0::serialize(&_0.hand, output)?;
+	super::super::super::lp_vec3::serialize(&_0.location, output)?;
+	super::super::super::bool::serialize(&_0.sneaking, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_target = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_hand = super::packet_use_entity_0::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::lp_vec3::deserialize(
-        input,
-    )?;
-    let f_sneaking = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        target: f_target,hand: f_hand,location: f_location,sneaking: f_sneaking
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_target = super::super::super::varint::deserialize(input)?;
+	let f_hand = super::packet_use_entity_0::deserialize(input)?;
+	let f_location = super::super::super::lp_vec3::deserialize(input)?;
+	let f_sneaking = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		target: f_target,
+		hand: f_hand,
+		location: f_location,
+		sneaking: f_sneaking,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.target
-    )
-    + super::packet_use_entity_0::size_of(
-        &_0.hand
-    )
-    + super::super::super::lp_vec3::size_of(
-        &_0.location
-    )
-    + super::super::super::bool::size_of(
-        &_0.sneaking
-    )
+	0 + super::super::super::varint::size_of(&_0.target)
+		+ super::packet_use_entity_0::size_of(&_0.hand)
+		+ super::super::super::lp_vec3::size_of(&_0.location)
+		+ super::super::super::bool::size_of(&_0.sneaking)
 }
- pub type Ty = PacketUseEntity;
+pub type Ty = PacketUseEntity;

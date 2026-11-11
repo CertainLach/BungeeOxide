@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMoveMinecart21 {
-    pub position: super::super::super::Vec3f,
-    pub velocity: super::super::super::Vec3f,
-    pub yaw: super::super::super::F32,
-    pub pitch: super::super::super::F32,
-    pub weight: super::super::super::F32,
+	pub position: super::super::super::Vec3f,
+	pub velocity: super::super::super::Vec3f,
+	pub yaw: super::super::super::F32,
+	pub pitch: super::super::super::F32,
+	pub weight: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::vec3f::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::super::vec3f::serialize(
-        &_0.velocity,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.weight,
-        output,
-    )?;
-    Ok(())
+	super::super::super::vec3f::serialize(&_0.position, output)?;
+	super::super::super::vec3f::serialize(&_0.velocity, output)?;
+	super::super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::super::f32::serialize(&_0.pitch, output)?;
+	super::super::super::f32::serialize(&_0.weight, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(36)?;
-    let f_position = super::super::super::vec3f::deserialize(
-        input,
-    )?;
-    let f_velocity = super::super::super::vec3f::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_weight = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position: f_position,velocity: f_velocity,yaw: f_yaw,pitch: f_pitch,weight: f_weight
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(36)?;
+	let f_position = super::super::super::vec3f::deserialize(input)?;
+	let f_velocity = super::super::super::vec3f::deserialize(input)?;
+	let f_yaw = super::super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::super::f32::deserialize(input)?;
+	let f_weight = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		position: f_position,
+		velocity: f_velocity,
+		yaw: f_yaw,
+		pitch: f_pitch,
+		weight: f_weight,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::vec3f::size_of(
-        &_0.position
-    )
-    + super::super::super::vec3f::size_of(
-        &_0.velocity
-    )
-    + super::super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::super::super::f32::size_of(
-        &_0.weight
-    )
+	0 + super::super::super::vec3f::size_of(&_0.position)
+		+ super::super::super::vec3f::size_of(&_0.velocity)
+		+ super::super::super::f32::size_of(&_0.yaw)
+		+ super::super::super::f32::size_of(&_0.pitch)
+		+ super::super::super::f32::size_of(&_0.weight)
 }
- pub type Ty = PacketMoveMinecart21;
+pub type Ty = PacketMoveMinecart21;

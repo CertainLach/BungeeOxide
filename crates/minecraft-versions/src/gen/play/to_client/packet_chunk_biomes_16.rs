@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChunkBiomes16 {
-    pub position: super::super::super::PackedChunkPos,
-    pub data: Vec<u8>,
+	pub position: super::super::super::PackedChunkPos,
+	pub data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::packed_chunk_pos::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::super::buffer::inline_3::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::packed_chunk_pos::serialize(&_0.position, output)?;
+	super::super::super::buffer::inline_3::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_position = super::super::super::packed_chunk_pos::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position: f_position,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_position = super::super::super::packed_chunk_pos::deserialize(input)?;
+	let f_data = super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		position: f_position,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::packed_chunk_pos::size_of(
-        &_0.position
-    )
-    + super::super::super::buffer::inline_3::size_of(
-        &_0.data
-    )
+	0 + super::super::super::packed_chunk_pos::size_of(&_0.position)
+		+ super::super::super::buffer::inline_3::size_of(&_0.data)
 }
- pub type Ty = PacketChunkBiomes16;
+pub type Ty = PacketChunkBiomes16;

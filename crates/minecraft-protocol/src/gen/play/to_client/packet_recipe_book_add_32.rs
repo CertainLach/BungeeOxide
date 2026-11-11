@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRecipeBookAdd32 {
-    pub display_id: super::super::super::Varint,
-    pub display: super::RecipeDisplay,
-    pub group: super::super::super::Varint,
-    pub category: super::PacketRecipeBookAdd31,
-    pub crafting_requirements: Option<Vec<super::super::super::IdSet>>,
+	pub display_id: super::super::super::Varint,
+	pub display: super::RecipeDisplay,
+	pub group: super::super::super::Varint,
+	pub category: super::PacketRecipeBookAdd31,
+	pub crafting_requirements: Option<Vec<super::super::super::IdSet>>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.display_id,
-        output,
-    )?;
-    super::recipe_display::serialize(
-        &_0.display,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::packet_recipe_book_add_31::serialize(
-        &_0.category,
-        output,
-    )?;
-    super::super::super::option_39::serialize(
-        &_0.crafting_requirements,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.display_id, output)?;
+	super::recipe_display::serialize(&_0.display, output)?;
+	super::super::super::varint::serialize(&_0.group, output)?;
+	super::packet_recipe_book_add_31::serialize(&_0.category, output)?;
+	super::super::super::option_39::serialize(&_0.crafting_requirements, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_displayId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_display = super::recipe_display::deserialize(
-        input,
-    )?;
-    let f_group = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_category = super::packet_recipe_book_add_31::deserialize(
-        input,
-    )?;
-    let f_craftingRequirements = super::super::super::option_39::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        display_id: f_displayId,display: f_display,group: f_group,category: f_category,crafting_requirements: f_craftingRequirements
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_displayId = super::super::super::varint::deserialize(input)?;
+	let f_display = super::recipe_display::deserialize(input)?;
+	let f_group = super::super::super::varint::deserialize(input)?;
+	let f_category = super::packet_recipe_book_add_31::deserialize(input)?;
+	let f_craftingRequirements = super::super::super::option_39::deserialize(input)?;
+	Ok(Ty {
+		display_id: f_displayId,
+		display: f_display,
+		group: f_group,
+		category: f_category,
+		crafting_requirements: f_craftingRequirements,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.display_id
-    )
-    + super::recipe_display::size_of(
-        &_0.display
-    )
-    + super::super::super::varint::size_of(
-        &_0.group
-    )
-    + super::packet_recipe_book_add_31::size_of(
-        &_0.category
-    )
-    + super::super::super::option_39::size_of(
-        &_0.crafting_requirements
-    )
+	0 + super::super::super::varint::size_of(&_0.display_id)
+		+ super::recipe_display::size_of(&_0.display)
+		+ super::super::super::varint::size_of(&_0.group)
+		+ super::packet_recipe_book_add_31::size_of(&_0.category)
+		+ super::super::super::option_39::size_of(&_0.crafting_requirements)
 }
- pub type Ty = PacketRecipeBookAdd32;
+pub type Ty = PacketRecipeBookAdd32;

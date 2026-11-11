@@ -3,33 +3,31 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Position {
-    pub x: super::super::I32,
-    pub y: super::super::I16,
-    pub z: super::super::I32,
+	pub x: super::super::I32,
+	pub y: super::super::I16,
+	pub z: super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    let mut acc: u128 = 0;
-    acc = (acc << 26) | ((_0.x as u128) & 0x3ffffff);
-    acc = (acc << 12) | ((_0.y as u128) & 0xfff);
-    acc = (acc << 26) | ((_0.z as u128) & 0x3ffffff);
-    for i in (0..8u32).rev() {
-        super::super::u8::serialize(&(((acc >> (i * 8)) & 0xff) as u8), output)?;
-    }
-    Ok(())
+	let mut acc: u128 = 0;
+	acc = (acc << 26) | ((_0.x as u128) & 0x3ffffff);
+	acc = (acc << 12) | ((_0.y as u128) & 0xfff);
+	acc = (acc << 26) | ((_0.z as u128) & 0x3ffffff);
+	for i in (0..8u32).rev() {
+		super::super::u8::serialize(&(((acc >> (i * 8)) & 0xff) as u8), output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let mut acc: u128 = 0;
-    for _ in 0..8u32 {
-        acc = (acc << 8) | (super::super::u8::deserialize(input)? as u128);
-    }
-    let x = (((((acc >> 38) & 0x3ffffff) as u32) << 6) as i32) >> 6;
-    let y = (((((acc >> 26) & 0xfff) as u16) << 4) as i16) >> 4;
-    let z = (((((acc >> 0) & 0x3ffffff) as u32) << 6) as i32) >> 6;
-    Ok(Ty {
-        x, y, z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let mut acc: u128 = 0;
+	for _ in 0..8u32 {
+		acc = (acc << 8) | (super::super::u8::deserialize(input)? as u128);
+	}
+	let x = (((((acc >> 38) & 0x3ffffff) as u32) << 6) as i32) >> 6;
+	let y = (((((acc >> 26) & 0xfff) as u16) << 4) as i16) >> 4;
+	let z = (((((acc >> 0) & 0x3ffffff) as u32) << 6) as i32) >> 6;
+	Ok(Ty { x, y, z })
 }
 pub fn size_of(_0: &Ty) -> usize {
-    8
+	8
 }
- pub type Ty = Position;
+pub type Ty = Position;

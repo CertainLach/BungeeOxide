@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent32 {
-    pub floats: Vec<super::F32>,
-    pub flags: Vec<super::Bool>,
-    pub strings: Vec<String>,
-    pub colors: Vec<super::I32>,
+	pub floats: Vec<super::F32>,
+	pub flags: Vec<super::Bool>,
+	pub strings: Vec<String>,
+	pub colors: Vec<super::I32>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::array::inline_22::serialize(
-        &_0.floats,
-        output,
-    )?;
-    super::array::inline_19::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::array::inline_29::serialize(
-        &_0.strings,
-        output,
-    )?;
-    super::array::inline_23::serialize(
-        &_0.colors,
-        output,
-    )?;
-    Ok(())
+	super::array::inline_22::serialize(&_0.floats, output)?;
+	super::array::inline_19::serialize(&_0.flags, output)?;
+	super::array::inline_29::serialize(&_0.strings, output)?;
+	super::array::inline_23::serialize(&_0.colors, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_floats = super::array::inline_22::deserialize(
-        input,
-    )?;
-    let f_flags = super::array::inline_19::deserialize(
-        input,
-    )?;
-    let f_strings = super::array::inline_29::deserialize(
-        input,
-    )?;
-    let f_colors = super::array::inline_23::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        floats: f_floats,flags: f_flags,strings: f_strings,colors: f_colors
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_floats = super::array::inline_22::deserialize(input)?;
+	let f_flags = super::array::inline_19::deserialize(input)?;
+	let f_strings = super::array::inline_29::deserialize(input)?;
+	let f_colors = super::array::inline_23::deserialize(input)?;
+	Ok(Ty {
+		floats: f_floats,
+		flags: f_flags,
+		strings: f_strings,
+		colors: f_colors,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::array::inline_22::size_of(
-        &_0.floats
-    )
-    + super::array::inline_19::size_of(
-        &_0.flags
-    )
-    + super::array::inline_29::size_of(
-        &_0.strings
-    )
-    + super::array::inline_23::size_of(
-        &_0.colors
-    )
+	0 + super::array::inline_22::size_of(&_0.floats)
+		+ super::array::inline_19::size_of(&_0.flags)
+		+ super::array::inline_29::size_of(&_0.strings)
+		+ super::array::inline_23::size_of(&_0.colors)
 }
- pub type Ty = SlotComponent32;
+pub type Ty = SlotComponent32;

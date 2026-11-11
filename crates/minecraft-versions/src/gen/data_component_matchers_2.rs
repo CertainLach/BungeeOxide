@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DataComponentMatchers2 {
-    pub is_predicate_type: super::Bool,
-    pub r#type: super::Varint,
-    pub predicate: super::AnonymousNbt,
+	pub is_predicate_type: super::Bool,
+	pub r#type: super::Varint,
+	pub predicate: super::AnonymousNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(
-        &_0.is_predicate_type,
-        output,
-    )?;
-    super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::anonymous_nbt::serialize(
-        &_0.predicate,
-        output,
-    )?;
-    Ok(())
+	super::bool::serialize(&_0.is_predicate_type, output)?;
+	super::varint::serialize(&_0.r#type, output)?;
+	super::anonymous_nbt::serialize(&_0.predicate, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_isPredicateType = super::bool::deserialize(
-        input,
-    )?;
-    let f_type = super::varint::deserialize(
-        input,
-    )?;
-    let f_predicate = super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        is_predicate_type: f_isPredicateType,r#type: f_type,predicate: f_predicate
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_isPredicateType = super::bool::deserialize(input)?;
+	let f_type = super::varint::deserialize(input)?;
+	let f_predicate = super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		is_predicate_type: f_isPredicateType,
+		r#type: f_type,
+		predicate: f_predicate,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::bool::size_of(
-        &_0.is_predicate_type
-    )
-    + super::varint::size_of(
-        &_0.r#type
-    )
-    + super::anonymous_nbt::size_of(
-        &_0.predicate
-    )
+	0 + super::bool::size_of(&_0.is_predicate_type)
+		+ super::varint::size_of(&_0.r#type)
+		+ super::anonymous_nbt::size_of(&_0.predicate)
 }
- pub type Ty = DataComponentMatchers2;
+pub type Ty = DataComponentMatchers2;

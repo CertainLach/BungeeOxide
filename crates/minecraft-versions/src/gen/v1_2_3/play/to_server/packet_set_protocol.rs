@@ -3,27 +3,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetProtocol {
-    pub username_and_host: super::super::super::super::String16,
+	pub username_and_host: super::super::super::super::String16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::string16::serialize(
-        &_0.username_and_host,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::string16::serialize(&_0.username_and_host, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_usernameAndHost = super::super::super::super::string16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        username_and_host: f_usernameAndHost
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let f_usernameAndHost = super::super::super::super::string16::deserialize(input)?;
+	Ok(Ty {
+		username_and_host: f_usernameAndHost,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::string16::size_of(
-        &_0.username_and_host
-    )
+	0 + super::super::super::super::string16::size_of(&_0.username_and_host)
 }
- pub type Ty = PacketSetProtocol;
+pub type Ty = PacketSetProtocol;

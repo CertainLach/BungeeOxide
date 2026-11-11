@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PathDebugData {
-    pub open_set: Vec<super::Node>,
-    pub closed_set: Vec<super::Node>,
-    pub target_nodes: Vec<super::Node>,
+	pub open_set: Vec<super::Node>,
+	pub closed_set: Vec<super::Node>,
+	pub target_nodes: Vec<super::Node>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::array::inline_12::serialize(
-        &_0.open_set,
-        output,
-    )?;
-    super::array::inline_12::serialize(
-        &_0.closed_set,
-        output,
-    )?;
-    super::array::inline_12::serialize(
-        &_0.target_nodes,
-        output,
-    )?;
-    Ok(())
+	super::array::inline_12::serialize(&_0.open_set, output)?;
+	super::array::inline_12::serialize(&_0.closed_set, output)?;
+	super::array::inline_12::serialize(&_0.target_nodes, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_openSet = super::array::inline_12::deserialize(
-        input,
-    )?;
-    let f_closedSet = super::array::inline_12::deserialize(
-        input,
-    )?;
-    let f_targetNodes = super::array::inline_12::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        open_set: f_openSet,closed_set: f_closedSet,target_nodes: f_targetNodes
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_openSet = super::array::inline_12::deserialize(input)?;
+	let f_closedSet = super::array::inline_12::deserialize(input)?;
+	let f_targetNodes = super::array::inline_12::deserialize(input)?;
+	Ok(Ty {
+		open_set: f_openSet,
+		closed_set: f_closedSet,
+		target_nodes: f_targetNodes,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::array::inline_12::size_of(
-        &_0.open_set
-    )
-    + super::array::inline_12::size_of(
-        &_0.closed_set
-    )
-    + super::array::inline_12::size_of(
-        &_0.target_nodes
-    )
+	0 + super::array::inline_12::size_of(&_0.open_set)
+		+ super::array::inline_12::size_of(&_0.closed_set)
+		+ super::array::inline_12::size_of(&_0.target_nodes)
 }
- pub type Ty = PathDebugData;
+pub type Ty = PathDebugData;

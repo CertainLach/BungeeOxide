@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDifficulty {
-    pub difficulty: super::PacketDifficulty6,
-    pub difficulty_locked: super::super::super::super::Bool,
+	pub difficulty: super::PacketDifficulty6,
+	pub difficulty_locked: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::packet_difficulty_6::serialize(
-        &_0.difficulty,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.difficulty_locked,
-        output,
-    )?;
-    Ok(())
+	super::packet_difficulty_6::serialize(&_0.difficulty, output)?;
+	super::super::super::super::bool::serialize(&_0.difficulty_locked, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_difficulty = super::packet_difficulty_6::deserialize(
-        input,
-    )?;
-    let f_difficultyLocked = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        difficulty: f_difficulty,difficulty_locked: f_difficultyLocked
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_difficulty = super::packet_difficulty_6::deserialize(input)?;
+	let f_difficultyLocked = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		difficulty: f_difficulty,
+		difficulty_locked: f_difficultyLocked,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::packet_difficulty_6::size_of(
-        &_0.difficulty
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.difficulty_locked
-    )
+	0 + super::packet_difficulty_6::size_of(&_0.difficulty)
+		+ super::super::super::super::bool::size_of(&_0.difficulty_locked)
 }
- pub type Ty = PacketDifficulty;
+pub type Ty = PacketDifficulty;

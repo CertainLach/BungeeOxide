@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBed {
-    pub entity_id: super::super::super::super::I32,
-    pub action: super::super::super::super::I8,
-    pub location: super::super::super::PositionIbi,
+	pub entity_id: super::super::super::super::I32,
+	pub action: super::super::super::super::I8,
+	pub location: super::super::super::PositionIbi,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.action,
-        output,
-    )?;
-    super::super::super::position_ibi::serialize(
-        &_0.location,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.action, output)?;
+	super::super::super::position_ibi::serialize(&_0.location, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(14)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_action = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::position_ibi::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,action: f_action,location: f_location
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(14)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_action = super::super::super::super::i8::deserialize(input)?;
+	let f_location = super::super::super::position_ibi::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		action: f_action,
+		location: f_location,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.action
-    )
-    + super::super::super::position_ibi::size_of(
-        &_0.location
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.action)
+		+ super::super::super::position_ibi::size_of(&_0.location)
 }
- pub type Ty = PacketBed;
+pub type Ty = PacketBed;

@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent68 {
-    pub name: String,
-    pub value: String,
+	pub name: String,
+	pub value: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::pstring_96::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.name, output)?;
+	super::pstring_96::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_name = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_name = super::pstring_96::deserialize(input)?;
+	let f_value = super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::pstring_96::size_of(
-        &_0.value
-    )
+	0 + super::pstring_96::size_of(&_0.name) + super::pstring_96::size_of(&_0.value)
 }
- pub type Ty = SlotComponent68;
+pub type Ty = SlotComponent68;

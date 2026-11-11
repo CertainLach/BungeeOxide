@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityAction {
-    pub entity_id: super::super::super::super::I32,
-    pub action_id: super::super::super::super::I8,
+	pub entity_id: super::super::super::super::I32,
+	pub action_id: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.action_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.action_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_actionId = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,action_id: f_actionId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_actionId = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		action_id: f_actionId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.action_id
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.action_id)
 }
- pub type Ty = PacketEntityAction;
+pub type Ty = PacketEntityAction;

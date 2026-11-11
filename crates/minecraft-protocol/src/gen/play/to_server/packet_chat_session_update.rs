@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatSessionUpdate {
-    pub session_uuid: super::super::super::Uuid,
-    pub expire_time: super::super::super::I64,
-    pub public_key: Vec<u8>,
-    pub signature: Vec<u8>,
+	pub session_uuid: super::super::super::Uuid,
+	pub expire_time: super::super::super::I64,
+	pub public_key: Vec<u8>,
+	pub signature: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::uuid::serialize(
-        &_0.session_uuid,
-        output,
-    )?;
-    super::super::super::i64::serialize(
-        &_0.expire_time,
-        output,
-    )?;
-    super::super::super::buffer::inline_0::serialize(
-        &_0.public_key,
-        output,
-    )?;
-    super::super::super::buffer::inline_0::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::uuid::serialize(&_0.session_uuid, output)?;
+	super::super::super::i64::serialize(&_0.expire_time, output)?;
+	super::super::super::buffer::inline_0::serialize(&_0.public_key, output)?;
+	super::super::super::buffer::inline_0::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_sessionUUID = super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_expireTime = super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_publicKey = super::super::super::buffer::inline_0::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::buffer::inline_0::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        session_uuid: f_sessionUUID,expire_time: f_expireTime,public_key: f_publicKey,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_sessionUUID = super::super::super::uuid::deserialize(input)?;
+	let f_expireTime = super::super::super::i64::deserialize(input)?;
+	let f_publicKey = super::super::super::buffer::inline_0::deserialize(input)?;
+	let f_signature = super::super::super::buffer::inline_0::deserialize(input)?;
+	Ok(Ty {
+		session_uuid: f_sessionUUID,
+		expire_time: f_expireTime,
+		public_key: f_publicKey,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::uuid::size_of(
-        &_0.session_uuid
-    )
-    + super::super::super::i64::size_of(
-        &_0.expire_time
-    )
-    + super::super::super::buffer::inline_0::size_of(
-        &_0.public_key
-    )
-    + super::super::super::buffer::inline_0::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::uuid::size_of(&_0.session_uuid)
+		+ super::super::super::i64::size_of(&_0.expire_time)
+		+ super::super::super::buffer::inline_0::size_of(&_0.public_key)
+		+ super::super::super::buffer::inline_0::size_of(&_0.signature)
 }
- pub type Ty = PacketChatSessionUpdate;
+pub type Ty = PacketChatSessionUpdate;

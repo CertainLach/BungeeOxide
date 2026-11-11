@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonServerLinks107 {
-    pub has_known_type: super::PacketCommonServerLinks106,
-    pub link: String,
+	pub has_known_type: super::PacketCommonServerLinks106,
+	pub link: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::packet_common_server_links_106::serialize(
-        &_0.has_known_type,
-        output,
-    )?;
-    super::pstring_39::serialize(
-        &_0.link,
-        output,
-    )?;
-    Ok(())
+	super::packet_common_server_links_106::serialize(&_0.has_known_type, output)?;
+	super::pstring_39::serialize(&_0.link, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_hasKnownType = super::packet_common_server_links_106::deserialize(
-        input,
-    )?;
-    let f_link = super::pstring_39::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        has_known_type: f_hasKnownType,link: f_link
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_hasKnownType = super::packet_common_server_links_106::deserialize(input)?;
+	let f_link = super::pstring_39::deserialize(input)?;
+	Ok(Ty {
+		has_known_type: f_hasKnownType,
+		link: f_link,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::packet_common_server_links_106::size_of(
-        &_0.has_known_type
-    )
-    + super::pstring_39::size_of(
-        &_0.link
-    )
+	0 + super::packet_common_server_links_106::size_of(&_0.has_known_type)
+		+ super::pstring_39::size_of(&_0.link)
 }
- pub type Ty = PacketCommonServerLinks107;
+pub type Ty = PacketCommonServerLinks107;

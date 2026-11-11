@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonCustomClickAction {
-    pub id: String,
-    pub nbt: Option<super::AnonymousNbt>,
+	pub id: String,
+	pub nbt: Option<super::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_39::serialize(
-        &_0.id,
-        output,
-    )?;
-    super::option_8::serialize(
-        &_0.nbt,
-        output,
-    )?;
-    Ok(())
+	super::pstring_39::serialize(&_0.id, output)?;
+	super::option_8::serialize(&_0.nbt, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_id = super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_nbt = super::option_8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        id: f_id,nbt: f_nbt
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_id = super::pstring_39::deserialize(input)?;
+	let f_nbt = super::option_8::deserialize(input)?;
+	Ok(Ty {
+		id: f_id,
+		nbt: f_nbt,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_39::size_of(
-        &_0.id
-    )
-    + super::option_8::size_of(
-        &_0.nbt
-    )
+	0 + super::pstring_39::size_of(&_0.id) + super::option_8::size_of(&_0.nbt)
 }
- pub type Ty = PacketCommonCustomClickAction;
+pub type Ty = PacketCommonCustomClickAction;

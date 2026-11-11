@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent17 {
-    pub enchantments: Vec<super::SlotComponent16>,
-    pub show_in_tooltip: super::super::Bool,
+	pub enchantments: Vec<super::SlotComponent16>,
+	pub show_in_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::array::inline_231::serialize(
-        &_0.enchantments,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_in_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::super::array::inline_231::serialize(&_0.enchantments, output)?;
+	super::super::bool::serialize(&_0.show_in_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_enchantments = super::super::array::inline_231::deserialize(
-        input,
-    )?;
-    let f_showInTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        enchantments: f_enchantments,show_in_tooltip: f_showInTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_enchantments = super::super::array::inline_231::deserialize(input)?;
+	let f_showInTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		enchantments: f_enchantments,
+		show_in_tooltip: f_showInTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::array::inline_231::size_of(
-        &_0.enchantments
-    )
-    + super::super::bool::size_of(
-        &_0.show_in_tooltip
-    )
+	0 + super::super::array::inline_231::size_of(&_0.enchantments)
+		+ super::super::bool::size_of(&_0.show_in_tooltip)
 }
- pub type Ty = SlotComponent17;
+pub type Ty = SlotComponent17;

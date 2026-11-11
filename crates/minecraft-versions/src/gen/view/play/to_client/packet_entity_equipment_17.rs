@@ -3,49 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment17<'i> {
-    pub slot: super::super::super::super::I8,
-    pub item: super::super::super::Slot::<'i>,
+	pub slot: super::super::super::super::I8,
+	pub item: super::super::super::Slot<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::i8::serialize(
-        &_0.slot,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.item,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i8::serialize(&_0.slot, output)?;
+	super::super::super::slot::serialize(&_0.item, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_slot = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_item = super::super::super::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        slot: f_slot,item: f_item
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_slot = super::super::super::super::i8::deserialize(input)?;
+	let f_item = super::super::super::slot::deserialize(input)?;
+	Ok(Ty {
+		slot: f_slot,
+		item: f_item,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::i8::size_of(
-        &_0.slot
-    )
-    + super::super::super::slot::size_of(
-        &_0.item
-    )
+	0 + super::super::super::super::i8::size_of(&_0.slot)
+		+ super::super::super::slot::size_of(&_0.item)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityEquipment17) -> Ty<'i> {
-    Ty {
-        slot: ::core::clone::Clone::clone(&_0.slot),item: super::super::super::slot::view(&_0.item)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketEntityEquipment17,
+) -> Ty<'i> {
+	Ty {
+		slot: ::core::clone::Clone::clone(&_0.slot),
+		item: super::super::super::slot::view(&_0.item),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketEntityEquipment17) -> Ty<'i> {
-    Ty {
-        slot: ::core::clone::Clone::clone(&mut _0.slot),item: super::super::super::slot::into_view(&mut _0.item)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketEntityEquipment17,
+) -> Ty<'i> {
+	Ty {
+		slot: ::core::clone::Clone::clone(&mut _0.slot),
+		item: super::super::super::slot::into_view(&mut _0.item),
+	}
 }
- pub type Ty<'i> = PacketEntityEquipment17<'i>;
+pub type Ty<'i> = PacketEntityEquipment17<'i>;

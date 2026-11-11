@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonAddResourcePack {
-    pub uuid: super::Uuid,
-    pub url: String,
-    pub hash: String,
-    pub forced: super::Bool,
-    pub prompt_message: Option<super::AnonymousNbt>,
+	pub uuid: super::Uuid,
+	pub url: String,
+	pub hash: String,
+	pub forced: super::Bool,
+	pub prompt_message: Option<super::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::pstring_96::serialize(
-        &_0.url,
-        output,
-    )?;
-    super::pstring_96::serialize(
-        &_0.hash,
-        output,
-    )?;
-    super::bool::serialize(
-        &_0.forced,
-        output,
-    )?;
-    super::option_9::serialize(
-        &_0.prompt_message,
-        output,
-    )?;
-    Ok(())
+	super::uuid::serialize(&_0.uuid, output)?;
+	super::pstring_96::serialize(&_0.url, output)?;
+	super::pstring_96::serialize(&_0.hash, output)?;
+	super::bool::serialize(&_0.forced, output)?;
+	super::option_9::serialize(&_0.prompt_message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_uuid = super::uuid::deserialize(
-        input,
-    )?;
-    let f_url = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_hash = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_forced = super::bool::deserialize(
-        input,
-    )?;
-    let f_promptMessage = super::option_9::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,url: f_url,hash: f_hash,forced: f_forced,prompt_message: f_promptMessage
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_uuid = super::uuid::deserialize(input)?;
+	let f_url = super::pstring_96::deserialize(input)?;
+	let f_hash = super::pstring_96::deserialize(input)?;
+	let f_forced = super::bool::deserialize(input)?;
+	let f_promptMessage = super::option_9::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		url: f_url,
+		hash: f_hash,
+		forced: f_forced,
+		prompt_message: f_promptMessage,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::pstring_96::size_of(
-        &_0.url
-    )
-    + super::pstring_96::size_of(
-        &_0.hash
-    )
-    + super::bool::size_of(
-        &_0.forced
-    )
-    + super::option_9::size_of(
-        &_0.prompt_message
-    )
+	0 + super::uuid::size_of(&_0.uuid)
+		+ super::pstring_96::size_of(&_0.url)
+		+ super::pstring_96::size_of(&_0.hash)
+		+ super::bool::size_of(&_0.forced)
+		+ super::option_9::size_of(&_0.prompt_message)
 }
- pub type Ty = PacketCommonAddResourcePack;
+pub type Ty = PacketCommonAddResourcePack;

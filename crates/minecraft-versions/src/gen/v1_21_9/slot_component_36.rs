@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent36 {
-    pub r#type: super::super::Varint,
-    pub data: super::super::AnonymousNbt,
+	pub r#type: super::super::Varint,
+	pub data: super::super::AnonymousNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::anonymous_nbt::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::anonymous_nbt::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_type = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_data = super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_type = super::super::varint::deserialize(input)?;
+	let f_data = super::super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::anonymous_nbt::size_of(
-        &_0.data
-    )
+	0 + super::super::varint::size_of(&_0.r#type) + super::super::anonymous_nbt::size_of(&_0.data)
 }
- pub type Ty = SlotComponent36;
+pub type Ty = SlotComponent36;

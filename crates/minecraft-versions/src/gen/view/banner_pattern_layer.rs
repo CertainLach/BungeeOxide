@@ -3,44 +3,31 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BannerPatternLayer<'i> {
-    pub pattern: super::BannerPatternLayer0::<'i>,
-    pub color_id: super::super::Varint,
+	pub pattern: super::BannerPatternLayer0<'i>,
+	pub color_id: super::super::Varint,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::banner_pattern_layer_0::serialize(
-        &_0.pattern,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.color_id,
-        output,
-    )?;
-    Ok(())
+	super::banner_pattern_layer_0::serialize(&_0.pattern, output)?;
+	super::super::varint::serialize(&_0.color_id, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_pattern = super::banner_pattern_layer_0::deserialize(
-        input,
-    )?;
-    let f_colorId = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        pattern: f_pattern,color_id: f_colorId
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_pattern = super::banner_pattern_layer_0::deserialize(input)?;
+	let f_colorId = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		pattern: f_pattern,
+		color_id: f_colorId,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::banner_pattern_layer_0::size_of(
-        &_0.pattern
-    )
-    + super::super::varint::size_of(
-        &_0.color_id
-    )
+	0 + super::banner_pattern_layer_0::size_of(&_0.pattern)
+		+ super::super::varint::size_of(&_0.color_id)
 }
 pub fn view<'i>(_0: &'i super::super::BannerPatternLayer) -> Ty<'i> {
-    Ty {
-        pattern: super::banner_pattern_layer_0::view(&_0.pattern),color_id: ::core::clone::Clone::clone(&_0.color_id)
-    }
+	Ty {
+		pattern: super::banner_pattern_layer_0::view(&_0.pattern),
+		color_id: ::core::clone::Clone::clone(&_0.color_id),
+	}
 }
- pub type Ty<'i> = BannerPatternLayer<'i>;
+pub type Ty<'i> = BannerPatternLayer<'i>;

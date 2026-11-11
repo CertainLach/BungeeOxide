@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes5 {
-    pub group: String,
-    pub ingredient: Vec<super::super::super::super::v1_13_2::Slot>,
-    pub result: super::super::super::super::v1_13_2::Slot,
+	pub group: String,
+	pub ingredient: Vec<super::super::super::super::v1_13_2::Slot>,
+	pub result: super::super::super::super::v1_13_2::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::super::super::array::inline_63::serialize(
-        &_0.ingredient,
-        output,
-    )?;
-    super::super::super::super::v1_13_2::slot::serialize(
-        &_0.result,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::super::super::array::inline_63::serialize(&_0.ingredient, output)?;
+	super::super::super::super::v1_13_2::slot::serialize(&_0.result, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_group = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_ingredient = super::super::super::super::array::inline_63::deserialize(
-        input,
-    )?;
-    let f_result = super::super::super::super::v1_13_2::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        group: f_group,ingredient: f_ingredient,result: f_result
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_group = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_ingredient = super::super::super::super::array::inline_63::deserialize(input)?;
+	let f_result = super::super::super::super::v1_13_2::slot::deserialize(input)?;
+	Ok(Ty {
+		group: f_group,
+		ingredient: f_ingredient,
+		result: f_result,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::super::super::array::inline_63::size_of(
-        &_0.ingredient
-    )
-    + super::super::super::super::v1_13_2::slot::size_of(
-        &_0.result
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.group)
+		+ super::super::super::super::array::inline_63::size_of(&_0.ingredient)
+		+ super::super::super::super::v1_13_2::slot::size_of(&_0.result)
 }
- pub type Ty = PacketDeclareRecipes5;
+pub type Ty = PacketDeclareRecipes5;

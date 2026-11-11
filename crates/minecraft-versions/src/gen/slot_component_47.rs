@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent47 {
-    pub threshold: super::F32,
-    pub base: super::F32,
-    pub factor: super::F32,
+	pub threshold: super::F32,
+	pub base: super::F32,
+	pub factor: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.threshold,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.base,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.factor,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.threshold, output)?;
+	super::f32::serialize(&_0.base, output)?;
+	super::f32::serialize(&_0.factor, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(12)?;
-    let f_threshold = super::f32::deserialize(
-        input,
-    )?;
-    let f_base = super::f32::deserialize(
-        input,
-    )?;
-    let f_factor = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        threshold: f_threshold,base: f_base,factor: f_factor
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(12)?;
+	let f_threshold = super::f32::deserialize(input)?;
+	let f_base = super::f32::deserialize(input)?;
+	let f_factor = super::f32::deserialize(input)?;
+	Ok(Ty {
+		threshold: f_threshold,
+		base: f_base,
+		factor: f_factor,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.threshold
-    )
-    + super::f32::size_of(
-        &_0.base
-    )
-    + super::f32::size_of(
-        &_0.factor
-    )
+	0 + super::f32::size_of(&_0.threshold)
+		+ super::f32::size_of(&_0.base)
+		+ super::f32::size_of(&_0.factor)
 }
- pub type Ty = SlotComponent47;
+pub type Ty = SlotComponent47;

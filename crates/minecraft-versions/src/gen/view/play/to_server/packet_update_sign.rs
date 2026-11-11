@@ -3,88 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateSign<'i> {
-    pub location: super::super::super::super::Position,
-    pub is_front_text: super::super::super::super::Bool,
-    pub text1: super::super::super::Pstring96::<'i>,
-    pub text2: super::super::super::Pstring96::<'i>,
-    pub text3: super::super::super::Pstring96::<'i>,
-    pub text4: super::super::super::Pstring96::<'i>,
+	pub location: super::super::super::super::Position,
+	pub is_front_text: super::super::super::super::Bool,
+	pub text1: super::super::super::Pstring96<'i>,
+	pub text2: super::super::super::Pstring96<'i>,
+	pub text3: super::super::super::Pstring96<'i>,
+	pub text4: super::super::super::Pstring96<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.is_front_text,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.text1,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.text2,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.text3,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.text4,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::bool::serialize(&_0.is_front_text, output)?;
+	super::super::super::pstring_96::serialize(&_0.text1, output)?;
+	super::super::super::pstring_96::serialize(&_0.text2, output)?;
+	super::super::super::pstring_96::serialize(&_0.text3, output)?;
+	super::super::super::pstring_96::serialize(&_0.text4, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(13)?;
-    let f_location = super::super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_isFrontText = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_text1 = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_text2 = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_text3 = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_text4 = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,is_front_text: f_isFrontText,text1: f_text1,text2: f_text2,text3: f_text3,text4: f_text4
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(13)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
+	let f_isFrontText = super::super::super::super::bool::deserialize(input)?;
+	let f_text1 = super::super::super::pstring_96::deserialize(input)?;
+	let f_text2 = super::super::super::pstring_96::deserialize(input)?;
+	let f_text3 = super::super::super::pstring_96::deserialize(input)?;
+	let f_text4 = super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		is_front_text: f_isFrontText,
+		text1: f_text1,
+		text2: f_text2,
+		text3: f_text3,
+		text4: f_text4,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.is_front_text
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.text1
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.text2
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.text3
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.text4
-    )
+	0 + super::super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::bool::size_of(&_0.is_front_text)
+		+ super::super::super::pstring_96::size_of(&_0.text1)
+		+ super::super::super::pstring_96::size_of(&_0.text2)
+		+ super::super::super::pstring_96::size_of(&_0.text3)
+		+ super::super::super::pstring_96::size_of(&_0.text4)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketUpdateSign) -> Ty<'i> {
-    Ty {
-        location: ::core::clone::Clone::clone(&_0.location),is_front_text: ::core::clone::Clone::clone(&_0.is_front_text),text1: super::super::super::pstring_96::view(&_0.text1),text2: super::super::super::pstring_96::view(&_0.text2),text3: super::super::super::pstring_96::view(&_0.text3),text4: super::super::super::pstring_96::view(&_0.text4)
-    }
+	Ty {
+		location: ::core::clone::Clone::clone(&_0.location),
+		is_front_text: ::core::clone::Clone::clone(&_0.is_front_text),
+		text1: super::super::super::pstring_96::view(&_0.text1),
+		text2: super::super::super::pstring_96::view(&_0.text2),
+		text3: super::super::super::pstring_96::view(&_0.text3),
+		text4: super::super::super::pstring_96::view(&_0.text4),
+	}
 }
- pub type Ty<'i> = PacketUpdateSign<'i>;
+pub type Ty<'i> = PacketUpdateSign<'i>;

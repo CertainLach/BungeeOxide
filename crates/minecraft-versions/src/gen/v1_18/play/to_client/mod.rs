@@ -12,6 +12,6 @@ pub use self::packet_entity_metadata::PacketEntityMetadata;
 pub use self::packet_login::PacketLogin;
 pub use self::packet_map_chunk::PacketMapChunk;
 pub use self::packet_multi_block_change::PacketMultiBlockChange;
+pub use self::packet_multi_block_change_0::PacketMultiBlockChange0;
 pub use self::packet_tile_entity_data::PacketTileEntityData;
 pub use self::packet_world_particles::PacketWorldParticles;
-pub use self::packet_multi_block_change_0::PacketMultiBlockChange0;

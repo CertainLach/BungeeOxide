@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent19 {
-    pub potion_id: Option<super::super::Varint>,
-    pub custom_color: Option<super::super::I32>,
-    pub custom_effects: Vec<super::super::ItemPotionEffect>,
+	pub potion_id: Option<super::super::Varint>,
+	pub custom_color: Option<super::super::I32>,
+	pub custom_effects: Vec<super::super::ItemPotionEffect>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::option_23::serialize(
-        &_0.potion_id,
-        output,
-    )?;
-    super::super::option_13::serialize(
-        &_0.custom_color,
-        output,
-    )?;
-    super::super::array::inline_35::serialize(
-        &_0.custom_effects,
-        output,
-    )?;
-    Ok(())
+	super::super::option_23::serialize(&_0.potion_id, output)?;
+	super::super::option_13::serialize(&_0.custom_color, output)?;
+	super::super::array::inline_35::serialize(&_0.custom_effects, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_potionId = super::super::option_23::deserialize(
-        input,
-    )?;
-    let f_customColor = super::super::option_13::deserialize(
-        input,
-    )?;
-    let f_customEffects = super::super::array::inline_35::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        potion_id: f_potionId,custom_color: f_customColor,custom_effects: f_customEffects
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_potionId = super::super::option_23::deserialize(input)?;
+	let f_customColor = super::super::option_13::deserialize(input)?;
+	let f_customEffects = super::super::array::inline_35::deserialize(input)?;
+	Ok(Ty {
+		potion_id: f_potionId,
+		custom_color: f_customColor,
+		custom_effects: f_customEffects,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::option_23::size_of(
-        &_0.potion_id
-    )
-    + super::super::option_13::size_of(
-        &_0.custom_color
-    )
-    + super::super::array::inline_35::size_of(
-        &_0.custom_effects
-    )
+	0 + super::super::option_23::size_of(&_0.potion_id)
+		+ super::super::option_13::size_of(&_0.custom_color)
+		+ super::super::array::inline_35::size_of(&_0.custom_effects)
 }
- pub type Ty = SlotComponent19;
+pub type Ty = SlotComponent19;

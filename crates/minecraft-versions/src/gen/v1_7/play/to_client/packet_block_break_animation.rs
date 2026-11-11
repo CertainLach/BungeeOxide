@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockBreakAnimation {
-    pub entity_id: super::super::super::super::Varint,
-    pub location: super::super::super::super::v1_0_1::PositionIii,
-    pub destroy_stage: super::super::super::super::I8,
+	pub entity_id: super::super::super::super::Varint,
+	pub location: super::super::super::super::v1_0_1::PositionIii,
+	pub destroy_stage: super::super::super::super::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::v1_0_1::position_iii::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.destroy_stage,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::v1_0_1::position_iii::serialize(&_0.location, output)?;
+	super::super::super::super::i8::serialize(&_0.destroy_stage, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(14)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::super::v1_0_1::position_iii::deserialize(
-        input,
-    )?;
-    let f_destroyStage = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,location: f_location,destroy_stage: f_destroyStage
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(14)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_location = super::super::super::super::v1_0_1::position_iii::deserialize(input)?;
+	let f_destroyStage = super::super::super::super::i8::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		location: f_location,
+		destroy_stage: f_destroyStage,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::v1_0_1::position_iii::size_of(
-        &_0.location
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.destroy_stage
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::v1_0_1::position_iii::size_of(&_0.location)
+		+ super::super::super::super::i8::size_of(&_0.destroy_stage)
 }
- pub type Ty = PacketBlockBreakAnimation;
+pub type Ty = PacketBlockBreakAnimation;

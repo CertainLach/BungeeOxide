@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCustomPayload {
-    pub channel: String,
-    pub data: super::super::super::RestBuffer,
+	pub channel: String,
+	pub data: super::super::super::RestBuffer,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.channel,
-        output,
-    )?;
-    super::super::super::rest_buffer::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.channel, output)?;
+	super::super::super::rest_buffer::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_channel = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::rest_buffer::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        channel: f_channel,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_channel = super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::super::super::rest_buffer::deserialize(input)?;
+	Ok(Ty {
+		channel: f_channel,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.channel
-    )
-    + super::super::super::rest_buffer::size_of(
-        &_0.data
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.channel)
+		+ super::super::super::rest_buffer::size_of(&_0.data)
 }
- pub type Ty = PacketCustomPayload;
+pub type Ty = PacketCustomPayload;

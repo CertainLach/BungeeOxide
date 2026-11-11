@@ -3,49 +3,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTeams<'i> {
-    pub team: super::super::super::Pstring96::<'i>,
-    pub mode: super::PacketTeams48::<'i>,
+	pub team: super::super::super::Pstring96<'i>,
+	pub mode: super::PacketTeams48<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.team,
-        output,
-    )?;
-    super::packet_teams_48::serialize(
-        &_0.mode,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.team, output)?;
+	super::packet_teams_48::serialize(&_0.mode, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_team = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_mode = super::packet_teams_48::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        team: f_team,mode: f_mode
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_team = super::super::super::pstring_96::deserialize(input)?;
+	let f_mode = super::packet_teams_48::deserialize(input)?;
+	Ok(Ty {
+		team: f_team,
+		mode: f_mode,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.team
-    )
-    + super::packet_teams_48::size_of(
-        &_0.mode
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.team)
+		+ super::packet_teams_48::size_of(&_0.mode)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTeams) -> Ty<'i> {
-    Ty {
-        team: super::super::super::pstring_96::view(&_0.team),mode: super::packet_teams_48::view(&_0.mode)
-    }
+	Ty {
+		team: super::super::super::pstring_96::view(&_0.team),
+		mode: super::packet_teams_48::view(&_0.mode),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketTeams) -> Ty<'i> {
-    Ty {
-        team: super::super::super::pstring_96::view(&mut _0.team),mode: super::packet_teams_48::into_view(&mut _0.mode)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketTeams,
+) -> Ty<'i> {
+	Ty {
+		team: super::super::super::pstring_96::view(&mut _0.team),
+		mode: super::packet_teams_48::into_view(&mut _0.mode),
+	}
 }
- pub type Ty<'i> = PacketTeams<'i>;
+pub type Ty<'i> = PacketTeams<'i>;

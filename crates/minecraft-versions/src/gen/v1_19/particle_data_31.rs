@@ -3,57 +3,42 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ParticleData31 {
-    pub position_type: String,
-    pub destination: super::ParticleData30,
-    pub ticks: super::super::Varint,
+	pub position_type: String,
+	pub destination: super::ParticleData30,
+	pub ticks: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.position_type,
-        output,
-    )?;
-    super::particle_data_30::debug_assert_tag(
-        &_0.destination,
-        {let _0: &String = &_0.position_type;_0},
-    );
-    super::particle_data_30::serialize(
-        &_0.destination,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.ticks,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.position_type, output)?;
+	super::particle_data_30::debug_assert_tag(&_0.destination, {
+		let _0: &String = &_0.position_type;
+		_0
+	});
+	super::particle_data_30::serialize(&_0.destination, output)?;
+	super::super::varint::serialize(&_0.ticks, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_positionType = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_destination = super::particle_data_30::deserialize(
-        input,
-        super::particle_data_30::Args {
-            position_type: {let _0: &String = &f_positionType;_0}
-        },
-    )?;
-    let f_ticks = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position_type: f_positionType,destination: f_destination,ticks: f_ticks
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_positionType = super::super::pstring_96::deserialize(input)?;
+	let f_destination = super::particle_data_30::deserialize(
+		input,
+		super::particle_data_30::Args {
+			position_type: {
+				let _0: &String = &f_positionType;
+				_0
+			},
+		},
+	)?;
+	let f_ticks = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		position_type: f_positionType,
+		destination: f_destination,
+		ticks: f_ticks,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.position_type
-    )
-    + super::particle_data_30::size_of(
-        &_0.destination
-    )
-    + super::super::varint::size_of(
-        &_0.ticks
-    )
+	0 + super::super::pstring_96::size_of(&_0.position_type)
+		+ super::particle_data_30::size_of(&_0.destination)
+		+ super::super::varint::size_of(&_0.ticks)
 }
- pub type Ty = ParticleData31;
+pub type Ty = ParticleData31;

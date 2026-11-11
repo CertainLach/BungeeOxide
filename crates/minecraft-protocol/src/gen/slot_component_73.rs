@@ -3,30 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent73 {
-    Id(super::Varint),
-    Inline(String),
+	Id(super::Varint),
+	Inline(String),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::Id(id) => super::varint::serialize(&(id + 1), output),
-        Ty::Inline(v) => {
-            super::varint::serialize(&0, output)?;
-            super::pstring_39::serialize(v, output)
-        }
-    }
+	match _0 {
+		Ty::Id(id) => super::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			super::varint::serialize(&0, output)?;
+			super::pstring_39::serialize(v, output)
+		}
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let n = super::varint::deserialize(input)?;
-    Ok(if n == 0 {
-        Ty::Inline(super::pstring_39::deserialize(input, )?)
-    } else {
-        Ty::Id(n - 1)
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let n = super::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(super::pstring_39::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    match _0 {
-        Ty::Id(id) => super::varint::size_of(&(id + 1)),
-        Ty::Inline(v) => super::varint::size_of(&0) + super::pstring_39::size_of(v),
-    }
+	match _0 {
+		Ty::Id(id) => super::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => super::varint::size_of(&0) + super::pstring_39::size_of(v),
+	}
 }
- pub type Ty = SlotComponent73;
+pub type Ty = SlotComponent73;

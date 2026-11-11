@@ -3,44 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEncryptionBegin<'i> {
-    pub shared_secret: super::super::super::buffer::Inline3::<'i>,
-    pub verify_token: super::super::super::buffer::Inline3::<'i>,
+	pub shared_secret: super::super::super::buffer::Inline3<'i>,
+	pub verify_token: super::super::super::buffer::Inline3<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::buffer::inline_3::serialize(
-        &_0.shared_secret,
-        output,
-    )?;
-    super::super::super::buffer::inline_3::serialize(
-        &_0.verify_token,
-        output,
-    )?;
-    Ok(())
+	super::super::super::buffer::inline_3::serialize(&_0.shared_secret, output)?;
+	super::super::super::buffer::inline_3::serialize(&_0.verify_token, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_sharedSecret = super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_verifyToken = super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        shared_secret: f_sharedSecret,verify_token: f_verifyToken
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_sharedSecret = super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_verifyToken = super::super::super::buffer::inline_3::deserialize(input)?;
+	Ok(Ty {
+		shared_secret: f_sharedSecret,
+		verify_token: f_verifyToken,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::buffer::inline_3::size_of(
-        &_0.shared_secret
-    )
-    + super::super::super::buffer::inline_3::size_of(
-        &_0.verify_token
-    )
+	0 + super::super::super::buffer::inline_3::size_of(&_0.shared_secret)
+		+ super::super::super::buffer::inline_3::size_of(&_0.verify_token)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::login::to_server::PacketEncryptionBegin) -> Ty<'i> {
-    Ty {
-        shared_secret: super::super::super::buffer::inline_3::view(&_0.shared_secret),verify_token: super::super::super::buffer::inline_3::view(&_0.verify_token)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::login::to_server::PacketEncryptionBegin,
+) -> Ty<'i> {
+	Ty {
+		shared_secret: super::super::super::buffer::inline_3::view(&_0.shared_secret),
+		verify_token: super::super::super::buffer::inline_3::view(&_0.verify_token),
+	}
 }
- pub type Ty<'i> = PacketEncryptionBegin<'i>;
+pub type Ty<'i> = PacketEncryptionBegin<'i>;

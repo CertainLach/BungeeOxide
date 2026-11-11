@@ -3,23 +3,30 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub type Ty = Vec<super::super::v1_8::Slot>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i16::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::v1_8::slot::serialize(e, output)?;
-    }
-    Ok(())
+	super::super::i16::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::v1_8::slot::serialize(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let count: usize = super::super::i16::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    input.expect(count.saturating_mul(2))?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::v1_8::slot::deserialize(input, )?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let count: usize = super::super::i16::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count.saturating_mul(2))?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(super::super::v1_8::slot::deserialize(input)?);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::super::i16::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::v1_8::slot::size_of(e); }
-    n
+	let mut n = super::super::i16::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::v1_8::slot::size_of(e);
+	}
+	n
 }

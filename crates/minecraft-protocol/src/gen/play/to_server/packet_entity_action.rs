@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityAction {
-    pub entity_id: super::super::super::Varint,
-    pub action_id: super::PacketEntityAction0,
-    pub jump_boost: super::super::super::Varint,
+	pub entity_id: super::super::super::Varint,
+	pub action_id: super::PacketEntityAction0,
+	pub jump_boost: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::packet_entity_action_0::serialize(
-        &_0.action_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.jump_boost,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::packet_entity_action_0::serialize(&_0.action_id, output)?;
+	super::super::super::varint::serialize(&_0.jump_boost, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_actionId = super::packet_entity_action_0::deserialize(
-        input,
-    )?;
-    let f_jumpBoost = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,action_id: f_actionId,jump_boost: f_jumpBoost
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_actionId = super::packet_entity_action_0::deserialize(input)?;
+	let f_jumpBoost = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		action_id: f_actionId,
+		jump_boost: f_jumpBoost,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::packet_entity_action_0::size_of(
-        &_0.action_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.jump_boost
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::packet_entity_action_0::size_of(&_0.action_id)
+		+ super::super::super::varint::size_of(&_0.jump_boost)
 }
- pub type Ty = PacketEntityAction;
+pub type Ty = PacketEntityAction;

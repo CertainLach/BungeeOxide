@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAbilities {
-    pub flags: super::super::super::I8,
-    pub flying_speed: super::super::super::F32,
-    pub walking_speed: super::super::super::F32,
+	pub flags: super::super::super::I8,
+	pub flying_speed: super::super::super::F32,
+	pub walking_speed: super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i8::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.flying_speed,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.walking_speed,
-        output,
-    )?;
-    Ok(())
+	super::super::super::i8::serialize(&_0.flags, output)?;
+	super::super::super::f32::serialize(&_0.flying_speed, output)?;
+	super::super::super::f32::serialize(&_0.walking_speed, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_flags = super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_flyingSpeed = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_walkingSpeed = super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        flags: f_flags,flying_speed: f_flyingSpeed,walking_speed: f_walkingSpeed
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_flags = super::super::super::i8::deserialize(input)?;
+	let f_flyingSpeed = super::super::super::f32::deserialize(input)?;
+	let f_walkingSpeed = super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		flags: f_flags,
+		flying_speed: f_flyingSpeed,
+		walking_speed: f_walkingSpeed,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::i8::size_of(
-        &_0.flags
-    )
-    + super::super::super::f32::size_of(
-        &_0.flying_speed
-    )
-    + super::super::super::f32::size_of(
-        &_0.walking_speed
-    )
+	0 + super::super::super::i8::size_of(&_0.flags)
+		+ super::super::super::f32::size_of(&_0.flying_speed)
+		+ super::super::super::f32::size_of(&_0.walking_speed)
 }
- pub type Ty = PacketAbilities;
+pub type Ty = PacketAbilities;

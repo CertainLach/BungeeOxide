@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent37 {
-    pub seconds: super::F32,
-    pub cooldown_group: Option<String>,
+	pub seconds: super::F32,
+	pub cooldown_group: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::f32::serialize(
-        &_0.seconds,
-        output,
-    )?;
-    super::option_16::serialize(
-        &_0.cooldown_group,
-        output,
-    )?;
-    Ok(())
+	super::f32::serialize(&_0.seconds, output)?;
+	super::option_16::serialize(&_0.cooldown_group, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_seconds = super::f32::deserialize(
-        input,
-    )?;
-    let f_cooldownGroup = super::option_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        seconds: f_seconds,cooldown_group: f_cooldownGroup
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_seconds = super::f32::deserialize(input)?;
+	let f_cooldownGroup = super::option_16::deserialize(input)?;
+	Ok(Ty {
+		seconds: f_seconds,
+		cooldown_group: f_cooldownGroup,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::f32::size_of(
-        &_0.seconds
-    )
-    + super::option_16::size_of(
-        &_0.cooldown_group
-    )
+	0 + super::f32::size_of(&_0.seconds) + super::option_16::size_of(&_0.cooldown_group)
 }
- pub type Ty = SlotComponent37;
+pub type Ty = SlotComponent37;

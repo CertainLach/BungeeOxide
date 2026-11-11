@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginPluginResponse {
-    pub message_id: super::super::super::Varint,
-    pub data: Option<super::super::super::RestBuffer>,
+	pub message_id: super::super::super::Varint,
+	pub data: Option<super::super::super::RestBuffer>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.message_id,
-        output,
-    )?;
-    super::super::super::option_17::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.message_id, output)?;
+	super::super::super::option_17::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_messageId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::option_17::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        message_id: f_messageId,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_messageId = super::super::super::varint::deserialize(input)?;
+	let f_data = super::super::super::option_17::deserialize(input)?;
+	Ok(Ty {
+		message_id: f_messageId,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.message_id
-    )
-    + super::super::super::option_17::size_of(
-        &_0.data
-    )
+	0 + super::super::super::varint::size_of(&_0.message_id)
+		+ super::super::super::option_17::size_of(&_0.data)
 }
- pub type Ty = PacketLoginPluginResponse;
+pub type Ty = PacketLoginPluginResponse;

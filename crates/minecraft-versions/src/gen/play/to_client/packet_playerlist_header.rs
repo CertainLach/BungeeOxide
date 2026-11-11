@@ -3,38 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerlistHeader {
-    pub header: super::super::super::AnonymousNbt,
-    pub footer: super::super::super::AnonymousNbt,
+	pub header: super::super::super::AnonymousNbt,
+	pub footer: super::super::super::AnonymousNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.header,
-        output,
-    )?;
-    super::super::super::anonymous_nbt::serialize(
-        &_0.footer,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.header, output)?;
+	super::super::super::anonymous_nbt::serialize(&_0.footer, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_header = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_footer = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        header: f_header,footer: f_footer
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let f_header = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_footer = super::super::super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		header: f_header,
+		footer: f_footer,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.header
-    )
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.footer
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.header)
+		+ super::super::super::anonymous_nbt::size_of(&_0.footer)
 }
- pub type Ty = PacketPlayerlistHeader;
+pub type Ty = PacketPlayerlistHeader;

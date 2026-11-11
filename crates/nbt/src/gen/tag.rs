@@ -3,46 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Tag {
-    pub r#type: super::U8,
-    pub value: super::Payload,
+	pub r#type: super::U8,
+	pub value: super::Payload,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::u8::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::payload::debug_assert_tag(
-        &_0.value,
-        {let _0: &super::U8 = &_0.r#type;_0},
-    );
-    super::payload::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::u8::serialize(&_0.r#type, output)?;
+	super::payload::debug_assert_tag(&_0.value, {
+		let _0: &super::U8 = &_0.r#type;
+		_0
+	});
+	super::payload::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_type = super::u8::deserialize(
-        input,
-    )?;
-    let f_value = super::payload::deserialize(
-        input,
-        super::payload::Args {
-            r#type: {let _0: &super::U8 = &f_type;_0}
-        },
-    )?;
-    Ok(Ty {
-        r#type: f_type,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_type = super::u8::deserialize(input)?;
+	let f_value = super::payload::deserialize(
+		input,
+		super::payload::Args {
+			r#type: {
+				let _0: &super::U8 = &f_type;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		r#type: f_type,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::u8::size_of(
-        &_0.r#type
-    )
-    + super::payload::size_of(
-        &_0.value
-    )
+	0 + super::u8::size_of(&_0.r#type) + super::payload::size_of(&_0.value)
 }
- pub type Ty = Tag;
+pub type Ty = Tag;

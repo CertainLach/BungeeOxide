@@ -3,49 +3,38 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotDisplay5<'i> {
-    pub dye: super::SlotDisplay::<'i>,
-    pub target: super::SlotDisplay::<'i>,
+	pub dye: super::SlotDisplay<'i>,
+	pub target: super::SlotDisplay<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::slot_display::serialize_guarded(
-        &_0.dye,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.target,
-        output,
-    )?;
-    Ok(())
+	super::slot_display::serialize_guarded(&_0.dye, output)?;
+	super::slot_display::serialize_guarded(&_0.target, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_dye = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_target = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        dye: f_dye,target: f_target
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_dye = super::slot_display::deserialize_guarded(input)?;
+	let f_target = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		dye: f_dye,
+		target: f_target,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::slot_display::size_of(
-        &_0.dye
-    )
-    + super::slot_display::size_of(
-        &_0.target
-    )
+	0 + super::slot_display::size_of(&_0.dye) + super::slot_display::size_of(&_0.target)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::SlotDisplay5) -> Ty<'i> {
-    Ty {
-        dye: super::slot_display::view(&_0.dye),target: super::slot_display::view(&_0.target)
-    }
+	Ty {
+		dye: super::slot_display::view(&_0.dye),
+		target: super::slot_display::view(&_0.target),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::SlotDisplay5) -> Ty<'i> {
-    Ty {
-        dye: super::slot_display::into_view(&mut _0.dye),target: super::slot_display::into_view(&mut _0.target)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::SlotDisplay5,
+) -> Ty<'i> {
+	Ty {
+		dye: super::slot_display::into_view(&mut _0.dye),
+		target: super::slot_display::into_view(&mut _0.target),
+	}
 }
- pub type Ty<'i> = SlotDisplay5<'i>;
+pub type Ty<'i> = SlotDisplay5<'i>;

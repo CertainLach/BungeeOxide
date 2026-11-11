@@ -3,46 +3,45 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketCommonServerLinks106 {
-    False(super::AnonymousNbt),
-    True(super::ServerLinkType),
+	False(super::AnonymousNbt),
+	True(super::ServerLinkType),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::True(__v) => super::server_link_type::serialize(__v, output),
-    }
+	super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::True(__v) => super::server_link_type::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::server_link_type::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::server_link_type::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::True(__v) => super::server_link_type::size_of(__v),
-    }
+	super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::True(__v) => super::server_link_type::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = PacketCommonServerLinks106;
+pub type Ty = PacketCommonServerLinks106;

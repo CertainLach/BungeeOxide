@@ -3,267 +3,467 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet {
-    KeepAlive(super::super::super::super::I32),
-    Login(super::super::super::super::v1_3_2::play::to_server::PacketLogin),
-    SetProtocol(super::super::super::super::v1_3_2::play::to_server::PacketSetProtocol),
-    Chat(super::super::super::super::String16),
-    UseEntity(super::super::super::super::v1_0_1::play::to_server::PacketUseEntity),
-    Respawn(super::super::super::super::v1_2_3::play::to_server::PacketRespawn),
-    Flying(super::super::super::super::Bool),
-    Position(super::super::super::super::v1_0_1::play::to_server::PacketPosition),
-    Look(super::super::super::super::v1_0_1::play::to_server::PacketLook),
-    PositionLook(super::super::super::super::v1_0_1::play::to_server::PacketPositionLook),
-    BlockDig(super::super::super::super::v1_0_1::play::to_server::PacketBlockDig),
-    BlockPlace(super::super::super::super::v1_3_2::play::to_server::PacketBlockPlace),
-    HeldItemSlot(super::super::super::super::I16),
-    ArmAnimation(super::super::super::super::v1_0_1::play::to_server::PacketArmAnimation),
-    EntityAction(super::super::super::super::v1_0_1::play::to_server::PacketEntityAction),
-    CloseWindow(super::super::super::super::U8),
-    WindowClick(super::super::super::super::v1_3_2::play::to_server::PacketWindowClick),
-    Transaction(super::super::super::super::v1_0_1::play::to_server::PacketTransaction),
-    SetCreativeSlot(super::super::super::super::v1_3_2::play::to_server::PacketSetCreativeSlot),
-    EnchantItem(super::super::super::super::v1_0_1::play::to_server::PacketEnchantItem),
-    UpdateSign(super::super::super::super::v1_0_1::play::to_server::PacketUpdateSign),
-    Abilities(super::super::super::super::v1_3_2::play::to_server::PacketAbilities),
-    TabComplete(super::super::super::super::String16),
-    Settings(super::PacketSettings),
-    ClientCommand(super::super::super::super::v1_3_2::play::to_server::PacketClientCommand),
-    CustomPayload(super::super::super::super::v1_1::play::to_server::PacketCustomPayload),
-    EncryptionBegin(super::super::super::super::v1_3_2::play::to_server::PacketEncryptionBegin),
-    LegacyServerListPing(super::super::super::super::U8),
-    KickDisconnect(super::super::super::super::String16),
-    Default(super::super::super::super::U8),
+	KeepAlive(super::super::super::super::I32),
+	Login(super::super::super::super::v1_3_2::play::to_server::PacketLogin),
+	SetProtocol(super::super::super::super::v1_3_2::play::to_server::PacketSetProtocol),
+	Chat(super::super::super::super::String16),
+	UseEntity(super::super::super::super::v1_0_1::play::to_server::PacketUseEntity),
+	Respawn(super::super::super::super::v1_2_3::play::to_server::PacketRespawn),
+	Flying(super::super::super::super::Bool),
+	Position(super::super::super::super::v1_0_1::play::to_server::PacketPosition),
+	Look(super::super::super::super::v1_0_1::play::to_server::PacketLook),
+	PositionLook(super::super::super::super::v1_0_1::play::to_server::PacketPositionLook),
+	BlockDig(super::super::super::super::v1_0_1::play::to_server::PacketBlockDig),
+	BlockPlace(super::super::super::super::v1_3_2::play::to_server::PacketBlockPlace),
+	HeldItemSlot(super::super::super::super::I16),
+	ArmAnimation(super::super::super::super::v1_0_1::play::to_server::PacketArmAnimation),
+	EntityAction(super::super::super::super::v1_0_1::play::to_server::PacketEntityAction),
+	CloseWindow(super::super::super::super::U8),
+	WindowClick(super::super::super::super::v1_3_2::play::to_server::PacketWindowClick),
+	Transaction(super::super::super::super::v1_0_1::play::to_server::PacketTransaction),
+	SetCreativeSlot(super::super::super::super::v1_3_2::play::to_server::PacketSetCreativeSlot),
+	EnchantItem(super::super::super::super::v1_0_1::play::to_server::PacketEnchantItem),
+	UpdateSign(super::super::super::super::v1_0_1::play::to_server::PacketUpdateSign),
+	Abilities(super::super::super::super::v1_3_2::play::to_server::PacketAbilities),
+	TabComplete(super::super::super::super::String16),
+	Settings(super::PacketSettings),
+	ClientCommand(super::super::super::super::v1_3_2::play::to_server::PacketClientCommand),
+	CustomPayload(super::super::super::super::v1_1::play::to_server::PacketCustomPayload),
+	EncryptionBegin(super::super::super::super::v1_3_2::play::to_server::PacketEncryptionBegin),
+	LegacyServerListPing(super::super::super::super::U8),
+	KickDisconnect(super::super::super::super::String16),
+	Default(super::super::super::super::U8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::u8::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::KeepAlive(__v) => super::super::super::super::i32::serialize(__v, output),
-        Ty::Login(__v) => super::super::super::super::v1_3_2::play::to_server::packet_login::serialize(__v, output),
-        Ty::SetProtocol(__v) => super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::serialize(__v, output),
-        Ty::Chat(__v) => super::super::super::super::string16::serialize(__v, output),
-        Ty::UseEntity(__v) => super::super::super::super::v1_0_1::play::to_server::packet_use_entity::serialize(__v, output),
-        Ty::Respawn(__v) => super::super::super::super::v1_2_3::play::to_server::packet_respawn::serialize(__v, output),
-        Ty::Flying(__v) => super::super::super::super::bool::serialize(__v, output),
-        Ty::Position(__v) => super::super::super::super::v1_0_1::play::to_server::packet_position::serialize(__v, output),
-        Ty::Look(__v) => super::super::super::super::v1_0_1::play::to_server::packet_look::serialize(__v, output),
-        Ty::PositionLook(__v) => super::super::super::super::v1_0_1::play::to_server::packet_position_look::serialize(__v, output),
-        Ty::BlockDig(__v) => super::super::super::super::v1_0_1::play::to_server::packet_block_dig::serialize(__v, output),
-        Ty::BlockPlace(__v) => super::super::super::super::v1_3_2::play::to_server::packet_block_place::serialize(__v, output),
-        Ty::HeldItemSlot(__v) => super::super::super::super::i16::serialize(__v, output),
-        Ty::ArmAnimation(__v) => super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::serialize(__v, output),
-        Ty::EntityAction(__v) => super::super::super::super::v1_0_1::play::to_server::packet_entity_action::serialize(__v, output),
-        Ty::CloseWindow(__v) => super::super::super::super::u8::serialize(__v, output),
-        Ty::WindowClick(__v) => super::super::super::super::v1_3_2::play::to_server::packet_window_click::serialize(__v, output),
-        Ty::Transaction(__v) => super::super::super::super::v1_0_1::play::to_server::packet_transaction::serialize(__v, output),
-        Ty::SetCreativeSlot(__v) => super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::serialize(__v, output),
-        Ty::EnchantItem(__v) => super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::serialize(__v, output),
-        Ty::UpdateSign(__v) => super::super::super::super::v1_0_1::play::to_server::packet_update_sign::serialize(__v, output),
-        Ty::Abilities(__v) => super::super::super::super::v1_3_2::play::to_server::packet_abilities::serialize(__v, output),
-        Ty::TabComplete(__v) => super::super::super::super::string16::serialize(__v, output),
-        Ty::Settings(__v) => super::packet_settings::serialize(__v, output),
-        Ty::ClientCommand(__v) => super::super::super::super::v1_3_2::play::to_server::packet_client_command::serialize(__v, output),
-        Ty::CustomPayload(__v) => super::super::super::super::v1_1::play::to_server::packet_custom_payload::serialize(__v, output),
-        Ty::EncryptionBegin(__v) => super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::serialize(__v, output),
-        Ty::LegacyServerListPing(__v) => super::super::super::super::u8::serialize(__v, output),
-        Ty::KickDisconnect(__v) => super::super::super::super::string16::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::u8::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::KeepAlive(__v) => super::super::super::super::i32::serialize(__v, output),
+		Ty::Login(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_login::serialize(
+				__v, output,
+			)
+		}
+		Ty::SetProtocol(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::serialize(
+				__v, output,
+			)
+		}
+		Ty::Chat(__v) => super::super::super::super::string16::serialize(__v, output),
+		Ty::UseEntity(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_use_entity::serialize(
+				__v, output,
+			)
+		}
+		Ty::Respawn(__v) => {
+			super::super::super::super::v1_2_3::play::to_server::packet_respawn::serialize(
+				__v, output,
+			)
+		}
+		Ty::Flying(__v) => super::super::super::super::bool::serialize(__v, output),
+		Ty::Position(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_position::serialize(
+				__v, output,
+			)
+		}
+		Ty::Look(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_look::serialize(__v, output)
+		}
+		Ty::PositionLook(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_position_look::serialize(
+				__v, output,
+			)
+		}
+		Ty::BlockDig(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_block_dig::serialize(
+				__v, output,
+			)
+		}
+		Ty::BlockPlace(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_block_place::serialize(
+				__v, output,
+			)
+		}
+		Ty::HeldItemSlot(__v) => super::super::super::super::i16::serialize(__v, output),
+		Ty::ArmAnimation(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::serialize(
+				__v, output,
+			)
+		}
+		Ty::EntityAction(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_entity_action::serialize(
+				__v, output,
+			)
+		}
+		Ty::CloseWindow(__v) => super::super::super::super::u8::serialize(__v, output),
+		Ty::WindowClick(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_window_click::serialize(
+				__v, output,
+			)
+		}
+		Ty::Transaction(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_transaction::serialize(
+				__v, output,
+			)
+		}
+		Ty::SetCreativeSlot(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::serialize(
+				__v, output,
+			)
+		}
+		Ty::EnchantItem(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::serialize(
+				__v, output,
+			)
+		}
+		Ty::UpdateSign(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_update_sign::serialize(
+				__v, output,
+			)
+		}
+		Ty::Abilities(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_abilities::serialize(
+				__v, output,
+			)
+		}
+		Ty::TabComplete(__v) => super::super::super::super::string16::serialize(__v, output),
+		Ty::Settings(__v) => super::packet_settings::serialize(__v, output),
+		Ty::ClientCommand(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_client_command::serialize(
+				__v, output,
+			)
+		}
+		Ty::CustomPayload(__v) => {
+			super::super::super::super::v1_1::play::to_server::packet_custom_payload::serialize(
+				__v, output,
+			)
+		}
+		Ty::EncryptionBegin(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::serialize(
+				__v, output,
+			)
+		}
+		Ty::LegacyServerListPing(__v) => super::super::super::super::u8::serialize(__v, output),
+		Ty::KickDisconnect(__v) => super::super::super::super::string16::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_u8) {
-        return Ok(Ty::KeepAlive(super::super::super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_u8) {
-        return Ok(Ty::Login(super::super::super::super::v1_3_2::play::to_server::packet_login::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_u8) {
-        return Ok(Ty::SetProtocol(super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_u8) {
-        return Ok(Ty::Chat(super::super::super::super::string16::deserialize(input, )?));
-    }
-    if (__tag.clone() == 7_u8) {
-        return Ok(Ty::UseEntity(super::super::super::super::v1_0_1::play::to_server::packet_use_entity::deserialize(input, )?));
-    }
-    if (__tag.clone() == 9_u8) {
-        return Ok(Ty::Respawn(super::super::super::super::v1_2_3::play::to_server::packet_respawn::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_u8) {
-        return Ok(Ty::Flying(super::super::super::super::bool::deserialize(input, )?));
-    }
-    if (__tag.clone() == 11_u8) {
-        return Ok(Ty::Position(super::super::super::super::v1_0_1::play::to_server::packet_position::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_u8) {
-        return Ok(Ty::Look(super::super::super::super::v1_0_1::play::to_server::packet_look::deserialize(input, )?));
-    }
-    if (__tag.clone() == 13_u8) {
-        return Ok(Ty::PositionLook(super::super::super::super::v1_0_1::play::to_server::packet_position_look::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_u8) {
-        return Ok(Ty::BlockDig(super::super::super::super::v1_0_1::play::to_server::packet_block_dig::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_u8) {
-        return Ok(Ty::BlockPlace(super::super::super::super::v1_3_2::play::to_server::packet_block_place::deserialize(input, )?));
-    }
-    if (__tag.clone() == 16_u8) {
-        return Ok(Ty::HeldItemSlot(super::super::super::super::i16::deserialize(input, )?));
-    }
-    if (__tag.clone() == 18_u8) {
-        return Ok(Ty::ArmAnimation(super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::deserialize(input, )?));
-    }
-    if (__tag.clone() == 19_u8) {
-        return Ok(Ty::EntityAction(super::super::super::super::v1_0_1::play::to_server::packet_entity_action::deserialize(input, )?));
-    }
-    if (__tag.clone() == 101_u8) {
-        return Ok(Ty::CloseWindow(super::super::super::super::u8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 102_u8) {
-        return Ok(Ty::WindowClick(super::super::super::super::v1_3_2::play::to_server::packet_window_click::deserialize(input, )?));
-    }
-    if (__tag.clone() == 106_u8) {
-        return Ok(Ty::Transaction(super::super::super::super::v1_0_1::play::to_server::packet_transaction::deserialize(input, )?));
-    }
-    if (__tag.clone() == 107_u8) {
-        return Ok(Ty::SetCreativeSlot(super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::deserialize(input, )?));
-    }
-    if (__tag.clone() == 108_u8) {
-        return Ok(Ty::EnchantItem(super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::deserialize(input, )?));
-    }
-    if (__tag.clone() == 130_u8) {
-        return Ok(Ty::UpdateSign(super::super::super::super::v1_0_1::play::to_server::packet_update_sign::deserialize(input, )?));
-    }
-    if (__tag.clone() == 202_u8) {
-        return Ok(Ty::Abilities(super::super::super::super::v1_3_2::play::to_server::packet_abilities::deserialize(input, )?));
-    }
-    if (__tag.clone() == 203_u8) {
-        return Ok(Ty::TabComplete(super::super::super::super::string16::deserialize(input, )?));
-    }
-    if (__tag.clone() == 204_u8) {
-        return Ok(Ty::Settings(super::packet_settings::deserialize(input, )?));
-    }
-    if (__tag.clone() == 205_u8) {
-        return Ok(Ty::ClientCommand(super::super::super::super::v1_3_2::play::to_server::packet_client_command::deserialize(input, )?));
-    }
-    if (__tag.clone() == 250_u8) {
-        return Ok(Ty::CustomPayload(super::super::super::super::v1_1::play::to_server::packet_custom_payload::deserialize(input, )?));
-    }
-    if (__tag.clone() == 252_u8) {
-        return Ok(Ty::EncryptionBegin(super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::deserialize(input, )?));
-    }
-    if (__tag.clone() == 254_u8) {
-        return Ok(Ty::LegacyServerListPing(super::super::super::super::u8::deserialize(input, )?));
-    }
-    if (__tag.clone() == 255_u8) {
-        return Ok(Ty::KickDisconnect(super::super::super::super::string16::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::u8::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_u8) {
+		return Ok(Ty::KeepAlive(super::super::super::super::i32::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 1_u8) {
+		return Ok(Ty::Login(
+			super::super::super::super::v1_3_2::play::to_server::packet_login::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 2_u8) {
+		return Ok(Ty::SetProtocol(
+			super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 3_u8) {
+		return Ok(Ty::Chat(super::super::super::super::string16::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 7_u8) {
+		return Ok(Ty::UseEntity(
+			super::super::super::super::v1_0_1::play::to_server::packet_use_entity::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 9_u8) {
+		return Ok(Ty::Respawn(
+			super::super::super::super::v1_2_3::play::to_server::packet_respawn::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 10_u8) {
+		return Ok(Ty::Flying(super::super::super::super::bool::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 11_u8) {
+		return Ok(Ty::Position(
+			super::super::super::super::v1_0_1::play::to_server::packet_position::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 12_u8) {
+		return Ok(Ty::Look(
+			super::super::super::super::v1_0_1::play::to_server::packet_look::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 13_u8) {
+		return Ok(Ty::PositionLook(
+			super::super::super::super::v1_0_1::play::to_server::packet_position_look::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 14_u8) {
+		return Ok(Ty::BlockDig(
+			super::super::super::super::v1_0_1::play::to_server::packet_block_dig::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 15_u8) {
+		return Ok(Ty::BlockPlace(
+			super::super::super::super::v1_3_2::play::to_server::packet_block_place::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 16_u8) {
+		return Ok(Ty::HeldItemSlot(
+			super::super::super::super::i16::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 18_u8) {
+		return Ok(Ty::ArmAnimation(
+			super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 19_u8) {
+		return Ok(Ty::EntityAction(
+			super::super::super::super::v1_0_1::play::to_server::packet_entity_action::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 101_u8) {
+		return Ok(Ty::CloseWindow(
+			super::super::super::super::u8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 102_u8) {
+		return Ok(Ty::WindowClick(
+			super::super::super::super::v1_3_2::play::to_server::packet_window_click::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 106_u8) {
+		return Ok(Ty::Transaction(
+			super::super::super::super::v1_0_1::play::to_server::packet_transaction::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 107_u8) {
+		return Ok(Ty::SetCreativeSlot(super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::deserialize(input, )?));
+	}
+	if (__tag.clone() == 108_u8) {
+		return Ok(Ty::EnchantItem(
+			super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 130_u8) {
+		return Ok(Ty::UpdateSign(
+			super::super::super::super::v1_0_1::play::to_server::packet_update_sign::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 202_u8) {
+		return Ok(Ty::Abilities(
+			super::super::super::super::v1_3_2::play::to_server::packet_abilities::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 203_u8) {
+		return Ok(Ty::TabComplete(
+			super::super::super::super::string16::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 204_u8) {
+		return Ok(Ty::Settings(super::packet_settings::deserialize(input)?));
+	}
+	if (__tag.clone() == 205_u8) {
+		return Ok(Ty::ClientCommand(super::super::super::super::v1_3_2::play::to_server::packet_client_command::deserialize(input, )?));
+	}
+	if (__tag.clone() == 250_u8) {
+		return Ok(Ty::CustomPayload(
+			super::super::super::super::v1_1::play::to_server::packet_custom_payload::deserialize(
+				input,
+			)?,
+		));
+	}
+	if (__tag.clone() == 252_u8) {
+		return Ok(Ty::EncryptionBegin(super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::deserialize(input, )?));
+	}
+	if (__tag.clone() == 254_u8) {
+		return Ok(Ty::LegacyServerListPing(
+			super::super::super::super::u8::deserialize(input)?,
+		));
+	}
+	if (__tag.clone() == 255_u8) {
+		return Ok(Ty::KickDisconnect(
+			super::super::super::super::string16::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::u8::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::KeepAlive(__v) => super::super::super::super::i32::size_of(__v),
-        Ty::Login(__v) => super::super::super::super::v1_3_2::play::to_server::packet_login::size_of(__v),
-        Ty::SetProtocol(__v) => super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::size_of(__v),
-        Ty::Chat(__v) => super::super::super::super::string16::size_of(__v),
-        Ty::UseEntity(__v) => super::super::super::super::v1_0_1::play::to_server::packet_use_entity::size_of(__v),
-        Ty::Respawn(__v) => super::super::super::super::v1_2_3::play::to_server::packet_respawn::size_of(__v),
-        Ty::Flying(__v) => super::super::super::super::bool::size_of(__v),
-        Ty::Position(__v) => super::super::super::super::v1_0_1::play::to_server::packet_position::size_of(__v),
-        Ty::Look(__v) => super::super::super::super::v1_0_1::play::to_server::packet_look::size_of(__v),
-        Ty::PositionLook(__v) => super::super::super::super::v1_0_1::play::to_server::packet_position_look::size_of(__v),
-        Ty::BlockDig(__v) => super::super::super::super::v1_0_1::play::to_server::packet_block_dig::size_of(__v),
-        Ty::BlockPlace(__v) => super::super::super::super::v1_3_2::play::to_server::packet_block_place::size_of(__v),
-        Ty::HeldItemSlot(__v) => super::super::super::super::i16::size_of(__v),
-        Ty::ArmAnimation(__v) => super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::size_of(__v),
-        Ty::EntityAction(__v) => super::super::super::super::v1_0_1::play::to_server::packet_entity_action::size_of(__v),
-        Ty::CloseWindow(__v) => super::super::super::super::u8::size_of(__v),
-        Ty::WindowClick(__v) => super::super::super::super::v1_3_2::play::to_server::packet_window_click::size_of(__v),
-        Ty::Transaction(__v) => super::super::super::super::v1_0_1::play::to_server::packet_transaction::size_of(__v),
-        Ty::SetCreativeSlot(__v) => super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::size_of(__v),
-        Ty::EnchantItem(__v) => super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::size_of(__v),
-        Ty::UpdateSign(__v) => super::super::super::super::v1_0_1::play::to_server::packet_update_sign::size_of(__v),
-        Ty::Abilities(__v) => super::super::super::super::v1_3_2::play::to_server::packet_abilities::size_of(__v),
-        Ty::TabComplete(__v) => super::super::super::super::string16::size_of(__v),
-        Ty::Settings(__v) => super::packet_settings::size_of(__v),
-        Ty::ClientCommand(__v) => super::super::super::super::v1_3_2::play::to_server::packet_client_command::size_of(__v),
-        Ty::CustomPayload(__v) => super::super::super::super::v1_1::play::to_server::packet_custom_payload::size_of(__v),
-        Ty::EncryptionBegin(__v) => super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::size_of(__v),
-        Ty::LegacyServerListPing(__v) => super::super::super::super::u8::size_of(__v),
-        Ty::KickDisconnect(__v) => super::super::super::super::string16::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::u8::size_of(&virtual_tag(_0)) + match _0 {
+		Ty::KeepAlive(__v) => super::super::super::super::i32::size_of(__v),
+		Ty::Login(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_login::size_of(__v)
+		}
+		Ty::SetProtocol(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_set_protocol::size_of(__v)
+		}
+		Ty::Chat(__v) => super::super::super::super::string16::size_of(__v),
+		Ty::UseEntity(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_use_entity::size_of(__v)
+		}
+		Ty::Respawn(__v) => {
+			super::super::super::super::v1_2_3::play::to_server::packet_respawn::size_of(__v)
+		}
+		Ty::Flying(__v) => super::super::super::super::bool::size_of(__v),
+		Ty::Position(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_position::size_of(__v)
+		}
+		Ty::Look(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_look::size_of(__v)
+		}
+		Ty::PositionLook(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_position_look::size_of(__v)
+		}
+		Ty::BlockDig(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_block_dig::size_of(__v)
+		}
+		Ty::BlockPlace(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_block_place::size_of(__v)
+		}
+		Ty::HeldItemSlot(__v) => super::super::super::super::i16::size_of(__v),
+		Ty::ArmAnimation(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_arm_animation::size_of(__v)
+		}
+		Ty::EntityAction(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_entity_action::size_of(__v)
+		}
+		Ty::CloseWindow(__v) => super::super::super::super::u8::size_of(__v),
+		Ty::WindowClick(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_window_click::size_of(__v)
+		}
+		Ty::Transaction(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_transaction::size_of(__v)
+		}
+		Ty::SetCreativeSlot(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_set_creative_slot::size_of(
+				__v,
+			)
+		}
+		Ty::EnchantItem(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_enchant_item::size_of(__v)
+		}
+		Ty::UpdateSign(__v) => {
+			super::super::super::super::v1_0_1::play::to_server::packet_update_sign::size_of(__v)
+		}
+		Ty::Abilities(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_abilities::size_of(__v)
+		}
+		Ty::TabComplete(__v) => super::super::super::super::string16::size_of(__v),
+		Ty::Settings(__v) => super::packet_settings::size_of(__v),
+		Ty::ClientCommand(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_client_command::size_of(__v)
+		}
+		Ty::CustomPayload(__v) => {
+			super::super::super::super::v1_1::play::to_server::packet_custom_payload::size_of(__v)
+		}
+		Ty::EncryptionBegin(__v) => {
+			super::super::super::super::v1_3_2::play::to_server::packet_encryption_begin::size_of(
+				__v,
+			)
+		}
+		Ty::LegacyServerListPing(__v) => super::super::super::super::u8::size_of(__v),
+		Ty::KickDisconnect(__v) => super::super::super::super::string16::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::KeepAlive(_) => "keep_alive",
-        Ty::Login(_) => "login",
-        Ty::SetProtocol(_) => "set_protocol",
-        Ty::Chat(_) => "chat",
-        Ty::UseEntity(_) => "use_entity",
-        Ty::Respawn(_) => "respawn",
-        Ty::Flying(_) => "flying",
-        Ty::Position(_) => "position",
-        Ty::Look(_) => "look",
-        Ty::PositionLook(_) => "position_look",
-        Ty::BlockDig(_) => "block_dig",
-        Ty::BlockPlace(_) => "block_place",
-        Ty::HeldItemSlot(_) => "held_item_slot",
-        Ty::ArmAnimation(_) => "arm_animation",
-        Ty::EntityAction(_) => "entity_action",
-        Ty::CloseWindow(_) => "close_window",
-        Ty::WindowClick(_) => "window_click",
-        Ty::Transaction(_) => "transaction",
-        Ty::SetCreativeSlot(_) => "set_creative_slot",
-        Ty::EnchantItem(_) => "enchant_item",
-        Ty::UpdateSign(_) => "update_sign",
-        Ty::Abilities(_) => "abilities",
-        Ty::TabComplete(_) => "tab_complete",
-        Ty::Settings(_) => "settings",
-        Ty::ClientCommand(_) => "client_command",
-        Ty::CustomPayload(_) => "custom_payload",
-        Ty::EncryptionBegin(_) => "encryption_begin",
-        Ty::LegacyServerListPing(_) => "legacy_server_list_ping",
-        Ty::KickDisconnect(_) => "kick_disconnect",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::KeepAlive(_) => "keep_alive",
+		Ty::Login(_) => "login",
+		Ty::SetProtocol(_) => "set_protocol",
+		Ty::Chat(_) => "chat",
+		Ty::UseEntity(_) => "use_entity",
+		Ty::Respawn(_) => "respawn",
+		Ty::Flying(_) => "flying",
+		Ty::Position(_) => "position",
+		Ty::Look(_) => "look",
+		Ty::PositionLook(_) => "position_look",
+		Ty::BlockDig(_) => "block_dig",
+		Ty::BlockPlace(_) => "block_place",
+		Ty::HeldItemSlot(_) => "held_item_slot",
+		Ty::ArmAnimation(_) => "arm_animation",
+		Ty::EntityAction(_) => "entity_action",
+		Ty::CloseWindow(_) => "close_window",
+		Ty::WindowClick(_) => "window_click",
+		Ty::Transaction(_) => "transaction",
+		Ty::SetCreativeSlot(_) => "set_creative_slot",
+		Ty::EnchantItem(_) => "enchant_item",
+		Ty::UpdateSign(_) => "update_sign",
+		Ty::Abilities(_) => "abilities",
+		Ty::TabComplete(_) => "tab_complete",
+		Ty::Settings(_) => "settings",
+		Ty::ClientCommand(_) => "client_command",
+		Ty::CustomPayload(_) => "custom_payload",
+		Ty::EncryptionBegin(_) => "encryption_begin",
+		Ty::LegacyServerListPing(_) => "legacy_server_list_ping",
+		Ty::KickDisconnect(_) => "kick_disconnect",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::U8 {
-    match _0 {
-        Ty::KeepAlive(_) => 0_u8,
-        Ty::Login(_) => 1_u8,
-        Ty::SetProtocol(_) => 2_u8,
-        Ty::Chat(_) => 3_u8,
-        Ty::UseEntity(_) => 7_u8,
-        Ty::Respawn(_) => 9_u8,
-        Ty::Flying(_) => 10_u8,
-        Ty::Position(_) => 11_u8,
-        Ty::Look(_) => 12_u8,
-        Ty::PositionLook(_) => 13_u8,
-        Ty::BlockDig(_) => 14_u8,
-        Ty::BlockPlace(_) => 15_u8,
-        Ty::HeldItemSlot(_) => 16_u8,
-        Ty::ArmAnimation(_) => 18_u8,
-        Ty::EntityAction(_) => 19_u8,
-        Ty::CloseWindow(_) => 101_u8,
-        Ty::WindowClick(_) => 102_u8,
-        Ty::Transaction(_) => 106_u8,
-        Ty::SetCreativeSlot(_) => 107_u8,
-        Ty::EnchantItem(_) => 108_u8,
-        Ty::UpdateSign(_) => 130_u8,
-        Ty::Abilities(_) => 202_u8,
-        Ty::TabComplete(_) => 203_u8,
-        Ty::Settings(_) => 204_u8,
-        Ty::ClientCommand(_) => 205_u8,
-        Ty::CustomPayload(_) => 250_u8,
-        Ty::EncryptionBegin(_) => 252_u8,
-        Ty::LegacyServerListPing(_) => 254_u8,
-        Ty::KickDisconnect(_) => 255_u8,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::KeepAlive(_) => 0_u8,
+		Ty::Login(_) => 1_u8,
+		Ty::SetProtocol(_) => 2_u8,
+		Ty::Chat(_) => 3_u8,
+		Ty::UseEntity(_) => 7_u8,
+		Ty::Respawn(_) => 9_u8,
+		Ty::Flying(_) => 10_u8,
+		Ty::Position(_) => 11_u8,
+		Ty::Look(_) => 12_u8,
+		Ty::PositionLook(_) => 13_u8,
+		Ty::BlockDig(_) => 14_u8,
+		Ty::BlockPlace(_) => 15_u8,
+		Ty::HeldItemSlot(_) => 16_u8,
+		Ty::ArmAnimation(_) => 18_u8,
+		Ty::EntityAction(_) => 19_u8,
+		Ty::CloseWindow(_) => 101_u8,
+		Ty::WindowClick(_) => 102_u8,
+		Ty::Transaction(_) => 106_u8,
+		Ty::SetCreativeSlot(_) => 107_u8,
+		Ty::EnchantItem(_) => 108_u8,
+		Ty::UpdateSign(_) => 130_u8,
+		Ty::Abilities(_) => 202_u8,
+		Ty::TabComplete(_) => 203_u8,
+		Ty::Settings(_) => 204_u8,
+		Ty::ClientCommand(_) => 205_u8,
+		Ty::CustomPayload(_) => 250_u8,
+		Ty::EncryptionBegin(_) => 252_u8,
+		Ty::LegacyServerListPing(_) => 254_u8,
+		Ty::KickDisconnect(_) => 255_u8,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Packet;
+pub type Ty = Packet;

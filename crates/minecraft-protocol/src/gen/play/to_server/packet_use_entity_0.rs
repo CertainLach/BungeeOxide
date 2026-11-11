@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUseEntity0 {
-    pub x: super::super::super::F32,
-    pub y: super::super::super::F32,
-    pub z: super::super::super::F32,
-    pub hand: super::super::super::Varint,
+	pub x: super::super::super::F32,
+	pub y: super::super::super::F32,
+	pub z: super::super::super::F32,
+	pub hand: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::f32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.hand,
-        output,
-    )?;
-    Ok(())
+	super::super::super::f32::serialize(&_0.x, output)?;
+	super::super::super::f32::serialize(&_0.y, output)?;
+	super::super::super::f32::serialize(&_0.z, output)?;
+	super::super::super::varint::serialize(&_0.hand, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(13)?;
-    let f_x = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_hand = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z,hand: f_hand
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(13)?;
+	let f_x = super::super::super::f32::deserialize(input)?;
+	let f_y = super::super::super::f32::deserialize(input)?;
+	let f_z = super::super::super::f32::deserialize(input)?;
+	let f_hand = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		hand: f_hand,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::f32::size_of(
-        &_0.x
-    )
-    + super::super::super::f32::size_of(
-        &_0.y
-    )
-    + super::super::super::f32::size_of(
-        &_0.z
-    )
-    + super::super::super::varint::size_of(
-        &_0.hand
-    )
+	0 + super::super::super::f32::size_of(&_0.x)
+		+ super::super::super::f32::size_of(&_0.y)
+		+ super::super::super::f32::size_of(&_0.z)
+		+ super::super::super::varint::size_of(&_0.hand)
 }
- pub type Ty = PacketUseEntity0;
+pub type Ty = PacketUseEntity0;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWorldEvent {
-    pub effect_id: super::super::super::super::I32,
-    pub location: super::super::super::Position,
-    pub data: super::super::super::super::I32,
-    pub global: super::super::super::super::Bool,
+	pub effect_id: super::super::super::super::I32,
+	pub location: super::super::super::Position,
+	pub data: super::super::super::super::I32,
+	pub global: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.effect_id,
-        output,
-    )?;
-    super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.data,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.global,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.effect_id, output)?;
+	super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::super::i32::serialize(&_0.data, output)?;
+	super::super::super::super::bool::serialize(&_0.global, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(17)?;
-    let f_effectId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_location = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_global = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        effect_id: f_effectId,location: f_location,data: f_data,global: f_global
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(17)?;
+	let f_effectId = super::super::super::super::i32::deserialize(input)?;
+	let f_location = super::super::super::position::deserialize(input)?;
+	let f_data = super::super::super::super::i32::deserialize(input)?;
+	let f_global = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		effect_id: f_effectId,
+		location: f_location,
+		data: f_data,
+		global: f_global,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.effect_id
-    )
-    + super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.data
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.global
-    )
+	0 + super::super::super::super::i32::size_of(&_0.effect_id)
+		+ super::super::super::position::size_of(&_0.location)
+		+ super::super::super::super::i32::size_of(&_0.data)
+		+ super::super::super::super::bool::size_of(&_0.global)
 }
- pub type Ty = PacketWorldEvent;
+pub type Ty = PacketWorldEvent;

@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMap19 {
-    pub rows: super::super::super::U8,
-    pub x: super::super::super::U8,
-    pub y: super::super::super::U8,
-    pub data: Vec<u8>,
+	pub rows: super::super::super::U8,
+	pub x: super::super::super::U8,
+	pub y: super::super::super::U8,
+	pub data: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::u8::serialize(
-        &_0.rows,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::buffer::inline_0::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::u8::serialize(&_0.rows, output)?;
+	super::super::super::u8::serialize(&_0.x, output)?;
+	super::super::super::u8::serialize(&_0.y, output)?;
+	super::super::super::buffer::inline_0::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_rows = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_data = super::super::super::buffer::inline_0::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        rows: f_rows,x: f_x,y: f_y,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_rows = super::super::super::u8::deserialize(input)?;
+	let f_x = super::super::super::u8::deserialize(input)?;
+	let f_y = super::super::super::u8::deserialize(input)?;
+	let f_data = super::super::super::buffer::inline_0::deserialize(input)?;
+	Ok(Ty {
+		rows: f_rows,
+		x: f_x,
+		y: f_y,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::u8::size_of(
-        &_0.rows
-    )
-    + super::super::super::u8::size_of(
-        &_0.x
-    )
-    + super::super::super::u8::size_of(
-        &_0.y
-    )
-    + super::super::super::buffer::inline_0::size_of(
-        &_0.data
-    )
+	0 + super::super::super::u8::size_of(&_0.rows)
+		+ super::super::super::u8::size_of(&_0.x)
+		+ super::super::super::u8::size_of(&_0.y)
+		+ super::super::super::buffer::inline_0::size_of(&_0.data)
 }
- pub type Ty = PacketMap19;
+pub type Ty = PacketMap19;

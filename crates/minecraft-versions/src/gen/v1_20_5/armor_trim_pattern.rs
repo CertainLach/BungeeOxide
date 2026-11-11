@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimPattern {
-    pub asset_id: String,
-    pub template_item_id: super::super::Varint,
-    pub description: super::super::AnonymousNbt,
-    pub decal: super::super::Bool,
+	pub asset_id: String,
+	pub template_item_id: super::super::Varint,
+	pub description: super::super::AnonymousNbt,
+	pub decal: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.asset_id,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.template_item_id,
-        output,
-    )?;
-    super::super::anonymous_nbt::serialize(
-        &_0.description,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.decal,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.asset_id, output)?;
+	super::super::varint::serialize(&_0.template_item_id, output)?;
+	super::super::anonymous_nbt::serialize(&_0.description, output)?;
+	super::super::bool::serialize(&_0.decal, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_assetId = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_templateItemId = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_description = super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_decal = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        asset_id: f_assetId,template_item_id: f_templateItemId,description: f_description,decal: f_decal
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_assetId = super::super::pstring_96::deserialize(input)?;
+	let f_templateItemId = super::super::varint::deserialize(input)?;
+	let f_description = super::super::anonymous_nbt::deserialize(input)?;
+	let f_decal = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		asset_id: f_assetId,
+		template_item_id: f_templateItemId,
+		description: f_description,
+		decal: f_decal,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.asset_id
-    )
-    + super::super::varint::size_of(
-        &_0.template_item_id
-    )
-    + super::super::anonymous_nbt::size_of(
-        &_0.description
-    )
-    + super::super::bool::size_of(
-        &_0.decal
-    )
+	0 + super::super::pstring_96::size_of(&_0.asset_id)
+		+ super::super::varint::size_of(&_0.template_item_id)
+		+ super::super::anonymous_nbt::size_of(&_0.description)
+		+ super::super::bool::size_of(&_0.decal)
 }
- pub type Ty = ArmorTrimPattern;
+pub type Ty = ArmorTrimPattern;

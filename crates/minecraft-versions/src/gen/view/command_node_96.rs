@@ -2,62 +2,49 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub flags_has_custom_suggestions: &'a super::super::U8,
+	pub flags_has_custom_suggestions: &'a super::super::U8,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode96<'i> {
-    pub name: super::Pstring96::<'i>,
-    pub properties: super::CommandNode94::<'i>,
-    pub suggestion_type: super::CommandNode95::<'i>,
+	pub name: super::Pstring96<'i>,
+	pub properties: super::CommandNode94<'i>,
+	pub suggestion_type: super::CommandNode95<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::command_node_94::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::command_node_95::serialize(
-        &_0.suggestion_type,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.name, output)?;
+	super::command_node_94::serialize(&_0.properties, output)?;
+	super::command_node_95::serialize(&_0.suggestion_type, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>,) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_name = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::command_node_94::deserialize(
-        input,
-    )?;
-    let f_suggestionType = super::command_node_95::deserialize(
-        input,
-        super::command_node_95::Args {
-            flags_has_custom_suggestions: {let _0 = args.flags_has_custom_suggestions;_0}
-        },
-    )?;
-    Ok(Ty {
-        name: f_name,properties: f_properties,suggestion_type: f_suggestionType
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_name = super::pstring_96::deserialize(input)?;
+	let f_properties = super::command_node_94::deserialize(input)?;
+	let f_suggestionType = super::command_node_95::deserialize(
+		input,
+		super::command_node_95::Args {
+			flags_has_custom_suggestions: {
+				let _0 = args.flags_has_custom_suggestions;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		name: f_name,
+		properties: f_properties,
+		suggestion_type: f_suggestionType,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::command_node_94::size_of(
-        &_0.properties
-    )
-    + super::command_node_95::size_of(
-        &_0.suggestion_type
-    )
+	0 + super::pstring_96::size_of(&_0.name)
+		+ super::command_node_94::size_of(&_0.properties)
+		+ super::command_node_95::size_of(&_0.suggestion_type)
 }
 pub fn view<'i>(_0: &'i super::super::CommandNode96) -> Ty<'i> {
-    Ty {
-        name: super::pstring_96::view(&_0.name),properties: super::command_node_94::view(&_0.properties),suggestion_type: super::command_node_95::view(&_0.suggestion_type)
-    }
+	Ty {
+		name: super::pstring_96::view(&_0.name),
+		properties: super::command_node_94::view(&_0.properties),
+		suggestion_type: super::command_node_95::view(&_0.suggestion_type),
+	}
 }
- pub type Ty<'i> = CommandNode96<'i>;
+pub type Ty<'i> = CommandNode96<'i>;

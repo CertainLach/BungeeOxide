@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCollect {
-    pub collected_entity_id: super::super::super::super::I32,
-    pub collector_entity_id: super::super::super::super::I32,
+	pub collected_entity_id: super::super::super::super::I32,
+	pub collector_entity_id: super::super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.collected_entity_id,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.collector_entity_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.collected_entity_id, output)?;
+	super::super::super::super::i32::serialize(&_0.collector_entity_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_collectedEntityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_collectorEntityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        collected_entity_id: f_collectedEntityId,collector_entity_id: f_collectorEntityId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_collectedEntityId = super::super::super::super::i32::deserialize(input)?;
+	let f_collectorEntityId = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		collected_entity_id: f_collectedEntityId,
+		collector_entity_id: f_collectorEntityId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.collected_entity_id
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.collector_entity_id
-    )
+	0 + super::super::super::super::i32::size_of(&_0.collected_entity_id)
+		+ super::super::super::super::i32::size_of(&_0.collector_entity_id)
 }
- pub type Ty = PacketCollect;
+pub type Ty = PacketCollect;

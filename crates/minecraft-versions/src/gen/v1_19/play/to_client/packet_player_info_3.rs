@@ -3,83 +3,45 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo3 {
-    pub name: String,
-    pub properties: Vec<super::PacketPlayerInfo1>,
-    pub gamemode: super::super::super::super::Varint,
-    pub ping: super::super::super::super::Varint,
-    pub display_name: Option<String>,
-    pub crypto: Option<super::PacketPlayerInfo2>,
+	pub name: String,
+	pub properties: Vec<super::PacketPlayerInfo1>,
+	pub gamemode: super::super::super::super::Varint,
+	pub ping: super::super::super::super::Varint,
+	pub display_name: Option<String>,
+	pub crypto: Option<super::PacketPlayerInfo2>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::super::array::inline_177::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.gamemode,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.ping,
-        output,
-    )?;
-    super::super::super::super::option_18::serialize(
-        &_0.display_name,
-        output,
-    )?;
-    super::super::super::super::option_46::serialize(
-        &_0.crypto,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.name, output)?;
+	super::super::super::super::array::inline_177::serialize(&_0.properties, output)?;
+	super::super::super::super::varint::serialize(&_0.gamemode, output)?;
+	super::super::super::super::varint::serialize(&_0.ping, output)?;
+	super::super::super::super::option_18::serialize(&_0.display_name, output)?;
+	super::super::super::super::option_46::serialize(&_0.crypto, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_name = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::super::super::array::inline_177::deserialize(
-        input,
-    )?;
-    let f_gamemode = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ping = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_displayName = super::super::super::super::option_18::deserialize(
-        input,
-    )?;
-    let f_crypto = super::super::super::super::option_46::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,properties: f_properties,gamemode: f_gamemode,ping: f_ping,display_name: f_displayName,crypto: f_crypto
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_name = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_properties = super::super::super::super::array::inline_177::deserialize(input)?;
+	let f_gamemode = super::super::super::super::varint::deserialize(input)?;
+	let f_ping = super::super::super::super::varint::deserialize(input)?;
+	let f_displayName = super::super::super::super::option_18::deserialize(input)?;
+	let f_crypto = super::super::super::super::option_46::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		properties: f_properties,
+		gamemode: f_gamemode,
+		ping: f_ping,
+		display_name: f_displayName,
+		crypto: f_crypto,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.name
-    )
-    + super::super::super::super::array::inline_177::size_of(
-        &_0.properties
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.gamemode
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.ping
-    )
-    + super::super::super::super::option_18::size_of(
-        &_0.display_name
-    )
-    + super::super::super::super::option_46::size_of(
-        &_0.crypto
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.name)
+		+ super::super::super::super::array::inline_177::size_of(&_0.properties)
+		+ super::super::super::super::varint::size_of(&_0.gamemode)
+		+ super::super::super::super::varint::size_of(&_0.ping)
+		+ super::super::super::super::option_18::size_of(&_0.display_name)
+		+ super::super::super::super::option_46::size_of(&_0.crypto)
 }
- pub type Ty = PacketPlayerInfo3;
+pub type Ty = PacketPlayerInfo3;

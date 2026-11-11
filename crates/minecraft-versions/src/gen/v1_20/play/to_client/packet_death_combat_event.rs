@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeathCombatEvent {
-    pub player_id: super::super::super::super::Varint,
-    pub message: String,
+	pub player_id: super::super::super::super::Varint,
+	pub message: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.player_id,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.player_id, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_playerId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_message = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        player_id: f_playerId,message: f_message
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_playerId = super::super::super::super::varint::deserialize(input)?;
+	let f_message = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		player_id: f_playerId,
+		message: f_message,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.player_id
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.message
-    )
+	0 + super::super::super::super::varint::size_of(&_0.player_id)
+		+ super::super::super::super::pstring_96::size_of(&_0.message)
 }
- pub type Ty = PacketDeathCombatEvent;
+pub type Ty = PacketDeathCombatEvent;

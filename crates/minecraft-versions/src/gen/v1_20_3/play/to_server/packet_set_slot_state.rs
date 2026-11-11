@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetSlotState {
-    pub slot_id: super::super::super::super::Varint,
-    pub window_id: super::super::super::super::Varint,
-    pub state: super::super::super::super::Bool,
+	pub slot_id: super::super::super::super::Varint,
+	pub window_id: super::super::super::super::Varint,
+	pub state: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.slot_id,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.state,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.slot_id, output)?;
+	super::super::super::super::varint::serialize(&_0.window_id, output)?;
+	super::super::super::super::bool::serialize(&_0.state, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_slot_id = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_window_id = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_state = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        slot_id: f_slot_id,window_id: f_window_id,state: f_state
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_slot_id = super::super::super::super::varint::deserialize(input)?;
+	let f_window_id = super::super::super::super::varint::deserialize(input)?;
+	let f_state = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		slot_id: f_slot_id,
+		window_id: f_window_id,
+		state: f_state,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.slot_id
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.state
-    )
+	0 + super::super::super::super::varint::size_of(&_0.slot_id)
+		+ super::super::super::super::varint::size_of(&_0.window_id)
+		+ super::super::super::super::bool::size_of(&_0.state)
 }
- pub type Ty = PacketSetSlotState;
+pub type Ty = PacketSetSlotState;

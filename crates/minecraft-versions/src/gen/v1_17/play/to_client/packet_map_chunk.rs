@@ -3,94 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMapChunk {
-    pub x: super::super::super::super::I32,
-    pub z: super::super::super::super::I32,
-    pub bit_map: Vec<super::super::super::super::I64>,
-    pub heightmaps: super::super::super::super::Nbt,
-    pub biomes: Vec<super::super::super::super::Varint>,
-    pub chunk_data: Vec<u8>,
-    pub block_entities: Vec<super::super::super::super::Nbt>,
+	pub x: super::super::super::super::I32,
+	pub z: super::super::super::super::I32,
+	pub bit_map: Vec<super::super::super::super::I64>,
+	pub heightmaps: super::super::super::super::Nbt,
+	pub biomes: Vec<super::super::super::super::Varint>,
+	pub chunk_data: Vec<u8>,
+	pub block_entities: Vec<super::super::super::super::Nbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::array::inline_51::serialize(
-        &_0.bit_map,
-        output,
-    )?;
-    super::super::super::super::nbt::serialize(
-        &_0.heightmaps,
-        output,
-    )?;
-    super::super::super::super::array::inline_107::serialize(
-        &_0.biomes,
-        output,
-    )?;
-    super::super::super::super::buffer::inline_3::serialize(
-        &_0.chunk_data,
-        output,
-    )?;
-    super::super::super::super::array::inline_52::serialize(
-        &_0.block_entities,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.x, output)?;
+	super::super::super::super::i32::serialize(&_0.z, output)?;
+	super::super::super::super::array::inline_51::serialize(&_0.bit_map, output)?;
+	super::super::super::super::nbt::serialize(&_0.heightmaps, output)?;
+	super::super::super::super::array::inline_107::serialize(&_0.biomes, output)?;
+	super::super::super::super::buffer::inline_3::serialize(&_0.chunk_data, output)?;
+	super::super::super::super::array::inline_52::serialize(&_0.block_entities, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(12)?;
-    let f_x = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_bitMap = super::super::super::super::array::inline_51::deserialize(
-        input,
-    )?;
-    let f_heightmaps = super::super::super::super::nbt::deserialize(
-        input,
-    )?;
-    let f_biomes = super::super::super::super::array::inline_107::deserialize(
-        input,
-    )?;
-    let f_chunkData = super::super::super::super::buffer::inline_3::deserialize(
-        input,
-    )?;
-    let f_blockEntities = super::super::super::super::array::inline_52::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,z: f_z,bit_map: f_bitMap,heightmaps: f_heightmaps,biomes: f_biomes,chunk_data: f_chunkData,block_entities: f_blockEntities
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(12)?;
+	let f_x = super::super::super::super::i32::deserialize(input)?;
+	let f_z = super::super::super::super::i32::deserialize(input)?;
+	let f_bitMap = super::super::super::super::array::inline_51::deserialize(input)?;
+	let f_heightmaps = super::super::super::super::nbt::deserialize(input)?;
+	let f_biomes = super::super::super::super::array::inline_107::deserialize(input)?;
+	let f_chunkData = super::super::super::super::buffer::inline_3::deserialize(input)?;
+	let f_blockEntities = super::super::super::super::array::inline_52::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		z: f_z,
+		bit_map: f_bitMap,
+		heightmaps: f_heightmaps,
+		biomes: f_biomes,
+		chunk_data: f_chunkData,
+		block_entities: f_blockEntities,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::array::inline_51::size_of(
-        &_0.bit_map
-    )
-    + super::super::super::super::nbt::size_of(
-        &_0.heightmaps
-    )
-    + super::super::super::super::array::inline_107::size_of(
-        &_0.biomes
-    )
-    + super::super::super::super::buffer::inline_3::size_of(
-        &_0.chunk_data
-    )
-    + super::super::super::super::array::inline_52::size_of(
-        &_0.block_entities
-    )
+	0 + super::super::super::super::i32::size_of(&_0.x)
+		+ super::super::super::super::i32::size_of(&_0.z)
+		+ super::super::super::super::array::inline_51::size_of(&_0.bit_map)
+		+ super::super::super::super::nbt::size_of(&_0.heightmaps)
+		+ super::super::super::super::array::inline_107::size_of(&_0.biomes)
+		+ super::super::super::super::buffer::inline_3::size_of(&_0.chunk_data)
+		+ super::super::super::super::array::inline_52::size_of(&_0.block_entities)
 }
- pub type Ty = PacketMapChunk;
+pub type Ty = PacketMapChunk;

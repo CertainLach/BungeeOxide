@@ -2,33 +2,68 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub action_add_player: &'a super::super::Bool,
-    pub action_initialize_chat: &'a super::super::Bool,
-    pub action_update_display_name: &'a super::super::Bool,
-    pub action_update_game_mode: &'a super::super::Bool,
-    pub action_update_latency: &'a super::super::Bool,
-    pub action_update_listed: &'a super::super::Bool,
+	pub action_add_player: &'a super::super::Bool,
+	pub action_initialize_chat: &'a super::super::Bool,
+	pub action_update_display_name: &'a super::super::Bool,
+	pub action_update_game_mode: &'a super::super::Bool,
+	pub action_update_latency: &'a super::super::Bool,
+	pub action_update_listed: &'a super::super::Bool,
 }
 pub type Ty = Vec<super::super::v1_19_3::play::to_client::PacketPlayerInfo15>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&_0.len().try_into().map_err(|_| Error::InvalidValue)?, output)?;
-    for e in _0.iter() {
-        super::super::v1_19_3::play::to_client::packet_player_info_15::serialize(e, output)?;
-    }
-    Ok(())
+	super::super::varint::serialize(
+		&_0.len().try_into().map_err(|_| Error::InvalidValue)?,
+		output,
+	)?;
+	for e in _0.iter() {
+		super::super::v1_19_3::play::to_client::packet_player_info_15::serialize(e, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let count: usize = super::super::varint::deserialize(input)?.try_into().map_err(|_| Error::InvalidValue)?;
-    let mut out = Vec::with_capacity(count.min(input.remaining()));
-    for _ in 0..count {
-        out.push(super::super::v1_19_3::play::to_client::packet_player_info_15::deserialize(input, super::super::v1_19_3::play::to_client::packet_player_info_15::Args {
-            action_add_player: {let _0 = args.action_add_player;_0},action_initialize_chat: {let _0 = args.action_initialize_chat;_0},action_update_game_mode: {let _0 = args.action_update_game_mode;_0},action_update_listed: {let _0 = args.action_update_listed;_0},action_update_latency: {let _0 = args.action_update_latency;_0},action_update_display_name: {let _0 = args.action_update_display_name;_0}
-        },)?);
-    }
-    Ok(out)
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let count: usize = super::super::varint::deserialize(input)?
+		.try_into()
+		.map_err(|_| Error::InvalidValue)?;
+	let mut out = Vec::with_capacity(count.min(input.remaining()));
+	for _ in 0..count {
+		out.push(
+			super::super::v1_19_3::play::to_client::packet_player_info_15::deserialize(
+				input,
+				super::super::v1_19_3::play::to_client::packet_player_info_15::Args {
+					action_add_player: {
+						let _0 = args.action_add_player;
+						_0
+					},
+					action_initialize_chat: {
+						let _0 = args.action_initialize_chat;
+						_0
+					},
+					action_update_game_mode: {
+						let _0 = args.action_update_game_mode;
+						_0
+					},
+					action_update_listed: {
+						let _0 = args.action_update_listed;
+						_0
+					},
+					action_update_latency: {
+						let _0 = args.action_update_latency;
+						_0
+					},
+					action_update_display_name: {
+						let _0 = args.action_update_display_name;
+						_0
+					},
+				},
+			)?,
+		);
+	}
+	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
-    for e in _0.iter() { n += super::super::v1_19_3::play::to_client::packet_player_info_15::size_of(e); }
-    n
+	let mut n = super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
+	for e in _0.iter() {
+		n += super::super::v1_19_3::play::to_client::packet_player_info_15::size_of(e);
+	}
+	n
 }

@@ -2,109 +2,109 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub compare_to: &'a super::super::Varint,
+	pub compare_to: &'a super::super::Varint,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParticleData {
-    V14(super::ParticleData27),
-    V15(super::ParticleData28),
-    V2(super::super::Varint),
-    V25(super::super::Varint),
-    V3(super::super::Varint),
-    V30(super::super::F32),
-    V39(super::super::v1_13_2::Slot),
-    V40(super::ParticleData31),
-    V92(super::super::Varint),
-    Default(super::super::Varint),
+	V14(super::ParticleData27),
+	V15(super::ParticleData28),
+	V2(super::super::Varint),
+	V25(super::super::Varint),
+	V3(super::super::Varint),
+	V30(super::super::F32),
+	V39(super::super::v1_13_2::Slot),
+	V40(super::ParticleData31),
+	V92(super::super::Varint),
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::V14(__v) => super::particle_data_27::serialize(__v, output),
-        Ty::V15(__v) => super::particle_data_28::serialize(__v, output),
-        Ty::V2(__v) => super::super::varint::serialize(__v, output),
-        Ty::V25(__v) => super::super::varint::serialize(__v, output),
-        Ty::V3(__v) => super::super::varint::serialize(__v, output),
-        Ty::V30(__v) => super::super::f32::serialize(__v, output),
-        Ty::V39(__v) => super::super::v1_13_2::slot::serialize(__v, output),
-        Ty::V40(__v) => super::particle_data_31::serialize(__v, output),
-        Ty::V92(__v) => super::super::varint::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::V14(__v) => super::particle_data_27::serialize(__v, output),
+		Ty::V15(__v) => super::particle_data_28::serialize(__v, output),
+		Ty::V2(__v) => super::super::varint::serialize(__v, output),
+		Ty::V25(__v) => super::super::varint::serialize(__v, output),
+		Ty::V3(__v) => super::super::varint::serialize(__v, output),
+		Ty::V30(__v) => super::super::f32::serialize(__v, output),
+		Ty::V39(__v) => super::super::v1_13_2::slot::serialize(__v, output),
+		Ty::V40(__v) => super::particle_data_31::serialize(__v, output),
+		Ty::V92(__v) => super::super::varint::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.compare_to;
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::V14(super::particle_data_27::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) {
-        return Ok(Ty::V15(super::particle_data_28::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::V2(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 25_i32) {
-        return Ok(Ty::V25(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::V3(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 30_i32) {
-        return Ok(Ty::V30(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 39_i32) {
-        return Ok(Ty::V39(super::super::v1_13_2::slot::deserialize(input, )?));
-    }
-    if (__tag.clone() == 40_i32) {
-        return Ok(Ty::V40(super::particle_data_31::deserialize(input, )?));
-    }
-    if (__tag.clone() == 92_i32) {
-        return Ok(Ty::V92(super::super::varint::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.compare_to;
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::V14(super::particle_data_27::deserialize(input)?));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::V15(super::particle_data_28::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::V2(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::V25(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::V3(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::V30(super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::V39(super::super::v1_13_2::slot::deserialize(input)?));
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::V40(super::particle_data_31::deserialize(input)?));
+	}
+	if (__tag.clone() == 92_i32) {
+		return Ok(Ty::V92(super::super::varint::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::V14(__v) => super::particle_data_27::size_of(__v),
-        Ty::V15(__v) => super::particle_data_28::size_of(__v),
-        Ty::V2(__v) => super::super::varint::size_of(__v),
-        Ty::V25(__v) => super::super::varint::size_of(__v),
-        Ty::V3(__v) => super::super::varint::size_of(__v),
-        Ty::V30(__v) => super::super::f32::size_of(__v),
-        Ty::V39(__v) => super::super::v1_13_2::slot::size_of(__v),
-        Ty::V40(__v) => super::particle_data_31::size_of(__v),
-        Ty::V92(__v) => super::super::varint::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::V14(__v) => super::particle_data_27::size_of(__v),
+		Ty::V15(__v) => super::particle_data_28::size_of(__v),
+		Ty::V2(__v) => super::super::varint::size_of(__v),
+		Ty::V25(__v) => super::super::varint::size_of(__v),
+		Ty::V3(__v) => super::super::varint::size_of(__v),
+		Ty::V30(__v) => super::super::f32::size_of(__v),
+		Ty::V39(__v) => super::super::v1_13_2::slot::size_of(__v),
+		Ty::V40(__v) => super::particle_data_31::size_of(__v),
+		Ty::V92(__v) => super::super::varint::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V14(_) => "v14",
-        Ty::V15(_) => "v15",
-        Ty::V2(_) => "v2",
-        Ty::V25(_) => "v25",
-        Ty::V3(_) => "v3",
-        Ty::V30(_) => "v30",
-        Ty::V39(_) => "v39",
-        Ty::V40(_) => "v40",
-        Ty::V92(_) => "v92",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V14(_) => "v14",
+		Ty::V15(_) => "v15",
+		Ty::V2(_) => "v2",
+		Ty::V25(_) => "v25",
+		Ty::V3(_) => "v3",
+		Ty::V30(_) => "v30",
+		Ty::V39(_) => "v39",
+		Ty::V40(_) => "v40",
+		Ty::V92(_) => "v92",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::super::Varint) {
-    debug_assert!(
-        match _0 {
-            Ty::V14(_) => (__tag.clone() == 14_i32),
-            Ty::V15(_) => (__tag.clone() == 15_i32),
-            Ty::V2(_) => (__tag.clone() == 2_i32),
-            Ty::V25(_) => (__tag.clone() == 25_i32),
-            Ty::V3(_) => (__tag.clone() == 3_i32),
-            Ty::V30(_) => (__tag.clone() == 30_i32),
-            Ty::V39(_) => (__tag.clone() == 39_i32),
-            Ty::V40(_) => (__tag.clone() == 40_i32),
-            Ty::V92(_) => (__tag.clone() == 92_i32),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::V14(_) => (__tag.clone() == 14_i32),
+			Ty::V15(_) => (__tag.clone() == 15_i32),
+			Ty::V2(_) => (__tag.clone() == 2_i32),
+			Ty::V25(_) => (__tag.clone() == 25_i32),
+			Ty::V3(_) => (__tag.clone() == 3_i32),
+			Ty::V30(_) => (__tag.clone() == 30_i32),
+			Ty::V39(_) => (__tag.clone() == 39_i32),
+			Ty::V40(_) => (__tag.clone() == 40_i32),
+			Ty::V92(_) => (__tag.clone() == 92_i32),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = ParticleData;
+pub type Ty = ParticleData;

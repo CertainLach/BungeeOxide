@@ -2,54 +2,61 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub ground_up: &'a super::super::super::super::Bool,
+	pub ground_up: &'a super::super::super::super::Bool,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketMapChunk0 {
-    False,
-    True(Vec<super::super::super::super::I32>),
+	False,
+	True(Vec<super::super::super::super::I32>),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::False => Ok(()),
-        Ty::True(__v) => super::super::super::super::array::sized_369::serialize(__v, output),
-    }
+	match _0 {
+		Ty::False => Ok(()),
+		Ty::True(__v) => super::super::super::super::array::sized_369::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.ground_up;
-    if (__tag.clone() == false) { return Ok(Ty::False); }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::super::super::super::array::sized_369::deserialize(input, super::super::super::super::array::sized_369::Args {
-            count: &(1024).try_into().expect("constant fits")
-        },)?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.ground_up;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False);
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(
+			super::super::super::super::array::sized_369::deserialize(
+				input,
+				super::super::super::super::array::sized_369::Args {
+					count: &(1024).try_into().expect("constant fits"),
+				},
+			)?,
+		));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::False => 0,
-        Ty::True(__v) => super::super::super::super::array::sized_369::size_of(__v),
-    }
+	0 + match _0 {
+		Ty::False => 0,
+		Ty::True(__v) => super::super::super::super::array::sized_369::size_of(__v),
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::super::super::super::Bool) {
-    debug_assert!(
-        match _0 {
-            Ty::False => (__tag.clone() == false),
-            Ty::True(_) => (__tag.clone() == true),
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::False => (__tag.clone() == false),
+			Ty::True(_) => (__tag.clone() == true),
+		},
+		"union variant does not match its external tag",
+	);
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Bool {
-    match _0 {
-        Ty::False => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = PacketMapChunk0;
+pub type Ty = PacketMapChunk0;

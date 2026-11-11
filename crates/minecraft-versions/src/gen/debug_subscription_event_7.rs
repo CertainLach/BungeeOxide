@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionEvent7 {
-    pub path: super::Path,
-    pub max_node_distance: super::F32,
+	pub path: super::Path,
+	pub max_node_distance: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::path::serialize(
-        &_0.path,
-        output,
-    )?;
-    super::f32::serialize(
-        &_0.max_node_distance,
-        output,
-    )?;
-    Ok(())
+	super::path::serialize(&_0.path, output)?;
+	super::f32::serialize(&_0.max_node_distance, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(21)?;
-    let f_path = super::path::deserialize(
-        input,
-    )?;
-    let f_maxNodeDistance = super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        path: f_path,max_node_distance: f_maxNodeDistance
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(21)?;
+	let f_path = super::path::deserialize(input)?;
+	let f_maxNodeDistance = super::f32::deserialize(input)?;
+	Ok(Ty {
+		path: f_path,
+		max_node_distance: f_maxNodeDistance,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::path::size_of(
-        &_0.path
-    )
-    + super::f32::size_of(
-        &_0.max_node_distance
-    )
+	0 + super::path::size_of(&_0.path) + super::f32::size_of(&_0.max_node_distance)
 }
- pub type Ty = DebugSubscriptionEvent7;
+pub type Ty = DebugSubscriptionEvent7;

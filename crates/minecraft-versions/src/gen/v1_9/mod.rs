@@ -8,6 +8,6 @@ pub mod login;
 pub mod play;
 pub mod status;
 pub use self::entity_metadata::Ty as EntityMetadata;
-pub use self::entity_metadata_item::EntityMetadataItem;
 pub use self::entity_metadata_1::EntityMetadata1;
+pub use self::entity_metadata_item::EntityMetadataItem;
 pub use self::entity_metadata_item_1::EntityMetadataItem1;

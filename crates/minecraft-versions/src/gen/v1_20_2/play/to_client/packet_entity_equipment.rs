@@ -3,39 +3,26 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment {
-    pub entity_id: super::super::super::super::Varint,
-    pub equipments: Vec<super::PacketEntityEquipment14>,
+	pub entity_id: super::super::super::super::Varint,
+	pub equipments: Vec<super::PacketEntityEquipment14>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::top_bit_set_terminated_array_98::serialize(
-        &_0.equipments,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::top_bit_set_terminated_array_98::serialize(&_0.equipments, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_equipments = super::super::super::super::top_bit_set_terminated_array_98::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,equipments: f_equipments
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_equipments =
+		super::super::super::super::top_bit_set_terminated_array_98::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		equipments: f_equipments,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::top_bit_set_terminated_array_98::size_of(
-        &_0.equipments
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::top_bit_set_terminated_array_98::size_of(&_0.equipments)
 }
- pub type Ty = PacketEntityEquipment;
+pub type Ty = PacketEntityEquipment;

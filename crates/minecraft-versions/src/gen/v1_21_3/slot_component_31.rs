@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent31 {
-    pub material: super::SlotComponent29,
-    pub pattern: super::SlotComponent30,
-    pub show_in_tooltip: super::super::Bool,
+	pub material: super::SlotComponent29,
+	pub pattern: super::SlotComponent30,
+	pub show_in_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_component_29::serialize(
-        &_0.material,
-        output,
-    )?;
-    super::slot_component_30::serialize(
-        &_0.pattern,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_in_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::slot_component_29::serialize(&_0.material, output)?;
+	super::slot_component_30::serialize(&_0.pattern, output)?;
+	super::super::bool::serialize(&_0.show_in_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_material = super::slot_component_29::deserialize(
-        input,
-    )?;
-    let f_pattern = super::slot_component_30::deserialize(
-        input,
-    )?;
-    let f_showInTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        material: f_material,pattern: f_pattern,show_in_tooltip: f_showInTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_material = super::slot_component_29::deserialize(input)?;
+	let f_pattern = super::slot_component_30::deserialize(input)?;
+	let f_showInTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		material: f_material,
+		pattern: f_pattern,
+		show_in_tooltip: f_showInTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_component_29::size_of(
-        &_0.material
-    )
-    + super::slot_component_30::size_of(
-        &_0.pattern
-    )
-    + super::super::bool::size_of(
-        &_0.show_in_tooltip
-    )
+	0 + super::slot_component_29::size_of(&_0.material)
+		+ super::slot_component_30::size_of(&_0.pattern)
+		+ super::super::bool::size_of(&_0.show_in_tooltip)
 }
- pub type Ty = SlotComponent31;
+pub type Ty = SlotComponent31;

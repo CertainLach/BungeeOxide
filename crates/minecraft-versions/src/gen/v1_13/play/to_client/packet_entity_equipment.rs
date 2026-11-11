@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment {
-    pub entity_id: super::super::super::super::Varint,
-    pub slot: super::super::super::super::Varint,
-    pub item: super::super::super::Slot,
+	pub entity_id: super::super::super::super::Varint,
+	pub slot: super::super::super::super::Varint,
+	pub item: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.slot,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.item,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::varint::serialize(&_0.slot, output)?;
+	super::super::super::slot::serialize(&_0.item, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_slot = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_item = super::super::super::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,slot: f_slot,item: f_item
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_slot = super::super::super::super::varint::deserialize(input)?;
+	let f_item = super::super::super::slot::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		slot: f_slot,
+		item: f_item,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.slot
-    )
-    + super::super::super::slot::size_of(
-        &_0.item
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::varint::size_of(&_0.slot)
+		+ super::super::super::slot::size_of(&_0.item)
 }
- pub type Ty = PacketEntityEquipment;
+pub type Ty = PacketEntityEquipment;

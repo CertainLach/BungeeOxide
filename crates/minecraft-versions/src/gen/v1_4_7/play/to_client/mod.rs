@@ -7,7 +7,7 @@ pub mod packet_spawn_entity_2;
 pub mod packet_spawn_entity_3;
 pub use self::packet::Packet;
 pub use self::packet_map_chunk_bulk::PacketMapChunkBulk;
-pub use self::packet_spawn_entity::PacketSpawnEntity;
 pub use self::packet_map_chunk_bulk_1::PacketMapChunkBulk1;
+pub use self::packet_spawn_entity::PacketSpawnEntity;
 pub use self::packet_spawn_entity_2::PacketSpawnEntity2;
 pub use self::packet_spawn_entity_3::PacketSpawnEntity3;

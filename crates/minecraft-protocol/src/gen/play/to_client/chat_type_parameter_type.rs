@@ -3,53 +3,58 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ChatTypeParameterType {
-    Content,
-    Sender,
-    Target,
-    Default(super::super::super::Varint),
+	Content,
+	Sender,
+	Target,
+	Default(super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Content => Ok(()),
-        Ty::Sender => Ok(()),
-        Ty::Target => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Content => Ok(()),
+		Ty::Sender => Ok(()),
+		Ty::Target => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Content); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Sender); }
-    if (__tag.clone() == 2_i32) { return Ok(Ty::Target); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Content);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Sender);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::Target);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Content => 0,
-        Ty::Sender => 0,
-        Ty::Target => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Content => 0,
+			Ty::Sender => 0,
+			Ty::Target => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Content => "content",
-        Ty::Sender => "sender",
-        Ty::Target => "target",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Content => "content",
+		Ty::Sender => "sender",
+		Ty::Target => "target",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::Varint {
-    match _0 {
-        Ty::Content => 0_i32,
-        Ty::Sender => 1_i32,
-        Ty::Target => 2_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Content => 0_i32,
+		Ty::Sender => 1_i32,
+		Ty::Target => 2_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = ChatTypeParameterType;
+pub type Ty = ChatTypeParameterType;

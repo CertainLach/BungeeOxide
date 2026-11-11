@@ -3,49 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataEntry<'i> {
-    pub key: super::super::U8,
-    pub value: super::EntityMetadataEntry101::<'i>,
+	pub key: super::super::U8,
+	pub value: super::EntityMetadataEntry101<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::u8::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::entity_metadata_entry_101::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::u8::serialize(&_0.key, output)?;
+	super::entity_metadata_entry_101::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_key = super::super::u8::deserialize(
-        input,
-    )?;
-    let f_value = super::entity_metadata_entry_101::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_key = super::super::u8::deserialize(input)?;
+	let f_value = super::entity_metadata_entry_101::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::u8::size_of(
-        &_0.key
-    )
-    + super::entity_metadata_entry_101::size_of(
-        &_0.value
-    )
+	0 + super::super::u8::size_of(&_0.key) + super::entity_metadata_entry_101::size_of(&_0.value)
 }
 pub fn view<'i>(_0: &'i super::super::EntityMetadataEntry) -> Ty<'i> {
-    Ty {
-        key: ::core::clone::Clone::clone(&_0.key),value: super::entity_metadata_entry_101::view(&_0.value)
-    }
+	Ty {
+		key: ::core::clone::Clone::clone(&_0.key),
+		value: super::entity_metadata_entry_101::view(&_0.value),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataEntry) -> Ty<'i> {
-    Ty {
-        key: ::core::clone::Clone::clone(&mut _0.key),value: super::entity_metadata_entry_101::into_view(&mut _0.value)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataEntry) -> Ty<'i> {
+	Ty {
+		key: ::core::clone::Clone::clone(&mut _0.key),
+		value: super::entity_metadata_entry_101::into_view(&mut _0.value),
+	}
 }
- pub type Ty<'i> = EntityMetadataEntry<'i>;
+pub type Ty<'i> = EntityMetadataEntry<'i>;

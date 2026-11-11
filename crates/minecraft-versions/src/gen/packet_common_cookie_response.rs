@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonCookieResponse {
-    pub key: String,
-    pub value: Option<Vec<u8>>,
+	pub key: String,
+	pub value: Option<Vec<u8>>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::option_0::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.key, output)?;
+	super::option_0::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_key = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::option_0::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_key = super::pstring_96::deserialize(input)?;
+	let f_value = super::option_0::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::option_0::size_of(
-        &_0.value
-    )
+	0 + super::pstring_96::size_of(&_0.key) + super::option_0::size_of(&_0.value)
 }
- pub type Ty = PacketCommonCookieResponse;
+pub type Ty = PacketCommonCookieResponse;

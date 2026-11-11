@@ -3,71 +3,51 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent35<'i> {
-    pub potion_id: super::super::super::Option23,
-    pub custom_color: super::super::super::Option13,
-    pub custom_effects: super::super::super::array::Inline35,
-    pub custom_name: super::super::Option18::<'i>,
+	pub potion_id: super::super::super::Option23,
+	pub custom_color: super::super::super::Option13,
+	pub custom_effects: super::super::super::array::Inline35,
+	pub custom_name: super::super::Option18<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::option_23::serialize(
-        &_0.potion_id,
-        output,
-    )?;
-    super::super::super::option_13::serialize(
-        &_0.custom_color,
-        output,
-    )?;
-    super::super::super::array::inline_35::serialize(
-        &_0.custom_effects,
-        output,
-    )?;
-    super::super::option_18::serialize(
-        &_0.custom_name,
-        output,
-    )?;
-    Ok(())
+	super::super::super::option_23::serialize(&_0.potion_id, output)?;
+	super::super::super::option_13::serialize(&_0.custom_color, output)?;
+	super::super::super::array::inline_35::serialize(&_0.custom_effects, output)?;
+	super::super::option_18::serialize(&_0.custom_name, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_potionId = super::super::super::option_23::deserialize(
-        input,
-    )?;
-    let f_customColor = super::super::super::option_13::deserialize(
-        input,
-    )?;
-    let f_customEffects = super::super::super::array::inline_35::deserialize(
-        input,
-    )?;
-    let f_customName = super::super::option_18::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        potion_id: f_potionId,custom_color: f_customColor,custom_effects: f_customEffects,custom_name: f_customName
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_potionId = super::super::super::option_23::deserialize(input)?;
+	let f_customColor = super::super::super::option_13::deserialize(input)?;
+	let f_customEffects = super::super::super::array::inline_35::deserialize(input)?;
+	let f_customName = super::super::option_18::deserialize(input)?;
+	Ok(Ty {
+		potion_id: f_potionId,
+		custom_color: f_customColor,
+		custom_effects: f_customEffects,
+		custom_name: f_customName,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::option_23::size_of(
-        &_0.potion_id
-    )
-    + super::super::super::option_13::size_of(
-        &_0.custom_color
-    )
-    + super::super::super::array::inline_35::size_of(
-        &_0.custom_effects
-    )
-    + super::super::option_18::size_of(
-        &_0.custom_name
-    )
+	0 + super::super::super::option_23::size_of(&_0.potion_id)
+		+ super::super::super::option_13::size_of(&_0.custom_color)
+		+ super::super::super::array::inline_35::size_of(&_0.custom_effects)
+		+ super::super::option_18::size_of(&_0.custom_name)
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent35) -> Ty<'i> {
-    Ty {
-        potion_id: ::core::clone::Clone::clone(&_0.potion_id),custom_color: ::core::clone::Clone::clone(&_0.custom_color),custom_effects: ::core::clone::Clone::clone(&_0.custom_effects),custom_name: super::super::option_18::view(&_0.custom_name)
-    }
+	Ty {
+		potion_id: ::core::clone::Clone::clone(&_0.potion_id),
+		custom_color: ::core::clone::Clone::clone(&_0.custom_color),
+		custom_effects: ::core::clone::Clone::clone(&_0.custom_effects),
+		custom_name: super::super::option_18::view(&_0.custom_name),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent35) -> Ty<'i> {
-    Ty {
-        potion_id: ::core::clone::Clone::clone(&mut _0.potion_id),custom_color: ::core::clone::Clone::clone(&mut _0.custom_color),custom_effects: ::core::mem::take(&mut _0.custom_effects),custom_name: super::super::option_18::view(&mut _0.custom_name)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent35) -> Ty<'i> {
+	Ty {
+		potion_id: ::core::clone::Clone::clone(&mut _0.potion_id),
+		custom_color: ::core::clone::Clone::clone(&mut _0.custom_color),
+		custom_effects: ::core::mem::take(&mut _0.custom_effects),
+		custom_name: super::super::option_18::view(&mut _0.custom_name),
+	}
 }
- pub type Ty<'i> = SlotComponent35<'i>;
+pub type Ty<'i> = SlotComponent35<'i>;

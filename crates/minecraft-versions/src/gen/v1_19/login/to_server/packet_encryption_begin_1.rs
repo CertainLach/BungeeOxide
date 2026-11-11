@@ -3,46 +3,49 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketEncryptionBegin1 {
-    False(super::PacketEncryptionBegin0),
-    True(Vec<u8>),
+	False(super::PacketEncryptionBegin0),
+	True(Vec<u8>),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::packet_encryption_begin_0::serialize(__v, output),
-        Ty::True(__v) => super::super::super::super::buffer::inline_3::serialize(__v, output),
-    }
+	super::super::super::super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::packet_encryption_begin_0::serialize(__v, output),
+		Ty::True(__v) => super::super::super::super::buffer::inline_3::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let __tagv = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::packet_encryption_begin_0::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::super::super::super::buffer::inline_3::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let __tagv = super::super::super::super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::packet_encryption_begin_0::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(
+			super::super::super::super::buffer::inline_3::deserialize(input)?,
+		));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::packet_encryption_begin_0::size_of(__v),
-        Ty::True(__v) => super::super::super::super::buffer::inline_3::size_of(__v),
-    }
+	super::super::super::super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::packet_encryption_begin_0::size_of(__v),
+			Ty::True(__v) => super::super::super::super::buffer::inline_3::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = PacketEncryptionBegin1;
+pub type Ty = PacketEncryptionBegin1;

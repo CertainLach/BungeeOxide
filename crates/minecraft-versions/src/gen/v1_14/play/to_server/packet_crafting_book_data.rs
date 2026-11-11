@@ -3,51 +3,54 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketCraftingBookData {
-    V0(String),
-    V1(super::PacketCraftingBookData0),
-    Default(super::super::super::super::Varint),
+	V0(String),
+	V1(super::PacketCraftingBookData0),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0(__v) => super::super::super::super::pstring_96::serialize(__v, output),
-        Ty::V1(__v) => super::packet_crafting_book_data_0::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0(__v) => super::super::super::super::pstring_96::serialize(__v, output),
+		Ty::V1(__v) => super::packet_crafting_book_data_0::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::V0(super::super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::V1(super::packet_crafting_book_data_0::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0(super::super::super::super::pstring_96::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::V1(super::packet_crafting_book_data_0::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0(__v) => super::super::super::super::pstring_96::size_of(__v),
-        Ty::V1(__v) => super::packet_crafting_book_data_0::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0(__v) => super::super::super::super::pstring_96::size_of(__v),
+			Ty::V1(__v) => super::packet_crafting_book_data_0::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V0(_) => "v0",
-        Ty::V1(_) => "v1",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0(_) => "v0",
+		Ty::V1(_) => "v1",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::V0(_) => 0_i32,
-        Ty::V1(_) => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0(_) => 0_i32,
+		Ty::V1(_) => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketCraftingBookData;
+pub type Ty = PacketCraftingBookData;

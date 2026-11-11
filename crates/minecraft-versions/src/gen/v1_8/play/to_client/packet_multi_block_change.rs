@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMultiBlockChange {
-    pub chunk_x: super::super::super::super::I32,
-    pub chunk_z: super::super::super::super::I32,
-    pub records: Vec<super::PacketMultiBlockChange3>,
+	pub chunk_x: super::super::super::super::I32,
+	pub chunk_z: super::super::super::super::I32,
+	pub records: Vec<super::PacketMultiBlockChange3>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.chunk_x,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.chunk_z,
-        output,
-    )?;
-    super::super::super::super::array::inline_358::serialize(
-        &_0.records,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.chunk_x, output)?;
+	super::super::super::super::i32::serialize(&_0.chunk_z, output)?;
+	super::super::super::super::array::inline_358::serialize(&_0.records, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_chunkX = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_chunkZ = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_records = super::super::super::super::array::inline_358::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        chunk_x: f_chunkX,chunk_z: f_chunkZ,records: f_records
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_chunkX = super::super::super::super::i32::deserialize(input)?;
+	let f_chunkZ = super::super::super::super::i32::deserialize(input)?;
+	let f_records = super::super::super::super::array::inline_358::deserialize(input)?;
+	Ok(Ty {
+		chunk_x: f_chunkX,
+		chunk_z: f_chunkZ,
+		records: f_records,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.chunk_x
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.chunk_z
-    )
-    + super::super::super::super::array::inline_358::size_of(
-        &_0.records
-    )
+	0 + super::super::super::super::i32::size_of(&_0.chunk_x)
+		+ super::super::super::super::i32::size_of(&_0.chunk_z)
+		+ super::super::super::super::array::inline_358::size_of(&_0.records)
 }
- pub type Ty = PacketMultiBlockChange;
+pub type Ty = PacketMultiBlockChange;

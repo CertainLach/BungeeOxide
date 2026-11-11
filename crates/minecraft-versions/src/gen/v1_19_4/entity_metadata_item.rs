@@ -2,261 +2,285 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-    pub compare_to: &'a super::EntityMetadata24,
+	pub compare_to: &'a super::EntityMetadata24,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum EntityMetadataItem {
-    BlockPos(super::super::Position),
-    BlockState(super::super::Varint),
-    Boolean(super::super::Bool),
-    Byte(super::super::I8),
-    CatVariant(super::super::Varint),
-    Component(String),
-    CompoundTag(super::super::Nbt),
-    Direction(super::super::Varint),
-    Float(super::super::F32),
-    FrogVariant(super::super::Varint),
-    Int(super::super::Varint),
-    ItemStack(super::super::v1_13_2::Slot),
-    Long(super::super::Varlong),
-    OptionalBlockPos(Option<super::super::Position>),
-    OptionalBlockState(super::super::Varint),
-    OptionalComponent(Option<String>),
-    OptionalGlobalPos(Option<String>),
-    OptionalUnsignedInt(super::super::Varint),
-    OptionalUuid(Option<super::super::Uuid>),
-    PaintingVariant(super::super::Varint),
-    Particle(super::Particle),
-    Pose(super::super::Varint),
-    Quaternion(super::super::Vec4f),
-    Rotations(super::EntityMetadataItem26),
-    SnifferState(super::super::Varint),
-    String(String),
-    Vector3(super::super::Vec3f),
-    VillagerData(super::EntityMetadataItem27),
-    Default(super::EntityMetadata24),
+	BlockPos(super::super::Position),
+	BlockState(super::super::Varint),
+	Boolean(super::super::Bool),
+	Byte(super::super::I8),
+	CatVariant(super::super::Varint),
+	Component(String),
+	CompoundTag(super::super::Nbt),
+	Direction(super::super::Varint),
+	Float(super::super::F32),
+	FrogVariant(super::super::Varint),
+	Int(super::super::Varint),
+	ItemStack(super::super::v1_13_2::Slot),
+	Long(super::super::Varlong),
+	OptionalBlockPos(Option<super::super::Position>),
+	OptionalBlockState(super::super::Varint),
+	OptionalComponent(Option<String>),
+	OptionalGlobalPos(Option<String>),
+	OptionalUnsignedInt(super::super::Varint),
+	OptionalUuid(Option<super::super::Uuid>),
+	PaintingVariant(super::super::Varint),
+	Particle(super::Particle),
+	Pose(super::super::Varint),
+	Quaternion(super::super::Vec4f),
+	Rotations(super::EntityMetadataItem26),
+	SnifferState(super::super::Varint),
+	String(String),
+	Vector3(super::super::Vec3f),
+	VillagerData(super::EntityMetadataItem27),
+	Default(super::EntityMetadata24),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    match _0 {
-        Ty::BlockPos(__v) => super::super::position::serialize(__v, output),
-        Ty::BlockState(__v) => super::super::varint::serialize(__v, output),
-        Ty::Boolean(__v) => super::super::bool::serialize(__v, output),
-        Ty::Byte(__v) => super::super::i8::serialize(__v, output),
-        Ty::CatVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::Component(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::CompoundTag(__v) => super::super::nbt::serialize(__v, output),
-        Ty::Direction(__v) => super::super::varint::serialize(__v, output),
-        Ty::Float(__v) => super::super::f32::serialize(__v, output),
-        Ty::FrogVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::Int(__v) => super::super::varint::serialize(__v, output),
-        Ty::ItemStack(__v) => super::super::v1_13_2::slot::serialize(__v, output),
-        Ty::Long(__v) => super::super::varlong::serialize(__v, output),
-        Ty::OptionalBlockPos(__v) => super::super::option_16::serialize(__v, output),
-        Ty::OptionalBlockState(__v) => super::super::varint::serialize(__v, output),
-        Ty::OptionalComponent(__v) => super::super::option_18::serialize(__v, output),
-        Ty::OptionalGlobalPos(__v) => super::super::option_18::serialize(__v, output),
-        Ty::OptionalUnsignedInt(__v) => super::super::varint::serialize(__v, output),
-        Ty::OptionalUuid(__v) => super::super::option_8::serialize(__v, output),
-        Ty::PaintingVariant(__v) => super::super::varint::serialize(__v, output),
-        Ty::Particle(__v) => super::particle::serialize(__v, output),
-        Ty::Pose(__v) => super::super::varint::serialize(__v, output),
-        Ty::Quaternion(__v) => super::super::vec4f::serialize(__v, output),
-        Ty::Rotations(__v) => super::entity_metadata_item_26::serialize(__v, output),
-        Ty::SnifferState(__v) => super::super::varint::serialize(__v, output),
-        Ty::String(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::Vector3(__v) => super::super::vec3f::serialize(__v, output),
-        Ty::VillagerData(__v) => super::entity_metadata_item_27::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	match _0 {
+		Ty::BlockPos(__v) => super::super::position::serialize(__v, output),
+		Ty::BlockState(__v) => super::super::varint::serialize(__v, output),
+		Ty::Boolean(__v) => super::super::bool::serialize(__v, output),
+		Ty::Byte(__v) => super::super::i8::serialize(__v, output),
+		Ty::CatVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::Component(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::CompoundTag(__v) => super::super::nbt::serialize(__v, output),
+		Ty::Direction(__v) => super::super::varint::serialize(__v, output),
+		Ty::Float(__v) => super::super::f32::serialize(__v, output),
+		Ty::FrogVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::Int(__v) => super::super::varint::serialize(__v, output),
+		Ty::ItemStack(__v) => super::super::v1_13_2::slot::serialize(__v, output),
+		Ty::Long(__v) => super::super::varlong::serialize(__v, output),
+		Ty::OptionalBlockPos(__v) => super::super::option_16::serialize(__v, output),
+		Ty::OptionalBlockState(__v) => super::super::varint::serialize(__v, output),
+		Ty::OptionalComponent(__v) => super::super::option_18::serialize(__v, output),
+		Ty::OptionalGlobalPos(__v) => super::super::option_18::serialize(__v, output),
+		Ty::OptionalUnsignedInt(__v) => super::super::varint::serialize(__v, output),
+		Ty::OptionalUuid(__v) => super::super::option_8::serialize(__v, output),
+		Ty::PaintingVariant(__v) => super::super::varint::serialize(__v, output),
+		Ty::Particle(__v) => super::particle::serialize(__v, output),
+		Ty::Pose(__v) => super::super::varint::serialize(__v, output),
+		Ty::Quaternion(__v) => super::super::vec4f::serialize(__v, output),
+		Ty::Rotations(__v) => super::entity_metadata_item_26::serialize(__v, output),
+		Ty::SnifferState(__v) => super::super::varint::serialize(__v, output),
+		Ty::String(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::Vector3(__v) => super::super::vec3f::serialize(__v, output),
+		Ty::VillagerData(__v) => super::entity_metadata_item_27::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
-    let __tag = args.compare_to;
-    if (__tag.clone() == super::EntityMetadata24::BlockPos) {
-        return Ok(Ty::BlockPos(super::super::position::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::BlockState) {
-        return Ok(Ty::BlockState(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Boolean) {
-        return Ok(Ty::Boolean(super::super::bool::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Byte) {
-        return Ok(Ty::Byte(super::super::i8::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::CatVariant) {
-        return Ok(Ty::CatVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Component) {
-        return Ok(Ty::Component(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::CompoundTag) {
-        return Ok(Ty::CompoundTag(super::super::nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Direction) {
-        return Ok(Ty::Direction(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Float) {
-        return Ok(Ty::Float(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::FrogVariant) {
-        return Ok(Ty::FrogVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Int) {
-        return Ok(Ty::Int(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::ItemStack) {
-        return Ok(Ty::ItemStack(super::super::v1_13_2::slot::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Long) {
-        return Ok(Ty::Long(super::super::varlong::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalBlockPos) {
-        return Ok(Ty::OptionalBlockPos(super::super::option_16::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalBlockState) {
-        return Ok(Ty::OptionalBlockState(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalComponent) {
-        return Ok(Ty::OptionalComponent(super::super::option_18::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalGlobalPos) {
-        return Ok(Ty::OptionalGlobalPos(super::super::option_18::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalUnsignedInt) {
-        return Ok(Ty::OptionalUnsignedInt(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::OptionalUuid) {
-        return Ok(Ty::OptionalUuid(super::super::option_8::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::PaintingVariant) {
-        return Ok(Ty::PaintingVariant(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Particle) {
-        return Ok(Ty::Particle(super::particle::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Pose) {
-        return Ok(Ty::Pose(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Quaternion) {
-        return Ok(Ty::Quaternion(super::super::vec4f::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Rotations) {
-        return Ok(Ty::Rotations(super::entity_metadata_item_26::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::SnifferState) {
-        return Ok(Ty::SnifferState(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::String) {
-        return Ok(Ty::String(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::Vector3) {
-        return Ok(Ty::Vector3(super::super::vec3f::deserialize(input, )?));
-    }
-    if (__tag.clone() == super::EntityMetadata24::VillagerData) {
-        return Ok(Ty::VillagerData(super::entity_metadata_item_27::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tag.clone()))
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+	let __tag = args.compare_to;
+	if (__tag.clone() == super::EntityMetadata24::BlockPos) {
+		return Ok(Ty::BlockPos(super::super::position::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::BlockState) {
+		return Ok(Ty::BlockState(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Boolean) {
+		return Ok(Ty::Boolean(super::super::bool::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Byte) {
+		return Ok(Ty::Byte(super::super::i8::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::CatVariant) {
+		return Ok(Ty::CatVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Component) {
+		return Ok(Ty::Component(super::super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::CompoundTag) {
+		return Ok(Ty::CompoundTag(super::super::nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Direction) {
+		return Ok(Ty::Direction(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Float) {
+		return Ok(Ty::Float(super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::FrogVariant) {
+		return Ok(Ty::FrogVariant(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Int) {
+		return Ok(Ty::Int(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::ItemStack) {
+		return Ok(Ty::ItemStack(super::super::v1_13_2::slot::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Long) {
+		return Ok(Ty::Long(super::super::varlong::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalBlockPos) {
+		return Ok(Ty::OptionalBlockPos(super::super::option_16::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalBlockState) {
+		return Ok(Ty::OptionalBlockState(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalComponent) {
+		return Ok(Ty::OptionalComponent(super::super::option_18::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalGlobalPos) {
+		return Ok(Ty::OptionalGlobalPos(super::super::option_18::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalUnsignedInt) {
+		return Ok(Ty::OptionalUnsignedInt(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::OptionalUuid) {
+		return Ok(Ty::OptionalUuid(super::super::option_8::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::PaintingVariant) {
+		return Ok(Ty::PaintingVariant(super::super::varint::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Particle) {
+		return Ok(Ty::Particle(super::particle::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Pose) {
+		return Ok(Ty::Pose(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Quaternion) {
+		return Ok(Ty::Quaternion(super::super::vec4f::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Rotations) {
+		return Ok(Ty::Rotations(super::entity_metadata_item_26::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::SnifferState) {
+		return Ok(Ty::SnifferState(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::String) {
+		return Ok(Ty::String(super::super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::Vector3) {
+		return Ok(Ty::Vector3(super::super::vec3f::deserialize(input)?));
+	}
+	if (__tag.clone() == super::EntityMetadata24::VillagerData) {
+		return Ok(Ty::VillagerData(
+			super::entity_metadata_item_27::deserialize(input)?,
+		));
+	}
+	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0 + match _0 {
-        Ty::BlockPos(__v) => super::super::position::size_of(__v),
-        Ty::BlockState(__v) => super::super::varint::size_of(__v),
-        Ty::Boolean(__v) => super::super::bool::size_of(__v),
-        Ty::Byte(__v) => super::super::i8::size_of(__v),
-        Ty::CatVariant(__v) => super::super::varint::size_of(__v),
-        Ty::Component(__v) => super::super::pstring_96::size_of(__v),
-        Ty::CompoundTag(__v) => super::super::nbt::size_of(__v),
-        Ty::Direction(__v) => super::super::varint::size_of(__v),
-        Ty::Float(__v) => super::super::f32::size_of(__v),
-        Ty::FrogVariant(__v) => super::super::varint::size_of(__v),
-        Ty::Int(__v) => super::super::varint::size_of(__v),
-        Ty::ItemStack(__v) => super::super::v1_13_2::slot::size_of(__v),
-        Ty::Long(__v) => super::super::varlong::size_of(__v),
-        Ty::OptionalBlockPos(__v) => super::super::option_16::size_of(__v),
-        Ty::OptionalBlockState(__v) => super::super::varint::size_of(__v),
-        Ty::OptionalComponent(__v) => super::super::option_18::size_of(__v),
-        Ty::OptionalGlobalPos(__v) => super::super::option_18::size_of(__v),
-        Ty::OptionalUnsignedInt(__v) => super::super::varint::size_of(__v),
-        Ty::OptionalUuid(__v) => super::super::option_8::size_of(__v),
-        Ty::PaintingVariant(__v) => super::super::varint::size_of(__v),
-        Ty::Particle(__v) => super::particle::size_of(__v),
-        Ty::Pose(__v) => super::super::varint::size_of(__v),
-        Ty::Quaternion(__v) => super::super::vec4f::size_of(__v),
-        Ty::Rotations(__v) => super::entity_metadata_item_26::size_of(__v),
-        Ty::SnifferState(__v) => super::super::varint::size_of(__v),
-        Ty::String(__v) => super::super::pstring_96::size_of(__v),
-        Ty::Vector3(__v) => super::super::vec3f::size_of(__v),
-        Ty::VillagerData(__v) => super::entity_metadata_item_27::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	0 + match _0 {
+		Ty::BlockPos(__v) => super::super::position::size_of(__v),
+		Ty::BlockState(__v) => super::super::varint::size_of(__v),
+		Ty::Boolean(__v) => super::super::bool::size_of(__v),
+		Ty::Byte(__v) => super::super::i8::size_of(__v),
+		Ty::CatVariant(__v) => super::super::varint::size_of(__v),
+		Ty::Component(__v) => super::super::pstring_96::size_of(__v),
+		Ty::CompoundTag(__v) => super::super::nbt::size_of(__v),
+		Ty::Direction(__v) => super::super::varint::size_of(__v),
+		Ty::Float(__v) => super::super::f32::size_of(__v),
+		Ty::FrogVariant(__v) => super::super::varint::size_of(__v),
+		Ty::Int(__v) => super::super::varint::size_of(__v),
+		Ty::ItemStack(__v) => super::super::v1_13_2::slot::size_of(__v),
+		Ty::Long(__v) => super::super::varlong::size_of(__v),
+		Ty::OptionalBlockPos(__v) => super::super::option_16::size_of(__v),
+		Ty::OptionalBlockState(__v) => super::super::varint::size_of(__v),
+		Ty::OptionalComponent(__v) => super::super::option_18::size_of(__v),
+		Ty::OptionalGlobalPos(__v) => super::super::option_18::size_of(__v),
+		Ty::OptionalUnsignedInt(__v) => super::super::varint::size_of(__v),
+		Ty::OptionalUuid(__v) => super::super::option_8::size_of(__v),
+		Ty::PaintingVariant(__v) => super::super::varint::size_of(__v),
+		Ty::Particle(__v) => super::particle::size_of(__v),
+		Ty::Pose(__v) => super::super::varint::size_of(__v),
+		Ty::Quaternion(__v) => super::super::vec4f::size_of(__v),
+		Ty::Rotations(__v) => super::entity_metadata_item_26::size_of(__v),
+		Ty::SnifferState(__v) => super::super::varint::size_of(__v),
+		Ty::String(__v) => super::super::pstring_96::size_of(__v),
+		Ty::Vector3(__v) => super::super::vec3f::size_of(__v),
+		Ty::VillagerData(__v) => super::entity_metadata_item_27::size_of(__v),
+		Ty::Default(_) => 0,
+	}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::BlockPos(_) => "block_pos",
-        Ty::BlockState(_) => "block_state",
-        Ty::Boolean(_) => "boolean",
-        Ty::Byte(_) => "byte",
-        Ty::CatVariant(_) => "cat_variant",
-        Ty::Component(_) => "component",
-        Ty::CompoundTag(_) => "compound_tag",
-        Ty::Direction(_) => "direction",
-        Ty::Float(_) => "float",
-        Ty::FrogVariant(_) => "frog_variant",
-        Ty::Int(_) => "int",
-        Ty::ItemStack(_) => "item_stack",
-        Ty::Long(_) => "long",
-        Ty::OptionalBlockPos(_) => "optional_block_pos",
-        Ty::OptionalBlockState(_) => "optional_block_state",
-        Ty::OptionalComponent(_) => "optional_component",
-        Ty::OptionalGlobalPos(_) => "optional_global_pos",
-        Ty::OptionalUnsignedInt(_) => "optional_unsigned_int",
-        Ty::OptionalUuid(_) => "optional_uuid",
-        Ty::PaintingVariant(_) => "painting_variant",
-        Ty::Particle(_) => "particle",
-        Ty::Pose(_) => "pose",
-        Ty::Quaternion(_) => "quaternion",
-        Ty::Rotations(_) => "rotations",
-        Ty::SnifferState(_) => "sniffer_state",
-        Ty::String(_) => "string",
-        Ty::Vector3(_) => "vector3",
-        Ty::VillagerData(_) => "villager_data",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::BlockPos(_) => "block_pos",
+		Ty::BlockState(_) => "block_state",
+		Ty::Boolean(_) => "boolean",
+		Ty::Byte(_) => "byte",
+		Ty::CatVariant(_) => "cat_variant",
+		Ty::Component(_) => "component",
+		Ty::CompoundTag(_) => "compound_tag",
+		Ty::Direction(_) => "direction",
+		Ty::Float(_) => "float",
+		Ty::FrogVariant(_) => "frog_variant",
+		Ty::Int(_) => "int",
+		Ty::ItemStack(_) => "item_stack",
+		Ty::Long(_) => "long",
+		Ty::OptionalBlockPos(_) => "optional_block_pos",
+		Ty::OptionalBlockState(_) => "optional_block_state",
+		Ty::OptionalComponent(_) => "optional_component",
+		Ty::OptionalGlobalPos(_) => "optional_global_pos",
+		Ty::OptionalUnsignedInt(_) => "optional_unsigned_int",
+		Ty::OptionalUuid(_) => "optional_uuid",
+		Ty::PaintingVariant(_) => "painting_variant",
+		Ty::Particle(_) => "particle",
+		Ty::Pose(_) => "pose",
+		Ty::Quaternion(_) => "quaternion",
+		Ty::Rotations(_) => "rotations",
+		Ty::SnifferState(_) => "sniffer_state",
+		Ty::String(_) => "string",
+		Ty::Vector3(_) => "vector3",
+		Ty::VillagerData(_) => "villager_data",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn debug_assert_tag(_0: &Ty, __tag: &super::EntityMetadata24) {
-    debug_assert!(
-        match _0 {
-            Ty::BlockPos(_) => (__tag.clone() == super::EntityMetadata24::BlockPos),
-            Ty::BlockState(_) => (__tag.clone() == super::EntityMetadata24::BlockState),
-            Ty::Boolean(_) => (__tag.clone() == super::EntityMetadata24::Boolean),
-            Ty::Byte(_) => (__tag.clone() == super::EntityMetadata24::Byte),
-            Ty::CatVariant(_) => (__tag.clone() == super::EntityMetadata24::CatVariant),
-            Ty::Component(_) => (__tag.clone() == super::EntityMetadata24::Component),
-            Ty::CompoundTag(_) => (__tag.clone() == super::EntityMetadata24::CompoundTag),
-            Ty::Direction(_) => (__tag.clone() == super::EntityMetadata24::Direction),
-            Ty::Float(_) => (__tag.clone() == super::EntityMetadata24::Float),
-            Ty::FrogVariant(_) => (__tag.clone() == super::EntityMetadata24::FrogVariant),
-            Ty::Int(_) => (__tag.clone() == super::EntityMetadata24::Int),
-            Ty::ItemStack(_) => (__tag.clone() == super::EntityMetadata24::ItemStack),
-            Ty::Long(_) => (__tag.clone() == super::EntityMetadata24::Long),
-            Ty::OptionalBlockPos(_) => (__tag.clone() == super::EntityMetadata24::OptionalBlockPos),
-            Ty::OptionalBlockState(_) => (__tag.clone() == super::EntityMetadata24::OptionalBlockState),
-            Ty::OptionalComponent(_) => (__tag.clone() == super::EntityMetadata24::OptionalComponent),
-            Ty::OptionalGlobalPos(_) => (__tag.clone() == super::EntityMetadata24::OptionalGlobalPos),
-            Ty::OptionalUnsignedInt(_) => (__tag.clone() == super::EntityMetadata24::OptionalUnsignedInt),
-            Ty::OptionalUuid(_) => (__tag.clone() == super::EntityMetadata24::OptionalUuid),
-            Ty::PaintingVariant(_) => (__tag.clone() == super::EntityMetadata24::PaintingVariant),
-            Ty::Particle(_) => (__tag.clone() == super::EntityMetadata24::Particle),
-            Ty::Pose(_) => (__tag.clone() == super::EntityMetadata24::Pose),
-            Ty::Quaternion(_) => (__tag.clone() == super::EntityMetadata24::Quaternion),
-            Ty::Rotations(_) => (__tag.clone() == super::EntityMetadata24::Rotations),
-            Ty::SnifferState(_) => (__tag.clone() == super::EntityMetadata24::SnifferState),
-            Ty::String(_) => (__tag.clone() == super::EntityMetadata24::String),
-            Ty::Vector3(_) => (__tag.clone() == super::EntityMetadata24::Vector3),
-            Ty::VillagerData(_) => (__tag.clone() == super::EntityMetadata24::VillagerData),
-            Ty::Default(_) => true,
-        },
-        "union variant does not match its external tag",
-    );
+	debug_assert!(
+		match _0 {
+			Ty::BlockPos(_) => (__tag.clone() == super::EntityMetadata24::BlockPos),
+			Ty::BlockState(_) => (__tag.clone() == super::EntityMetadata24::BlockState),
+			Ty::Boolean(_) => (__tag.clone() == super::EntityMetadata24::Boolean),
+			Ty::Byte(_) => (__tag.clone() == super::EntityMetadata24::Byte),
+			Ty::CatVariant(_) => (__tag.clone() == super::EntityMetadata24::CatVariant),
+			Ty::Component(_) => (__tag.clone() == super::EntityMetadata24::Component),
+			Ty::CompoundTag(_) => (__tag.clone() == super::EntityMetadata24::CompoundTag),
+			Ty::Direction(_) => (__tag.clone() == super::EntityMetadata24::Direction),
+			Ty::Float(_) => (__tag.clone() == super::EntityMetadata24::Float),
+			Ty::FrogVariant(_) => (__tag.clone() == super::EntityMetadata24::FrogVariant),
+			Ty::Int(_) => (__tag.clone() == super::EntityMetadata24::Int),
+			Ty::ItemStack(_) => (__tag.clone() == super::EntityMetadata24::ItemStack),
+			Ty::Long(_) => (__tag.clone() == super::EntityMetadata24::Long),
+			Ty::OptionalBlockPos(_) => (__tag.clone() == super::EntityMetadata24::OptionalBlockPos),
+			Ty::OptionalBlockState(_) =>
+				(__tag.clone() == super::EntityMetadata24::OptionalBlockState),
+			Ty::OptionalComponent(_) =>
+				(__tag.clone() == super::EntityMetadata24::OptionalComponent),
+			Ty::OptionalGlobalPos(_) =>
+				(__tag.clone() == super::EntityMetadata24::OptionalGlobalPos),
+			Ty::OptionalUnsignedInt(_) =>
+				(__tag.clone() == super::EntityMetadata24::OptionalUnsignedInt),
+			Ty::OptionalUuid(_) => (__tag.clone() == super::EntityMetadata24::OptionalUuid),
+			Ty::PaintingVariant(_) => (__tag.clone() == super::EntityMetadata24::PaintingVariant),
+			Ty::Particle(_) => (__tag.clone() == super::EntityMetadata24::Particle),
+			Ty::Pose(_) => (__tag.clone() == super::EntityMetadata24::Pose),
+			Ty::Quaternion(_) => (__tag.clone() == super::EntityMetadata24::Quaternion),
+			Ty::Rotations(_) => (__tag.clone() == super::EntityMetadata24::Rotations),
+			Ty::SnifferState(_) => (__tag.clone() == super::EntityMetadata24::SnifferState),
+			Ty::String(_) => (__tag.clone() == super::EntityMetadata24::String),
+			Ty::Vector3(_) => (__tag.clone() == super::EntityMetadata24::Vector3),
+			Ty::VillagerData(_) => (__tag.clone() == super::EntityMetadata24::VillagerData),
+			Ty::Default(_) => true,
+		},
+		"union variant does not match its external tag",
+	);
 }
- pub type Ty = EntityMetadataItem;
+pub type Ty = EntityMetadataItem;

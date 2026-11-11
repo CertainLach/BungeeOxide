@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTileEntityData {
-    pub location: super::super::super::super::v1_0_1::PositionIsi,
-    pub action: super::super::super::super::U8,
-    pub custom1: super::super::super::super::I32,
-    pub custom2: super::super::super::super::I32,
-    pub custom3: super::super::super::super::I32,
+	pub location: super::super::super::super::v1_0_1::PositionIsi,
+	pub action: super::super::super::super::U8,
+	pub custom1: super::super::super::super::I32,
+	pub custom2: super::super::super::super::I32,
+	pub custom3: super::super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::v1_0_1::position_isi::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.action,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.custom1,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.custom2,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.custom3,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::v1_0_1::position_isi::serialize(&_0.location, output)?;
+	super::super::super::super::u8::serialize(&_0.action, output)?;
+	super::super::super::super::i32::serialize(&_0.custom1, output)?;
+	super::super::super::super::i32::serialize(&_0.custom2, output)?;
+	super::super::super::super::i32::serialize(&_0.custom3, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(23)?;
-    let f_location = super::super::super::super::v1_0_1::position_isi::deserialize(
-        input,
-    )?;
-    let f_action = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_custom1 = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_custom2 = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_custom3 = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,action: f_action,custom1: f_custom1,custom2: f_custom2,custom3: f_custom3
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(23)?;
+	let f_location = super::super::super::super::v1_0_1::position_isi::deserialize(input)?;
+	let f_action = super::super::super::super::u8::deserialize(input)?;
+	let f_custom1 = super::super::super::super::i32::deserialize(input)?;
+	let f_custom2 = super::super::super::super::i32::deserialize(input)?;
+	let f_custom3 = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		action: f_action,
+		custom1: f_custom1,
+		custom2: f_custom2,
+		custom3: f_custom3,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::v1_0_1::position_isi::size_of(
-        &_0.location
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.action
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.custom1
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.custom2
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.custom3
-    )
+	0 + super::super::super::super::v1_0_1::position_isi::size_of(&_0.location)
+		+ super::super::super::super::u8::size_of(&_0.action)
+		+ super::super::super::super::i32::size_of(&_0.custom1)
+		+ super::super::super::super::i32::size_of(&_0.custom2)
+		+ super::super::super::super::i32::size_of(&_0.custom3)
 }
- pub type Ty = PacketTileEntityData;
+pub type Ty = PacketTileEntityData;

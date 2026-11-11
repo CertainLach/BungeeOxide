@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPrepareCraftingGrid1 {
-    pub item: super::super::super::super::v1_8::Slot,
-    pub crafting_slot: super::super::super::super::U8,
-    pub player_slot: super::super::super::super::U8,
+	pub item: super::super::super::super::v1_8::Slot,
+	pub crafting_slot: super::super::super::super::U8,
+	pub player_slot: super::super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::v1_8::slot::serialize(
-        &_0.item,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.crafting_slot,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.player_slot,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::v1_8::slot::serialize(&_0.item, output)?;
+	super::super::super::super::u8::serialize(&_0.crafting_slot, output)?;
+	super::super::super::super::u8::serialize(&_0.player_slot, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_item = super::super::super::super::v1_8::slot::deserialize(
-        input,
-    )?;
-    let f_craftingSlot = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_playerSlot = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item: f_item,crafting_slot: f_craftingSlot,player_slot: f_playerSlot
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_item = super::super::super::super::v1_8::slot::deserialize(input)?;
+	let f_craftingSlot = super::super::super::super::u8::deserialize(input)?;
+	let f_playerSlot = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		item: f_item,
+		crafting_slot: f_craftingSlot,
+		player_slot: f_playerSlot,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::v1_8::slot::size_of(
-        &_0.item
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.crafting_slot
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.player_slot
-    )
+	0 + super::super::super::super::v1_8::slot::size_of(&_0.item)
+		+ super::super::super::super::u8::size_of(&_0.crafting_slot)
+		+ super::super::super::super::u8::size_of(&_0.player_slot)
 }
- pub type Ty = PacketPrepareCraftingGrid1;
+pub type Ty = PacketPrepareCraftingGrid1;

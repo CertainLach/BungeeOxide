@@ -3,58 +3,65 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent45<'i> {
-    False(super::super::Pstring96::<'i>),
-    True(super::SlotComponent44::<'i>),
+	False(super::super::Pstring96<'i>),
+	True(super::SlotComponent44<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::super::pstring_96::serialize(__v, output),
-        Ty::True(__v) => super::slot_component_44::serialize(__v, output),
-    }
+	super::super::super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::super::pstring_96::serialize(__v, output),
+		Ty::True(__v) => super::slot_component_44::serialize(__v, output),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let __tagv = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::slot_component_44::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let __tagv = super::super::super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::super::pstring_96::deserialize(input)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::slot_component_44::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::super::pstring_96::size_of(__v),
-        Ty::True(__v) => super::slot_component_44::size_of(__v),
-    }
+	super::super::super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::super::pstring_96::size_of(__v),
+			Ty::True(__v) => super::slot_component_44::size_of(__v),
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent45) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::SlotComponent45::False(__v) => Ty::False(super::super::pstring_96::view(__v)),
-        super::super::super::v1_21_11::SlotComponent45::True(__v) => Ty::True(super::slot_component_44::view(__v)),
-    }
+	match _0 {
+		super::super::super::v1_21_11::SlotComponent45::False(__v) => {
+			Ty::False(super::super::pstring_96::view(__v))
+		}
+		super::super::super::v1_21_11::SlotComponent45::True(__v) => {
+			Ty::True(super::slot_component_44::view(__v))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent45) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::SlotComponent45::False(__v) => Ty::False(super::super::pstring_96::view(__v)),
-        super::super::super::v1_21_11::SlotComponent45::True(__v) => Ty::True(super::slot_component_44::into_view(__v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent45) -> Ty<'i> {
+	match _0 {
+		super::super::super::v1_21_11::SlotComponent45::False(__v) => {
+			Ty::False(super::super::pstring_96::view(__v))
+		}
+		super::super::super::v1_21_11::SlotComponent45::True(__v) => {
+			Ty::True(super::slot_component_44::into_view(__v))
+		}
+	}
 }
- pub type Ty<'i> = SlotComponent45<'i>;
+pub type Ty<'i> = SlotComponent45<'i>;

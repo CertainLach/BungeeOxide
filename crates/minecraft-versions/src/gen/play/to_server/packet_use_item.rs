@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUseItem {
-    pub hand: super::PacketUseItem0,
-    pub sequence: super::super::super::Varint,
-    pub rotation: super::super::super::Vec2f,
+	pub hand: super::PacketUseItem0,
+	pub sequence: super::super::super::Varint,
+	pub rotation: super::super::super::Vec2f,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::packet_use_item_0::serialize(
-        &_0.hand,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.sequence,
-        output,
-    )?;
-    super::super::super::vec2f::serialize(
-        &_0.rotation,
-        output,
-    )?;
-    Ok(())
+	super::packet_use_item_0::serialize(&_0.hand, output)?;
+	super::super::super::varint::serialize(&_0.sequence, output)?;
+	super::super::super::vec2f::serialize(&_0.rotation, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_hand = super::packet_use_item_0::deserialize(
-        input,
-    )?;
-    let f_sequence = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_rotation = super::super::super::vec2f::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        hand: f_hand,sequence: f_sequence,rotation: f_rotation
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_hand = super::packet_use_item_0::deserialize(input)?;
+	let f_sequence = super::super::super::varint::deserialize(input)?;
+	let f_rotation = super::super::super::vec2f::deserialize(input)?;
+	Ok(Ty {
+		hand: f_hand,
+		sequence: f_sequence,
+		rotation: f_rotation,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::packet_use_item_0::size_of(
-        &_0.hand
-    )
-    + super::super::super::varint::size_of(
-        &_0.sequence
-    )
-    + super::super::super::vec2f::size_of(
-        &_0.rotation
-    )
+	0 + super::packet_use_item_0::size_of(&_0.hand)
+		+ super::super::super::varint::size_of(&_0.sequence)
+		+ super::super::super::vec2f::size_of(&_0.rotation)
 }
- pub type Ty = PacketUseItem;
+pub type Ty = PacketUseItem;

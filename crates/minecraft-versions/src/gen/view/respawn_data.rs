@@ -3,55 +3,37 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RespawnData<'i> {
-    pub global_pos: super::GlobalPos::<'i>,
-    pub yaw: super::super::F32,
-    pub pitch: super::super::F32,
+	pub global_pos: super::GlobalPos<'i>,
+	pub yaw: super::super::F32,
+	pub pitch: super::super::F32,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::global_pos::serialize(
-        &_0.global_pos,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    Ok(())
+	super::global_pos::serialize(&_0.global_pos, output)?;
+	super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::f32::serialize(&_0.pitch, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(17)?;
-    let f_globalPos = super::global_pos::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        global_pos: f_globalPos,yaw: f_yaw,pitch: f_pitch
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(17)?;
+	let f_globalPos = super::global_pos::deserialize(input)?;
+	let f_yaw = super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		global_pos: f_globalPos,
+		yaw: f_yaw,
+		pitch: f_pitch,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::global_pos::size_of(
-        &_0.global_pos
-    )
-    + super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::f32::size_of(
-        &_0.pitch
-    )
+	0 + super::global_pos::size_of(&_0.global_pos)
+		+ super::super::f32::size_of(&_0.yaw)
+		+ super::super::f32::size_of(&_0.pitch)
 }
 pub fn view<'i>(_0: &'i super::super::RespawnData) -> Ty<'i> {
-    Ty {
-        global_pos: super::global_pos::view(&_0.global_pos),yaw: ::core::clone::Clone::clone(&_0.yaw),pitch: ::core::clone::Clone::clone(&_0.pitch)
-    }
+	Ty {
+		global_pos: super::global_pos::view(&_0.global_pos),
+		yaw: ::core::clone::Clone::clone(&_0.yaw),
+		pitch: ::core::clone::Clone::clone(&_0.pitch),
+	}
 }
- pub type Ty<'i> = RespawnData<'i>;
+pub type Ty<'i> = RespawnData<'i>;

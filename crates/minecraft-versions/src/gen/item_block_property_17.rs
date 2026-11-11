@@ -3,46 +3,47 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum ItemBlockProperty17 {
-    False(super::ItemBlockProperty16),
-    True(String),
+	False(super::ItemBlockProperty16),
+	True(String),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::item_block_property_16::serialize(__v, output),
-        Ty::True(__v) => super::pstring_96::serialize(__v, output),
-    }
+	super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::item_block_property_16::serialize(__v, output),
+		Ty::True(__v) => super::pstring_96::serialize(__v, output),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let __tagv = super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::item_block_property_16::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::pstring_96::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let __tagv = super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::item_block_property_16::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::pstring_96::deserialize(input)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::item_block_property_16::size_of(__v),
-        Ty::True(__v) => super::pstring_96::size_of(__v),
-    }
+	super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::item_block_property_16::size_of(__v),
+			Ty::True(__v) => super::pstring_96::size_of(__v),
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
- pub type Ty = ItemBlockProperty17;
+pub type Ty = ItemBlockProperty17;

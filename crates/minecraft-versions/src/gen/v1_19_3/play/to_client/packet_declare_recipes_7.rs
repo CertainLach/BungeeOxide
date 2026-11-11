@@ -3,57 +3,42 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes7 {
-    pub r#type: String,
-    pub recipe_id: String,
-    pub data: super::PacketDeclareRecipes6,
+	pub r#type: String,
+	pub recipe_id: String,
+	pub data: super::PacketDeclareRecipes6,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.recipe_id,
-        output,
-    )?;
-    super::packet_declare_recipes_6::debug_assert_tag(
-        &_0.data,
-        {let _0: &String = &_0.r#type;_0},
-    );
-    super::packet_declare_recipes_6::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.r#type, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.recipe_id, output)?;
+	super::packet_declare_recipes_6::debug_assert_tag(&_0.data, {
+		let _0: &String = &_0.r#type;
+		_0
+	});
+	super::packet_declare_recipes_6::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_type = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_recipeId = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_data = super::packet_declare_recipes_6::deserialize(
-        input,
-        super::packet_declare_recipes_6::Args {
-            r#type: {let _0: &String = &f_type;_0}
-        },
-    )?;
-    Ok(Ty {
-        r#type: f_type,recipe_id: f_recipeId,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_type = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_recipeId = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_data = super::packet_declare_recipes_6::deserialize(
+		input,
+		super::packet_declare_recipes_6::Args {
+			r#type: {
+				let _0: &String = &f_type;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		r#type: f_type,
+		recipe_id: f_recipeId,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.recipe_id
-    )
-    + super::packet_declare_recipes_6::size_of(
-        &_0.data
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.r#type)
+		+ super::super::super::super::pstring_96::size_of(&_0.recipe_id)
+		+ super::packet_declare_recipes_6::size_of(&_0.data)
 }
- pub type Ty = PacketDeclareRecipes7;
+pub type Ty = PacketDeclareRecipes7;

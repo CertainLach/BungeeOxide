@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatSuggestions {
-    pub action: super::super::super::Varint,
-    pub entries: Vec<String>,
+	pub action: super::super::super::Varint,
+	pub entries: Vec<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.action,
-        output,
-    )?;
-    super::super::super::array::inline_29::serialize(
-        &_0.entries,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.action, output)?;
+	super::super::super::array::inline_29::serialize(&_0.entries, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_action = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_entries = super::super::super::array::inline_29::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        action: f_action,entries: f_entries
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_action = super::super::super::varint::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_29::deserialize(input)?;
+	Ok(Ty {
+		action: f_action,
+		entries: f_entries,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.action
-    )
-    + super::super::super::array::inline_29::size_of(
-        &_0.entries
-    )
+	0 + super::super::super::varint::size_of(&_0.action)
+		+ super::super::super::array::inline_29::size_of(&_0.entries)
 }
- pub type Ty = PacketChatSuggestions;
+pub type Ty = PacketChatSuggestions;

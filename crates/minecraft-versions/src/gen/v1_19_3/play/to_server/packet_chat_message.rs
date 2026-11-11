@@ -3,86 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatMessage {
-    pub message: String,
-    pub timestamp: super::super::super::super::I64,
-    pub salt: super::super::super::super::I64,
-    pub signature: Option<Vec<u8>>,
-    pub offset: super::super::super::super::Varint,
-    pub acknowledged: Vec<u8>,
+	pub message: String,
+	pub timestamp: super::super::super::super::I64,
+	pub salt: super::super::super::super::I64,
+	pub signature: Option<Vec<u8>>,
+	pub offset: super::super::super::super::Varint,
+	pub acknowledged: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.message,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.salt,
-        output,
-    )?;
-    super::super::super::super::option_11::serialize(
-        &_0.signature,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.offset,
-        output,
-    )?;
-    super::super::super::super::buffer::sized::serialize(
-        &_0.acknowledged,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.message, output)?;
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::i64::serialize(&_0.salt, output)?;
+	super::super::super::super::option_11::serialize(&_0.signature, output)?;
+	super::super::super::super::varint::serialize(&_0.offset, output)?;
+	super::super::super::super::buffer::sized::serialize(&_0.acknowledged, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(19)?;
-    let f_message = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_salt = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::super::option_11::deserialize(
-        input,
-    )?;
-    let f_offset = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_acknowledged = super::super::super::super::buffer::sized::deserialize(
-        input,
-        super::super::super::super::buffer::sized::Args {
-            count: &(3).try_into().expect("constant fits")
-        },
-    )?;
-    Ok(Ty {
-        message: f_message,timestamp: f_timestamp,salt: f_salt,signature: f_signature,offset: f_offset,acknowledged: f_acknowledged
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(19)?;
+	let f_message = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_salt = super::super::super::super::i64::deserialize(input)?;
+	let f_signature = super::super::super::super::option_11::deserialize(input)?;
+	let f_offset = super::super::super::super::varint::deserialize(input)?;
+	let f_acknowledged = super::super::super::super::buffer::sized::deserialize(
+		input,
+		super::super::super::super::buffer::sized::Args {
+			count: &(3).try_into().expect("constant fits"),
+		},
+	)?;
+	Ok(Ty {
+		message: f_message,
+		timestamp: f_timestamp,
+		salt: f_salt,
+		signature: f_signature,
+		offset: f_offset,
+		acknowledged: f_acknowledged,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.message
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.salt
-    )
-    + super::super::super::super::option_11::size_of(
-        &_0.signature
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.offset
-    )
-    + super::super::super::super::buffer::sized::size_of(
-        &_0.acknowledged
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.message)
+		+ super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::i64::size_of(&_0.salt)
+		+ super::super::super::super::option_11::size_of(&_0.signature)
+		+ super::super::super::super::varint::size_of(&_0.offset)
+		+ super::super::super::super::buffer::sized::size_of(&_0.acknowledged)
 }
- pub type Ty = PacketChatMessage;
+pub type Ty = PacketChatMessage;

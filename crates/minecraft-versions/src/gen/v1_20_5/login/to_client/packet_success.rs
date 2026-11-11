@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSuccess {
-    pub uuid: super::super::super::super::Uuid,
-    pub username: String,
-    pub properties: Vec<super::PacketSuccess0>,
-    pub strict_error_handling: super::super::super::super::Bool,
+	pub uuid: super::super::super::super::Uuid,
+	pub username: String,
+	pub properties: Vec<super::PacketSuccess0>,
+	pub strict_error_handling: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.username,
-        output,
-    )?;
-    super::super::super::super::array::inline_217::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.strict_error_handling,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.uuid, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.username, output)?;
+	super::super::super::super::array::inline_217::serialize(&_0.properties, output)?;
+	super::super::super::super::bool::serialize(&_0.strict_error_handling, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_uuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_username = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::super::super::array::inline_217::deserialize(
-        input,
-    )?;
-    let f_strictErrorHandling = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,username: f_username,properties: f_properties,strict_error_handling: f_strictErrorHandling
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_uuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_username = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_properties = super::super::super::super::array::inline_217::deserialize(input)?;
+	let f_strictErrorHandling = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		username: f_username,
+		properties: f_properties,
+		strict_error_handling: f_strictErrorHandling,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.username
-    )
-    + super::super::super::super::array::inline_217::size_of(
-        &_0.properties
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.strict_error_handling
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.uuid)
+		+ super::super::super::super::pstring_96::size_of(&_0.username)
+		+ super::super::super::super::array::inline_217::size_of(&_0.properties)
+		+ super::super::super::super::bool::size_of(&_0.strict_error_handling)
 }
- pub type Ty = PacketSuccess;
+pub type Ty = PacketSuccess;

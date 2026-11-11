@@ -7,7 +7,7 @@ pub mod packet_window_click;
 pub mod packet_window_click_0;
 pub use self::packet::Packet;
 pub use self::packet_chat_command_signed::PacketChatCommandSigned;
+pub use self::packet_chat_command_signed_0::PacketChatCommandSigned0;
 pub use self::packet_set_creative_slot::PacketSetCreativeSlot;
 pub use self::packet_window_click::PacketWindowClick;
-pub use self::packet_chat_command_signed_0::PacketChatCommandSigned0;
 pub use self::packet_window_click_0::PacketWindowClick0;

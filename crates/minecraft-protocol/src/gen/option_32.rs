@@ -3,21 +3,23 @@ use crate::pds::{Input, Output, Result};
 
 pub type Ty = Option<super::play::to_client::PacketTrackedWaypoint48>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::bool::serialize(&_0.is_some(), output)?;
-    if let Some(v) = _0 {
-        super::play::to_client::packet_tracked_waypoint_48::serialize(v, output)?;
-    }
-    Ok(())
+	super::bool::serialize(&_0.is_some(), output)?;
+	if let Some(v) = _0 {
+		super::play::to_client::packet_tracked_waypoint_48::serialize(v, output)?;
+	}
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    Ok(if super::bool::deserialize(input)? {
-        Some(super::play::to_client::packet_tracked_waypoint_48::deserialize(input, )?)
-    } else {
-        None
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	Ok(if super::bool::deserialize(input)? {
+		Some(super::play::to_client::packet_tracked_waypoint_48::deserialize(input)?)
+	} else {
+		None
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    let mut n = super::bool::size_of(&_0.is_some());
-    if let Some(v) = _0 { n += super::play::to_client::packet_tracked_waypoint_48::size_of(v); }
-    n
+	let mut n = super::bool::size_of(&_0.is_some());
+	if let Some(v) = _0 {
+		n += super::play::to_client::packet_tracked_waypoint_48::size_of(v);
+	}
+	n
 }

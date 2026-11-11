@@ -3,64 +3,43 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTradeList17 {
-    pub item_id: super::super::super::super::Varint,
-    pub item_count: super::super::super::super::Varint,
-    pub added_component_count: super::super::super::super::Varint,
-    pub components: Vec<super::super::super::SlotComponent>,
+	pub item_id: super::super::super::super::Varint,
+	pub item_count: super::super::super::super::Varint,
+	pub added_component_count: super::super::super::super::Varint,
+	pub components: Vec<super::super::super::SlotComponent>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.item_id,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.added_component_count,
-        output,
-    )?;
-    super::super::super::super::array::sized_377::serialize(
-        &_0.components,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.item_id, output)?;
+	super::super::super::super::varint::serialize(&_0.item_count, output)?;
+	super::super::super::super::varint::serialize(&_0.added_component_count, output)?;
+	super::super::super::super::array::sized_377::serialize(&_0.components, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_itemId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_itemCount = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_addedComponentCount = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_components = super::super::super::super::array::sized_377::deserialize(
-        input,
-        super::super::super::super::array::sized_377::Args {
-            count: {let _0: &super::super::super::super::Varint = &f_addedComponentCount;_0}
-        },
-    )?;
-    Ok(Ty {
-        item_id: f_itemId,item_count: f_itemCount,added_component_count: f_addedComponentCount,components: f_components
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_itemId = super::super::super::super::varint::deserialize(input)?;
+	let f_itemCount = super::super::super::super::varint::deserialize(input)?;
+	let f_addedComponentCount = super::super::super::super::varint::deserialize(input)?;
+	let f_components = super::super::super::super::array::sized_377::deserialize(
+		input,
+		super::super::super::super::array::sized_377::Args {
+			count: {
+				let _0: &super::super::super::super::Varint = &f_addedComponentCount;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		item_id: f_itemId,
+		item_count: f_itemCount,
+		added_component_count: f_addedComponentCount,
+		components: f_components,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.item_id
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.item_count
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.added_component_count
-    )
-    + super::super::super::super::array::sized_377::size_of(
-        &_0.components
-    )
+	0 + super::super::super::super::varint::size_of(&_0.item_id)
+		+ super::super::super::super::varint::size_of(&_0.item_count)
+		+ super::super::super::super::varint::size_of(&_0.added_component_count)
+		+ super::super::super::super::array::sized_377::size_of(&_0.components)
 }
- pub type Ty = PacketTradeList17;
+pub type Ty = PacketTradeList17;

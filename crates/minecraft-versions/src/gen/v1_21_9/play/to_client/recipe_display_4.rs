@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct RecipeDisplay4 {
-    pub template: super::SlotDisplay,
-    pub base: super::SlotDisplay,
-    pub addition: super::SlotDisplay,
-    pub result: super::SlotDisplay,
-    pub crafting_station: super::SlotDisplay,
+	pub template: super::SlotDisplay,
+	pub base: super::SlotDisplay,
+	pub addition: super::SlotDisplay,
+	pub result: super::SlotDisplay,
+	pub crafting_station: super::SlotDisplay,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_display::serialize_guarded(
-        &_0.template,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.base,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.addition,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.result,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.crafting_station,
-        output,
-    )?;
-    Ok(())
+	super::slot_display::serialize_guarded(&_0.template, output)?;
+	super::slot_display::serialize_guarded(&_0.base, output)?;
+	super::slot_display::serialize_guarded(&_0.addition, output)?;
+	super::slot_display::serialize_guarded(&_0.result, output)?;
+	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_template = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_base = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_addition = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_result = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_craftingStation = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        template: f_template,base: f_base,addition: f_addition,result: f_result,crafting_station: f_craftingStation
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_template = super::slot_display::deserialize_guarded(input)?;
+	let f_base = super::slot_display::deserialize_guarded(input)?;
+	let f_addition = super::slot_display::deserialize_guarded(input)?;
+	let f_result = super::slot_display::deserialize_guarded(input)?;
+	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		template: f_template,
+		base: f_base,
+		addition: f_addition,
+		result: f_result,
+		crafting_station: f_craftingStation,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_display::size_of(
-        &_0.template
-    )
-    + super::slot_display::size_of(
-        &_0.base
-    )
-    + super::slot_display::size_of(
-        &_0.addition
-    )
-    + super::slot_display::size_of(
-        &_0.result
-    )
-    + super::slot_display::size_of(
-        &_0.crafting_station
-    )
+	0 + super::slot_display::size_of(&_0.template)
+		+ super::slot_display::size_of(&_0.base)
+		+ super::slot_display::size_of(&_0.addition)
+		+ super::slot_display::size_of(&_0.result)
+		+ super::slot_display::size_of(&_0.crafting_station)
 }
- pub type Ty = RecipeDisplay4;
+pub type Ty = RecipeDisplay4;

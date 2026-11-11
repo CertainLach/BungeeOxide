@@ -3,47 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketClientCommand {
-    PerformRespawn,
-    RequestStats,
-    Default(super::super::super::super::Varint),
+	PerformRespawn,
+	RequestStats,
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::PerformRespawn => Ok(()),
-        Ty::RequestStats => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::PerformRespawn => Ok(()),
+		Ty::RequestStats => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::PerformRespawn); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::RequestStats); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::PerformRespawn);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::RequestStats);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::PerformRespawn => 0,
-        Ty::RequestStats => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::PerformRespawn => 0,
+			Ty::RequestStats => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::PerformRespawn => "perform_respawn",
-        Ty::RequestStats => "request_stats",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::PerformRespawn => "perform_respawn",
+		Ty::RequestStats => "request_stats",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::PerformRespawn => 0_i32,
-        Ty::RequestStats => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::PerformRespawn => 0_i32,
+		Ty::RequestStats => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketClientCommand;
+pub type Ty = PacketClientCommand;

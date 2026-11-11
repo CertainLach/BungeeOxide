@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateCommandBlockMinecart {
-    pub entity_id: super::super::super::Varint,
-    pub command: String,
-    pub track_output: super::super::super::Bool,
+	pub entity_id: super::super::super::Varint,
+	pub command: String,
+	pub track_output: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::pstring_96::serialize(
-        &_0.command,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.track_output,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::pstring_96::serialize(&_0.command, output)?;
+	super::super::super::bool::serialize(&_0.track_output, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_command = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_track_output = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,command: f_command,track_output: f_track_output
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_command = super::super::super::pstring_96::deserialize(input)?;
+	let f_track_output = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		command: f_command,
+		track_output: f_track_output,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::pstring_96::size_of(
-        &_0.command
-    )
-    + super::super::super::bool::size_of(
-        &_0.track_output
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::pstring_96::size_of(&_0.command)
+		+ super::super::super::bool::size_of(&_0.track_output)
 }
- pub type Ty = PacketUpdateCommandBlockMinecart;
+pub type Ty = PacketUpdateCommandBlockMinecart;

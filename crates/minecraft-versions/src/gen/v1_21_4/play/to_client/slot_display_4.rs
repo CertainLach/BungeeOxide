@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotDisplay4 {
-    pub base: super::SlotDisplay,
-    pub material: super::SlotDisplay,
-    pub pattern: super::SlotDisplay,
+	pub base: super::SlotDisplay,
+	pub material: super::SlotDisplay,
+	pub pattern: super::SlotDisplay,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::slot_display::serialize_guarded(
-        &_0.base,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.material,
-        output,
-    )?;
-    super::slot_display::serialize_guarded(
-        &_0.pattern,
-        output,
-    )?;
-    Ok(())
+	super::slot_display::serialize_guarded(&_0.base, output)?;
+	super::slot_display::serialize_guarded(&_0.material, output)?;
+	super::slot_display::serialize_guarded(&_0.pattern, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_base = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_material = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    let f_pattern = super::slot_display::deserialize_guarded(
-        input,
-    )?;
-    Ok(Ty {
-        base: f_base,material: f_material,pattern: f_pattern
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_base = super::slot_display::deserialize_guarded(input)?;
+	let f_material = super::slot_display::deserialize_guarded(input)?;
+	let f_pattern = super::slot_display::deserialize_guarded(input)?;
+	Ok(Ty {
+		base: f_base,
+		material: f_material,
+		pattern: f_pattern,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::slot_display::size_of(
-        &_0.base
-    )
-    + super::slot_display::size_of(
-        &_0.material
-    )
-    + super::slot_display::size_of(
-        &_0.pattern
-    )
+	0 + super::slot_display::size_of(&_0.base)
+		+ super::slot_display::size_of(&_0.material)
+		+ super::slot_display::size_of(&_0.pattern)
 }
- pub type Ty = SlotDisplay4;
+pub type Ty = SlotDisplay4;

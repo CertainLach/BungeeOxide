@@ -3,60 +3,48 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ExplosionParticleInfo<'i> {
-    pub particle: super::super::super::Particle::<'i>,
-    pub scaling: super::super::super::super::F32,
-    pub speed: super::super::super::super::F32,
+	pub particle: super::super::super::Particle<'i>,
+	pub scaling: super::super::super::super::F32,
+	pub speed: super::super::super::super::F32,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::particle::serialize(
-        &_0.particle,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.scaling,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.speed,
-        output,
-    )?;
-    Ok(())
+	super::super::super::particle::serialize(&_0.particle, output)?;
+	super::super::super::super::f32::serialize(&_0.scaling, output)?;
+	super::super::super::super::f32::serialize(&_0.speed, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(9)?;
-    let f_particle = super::super::super::particle::deserialize(
-        input,
-    )?;
-    let f_scaling = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_speed = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        particle: f_particle,scaling: f_scaling,speed: f_speed
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(9)?;
+	let f_particle = super::super::super::particle::deserialize(input)?;
+	let f_scaling = super::super::super::super::f32::deserialize(input)?;
+	let f_speed = super::super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		particle: f_particle,
+		scaling: f_scaling,
+		speed: f_speed,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::particle::size_of(
-        &_0.particle
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.scaling
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.speed
-    )
+	0 + super::super::super::particle::size_of(&_0.particle)
+		+ super::super::super::super::f32::size_of(&_0.scaling)
+		+ super::super::super::super::f32::size_of(&_0.speed)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::ExplosionParticleInfo) -> Ty<'i> {
-    Ty {
-        particle: super::super::super::particle::view(&_0.particle),scaling: ::core::clone::Clone::clone(&_0.scaling),speed: ::core::clone::Clone::clone(&_0.speed)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::ExplosionParticleInfo,
+) -> Ty<'i> {
+	Ty {
+		particle: super::super::super::particle::view(&_0.particle),
+		scaling: ::core::clone::Clone::clone(&_0.scaling),
+		speed: ::core::clone::Clone::clone(&_0.speed),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ExplosionParticleInfo) -> Ty<'i> {
-    Ty {
-        particle: super::super::super::particle::into_view(&mut _0.particle),scaling: ::core::clone::Clone::clone(&mut _0.scaling),speed: ::core::clone::Clone::clone(&mut _0.speed)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::ExplosionParticleInfo,
+) -> Ty<'i> {
+	Ty {
+		particle: super::super::super::particle::into_view(&mut _0.particle),
+		scaling: ::core::clone::Clone::clone(&mut _0.scaling),
+		speed: ::core::clone::Clone::clone(&mut _0.speed),
+	}
 }
- pub type Ty<'i> = ExplosionParticleInfo<'i>;
+pub type Ty<'i> = ExplosionParticleInfo<'i>;

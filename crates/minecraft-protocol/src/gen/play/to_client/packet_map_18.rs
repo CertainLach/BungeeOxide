@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMap18 {
-    pub r#type: super::super::super::Varint,
-    pub x: super::super::super::I8,
-    pub z: super::super::super::I8,
-    pub direction: super::super::super::U8,
-    pub display_name: Option<super::super::super::AnonymousNbt>,
+	pub r#type: super::super::super::Varint,
+	pub x: super::super::super::I8,
+	pub z: super::super::super::I8,
+	pub direction: super::super::super::U8,
+	pub display_name: Option<super::super::super::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::i8::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::i8::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.direction,
-        output,
-    )?;
-    super::super::super::option_8::serialize(
-        &_0.display_name,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::i8::serialize(&_0.x, output)?;
+	super::super::super::i8::serialize(&_0.z, output)?;
+	super::super::super::u8::serialize(&_0.direction, output)?;
+	super::super::super::option_8::serialize(&_0.display_name, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_type = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_direction = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_displayName = super::super::super::option_8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,x: f_x,z: f_z,direction: f_direction,display_name: f_displayName
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_type = super::super::super::varint::deserialize(input)?;
+	let f_x = super::super::super::i8::deserialize(input)?;
+	let f_z = super::super::super::i8::deserialize(input)?;
+	let f_direction = super::super::super::u8::deserialize(input)?;
+	let f_displayName = super::super::super::option_8::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		x: f_x,
+		z: f_z,
+		direction: f_direction,
+		display_name: f_displayName,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::i8::size_of(
-        &_0.x
-    )
-    + super::super::super::i8::size_of(
-        &_0.z
-    )
-    + super::super::super::u8::size_of(
-        &_0.direction
-    )
-    + super::super::super::option_8::size_of(
-        &_0.display_name
-    )
+	0 + super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::i8::size_of(&_0.x)
+		+ super::super::super::i8::size_of(&_0.z)
+		+ super::super::super::u8::size_of(&_0.direction)
+		+ super::super::super::option_8::size_of(&_0.display_name)
 }
- pub type Ty = PacketMap18;
+pub type Ty = PacketMap18;

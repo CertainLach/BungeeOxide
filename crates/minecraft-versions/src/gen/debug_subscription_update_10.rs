@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionUpdate10 {
-    pub event: super::Varint,
-    pub pos: super::Vec3f64,
+	pub event: super::Varint,
+	pub pos: super::Vec3f64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(
-        &_0.event,
-        output,
-    )?;
-    super::vec3f64::serialize(
-        &_0.pos,
-        output,
-    )?;
-    Ok(())
+	super::varint::serialize(&_0.event, output)?;
+	super::vec3f64::serialize(&_0.pos, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(25)?;
-    let f_event = super::varint::deserialize(
-        input,
-    )?;
-    let f_pos = super::vec3f64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        event: f_event,pos: f_pos
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(25)?;
+	let f_event = super::varint::deserialize(input)?;
+	let f_pos = super::vec3f64::deserialize(input)?;
+	Ok(Ty {
+		event: f_event,
+		pos: f_pos,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::varint::size_of(
-        &_0.event
-    )
-    + super::vec3f64::size_of(
-        &_0.pos
-    )
+	0 + super::varint::size_of(&_0.event) + super::vec3f64::size_of(&_0.pos)
 }
- pub type Ty = DebugSubscriptionUpdate10;
+pub type Ty = DebugSubscriptionUpdate10;

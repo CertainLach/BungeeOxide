@@ -3,53 +3,59 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Slot<'i> {
-    V0,
-    Default(super::super::super::Varint, super::Slot9::<'i>),
+	V0,
+	Default(super::super::super::Varint, super::Slot9<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0 => Ok(()),
-        Ty::Default(_, __v) => super::slot_9::serialize(__v, output),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0 => Ok(()),
+		Ty::Default(_, __v) => super::slot_9::serialize(__v, output),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::V0); }
-    Ok(Ty::Default(__tagv, super::slot_9::deserialize(input, )?))
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0);
+	}
+	Ok(Ty::Default(__tagv, super::slot_9::deserialize(input)?))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0 => 0,
-        Ty::Default(_, __v) => super::slot_9::size_of(__v),
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0 => 0,
+			Ty::Default(_, __v) => super::slot_9::size_of(__v),
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::V0 => "v0",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0 => "v0",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::super::Varint {
-    match _0 {
-        Ty::V0 => 0_i32,
-        Ty::Default(__t, _) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0 => 0_i32,
+		Ty::Default(__t, _) => __t.clone(),
+	}
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::Slot) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::Slot::V0 => Ty::V0,
-        super::super::super::v1_21_11::Slot::Default(__t, __v) => Ty::Default(::core::clone::Clone::clone(__t), super::slot_9::view(__v)),
-    }
+	match _0 {
+		super::super::super::v1_21_11::Slot::V0 => Ty::V0,
+		super::super::super::v1_21_11::Slot::Default(__t, __v) => {
+			Ty::Default(::core::clone::Clone::clone(__t), super::slot_9::view(__v))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::Slot) -> Ty<'i> {
-    match _0 {
-        super::super::super::v1_21_11::Slot::V0 => Ty::V0,
-        super::super::super::v1_21_11::Slot::Default(__t, __v) => Ty::Default(::core::clone::Clone::clone(__t), super::slot_9::into_view(__v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::Slot) -> Ty<'i> {
+	match _0 {
+		super::super::super::v1_21_11::Slot::V0 => Ty::V0,
+		super::super::super::v1_21_11::Slot::Default(__t, __v) => Ty::Default(
+			::core::clone::Clone::clone(__t),
+			super::slot_9::into_view(__v),
+		),
+	}
 }
- pub type Ty<'i> = Slot<'i>;
+pub type Ty<'i> = Slot<'i>;

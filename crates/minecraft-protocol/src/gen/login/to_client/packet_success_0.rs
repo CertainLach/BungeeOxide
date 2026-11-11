@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSuccess0 {
-    pub name: String,
-    pub value: String,
-    pub signature: Option<String>,
+	pub name: String,
+	pub value: String,
+	pub signature: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_39::serialize(
-        &_0.name,
-        output,
-    )?;
-    super::super::super::pstring_39::serialize(
-        &_0.value,
-        output,
-    )?;
-    super::super::super::option_16::serialize(
-        &_0.signature,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_39::serialize(&_0.name, output)?;
+	super::super::super::pstring_39::serialize(&_0.value, output)?;
+	super::super::super::option_16::serialize(&_0.signature, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_name = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    let f_signature = super::super::super::option_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        name: f_name,value: f_value,signature: f_signature
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_name = super::super::super::pstring_39::deserialize(input)?;
+	let f_value = super::super::super::pstring_39::deserialize(input)?;
+	let f_signature = super::super::super::option_16::deserialize(input)?;
+	Ok(Ty {
+		name: f_name,
+		value: f_value,
+		signature: f_signature,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::pstring_39::size_of(
-        &_0.name
-    )
-    + super::super::super::pstring_39::size_of(
-        &_0.value
-    )
-    + super::super::super::option_16::size_of(
-        &_0.signature
-    )
+	0 + super::super::super::pstring_39::size_of(&_0.name)
+		+ super::super::super::pstring_39::size_of(&_0.value)
+		+ super::super::super::option_16::size_of(&_0.signature)
 }
- pub type Ty = PacketSuccess0;
+pub type Ty = PacketSuccess0;

@@ -3,97 +3,62 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes8 {
-    pub group: String,
-    pub category: super::super::super::super::Varint,
-    pub width: super::super::super::super::Varint,
-    pub height: super::super::super::super::Varint,
-    pub ingredients: Vec<Vec<Vec<super::super::super::super::v1_20_2::Slot>>>,
-    pub result: super::super::super::super::v1_20_2::Slot,
-    pub show_notification: super::super::super::super::Bool,
+	pub group: String,
+	pub category: super::super::super::super::Varint,
+	pub width: super::super::super::super::Varint,
+	pub height: super::super::super::super::Varint,
+	pub ingredients: Vec<Vec<Vec<super::super::super::super::v1_20_2::Slot>>>,
+	pub result: super::super::super::super::v1_20_2::Slot,
+	pub show_notification: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.group,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.category,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.width,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.height,
-        output,
-    )?;
-    super::super::super::super::array::sized_402::serialize(
-        &_0.ingredients,
-        output,
-    )?;
-    super::super::super::super::v1_20_2::slot::serialize(
-        &_0.result,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.show_notification,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.group, output)?;
+	super::super::super::super::varint::serialize(&_0.category, output)?;
+	super::super::super::super::varint::serialize(&_0.width, output)?;
+	super::super::super::super::varint::serialize(&_0.height, output)?;
+	super::super::super::super::array::sized_402::serialize(&_0.ingredients, output)?;
+	super::super::super::super::v1_20_2::slot::serialize(&_0.result, output)?;
+	super::super::super::super::bool::serialize(&_0.show_notification, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_group = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_category = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_width = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_height = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_ingredients = super::super::super::super::array::sized_402::deserialize(
-        input,
-        super::super::super::super::array::sized_402::Args {
-            count: {let _0: &super::super::super::super::Varint = &f_width;_0},height: {let _0: &super::super::super::super::Varint = &f_height;_0}
-        },
-    )?;
-    let f_result = super::super::super::super::v1_20_2::slot::deserialize(
-        input,
-    )?;
-    let f_showNotification = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        group: f_group,category: f_category,width: f_width,height: f_height,ingredients: f_ingredients,result: f_result,show_notification: f_showNotification
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_group = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_category = super::super::super::super::varint::deserialize(input)?;
+	let f_width = super::super::super::super::varint::deserialize(input)?;
+	let f_height = super::super::super::super::varint::deserialize(input)?;
+	let f_ingredients = super::super::super::super::array::sized_402::deserialize(
+		input,
+		super::super::super::super::array::sized_402::Args {
+			count: {
+				let _0: &super::super::super::super::Varint = &f_width;
+				_0
+			},
+			height: {
+				let _0: &super::super::super::super::Varint = &f_height;
+				_0
+			},
+		},
+	)?;
+	let f_result = super::super::super::super::v1_20_2::slot::deserialize(input)?;
+	let f_showNotification = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		group: f_group,
+		category: f_category,
+		width: f_width,
+		height: f_height,
+		ingredients: f_ingredients,
+		result: f_result,
+		show_notification: f_showNotification,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.group
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.category
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.width
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.height
-    )
-    + super::super::super::super::array::sized_402::size_of(
-        &_0.ingredients
-    )
-    + super::super::super::super::v1_20_2::slot::size_of(
-        &_0.result
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.show_notification
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.group)
+		+ super::super::super::super::varint::size_of(&_0.category)
+		+ super::super::super::super::varint::size_of(&_0.width)
+		+ super::super::super::super::varint::size_of(&_0.height)
+		+ super::super::super::super::array::sized_402::size_of(&_0.ingredients)
+		+ super::super::super::super::v1_20_2::slot::size_of(&_0.result)
+		+ super::super::super::super::bool::size_of(&_0.show_notification)
 }
- pub type Ty = PacketDeclareRecipes8;
+pub type Ty = PacketDeclareRecipes8;

@@ -3,138 +3,70 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityTeleport {
-    pub entity_id: super::super::super::Varint,
-    pub x: super::super::super::F64,
-    pub y: super::super::super::F64,
-    pub z: super::super::super::F64,
-    pub dx: super::super::super::F64,
-    pub dy: super::super::super::F64,
-    pub dz: super::super::super::F64,
-    pub yaw: super::super::super::F32,
-    pub pitch: super::super::super::F32,
-    pub flags: super::PositionUpdateRelatives,
-    pub on_ground: super::super::super::Bool,
+	pub entity_id: super::super::super::Varint,
+	pub x: super::super::super::F64,
+	pub y: super::super::super::F64,
+	pub z: super::super::super::F64,
+	pub dx: super::super::super::F64,
+	pub dy: super::super::super::F64,
+	pub dz: super::super::super::F64,
+	pub yaw: super::super::super::F32,
+	pub pitch: super::super::super::F32,
+	pub flags: super::PositionUpdateRelatives,
+	pub on_ground: super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.dx,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.dy,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.dz,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::position_update_relatives::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.on_ground,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::f64::serialize(&_0.dx, output)?;
+	super::super::super::f64::serialize(&_0.dy, output)?;
+	super::super::super::f64::serialize(&_0.dz, output)?;
+	super::super::super::f32::serialize(&_0.yaw, output)?;
+	super::super::super::f32::serialize(&_0.pitch, output)?;
+	super::position_update_relatives::serialize(&_0.flags, output)?;
+	super::super::super::bool::serialize(&_0.on_ground, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(62)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_dx = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_dy = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_dz = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_flags = super::position_update_relatives::deserialize(
-        input,
-    )?;
-    let f_onGround = super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,x: f_x,y: f_y,z: f_z,dx: f_dx,dy: f_dy,dz: f_dz,yaw: f_yaw,pitch: f_pitch,flags: f_flags,on_ground: f_onGround
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(62)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_x = super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::f64::deserialize(input)?;
+	let f_dx = super::super::super::f64::deserialize(input)?;
+	let f_dy = super::super::super::f64::deserialize(input)?;
+	let f_dz = super::super::super::f64::deserialize(input)?;
+	let f_yaw = super::super::super::f32::deserialize(input)?;
+	let f_pitch = super::super::super::f32::deserialize(input)?;
+	let f_flags = super::position_update_relatives::deserialize(input)?;
+	let f_onGround = super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		dx: f_dx,
+		dy: f_dy,
+		dz: f_dz,
+		yaw: f_yaw,
+		pitch: f_pitch,
+		flags: f_flags,
+		on_ground: f_onGround,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::f64::size_of(
-        &_0.dx
-    )
-    + super::super::super::f64::size_of(
-        &_0.dy
-    )
-    + super::super::super::f64::size_of(
-        &_0.dz
-    )
-    + super::super::super::f32::size_of(
-        &_0.yaw
-    )
-    + super::super::super::f32::size_of(
-        &_0.pitch
-    )
-    + super::position_update_relatives::size_of(
-        &_0.flags
-    )
-    + super::super::super::bool::size_of(
-        &_0.on_ground
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::f64::size_of(&_0.dx)
+		+ super::super::super::f64::size_of(&_0.dy)
+		+ super::super::super::f64::size_of(&_0.dz)
+		+ super::super::super::f32::size_of(&_0.yaw)
+		+ super::super::super::f32::size_of(&_0.pitch)
+		+ super::position_update_relatives::size_of(&_0.flags)
+		+ super::super::super::bool::size_of(&_0.on_ground)
 }
- pub type Ty = PacketEntityTeleport;
+pub type Ty = PacketEntityTeleport;

@@ -3,112 +3,69 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements7 {
-    pub title: super::super::super::super::AnonymousNbt,
-    pub description: super::super::super::super::AnonymousNbt,
-    pub icon: super::super::super::Slot,
-    pub frame_type: super::super::super::super::Varint,
-    pub flags: super::PacketAdvancements5,
-    pub background_texture: super::PacketAdvancements6,
-    pub x_cord: super::super::super::super::F32,
-    pub y_cord: super::super::super::super::F32,
+	pub title: super::super::super::super::AnonymousNbt,
+	pub description: super::super::super::super::AnonymousNbt,
+	pub icon: super::super::super::Slot,
+	pub frame_type: super::super::super::super::Varint,
+	pub flags: super::PacketAdvancements5,
+	pub background_texture: super::PacketAdvancements6,
+	pub x_cord: super::super::super::super::F32,
+	pub y_cord: super::super::super::super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::anonymous_nbt::serialize(
-        &_0.title,
-        output,
-    )?;
-    super::super::super::super::anonymous_nbt::serialize(
-        &_0.description,
-        output,
-    )?;
-    super::super::super::slot::serialize_guarded(
-        &_0.icon,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.frame_type,
-        output,
-    )?;
-    super::packet_advancements_5::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::packet_advancements_6::debug_assert_tag(
-        &_0.background_texture,
-        {let _0: &super::PacketAdvancements5 = &_0.flags;let _0: &super::super::super::super::U8 = &_0.has_background_texture;_0},
-    );
-    super::packet_advancements_6::serialize(
-        &_0.background_texture,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.x_cord,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.y_cord,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::anonymous_nbt::serialize(&_0.title, output)?;
+	super::super::super::super::anonymous_nbt::serialize(&_0.description, output)?;
+	super::super::super::slot::serialize_guarded(&_0.icon, output)?;
+	super::super::super::super::varint::serialize(&_0.frame_type, output)?;
+	super::packet_advancements_5::serialize(&_0.flags, output)?;
+	super::packet_advancements_6::debug_assert_tag(&_0.background_texture, {
+		let _0: &super::PacketAdvancements5 = &_0.flags;
+		let _0: &super::super::super::super::U8 = &_0.has_background_texture;
+		_0
+	});
+	super::packet_advancements_6::serialize(&_0.background_texture, output)?;
+	super::super::super::super::f32::serialize(&_0.x_cord, output)?;
+	super::super::super::super::f32::serialize(&_0.y_cord, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(14)?;
-    let f_title = super::super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_description = super::super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_icon = super::super::super::slot::deserialize_guarded(
-        input,
-    )?;
-    let f_frameType = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_flags = super::packet_advancements_5::deserialize(
-        input,
-    )?;
-    let f_backgroundTexture = super::packet_advancements_6::deserialize(
-        input,
-        super::packet_advancements_6::Args {
-            flags_has_background_texture: {let _0: &super::PacketAdvancements5 = &f_flags;let _0: &super::super::super::super::U8 = &_0.has_background_texture;_0}
-        },
-    )?;
-    let f_xCord = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_yCord = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        title: f_title,description: f_description,icon: f_icon,frame_type: f_frameType,flags: f_flags,background_texture: f_backgroundTexture,x_cord: f_xCord,y_cord: f_yCord
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(14)?;
+	let f_title = super::super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_description = super::super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_icon = super::super::super::slot::deserialize_guarded(input)?;
+	let f_frameType = super::super::super::super::varint::deserialize(input)?;
+	let f_flags = super::packet_advancements_5::deserialize(input)?;
+	let f_backgroundTexture = super::packet_advancements_6::deserialize(
+		input,
+		super::packet_advancements_6::Args {
+			flags_has_background_texture: {
+				let _0: &super::PacketAdvancements5 = &f_flags;
+				let _0: &super::super::super::super::U8 = &_0.has_background_texture;
+				_0
+			},
+		},
+	)?;
+	let f_xCord = super::super::super::super::f32::deserialize(input)?;
+	let f_yCord = super::super::super::super::f32::deserialize(input)?;
+	Ok(Ty {
+		title: f_title,
+		description: f_description,
+		icon: f_icon,
+		frame_type: f_frameType,
+		flags: f_flags,
+		background_texture: f_backgroundTexture,
+		x_cord: f_xCord,
+		y_cord: f_yCord,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::anonymous_nbt::size_of(
-        &_0.title
-    )
-    + super::super::super::super::anonymous_nbt::size_of(
-        &_0.description
-    )
-    + super::super::super::slot::size_of(
-        &_0.icon
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.frame_type
-    )
-    + super::packet_advancements_5::size_of(
-        &_0.flags
-    )
-    + super::packet_advancements_6::size_of(
-        &_0.background_texture
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.x_cord
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.y_cord
-    )
+	0 + super::super::super::super::anonymous_nbt::size_of(&_0.title)
+		+ super::super::super::super::anonymous_nbt::size_of(&_0.description)
+		+ super::super::super::slot::size_of(&_0.icon)
+		+ super::super::super::super::varint::size_of(&_0.frame_type)
+		+ super::packet_advancements_5::size_of(&_0.flags)
+		+ super::packet_advancements_6::size_of(&_0.background_texture)
+		+ super::super::super::super::f32::size_of(&_0.x_cord)
+		+ super::super::super::super::f32::size_of(&_0.y_cord)
 }
- pub type Ty = PacketAdvancements7;
+pub type Ty = PacketAdvancements7;

@@ -3,149 +3,75 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketExplosion {
-    pub x: super::super::super::super::F64,
-    pub y: super::super::super::super::F64,
-    pub z: super::super::super::super::F64,
-    pub radius: super::super::super::super::F32,
-    pub affected_block_offsets: Vec<super::PacketExplosion16>,
-    pub player_motion_x: super::super::super::super::F32,
-    pub player_motion_y: super::super::super::super::F32,
-    pub player_motion_z: super::super::super::super::F32,
-    pub block_interaction_type: super::super::super::super::Varint,
-    pub small_explosion_particle: super::super::super::Particle,
-    pub large_explosion_particle: super::super::super::Particle,
-    pub sound: super::super::super::super::ItemSoundHolder,
+	pub x: super::super::super::super::F64,
+	pub y: super::super::super::super::F64,
+	pub z: super::super::super::super::F64,
+	pub radius: super::super::super::super::F32,
+	pub affected_block_offsets: Vec<super::PacketExplosion16>,
+	pub player_motion_x: super::super::super::super::F32,
+	pub player_motion_y: super::super::super::super::F32,
+	pub player_motion_z: super::super::super::super::F32,
+	pub block_interaction_type: super::super::super::super::Varint,
+	pub small_explosion_particle: super::super::super::Particle,
+	pub large_explosion_particle: super::super::super::Particle,
+	pub sound: super::super::super::super::ItemSoundHolder,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.radius,
-        output,
-    )?;
-    super::super::super::super::array::inline_243::serialize(
-        &_0.affected_block_offsets,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.player_motion_z,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.block_interaction_type,
-        output,
-    )?;
-    super::super::super::particle::serialize(
-        &_0.small_explosion_particle,
-        output,
-    )?;
-    super::super::super::particle::serialize(
-        &_0.large_explosion_particle,
-        output,
-    )?;
-    super::super::super::super::item_sound_holder::serialize(
-        &_0.sound,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::super::f32::serialize(&_0.radius, output)?;
+	super::super::super::super::array::inline_243::serialize(&_0.affected_block_offsets, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_x, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_y, output)?;
+	super::super::super::super::f32::serialize(&_0.player_motion_z, output)?;
+	super::super::super::super::varint::serialize(&_0.block_interaction_type, output)?;
+	super::super::super::particle::serialize(&_0.small_explosion_particle, output)?;
+	super::super::super::particle::serialize(&_0.large_explosion_particle, output)?;
+	super::super::super::super::item_sound_holder::serialize(&_0.sound, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(45)?;
-    let f_x = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_radius = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_affectedBlockOffsets = super::super::super::super::array::inline_243::deserialize(
-        input,
-    )?;
-    let f_playerMotionX = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_playerMotionY = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_playerMotionZ = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_block_interaction_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_small_explosion_particle = super::super::super::particle::deserialize(
-        input,
-    )?;
-    let f_large_explosion_particle = super::super::super::particle::deserialize(
-        input,
-    )?;
-    let f_sound = super::super::super::super::item_sound_holder::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z,radius: f_radius,affected_block_offsets: f_affectedBlockOffsets,player_motion_x: f_playerMotionX,player_motion_y: f_playerMotionY,player_motion_z: f_playerMotionZ,block_interaction_type: f_block_interaction_type,small_explosion_particle: f_small_explosion_particle,large_explosion_particle: f_large_explosion_particle,sound: f_sound
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(45)?;
+	let f_x = super::super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::super::f64::deserialize(input)?;
+	let f_radius = super::super::super::super::f32::deserialize(input)?;
+	let f_affectedBlockOffsets = super::super::super::super::array::inline_243::deserialize(input)?;
+	let f_playerMotionX = super::super::super::super::f32::deserialize(input)?;
+	let f_playerMotionY = super::super::super::super::f32::deserialize(input)?;
+	let f_playerMotionZ = super::super::super::super::f32::deserialize(input)?;
+	let f_block_interaction_type = super::super::super::super::varint::deserialize(input)?;
+	let f_small_explosion_particle = super::super::super::particle::deserialize(input)?;
+	let f_large_explosion_particle = super::super::super::particle::deserialize(input)?;
+	let f_sound = super::super::super::super::item_sound_holder::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		radius: f_radius,
+		affected_block_offsets: f_affectedBlockOffsets,
+		player_motion_x: f_playerMotionX,
+		player_motion_y: f_playerMotionY,
+		player_motion_z: f_playerMotionZ,
+		block_interaction_type: f_block_interaction_type,
+		small_explosion_particle: f_small_explosion_particle,
+		large_explosion_particle: f_large_explosion_particle,
+		sound: f_sound,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.radius
-    )
-    + super::super::super::super::array::inline_243::size_of(
-        &_0.affected_block_offsets
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.player_motion_z
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.block_interaction_type
-    )
-    + super::super::super::particle::size_of(
-        &_0.small_explosion_particle
-    )
-    + super::super::super::particle::size_of(
-        &_0.large_explosion_particle
-    )
-    + super::super::super::super::item_sound_holder::size_of(
-        &_0.sound
-    )
+	0 + super::super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::super::f32::size_of(&_0.radius)
+		+ super::super::super::super::array::inline_243::size_of(&_0.affected_block_offsets)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_x)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_y)
+		+ super::super::super::super::f32::size_of(&_0.player_motion_z)
+		+ super::super::super::super::varint::size_of(&_0.block_interaction_type)
+		+ super::super::super::particle::size_of(&_0.small_explosion_particle)
+		+ super::super::super::particle::size_of(&_0.large_explosion_particle)
+		+ super::super::super::super::item_sound_holder::size_of(&_0.sound)
 }
- pub type Ty = PacketExplosion;
+pub type Ty = PacketExplosion;

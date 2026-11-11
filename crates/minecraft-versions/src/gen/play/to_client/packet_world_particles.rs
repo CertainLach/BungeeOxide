@@ -3,138 +3,70 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWorldParticles {
-    pub long_distance: super::super::super::Bool,
-    pub always_show: super::super::super::Bool,
-    pub x: super::super::super::F64,
-    pub y: super::super::super::F64,
-    pub z: super::super::super::F64,
-    pub offset_x: super::super::super::F32,
-    pub offset_y: super::super::super::F32,
-    pub offset_z: super::super::super::F32,
-    pub velocity_offset: super::super::super::F32,
-    pub amount: super::super::super::I32,
-    pub particle: super::super::super::Particle,
+	pub long_distance: super::super::super::Bool,
+	pub always_show: super::super::super::Bool,
+	pub x: super::super::super::F64,
+	pub y: super::super::super::F64,
+	pub z: super::super::super::F64,
+	pub offset_x: super::super::super::F32,
+	pub offset_y: super::super::super::F32,
+	pub offset_z: super::super::super::F32,
+	pub velocity_offset: super::super::super::F32,
+	pub amount: super::super::super::I32,
+	pub particle: super::super::super::Particle,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::bool::serialize(
-        &_0.long_distance,
-        output,
-    )?;
-    super::super::super::bool::serialize(
-        &_0.always_show,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.offset_x,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.offset_y,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.offset_z,
-        output,
-    )?;
-    super::super::super::f32::serialize(
-        &_0.velocity_offset,
-        output,
-    )?;
-    super::super::super::i32::serialize(
-        &_0.amount,
-        output,
-    )?;
-    super::super::super::particle::serialize(
-        &_0.particle,
-        output,
-    )?;
-    Ok(())
+	super::super::super::bool::serialize(&_0.long_distance, output)?;
+	super::super::super::bool::serialize(&_0.always_show, output)?;
+	super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::f32::serialize(&_0.offset_x, output)?;
+	super::super::super::f32::serialize(&_0.offset_y, output)?;
+	super::super::super::f32::serialize(&_0.offset_z, output)?;
+	super::super::super::f32::serialize(&_0.velocity_offset, output)?;
+	super::super::super::i32::serialize(&_0.amount, output)?;
+	super::super::super::particle::serialize(&_0.particle, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(47)?;
-    let f_longDistance = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_alwaysShow = super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_offsetX = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetY = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetZ = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_velocityOffset = super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_amount = super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_particle = super::super::super::particle::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        long_distance: f_longDistance,always_show: f_alwaysShow,x: f_x,y: f_y,z: f_z,offset_x: f_offsetX,offset_y: f_offsetY,offset_z: f_offsetZ,velocity_offset: f_velocityOffset,amount: f_amount,particle: f_particle
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(47)?;
+	let f_longDistance = super::super::super::bool::deserialize(input)?;
+	let f_alwaysShow = super::super::super::bool::deserialize(input)?;
+	let f_x = super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::f64::deserialize(input)?;
+	let f_offsetX = super::super::super::f32::deserialize(input)?;
+	let f_offsetY = super::super::super::f32::deserialize(input)?;
+	let f_offsetZ = super::super::super::f32::deserialize(input)?;
+	let f_velocityOffset = super::super::super::f32::deserialize(input)?;
+	let f_amount = super::super::super::i32::deserialize(input)?;
+	let f_particle = super::super::super::particle::deserialize(input)?;
+	Ok(Ty {
+		long_distance: f_longDistance,
+		always_show: f_alwaysShow,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		offset_x: f_offsetX,
+		offset_y: f_offsetY,
+		offset_z: f_offsetZ,
+		velocity_offset: f_velocityOffset,
+		amount: f_amount,
+		particle: f_particle,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::bool::size_of(
-        &_0.long_distance
-    )
-    + super::super::super::bool::size_of(
-        &_0.always_show
-    )
-    + super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::f32::size_of(
-        &_0.offset_x
-    )
-    + super::super::super::f32::size_of(
-        &_0.offset_y
-    )
-    + super::super::super::f32::size_of(
-        &_0.offset_z
-    )
-    + super::super::super::f32::size_of(
-        &_0.velocity_offset
-    )
-    + super::super::super::i32::size_of(
-        &_0.amount
-    )
-    + super::super::super::particle::size_of(
-        &_0.particle
-    )
+	0 + super::super::super::bool::size_of(&_0.long_distance)
+		+ super::super::super::bool::size_of(&_0.always_show)
+		+ super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::f32::size_of(&_0.offset_x)
+		+ super::super::super::f32::size_of(&_0.offset_y)
+		+ super::super::super::f32::size_of(&_0.offset_z)
+		+ super::super::super::f32::size_of(&_0.velocity_offset)
+		+ super::super::super::i32::size_of(&_0.amount)
+		+ super::super::super::particle::size_of(&_0.particle)
 }
- pub type Ty = PacketWorldParticles;
+pub type Ty = PacketWorldParticles;

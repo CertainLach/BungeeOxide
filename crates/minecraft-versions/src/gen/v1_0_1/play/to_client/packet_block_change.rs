@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockChange {
-    pub location: super::super::super::PositionIbi,
-    pub r#type: super::super::super::super::U8,
-    pub metadata: super::super::super::super::U8,
+	pub location: super::super::super::PositionIbi,
+	pub r#type: super::super::super::super::U8,
+	pub metadata: super::super::super::super::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position_ibi::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.metadata,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position_ibi::serialize(&_0.location, output)?;
+	super::super::super::super::u8::serialize(&_0.r#type, output)?;
+	super::super::super::super::u8::serialize(&_0.metadata, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(11)?;
-    let f_location = super::super::super::position_ibi::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_metadata = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,r#type: f_type,metadata: f_metadata
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(11)?;
+	let f_location = super::super::super::position_ibi::deserialize(input)?;
+	let f_type = super::super::super::super::u8::deserialize(input)?;
+	let f_metadata = super::super::super::super::u8::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		r#type: f_type,
+		metadata: f_metadata,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position_ibi::size_of(
-        &_0.location
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.metadata
-    )
+	0 + super::super::super::position_ibi::size_of(&_0.location)
+		+ super::super::super::super::u8::size_of(&_0.r#type)
+		+ super::super::super::super::u8::size_of(&_0.metadata)
 }
- pub type Ty = PacketBlockChange;
+pub type Ty = PacketBlockChange;

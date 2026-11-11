@@ -3,75 +3,76 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketBossBar2 {
-    V0(super::PacketBossBar0),
-    V2(super::super::super::super::F32),
-    V3(String),
-    V4(super::PacketBossBar1),
-    V5(super::super::super::super::U8),
-    Default(super::super::super::super::Varint),
+	V0(super::PacketBossBar0),
+	V2(super::super::super::super::F32),
+	V3(String),
+	V4(super::PacketBossBar1),
+	V5(super::super::super::super::U8),
+	Default(super::super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V0(__v) => super::packet_boss_bar_0::serialize(__v, output),
-        Ty::V2(__v) => super::super::super::super::f32::serialize(__v, output),
-        Ty::V3(__v) => super::super::super::super::pstring_96::serialize(__v, output),
-        Ty::V4(__v) => super::packet_boss_bar_1::serialize(__v, output),
-        Ty::V5(__v) => super::super::super::super::u8::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V0(__v) => super::packet_boss_bar_0::serialize(__v, output),
+		Ty::V2(__v) => super::super::super::super::f32::serialize(__v, output),
+		Ty::V3(__v) => super::super::super::super::pstring_96::serialize(__v, output),
+		Ty::V4(__v) => super::packet_boss_bar_1::serialize(__v, output),
+		Ty::V5(__v) => super::super::super::super::u8::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) {
-        return Ok(Ty::V0(super::packet_boss_bar_0::deserialize(input, )?));
-    }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::V2(super::super::super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 3_i32) {
-        return Ok(Ty::V3(super::super::super::super::pstring_96::deserialize(input, )?));
-    }
-    if (__tag.clone() == 4_i32) {
-        return Ok(Ty::V4(super::packet_boss_bar_1::deserialize(input, )?));
-    }
-    if (__tag.clone() == 5_i32) {
-        return Ok(Ty::V5(super::super::super::super::u8::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::V0(super::packet_boss_bar_0::deserialize(input)?));
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::V2(super::super::super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::V3(super::super::super::super::pstring_96::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::V4(super::packet_boss_bar_1::deserialize(input)?));
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::V5(super::super::super::super::u8::deserialize(input)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V0(__v) => super::packet_boss_bar_0::size_of(__v),
-        Ty::V2(__v) => super::super::super::super::f32::size_of(__v),
-        Ty::V3(__v) => super::super::super::super::pstring_96::size_of(__v),
-        Ty::V4(__v) => super::packet_boss_bar_1::size_of(__v),
-        Ty::V5(__v) => super::super::super::super::u8::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V0(__v) => super::packet_boss_bar_0::size_of(__v),
+			Ty::V2(__v) => super::super::super::super::f32::size_of(__v),
+			Ty::V3(__v) => super::super::super::super::pstring_96::size_of(__v),
+			Ty::V4(__v) => super::packet_boss_bar_1::size_of(__v),
+			Ty::V5(__v) => super::super::super::super::u8::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V0(_) => "v0",
-        Ty::V2(_) => "v2",
-        Ty::V3(_) => "v3",
-        Ty::V4(_) => "v4",
-        Ty::V5(_) => "v5",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V0(_) => "v0",
+		Ty::V2(_) => "v2",
+		Ty::V3(_) => "v3",
+		Ty::V4(_) => "v4",
+		Ty::V5(_) => "v5",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::super::Varint {
-    match _0 {
-        Ty::V0(_) => 0_i32,
-        Ty::V2(_) => 2_i32,
-        Ty::V3(_) => 3_i32,
-        Ty::V4(_) => 4_i32,
-        Ty::V5(_) => 5_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V0(_) => 0_i32,
+		Ty::V2(_) => 2_i32,
+		Ty::V3(_) => 3_i32,
+		Ty::V4(_) => 4_i32,
+		Ty::V5(_) => 5_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketBossBar2;
+pub type Ty = PacketBossBar2;

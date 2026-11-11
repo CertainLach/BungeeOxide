@@ -3,79 +3,52 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketOpenWindow {
-    pub window_id: super::super::super::super::U8,
-    pub inventory_type: String,
-    pub window_title: String,
-    pub slot_count: super::super::super::super::U8,
-    pub entity_id: super::PacketOpenWindow3,
+	pub window_id: super::super::super::super::U8,
+	pub inventory_type: String,
+	pub window_title: String,
+	pub slot_count: super::super::super::super::U8,
+	pub entity_id: super::PacketOpenWindow3,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::u8::serialize(
-        &_0.window_id,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.inventory_type,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.window_title,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.slot_count,
-        output,
-    )?;
-    super::packet_open_window_3::debug_assert_tag(
-        &_0.entity_id,
-        {let _0: &String = &_0.inventory_type;_0},
-    );
-    super::packet_open_window_3::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::u8::serialize(&_0.window_id, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.inventory_type, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.window_title, output)?;
+	super::super::super::super::u8::serialize(&_0.slot_count, output)?;
+	super::packet_open_window_3::debug_assert_tag(&_0.entity_id, {
+		let _0: &String = &_0.inventory_type;
+		_0
+	});
+	super::packet_open_window_3::serialize(&_0.entity_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_windowId = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_inventoryType = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_windowTitle = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_slotCount = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_entityId = super::packet_open_window_3::deserialize(
-        input,
-        super::packet_open_window_3::Args {
-            inventory_type: {let _0: &String = &f_inventoryType;_0}
-        },
-    )?;
-    Ok(Ty {
-        window_id: f_windowId,inventory_type: f_inventoryType,window_title: f_windowTitle,slot_count: f_slotCount,entity_id: f_entityId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_windowId = super::super::super::super::u8::deserialize(input)?;
+	let f_inventoryType = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_windowTitle = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_slotCount = super::super::super::super::u8::deserialize(input)?;
+	let f_entityId = super::packet_open_window_3::deserialize(
+		input,
+		super::packet_open_window_3::Args {
+			inventory_type: {
+				let _0: &String = &f_inventoryType;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		window_id: f_windowId,
+		inventory_type: f_inventoryType,
+		window_title: f_windowTitle,
+		slot_count: f_slotCount,
+		entity_id: f_entityId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::u8::size_of(
-        &_0.window_id
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.inventory_type
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.window_title
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.slot_count
-    )
-    + super::packet_open_window_3::size_of(
-        &_0.entity_id
-    )
+	0 + super::super::super::super::u8::size_of(&_0.window_id)
+		+ super::super::super::super::pstring_96::size_of(&_0.inventory_type)
+		+ super::super::super::super::pstring_96::size_of(&_0.window_title)
+		+ super::super::super::super::u8::size_of(&_0.slot_count)
+		+ super::packet_open_window_3::size_of(&_0.entity_id)
 }
- pub type Ty = PacketOpenWindow;
+pub type Ty = PacketOpenWindow;

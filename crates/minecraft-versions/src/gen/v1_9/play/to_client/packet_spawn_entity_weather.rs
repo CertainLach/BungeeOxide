@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntityWeather {
-    pub entity_id: super::super::super::super::Varint,
-    pub r#type: super::super::super::super::I8,
-    pub x: super::super::super::super::F64,
-    pub y: super::super::super::super::F64,
-    pub z: super::super::super::super::F64,
+	pub entity_id: super::super::super::super::Varint,
+	pub r#type: super::super::super::super::I8,
+	pub x: super::super::super::super::F64,
+	pub y: super::super::super::super::F64,
+	pub z: super::super::super::super::F64,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::i8::serialize(&_0.r#type, output)?;
+	super::super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::super::f64::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(26)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,r#type: f_type,x: f_x,y: f_y,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(26)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_type = super::super::super::super::i8::deserialize(input)?;
+	let f_x = super::super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::super::f64::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		r#type: f_type,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.z
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::i8::size_of(&_0.r#type)
+		+ super::super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::super::f64::size_of(&_0.z)
 }
- pub type Ty = PacketSpawnEntityWeather;
+pub type Ty = PacketSpawnEntityWeather;

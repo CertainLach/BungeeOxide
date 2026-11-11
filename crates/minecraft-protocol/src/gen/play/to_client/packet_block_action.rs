@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketBlockAction {
-    pub location: super::super::super::Position,
-    pub byte1: super::super::super::U8,
-    pub byte2: super::super::super::U8,
-    pub block_id: super::super::super::Varint,
+	pub location: super::super::super::Position,
+	pub byte1: super::super::super::U8,
+	pub byte2: super::super::super::U8,
+	pub block_id: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.location,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.byte1,
-        output,
-    )?;
-    super::super::super::u8::serialize(
-        &_0.byte2,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.block_id,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.location, output)?;
+	super::super::super::u8::serialize(&_0.byte1, output)?;
+	super::super::super::u8::serialize(&_0.byte2, output)?;
+	super::super::super::varint::serialize(&_0.block_id, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(11)?;
-    let f_location = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_byte1 = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_byte2 = super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_blockId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        location: f_location,byte1: f_byte1,byte2: f_byte2,block_id: f_blockId
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(11)?;
+	let f_location = super::super::super::position::deserialize(input)?;
+	let f_byte1 = super::super::super::u8::deserialize(input)?;
+	let f_byte2 = super::super::super::u8::deserialize(input)?;
+	let f_blockId = super::super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		location: f_location,
+		byte1: f_byte1,
+		byte2: f_byte2,
+		block_id: f_blockId,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.location
-    )
-    + super::super::super::u8::size_of(
-        &_0.byte1
-    )
-    + super::super::super::u8::size_of(
-        &_0.byte2
-    )
-    + super::super::super::varint::size_of(
-        &_0.block_id
-    )
+	0 + super::super::super::position::size_of(&_0.location)
+		+ super::super::super::u8::size_of(&_0.byte1)
+		+ super::super::super::u8::size_of(&_0.byte2)
+		+ super::super::super::varint::size_of(&_0.block_id)
 }
- pub type Ty = PacketBlockAction;
+pub type Ty = PacketBlockAction;

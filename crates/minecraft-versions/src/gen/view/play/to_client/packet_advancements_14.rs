@@ -3,44 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements14<'i> {
-    pub key: super::super::super::Pstring96::<'i>,
-    pub value: super::super::super::array::Inline129::<'i>,
+	pub key: super::super::super::Pstring96<'i>,
+	pub value: super::super::super::array::Inline129<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::super::super::array::inline_129::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::super::pstring_96::serialize(&_0.key, output)?;
+	super::super::super::array::inline_129::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_key = super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::array::inline_129::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_key = super::super::super::pstring_96::deserialize(input)?;
+	let f_value = super::super::super::array::inline_129::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::super::super::array::inline_129::size_of(
-        &_0.value
-    )
+	0 + super::super::super::pstring_96::size_of(&_0.key)
+		+ super::super::super::array::inline_129::size_of(&_0.value)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements14) -> Ty<'i> {
-    Ty {
-        key: super::super::super::pstring_96::view(&_0.key),value: super::super::super::array::inline_129::view(&_0.value)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketAdvancements14,
+) -> Ty<'i> {
+	Ty {
+		key: super::super::super::pstring_96::view(&_0.key),
+		value: super::super::super::array::inline_129::view(&_0.value),
+	}
 }
- pub type Ty<'i> = PacketAdvancements14<'i>;
+pub type Ty<'i> = PacketAdvancements14<'i>;

@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMap {
-    pub item_damage: super::super::super::super::Varint,
-    pub scale: super::super::super::super::I8,
-    pub tracking_position: super::super::super::super::Bool,
-    pub icons: Vec<super::PacketMap14>,
-    pub columns: super::PacketMap16,
+	pub item_damage: super::super::super::super::Varint,
+	pub scale: super::super::super::super::I8,
+	pub tracking_position: super::super::super::super::Bool,
+	pub icons: Vec<super::PacketMap14>,
+	pub columns: super::PacketMap16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.item_damage,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.scale,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.tracking_position,
-        output,
-    )?;
-    super::super::super::super::array::inline_159::serialize(
-        &_0.icons,
-        output,
-    )?;
-    super::packet_map_16::serialize(
-        &_0.columns,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.item_damage, output)?;
+	super::super::super::super::i8::serialize(&_0.scale, output)?;
+	super::super::super::super::bool::serialize(&_0.tracking_position, output)?;
+	super::super::super::super::array::inline_159::serialize(&_0.icons, output)?;
+	super::packet_map_16::serialize(&_0.columns, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_itemDamage = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_scale = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_trackingPosition = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_icons = super::super::super::super::array::inline_159::deserialize(
-        input,
-    )?;
-    let f_columns = super::packet_map_16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_damage: f_itemDamage,scale: f_scale,tracking_position: f_trackingPosition,icons: f_icons,columns: f_columns
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_itemDamage = super::super::super::super::varint::deserialize(input)?;
+	let f_scale = super::super::super::super::i8::deserialize(input)?;
+	let f_trackingPosition = super::super::super::super::bool::deserialize(input)?;
+	let f_icons = super::super::super::super::array::inline_159::deserialize(input)?;
+	let f_columns = super::packet_map_16::deserialize(input)?;
+	Ok(Ty {
+		item_damage: f_itemDamage,
+		scale: f_scale,
+		tracking_position: f_trackingPosition,
+		icons: f_icons,
+		columns: f_columns,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.item_damage
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.scale
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.tracking_position
-    )
-    + super::super::super::super::array::inline_159::size_of(
-        &_0.icons
-    )
-    + super::packet_map_16::size_of(
-        &_0.columns
-    )
+	0 + super::super::super::super::varint::size_of(&_0.item_damage)
+		+ super::super::super::super::i8::size_of(&_0.scale)
+		+ super::super::super::super::bool::size_of(&_0.tracking_position)
+		+ super::super::super::super::array::inline_159::size_of(&_0.icons)
+		+ super::packet_map_16::size_of(&_0.columns)
 }
- pub type Ty = PacketMap;
+pub type Ty = PacketMap;

@@ -3,72 +3,40 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommand {
-    pub command: String,
-    pub timestamp: super::super::super::super::I64,
-    pub salt: super::super::super::super::I64,
-    pub argument_signatures: Vec<super::PacketChatCommand0>,
-    pub signed_preview: super::super::super::super::Bool,
+	pub command: String,
+	pub timestamp: super::super::super::super::I64,
+	pub salt: super::super::super::super::I64,
+	pub argument_signatures: Vec<super::PacketChatCommand0>,
+	pub signed_preview: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.command,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.timestamp,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.salt,
-        output,
-    )?;
-    super::super::super::super::array::inline_179::serialize(
-        &_0.argument_signatures,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.signed_preview,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.command, output)?;
+	super::super::super::super::i64::serialize(&_0.timestamp, output)?;
+	super::super::super::super::i64::serialize(&_0.salt, output)?;
+	super::super::super::super::array::inline_179::serialize(&_0.argument_signatures, output)?;
+	super::super::super::super::bool::serialize(&_0.signed_preview, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(19)?;
-    let f_command = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_timestamp = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_salt = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_argumentSignatures = super::super::super::super::array::inline_179::deserialize(
-        input,
-    )?;
-    let f_signedPreview = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        command: f_command,timestamp: f_timestamp,salt: f_salt,argument_signatures: f_argumentSignatures,signed_preview: f_signedPreview
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(19)?;
+	let f_command = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_timestamp = super::super::super::super::i64::deserialize(input)?;
+	let f_salt = super::super::super::super::i64::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::super::array::inline_179::deserialize(input)?;
+	let f_signedPreview = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		command: f_command,
+		timestamp: f_timestamp,
+		salt: f_salt,
+		argument_signatures: f_argumentSignatures,
+		signed_preview: f_signedPreview,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.command
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.timestamp
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.salt
-    )
-    + super::super::super::super::array::inline_179::size_of(
-        &_0.argument_signatures
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.signed_preview
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.command)
+		+ super::super::super::super::i64::size_of(&_0.timestamp)
+		+ super::super::super::super::i64::size_of(&_0.salt)
+		+ super::super::super::super::array::inline_179::size_of(&_0.argument_signatures)
+		+ super::super::super::super::bool::size_of(&_0.signed_preview)
 }
- pub type Ty = PacketChatCommand;
+pub type Ty = PacketChatCommand;

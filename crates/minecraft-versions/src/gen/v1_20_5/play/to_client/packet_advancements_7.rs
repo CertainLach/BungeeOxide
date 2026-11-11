@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements7 {
-    pub key: String,
-    pub value: Vec<super::PacketAdvancements6>,
+	pub key: String,
+	pub value: Vec<super::PacketAdvancements6>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::super::super::super::array::inline_219::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.key, output)?;
+	super::super::super::super::array::inline_219::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_key = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::super::super::super::array::inline_219::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_key = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_value = super::super::super::super::array::inline_219::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::super::super::super::array::inline_219::size_of(
-        &_0.value
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.key)
+		+ super::super::super::super::array::inline_219::size_of(&_0.value)
 }
- pub type Ty = PacketAdvancements7;
+pub type Ty = PacketAdvancements7;

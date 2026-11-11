@@ -3,127 +3,65 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSpawnEntityLiving {
-    pub entity_id: super::super::super::super::Varint,
-    pub entity_uuid: super::super::super::super::Uuid,
-    pub r#type: super::super::super::super::Varint,
-    pub x: super::super::super::super::F64,
-    pub y: super::super::super::super::F64,
-    pub z: super::super::super::super::F64,
-    pub yaw: super::super::super::super::I8,
-    pub pitch: super::super::super::super::I8,
-    pub head_pitch: super::super::super::super::I8,
-    pub velocity: super::super::super::super::v1_0_1::Vec3i16,
+	pub entity_id: super::super::super::super::Varint,
+	pub entity_uuid: super::super::super::super::Uuid,
+	pub r#type: super::super::super::super::Varint,
+	pub x: super::super::super::super::F64,
+	pub y: super::super::super::super::F64,
+	pub z: super::super::super::super::F64,
+	pub yaw: super::super::super::super::I8,
+	pub pitch: super::super::super::super::I8,
+	pub head_pitch: super::super::super::super::I8,
+	pub velocity: super::super::super::super::v1_0_1::Vec3i16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::uuid::serialize(
-        &_0.entity_uuid,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f64::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.yaw,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.pitch,
-        output,
-    )?;
-    super::super::super::super::i8::serialize(
-        &_0.head_pitch,
-        output,
-    )?;
-    super::super::super::super::v1_0_1::vec3i16::serialize(
-        &_0.velocity,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::uuid::serialize(&_0.entity_uuid, output)?;
+	super::super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::super::f64::serialize(&_0.x, output)?;
+	super::super::super::super::f64::serialize(&_0.y, output)?;
+	super::super::super::super::f64::serialize(&_0.z, output)?;
+	super::super::super::super::i8::serialize(&_0.yaw, output)?;
+	super::super::super::super::i8::serialize(&_0.pitch, output)?;
+	super::super::super::super::i8::serialize(&_0.head_pitch, output)?;
+	super::super::super::super::v1_0_1::vec3i16::serialize(&_0.velocity, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(35)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_entityUUID = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f64::deserialize(
-        input,
-    )?;
-    let f_yaw = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_pitch = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_headPitch = super::super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_velocity = super::super::super::super::v1_0_1::vec3i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,entity_uuid: f_entityUUID,r#type: f_type,x: f_x,y: f_y,z: f_z,yaw: f_yaw,pitch: f_pitch,head_pitch: f_headPitch,velocity: f_velocity
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(35)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_entityUUID = super::super::super::super::uuid::deserialize(input)?;
+	let f_type = super::super::super::super::varint::deserialize(input)?;
+	let f_x = super::super::super::super::f64::deserialize(input)?;
+	let f_y = super::super::super::super::f64::deserialize(input)?;
+	let f_z = super::super::super::super::f64::deserialize(input)?;
+	let f_yaw = super::super::super::super::i8::deserialize(input)?;
+	let f_pitch = super::super::super::super::i8::deserialize(input)?;
+	let f_headPitch = super::super::super::super::i8::deserialize(input)?;
+	let f_velocity = super::super::super::super::v1_0_1::vec3i16::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		entity_uuid: f_entityUUID,
+		r#type: f_type,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		yaw: f_yaw,
+		pitch: f_pitch,
+		head_pitch: f_headPitch,
+		velocity: f_velocity,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::uuid::size_of(
-        &_0.entity_uuid
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f64::size_of(
-        &_0.z
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.yaw
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.pitch
-    )
-    + super::super::super::super::i8::size_of(
-        &_0.head_pitch
-    )
-    + super::super::super::super::v1_0_1::vec3i16::size_of(
-        &_0.velocity
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::uuid::size_of(&_0.entity_uuid)
+		+ super::super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::super::f64::size_of(&_0.x)
+		+ super::super::super::super::f64::size_of(&_0.y)
+		+ super::super::super::super::f64::size_of(&_0.z)
+		+ super::super::super::super::i8::size_of(&_0.yaw)
+		+ super::super::super::super::i8::size_of(&_0.pitch)
+		+ super::super::super::super::i8::size_of(&_0.head_pitch)
+		+ super::super::super::super::v1_0_1::vec3i16::size_of(&_0.velocity)
 }
- pub type Ty = PacketSpawnEntityLiving;
+pub type Ty = PacketSpawnEntityLiving;

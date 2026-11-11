@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DataComponentMatchers0 {
-    pub r#type: super::super::Varint,
-    pub predicate: super::super::AnonymousNbt,
+	pub r#type: super::super::Varint,
+	pub predicate: super::super::AnonymousNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::anonymous_nbt::serialize(
-        &_0.predicate,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::anonymous_nbt::serialize(&_0.predicate, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_type = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_predicate = super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        r#type: f_type,predicate: f_predicate
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_type = super::super::varint::deserialize(input)?;
+	let f_predicate = super::super::anonymous_nbt::deserialize(input)?;
+	Ok(Ty {
+		r#type: f_type,
+		predicate: f_predicate,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::anonymous_nbt::size_of(
-        &_0.predicate
-    )
+	0 + super::super::varint::size_of(&_0.r#type)
+		+ super::super::anonymous_nbt::size_of(&_0.predicate)
 }
- pub type Ty = DataComponentMatchers0;
+pub type Ty = DataComponentMatchers0;

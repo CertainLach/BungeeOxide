@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSuccess {
-    pub uuid: super::super::super::super::Uuid,
-    pub username: String,
+	pub uuid: super::super::super::super::Uuid,
+	pub username: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::uuid::serialize(
-        &_0.uuid,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.username,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::uuid::serialize(&_0.uuid, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.username, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_uuid = super::super::super::super::uuid::deserialize(
-        input,
-    )?;
-    let f_username = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        uuid: f_uuid,username: f_username
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_uuid = super::super::super::super::uuid::deserialize(input)?;
+	let f_username = super::super::super::super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		uuid: f_uuid,
+		username: f_username,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::uuid::size_of(
-        &_0.uuid
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.username
-    )
+	0 + super::super::super::super::uuid::size_of(&_0.uuid)
+		+ super::super::super::super::pstring_96::size_of(&_0.username)
 }
- pub type Ty = PacketSuccess;
+pub type Ty = PacketSuccess;

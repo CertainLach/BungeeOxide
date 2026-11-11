@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetPlayerInventory {
-    pub slot_id: super::super::super::Varint,
-    pub contents: super::super::super::Slot,
+	pub slot_id: super::super::super::Varint,
+	pub contents: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.slot_id,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.contents,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.slot_id, output)?;
+	super::super::super::slot::serialize(&_0.contents, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_slotId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_contents = super::super::super::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        slot_id: f_slotId,contents: f_contents
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_slotId = super::super::super::varint::deserialize(input)?;
+	let f_contents = super::super::super::slot::deserialize(input)?;
+	Ok(Ty {
+		slot_id: f_slotId,
+		contents: f_contents,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.slot_id
-    )
-    + super::super::super::slot::size_of(
-        &_0.contents
-    )
+	0 + super::super::super::varint::size_of(&_0.slot_id)
+		+ super::super::super::slot::size_of(&_0.contents)
 }
- pub type Ty = PacketSetPlayerInventory;
+pub type Ty = PacketSetPlayerInventory;

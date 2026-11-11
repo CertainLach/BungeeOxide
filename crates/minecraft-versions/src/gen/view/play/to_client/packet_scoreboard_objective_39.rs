@@ -3,81 +3,85 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardObjective39<'i> {
-    pub display_text: super::super::super::AnonymousNbt::<'i>,
-    pub r#type: super::super::super::super::Varint,
-    //  number_format - virtual field
-    pub styling: super::PacketScoreboardObjective38::<'i>,
+	pub display_text: super::super::super::AnonymousNbt<'i>,
+	pub r#type: super::super::super::super::Varint,
+	//  number_format - virtual field
+	pub styling: super::PacketScoreboardObjective38<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::anonymous_nbt::serialize(
-        &_0.display_text,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.r#type,
-        output,
-    )?;
-    super::super::super::super::option_23::serialize(
-        &{let _0: &super::PacketScoreboardObjective38::<'i> = &_0.styling;let __v1: super::super::super::super::Option23 = super::packet_scoreboard_objective_38::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        output,
-    )?;
-    super::packet_scoreboard_objective_38::serialize(
-        &_0.styling,
-        output,
-    )?;
-    Ok(())
+	super::super::super::anonymous_nbt::serialize(&_0.display_text, output)?;
+	super::super::super::super::varint::serialize(&_0.r#type, output)?;
+	super::super::super::super::option_23::serialize(
+		&{
+			let _0: &super::PacketScoreboardObjective38<'i> = &_0.styling;
+			let __v1: super::super::super::super::Option23 =
+				super::packet_scoreboard_objective_38::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		},
+		output,
+	)?;
+	super::packet_scoreboard_objective_38::serialize(&_0.styling, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_displayText = super::super::super::anonymous_nbt::deserialize(
-        input,
-    )?;
-    let f_type = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_number_format = super::super::super::super::option_23::deserialize(
-        input,
-    )?;
-    let f_styling = super::packet_scoreboard_objective_38::deserialize(
-        input,
-        super::packet_scoreboard_objective_38::Args {
-            number_format: {let _0: &super::super::super::super::Option23 = &f_number_format;_0}
-        },
-    )?;
-    debug_assert!(
-        &f_number_format == &{let _0: &super::PacketScoreboardObjective38::<'i> = &f_styling;let __v1: super::super::super::super::Option23 = super::packet_scoreboard_objective_38::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()},
-        "virtual field number_format does not match its value source"
-    );
-    Ok(Ty {
-        display_text: f_displayText,r#type: f_type,styling: f_styling
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_displayText = super::super::super::anonymous_nbt::deserialize(input)?;
+	let f_type = super::super::super::super::varint::deserialize(input)?;
+	let f_number_format = super::super::super::super::option_23::deserialize(input)?;
+	let f_styling = super::packet_scoreboard_objective_38::deserialize(
+		input,
+		super::packet_scoreboard_objective_38::Args {
+			number_format: {
+				let _0: &super::super::super::super::Option23 = &f_number_format;
+				_0
+			},
+		},
+	)?;
+	debug_assert!(
+		&f_number_format
+			== &{
+				let _0: &super::PacketScoreboardObjective38<'i> = &f_styling;
+				let __v1: super::super::super::super::Option23 =
+					super::packet_scoreboard_objective_38::virtual_tag(_0);
+				let _0 = &__v1;
+				_0.clone()
+			},
+		"virtual field number_format does not match its value source"
+	);
+	Ok(Ty {
+		display_text: f_displayText,
+		r#type: f_type,
+		styling: f_styling,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::anonymous_nbt::size_of(
-        &_0.display_text
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.r#type
-    )
-    + super::super::super::super::option_23::size_of(
-        &{let _0: &super::PacketScoreboardObjective38::<'i> = &_0.styling;let __v1: super::super::super::super::Option23 = super::packet_scoreboard_objective_38::virtual_tag(_0);
-        let _0 = &__v1;_0.clone()}
-    )
-    + super::packet_scoreboard_objective_38::size_of(
-        &_0.styling
-    )
+	0 + super::super::super::anonymous_nbt::size_of(&_0.display_text)
+		+ super::super::super::super::varint::size_of(&_0.r#type)
+		+ super::super::super::super::option_23::size_of(&{
+			let _0: &super::PacketScoreboardObjective38<'i> = &_0.styling;
+			let __v1: super::super::super::super::Option23 =
+				super::packet_scoreboard_objective_38::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		}) + super::packet_scoreboard_objective_38::size_of(&_0.styling)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScoreboardObjective39) -> Ty<'i> {
-    Ty {
-        display_text: super::super::super::anonymous_nbt::view(&_0.display_text),r#type: ::core::clone::Clone::clone(&_0.r#type),styling: super::packet_scoreboard_objective_38::view(&_0.styling)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketScoreboardObjective39,
+) -> Ty<'i> {
+	Ty {
+		display_text: super::super::super::anonymous_nbt::view(&_0.display_text),
+		r#type: ::core::clone::Clone::clone(&_0.r#type),
+		styling: super::packet_scoreboard_objective_38::view(&_0.styling),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardObjective39) -> Ty<'i> {
-    Ty {
-        display_text: super::super::super::anonymous_nbt::into_view(&mut _0.display_text),r#type: ::core::clone::Clone::clone(&mut _0.r#type),styling: super::packet_scoreboard_objective_38::into_view(&mut _0.styling)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardObjective39,
+) -> Ty<'i> {
+	Ty {
+		display_text: super::super::super::anonymous_nbt::into_view(&mut _0.display_text),
+		r#type: ::core::clone::Clone::clone(&mut _0.r#type),
+		styling: super::packet_scoreboard_objective_38::into_view(&mut _0.styling),
+	}
 }
- pub type Ty<'i> = PacketScoreboardObjective39<'i>;
+pub type Ty<'i> = PacketScoreboardObjective39<'i>;

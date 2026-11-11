@@ -3,137 +3,95 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTradeList56<'i> {
-    pub input_item1: super::PacketTradeList54::<'i>,
-    pub output_item: super::super::super::Slot::<'i>,
-    pub input_item2: super::super::super::Option39::<'i>,
-    pub trade_disabled: super::super::super::super::Bool,
-    pub nb_trade_uses: super::super::super::super::I32,
-    pub maximum_nb_trade_uses: super::super::super::super::I32,
-    pub xp: super::super::super::super::I32,
-    pub special_price: super::super::super::super::I32,
-    pub price_multiplier: super::super::super::super::F32,
-    pub demand: super::super::super::super::I32,
+	pub input_item1: super::PacketTradeList54<'i>,
+	pub output_item: super::super::super::Slot<'i>,
+	pub input_item2: super::super::super::Option39<'i>,
+	pub trade_disabled: super::super::super::super::Bool,
+	pub nb_trade_uses: super::super::super::super::I32,
+	pub maximum_nb_trade_uses: super::super::super::super::I32,
+	pub xp: super::super::super::super::I32,
+	pub special_price: super::super::super::super::I32,
+	pub price_multiplier: super::super::super::super::F32,
+	pub demand: super::super::super::super::I32,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::packet_trade_list_54::serialize(
-        &_0.input_item1,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.output_item,
-        output,
-    )?;
-    super::super::super::option_39::serialize(
-        &_0.input_item2,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.trade_disabled,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.nb_trade_uses,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.maximum_nb_trade_uses,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.xp,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.special_price,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.price_multiplier,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.demand,
-        output,
-    )?;
-    Ok(())
+	super::packet_trade_list_54::serialize(&_0.input_item1, output)?;
+	super::super::super::slot::serialize(&_0.output_item, output)?;
+	super::super::super::option_39::serialize(&_0.input_item2, output)?;
+	super::super::super::super::bool::serialize(&_0.trade_disabled, output)?;
+	super::super::super::super::i32::serialize(&_0.nb_trade_uses, output)?;
+	super::super::super::super::i32::serialize(&_0.maximum_nb_trade_uses, output)?;
+	super::super::super::super::i32::serialize(&_0.xp, output)?;
+	super::super::super::super::i32::serialize(&_0.special_price, output)?;
+	super::super::super::super::f32::serialize(&_0.price_multiplier, output)?;
+	super::super::super::super::i32::serialize(&_0.demand, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(30)?;
-    let f_inputItem1 = super::packet_trade_list_54::deserialize(
-        input,
-    )?;
-    let f_outputItem = super::super::super::slot::deserialize(
-        input,
-    )?;
-    let f_inputItem2 = super::super::super::option_39::deserialize(
-        input,
-    )?;
-    let f_tradeDisabled = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_nbTradeUses = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_maximumNbTradeUses = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_xp = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_specialPrice = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_priceMultiplier = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_demand = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        input_item1: f_inputItem1,output_item: f_outputItem,input_item2: f_inputItem2,trade_disabled: f_tradeDisabled,nb_trade_uses: f_nbTradeUses,maximum_nb_trade_uses: f_maximumNbTradeUses,xp: f_xp,special_price: f_specialPrice,price_multiplier: f_priceMultiplier,demand: f_demand
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(30)?;
+	let f_inputItem1 = super::packet_trade_list_54::deserialize(input)?;
+	let f_outputItem = super::super::super::slot::deserialize(input)?;
+	let f_inputItem2 = super::super::super::option_39::deserialize(input)?;
+	let f_tradeDisabled = super::super::super::super::bool::deserialize(input)?;
+	let f_nbTradeUses = super::super::super::super::i32::deserialize(input)?;
+	let f_maximumNbTradeUses = super::super::super::super::i32::deserialize(input)?;
+	let f_xp = super::super::super::super::i32::deserialize(input)?;
+	let f_specialPrice = super::super::super::super::i32::deserialize(input)?;
+	let f_priceMultiplier = super::super::super::super::f32::deserialize(input)?;
+	let f_demand = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		input_item1: f_inputItem1,
+		output_item: f_outputItem,
+		input_item2: f_inputItem2,
+		trade_disabled: f_tradeDisabled,
+		nb_trade_uses: f_nbTradeUses,
+		maximum_nb_trade_uses: f_maximumNbTradeUses,
+		xp: f_xp,
+		special_price: f_specialPrice,
+		price_multiplier: f_priceMultiplier,
+		demand: f_demand,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::packet_trade_list_54::size_of(
-        &_0.input_item1
-    )
-    + super::super::super::slot::size_of(
-        &_0.output_item
-    )
-    + super::super::super::option_39::size_of(
-        &_0.input_item2
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.trade_disabled
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.nb_trade_uses
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.maximum_nb_trade_uses
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.xp
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.special_price
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.price_multiplier
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.demand
-    )
+	0 + super::packet_trade_list_54::size_of(&_0.input_item1)
+		+ super::super::super::slot::size_of(&_0.output_item)
+		+ super::super::super::option_39::size_of(&_0.input_item2)
+		+ super::super::super::super::bool::size_of(&_0.trade_disabled)
+		+ super::super::super::super::i32::size_of(&_0.nb_trade_uses)
+		+ super::super::super::super::i32::size_of(&_0.maximum_nb_trade_uses)
+		+ super::super::super::super::i32::size_of(&_0.xp)
+		+ super::super::super::super::i32::size_of(&_0.special_price)
+		+ super::super::super::super::f32::size_of(&_0.price_multiplier)
+		+ super::super::super::super::i32::size_of(&_0.demand)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTradeList56) -> Ty<'i> {
-    Ty {
-        input_item1: super::packet_trade_list_54::view(&_0.input_item1),output_item: super::super::super::slot::view(&_0.output_item),input_item2: super::super::super::option_39::view(&_0.input_item2),trade_disabled: ::core::clone::Clone::clone(&_0.trade_disabled),nb_trade_uses: ::core::clone::Clone::clone(&_0.nb_trade_uses),maximum_nb_trade_uses: ::core::clone::Clone::clone(&_0.maximum_nb_trade_uses),xp: ::core::clone::Clone::clone(&_0.xp),special_price: ::core::clone::Clone::clone(&_0.special_price),price_multiplier: ::core::clone::Clone::clone(&_0.price_multiplier),demand: ::core::clone::Clone::clone(&_0.demand)
-    }
+	Ty {
+		input_item1: super::packet_trade_list_54::view(&_0.input_item1),
+		output_item: super::super::super::slot::view(&_0.output_item),
+		input_item2: super::super::super::option_39::view(&_0.input_item2),
+		trade_disabled: ::core::clone::Clone::clone(&_0.trade_disabled),
+		nb_trade_uses: ::core::clone::Clone::clone(&_0.nb_trade_uses),
+		maximum_nb_trade_uses: ::core::clone::Clone::clone(&_0.maximum_nb_trade_uses),
+		xp: ::core::clone::Clone::clone(&_0.xp),
+		special_price: ::core::clone::Clone::clone(&_0.special_price),
+		price_multiplier: ::core::clone::Clone::clone(&_0.price_multiplier),
+		demand: ::core::clone::Clone::clone(&_0.demand),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketTradeList56) -> Ty<'i> {
-    Ty {
-        input_item1: super::packet_trade_list_54::into_view(&mut _0.input_item1),output_item: super::super::super::slot::into_view(&mut _0.output_item),input_item2: super::super::super::option_39::into_view(&mut _0.input_item2),trade_disabled: ::core::clone::Clone::clone(&mut _0.trade_disabled),nb_trade_uses: ::core::clone::Clone::clone(&mut _0.nb_trade_uses),maximum_nb_trade_uses: ::core::clone::Clone::clone(&mut _0.maximum_nb_trade_uses),xp: ::core::clone::Clone::clone(&mut _0.xp),special_price: ::core::clone::Clone::clone(&mut _0.special_price),price_multiplier: ::core::clone::Clone::clone(&mut _0.price_multiplier),demand: ::core::clone::Clone::clone(&mut _0.demand)
-    }
+pub fn into_view<'i>(
+	_0: &'i mut super::super::super::super::play::to_client::PacketTradeList56,
+) -> Ty<'i> {
+	Ty {
+		input_item1: super::packet_trade_list_54::into_view(&mut _0.input_item1),
+		output_item: super::super::super::slot::into_view(&mut _0.output_item),
+		input_item2: super::super::super::option_39::into_view(&mut _0.input_item2),
+		trade_disabled: ::core::clone::Clone::clone(&mut _0.trade_disabled),
+		nb_trade_uses: ::core::clone::Clone::clone(&mut _0.nb_trade_uses),
+		maximum_nb_trade_uses: ::core::clone::Clone::clone(&mut _0.maximum_nb_trade_uses),
+		xp: ::core::clone::Clone::clone(&mut _0.xp),
+		special_price: ::core::clone::Clone::clone(&mut _0.special_price),
+		price_multiplier: ::core::clone::Clone::clone(&mut _0.price_multiplier),
+		demand: ::core::clone::Clone::clone(&mut _0.demand),
+	}
 }
- pub type Ty<'i> = PacketTradeList56<'i>;
+pub type Ty<'i> = PacketTradeList56<'i>;

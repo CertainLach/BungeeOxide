@@ -7,7 +7,7 @@ pub mod packet_login_start;
 pub mod packet_login_start_1;
 pub use self::packet::Packet;
 pub use self::packet_encryption_begin::PacketEncryptionBegin;
-pub use self::packet_login_start::PacketLoginStart;
 pub use self::packet_encryption_begin_0::PacketEncryptionBegin0;
 pub use self::packet_encryption_begin_1::PacketEncryptionBegin1;
+pub use self::packet_login_start::PacketLoginStart;
 pub use self::packet_login_start_1::PacketLoginStart1;

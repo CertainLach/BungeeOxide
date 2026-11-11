@@ -3,116 +3,60 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketWorldParticles {
-    pub particle_name: String,
-    pub x: super::super::super::super::F32,
-    pub y: super::super::super::super::F32,
-    pub z: super::super::super::super::F32,
-    pub offset_x: super::super::super::super::F32,
-    pub offset_y: super::super::super::super::F32,
-    pub offset_z: super::super::super::super::F32,
-    pub particle_data: super::super::super::super::F32,
-    pub particles: super::super::super::super::I32,
+	pub particle_name: String,
+	pub x: super::super::super::super::F32,
+	pub y: super::super::super::super::F32,
+	pub z: super::super::super::super::F32,
+	pub offset_x: super::super::super::super::F32,
+	pub offset_y: super::super::super::super::F32,
+	pub offset_z: super::super::super::super::F32,
+	pub particle_data: super::super::super::super::F32,
+	pub particles: super::super::super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::pstring_96::serialize(
-        &_0.particle_name,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_x,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_y,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.offset_z,
-        output,
-    )?;
-    super::super::super::super::f32::serialize(
-        &_0.particle_data,
-        output,
-    )?;
-    super::super::super::super::i32::serialize(
-        &_0.particles,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::pstring_96::serialize(&_0.particle_name, output)?;
+	super::super::super::super::f32::serialize(&_0.x, output)?;
+	super::super::super::super::f32::serialize(&_0.y, output)?;
+	super::super::super::super::f32::serialize(&_0.z, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_x, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_y, output)?;
+	super::super::super::super::f32::serialize(&_0.offset_z, output)?;
+	super::super::super::super::f32::serialize(&_0.particle_data, output)?;
+	super::super::super::super::i32::serialize(&_0.particles, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(33)?;
-    let f_particleName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_x = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_z = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetX = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetY = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_offsetZ = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_particleData = super::super::super::super::f32::deserialize(
-        input,
-    )?;
-    let f_particles = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        particle_name: f_particleName,x: f_x,y: f_y,z: f_z,offset_x: f_offsetX,offset_y: f_offsetY,offset_z: f_offsetZ,particle_data: f_particleData,particles: f_particles
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(33)?;
+	let f_particleName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_x = super::super::super::super::f32::deserialize(input)?;
+	let f_y = super::super::super::super::f32::deserialize(input)?;
+	let f_z = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetX = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetY = super::super::super::super::f32::deserialize(input)?;
+	let f_offsetZ = super::super::super::super::f32::deserialize(input)?;
+	let f_particleData = super::super::super::super::f32::deserialize(input)?;
+	let f_particles = super::super::super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		particle_name: f_particleName,
+		x: f_x,
+		y: f_y,
+		z: f_z,
+		offset_x: f_offsetX,
+		offset_y: f_offsetY,
+		offset_z: f_offsetZ,
+		particle_data: f_particleData,
+		particles: f_particles,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::pstring_96::size_of(
-        &_0.particle_name
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_x
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_y
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.offset_z
-    )
-    + super::super::super::super::f32::size_of(
-        &_0.particle_data
-    )
-    + super::super::super::super::i32::size_of(
-        &_0.particles
-    )
+	0 + super::super::super::super::pstring_96::size_of(&_0.particle_name)
+		+ super::super::super::super::f32::size_of(&_0.x)
+		+ super::super::super::super::f32::size_of(&_0.y)
+		+ super::super::super::super::f32::size_of(&_0.z)
+		+ super::super::super::super::f32::size_of(&_0.offset_x)
+		+ super::super::super::super::f32::size_of(&_0.offset_y)
+		+ super::super::super::super::f32::size_of(&_0.offset_z)
+		+ super::super::super::super::f32::size_of(&_0.particle_data)
+		+ super::super::super::super::i32::size_of(&_0.particles)
 }
- pub type Ty = PacketWorldParticles;
+pub type Ty = PacketWorldParticles;

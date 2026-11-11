@@ -10,6 +10,6 @@ pub use self::packet::Packet;
 pub use self::packet_custom_payload::PacketCustomPayload;
 pub use self::packet_finish_configuration::PacketFinishConfiguration;
 pub use self::packet_registry_data::PacketRegistryData;
-pub use self::packet_reset_chat::PacketResetChat;
 pub use self::packet_registry_data_0::PacketRegistryData0;
+pub use self::packet_reset_chat::PacketResetChat;
 pub use self::packet_tags_0::PacketTags0;

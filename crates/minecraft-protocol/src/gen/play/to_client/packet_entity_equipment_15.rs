@@ -3,39 +3,24 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment15 {
-    pub slot: super::super::super::I8,
-    pub item: super::super::super::Slot,
+	pub slot: super::super::super::I8,
+	pub item: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::i8::serialize(
-        &_0.slot,
-        output,
-    )?;
-    super::super::super::slot::serialize(
-        &_0.item,
-        output,
-    )?;
-    Ok(())
+	super::super::super::i8::serialize(&_0.slot, output)?;
+	super::super::super::slot::serialize(&_0.item, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_slot = super::super::super::i8::deserialize(
-        input,
-    )?;
-    let f_item = super::super::super::slot::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        slot: f_slot,item: f_item
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_slot = super::super::super::i8::deserialize(input)?;
+	let f_item = super::super::super::slot::deserialize(input)?;
+	Ok(Ty {
+		slot: f_slot,
+		item: f_item,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::i8::size_of(
-        &_0.slot
-    )
-    + super::super::super::slot::size_of(
-        &_0.item
-    )
+	0 + super::super::super::i8::size_of(&_0.slot) + super::super::super::slot::size_of(&_0.item)
 }
- pub type Ty = PacketEntityEquipment15;
+pub type Ty = PacketEntityEquipment15;

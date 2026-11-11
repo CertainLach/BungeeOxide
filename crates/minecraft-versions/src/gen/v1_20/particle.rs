@@ -3,46 +3,36 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Particle {
-    pub particle_id: super::super::Varint,
-    pub data: super::ParticleData,
+	pub particle_id: super::super::Varint,
+	pub data: super::ParticleData,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(
-        &_0.particle_id,
-        output,
-    )?;
-    super::particle_data::debug_assert_tag(
-        &_0.data,
-        {let _0: &super::super::Varint = &_0.particle_id;_0},
-    );
-    super::particle_data::serialize(
-        &_0.data,
-        output,
-    )?;
-    Ok(())
+	super::super::varint::serialize(&_0.particle_id, output)?;
+	super::particle_data::debug_assert_tag(&_0.data, {
+		let _0: &super::super::Varint = &_0.particle_id;
+		_0
+	});
+	super::particle_data::serialize(&_0.data, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let f_particleId = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_data = super::particle_data::deserialize(
-        input,
-        super::particle_data::Args {
-            compare_to: {let _0: &super::super::Varint = &f_particleId;_0}
-        },
-    )?;
-    Ok(Ty {
-        particle_id: f_particleId,data: f_data
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let f_particleId = super::super::varint::deserialize(input)?;
+	let f_data = super::particle_data::deserialize(
+		input,
+		super::particle_data::Args {
+			compare_to: {
+				let _0: &super::super::Varint = &f_particleId;
+				_0
+			},
+		},
+	)?;
+	Ok(Ty {
+		particle_id: f_particleId,
+		data: f_data,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::varint::size_of(
-        &_0.particle_id
-    )
-    + super::particle_data::size_of(
-        &_0.data
-    )
+	0 + super::super::varint::size_of(&_0.particle_id) + super::particle_data::size_of(&_0.data)
 }
- pub type Ty = Particle;
+pub type Ty = Particle;

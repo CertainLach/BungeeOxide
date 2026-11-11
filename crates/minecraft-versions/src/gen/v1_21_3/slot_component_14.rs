@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent14 {
-    pub attributes: Vec<super::SlotComponent13>,
-    pub show_tooltip: super::super::Bool,
+	pub attributes: Vec<super::SlotComponent13>,
+	pub show_tooltip: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::array::inline_265::serialize(
-        &_0.attributes,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.show_tooltip,
-        output,
-    )?;
-    Ok(())
+	super::super::array::inline_265::serialize(&_0.attributes, output)?;
+	super::super::bool::serialize(&_0.show_tooltip, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_attributes = super::super::array::inline_265::deserialize(
-        input,
-    )?;
-    let f_showTooltip = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        attributes: f_attributes,show_tooltip: f_showTooltip
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_attributes = super::super::array::inline_265::deserialize(input)?;
+	let f_showTooltip = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		attributes: f_attributes,
+		show_tooltip: f_showTooltip,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::array::inline_265::size_of(
-        &_0.attributes
-    )
-    + super::super::bool::size_of(
-        &_0.show_tooltip
-    )
+	0 + super::super::array::inline_265::size_of(&_0.attributes)
+		+ super::super::bool::size_of(&_0.show_tooltip)
 }
- pub type Ty = SlotComponent14;
+pub type Ty = SlotComponent14;

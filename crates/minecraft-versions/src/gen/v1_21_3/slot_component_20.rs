@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent20 {
-    pub rules: Vec<super::SlotComponent19>,
-    pub default_mining_speed: super::super::F32,
-    pub damage_per_block: super::super::Varint,
+	pub rules: Vec<super::SlotComponent19>,
+	pub default_mining_speed: super::super::F32,
+	pub damage_per_block: super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::array::inline_266::serialize(
-        &_0.rules,
-        output,
-    )?;
-    super::super::f32::serialize(
-        &_0.default_mining_speed,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.damage_per_block,
-        output,
-    )?;
-    Ok(())
+	super::super::array::inline_266::serialize(&_0.rules, output)?;
+	super::super::f32::serialize(&_0.default_mining_speed, output)?;
+	super::super::varint::serialize(&_0.damage_per_block, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_rules = super::super::array::inline_266::deserialize(
-        input,
-    )?;
-    let f_defaultMiningSpeed = super::super::f32::deserialize(
-        input,
-    )?;
-    let f_damagePerBlock = super::super::varint::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        rules: f_rules,default_mining_speed: f_defaultMiningSpeed,damage_per_block: f_damagePerBlock
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_rules = super::super::array::inline_266::deserialize(input)?;
+	let f_defaultMiningSpeed = super::super::f32::deserialize(input)?;
+	let f_damagePerBlock = super::super::varint::deserialize(input)?;
+	Ok(Ty {
+		rules: f_rules,
+		default_mining_speed: f_defaultMiningSpeed,
+		damage_per_block: f_damagePerBlock,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::array::inline_266::size_of(
-        &_0.rules
-    )
-    + super::super::f32::size_of(
-        &_0.default_mining_speed
-    )
-    + super::super::varint::size_of(
-        &_0.damage_per_block
-    )
+	0 + super::super::array::inline_266::size_of(&_0.rules)
+		+ super::super::f32::size_of(&_0.default_mining_speed)
+		+ super::super::varint::size_of(&_0.damage_per_block)
 }
- pub type Ty = SlotComponent20;
+pub type Ty = SlotComponent20;

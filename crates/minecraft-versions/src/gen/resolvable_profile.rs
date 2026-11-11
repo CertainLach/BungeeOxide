@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ResolvableProfile {
-    pub anon: super::ResolvableProfile25,
-    pub skin_patch: super::PlayerSkinPatch,
+	pub anon: super::ResolvableProfile25,
+	pub skin_patch: super::PlayerSkinPatch,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::resolvable_profile_25::serialize(
-        &_0.anon,
-        output,
-    )?;
-    super::player_skin_patch::serialize(
-        &_0.skin_patch,
-        output,
-    )?;
-    Ok(())
+	super::resolvable_profile_25::serialize(&_0.anon, output)?;
+	super::player_skin_patch::serialize(&_0.skin_patch, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_ANON = super::resolvable_profile_25::deserialize(
-        input,
-    )?;
-    let f_skinPatch = super::player_skin_patch::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        anon: f_ANON,skin_patch: f_skinPatch
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_ANON = super::resolvable_profile_25::deserialize(input)?;
+	let f_skinPatch = super::player_skin_patch::deserialize(input)?;
+	Ok(Ty {
+		anon: f_ANON,
+		skin_patch: f_skinPatch,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::resolvable_profile_25::size_of(
-        &_0.anon
-    )
-    + super::player_skin_patch::size_of(
-        &_0.skin_patch
-    )
+	0 + super::resolvable_profile_25::size_of(&_0.anon)
+		+ super::player_skin_patch::size_of(&_0.skin_patch)
 }
- pub type Ty = ResolvableProfile;
+pub type Ty = ResolvableProfile;

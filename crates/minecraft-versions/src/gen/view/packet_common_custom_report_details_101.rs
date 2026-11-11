@@ -3,44 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonCustomReportDetails101<'i> {
-    pub key: super::Pstring96::<'i>,
-    pub value: super::Pstring96::<'i>,
+	pub key: super::Pstring96<'i>,
+	pub value: super::Pstring96<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.key,
-        output,
-    )?;
-    super::pstring_96::serialize(
-        &_0.value,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.key, output)?;
+	super::pstring_96::serialize(&_0.value, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_key = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_value = super::pstring_96::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        key: f_key,value: f_value
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_key = super::pstring_96::deserialize(input)?;
+	let f_value = super::pstring_96::deserialize(input)?;
+	Ok(Ty {
+		key: f_key,
+		value: f_value,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.key
-    )
-    + super::pstring_96::size_of(
-        &_0.value
-    )
+	0 + super::pstring_96::size_of(&_0.key) + super::pstring_96::size_of(&_0.value)
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonCustomReportDetails101) -> Ty<'i> {
-    Ty {
-        key: super::pstring_96::view(&_0.key),value: super::pstring_96::view(&_0.value)
-    }
+	Ty {
+		key: super::pstring_96::view(&_0.key),
+		value: super::pstring_96::view(&_0.value),
+	}
 }
- pub type Ty<'i> = PacketCommonCustomReportDetails101<'i>;
+pub type Ty<'i> = PacketCommonCustomReportDetails101<'i>;

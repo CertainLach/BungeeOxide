@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketMoveMinecart {
-    pub entity_id: super::super::super::Varint,
-    pub steps: Vec<super::PacketMoveMinecart21>,
+	pub entity_id: super::super::super::Varint,
+	pub steps: Vec<super::PacketMoveMinecart21>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::array::inline_60::serialize(
-        &_0.steps,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::array::inline_60::serialize(&_0.steps, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_steps = super::super::super::array::inline_60::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,steps: f_steps
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::varint::deserialize(input)?;
+	let f_steps = super::super::super::array::inline_60::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		steps: f_steps,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::array::inline_60::size_of(
-        &_0.steps
-    )
+	0 + super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::array::inline_60::size_of(&_0.steps)
 }
- pub type Ty = PacketMoveMinecart;
+pub type Ty = PacketMoveMinecart;

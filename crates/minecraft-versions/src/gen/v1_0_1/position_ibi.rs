@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PositionIbi {
-    pub x: super::super::I32,
-    pub y: super::super::U8,
-    pub z: super::super::I32,
+	pub x: super::super::I32,
+	pub y: super::super::U8,
+	pub z: super::super::I32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i32::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::u8::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::i32::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::super::i32::serialize(&_0.x, output)?;
+	super::super::u8::serialize(&_0.y, output)?;
+	super::super::i32::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(9)?;
-    let f_x = super::super::i32::deserialize(
-        input,
-    )?;
-    let f_y = super::super::u8::deserialize(
-        input,
-    )?;
-    let f_z = super::super::i32::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(9)?;
+	let f_x = super::super::i32::deserialize(input)?;
+	let f_y = super::super::u8::deserialize(input)?;
+	let f_z = super::super::i32::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::i32::size_of(
-        &_0.x
-    )
-    + super::super::u8::size_of(
-        &_0.y
-    )
-    + super::super::i32::size_of(
-        &_0.z
-    )
+	0 + super::super::i32::size_of(&_0.x)
+		+ super::super::u8::size_of(&_0.y)
+		+ super::super::i32::size_of(&_0.z)
 }
- pub type Ty = PositionIbi;
+pub type Ty = PositionIbi;

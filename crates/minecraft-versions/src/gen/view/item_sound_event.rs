@@ -3,44 +3,31 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemSoundEvent<'i> {
-    pub sound_name: super::Pstring96::<'i>,
-    pub fixed_range: super::super::Option12,
+	pub sound_name: super::Pstring96<'i>,
+	pub fixed_range: super::super::Option12,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::pstring_96::serialize(
-        &_0.sound_name,
-        output,
-    )?;
-    super::super::option_12::serialize(
-        &_0.fixed_range,
-        output,
-    )?;
-    Ok(())
+	super::pstring_96::serialize(&_0.sound_name, output)?;
+	super::super::option_12::serialize(&_0.fixed_range, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_soundName = super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_fixedRange = super::super::option_12::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        sound_name: f_soundName,fixed_range: f_fixedRange
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_soundName = super::pstring_96::deserialize(input)?;
+	let f_fixedRange = super::super::option_12::deserialize(input)?;
+	Ok(Ty {
+		sound_name: f_soundName,
+		fixed_range: f_fixedRange,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::pstring_96::size_of(
-        &_0.sound_name
-    )
-    + super::super::option_12::size_of(
-        &_0.fixed_range
-    )
+	0 + super::pstring_96::size_of(&_0.sound_name)
+		+ super::super::option_12::size_of(&_0.fixed_range)
 }
 pub fn view<'i>(_0: &'i super::super::ItemSoundEvent) -> Ty<'i> {
-    Ty {
-        sound_name: super::pstring_96::view(&_0.sound_name),fixed_range: ::core::clone::Clone::clone(&_0.fixed_range)
-    }
+	Ty {
+		sound_name: super::pstring_96::view(&_0.sound_name),
+		fixed_range: ::core::clone::Clone::clone(&_0.fixed_range),
+	}
 }
- pub type Ty<'i> = ItemSoundEvent<'i>;
+pub type Ty<'i> = ItemSoundEvent<'i>;

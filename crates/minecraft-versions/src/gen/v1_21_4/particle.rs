@@ -3,733 +3,932 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Particle {
-    AngryVillager,
-    Block(super::super::Varint),
-    LandingLava,
-    Scrape,
-    Shriek(super::super::Varint),
-    EggCrack,
-    DustPlume,
-    TrialSpawnerDetectedPlayer,
-    TrialSpawnerDetectedPlayerOminous,
-    VaultConnection,
-    DustPillar(super::super::Varint),
-    OminousSpawning,
-    RaidOmen,
-    DrippingWater,
-    TrialOmen,
-    BlockCrumble(super::super::Varint),
-    FallingWater,
-    Dust(super::Particle0),
-    DustColorTransition(super::Particle1),
-    Effect,
-    ElderGuardian,
-    EnchantedHit,
-    Enchant,
-    EndRod,
-    BlockMarker(super::super::Varint),
-    EntityEffect(super::super::I32),
-    ExplosionEmitter,
-    Explosion,
-    Gust,
-    SmallGust,
-    GustEmitterLarge,
-    GustEmitterSmall,
-    SonicBoom,
-    FallingDust(super::super::Varint),
-    Firework,
-    Bubble,
-    Fishing,
-    Flame,
-    Infested,
-    CherryLeaves,
-    PaleOakLeaves,
-    SculkSoul,
-    SculkCharge(super::super::F32),
-    SculkChargePop,
-    SoulFireFlame,
-    Soul,
-    Cloud,
-    Flash,
-    HappyVillager,
-    Composter,
-    Heart,
-    InstantEffect,
-    Item(super::Slot),
-    Vibration(super::Particle4),
-    Trail(super::Particle5),
-    ItemSlime,
-    ItemCobweb,
-    Crit,
-    ItemSnowball,
-    LargeSmoke,
-    Lava,
-    Mycelium,
-    Note,
-    Poof,
-    Portal,
-    Rain,
-    Smoke,
-    WhiteSmoke,
-    DamageIndicator,
-    Sneeze,
-    Spit,
-    SquidInk,
-    SweepAttack,
-    TotemOfUndying,
-    Underwater,
-    Splash,
-    Witch,
-    BubblePop,
-    CurrentDown,
-    DragonBreath,
-    BubbleColumnUp,
-    Nautilus,
-    Dolphin,
-    CampfireCosySmoke,
-    CampfireSignalSmoke,
-    DrippingHoney,
-    FallingHoney,
-    LandingHoney,
-    FallingNectar,
-    FallingSporeBlossom,
-    DrippingLava,
-    Ash,
-    CrimsonSpore,
-    WarpedSpore,
-    SporeBlossomAir,
-    DrippingObsidianTear,
-    FallingObsidianTear,
-    LandingObsidianTear,
-    ReversePortal,
-    WhiteAsh,
-    SmallFlame,
-    FallingLava,
-    Snowflake,
-    DrippingDripstoneLava,
-    FallingDripstoneLava,
-    DrippingDripstoneWater,
-    FallingDripstoneWater,
-    GlowSquidInk,
-    Glow,
-    WaxOn,
-    WaxOff,
-    ElectricSpark,
-    Default(super::super::Varint),
+	AngryVillager,
+	Block(super::super::Varint),
+	LandingLava,
+	Scrape,
+	Shriek(super::super::Varint),
+	EggCrack,
+	DustPlume,
+	TrialSpawnerDetectedPlayer,
+	TrialSpawnerDetectedPlayerOminous,
+	VaultConnection,
+	DustPillar(super::super::Varint),
+	OminousSpawning,
+	RaidOmen,
+	DrippingWater,
+	TrialOmen,
+	BlockCrumble(super::super::Varint),
+	FallingWater,
+	Dust(super::Particle0),
+	DustColorTransition(super::Particle1),
+	Effect,
+	ElderGuardian,
+	EnchantedHit,
+	Enchant,
+	EndRod,
+	BlockMarker(super::super::Varint),
+	EntityEffect(super::super::I32),
+	ExplosionEmitter,
+	Explosion,
+	Gust,
+	SmallGust,
+	GustEmitterLarge,
+	GustEmitterSmall,
+	SonicBoom,
+	FallingDust(super::super::Varint),
+	Firework,
+	Bubble,
+	Fishing,
+	Flame,
+	Infested,
+	CherryLeaves,
+	PaleOakLeaves,
+	SculkSoul,
+	SculkCharge(super::super::F32),
+	SculkChargePop,
+	SoulFireFlame,
+	Soul,
+	Cloud,
+	Flash,
+	HappyVillager,
+	Composter,
+	Heart,
+	InstantEffect,
+	Item(super::Slot),
+	Vibration(super::Particle4),
+	Trail(super::Particle5),
+	ItemSlime,
+	ItemCobweb,
+	Crit,
+	ItemSnowball,
+	LargeSmoke,
+	Lava,
+	Mycelium,
+	Note,
+	Poof,
+	Portal,
+	Rain,
+	Smoke,
+	WhiteSmoke,
+	DamageIndicator,
+	Sneeze,
+	Spit,
+	SquidInk,
+	SweepAttack,
+	TotemOfUndying,
+	Underwater,
+	Splash,
+	Witch,
+	BubblePop,
+	CurrentDown,
+	DragonBreath,
+	BubbleColumnUp,
+	Nautilus,
+	Dolphin,
+	CampfireCosySmoke,
+	CampfireSignalSmoke,
+	DrippingHoney,
+	FallingHoney,
+	LandingHoney,
+	FallingNectar,
+	FallingSporeBlossom,
+	DrippingLava,
+	Ash,
+	CrimsonSpore,
+	WarpedSpore,
+	SporeBlossomAir,
+	DrippingObsidianTear,
+	FallingObsidianTear,
+	LandingObsidianTear,
+	ReversePortal,
+	WhiteAsh,
+	SmallFlame,
+	FallingLava,
+	Snowflake,
+	DrippingDripstoneLava,
+	FallingDripstoneLava,
+	DrippingDripstoneWater,
+	FallingDripstoneWater,
+	GlowSquidInk,
+	Glow,
+	WaxOn,
+	WaxOff,
+	ElectricSpark,
+	Default(super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::AngryVillager => Ok(()),
-        Ty::Block(__v) => super::super::varint::serialize(__v, output),
-        Ty::LandingLava => Ok(()),
-        Ty::Scrape => Ok(()),
-        Ty::Shriek(__v) => super::super::varint::serialize(__v, output),
-        Ty::EggCrack => Ok(()),
-        Ty::DustPlume => Ok(()),
-        Ty::TrialSpawnerDetectedPlayer => Ok(()),
-        Ty::TrialSpawnerDetectedPlayerOminous => Ok(()),
-        Ty::VaultConnection => Ok(()),
-        Ty::DustPillar(__v) => super::super::varint::serialize(__v, output),
-        Ty::OminousSpawning => Ok(()),
-        Ty::RaidOmen => Ok(()),
-        Ty::DrippingWater => Ok(()),
-        Ty::TrialOmen => Ok(()),
-        Ty::BlockCrumble(__v) => super::super::varint::serialize(__v, output),
-        Ty::FallingWater => Ok(()),
-        Ty::Dust(__v) => super::particle_0::serialize(__v, output),
-        Ty::DustColorTransition(__v) => super::particle_1::serialize(__v, output),
-        Ty::Effect => Ok(()),
-        Ty::ElderGuardian => Ok(()),
-        Ty::EnchantedHit => Ok(()),
-        Ty::Enchant => Ok(()),
-        Ty::EndRod => Ok(()),
-        Ty::BlockMarker(__v) => super::super::varint::serialize(__v, output),
-        Ty::EntityEffect(__v) => super::super::i32::serialize(__v, output),
-        Ty::ExplosionEmitter => Ok(()),
-        Ty::Explosion => Ok(()),
-        Ty::Gust => Ok(()),
-        Ty::SmallGust => Ok(()),
-        Ty::GustEmitterLarge => Ok(()),
-        Ty::GustEmitterSmall => Ok(()),
-        Ty::SonicBoom => Ok(()),
-        Ty::FallingDust(__v) => super::super::varint::serialize(__v, output),
-        Ty::Firework => Ok(()),
-        Ty::Bubble => Ok(()),
-        Ty::Fishing => Ok(()),
-        Ty::Flame => Ok(()),
-        Ty::Infested => Ok(()),
-        Ty::CherryLeaves => Ok(()),
-        Ty::PaleOakLeaves => Ok(()),
-        Ty::SculkSoul => Ok(()),
-        Ty::SculkCharge(__v) => super::super::f32::serialize(__v, output),
-        Ty::SculkChargePop => Ok(()),
-        Ty::SoulFireFlame => Ok(()),
-        Ty::Soul => Ok(()),
-        Ty::Cloud => Ok(()),
-        Ty::Flash => Ok(()),
-        Ty::HappyVillager => Ok(()),
-        Ty::Composter => Ok(()),
-        Ty::Heart => Ok(()),
-        Ty::InstantEffect => Ok(()),
-        Ty::Item(__v) => super::slot::serialize_guarded(__v, output),
-        Ty::Vibration(__v) => super::particle_4::serialize(__v, output),
-        Ty::Trail(__v) => super::particle_5::serialize(__v, output),
-        Ty::ItemSlime => Ok(()),
-        Ty::ItemCobweb => Ok(()),
-        Ty::Crit => Ok(()),
-        Ty::ItemSnowball => Ok(()),
-        Ty::LargeSmoke => Ok(()),
-        Ty::Lava => Ok(()),
-        Ty::Mycelium => Ok(()),
-        Ty::Note => Ok(()),
-        Ty::Poof => Ok(()),
-        Ty::Portal => Ok(()),
-        Ty::Rain => Ok(()),
-        Ty::Smoke => Ok(()),
-        Ty::WhiteSmoke => Ok(()),
-        Ty::DamageIndicator => Ok(()),
-        Ty::Sneeze => Ok(()),
-        Ty::Spit => Ok(()),
-        Ty::SquidInk => Ok(()),
-        Ty::SweepAttack => Ok(()),
-        Ty::TotemOfUndying => Ok(()),
-        Ty::Underwater => Ok(()),
-        Ty::Splash => Ok(()),
-        Ty::Witch => Ok(()),
-        Ty::BubblePop => Ok(()),
-        Ty::CurrentDown => Ok(()),
-        Ty::DragonBreath => Ok(()),
-        Ty::BubbleColumnUp => Ok(()),
-        Ty::Nautilus => Ok(()),
-        Ty::Dolphin => Ok(()),
-        Ty::CampfireCosySmoke => Ok(()),
-        Ty::CampfireSignalSmoke => Ok(()),
-        Ty::DrippingHoney => Ok(()),
-        Ty::FallingHoney => Ok(()),
-        Ty::LandingHoney => Ok(()),
-        Ty::FallingNectar => Ok(()),
-        Ty::FallingSporeBlossom => Ok(()),
-        Ty::DrippingLava => Ok(()),
-        Ty::Ash => Ok(()),
-        Ty::CrimsonSpore => Ok(()),
-        Ty::WarpedSpore => Ok(()),
-        Ty::SporeBlossomAir => Ok(()),
-        Ty::DrippingObsidianTear => Ok(()),
-        Ty::FallingObsidianTear => Ok(()),
-        Ty::LandingObsidianTear => Ok(()),
-        Ty::ReversePortal => Ok(()),
-        Ty::WhiteAsh => Ok(()),
-        Ty::SmallFlame => Ok(()),
-        Ty::FallingLava => Ok(()),
-        Ty::Snowflake => Ok(()),
-        Ty::DrippingDripstoneLava => Ok(()),
-        Ty::FallingDripstoneLava => Ok(()),
-        Ty::DrippingDripstoneWater => Ok(()),
-        Ty::FallingDripstoneWater => Ok(()),
-        Ty::GlowSquidInk => Ok(()),
-        Ty::Glow => Ok(()),
-        Ty::WaxOn => Ok(()),
-        Ty::WaxOff => Ok(()),
-        Ty::ElectricSpark => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::AngryVillager => Ok(()),
+		Ty::Block(__v) => super::super::varint::serialize(__v, output),
+		Ty::LandingLava => Ok(()),
+		Ty::Scrape => Ok(()),
+		Ty::Shriek(__v) => super::super::varint::serialize(__v, output),
+		Ty::EggCrack => Ok(()),
+		Ty::DustPlume => Ok(()),
+		Ty::TrialSpawnerDetectedPlayer => Ok(()),
+		Ty::TrialSpawnerDetectedPlayerOminous => Ok(()),
+		Ty::VaultConnection => Ok(()),
+		Ty::DustPillar(__v) => super::super::varint::serialize(__v, output),
+		Ty::OminousSpawning => Ok(()),
+		Ty::RaidOmen => Ok(()),
+		Ty::DrippingWater => Ok(()),
+		Ty::TrialOmen => Ok(()),
+		Ty::BlockCrumble(__v) => super::super::varint::serialize(__v, output),
+		Ty::FallingWater => Ok(()),
+		Ty::Dust(__v) => super::particle_0::serialize(__v, output),
+		Ty::DustColorTransition(__v) => super::particle_1::serialize(__v, output),
+		Ty::Effect => Ok(()),
+		Ty::ElderGuardian => Ok(()),
+		Ty::EnchantedHit => Ok(()),
+		Ty::Enchant => Ok(()),
+		Ty::EndRod => Ok(()),
+		Ty::BlockMarker(__v) => super::super::varint::serialize(__v, output),
+		Ty::EntityEffect(__v) => super::super::i32::serialize(__v, output),
+		Ty::ExplosionEmitter => Ok(()),
+		Ty::Explosion => Ok(()),
+		Ty::Gust => Ok(()),
+		Ty::SmallGust => Ok(()),
+		Ty::GustEmitterLarge => Ok(()),
+		Ty::GustEmitterSmall => Ok(()),
+		Ty::SonicBoom => Ok(()),
+		Ty::FallingDust(__v) => super::super::varint::serialize(__v, output),
+		Ty::Firework => Ok(()),
+		Ty::Bubble => Ok(()),
+		Ty::Fishing => Ok(()),
+		Ty::Flame => Ok(()),
+		Ty::Infested => Ok(()),
+		Ty::CherryLeaves => Ok(()),
+		Ty::PaleOakLeaves => Ok(()),
+		Ty::SculkSoul => Ok(()),
+		Ty::SculkCharge(__v) => super::super::f32::serialize(__v, output),
+		Ty::SculkChargePop => Ok(()),
+		Ty::SoulFireFlame => Ok(()),
+		Ty::Soul => Ok(()),
+		Ty::Cloud => Ok(()),
+		Ty::Flash => Ok(()),
+		Ty::HappyVillager => Ok(()),
+		Ty::Composter => Ok(()),
+		Ty::Heart => Ok(()),
+		Ty::InstantEffect => Ok(()),
+		Ty::Item(__v) => super::slot::serialize_guarded(__v, output),
+		Ty::Vibration(__v) => super::particle_4::serialize(__v, output),
+		Ty::Trail(__v) => super::particle_5::serialize(__v, output),
+		Ty::ItemSlime => Ok(()),
+		Ty::ItemCobweb => Ok(()),
+		Ty::Crit => Ok(()),
+		Ty::ItemSnowball => Ok(()),
+		Ty::LargeSmoke => Ok(()),
+		Ty::Lava => Ok(()),
+		Ty::Mycelium => Ok(()),
+		Ty::Note => Ok(()),
+		Ty::Poof => Ok(()),
+		Ty::Portal => Ok(()),
+		Ty::Rain => Ok(()),
+		Ty::Smoke => Ok(()),
+		Ty::WhiteSmoke => Ok(()),
+		Ty::DamageIndicator => Ok(()),
+		Ty::Sneeze => Ok(()),
+		Ty::Spit => Ok(()),
+		Ty::SquidInk => Ok(()),
+		Ty::SweepAttack => Ok(()),
+		Ty::TotemOfUndying => Ok(()),
+		Ty::Underwater => Ok(()),
+		Ty::Splash => Ok(()),
+		Ty::Witch => Ok(()),
+		Ty::BubblePop => Ok(()),
+		Ty::CurrentDown => Ok(()),
+		Ty::DragonBreath => Ok(()),
+		Ty::BubbleColumnUp => Ok(()),
+		Ty::Nautilus => Ok(()),
+		Ty::Dolphin => Ok(()),
+		Ty::CampfireCosySmoke => Ok(()),
+		Ty::CampfireSignalSmoke => Ok(()),
+		Ty::DrippingHoney => Ok(()),
+		Ty::FallingHoney => Ok(()),
+		Ty::LandingHoney => Ok(()),
+		Ty::FallingNectar => Ok(()),
+		Ty::FallingSporeBlossom => Ok(()),
+		Ty::DrippingLava => Ok(()),
+		Ty::Ash => Ok(()),
+		Ty::CrimsonSpore => Ok(()),
+		Ty::WarpedSpore => Ok(()),
+		Ty::SporeBlossomAir => Ok(()),
+		Ty::DrippingObsidianTear => Ok(()),
+		Ty::FallingObsidianTear => Ok(()),
+		Ty::LandingObsidianTear => Ok(()),
+		Ty::ReversePortal => Ok(()),
+		Ty::WhiteAsh => Ok(()),
+		Ty::SmallFlame => Ok(()),
+		Ty::FallingLava => Ok(()),
+		Ty::Snowflake => Ok(()),
+		Ty::DrippingDripstoneLava => Ok(()),
+		Ty::FallingDripstoneLava => Ok(()),
+		Ty::DrippingDripstoneWater => Ok(()),
+		Ty::FallingDripstoneWater => Ok(()),
+		Ty::GlowSquidInk => Ok(()),
+		Ty::Glow => Ok(()),
+		Ty::WaxOn => Ok(()),
+		Ty::WaxOff => Ok(()),
+		Ty::ElectricSpark => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::AngryVillager); }
-    if (__tag.clone() == 1_i32) {
-        return Ok(Ty::Block(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 10_i32) { return Ok(Ty::LandingLava); }
-    if (__tag.clone() == 100_i32) { return Ok(Ty::Scrape); }
-    if (__tag.clone() == 101_i32) {
-        return Ok(Ty::Shriek(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 102_i32) { return Ok(Ty::EggCrack); }
-    if (__tag.clone() == 103_i32) { return Ok(Ty::DustPlume); }
-    if (__tag.clone() == 104_i32) { return Ok(Ty::TrialSpawnerDetectedPlayer); }
-    if (__tag.clone() == 105_i32) { return Ok(Ty::TrialSpawnerDetectedPlayerOminous); }
-    if (__tag.clone() == 106_i32) { return Ok(Ty::VaultConnection); }
-    if (__tag.clone() == 107_i32) {
-        return Ok(Ty::DustPillar(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 108_i32) { return Ok(Ty::OminousSpawning); }
-    if (__tag.clone() == 109_i32) { return Ok(Ty::RaidOmen); }
-    if (__tag.clone() == 11_i32) { return Ok(Ty::DrippingWater); }
-    if (__tag.clone() == 110_i32) { return Ok(Ty::TrialOmen); }
-    if (__tag.clone() == 111_i32) {
-        return Ok(Ty::BlockCrumble(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 12_i32) { return Ok(Ty::FallingWater); }
-    if (__tag.clone() == 13_i32) {
-        return Ok(Ty::Dust(super::particle_0::deserialize(input, )?));
-    }
-    if (__tag.clone() == 14_i32) {
-        return Ok(Ty::DustColorTransition(super::particle_1::deserialize(input, )?));
-    }
-    if (__tag.clone() == 15_i32) { return Ok(Ty::Effect); }
-    if (__tag.clone() == 16_i32) { return Ok(Ty::ElderGuardian); }
-    if (__tag.clone() == 17_i32) { return Ok(Ty::EnchantedHit); }
-    if (__tag.clone() == 18_i32) { return Ok(Ty::Enchant); }
-    if (__tag.clone() == 19_i32) { return Ok(Ty::EndRod); }
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::BlockMarker(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 20_i32) {
-        return Ok(Ty::EntityEffect(super::super::i32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 21_i32) { return Ok(Ty::ExplosionEmitter); }
-    if (__tag.clone() == 22_i32) { return Ok(Ty::Explosion); }
-    if (__tag.clone() == 23_i32) { return Ok(Ty::Gust); }
-    if (__tag.clone() == 24_i32) { return Ok(Ty::SmallGust); }
-    if (__tag.clone() == 25_i32) { return Ok(Ty::GustEmitterLarge); }
-    if (__tag.clone() == 26_i32) { return Ok(Ty::GustEmitterSmall); }
-    if (__tag.clone() == 27_i32) { return Ok(Ty::SonicBoom); }
-    if (__tag.clone() == 28_i32) {
-        return Ok(Ty::FallingDust(super::super::varint::deserialize(input, )?));
-    }
-    if (__tag.clone() == 29_i32) { return Ok(Ty::Firework); }
-    if (__tag.clone() == 3_i32) { return Ok(Ty::Bubble); }
-    if (__tag.clone() == 30_i32) { return Ok(Ty::Fishing); }
-    if (__tag.clone() == 31_i32) { return Ok(Ty::Flame); }
-    if (__tag.clone() == 32_i32) { return Ok(Ty::Infested); }
-    if (__tag.clone() == 33_i32) { return Ok(Ty::CherryLeaves); }
-    if (__tag.clone() == 34_i32) { return Ok(Ty::PaleOakLeaves); }
-    if (__tag.clone() == 35_i32) { return Ok(Ty::SculkSoul); }
-    if (__tag.clone() == 36_i32) {
-        return Ok(Ty::SculkCharge(super::super::f32::deserialize(input, )?));
-    }
-    if (__tag.clone() == 37_i32) { return Ok(Ty::SculkChargePop); }
-    if (__tag.clone() == 38_i32) { return Ok(Ty::SoulFireFlame); }
-    if (__tag.clone() == 39_i32) { return Ok(Ty::Soul); }
-    if (__tag.clone() == 4_i32) { return Ok(Ty::Cloud); }
-    if (__tag.clone() == 40_i32) { return Ok(Ty::Flash); }
-    if (__tag.clone() == 41_i32) { return Ok(Ty::HappyVillager); }
-    if (__tag.clone() == 42_i32) { return Ok(Ty::Composter); }
-    if (__tag.clone() == 43_i32) { return Ok(Ty::Heart); }
-    if (__tag.clone() == 44_i32) { return Ok(Ty::InstantEffect); }
-    if (__tag.clone() == 45_i32) {
-        return Ok(Ty::Item(super::slot::deserialize_guarded(input, )?));
-    }
-    if (__tag.clone() == 46_i32) {
-        return Ok(Ty::Vibration(super::particle_4::deserialize(input, )?));
-    }
-    if (__tag.clone() == 47_i32) {
-        return Ok(Ty::Trail(super::particle_5::deserialize(input, )?));
-    }
-    if (__tag.clone() == 48_i32) { return Ok(Ty::ItemSlime); }
-    if (__tag.clone() == 49_i32) { return Ok(Ty::ItemCobweb); }
-    if (__tag.clone() == 5_i32) { return Ok(Ty::Crit); }
-    if (__tag.clone() == 50_i32) { return Ok(Ty::ItemSnowball); }
-    if (__tag.clone() == 51_i32) { return Ok(Ty::LargeSmoke); }
-    if (__tag.clone() == 52_i32) { return Ok(Ty::Lava); }
-    if (__tag.clone() == 53_i32) { return Ok(Ty::Mycelium); }
-    if (__tag.clone() == 54_i32) { return Ok(Ty::Note); }
-    if (__tag.clone() == 55_i32) { return Ok(Ty::Poof); }
-    if (__tag.clone() == 56_i32) { return Ok(Ty::Portal); }
-    if (__tag.clone() == 57_i32) { return Ok(Ty::Rain); }
-    if (__tag.clone() == 58_i32) { return Ok(Ty::Smoke); }
-    if (__tag.clone() == 59_i32) { return Ok(Ty::WhiteSmoke); }
-    if (__tag.clone() == 6_i32) { return Ok(Ty::DamageIndicator); }
-    if (__tag.clone() == 60_i32) { return Ok(Ty::Sneeze); }
-    if (__tag.clone() == 61_i32) { return Ok(Ty::Spit); }
-    if (__tag.clone() == 62_i32) { return Ok(Ty::SquidInk); }
-    if (__tag.clone() == 63_i32) { return Ok(Ty::SweepAttack); }
-    if (__tag.clone() == 64_i32) { return Ok(Ty::TotemOfUndying); }
-    if (__tag.clone() == 65_i32) { return Ok(Ty::Underwater); }
-    if (__tag.clone() == 66_i32) { return Ok(Ty::Splash); }
-    if (__tag.clone() == 67_i32) { return Ok(Ty::Witch); }
-    if (__tag.clone() == 68_i32) { return Ok(Ty::BubblePop); }
-    if (__tag.clone() == 69_i32) { return Ok(Ty::CurrentDown); }
-    if (__tag.clone() == 7_i32) { return Ok(Ty::DragonBreath); }
-    if (__tag.clone() == 70_i32) { return Ok(Ty::BubbleColumnUp); }
-    if (__tag.clone() == 71_i32) { return Ok(Ty::Nautilus); }
-    if (__tag.clone() == 72_i32) { return Ok(Ty::Dolphin); }
-    if (__tag.clone() == 73_i32) { return Ok(Ty::CampfireCosySmoke); }
-    if (__tag.clone() == 74_i32) { return Ok(Ty::CampfireSignalSmoke); }
-    if (__tag.clone() == 75_i32) { return Ok(Ty::DrippingHoney); }
-    if (__tag.clone() == 76_i32) { return Ok(Ty::FallingHoney); }
-    if (__tag.clone() == 77_i32) { return Ok(Ty::LandingHoney); }
-    if (__tag.clone() == 78_i32) { return Ok(Ty::FallingNectar); }
-    if (__tag.clone() == 79_i32) { return Ok(Ty::FallingSporeBlossom); }
-    if (__tag.clone() == 8_i32) { return Ok(Ty::DrippingLava); }
-    if (__tag.clone() == 80_i32) { return Ok(Ty::Ash); }
-    if (__tag.clone() == 81_i32) { return Ok(Ty::CrimsonSpore); }
-    if (__tag.clone() == 82_i32) { return Ok(Ty::WarpedSpore); }
-    if (__tag.clone() == 83_i32) { return Ok(Ty::SporeBlossomAir); }
-    if (__tag.clone() == 84_i32) { return Ok(Ty::DrippingObsidianTear); }
-    if (__tag.clone() == 85_i32) { return Ok(Ty::FallingObsidianTear); }
-    if (__tag.clone() == 86_i32) { return Ok(Ty::LandingObsidianTear); }
-    if (__tag.clone() == 87_i32) { return Ok(Ty::ReversePortal); }
-    if (__tag.clone() == 88_i32) { return Ok(Ty::WhiteAsh); }
-    if (__tag.clone() == 89_i32) { return Ok(Ty::SmallFlame); }
-    if (__tag.clone() == 9_i32) { return Ok(Ty::FallingLava); }
-    if (__tag.clone() == 90_i32) { return Ok(Ty::Snowflake); }
-    if (__tag.clone() == 91_i32) { return Ok(Ty::DrippingDripstoneLava); }
-    if (__tag.clone() == 92_i32) { return Ok(Ty::FallingDripstoneLava); }
-    if (__tag.clone() == 93_i32) { return Ok(Ty::DrippingDripstoneWater); }
-    if (__tag.clone() == 94_i32) { return Ok(Ty::FallingDripstoneWater); }
-    if (__tag.clone() == 95_i32) { return Ok(Ty::GlowSquidInk); }
-    if (__tag.clone() == 96_i32) { return Ok(Ty::Glow); }
-    if (__tag.clone() == 97_i32) { return Ok(Ty::WaxOn); }
-    if (__tag.clone() == 98_i32) { return Ok(Ty::WaxOff); }
-    if (__tag.clone() == 99_i32) { return Ok(Ty::ElectricSpark); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::AngryVillager);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Block(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 10_i32) {
+		return Ok(Ty::LandingLava);
+	}
+	if (__tag.clone() == 100_i32) {
+		return Ok(Ty::Scrape);
+	}
+	if (__tag.clone() == 101_i32) {
+		return Ok(Ty::Shriek(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 102_i32) {
+		return Ok(Ty::EggCrack);
+	}
+	if (__tag.clone() == 103_i32) {
+		return Ok(Ty::DustPlume);
+	}
+	if (__tag.clone() == 104_i32) {
+		return Ok(Ty::TrialSpawnerDetectedPlayer);
+	}
+	if (__tag.clone() == 105_i32) {
+		return Ok(Ty::TrialSpawnerDetectedPlayerOminous);
+	}
+	if (__tag.clone() == 106_i32) {
+		return Ok(Ty::VaultConnection);
+	}
+	if (__tag.clone() == 107_i32) {
+		return Ok(Ty::DustPillar(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 108_i32) {
+		return Ok(Ty::OminousSpawning);
+	}
+	if (__tag.clone() == 109_i32) {
+		return Ok(Ty::RaidOmen);
+	}
+	if (__tag.clone() == 11_i32) {
+		return Ok(Ty::DrippingWater);
+	}
+	if (__tag.clone() == 110_i32) {
+		return Ok(Ty::TrialOmen);
+	}
+	if (__tag.clone() == 111_i32) {
+		return Ok(Ty::BlockCrumble(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 12_i32) {
+		return Ok(Ty::FallingWater);
+	}
+	if (__tag.clone() == 13_i32) {
+		return Ok(Ty::Dust(super::particle_0::deserialize(input)?));
+	}
+	if (__tag.clone() == 14_i32) {
+		return Ok(Ty::DustColorTransition(super::particle_1::deserialize(
+			input,
+		)?));
+	}
+	if (__tag.clone() == 15_i32) {
+		return Ok(Ty::Effect);
+	}
+	if (__tag.clone() == 16_i32) {
+		return Ok(Ty::ElderGuardian);
+	}
+	if (__tag.clone() == 17_i32) {
+		return Ok(Ty::EnchantedHit);
+	}
+	if (__tag.clone() == 18_i32) {
+		return Ok(Ty::Enchant);
+	}
+	if (__tag.clone() == 19_i32) {
+		return Ok(Ty::EndRod);
+	}
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::BlockMarker(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 20_i32) {
+		return Ok(Ty::EntityEffect(super::super::i32::deserialize(input)?));
+	}
+	if (__tag.clone() == 21_i32) {
+		return Ok(Ty::ExplosionEmitter);
+	}
+	if (__tag.clone() == 22_i32) {
+		return Ok(Ty::Explosion);
+	}
+	if (__tag.clone() == 23_i32) {
+		return Ok(Ty::Gust);
+	}
+	if (__tag.clone() == 24_i32) {
+		return Ok(Ty::SmallGust);
+	}
+	if (__tag.clone() == 25_i32) {
+		return Ok(Ty::GustEmitterLarge);
+	}
+	if (__tag.clone() == 26_i32) {
+		return Ok(Ty::GustEmitterSmall);
+	}
+	if (__tag.clone() == 27_i32) {
+		return Ok(Ty::SonicBoom);
+	}
+	if (__tag.clone() == 28_i32) {
+		return Ok(Ty::FallingDust(super::super::varint::deserialize(input)?));
+	}
+	if (__tag.clone() == 29_i32) {
+		return Ok(Ty::Firework);
+	}
+	if (__tag.clone() == 3_i32) {
+		return Ok(Ty::Bubble);
+	}
+	if (__tag.clone() == 30_i32) {
+		return Ok(Ty::Fishing);
+	}
+	if (__tag.clone() == 31_i32) {
+		return Ok(Ty::Flame);
+	}
+	if (__tag.clone() == 32_i32) {
+		return Ok(Ty::Infested);
+	}
+	if (__tag.clone() == 33_i32) {
+		return Ok(Ty::CherryLeaves);
+	}
+	if (__tag.clone() == 34_i32) {
+		return Ok(Ty::PaleOakLeaves);
+	}
+	if (__tag.clone() == 35_i32) {
+		return Ok(Ty::SculkSoul);
+	}
+	if (__tag.clone() == 36_i32) {
+		return Ok(Ty::SculkCharge(super::super::f32::deserialize(input)?));
+	}
+	if (__tag.clone() == 37_i32) {
+		return Ok(Ty::SculkChargePop);
+	}
+	if (__tag.clone() == 38_i32) {
+		return Ok(Ty::SoulFireFlame);
+	}
+	if (__tag.clone() == 39_i32) {
+		return Ok(Ty::Soul);
+	}
+	if (__tag.clone() == 4_i32) {
+		return Ok(Ty::Cloud);
+	}
+	if (__tag.clone() == 40_i32) {
+		return Ok(Ty::Flash);
+	}
+	if (__tag.clone() == 41_i32) {
+		return Ok(Ty::HappyVillager);
+	}
+	if (__tag.clone() == 42_i32) {
+		return Ok(Ty::Composter);
+	}
+	if (__tag.clone() == 43_i32) {
+		return Ok(Ty::Heart);
+	}
+	if (__tag.clone() == 44_i32) {
+		return Ok(Ty::InstantEffect);
+	}
+	if (__tag.clone() == 45_i32) {
+		return Ok(Ty::Item(super::slot::deserialize_guarded(input)?));
+	}
+	if (__tag.clone() == 46_i32) {
+		return Ok(Ty::Vibration(super::particle_4::deserialize(input)?));
+	}
+	if (__tag.clone() == 47_i32) {
+		return Ok(Ty::Trail(super::particle_5::deserialize(input)?));
+	}
+	if (__tag.clone() == 48_i32) {
+		return Ok(Ty::ItemSlime);
+	}
+	if (__tag.clone() == 49_i32) {
+		return Ok(Ty::ItemCobweb);
+	}
+	if (__tag.clone() == 5_i32) {
+		return Ok(Ty::Crit);
+	}
+	if (__tag.clone() == 50_i32) {
+		return Ok(Ty::ItemSnowball);
+	}
+	if (__tag.clone() == 51_i32) {
+		return Ok(Ty::LargeSmoke);
+	}
+	if (__tag.clone() == 52_i32) {
+		return Ok(Ty::Lava);
+	}
+	if (__tag.clone() == 53_i32) {
+		return Ok(Ty::Mycelium);
+	}
+	if (__tag.clone() == 54_i32) {
+		return Ok(Ty::Note);
+	}
+	if (__tag.clone() == 55_i32) {
+		return Ok(Ty::Poof);
+	}
+	if (__tag.clone() == 56_i32) {
+		return Ok(Ty::Portal);
+	}
+	if (__tag.clone() == 57_i32) {
+		return Ok(Ty::Rain);
+	}
+	if (__tag.clone() == 58_i32) {
+		return Ok(Ty::Smoke);
+	}
+	if (__tag.clone() == 59_i32) {
+		return Ok(Ty::WhiteSmoke);
+	}
+	if (__tag.clone() == 6_i32) {
+		return Ok(Ty::DamageIndicator);
+	}
+	if (__tag.clone() == 60_i32) {
+		return Ok(Ty::Sneeze);
+	}
+	if (__tag.clone() == 61_i32) {
+		return Ok(Ty::Spit);
+	}
+	if (__tag.clone() == 62_i32) {
+		return Ok(Ty::SquidInk);
+	}
+	if (__tag.clone() == 63_i32) {
+		return Ok(Ty::SweepAttack);
+	}
+	if (__tag.clone() == 64_i32) {
+		return Ok(Ty::TotemOfUndying);
+	}
+	if (__tag.clone() == 65_i32) {
+		return Ok(Ty::Underwater);
+	}
+	if (__tag.clone() == 66_i32) {
+		return Ok(Ty::Splash);
+	}
+	if (__tag.clone() == 67_i32) {
+		return Ok(Ty::Witch);
+	}
+	if (__tag.clone() == 68_i32) {
+		return Ok(Ty::BubblePop);
+	}
+	if (__tag.clone() == 69_i32) {
+		return Ok(Ty::CurrentDown);
+	}
+	if (__tag.clone() == 7_i32) {
+		return Ok(Ty::DragonBreath);
+	}
+	if (__tag.clone() == 70_i32) {
+		return Ok(Ty::BubbleColumnUp);
+	}
+	if (__tag.clone() == 71_i32) {
+		return Ok(Ty::Nautilus);
+	}
+	if (__tag.clone() == 72_i32) {
+		return Ok(Ty::Dolphin);
+	}
+	if (__tag.clone() == 73_i32) {
+		return Ok(Ty::CampfireCosySmoke);
+	}
+	if (__tag.clone() == 74_i32) {
+		return Ok(Ty::CampfireSignalSmoke);
+	}
+	if (__tag.clone() == 75_i32) {
+		return Ok(Ty::DrippingHoney);
+	}
+	if (__tag.clone() == 76_i32) {
+		return Ok(Ty::FallingHoney);
+	}
+	if (__tag.clone() == 77_i32) {
+		return Ok(Ty::LandingHoney);
+	}
+	if (__tag.clone() == 78_i32) {
+		return Ok(Ty::FallingNectar);
+	}
+	if (__tag.clone() == 79_i32) {
+		return Ok(Ty::FallingSporeBlossom);
+	}
+	if (__tag.clone() == 8_i32) {
+		return Ok(Ty::DrippingLava);
+	}
+	if (__tag.clone() == 80_i32) {
+		return Ok(Ty::Ash);
+	}
+	if (__tag.clone() == 81_i32) {
+		return Ok(Ty::CrimsonSpore);
+	}
+	if (__tag.clone() == 82_i32) {
+		return Ok(Ty::WarpedSpore);
+	}
+	if (__tag.clone() == 83_i32) {
+		return Ok(Ty::SporeBlossomAir);
+	}
+	if (__tag.clone() == 84_i32) {
+		return Ok(Ty::DrippingObsidianTear);
+	}
+	if (__tag.clone() == 85_i32) {
+		return Ok(Ty::FallingObsidianTear);
+	}
+	if (__tag.clone() == 86_i32) {
+		return Ok(Ty::LandingObsidianTear);
+	}
+	if (__tag.clone() == 87_i32) {
+		return Ok(Ty::ReversePortal);
+	}
+	if (__tag.clone() == 88_i32) {
+		return Ok(Ty::WhiteAsh);
+	}
+	if (__tag.clone() == 89_i32) {
+		return Ok(Ty::SmallFlame);
+	}
+	if (__tag.clone() == 9_i32) {
+		return Ok(Ty::FallingLava);
+	}
+	if (__tag.clone() == 90_i32) {
+		return Ok(Ty::Snowflake);
+	}
+	if (__tag.clone() == 91_i32) {
+		return Ok(Ty::DrippingDripstoneLava);
+	}
+	if (__tag.clone() == 92_i32) {
+		return Ok(Ty::FallingDripstoneLava);
+	}
+	if (__tag.clone() == 93_i32) {
+		return Ok(Ty::DrippingDripstoneWater);
+	}
+	if (__tag.clone() == 94_i32) {
+		return Ok(Ty::FallingDripstoneWater);
+	}
+	if (__tag.clone() == 95_i32) {
+		return Ok(Ty::GlowSquidInk);
+	}
+	if (__tag.clone() == 96_i32) {
+		return Ok(Ty::Glow);
+	}
+	if (__tag.clone() == 97_i32) {
+		return Ok(Ty::WaxOn);
+	}
+	if (__tag.clone() == 98_i32) {
+		return Ok(Ty::WaxOff);
+	}
+	if (__tag.clone() == 99_i32) {
+		return Ok(Ty::ElectricSpark);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::AngryVillager => 0,
-        Ty::Block(__v) => super::super::varint::size_of(__v),
-        Ty::LandingLava => 0,
-        Ty::Scrape => 0,
-        Ty::Shriek(__v) => super::super::varint::size_of(__v),
-        Ty::EggCrack => 0,
-        Ty::DustPlume => 0,
-        Ty::TrialSpawnerDetectedPlayer => 0,
-        Ty::TrialSpawnerDetectedPlayerOminous => 0,
-        Ty::VaultConnection => 0,
-        Ty::DustPillar(__v) => super::super::varint::size_of(__v),
-        Ty::OminousSpawning => 0,
-        Ty::RaidOmen => 0,
-        Ty::DrippingWater => 0,
-        Ty::TrialOmen => 0,
-        Ty::BlockCrumble(__v) => super::super::varint::size_of(__v),
-        Ty::FallingWater => 0,
-        Ty::Dust(__v) => super::particle_0::size_of(__v),
-        Ty::DustColorTransition(__v) => super::particle_1::size_of(__v),
-        Ty::Effect => 0,
-        Ty::ElderGuardian => 0,
-        Ty::EnchantedHit => 0,
-        Ty::Enchant => 0,
-        Ty::EndRod => 0,
-        Ty::BlockMarker(__v) => super::super::varint::size_of(__v),
-        Ty::EntityEffect(__v) => super::super::i32::size_of(__v),
-        Ty::ExplosionEmitter => 0,
-        Ty::Explosion => 0,
-        Ty::Gust => 0,
-        Ty::SmallGust => 0,
-        Ty::GustEmitterLarge => 0,
-        Ty::GustEmitterSmall => 0,
-        Ty::SonicBoom => 0,
-        Ty::FallingDust(__v) => super::super::varint::size_of(__v),
-        Ty::Firework => 0,
-        Ty::Bubble => 0,
-        Ty::Fishing => 0,
-        Ty::Flame => 0,
-        Ty::Infested => 0,
-        Ty::CherryLeaves => 0,
-        Ty::PaleOakLeaves => 0,
-        Ty::SculkSoul => 0,
-        Ty::SculkCharge(__v) => super::super::f32::size_of(__v),
-        Ty::SculkChargePop => 0,
-        Ty::SoulFireFlame => 0,
-        Ty::Soul => 0,
-        Ty::Cloud => 0,
-        Ty::Flash => 0,
-        Ty::HappyVillager => 0,
-        Ty::Composter => 0,
-        Ty::Heart => 0,
-        Ty::InstantEffect => 0,
-        Ty::Item(__v) => super::slot::size_of(__v),
-        Ty::Vibration(__v) => super::particle_4::size_of(__v),
-        Ty::Trail(__v) => super::particle_5::size_of(__v),
-        Ty::ItemSlime => 0,
-        Ty::ItemCobweb => 0,
-        Ty::Crit => 0,
-        Ty::ItemSnowball => 0,
-        Ty::LargeSmoke => 0,
-        Ty::Lava => 0,
-        Ty::Mycelium => 0,
-        Ty::Note => 0,
-        Ty::Poof => 0,
-        Ty::Portal => 0,
-        Ty::Rain => 0,
-        Ty::Smoke => 0,
-        Ty::WhiteSmoke => 0,
-        Ty::DamageIndicator => 0,
-        Ty::Sneeze => 0,
-        Ty::Spit => 0,
-        Ty::SquidInk => 0,
-        Ty::SweepAttack => 0,
-        Ty::TotemOfUndying => 0,
-        Ty::Underwater => 0,
-        Ty::Splash => 0,
-        Ty::Witch => 0,
-        Ty::BubblePop => 0,
-        Ty::CurrentDown => 0,
-        Ty::DragonBreath => 0,
-        Ty::BubbleColumnUp => 0,
-        Ty::Nautilus => 0,
-        Ty::Dolphin => 0,
-        Ty::CampfireCosySmoke => 0,
-        Ty::CampfireSignalSmoke => 0,
-        Ty::DrippingHoney => 0,
-        Ty::FallingHoney => 0,
-        Ty::LandingHoney => 0,
-        Ty::FallingNectar => 0,
-        Ty::FallingSporeBlossom => 0,
-        Ty::DrippingLava => 0,
-        Ty::Ash => 0,
-        Ty::CrimsonSpore => 0,
-        Ty::WarpedSpore => 0,
-        Ty::SporeBlossomAir => 0,
-        Ty::DrippingObsidianTear => 0,
-        Ty::FallingObsidianTear => 0,
-        Ty::LandingObsidianTear => 0,
-        Ty::ReversePortal => 0,
-        Ty::WhiteAsh => 0,
-        Ty::SmallFlame => 0,
-        Ty::FallingLava => 0,
-        Ty::Snowflake => 0,
-        Ty::DrippingDripstoneLava => 0,
-        Ty::FallingDripstoneLava => 0,
-        Ty::DrippingDripstoneWater => 0,
-        Ty::FallingDripstoneWater => 0,
-        Ty::GlowSquidInk => 0,
-        Ty::Glow => 0,
-        Ty::WaxOn => 0,
-        Ty::WaxOff => 0,
-        Ty::ElectricSpark => 0,
-        Ty::Default(_) => 0,
-    }
+	super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::AngryVillager => 0,
+			Ty::Block(__v) => super::super::varint::size_of(__v),
+			Ty::LandingLava => 0,
+			Ty::Scrape => 0,
+			Ty::Shriek(__v) => super::super::varint::size_of(__v),
+			Ty::EggCrack => 0,
+			Ty::DustPlume => 0,
+			Ty::TrialSpawnerDetectedPlayer => 0,
+			Ty::TrialSpawnerDetectedPlayerOminous => 0,
+			Ty::VaultConnection => 0,
+			Ty::DustPillar(__v) => super::super::varint::size_of(__v),
+			Ty::OminousSpawning => 0,
+			Ty::RaidOmen => 0,
+			Ty::DrippingWater => 0,
+			Ty::TrialOmen => 0,
+			Ty::BlockCrumble(__v) => super::super::varint::size_of(__v),
+			Ty::FallingWater => 0,
+			Ty::Dust(__v) => super::particle_0::size_of(__v),
+			Ty::DustColorTransition(__v) => super::particle_1::size_of(__v),
+			Ty::Effect => 0,
+			Ty::ElderGuardian => 0,
+			Ty::EnchantedHit => 0,
+			Ty::Enchant => 0,
+			Ty::EndRod => 0,
+			Ty::BlockMarker(__v) => super::super::varint::size_of(__v),
+			Ty::EntityEffect(__v) => super::super::i32::size_of(__v),
+			Ty::ExplosionEmitter => 0,
+			Ty::Explosion => 0,
+			Ty::Gust => 0,
+			Ty::SmallGust => 0,
+			Ty::GustEmitterLarge => 0,
+			Ty::GustEmitterSmall => 0,
+			Ty::SonicBoom => 0,
+			Ty::FallingDust(__v) => super::super::varint::size_of(__v),
+			Ty::Firework => 0,
+			Ty::Bubble => 0,
+			Ty::Fishing => 0,
+			Ty::Flame => 0,
+			Ty::Infested => 0,
+			Ty::CherryLeaves => 0,
+			Ty::PaleOakLeaves => 0,
+			Ty::SculkSoul => 0,
+			Ty::SculkCharge(__v) => super::super::f32::size_of(__v),
+			Ty::SculkChargePop => 0,
+			Ty::SoulFireFlame => 0,
+			Ty::Soul => 0,
+			Ty::Cloud => 0,
+			Ty::Flash => 0,
+			Ty::HappyVillager => 0,
+			Ty::Composter => 0,
+			Ty::Heart => 0,
+			Ty::InstantEffect => 0,
+			Ty::Item(__v) => super::slot::size_of(__v),
+			Ty::Vibration(__v) => super::particle_4::size_of(__v),
+			Ty::Trail(__v) => super::particle_5::size_of(__v),
+			Ty::ItemSlime => 0,
+			Ty::ItemCobweb => 0,
+			Ty::Crit => 0,
+			Ty::ItemSnowball => 0,
+			Ty::LargeSmoke => 0,
+			Ty::Lava => 0,
+			Ty::Mycelium => 0,
+			Ty::Note => 0,
+			Ty::Poof => 0,
+			Ty::Portal => 0,
+			Ty::Rain => 0,
+			Ty::Smoke => 0,
+			Ty::WhiteSmoke => 0,
+			Ty::DamageIndicator => 0,
+			Ty::Sneeze => 0,
+			Ty::Spit => 0,
+			Ty::SquidInk => 0,
+			Ty::SweepAttack => 0,
+			Ty::TotemOfUndying => 0,
+			Ty::Underwater => 0,
+			Ty::Splash => 0,
+			Ty::Witch => 0,
+			Ty::BubblePop => 0,
+			Ty::CurrentDown => 0,
+			Ty::DragonBreath => 0,
+			Ty::BubbleColumnUp => 0,
+			Ty::Nautilus => 0,
+			Ty::Dolphin => 0,
+			Ty::CampfireCosySmoke => 0,
+			Ty::CampfireSignalSmoke => 0,
+			Ty::DrippingHoney => 0,
+			Ty::FallingHoney => 0,
+			Ty::LandingHoney => 0,
+			Ty::FallingNectar => 0,
+			Ty::FallingSporeBlossom => 0,
+			Ty::DrippingLava => 0,
+			Ty::Ash => 0,
+			Ty::CrimsonSpore => 0,
+			Ty::WarpedSpore => 0,
+			Ty::SporeBlossomAir => 0,
+			Ty::DrippingObsidianTear => 0,
+			Ty::FallingObsidianTear => 0,
+			Ty::LandingObsidianTear => 0,
+			Ty::ReversePortal => 0,
+			Ty::WhiteAsh => 0,
+			Ty::SmallFlame => 0,
+			Ty::FallingLava => 0,
+			Ty::Snowflake => 0,
+			Ty::DrippingDripstoneLava => 0,
+			Ty::FallingDripstoneLava => 0,
+			Ty::DrippingDripstoneWater => 0,
+			Ty::FallingDripstoneWater => 0,
+			Ty::GlowSquidInk => 0,
+			Ty::Glow => 0,
+			Ty::WaxOn => 0,
+			Ty::WaxOff => 0,
+			Ty::ElectricSpark => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::AngryVillager => "angry_villager",
-        Ty::Block(_) => "block",
-        Ty::LandingLava => "landing_lava",
-        Ty::Scrape => "scrape",
-        Ty::Shriek(_) => "shriek",
-        Ty::EggCrack => "egg_crack",
-        Ty::DustPlume => "dust_plume",
-        Ty::TrialSpawnerDetectedPlayer => "trial_spawner_detected_player",
-        Ty::TrialSpawnerDetectedPlayerOminous => "trial_spawner_detected_player_ominous",
-        Ty::VaultConnection => "vault_connection",
-        Ty::DustPillar(_) => "dust_pillar",
-        Ty::OminousSpawning => "ominous_spawning",
-        Ty::RaidOmen => "raid_omen",
-        Ty::DrippingWater => "dripping_water",
-        Ty::TrialOmen => "trial_omen",
-        Ty::BlockCrumble(_) => "block_crumble",
-        Ty::FallingWater => "falling_water",
-        Ty::Dust(_) => "dust",
-        Ty::DustColorTransition(_) => "dust_color_transition",
-        Ty::Effect => "effect",
-        Ty::ElderGuardian => "elder_guardian",
-        Ty::EnchantedHit => "enchanted_hit",
-        Ty::Enchant => "enchant",
-        Ty::EndRod => "end_rod",
-        Ty::BlockMarker(_) => "block_marker",
-        Ty::EntityEffect(_) => "entity_effect",
-        Ty::ExplosionEmitter => "explosion_emitter",
-        Ty::Explosion => "explosion",
-        Ty::Gust => "gust",
-        Ty::SmallGust => "small_gust",
-        Ty::GustEmitterLarge => "gust_emitter_large",
-        Ty::GustEmitterSmall => "gust_emitter_small",
-        Ty::SonicBoom => "sonic_boom",
-        Ty::FallingDust(_) => "falling_dust",
-        Ty::Firework => "firework",
-        Ty::Bubble => "bubble",
-        Ty::Fishing => "fishing",
-        Ty::Flame => "flame",
-        Ty::Infested => "infested",
-        Ty::CherryLeaves => "cherry_leaves",
-        Ty::PaleOakLeaves => "pale_oak_leaves",
-        Ty::SculkSoul => "sculk_soul",
-        Ty::SculkCharge(_) => "sculk_charge",
-        Ty::SculkChargePop => "sculk_charge_pop",
-        Ty::SoulFireFlame => "soul_fire_flame",
-        Ty::Soul => "soul",
-        Ty::Cloud => "cloud",
-        Ty::Flash => "flash",
-        Ty::HappyVillager => "happy_villager",
-        Ty::Composter => "composter",
-        Ty::Heart => "heart",
-        Ty::InstantEffect => "instant_effect",
-        Ty::Item(_) => "item",
-        Ty::Vibration(_) => "vibration",
-        Ty::Trail(_) => "trail",
-        Ty::ItemSlime => "item_slime",
-        Ty::ItemCobweb => "item_cobweb",
-        Ty::Crit => "crit",
-        Ty::ItemSnowball => "item_snowball",
-        Ty::LargeSmoke => "large_smoke",
-        Ty::Lava => "lava",
-        Ty::Mycelium => "mycelium",
-        Ty::Note => "note",
-        Ty::Poof => "poof",
-        Ty::Portal => "portal",
-        Ty::Rain => "rain",
-        Ty::Smoke => "smoke",
-        Ty::WhiteSmoke => "white_smoke",
-        Ty::DamageIndicator => "damage_indicator",
-        Ty::Sneeze => "sneeze",
-        Ty::Spit => "spit",
-        Ty::SquidInk => "squid_ink",
-        Ty::SweepAttack => "sweep_attack",
-        Ty::TotemOfUndying => "totem_of_undying",
-        Ty::Underwater => "underwater",
-        Ty::Splash => "splash",
-        Ty::Witch => "witch",
-        Ty::BubblePop => "bubble_pop",
-        Ty::CurrentDown => "current_down",
-        Ty::DragonBreath => "dragon_breath",
-        Ty::BubbleColumnUp => "bubble_column_up",
-        Ty::Nautilus => "nautilus",
-        Ty::Dolphin => "dolphin",
-        Ty::CampfireCosySmoke => "campfire_cosy_smoke",
-        Ty::CampfireSignalSmoke => "campfire_signal_smoke",
-        Ty::DrippingHoney => "dripping_honey",
-        Ty::FallingHoney => "falling_honey",
-        Ty::LandingHoney => "landing_honey",
-        Ty::FallingNectar => "falling_nectar",
-        Ty::FallingSporeBlossom => "falling_spore_blossom",
-        Ty::DrippingLava => "dripping_lava",
-        Ty::Ash => "ash",
-        Ty::CrimsonSpore => "crimson_spore",
-        Ty::WarpedSpore => "warped_spore",
-        Ty::SporeBlossomAir => "spore_blossom_air",
-        Ty::DrippingObsidianTear => "dripping_obsidian_tear",
-        Ty::FallingObsidianTear => "falling_obsidian_tear",
-        Ty::LandingObsidianTear => "landing_obsidian_tear",
-        Ty::ReversePortal => "reverse_portal",
-        Ty::WhiteAsh => "white_ash",
-        Ty::SmallFlame => "small_flame",
-        Ty::FallingLava => "falling_lava",
-        Ty::Snowflake => "snowflake",
-        Ty::DrippingDripstoneLava => "dripping_dripstone_lava",
-        Ty::FallingDripstoneLava => "falling_dripstone_lava",
-        Ty::DrippingDripstoneWater => "dripping_dripstone_water",
-        Ty::FallingDripstoneWater => "falling_dripstone_water",
-        Ty::GlowSquidInk => "glow_squid_ink",
-        Ty::Glow => "glow",
-        Ty::WaxOn => "wax_on",
-        Ty::WaxOff => "wax_off",
-        Ty::ElectricSpark => "electric_spark",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::AngryVillager => "angry_villager",
+		Ty::Block(_) => "block",
+		Ty::LandingLava => "landing_lava",
+		Ty::Scrape => "scrape",
+		Ty::Shriek(_) => "shriek",
+		Ty::EggCrack => "egg_crack",
+		Ty::DustPlume => "dust_plume",
+		Ty::TrialSpawnerDetectedPlayer => "trial_spawner_detected_player",
+		Ty::TrialSpawnerDetectedPlayerOminous => "trial_spawner_detected_player_ominous",
+		Ty::VaultConnection => "vault_connection",
+		Ty::DustPillar(_) => "dust_pillar",
+		Ty::OminousSpawning => "ominous_spawning",
+		Ty::RaidOmen => "raid_omen",
+		Ty::DrippingWater => "dripping_water",
+		Ty::TrialOmen => "trial_omen",
+		Ty::BlockCrumble(_) => "block_crumble",
+		Ty::FallingWater => "falling_water",
+		Ty::Dust(_) => "dust",
+		Ty::DustColorTransition(_) => "dust_color_transition",
+		Ty::Effect => "effect",
+		Ty::ElderGuardian => "elder_guardian",
+		Ty::EnchantedHit => "enchanted_hit",
+		Ty::Enchant => "enchant",
+		Ty::EndRod => "end_rod",
+		Ty::BlockMarker(_) => "block_marker",
+		Ty::EntityEffect(_) => "entity_effect",
+		Ty::ExplosionEmitter => "explosion_emitter",
+		Ty::Explosion => "explosion",
+		Ty::Gust => "gust",
+		Ty::SmallGust => "small_gust",
+		Ty::GustEmitterLarge => "gust_emitter_large",
+		Ty::GustEmitterSmall => "gust_emitter_small",
+		Ty::SonicBoom => "sonic_boom",
+		Ty::FallingDust(_) => "falling_dust",
+		Ty::Firework => "firework",
+		Ty::Bubble => "bubble",
+		Ty::Fishing => "fishing",
+		Ty::Flame => "flame",
+		Ty::Infested => "infested",
+		Ty::CherryLeaves => "cherry_leaves",
+		Ty::PaleOakLeaves => "pale_oak_leaves",
+		Ty::SculkSoul => "sculk_soul",
+		Ty::SculkCharge(_) => "sculk_charge",
+		Ty::SculkChargePop => "sculk_charge_pop",
+		Ty::SoulFireFlame => "soul_fire_flame",
+		Ty::Soul => "soul",
+		Ty::Cloud => "cloud",
+		Ty::Flash => "flash",
+		Ty::HappyVillager => "happy_villager",
+		Ty::Composter => "composter",
+		Ty::Heart => "heart",
+		Ty::InstantEffect => "instant_effect",
+		Ty::Item(_) => "item",
+		Ty::Vibration(_) => "vibration",
+		Ty::Trail(_) => "trail",
+		Ty::ItemSlime => "item_slime",
+		Ty::ItemCobweb => "item_cobweb",
+		Ty::Crit => "crit",
+		Ty::ItemSnowball => "item_snowball",
+		Ty::LargeSmoke => "large_smoke",
+		Ty::Lava => "lava",
+		Ty::Mycelium => "mycelium",
+		Ty::Note => "note",
+		Ty::Poof => "poof",
+		Ty::Portal => "portal",
+		Ty::Rain => "rain",
+		Ty::Smoke => "smoke",
+		Ty::WhiteSmoke => "white_smoke",
+		Ty::DamageIndicator => "damage_indicator",
+		Ty::Sneeze => "sneeze",
+		Ty::Spit => "spit",
+		Ty::SquidInk => "squid_ink",
+		Ty::SweepAttack => "sweep_attack",
+		Ty::TotemOfUndying => "totem_of_undying",
+		Ty::Underwater => "underwater",
+		Ty::Splash => "splash",
+		Ty::Witch => "witch",
+		Ty::BubblePop => "bubble_pop",
+		Ty::CurrentDown => "current_down",
+		Ty::DragonBreath => "dragon_breath",
+		Ty::BubbleColumnUp => "bubble_column_up",
+		Ty::Nautilus => "nautilus",
+		Ty::Dolphin => "dolphin",
+		Ty::CampfireCosySmoke => "campfire_cosy_smoke",
+		Ty::CampfireSignalSmoke => "campfire_signal_smoke",
+		Ty::DrippingHoney => "dripping_honey",
+		Ty::FallingHoney => "falling_honey",
+		Ty::LandingHoney => "landing_honey",
+		Ty::FallingNectar => "falling_nectar",
+		Ty::FallingSporeBlossom => "falling_spore_blossom",
+		Ty::DrippingLava => "dripping_lava",
+		Ty::Ash => "ash",
+		Ty::CrimsonSpore => "crimson_spore",
+		Ty::WarpedSpore => "warped_spore",
+		Ty::SporeBlossomAir => "spore_blossom_air",
+		Ty::DrippingObsidianTear => "dripping_obsidian_tear",
+		Ty::FallingObsidianTear => "falling_obsidian_tear",
+		Ty::LandingObsidianTear => "landing_obsidian_tear",
+		Ty::ReversePortal => "reverse_portal",
+		Ty::WhiteAsh => "white_ash",
+		Ty::SmallFlame => "small_flame",
+		Ty::FallingLava => "falling_lava",
+		Ty::Snowflake => "snowflake",
+		Ty::DrippingDripstoneLava => "dripping_dripstone_lava",
+		Ty::FallingDripstoneLava => "falling_dripstone_lava",
+		Ty::DrippingDripstoneWater => "dripping_dripstone_water",
+		Ty::FallingDripstoneWater => "falling_dripstone_water",
+		Ty::GlowSquidInk => "glow_squid_ink",
+		Ty::Glow => "glow",
+		Ty::WaxOn => "wax_on",
+		Ty::WaxOff => "wax_off",
+		Ty::ElectricSpark => "electric_spark",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::Varint {
-    match _0 {
-        Ty::AngryVillager => 0_i32,
-        Ty::Block(_) => 1_i32,
-        Ty::LandingLava => 10_i32,
-        Ty::Scrape => 100_i32,
-        Ty::Shriek(_) => 101_i32,
-        Ty::EggCrack => 102_i32,
-        Ty::DustPlume => 103_i32,
-        Ty::TrialSpawnerDetectedPlayer => 104_i32,
-        Ty::TrialSpawnerDetectedPlayerOminous => 105_i32,
-        Ty::VaultConnection => 106_i32,
-        Ty::DustPillar(_) => 107_i32,
-        Ty::OminousSpawning => 108_i32,
-        Ty::RaidOmen => 109_i32,
-        Ty::DrippingWater => 11_i32,
-        Ty::TrialOmen => 110_i32,
-        Ty::BlockCrumble(_) => 111_i32,
-        Ty::FallingWater => 12_i32,
-        Ty::Dust(_) => 13_i32,
-        Ty::DustColorTransition(_) => 14_i32,
-        Ty::Effect => 15_i32,
-        Ty::ElderGuardian => 16_i32,
-        Ty::EnchantedHit => 17_i32,
-        Ty::Enchant => 18_i32,
-        Ty::EndRod => 19_i32,
-        Ty::BlockMarker(_) => 2_i32,
-        Ty::EntityEffect(_) => 20_i32,
-        Ty::ExplosionEmitter => 21_i32,
-        Ty::Explosion => 22_i32,
-        Ty::Gust => 23_i32,
-        Ty::SmallGust => 24_i32,
-        Ty::GustEmitterLarge => 25_i32,
-        Ty::GustEmitterSmall => 26_i32,
-        Ty::SonicBoom => 27_i32,
-        Ty::FallingDust(_) => 28_i32,
-        Ty::Firework => 29_i32,
-        Ty::Bubble => 3_i32,
-        Ty::Fishing => 30_i32,
-        Ty::Flame => 31_i32,
-        Ty::Infested => 32_i32,
-        Ty::CherryLeaves => 33_i32,
-        Ty::PaleOakLeaves => 34_i32,
-        Ty::SculkSoul => 35_i32,
-        Ty::SculkCharge(_) => 36_i32,
-        Ty::SculkChargePop => 37_i32,
-        Ty::SoulFireFlame => 38_i32,
-        Ty::Soul => 39_i32,
-        Ty::Cloud => 4_i32,
-        Ty::Flash => 40_i32,
-        Ty::HappyVillager => 41_i32,
-        Ty::Composter => 42_i32,
-        Ty::Heart => 43_i32,
-        Ty::InstantEffect => 44_i32,
-        Ty::Item(_) => 45_i32,
-        Ty::Vibration(_) => 46_i32,
-        Ty::Trail(_) => 47_i32,
-        Ty::ItemSlime => 48_i32,
-        Ty::ItemCobweb => 49_i32,
-        Ty::Crit => 5_i32,
-        Ty::ItemSnowball => 50_i32,
-        Ty::LargeSmoke => 51_i32,
-        Ty::Lava => 52_i32,
-        Ty::Mycelium => 53_i32,
-        Ty::Note => 54_i32,
-        Ty::Poof => 55_i32,
-        Ty::Portal => 56_i32,
-        Ty::Rain => 57_i32,
-        Ty::Smoke => 58_i32,
-        Ty::WhiteSmoke => 59_i32,
-        Ty::DamageIndicator => 6_i32,
-        Ty::Sneeze => 60_i32,
-        Ty::Spit => 61_i32,
-        Ty::SquidInk => 62_i32,
-        Ty::SweepAttack => 63_i32,
-        Ty::TotemOfUndying => 64_i32,
-        Ty::Underwater => 65_i32,
-        Ty::Splash => 66_i32,
-        Ty::Witch => 67_i32,
-        Ty::BubblePop => 68_i32,
-        Ty::CurrentDown => 69_i32,
-        Ty::DragonBreath => 7_i32,
-        Ty::BubbleColumnUp => 70_i32,
-        Ty::Nautilus => 71_i32,
-        Ty::Dolphin => 72_i32,
-        Ty::CampfireCosySmoke => 73_i32,
-        Ty::CampfireSignalSmoke => 74_i32,
-        Ty::DrippingHoney => 75_i32,
-        Ty::FallingHoney => 76_i32,
-        Ty::LandingHoney => 77_i32,
-        Ty::FallingNectar => 78_i32,
-        Ty::FallingSporeBlossom => 79_i32,
-        Ty::DrippingLava => 8_i32,
-        Ty::Ash => 80_i32,
-        Ty::CrimsonSpore => 81_i32,
-        Ty::WarpedSpore => 82_i32,
-        Ty::SporeBlossomAir => 83_i32,
-        Ty::DrippingObsidianTear => 84_i32,
-        Ty::FallingObsidianTear => 85_i32,
-        Ty::LandingObsidianTear => 86_i32,
-        Ty::ReversePortal => 87_i32,
-        Ty::WhiteAsh => 88_i32,
-        Ty::SmallFlame => 89_i32,
-        Ty::FallingLava => 9_i32,
-        Ty::Snowflake => 90_i32,
-        Ty::DrippingDripstoneLava => 91_i32,
-        Ty::FallingDripstoneLava => 92_i32,
-        Ty::DrippingDripstoneWater => 93_i32,
-        Ty::FallingDripstoneWater => 94_i32,
-        Ty::GlowSquidInk => 95_i32,
-        Ty::Glow => 96_i32,
-        Ty::WaxOn => 97_i32,
-        Ty::WaxOff => 98_i32,
-        Ty::ElectricSpark => 99_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::AngryVillager => 0_i32,
+		Ty::Block(_) => 1_i32,
+		Ty::LandingLava => 10_i32,
+		Ty::Scrape => 100_i32,
+		Ty::Shriek(_) => 101_i32,
+		Ty::EggCrack => 102_i32,
+		Ty::DustPlume => 103_i32,
+		Ty::TrialSpawnerDetectedPlayer => 104_i32,
+		Ty::TrialSpawnerDetectedPlayerOminous => 105_i32,
+		Ty::VaultConnection => 106_i32,
+		Ty::DustPillar(_) => 107_i32,
+		Ty::OminousSpawning => 108_i32,
+		Ty::RaidOmen => 109_i32,
+		Ty::DrippingWater => 11_i32,
+		Ty::TrialOmen => 110_i32,
+		Ty::BlockCrumble(_) => 111_i32,
+		Ty::FallingWater => 12_i32,
+		Ty::Dust(_) => 13_i32,
+		Ty::DustColorTransition(_) => 14_i32,
+		Ty::Effect => 15_i32,
+		Ty::ElderGuardian => 16_i32,
+		Ty::EnchantedHit => 17_i32,
+		Ty::Enchant => 18_i32,
+		Ty::EndRod => 19_i32,
+		Ty::BlockMarker(_) => 2_i32,
+		Ty::EntityEffect(_) => 20_i32,
+		Ty::ExplosionEmitter => 21_i32,
+		Ty::Explosion => 22_i32,
+		Ty::Gust => 23_i32,
+		Ty::SmallGust => 24_i32,
+		Ty::GustEmitterLarge => 25_i32,
+		Ty::GustEmitterSmall => 26_i32,
+		Ty::SonicBoom => 27_i32,
+		Ty::FallingDust(_) => 28_i32,
+		Ty::Firework => 29_i32,
+		Ty::Bubble => 3_i32,
+		Ty::Fishing => 30_i32,
+		Ty::Flame => 31_i32,
+		Ty::Infested => 32_i32,
+		Ty::CherryLeaves => 33_i32,
+		Ty::PaleOakLeaves => 34_i32,
+		Ty::SculkSoul => 35_i32,
+		Ty::SculkCharge(_) => 36_i32,
+		Ty::SculkChargePop => 37_i32,
+		Ty::SoulFireFlame => 38_i32,
+		Ty::Soul => 39_i32,
+		Ty::Cloud => 4_i32,
+		Ty::Flash => 40_i32,
+		Ty::HappyVillager => 41_i32,
+		Ty::Composter => 42_i32,
+		Ty::Heart => 43_i32,
+		Ty::InstantEffect => 44_i32,
+		Ty::Item(_) => 45_i32,
+		Ty::Vibration(_) => 46_i32,
+		Ty::Trail(_) => 47_i32,
+		Ty::ItemSlime => 48_i32,
+		Ty::ItemCobweb => 49_i32,
+		Ty::Crit => 5_i32,
+		Ty::ItemSnowball => 50_i32,
+		Ty::LargeSmoke => 51_i32,
+		Ty::Lava => 52_i32,
+		Ty::Mycelium => 53_i32,
+		Ty::Note => 54_i32,
+		Ty::Poof => 55_i32,
+		Ty::Portal => 56_i32,
+		Ty::Rain => 57_i32,
+		Ty::Smoke => 58_i32,
+		Ty::WhiteSmoke => 59_i32,
+		Ty::DamageIndicator => 6_i32,
+		Ty::Sneeze => 60_i32,
+		Ty::Spit => 61_i32,
+		Ty::SquidInk => 62_i32,
+		Ty::SweepAttack => 63_i32,
+		Ty::TotemOfUndying => 64_i32,
+		Ty::Underwater => 65_i32,
+		Ty::Splash => 66_i32,
+		Ty::Witch => 67_i32,
+		Ty::BubblePop => 68_i32,
+		Ty::CurrentDown => 69_i32,
+		Ty::DragonBreath => 7_i32,
+		Ty::BubbleColumnUp => 70_i32,
+		Ty::Nautilus => 71_i32,
+		Ty::Dolphin => 72_i32,
+		Ty::CampfireCosySmoke => 73_i32,
+		Ty::CampfireSignalSmoke => 74_i32,
+		Ty::DrippingHoney => 75_i32,
+		Ty::FallingHoney => 76_i32,
+		Ty::LandingHoney => 77_i32,
+		Ty::FallingNectar => 78_i32,
+		Ty::FallingSporeBlossom => 79_i32,
+		Ty::DrippingLava => 8_i32,
+		Ty::Ash => 80_i32,
+		Ty::CrimsonSpore => 81_i32,
+		Ty::WarpedSpore => 82_i32,
+		Ty::SporeBlossomAir => 83_i32,
+		Ty::DrippingObsidianTear => 84_i32,
+		Ty::FallingObsidianTear => 85_i32,
+		Ty::LandingObsidianTear => 86_i32,
+		Ty::ReversePortal => 87_i32,
+		Ty::WhiteAsh => 88_i32,
+		Ty::SmallFlame => 89_i32,
+		Ty::FallingLava => 9_i32,
+		Ty::Snowflake => 90_i32,
+		Ty::DrippingDripstoneLava => 91_i32,
+		Ty::FallingDripstoneLava => 92_i32,
+		Ty::DrippingDripstoneWater => 93_i32,
+		Ty::FallingDripstoneWater => 94_i32,
+		Ty::GlowSquidInk => 95_i32,
+		Ty::Glow => 96_i32,
+		Ty::WaxOn => 97_i32,
+		Ty::WaxOff => 98_i32,
+		Ty::ElectricSpark => 99_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = Particle;
+pub type Ty = Particle;

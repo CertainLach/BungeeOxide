@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Vec3i16 {
-    pub x: super::super::I16,
-    pub y: super::super::I16,
-    pub z: super::super::I16,
+	pub x: super::super::I16,
+	pub y: super::super::I16,
+	pub z: super::super::I16,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::i16::serialize(
-        &_0.x,
-        output,
-    )?;
-    super::super::i16::serialize(
-        &_0.y,
-        output,
-    )?;
-    super::super::i16::serialize(
-        &_0.z,
-        output,
-    )?;
-    Ok(())
+	super::super::i16::serialize(&_0.x, output)?;
+	super::super::i16::serialize(&_0.y, output)?;
+	super::super::i16::serialize(&_0.z, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(6)?;
-    let f_x = super::super::i16::deserialize(
-        input,
-    )?;
-    let f_y = super::super::i16::deserialize(
-        input,
-    )?;
-    let f_z = super::super::i16::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        x: f_x,y: f_y,z: f_z
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(6)?;
+	let f_x = super::super::i16::deserialize(input)?;
+	let f_y = super::super::i16::deserialize(input)?;
+	let f_z = super::super::i16::deserialize(input)?;
+	Ok(Ty {
+		x: f_x,
+		y: f_y,
+		z: f_z,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::i16::size_of(
-        &_0.x
-    )
-    + super::super::i16::size_of(
-        &_0.y
-    )
-    + super::super::i16::size_of(
-        &_0.z
-    )
+	0 + super::super::i16::size_of(&_0.x)
+		+ super::super::i16::size_of(&_0.y)
+		+ super::super::i16::size_of(&_0.z)
 }
- pub type Ty = Vec3i16;
+pub type Ty = Vec3i16;

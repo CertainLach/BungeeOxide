@@ -3,105 +3,55 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonSettings {
-    pub locale: String,
-    pub view_distance: super::super::I8,
-    pub chat_flags: super::super::Varint,
-    pub chat_colors: super::super::Bool,
-    pub skin_parts: super::super::U8,
-    pub main_hand: super::super::Varint,
-    pub enable_text_filtering: super::super::Bool,
-    pub enable_server_listing: super::super::Bool,
+	pub locale: String,
+	pub view_distance: super::super::I8,
+	pub chat_flags: super::super::Varint,
+	pub chat_colors: super::super::Bool,
+	pub skin_parts: super::super::U8,
+	pub main_hand: super::super::Varint,
+	pub enable_text_filtering: super::super::Bool,
+	pub enable_server_listing: super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::pstring_96::serialize(
-        &_0.locale,
-        output,
-    )?;
-    super::super::i8::serialize(
-        &_0.view_distance,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.chat_flags,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.chat_colors,
-        output,
-    )?;
-    super::super::u8::serialize(
-        &_0.skin_parts,
-        output,
-    )?;
-    super::super::varint::serialize(
-        &_0.main_hand,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.enable_text_filtering,
-        output,
-    )?;
-    super::super::bool::serialize(
-        &_0.enable_server_listing,
-        output,
-    )?;
-    Ok(())
+	super::super::pstring_96::serialize(&_0.locale, output)?;
+	super::super::i8::serialize(&_0.view_distance, output)?;
+	super::super::varint::serialize(&_0.chat_flags, output)?;
+	super::super::bool::serialize(&_0.chat_colors, output)?;
+	super::super::u8::serialize(&_0.skin_parts, output)?;
+	super::super::varint::serialize(&_0.main_hand, output)?;
+	super::super::bool::serialize(&_0.enable_text_filtering, output)?;
+	super::super::bool::serialize(&_0.enable_server_listing, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(8)?;
-    let f_locale = super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_viewDistance = super::super::i8::deserialize(
-        input,
-    )?;
-    let f_chatFlags = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_chatColors = super::super::bool::deserialize(
-        input,
-    )?;
-    let f_skinParts = super::super::u8::deserialize(
-        input,
-    )?;
-    let f_mainHand = super::super::varint::deserialize(
-        input,
-    )?;
-    let f_enableTextFiltering = super::super::bool::deserialize(
-        input,
-    )?;
-    let f_enableServerListing = super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        locale: f_locale,view_distance: f_viewDistance,chat_flags: f_chatFlags,chat_colors: f_chatColors,skin_parts: f_skinParts,main_hand: f_mainHand,enable_text_filtering: f_enableTextFiltering,enable_server_listing: f_enableServerListing
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(8)?;
+	let f_locale = super::super::pstring_96::deserialize(input)?;
+	let f_viewDistance = super::super::i8::deserialize(input)?;
+	let f_chatFlags = super::super::varint::deserialize(input)?;
+	let f_chatColors = super::super::bool::deserialize(input)?;
+	let f_skinParts = super::super::u8::deserialize(input)?;
+	let f_mainHand = super::super::varint::deserialize(input)?;
+	let f_enableTextFiltering = super::super::bool::deserialize(input)?;
+	let f_enableServerListing = super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		locale: f_locale,
+		view_distance: f_viewDistance,
+		chat_flags: f_chatFlags,
+		chat_colors: f_chatColors,
+		skin_parts: f_skinParts,
+		main_hand: f_mainHand,
+		enable_text_filtering: f_enableTextFiltering,
+		enable_server_listing: f_enableServerListing,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::pstring_96::size_of(
-        &_0.locale
-    )
-    + super::super::i8::size_of(
-        &_0.view_distance
-    )
-    + super::super::varint::size_of(
-        &_0.chat_flags
-    )
-    + super::super::bool::size_of(
-        &_0.chat_colors
-    )
-    + super::super::u8::size_of(
-        &_0.skin_parts
-    )
-    + super::super::varint::size_of(
-        &_0.main_hand
-    )
-    + super::super::bool::size_of(
-        &_0.enable_text_filtering
-    )
-    + super::super::bool::size_of(
-        &_0.enable_server_listing
-    )
+	0 + super::super::pstring_96::size_of(&_0.locale)
+		+ super::super::i8::size_of(&_0.view_distance)
+		+ super::super::varint::size_of(&_0.chat_flags)
+		+ super::super::bool::size_of(&_0.chat_colors)
+		+ super::super::u8::size_of(&_0.skin_parts)
+		+ super::super::varint::size_of(&_0.main_hand)
+		+ super::super::bool::size_of(&_0.enable_text_filtering)
+		+ super::super::bool::size_of(&_0.enable_server_listing)
 }
- pub type Ty = PacketCommonSettings;
+pub type Ty = PacketCommonSettings;

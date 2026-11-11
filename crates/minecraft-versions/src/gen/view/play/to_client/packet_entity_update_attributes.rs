@@ -3,44 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityUpdateAttributes<'i> {
-    pub entity_id: super::super::super::super::Varint,
-    pub properties: super::super::super::array::Inline135::<'i>,
+	pub entity_id: super::super::super::super::Varint,
+	pub properties: super::super::super::array::Inline135<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::array::inline_135::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::array::inline_135::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(2)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::super::array::inline_135::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,properties: f_properties
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(2)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_135::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		properties: f_properties,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::array::inline_135::size_of(
-        &_0.properties
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::array::inline_135::size_of(&_0.properties)
 }
-pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes) -> Ty<'i> {
-    Ty {
-        entity_id: ::core::clone::Clone::clone(&_0.entity_id),properties: super::super::super::array::inline_135::view(&_0.properties)
-    }
+pub fn view<'i>(
+	_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes,
+) -> Ty<'i> {
+	Ty {
+		entity_id: ::core::clone::Clone::clone(&_0.entity_id),
+		properties: super::super::super::array::inline_135::view(&_0.properties),
+	}
 }
- pub type Ty<'i> = PacketEntityUpdateAttributes<'i>;
+pub type Ty<'i> = PacketEntityUpdateAttributes<'i>;

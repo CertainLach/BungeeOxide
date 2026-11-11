@@ -3,58 +3,67 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketCommonServerLinks101<'i> {
-    False(super::AnonymousNbt::<'i>),
-    True(super::super::ServerLinkType),
+	False(super::AnonymousNbt<'i>),
+	True(super::super::ServerLinkType),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::bool::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::False(__v) => super::anonymous_nbt::serialize(__v, output),
-        Ty::True(__v) => super::super::server_link_type::serialize(__v, output),
-    }
+	super::super::bool::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::False(__v) => super::anonymous_nbt::serialize(__v, output),
+		Ty::True(__v) => super::super::server_link_type::serialize(__v, output),
+	}
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(1)?;
-    let __tagv = super::super::bool::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == false) {
-        return Ok(Ty::False(super::anonymous_nbt::deserialize(input, )?));
-    }
-    if (__tag.clone() == true) {
-        return Ok(Ty::True(super::super::server_link_type::deserialize(input, )?));
-    }
-    Err(Error::InvalidValue)
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(1)?;
+	let __tagv = super::super::bool::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == false) {
+		return Ok(Ty::False(super::anonymous_nbt::deserialize(input)?));
+	}
+	if (__tag.clone() == true) {
+		return Ok(Ty::True(super::super::server_link_type::deserialize(
+			input,
+		)?));
+	}
+	Err(Error::InvalidValue)
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    super::super::bool::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::False(__v) => super::anonymous_nbt::size_of(__v),
-        Ty::True(__v) => super::super::server_link_type::size_of(__v),
-    }
+	super::super::bool::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::False(__v) => super::anonymous_nbt::size_of(__v),
+			Ty::True(__v) => super::super::server_link_type::size_of(__v),
+		}
 }
 pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
-    match _0 {
-        Ty::False(_) => "false",
-        Ty::True(_) => "true",
-    }
+	match _0 {
+		Ty::False(_) => "false",
+		Ty::True(_) => "true",
+	}
 }
 pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::Bool {
-    match _0 {
-        Ty::False(_) => false,
-        Ty::True(_) => true,
-    }
+	match _0 {
+		Ty::False(_) => false,
+		Ty::True(_) => true,
+	}
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonServerLinks101) -> Ty<'i> {
-    match _0 {
-        super::super::PacketCommonServerLinks101::False(__v) => Ty::False(super::anonymous_nbt::view(__v)),
-        super::super::PacketCommonServerLinks101::True(__v) => Ty::True(::core::clone::Clone::clone(__v)),
-    }
+	match _0 {
+		super::super::PacketCommonServerLinks101::False(__v) => {
+			Ty::False(super::anonymous_nbt::view(__v))
+		}
+		super::super::PacketCommonServerLinks101::True(__v) => {
+			Ty::True(::core::clone::Clone::clone(__v))
+		}
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::PacketCommonServerLinks101) -> Ty<'i> {
-    match _0 {
-        super::super::PacketCommonServerLinks101::False(__v) => Ty::False(super::anonymous_nbt::into_view(__v)),
-        super::super::PacketCommonServerLinks101::True(__v) => Ty::True(::core::clone::Clone::clone(__v)),
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::PacketCommonServerLinks101) -> Ty<'i> {
+	match _0 {
+		super::super::PacketCommonServerLinks101::False(__v) => {
+			Ty::False(super::anonymous_nbt::into_view(__v))
+		}
+		super::super::PacketCommonServerLinks101::True(__v) => {
+			Ty::True(::core::clone::Clone::clone(__v))
+		}
+	}
 }
- pub type Ty<'i> = PacketCommonServerLinks101<'i>;
+pub type Ty<'i> = PacketCommonServerLinks101<'i>;

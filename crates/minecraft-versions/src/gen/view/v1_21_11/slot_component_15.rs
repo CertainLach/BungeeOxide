@@ -3,71 +3,51 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent15<'i> {
-    pub floats: super::super::super::array::Inline49,
-    pub flags: super::super::super::array::Inline46,
-    pub strings: super::super::array::Inline57::<'i>,
-    pub colors: super::super::super::array::Inline50,
+	pub floats: super::super::super::array::Inline49,
+	pub flags: super::super::super::array::Inline46,
+	pub strings: super::super::array::Inline57<'i>,
+	pub colors: super::super::super::array::Inline50,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::array::inline_49::serialize(
-        &_0.floats,
-        output,
-    )?;
-    super::super::super::array::inline_46::serialize(
-        &_0.flags,
-        output,
-    )?;
-    super::super::array::inline_57::serialize(
-        &_0.strings,
-        output,
-    )?;
-    super::super::super::array::inline_50::serialize(
-        &_0.colors,
-        output,
-    )?;
-    Ok(())
+	super::super::super::array::inline_49::serialize(&_0.floats, output)?;
+	super::super::super::array::inline_46::serialize(&_0.flags, output)?;
+	super::super::array::inline_57::serialize(&_0.strings, output)?;
+	super::super::super::array::inline_50::serialize(&_0.colors, output)?;
+	Ok(())
 }
-pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    input.expect(4)?;
-    let f_floats = super::super::super::array::inline_49::deserialize(
-        input,
-    )?;
-    let f_flags = super::super::super::array::inline_46::deserialize(
-        input,
-    )?;
-    let f_strings = super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_colors = super::super::super::array::inline_50::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        floats: f_floats,flags: f_flags,strings: f_strings,colors: f_colors
-    })
+pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
+	input.expect(4)?;
+	let f_floats = super::super::super::array::inline_49::deserialize(input)?;
+	let f_flags = super::super::super::array::inline_46::deserialize(input)?;
+	let f_strings = super::super::array::inline_57::deserialize(input)?;
+	let f_colors = super::super::super::array::inline_50::deserialize(input)?;
+	Ok(Ty {
+		floats: f_floats,
+		flags: f_flags,
+		strings: f_strings,
+		colors: f_colors,
+	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-    0
-    + super::super::super::array::inline_49::size_of(
-        &_0.floats
-    )
-    + super::super::super::array::inline_46::size_of(
-        &_0.flags
-    )
-    + super::super::array::inline_57::size_of(
-        &_0.strings
-    )
-    + super::super::super::array::inline_50::size_of(
-        &_0.colors
-    )
+	0 + super::super::super::array::inline_49::size_of(&_0.floats)
+		+ super::super::super::array::inline_46::size_of(&_0.flags)
+		+ super::super::array::inline_57::size_of(&_0.strings)
+		+ super::super::super::array::inline_50::size_of(&_0.colors)
 }
 pub fn view<'i>(_0: &'i super::super::super::v1_21_11::SlotComponent15) -> Ty<'i> {
-    Ty {
-        floats: ::core::clone::Clone::clone(&_0.floats),flags: ::core::clone::Clone::clone(&_0.flags),strings: super::super::array::inline_57::view(&_0.strings),colors: ::core::clone::Clone::clone(&_0.colors)
-    }
+	Ty {
+		floats: ::core::clone::Clone::clone(&_0.floats),
+		flags: ::core::clone::Clone::clone(&_0.flags),
+		strings: super::super::array::inline_57::view(&_0.strings),
+		colors: ::core::clone::Clone::clone(&_0.colors),
+	}
 }
- pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent15) -> Ty<'i> {
-    Ty {
-        floats: ::core::mem::take(&mut _0.floats),flags: ::core::mem::take(&mut _0.flags),strings: super::super::array::inline_57::view(&mut _0.strings),colors: ::core::mem::take(&mut _0.colors)
-    }
+pub fn into_view<'i>(_0: &'i mut super::super::super::v1_21_11::SlotComponent15) -> Ty<'i> {
+	Ty {
+		floats: ::core::mem::take(&mut _0.floats),
+		flags: ::core::mem::take(&mut _0.flags),
+		strings: super::super::array::inline_57::view(&mut _0.strings),
+		colors: ::core::mem::take(&mut _0.colors),
+	}
 }
- pub type Ty<'i> = SlotComponent15<'i>;
+pub type Ty<'i> = SlotComponent15<'i>;

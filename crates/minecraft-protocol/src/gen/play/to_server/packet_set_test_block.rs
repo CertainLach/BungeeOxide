@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetTestBlock {
-    pub position: super::super::super::Position,
-    pub mode: super::super::super::Varint,
-    pub message: String,
+	pub position: super::super::super::Position,
+	pub mode: super::super::super::Varint,
+	pub message: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position::serialize(
-        &_0.position,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.mode,
-        output,
-    )?;
-    super::super::super::pstring_39::serialize(
-        &_0.message,
-        output,
-    )?;
-    Ok(())
+	super::super::super::position::serialize(&_0.position, output)?;
+	super::super::super::varint::serialize(&_0.mode, output)?;
+	super::super::super::pstring_39::serialize(&_0.message, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(10)?;
-    let f_position = super::super::super::position::deserialize(
-        input,
-    )?;
-    let f_mode = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_message = super::super::super::pstring_39::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        position: f_position,mode: f_mode,message: f_message
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(10)?;
+	let f_position = super::super::super::position::deserialize(input)?;
+	let f_mode = super::super::super::varint::deserialize(input)?;
+	let f_message = super::super::super::pstring_39::deserialize(input)?;
+	Ok(Ty {
+		position: f_position,
+		mode: f_mode,
+		message: f_message,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::position::size_of(
-        &_0.position
-    )
-    + super::super::super::varint::size_of(
-        &_0.mode
-    )
-    + super::super::super::pstring_39::size_of(
-        &_0.message
-    )
+	0 + super::super::super::position::size_of(&_0.position)
+		+ super::super::super::varint::size_of(&_0.mode)
+		+ super::super::super::pstring_39::size_of(&_0.message)
 }
- pub type Ty = PacketSetTestBlock;
+pub type Ty = PacketSetTestBlock;

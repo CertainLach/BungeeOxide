@@ -3,50 +3,30 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTradeList53 {
-    pub item_id: super::super::super::Varint,
-    pub item_count: super::super::super::Varint,
-    pub components: Vec<super::super::super::SlotComponent>,
+	pub item_id: super::super::super::Varint,
+	pub item_count: super::super::super::Varint,
+	pub components: Vec<super::super::super::SlotComponent>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(
-        &_0.item_id,
-        output,
-    )?;
-    super::super::super::varint::serialize(
-        &_0.item_count,
-        output,
-    )?;
-    super::super::super::array::inline_15::serialize(
-        &_0.components,
-        output,
-    )?;
-    Ok(())
+	super::super::super::varint::serialize(&_0.item_id, output)?;
+	super::super::super::varint::serialize(&_0.item_count, output)?;
+	super::super::super::array::inline_15::serialize(&_0.components, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(3)?;
-    let f_itemId = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_itemCount = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_components = super::super::super::array::inline_15::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        item_id: f_itemId,item_count: f_itemCount,components: f_components
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(3)?;
+	let f_itemId = super::super::super::varint::deserialize(input)?;
+	let f_itemCount = super::super::super::varint::deserialize(input)?;
+	let f_components = super::super::super::array::inline_15::deserialize(input)?;
+	Ok(Ty {
+		item_id: f_itemId,
+		item_count: f_itemCount,
+		components: f_components,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::varint::size_of(
-        &_0.item_id
-    )
-    + super::super::super::varint::size_of(
-        &_0.item_count
-    )
-    + super::super::super::array::inline_15::size_of(
-        &_0.components
-    )
+	0 + super::super::super::varint::size_of(&_0.item_id)
+		+ super::super::super::varint::size_of(&_0.item_count)
+		+ super::super::super::array::inline_15::size_of(&_0.components)
 }
- pub type Ty = PacketTradeList53;
+pub type Ty = PacketTradeList53;

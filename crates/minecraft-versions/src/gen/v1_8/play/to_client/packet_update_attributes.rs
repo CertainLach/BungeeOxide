@@ -3,39 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateAttributes {
-    pub entity_id: super::super::super::super::Varint,
-    pub properties: Vec<super::PacketUpdateAttributes13>,
+	pub entity_id: super::super::super::super::Varint,
+	pub properties: Vec<super::PacketUpdateAttributes13>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::varint::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::array::inline_15::serialize(
-        &_0.properties,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::varint::serialize(&_0.entity_id, output)?;
+	super::super::super::super::array::inline_15::serialize(&_0.properties, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(5)?;
-    let f_entityId = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_properties = super::super::super::super::array::inline_15::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,properties: f_properties
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(5)?;
+	let f_entityId = super::super::super::super::varint::deserialize(input)?;
+	let f_properties = super::super::super::super::array::inline_15::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		properties: f_properties,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::varint::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::array::inline_15::size_of(
-        &_0.properties
-    )
+	0 + super::super::super::super::varint::size_of(&_0.entity_id)
+		+ super::super::super::super::array::inline_15::size_of(&_0.properties)
 }
- pub type Ty = PacketUpdateAttributes;
+pub type Ty = PacketUpdateAttributes;

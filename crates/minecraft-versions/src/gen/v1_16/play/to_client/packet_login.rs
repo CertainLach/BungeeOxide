@@ -3,171 +3,85 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLogin {
-    pub entity_id: super::super::super::super::I32,
-    pub game_mode: super::super::super::super::U8,
-    pub previous_game_mode: super::super::super::super::U8,
-    pub world_names: Vec<String>,
-    pub dimension_codec: super::super::super::super::Nbt,
-    pub dimension: String,
-    pub world_name: String,
-    pub hashed_seed: super::super::super::super::I64,
-    pub max_players: super::super::super::super::U8,
-    pub view_distance: super::super::super::super::Varint,
-    pub reduced_debug_info: super::super::super::super::Bool,
-    pub enable_respawn_screen: super::super::super::super::Bool,
-    pub is_debug: super::super::super::super::Bool,
-    pub is_flat: super::super::super::super::Bool,
+	pub entity_id: super::super::super::super::I32,
+	pub game_mode: super::super::super::super::U8,
+	pub previous_game_mode: super::super::super::super::U8,
+	pub world_names: Vec<String>,
+	pub dimension_codec: super::super::super::super::Nbt,
+	pub dimension: String,
+	pub world_name: String,
+	pub hashed_seed: super::super::super::super::I64,
+	pub max_players: super::super::super::super::U8,
+	pub view_distance: super::super::super::super::Varint,
+	pub reduced_debug_info: super::super::super::super::Bool,
+	pub enable_respawn_screen: super::super::super::super::Bool,
+	pub is_debug: super::super::super::super::Bool,
+	pub is_flat: super::super::super::super::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::super::i32::serialize(
-        &_0.entity_id,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.game_mode,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.previous_game_mode,
-        output,
-    )?;
-    super::super::super::super::array::inline_57::serialize(
-        &_0.world_names,
-        output,
-    )?;
-    super::super::super::super::nbt::serialize(
-        &_0.dimension_codec,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.dimension,
-        output,
-    )?;
-    super::super::super::super::pstring_96::serialize(
-        &_0.world_name,
-        output,
-    )?;
-    super::super::super::super::i64::serialize(
-        &_0.hashed_seed,
-        output,
-    )?;
-    super::super::super::super::u8::serialize(
-        &_0.max_players,
-        output,
-    )?;
-    super::super::super::super::varint::serialize(
-        &_0.view_distance,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.reduced_debug_info,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.enable_respawn_screen,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.is_debug,
-        output,
-    )?;
-    super::super::super::super::bool::serialize(
-        &_0.is_flat,
-        output,
-    )?;
-    Ok(())
+	super::super::super::super::i32::serialize(&_0.entity_id, output)?;
+	super::super::super::super::u8::serialize(&_0.game_mode, output)?;
+	super::super::super::super::u8::serialize(&_0.previous_game_mode, output)?;
+	super::super::super::super::array::inline_57::serialize(&_0.world_names, output)?;
+	super::super::super::super::nbt::serialize(&_0.dimension_codec, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.dimension, output)?;
+	super::super::super::super::pstring_96::serialize(&_0.world_name, output)?;
+	super::super::super::super::i64::serialize(&_0.hashed_seed, output)?;
+	super::super::super::super::u8::serialize(&_0.max_players, output)?;
+	super::super::super::super::varint::serialize(&_0.view_distance, output)?;
+	super::super::super::super::bool::serialize(&_0.reduced_debug_info, output)?;
+	super::super::super::super::bool::serialize(&_0.enable_respawn_screen, output)?;
+	super::super::super::super::bool::serialize(&_0.is_debug, output)?;
+	super::super::super::super::bool::serialize(&_0.is_flat, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(23)?;
-    let f_entityId = super::super::super::super::i32::deserialize(
-        input,
-    )?;
-    let f_gameMode = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_previousGameMode = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_worldNames = super::super::super::super::array::inline_57::deserialize(
-        input,
-    )?;
-    let f_dimensionCodec = super::super::super::super::nbt::deserialize(
-        input,
-    )?;
-    let f_dimension = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_worldName = super::super::super::super::pstring_96::deserialize(
-        input,
-    )?;
-    let f_hashedSeed = super::super::super::super::i64::deserialize(
-        input,
-    )?;
-    let f_maxPlayers = super::super::super::super::u8::deserialize(
-        input,
-    )?;
-    let f_viewDistance = super::super::super::super::varint::deserialize(
-        input,
-    )?;
-    let f_reducedDebugInfo = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_enableRespawnScreen = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_isDebug = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    let f_isFlat = super::super::super::super::bool::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        entity_id: f_entityId,game_mode: f_gameMode,previous_game_mode: f_previousGameMode,world_names: f_worldNames,dimension_codec: f_dimensionCodec,dimension: f_dimension,world_name: f_worldName,hashed_seed: f_hashedSeed,max_players: f_maxPlayers,view_distance: f_viewDistance,reduced_debug_info: f_reducedDebugInfo,enable_respawn_screen: f_enableRespawnScreen,is_debug: f_isDebug,is_flat: f_isFlat
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(23)?;
+	let f_entityId = super::super::super::super::i32::deserialize(input)?;
+	let f_gameMode = super::super::super::super::u8::deserialize(input)?;
+	let f_previousGameMode = super::super::super::super::u8::deserialize(input)?;
+	let f_worldNames = super::super::super::super::array::inline_57::deserialize(input)?;
+	let f_dimensionCodec = super::super::super::super::nbt::deserialize(input)?;
+	let f_dimension = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_worldName = super::super::super::super::pstring_96::deserialize(input)?;
+	let f_hashedSeed = super::super::super::super::i64::deserialize(input)?;
+	let f_maxPlayers = super::super::super::super::u8::deserialize(input)?;
+	let f_viewDistance = super::super::super::super::varint::deserialize(input)?;
+	let f_reducedDebugInfo = super::super::super::super::bool::deserialize(input)?;
+	let f_enableRespawnScreen = super::super::super::super::bool::deserialize(input)?;
+	let f_isDebug = super::super::super::super::bool::deserialize(input)?;
+	let f_isFlat = super::super::super::super::bool::deserialize(input)?;
+	Ok(Ty {
+		entity_id: f_entityId,
+		game_mode: f_gameMode,
+		previous_game_mode: f_previousGameMode,
+		world_names: f_worldNames,
+		dimension_codec: f_dimensionCodec,
+		dimension: f_dimension,
+		world_name: f_worldName,
+		hashed_seed: f_hashedSeed,
+		max_players: f_maxPlayers,
+		view_distance: f_viewDistance,
+		reduced_debug_info: f_reducedDebugInfo,
+		enable_respawn_screen: f_enableRespawnScreen,
+		is_debug: f_isDebug,
+		is_flat: f_isFlat,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::super::super::super::i32::size_of(
-        &_0.entity_id
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.game_mode
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.previous_game_mode
-    )
-    + super::super::super::super::array::inline_57::size_of(
-        &_0.world_names
-    )
-    + super::super::super::super::nbt::size_of(
-        &_0.dimension_codec
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.dimension
-    )
-    + super::super::super::super::pstring_96::size_of(
-        &_0.world_name
-    )
-    + super::super::super::super::i64::size_of(
-        &_0.hashed_seed
-    )
-    + super::super::super::super::u8::size_of(
-        &_0.max_players
-    )
-    + super::super::super::super::varint::size_of(
-        &_0.view_distance
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.reduced_debug_info
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.enable_respawn_screen
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.is_debug
-    )
-    + super::super::super::super::bool::size_of(
-        &_0.is_flat
-    )
+	0 + super::super::super::super::i32::size_of(&_0.entity_id)
+		+ super::super::super::super::u8::size_of(&_0.game_mode)
+		+ super::super::super::super::u8::size_of(&_0.previous_game_mode)
+		+ super::super::super::super::array::inline_57::size_of(&_0.world_names)
+		+ super::super::super::super::nbt::size_of(&_0.dimension_codec)
+		+ super::super::super::super::pstring_96::size_of(&_0.dimension)
+		+ super::super::super::super::pstring_96::size_of(&_0.world_name)
+		+ super::super::super::super::i64::size_of(&_0.hashed_seed)
+		+ super::super::super::super::u8::size_of(&_0.max_players)
+		+ super::super::super::super::varint::size_of(&_0.view_distance)
+		+ super::super::super::super::bool::size_of(&_0.reduced_debug_info)
+		+ super::super::super::super::bool::size_of(&_0.enable_respawn_screen)
+		+ super::super::super::super::bool::size_of(&_0.is_debug)
+		+ super::super::super::super::bool::size_of(&_0.is_flat)
 }
- pub type Ty = PacketLogin;
+pub type Ty = PacketLogin;

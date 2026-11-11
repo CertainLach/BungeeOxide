@@ -3,43 +3,44 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketPlayerChat23 {
-    V2(Vec<super::super::super::I64>),
-    Default(super::super::super::Varint),
+	V2(Vec<super::super::super::I64>),
+	Default(super::super::super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::V2(__v) => super::super::super::array::inline_51::serialize(__v, output),
-        Ty::Default(_) => Ok(()),
-    }
+	super::super::super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::V2(__v) => super::super::super::array::inline_51::serialize(__v, output),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::super::super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 2_i32) {
-        return Ok(Ty::V2(super::super::super::array::inline_51::deserialize(input, )?));
-    }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::super::super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 2_i32) {
+		return Ok(Ty::V2(super::super::super::array::inline_51::deserialize(
+			input,
+		)?));
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::V2(__v) => super::super::super::array::inline_51::size_of(__v),
-        Ty::Default(_) => 0,
-    }
+	super::super::super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::V2(__v) => super::super::super::array::inline_51::size_of(__v),
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::V2(_) => "v2",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::V2(_) => "v2",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::super::super::Varint {
-    match _0 {
-        Ty::V2(_) => 2_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::V2(_) => 2_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PacketPlayerChat23;
+pub type Ty = PacketPlayerChat23;

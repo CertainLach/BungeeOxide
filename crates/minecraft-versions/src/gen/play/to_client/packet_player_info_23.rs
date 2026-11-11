@@ -3,44 +3,60 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo23 {
-    pub add_player: super::super::super::Bool,
-    pub initialize_chat: super::super::super::Bool,
-    pub update_game_mode: super::super::super::Bool,
-    pub update_listed: super::super::super::Bool,
-    pub update_latency: super::super::super::Bool,
-    pub update_display_name: super::super::super::Bool,
-    pub update_list_order: super::super::super::Bool,
-    pub update_hat: super::super::super::Bool,
+	pub add_player: super::super::super::Bool,
+	pub initialize_chat: super::super::super::Bool,
+	pub update_game_mode: super::super::super::Bool,
+	pub update_listed: super::super::super::Bool,
+	pub update_latency: super::super::super::Bool,
+	pub update_display_name: super::super::super::Bool,
+	pub update_list_order: super::super::super::Bool,
+	pub update_hat: super::super::super::Bool,
 }
 fn pack(_0: &Ty) -> u64 {
-    let mut acc: u64 = 0;
-    if _0.add_player { acc |= 0x1; }
-    if _0.initialize_chat { acc |= 0x2; }
-    if _0.update_game_mode { acc |= 0x4; }
-    if _0.update_listed { acc |= 0x8; }
-    if _0.update_latency { acc |= 0x10; }
-    if _0.update_display_name { acc |= 0x20; }
-    if _0.update_list_order { acc |= 0x40; }
-    if _0.update_hat { acc |= 0x80; }
-    acc
+	let mut acc: u64 = 0;
+	if _0.add_player {
+		acc |= 0x1;
+	}
+	if _0.initialize_chat {
+		acc |= 0x2;
+	}
+	if _0.update_game_mode {
+		acc |= 0x4;
+	}
+	if _0.update_listed {
+		acc |= 0x8;
+	}
+	if _0.update_latency {
+		acc |= 0x10;
+	}
+	if _0.update_display_name {
+		acc |= 0x20;
+	}
+	if _0.update_list_order {
+		acc |= 0x40;
+	}
+	if _0.update_hat {
+		acc |= 0x80;
+	}
+	acc
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::u8::serialize(&(pack(_0) as super::super::super::U8), output)
+	super::super::super::u8::serialize(&(pack(_0) as super::super::super::U8), output)
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let acc = super::super::super::u8::deserialize(input)? as u64;
-    Ok(Ty {
-        add_player: acc & 0x1 != 0,
-        initialize_chat: acc & 0x2 != 0,
-        update_game_mode: acc & 0x4 != 0,
-        update_listed: acc & 0x8 != 0,
-        update_latency: acc & 0x10 != 0,
-        update_display_name: acc & 0x20 != 0,
-        update_list_order: acc & 0x40 != 0,
-        update_hat: acc & 0x80 != 0,
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	let acc = super::super::super::u8::deserialize(input)? as u64;
+	Ok(Ty {
+		add_player: acc & 0x1 != 0,
+		initialize_chat: acc & 0x2 != 0,
+		update_game_mode: acc & 0x4 != 0,
+		update_listed: acc & 0x8 != 0,
+		update_latency: acc & 0x10 != 0,
+		update_display_name: acc & 0x20 != 0,
+		update_list_order: acc & 0x40 != 0,
+		update_hat: acc & 0x80 != 0,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::super::super::u8::size_of(&(pack(_0) as super::super::super::U8))
+	super::super::super::u8::size_of(&(pack(_0) as super::super::super::U8))
 }
- pub type Ty = PacketPlayerInfo23;
+pub type Ty = PacketPlayerInfo23;

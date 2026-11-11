@@ -3,47 +3,50 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PlayerSkinPatch24 {
-    Wide,
-    Slim,
-    Default(super::Varint),
+	Wide,
+	Slim,
+	Default(super::Varint),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::varint::serialize(&virtual_tag(_0), output)?;
-    match _0 {
-        Ty::Wide => Ok(()),
-        Ty::Slim => Ok(()),
-        Ty::Default(_) => Ok(()),
-    }
+	super::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Wide => Ok(()),
+		Ty::Slim => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(1)?;
-    let __tagv = super::varint::deserialize(
-        input,
-    )?;
-    let __tag = &__tagv;
-    if (__tag.clone() == 0_i32) { return Ok(Ty::Wide); }
-    if (__tag.clone() == 1_i32) { return Ok(Ty::Slim); }
-    Ok(Ty::Default(__tagv))
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(1)?;
+	let __tagv = super::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if (__tag.clone() == 0_i32) {
+		return Ok(Ty::Wide);
+	}
+	if (__tag.clone() == 1_i32) {
+		return Ok(Ty::Slim);
+	}
+	Ok(Ty::Default(__tagv))
 }
 pub fn size_of(_0: &Ty) -> usize {
-    super::varint::size_of(&virtual_tag(_0)) + match _0 {
-        Ty::Wide => 0,
-        Ty::Slim => 0,
-        Ty::Default(_) => 0,
-    }
+	super::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Wide => 0,
+			Ty::Slim => 0,
+			Ty::Default(_) => 0,
+		}
 }
 pub fn name(_0: &Ty) -> &'static str {
-    match _0 {
-        Ty::Wide => "wide",
-        Ty::Slim => "slim",
-        Ty::Default(..) => "default",
-    }
+	match _0 {
+		Ty::Wide => "wide",
+		Ty::Slim => "slim",
+		Ty::Default(..) => "default",
+	}
 }
 pub fn virtual_tag(_0: &Ty) -> super::Varint {
-    match _0 {
-        Ty::Wide => 0_i32,
-        Ty::Slim => 1_i32,
-        Ty::Default(__t) => __t.clone(),
-    }
+	match _0 {
+		Ty::Wide => 0_i32,
+		Ty::Slim => 1_i32,
+		Ty::Default(__t) => __t.clone(),
+	}
 }
- pub type Ty = PlayerSkinPatch24;
+pub type Ty = PlayerSkinPatch24;

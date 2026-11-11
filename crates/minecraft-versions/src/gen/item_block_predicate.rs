@@ -3,61 +3,35 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockPredicate {
-    pub block_set: Option<super::ItemBlockPredicate16>,
-    pub properties: Option<Vec<super::ItemBlockProperty>>,
-    pub nbt: super::AnonOptionalNbt,
-    pub components: super::v1_21_11::DataComponentMatchers,
+	pub block_set: Option<super::ItemBlockPredicate16>,
+	pub properties: Option<Vec<super::ItemBlockProperty>>,
+	pub nbt: super::AnonOptionalNbt,
+	pub components: super::v1_21_11::DataComponentMatchers,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_34::serialize(
-        &_0.block_set,
-        output,
-    )?;
-    super::option_93::serialize(
-        &_0.properties,
-        output,
-    )?;
-    super::anon_optional_nbt::serialize(
-        &_0.nbt,
-        output,
-    )?;
-    super::v1_21_11::data_component_matchers::serialize(
-        &_0.components,
-        output,
-    )?;
-    Ok(())
+	super::option_34::serialize(&_0.block_set, output)?;
+	super::option_93::serialize(&_0.properties, output)?;
+	super::anon_optional_nbt::serialize(&_0.nbt, output)?;
+	super::v1_21_11::data_component_matchers::serialize(&_0.components, output)?;
+	Ok(())
 }
-pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    input.expect(4)?;
-    let f_blockSet = super::option_34::deserialize(
-        input,
-    )?;
-    let f_properties = super::option_93::deserialize(
-        input,
-    )?;
-    let f_nbt = super::anon_optional_nbt::deserialize(
-        input,
-    )?;
-    let f_components = super::v1_21_11::data_component_matchers::deserialize(
-        input,
-    )?;
-    Ok(Ty {
-        block_set: f_blockSet,properties: f_properties,nbt: f_nbt,components: f_components
-    })
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
+	input.expect(4)?;
+	let f_blockSet = super::option_34::deserialize(input)?;
+	let f_properties = super::option_93::deserialize(input)?;
+	let f_nbt = super::anon_optional_nbt::deserialize(input)?;
+	let f_components = super::v1_21_11::data_component_matchers::deserialize(input)?;
+	Ok(Ty {
+		block_set: f_blockSet,
+		properties: f_properties,
+		nbt: f_nbt,
+		components: f_components,
+	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-    0
-    + super::option_34::size_of(
-        &_0.block_set
-    )
-    + super::option_93::size_of(
-        &_0.properties
-    )
-    + super::anon_optional_nbt::size_of(
-        &_0.nbt
-    )
-    + super::v1_21_11::data_component_matchers::size_of(
-        &_0.components
-    )
+	0 + super::option_34::size_of(&_0.block_set)
+		+ super::option_93::size_of(&_0.properties)
+		+ super::anon_optional_nbt::size_of(&_0.nbt)
+		+ super::v1_21_11::data_component_matchers::size_of(&_0.components)
 }
- pub type Ty = ItemBlockPredicate;
+pub type Ty = ItemBlockPredicate;
