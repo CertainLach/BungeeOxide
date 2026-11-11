@@ -1,17 +1,12 @@
-use minecraft_versions::gen::convert::{
-	convert, index_of, inspect, v1_20_5 as a, v1_21_4 as d, Root,
-};
+use minecraft_versions::gen::convert::{convert, inspect, v1_20_5 as a, v1_21_4 as d, Root};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::registry::{blocks, names};
 use minecraft_versions::Session;
-
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
+use minecraft_versions::Version;
 
 fn run<A, B>(
 	root: Root,
-	(from, to): (&str, &str),
+	(from, to): (Version, Version),
 	packet: &A,
 	ser: fn(&A, &mut Output) -> minecraft_versions::pds::Result<()>,
 	de: fn(&mut Input) -> minecraft_versions::pds::Result<B>,
@@ -19,11 +14,11 @@ fn run<A, B>(
 ) -> Vec<B> {
 	let mut o = Output::new();
 	ser(packet, &mut o).unwrap();
-	convert(root, at(from), at(to), &o.into_inner(), cx)
+	convert(root, from, to, &o.into_inner(), cx)
 		.unwrap()
 		.iter()
 		.map(|bytes| {
-			inspect(root, at(to), bytes).unwrap();
+			inspect(root, to, bytes).unwrap();
 			let mut input = Input::new(bytes);
 			let p = de(&mut input).unwrap();
 			assert_eq!(input.remaining(), 0);
@@ -35,7 +30,7 @@ fn run<A, B>(
 fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<d::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
-		("1.20.5", "1.21.4"),
+		(Version::V1_20_5, Version::V1_21_4),
 		p,
 		a::play_to_client_packet::serialize,
 		d::play_to_client_packet::deserialize,
@@ -46,7 +41,7 @@ fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<d::play_to_clie
 fn down(p: &d::play_to_server_packet::Ty, cx: &mut Session) -> Vec<a::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
-		("1.21.4", "1.20.5"),
+		(Version::V1_21_4, Version::V1_20_5),
 		p,
 		d::play_to_server_packet::serialize,
 		a::play_to_server_packet::deserialize,
@@ -60,7 +55,7 @@ fn config(
 ) -> Vec<d::configuration_to_client_packet::Ty> {
 	run(
 		Root::ConfigurationToClient,
-		("1.20.5", "1.21.4"),
+		(Version::V1_20_5, Version::V1_21_4),
 		p,
 		a::configuration_to_client_packet::serialize,
 		d::configuration_to_client_packet::deserialize,
@@ -68,17 +63,17 @@ fn config(
 	)
 }
 
-fn id(version: &str, kind: &str, name: &str) -> i32 {
+fn id(version: Version, kind: &str, name: &str) -> i32 {
 	let table = names(version, kind).unwrap();
 	let base = u32::from(kind == "sounds" && table.name(0).is_none());
 	(table.id(name).unwrap() - base) as i32
 }
 
-fn state(version: &str, text: &str) -> i32 {
+fn state(version: Version, text: &str) -> i32 {
 	blocks(version).unwrap().parse_state(text).unwrap() as i32
 }
 
-fn describe(version: &str, state: i32) -> String {
+fn describe(version: Version, state: i32) -> String {
 	blocks(version).unwrap().describe(state as u32).unwrap()
 }
 
@@ -86,7 +81,7 @@ fn item_a(name: &str, components: Vec<a::slot_component::Ty>) -> a::slot::Ty {
 	a::slot::Ty::Default(
 		1,
 		a::slot_default::Ty {
-			item_id: id("1.20.5", "items", name),
+			item_id: id(Version::V1_20_5, "items", name),
 			added_component_count: components.len() as i32,
 			removed_component_count: 0,
 			components,
@@ -165,7 +160,7 @@ fn configuration_adds_required_registries() {
 	let enchantments = find("minecraft:enchantment");
 	assert_eq!(enchantments.entries.len(), 42);
 	assert_eq!(
-		enchantments.entries[id("1.21.4", "enchantments", "sharpness") as usize].key,
+		enchantments.entries[id(Version::V1_21_4, "enchantments", "sharpness") as usize].key,
 		"minecraft:sharpness"
 	);
 	let badlands = find("minecraft:worldgen/biome")
@@ -207,8 +202,8 @@ fn tags_get_remapped_and_completed() {
 				a::configuration_to_client_packet_tags_items_tags_items::Ty {
 					tag_name: "minecraft:logs".to_owned(),
 					entries: vec![
-						id("1.20.5", "blocks", "oak_log"),
-						id("1.20.5", "blocks", "cherry_log"),
+						id(Version::V1_20_5, "blocks", "oak_log"),
+						id(Version::V1_20_5, "blocks", "cherry_log"),
 					],
 				},
 			],
@@ -225,8 +220,8 @@ fn tags_get_remapped_and_completed() {
 	assert_eq!(
 		blocks.tags[0].entries,
 		vec![
-			id("1.21.4", "blocks", "oak_log"),
-			id("1.21.4", "blocks", "cherry_log")
+			id(Version::V1_21_4, "blocks", "oak_log"),
+			id(Version::V1_21_4, "blocks", "cherry_log")
 		]
 	);
 	let enchantments = groups
@@ -241,8 +236,8 @@ fn tags_get_remapped_and_completed() {
 	assert_eq!(
 		curse.entries,
 		vec![
-			id("1.21.4", "enchantments", "binding_curse"),
-			id("1.21.4", "enchantments", "vanishing_curse")
+			id(Version::V1_21_4, "enchantments", "binding_curse"),
+			id(Version::V1_21_4, "enchantments", "vanishing_curse")
 		]
 	);
 	assert!(enchantments
@@ -314,7 +309,7 @@ fn items_and_components() {
 	use d::play_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
 	let enchant = |name: &str, level: i32| a::slot_component_enchantments_enchantments_items::Ty {
-		id: id("1.20.5", "enchantments", name),
+		id: id(Version::V1_20_5, "enchantments", name),
 		level,
 	};
 	let sword = item_a(
@@ -355,7 +350,7 @@ fn items_and_components() {
 	let d::slot::Ty::Default(1, s) = &w.items[0] else {
 		panic!("{:?}", w.items[0])
 	};
-	assert_eq!(s.item_id, id("1.21.4", "items", "diamond_sword"));
+	assert_eq!(s.item_id, id(Version::V1_21_4, "items", "diamond_sword"));
 	let [d::slot_component::Ty::Enchantments(e)] = s.components.as_slice() else {
 		panic!("{s:?}")
 	};
@@ -363,8 +358,8 @@ fn items_and_components() {
 	assert_eq!(
 		ids,
 		vec![
-			(id("1.21.4", "enchantments", "sharpness"), 5),
-			(id("1.21.4", "enchantments", "unbreaking"), 3)
+			(id(Version::V1_21_4, "enchantments", "sharpness"), 5),
+			(id(Version::V1_21_4, "enchantments", "unbreaking"), 3)
 		]
 	);
 	assert!(matches!(&w.items[1], d::slot::Ty::V0));
@@ -399,7 +394,7 @@ fn items_and_components() {
 	let [Q::SetCursorItem(d::slot::Ty::Default(1, s))] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(s.item_id, id("1.21.4", "items", "apple"));
+	assert_eq!(s.item_id, id(Version::V1_21_4, "items", "apple"));
 }
 
 #[test]
@@ -411,7 +406,7 @@ fn creative_items_go_down() {
 		d::slot::Ty::Default(
 			3,
 			d::slot_default::Ty {
-				item_id: id("1.21.4", "items", name),
+				item_id: id(Version::V1_21_4, "items", name),
 				added_component_count: 2,
 				removed_component_count: 0,
 				components: vec![
@@ -441,7 +436,7 @@ fn creative_items_go_down() {
 		let a::slot::Ty::Default(3, s) = &p.item else {
 			panic!("{p:?}")
 		};
-		assert_eq!(s.item_id, id("1.20.5", "items", old), "{new}");
+		assert_eq!(s.item_id, id(Version::V1_20_5, "items", old), "{new}");
 		assert_eq!(s.added_component_count, 1);
 		assert!(matches!(
 			s.components.as_slice(),
@@ -513,7 +508,7 @@ fn chunks_keep_block_states() {
 		"minecraft:grass_block[snowy=false]",
 		"minecraft:chest[facing=west,type=single,waterlogged=false]",
 	];
-	let old: Vec<i32> = names.iter().map(|n| state("1.20.5", n)).collect();
+	let old: Vec<i32> = names.iter().map(|n| state(Version::V1_20_5, n)).collect();
 	let mut data = section(&old);
 	data.extend(section(&old[..2]));
 	let out = up(
@@ -556,7 +551,7 @@ fn chunks_keep_block_states() {
 					break;
 				}
 			}
-			describe("1.21.4", v as i32)
+			describe(Version::V1_21_4, v as i32)
 		})
 		.collect();
 	assert_eq!(palette, names.to_vec());
@@ -571,7 +566,7 @@ fn spawns_and_metadata() {
 		P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
 			entity_id: entity,
 			object_uuid: entity as u128,
-			r#type: id("1.20.5", "entities", ty),
+			r#type: id(Version::V1_20_5, "entities", ty),
 			x: 0.0,
 			y: 70.0,
 			z: 0.0,
@@ -586,13 +581,13 @@ fn spawns_and_metadata() {
 	let [Q::SpawnEntity(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(s.r#type, id("1.21.4", "entities", "oak_boat"));
-	let sand = state("1.20.5", "minecraft:sand");
+	assert_eq!(s.r#type, id(Version::V1_21_4, "entities", "oak_boat"));
+	let sand = state(Version::V1_20_5, "minecraft:sand");
 	let out = up(&spawn(11, "falling_block", sand), &mut cx);
 	let [Q::SpawnEntity(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(describe("1.21.4", s.object_data), "minecraft:sand");
+	assert_eq!(describe(Version::V1_21_4, s.object_data), "minecraft:sand");
 	let entry = |key: u8, value: a::entity_metadata_entry_value::Ty| a::entity_metadata_entry::Ty {
 		key,
 		value,
@@ -621,7 +616,7 @@ fn spawns_and_metadata() {
 		&P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
 			entity_id: 12,
 			object_uuid: 12,
-			r#type: id("1.20.5", "entities", "painting"),
+			r#type: id(Version::V1_20_5, "entities", "painting"),
 			x: 0.0,
 			y: 0.0,
 			z: 0.0,
@@ -696,7 +691,7 @@ fn particles_and_sounds() {
 	);
 	let out = up(
 		&particle(a::particle::Ty::Block(state(
-			"1.20.5",
+			Version::V1_20_5,
 			"minecraft:oak_log[axis=x]",
 		))),
 		&mut cx,
@@ -707,11 +702,11 @@ fn particles_and_sounds() {
 	let d::particle::Ty::Block(s) = p.particle else {
 		panic!()
 	};
-	assert_eq!(describe("1.21.4", s), "minecraft:oak_log[axis=x]");
+	assert_eq!(describe(Version::V1_21_4, s), "minecraft:oak_log[axis=x]");
 	let sound = "entity.player.levelup";
 	let out = up(
 		&P::SoundEffect(a::play_to_client_packet_sound_effect::Ty {
-			sound: a::item_sound_holder::Ty::Id(id("1.20.5", "sounds", sound)),
+			sound: a::item_sound_holder::Ty::Id(id(Version::V1_20_5, "sounds", sound)),
 			sound_category: a::sound_source::Ty::Master,
 			x: 0,
 			y: 0,
@@ -727,14 +722,14 @@ fn particles_and_sounds() {
 	};
 	assert_eq!(
 		s.sound,
-		d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", sound))
+		d::item_sound_holder::Ty::Id(id(Version::V1_21_4, "sounds", sound))
 	);
 }
 
 fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 	use a::play_to_client_packet::Ty as P;
 	let enchant = |name: &str, level: i32| a::slot_component_enchantments_enchantments_items::Ty {
-		id: id("1.20.5", "enchantments", name),
+		id: id(Version::V1_20_5, "enchantments", name),
 		level,
 	};
 	let sword = item_a(
@@ -761,15 +756,15 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 		],
 	);
 	let pos = |x, y, z| a::position::Ty { x, y, z };
-	let stone = state("1.20.5", "minecraft:stone");
+	let stone = state(Version::V1_20_5, "minecraft:stone");
 	let mut chunk = Vec::new();
 	for s in 0..24 {
 		let states = match s {
-			0..=3 => vec![state("1.20.5", "minecraft:bedrock"), stone],
+			0..=3 => vec![state(Version::V1_20_5, "minecraft:bedrock"), stone],
 			4 => vec![
 				stone,
-				state("1.20.5", "minecraft:grass_block[snowy=false]"),
-				state("1.20.5", "minecraft:oak_log[axis=y]"),
+				state(Version::V1_20_5, "minecraft:grass_block[snowy=false]"),
+				state(Version::V1_20_5, "minecraft:oak_log[axis=y]"),
 			],
 			_ => vec![0],
 		};
@@ -783,7 +778,7 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 		P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
 			entity_id: entity,
 			object_uuid: entity as u128,
-			r#type: id("1.20.5", "entities", ty),
+			r#type: id(Version::V1_20_5, "entities", ty),
 			x: 0.5,
 			y: 70.0,
 			z: 0.5,
@@ -812,7 +807,8 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 			particle,
 		})
 	};
-	let sound = a::item_sound_holder::Ty::Id(id("1.20.5", "sounds", "entity.generic.explode"));
+	let sound =
+		a::item_sound_holder::Ty::Id(id(Version::V1_20_5, "sounds", "entity.generic.explode"));
 	let small = || a::particle::Ty::Explosion;
 	vec![
 		P::Position(a::play_to_client_packet_position::Ty {
@@ -837,13 +833,13 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 			sky_light: vec![],
 			block_light: vec![],
 		}),
-		P::BlockChange(a::play_to_client_packet_block_change::Ty { location: pos(1, 70, 1), r#type: state("1.20.5", "minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=true]") }),
+		P::BlockChange(a::play_to_client_packet_block_change::Ty { location: pos(1, 70, 1), r#type: state(Version::V1_20_5, "minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=true]") }),
 		P::MultiBlockChange(a::play_to_client_packet_multi_block_change::Ty {
 			chunk_coordinates: a::play_to_client_packet_multi_block_change_chunk_coordinates::Ty { x: 0, z: 0, y: 4 },
 			records: vec![(stone << 12) | 0x123],
 		}),
 		spawn(10, "boat", 0),
-		spawn(11, "falling_block", state("1.20.5", "minecraft:sand")),
+		spawn(11, "falling_block", state(Version::V1_20_5, "minecraft:sand")),
 		spawn(12, "zombie", 0),
 		P::EntityMetadata(a::play_to_client_packet_entity_metadata::Ty {
 			entity_id: 10,
@@ -891,10 +887,10 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 				modifiers: vec![],
 			}],
 		}),
-		P::SetCooldown(a::play_to_client_packet_set_cooldown::Ty { item_id: id("1.20.5", "items", "ender_pearl"), cooldown_ticks: 20 }),
+		P::SetCooldown(a::play_to_client_packet_set_cooldown::Ty { item_id: id(Version::V1_20_5, "items", "ender_pearl"), cooldown_ticks: 20 }),
 		P::EntityTeleport(a::play_to_client_packet_entity_teleport::Ty { entity_id: 12, x: 1.0, y: 70.0, z: 1.0, yaw: 32, pitch: 0, on_ground: true }),
 		P::WorldEvent(a::play_to_client_packet_world_event::Ty { effect_id: 2001, location: pos(0, 70, 0), data: stone, global: false }),
-		P::WorldEvent(a::play_to_client_packet_world_event::Ty { effect_id: 1010, location: pos(0, 70, 0), data: id("1.20.5", "items", "music_disc_cat"), global: false }),
+		P::WorldEvent(a::play_to_client_packet_world_event::Ty { effect_id: 1010, location: pos(0, 70, 0), data: id(Version::V1_20_5, "items", "music_disc_cat"), global: false }),
 		P::TileEntityData(a::play_to_client_packet_tile_entity_data::Ty { location: pos(1, 0, 1), action: 7, nbt_data: Some(tag(vec![])) }),
 		P::SetPassengers(a::play_to_client_packet_set_passengers::Ty { entity_id: 10, passengers: vec![12] }),
 		P::EntityDestroy(vec![10, 11]),
@@ -906,7 +902,12 @@ fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
 fn write_dumps() {
 	let dir = std::env::var("TRICKY_DUMPS").expect("TRICKY_DUMPS names an output directory");
 	let packets = sample_packets();
-	for to in ["1.20.5", "1.21.1", "1.21.3", "1.21.4"] {
+	for to in [
+		Version::V1_20_5,
+		Version::V1_21_1,
+		Version::V1_21_3,
+		Version::V1_21_4,
+	] {
 		let mut cx = Session::new();
 		let mut out = Vec::new();
 		for p in &packets {
@@ -914,8 +915,8 @@ fn write_dumps() {
 			a::play_to_client_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::PlayToClient,
-				at("1.20.5"),
-				at(to),
+				Version::V1_20_5,
+				to,
 				&o.into_inner(),
 				&mut cx,
 			)
@@ -936,8 +937,8 @@ fn write_dumps() {
 		at_byte += 4 + len;
 		for bytes in convert(
 			Root::PlayToClient,
-			at("1.21.4"),
-			at("1.20.5"),
+			Version::V1_21_4,
+			Version::V1_20_5,
 			bytes,
 			&mut cx,
 		)
@@ -956,13 +957,13 @@ fn write_dumps() {
 			tags: vec![
 				a::configuration_to_client_packet_tags_items_tags_items::Ty {
 					tag_name: "minecraft:logs".to_owned(),
-					entries: vec![id("1.20.5", "items", "oak_log")],
+					entries: vec![id(Version::V1_20_5, "items", "oak_log")],
 				},
 			],
 		}]),
 		C::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 	];
-	for to in ["1.21.1", "1.21.3", "1.21.4"] {
+	for to in [Version::V1_21_1, Version::V1_21_3, Version::V1_21_4] {
 		let mut cx = Session::new();
 		let mut out = Vec::new();
 		for p in &configuration {
@@ -970,8 +971,8 @@ fn write_dumps() {
 			a::configuration_to_client_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::ConfigurationToClient,
-				at("1.20.5"),
-				at(to),
+				Version::V1_20_5,
+				to,
 				&o.into_inner(),
 				&mut cx,
 			)
@@ -991,7 +992,7 @@ fn write_dumps() {
 	let slot = d::slot::Ty::Default(
 		1,
 		d::slot_default::Ty {
-			item_id: id("1.21.4", "items", "pale_oak_log"),
+			item_id: id(Version::V1_21_4, "items", "pale_oak_log"),
 			added_component_count: 1,
 			removed_component_count: 0,
 			components: vec![d::slot_component::Ty::ItemModel(
@@ -1073,7 +1074,12 @@ fn write_dumps() {
 		}),
 		S::CloseWindow(0),
 	];
-	for to in ["1.21.4", "1.21.3", "1.21.1", "1.20.5"] {
+	for to in [
+		Version::V1_21_4,
+		Version::V1_21_3,
+		Version::V1_21_1,
+		Version::V1_20_5,
+	] {
 		let mut cx = Session::new();
 		let mut out = Vec::new();
 		for p in &server {
@@ -1081,8 +1087,8 @@ fn write_dumps() {
 			d::play_to_server_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::PlayToServer,
-				at("1.21.4"),
-				at(to),
+				Version::V1_21_4,
+				to,
 				&o.into_inner(),
 				&mut cx,
 			)
@@ -1095,11 +1101,16 @@ fn write_dumps() {
 		std::fs::write(format!("{dir}/server-{to}.bin"), out).unwrap();
 	}
 	let reverse = reverse_samples();
-	for to in ["1.21.4", "1.21.3", "1.21.1", "1.20.5"] {
+	for to in [
+		Version::V1_21_4,
+		Version::V1_21_3,
+		Version::V1_21_1,
+		Version::V1_20_5,
+	] {
 		dump(
 			&format!("{dir}/reverse-{to}.bin"),
 			Root::PlayToClient,
-			("1.21.4", to),
+			(Version::V1_21_4, to),
 			&reverse,
 			d::play_to_client_packet::serialize,
 		);
@@ -1138,11 +1149,16 @@ fn write_dumps() {
 			item: item_a("diamond", vec![]),
 		}),
 	];
-	for to in ["1.20.5", "1.21.1", "1.21.3", "1.21.4"] {
+	for to in [
+		Version::V1_20_5,
+		Version::V1_21_1,
+		Version::V1_21_3,
+		Version::V1_21_4,
+	] {
 		dump(
 			&format!("{dir}/server-up-{to}.bin"),
 			Root::PlayToServer,
-			("1.20.5", to),
+			(Version::V1_20_5, to),
 			&old,
 			a::play_to_server_packet::serialize,
 		);
@@ -1152,7 +1168,7 @@ fn write_dumps() {
 fn dump<A>(
 	file: &str,
 	root: Root,
-	(from, to): (&str, &str),
+	(from, to): (Version, Version),
 	packets: &[A],
 	ser: fn(&A, &mut Output) -> minecraft_versions::pds::Result<()>,
 ) {
@@ -1161,7 +1177,7 @@ fn dump<A>(
 	for p in packets {
 		let mut o = Output::new();
 		ser(p, &mut o).unwrap();
-		for bytes in convert(root, at(from), at(to), &o.into_inner(), &mut cx).unwrap() {
+		for bytes in convert(root, from, to, &o.into_inner(), &mut cx).unwrap() {
 			out.extend((bytes.len() as u32).to_be_bytes());
 			out.extend(bytes);
 		}
@@ -1194,7 +1210,11 @@ fn reverse_samples() -> Vec<d::play_to_client_packet::Ty> {
 			d::slot_component::Ty::Consumable(d::slot_component_consumable::Ty {
 				consume_seconds: 0.8,
 				animation: d::slot_component_consumable_animation::Ty::Eat,
-				sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
+				sound: d::item_sound_holder::Ty::Id(id(
+					Version::V1_21_4,
+					"sounds",
+					"entity.generic.eat",
+				)),
 				makes_particles: true,
 				effects: vec![d::item_consume_effect::Ty::ApplyEffects(
 					d::item_consume_effect_apply_effects::Ty {
@@ -1268,12 +1288,12 @@ fn reverse_samples() -> Vec<d::play_to_client_packet::Ty> {
 			z: 3.0,
 			player_knockback: Some(d::vec3f64::Ty { x: 0.25, y: 0.5, z: 0.0 }),
 			explosion_particle: d::particle::Ty::Explosion,
-			sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.explode")),
+			sound: d::item_sound_holder::Ty::Id(id(Version::V1_21_4, "sounds", "entity.generic.explode")),
 		}),
 		C::SpawnEntity(d::play_to_client_packet_spawn_entity::Ty {
 			entity_id: 9,
 			object_uuid: 9,
-			r#type: id("1.21.4", "entities", "spruce_boat"),
+			r#type: id(Version::V1_21_4, "entities", "spruce_boat"),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
@@ -1284,9 +1304,9 @@ fn reverse_samples() -> Vec<d::play_to_client_packet::Ty> {
 			velocity: d::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		}),
 		C::DeclareRecipes(d::play_to_client_packet_declare_recipes::Ty {
-			recipes: vec![d::play_to_client_packet_declare_recipes_recipes_items::Ty { name: "minecraft:furnace_input".to_owned(), items: vec![id("1.21.4", "items", "beef")] }],
+			recipes: vec![d::play_to_client_packet_declare_recipes_recipes_items::Ty { name: "minecraft:furnace_input".to_owned(), items: vec![id(Version::V1_21_4, "items", "beef")] }],
 			stone_cutter_recipes: vec![d::play_to_client_packet_declare_recipes_stone_cutter_recipes_items::Ty {
-				input: d::id_set::Ty::Ids(vec![id("1.21.4", "items", "stone")]),
+				input: d::id_set::Ty::Ids(vec![id(Version::V1_21_4, "items", "stone")]),
 				slot_display: S::ItemStack(item_d("stone_slab", vec![])),
 			}],
 		}),
@@ -1305,9 +1325,9 @@ fn reverse_samples() -> Vec<d::play_to_client_packet::Ty> {
 				recipe: d::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty {
 					display_id: 7,
 					display: d::play_to_client_recipe_display::Ty::CraftingShapeless(d::play_to_client_recipe_display_crafting_shapeless::Ty {
-						ingredients: vec![S::Item(id("1.21.4", "items", "oak_log"))],
+						ingredients: vec![S::Item(id(Version::V1_21_4, "items", "oak_log"))],
 						result: S::ItemStack(item_d("oak_planks", vec![])),
-						crafting_station: S::Item(id("1.21.4", "items", "crafting_table")),
+						crafting_station: S::Item(id(Version::V1_21_4, "items", "crafting_table")),
 					}),
 					group: 0,
 					category: d::play_to_client_packet_recipe_book_add_entries_items_recipe_category::Ty::CraftingBuildingBlocks,
@@ -1455,7 +1475,7 @@ fn client_down(
 ) -> Vec<a::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
-		("1.21.4", "1.20.5"),
+		(Version::V1_21_4, Version::V1_20_5),
 		p,
 		d::play_to_client_packet::serialize,
 		a::play_to_client_packet::deserialize,
@@ -1469,7 +1489,7 @@ fn server_up(
 ) -> Vec<d::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
-		("1.20.5", "1.21.4"),
+		(Version::V1_20_5, Version::V1_21_4),
 		p,
 		a::play_to_server_packet::serialize,
 		d::play_to_server_packet::deserialize,
@@ -1483,7 +1503,7 @@ fn config_down(
 ) -> Vec<a::configuration_to_client_packet::Ty> {
 	run(
 		Root::ConfigurationToClient,
-		("1.21.4", "1.20.5"),
+		(Version::V1_21_4, Version::V1_20_5),
 		p,
 		d::configuration_to_client_packet::serialize,
 		a::configuration_to_client_packet::deserialize,
@@ -1521,7 +1541,7 @@ fn item_d(name: &str, components: Vec<d::slot_component::Ty>) -> d::slot::Ty {
 	d::slot::Ty::Default(
 		1,
 		d::slot_default::Ty {
-			item_id: id("1.21.4", "items", name),
+			item_id: id(Version::V1_21_4, "items", name),
 			added_component_count: components.len() as i32,
 			removed_component_count: 0,
 			components,
@@ -1532,7 +1552,7 @@ fn item_d(name: &str, components: Vec<d::slot_component::Ty>) -> d::slot::Ty {
 
 fn potion(effect: &str) -> d::item_potion_effect::Ty {
 	d::item_potion_effect::Ty {
-		id: id("1.21.4", "effects", effect),
+		id: id(Version::V1_21_4, "effects", effect),
 		details: d::item_effect_detail::Ty {
 			amplifier: 0,
 			duration: 600,
@@ -1721,7 +1741,7 @@ fn registries_rebuilt_from_server_going_down() {
 	};
 	assert_eq!(
 		e.enchantments[0].id,
-		id("1.20.5", "enchantments", "sharpness")
+		id(Version::V1_20_5, "enchantments", "sharpness")
 	);
 }
 
@@ -1826,7 +1846,7 @@ fn world_and_recipes_going_down() {
 	let [loaded] = queued.as_slice() else {
 		panic!("player_loaded not queued")
 	};
-	assert_eq!(loaded.version, at("1.21.4"));
+	assert_eq!(loaded.version, Version::V1_21_4);
 	let mut input = Input::new(&loaded.data);
 	assert!(matches!(
 		d::play_to_server_packet::deserialize(&mut input).unwrap(),
@@ -1893,7 +1913,7 @@ fn world_and_recipes_going_down() {
 		"relative teleport of unknown entity"
 	);
 
-	let sound = |v: &str| id(v, "sounds", "entity.generic.explode");
+	let sound = |v: Version| id(v, "sounds", "entity.generic.explode");
 	let explosion = C::Explosion(d::play_to_client_packet_explosion::Ty {
 		x: 1.0,
 		y: 2.0,
@@ -1904,7 +1924,7 @@ fn world_and_recipes_going_down() {
 			z: 0.0,
 		}),
 		explosion_particle: d::particle::Ty::Explosion,
-		sound: d::item_sound_holder::Ty::Id(sound("1.21.4")),
+		sound: d::item_sound_holder::Ty::Id(sound(Version::V1_21_4)),
 	});
 	let out = client_down(&explosion, &mut cx);
 	let [A::Explosion(e)] = out.as_slice() else {
@@ -1918,9 +1938,12 @@ fn world_and_recipes_going_down() {
 		e.small_explosion_particle,
 		a::particle::Ty::Explosion
 	));
-	assert_eq!(e.sound, a::item_sound_holder::Ty::Id(sound("1.20.5")));
+	assert_eq!(
+		e.sound,
+		a::item_sound_holder::Ty::Id(sound(Version::V1_20_5))
+	);
 
-	let stone = id("1.21.4", "items", "stone");
+	let stone = id(Version::V1_21_4, "items", "stone");
 	let declare = C::DeclareRecipes(d::play_to_client_packet_declare_recipes::Ty {
 		recipes: vec![],
 		stone_cutter_recipes: vec![
@@ -1946,9 +1969,9 @@ fn world_and_recipes_going_down() {
 			recipe: d::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty {
 				display_id: 7,
 				display: d::play_to_client_recipe_display::Ty::CraftingShapeless(d::play_to_client_recipe_display_crafting_shapeless::Ty {
-					ingredients: vec![S::Item(id("1.21.4", "items", "oak_log"))],
+					ingredients: vec![S::Item(id(Version::V1_21_4, "items", "oak_log"))],
 					result: S::ItemStack(item_d("oak_planks", vec![])),
-					crafting_station: S::Item(id("1.21.4", "items", "crafting_table")),
+					crafting_station: S::Item(id(Version::V1_21_4, "items", "crafting_table")),
 				}),
 				group: 0,
 				category: d::play_to_client_packet_recipe_book_add_entries_items_recipe_category::Ty::CraftingBuildingBlocks,
@@ -2042,7 +2065,7 @@ fn food_and_sword_blocking() {
 			seconds_to_eat: 1.6,
 			effects: vec![a::slot_component_food_effects_items::Ty {
 				effect: a::item_potion_effect::Ty {
-					id: id("1.20.5", "effects", "Regeneration"),
+					id: id(Version::V1_20_5, "effects", "Regeneration"),
 					details: a::item_effect_detail::Ty {
 						amplifier: 0,
 						duration: 160,
@@ -2107,7 +2130,11 @@ fn food_and_sword_blocking() {
 			d::slot_component::Ty::Consumable(d::slot_component_consumable::Ty {
 				consume_seconds: 0.8,
 				animation: d::slot_component_consumable_animation::Ty::Eat,
-				sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
+				sound: d::item_sound_holder::Ty::Id(id(
+					Version::V1_21_4,
+					"sounds",
+					"entity.generic.eat",
+				)),
 				makes_particles: true,
 				effects: vec![d::item_consume_effect::Ty::ApplyEffects(
 					d::item_consume_effect_apply_effects::Ty {
@@ -2140,7 +2167,7 @@ fn food_and_sword_blocking() {
 	};
 	assert_eq!(f.seconds_to_eat, 0.8);
 	assert!(
-		matches!(&f.effects[..], [e] if e.probability == 0.25 && e.effect.id == id("1.20.5", "effects", "Hunger"))
+		matches!(&f.effects[..], [e] if e.probability == 0.25 && e.effect.id == id(Version::V1_20_5, "effects", "Hunger"))
 	);
 }
 
@@ -2152,7 +2179,7 @@ fn projectile_power_going_down() {
 	let spawn = C::SpawnEntity(d::play_to_client_packet_spawn_entity::Ty {
 		entity_id: 3,
 		object_uuid: 3,
-		r#type: id("1.21.4", "entities", "fireball"),
+		r#type: id(Version::V1_21_4, "entities", "fireball"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,

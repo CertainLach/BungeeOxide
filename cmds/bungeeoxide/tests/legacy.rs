@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -15,7 +16,7 @@ use minecraft_versions::gen::convert::v1_8::{
 	play_to_server_packet as play_s, status_to_client_packet as status_c,
 	status_to_server_packet as status_s,
 };
-use minecraft_versions::{index_of, Root};
+use minecraft_versions::Root;
 use rsa::pkcs8::DecodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -114,7 +115,7 @@ async fn start_proxy(target: SocketAddr) -> SocketAddr {
 		target: target.to_string(),
 		motd: "test bridge".to_owned(),
 		threshold: 32,
-		server_version: "1.8".to_owned(),
+		server_version: Version::V1_8,
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));
@@ -123,7 +124,7 @@ async fn start_proxy(target: SocketAddr) -> SocketAddr {
 
 struct Client {
 	conn: Conn,
-	version: usize,
+	version: Version,
 }
 
 fn read_string16(data: &[u8], at: usize) -> String {
@@ -141,8 +142,13 @@ fn short_bytes(data: &[u8], at: usize) -> (Vec<u8>, usize) {
 }
 
 impl Client {
-	async fn join(proxy: SocketAddr, version: &str, protocol: i32, name: &str) -> Result<Client> {
-		let v = index_of(version).unwrap();
+	async fn join(
+		proxy: SocketAddr,
+		version: Version,
+		protocol: i32,
+		name: &str,
+	) -> Result<Client> {
+		let v = version;
 		let stream = TcpStream::connect(proxy).await?;
 		let mut conn = Framed::new(
 			stream,
@@ -270,8 +276,13 @@ async fn live_bridge_moves_pre_netty_clients() -> Result<()> {
 		bail!("set LIVE_BRIDGE and LIVE_TARGETS");
 	};
 	let bridge: SocketAddr = bridge.parse()?;
-	for (version, protocol) in [("1.0.1", 22), ("1.2.5", 29), ("1.4.7", 51), ("1.6.4", 78)] {
-		let name = format!("pre_{}", version.replace('.', "_"));
+	for (version, protocol) in [
+		(Version::V1_0_1, 22),
+		(Version::V1_2_5, 29),
+		(Version::V1_4_7, 51),
+		(Version::V1_6_4, 78),
+	] {
+		let name = format!("pre_{}", version.name().replace('.', "_"));
 		let mut client = Client::join(bridge, version, protocol, &name).await?;
 		client.live("login").await?;
 		client.say("/proxy-ping").await?;
@@ -283,7 +294,7 @@ async fn live_bridge_moves_pre_netty_clients() -> Result<()> {
 				let data = client.live(wanted).await?;
 				if wanted == "respawn" {
 					dimensions.push(match version {
-						"1.0.1" => i32::from(data[1] as i8),
+						Version::V1_0_1 => i32::from(data[1] as i8),
 						_ => i32::from_be_bytes(data[1..5].try_into()?),
 					});
 				}
@@ -296,7 +307,7 @@ async fn live_bridge_moves_pre_netty_clients() -> Result<()> {
 	Ok(())
 }
 
-async fn session(version: &str, protocol: i32) -> Result<()> {
+async fn session(version: Version, protocol: i32) -> Result<()> {
 	let a = mock_server("a", 0).await;
 	let b = mock_server("b", -1).await;
 	let proxy = start_proxy(a).await;
@@ -336,22 +347,22 @@ async fn session(version: &str, protocol: i32) -> Result<()> {
 
 #[tokio::test]
 async fn release_1_0_joins_through_the_bridge() -> Result<()> {
-	session("1.0.1", 22).await
+	session(Version::V1_0_1, 22).await
 }
 
 #[tokio::test]
 async fn release_1_2_5_joins_through_the_bridge() -> Result<()> {
-	session("1.2.5", 29).await
+	session(Version::V1_2_5, 29).await
 }
 
 #[tokio::test]
 async fn release_1_4_7_joins_with_encryption() -> Result<()> {
-	session("1.4.7", 51).await
+	session(Version::V1_4_7, 51).await
 }
 
 #[tokio::test]
 async fn release_1_6_4_joins_with_encryption() -> Result<()> {
-	session("1.6.4", 78).await
+	session(Version::V1_6_4, 78).await
 }
 
 async fn ping(proxy: SocketAddr, request: &[u8]) -> Result<String> {
@@ -414,16 +425,16 @@ async fn pre_netty_server() -> SocketAddr {
 
 #[tokio::test]
 async fn probes_tell_netty_and_pre_netty_servers_apart() -> Result<()> {
-	let modern = index_of("26.1").unwrap();
+	let modern = Version::V26_1;
 	let netty = mock_server("a", 0).await.to_string();
 	assert_eq!(
 		bungeeoxide::status::probe(&netty, modern).await?,
-		index_of("1.8").unwrap()
+		Version::V1_8
 	);
 	let old = pre_netty_server().await.to_string();
 	assert_eq!(
 		bungeeoxide::status::probe(&old, modern).await?,
-		index_of("1.6.4").unwrap()
+		Version::V1_6_4
 	);
 	assert!(bungeeoxide::status::probe("127.0.0.1:1", modern)
 		.await

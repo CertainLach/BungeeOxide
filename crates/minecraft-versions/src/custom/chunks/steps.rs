@@ -8,7 +8,7 @@ use super::packets::{
 	light_17, list_18, list_202, named_entities, named_list, Packet,
 };
 use super::tables::{settle, step_table};
-use super::{v, Virtual};
+use super::Virtual;
 use crate::custom as m;
 use crate::gen::convert::{
 	step, v1_13, v1_14, v1_17, v1_18, v1_20_2, v1_21_3, Carrier, Root, Version,
@@ -35,7 +35,7 @@ fn present(col: &mut Column) -> Vec<(usize, Vec<u32>)> {
 		.collect()
 }
 
-fn flattening(a: usize, b: usize, mut col: Column, cx: &mut Session) -> Result<Vec<Carrier>> {
+fn flattening(a: Version, b: Version, mut col: Column, cx: &mut Session) -> Result<Vec<Carrier>> {
 	settle(&mut col, a);
 	let at = m::FlatChunk {
 		x: col.x,
@@ -65,7 +65,7 @@ fn flattening(a: usize, b: usize, mut col: Column, cx: &mut Session) -> Result<V
 	Ok(out)
 }
 
-fn village_up(a: usize, b: usize, mut col: Column, cx: &mut Session) -> Result<Vec<Carrier>> {
+fn village_up(a: Version, b: Version, mut col: Column, cx: &mut Session) -> Result<Vec<Carrier>> {
 	settle(&mut col, a);
 	let sky = has_sky(&col);
 	let sections = present(&mut col)
@@ -120,7 +120,7 @@ fn village_down(col: &mut Column, cx: &mut Session) -> Result<()> {
 	Ok(())
 }
 
-fn nether_partial(a: usize, b: usize, mut col: Column) -> Result<Vec<Carrier>> {
+fn nether_partial(a: Version, b: Version, mut col: Column) -> Result<Vec<Carrier>> {
 	settle(&mut col, a);
 	let table = step_table(a, b);
 	let mut out = Vec::new();
@@ -213,15 +213,14 @@ fn each_modern(
 	Ok(())
 }
 
-fn entities(a: usize, b: usize, col: &mut Column, cx: &mut Session) -> Result<()> {
+fn entities(a: Version, b: Version, col: &mut Column, cx: &mut Session) -> Result<()> {
 	if col.entities.is_empty() {
 		return Ok(());
 	}
 	let (x, z, up) = (col.x, col.z, b > a);
-	let at = |i: usize| Version::at(i).expect("netty version");
 	match (a, b) {
-		(v::V1_9_4, v::V1_9_2) => col.entities.clear(),
-		(v::V1_15_2, v::V1_16) | (v::V1_16, v::V1_15_2) => {
+		(Version::V1_9_4, Version::V1_9_2) => col.entities.clear(),
+		(Version::V1_15_2, Version::V1_16) | (Version::V1_16, Version::V1_15_2) => {
 			col.entities = named_entities(
 				named_list(&col.entities)
 					.into_iter()
@@ -229,51 +228,49 @@ fn entities(a: usize, b: usize, col: &mut Column, cx: &mut Session) -> Result<()
 					.collect(),
 			);
 		}
-		(v::V1_18, v::V1_17_1) => {
+		(Version::V1_18, Version::V1_17_1) => {
 			col.entities =
 				named_entities(m::caves_block_entities_1_17_1(x, z, list_18(&col.entities)))
 		}
-		(v::V1_19, v::V1_18_2) => {
+		(Version::V1_19, Version::V1_18_2) => {
 			col.entities = entities_18(x, z, m::caves_chunk_entities_1_18_2(list_18(&col.entities)))
 		}
-		(v::V1_19_2, v::V1_19_3) | (v::V1_19_3, v::V1_19_2) | (v::V1_19_4, v::V1_19_3) => {
-			col.entities = entities_18(
-				x,
-				z,
-				m::caves_chunk_entities(at(a), at(b), list_18(&col.entities)),
-			);
+		(Version::V1_19_2, Version::V1_19_3)
+		| (Version::V1_19_3, Version::V1_19_2)
+		| (Version::V1_19_4, Version::V1_19_3) => {
+			col.entities = entities_18(x, z, m::caves_chunk_entities(a, b, list_18(&col.entities)));
 		}
-		(v::V1_19_4, v::V1_20) | (v::V1_20, v::V1_19_4) => {
+		(Version::V1_19_4, Version::V1_20) | (Version::V1_20, Version::V1_19_4) => {
 			col.entities = entities_18(
 				x,
 				z,
 				m::trails_chunk_entities_1_20(list_18(&col.entities), up),
 			)
 		}
-		(v::V1_20, v::V1_20_2) | (v::V1_20_2, v::V1_20) => {
+		(Version::V1_20, Version::V1_20_2) | (Version::V1_20_2, Version::V1_20) => {
 			col.entities.iter_mut().for_each(|e| e.name.clear())
 		}
-		(v::V1_20_3, v::V1_20_5) | (v::V1_20_5, v::V1_20_3) => {
+		(Version::V1_20_3, Version::V1_20_5) | (Version::V1_20_5, Version::V1_20_3) => {
 			for e in col.entities.iter_mut() {
 				m::trails_chunk_entity_nbt_1_20_5(e.kind.unwrap_or(0), &mut e.nbt, up);
 			}
 		}
-		(v::V1_21_1, v::V1_21_3) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_1, Version::V1_21_3) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.kind = Some(m::tricky_block_entity_1_21_3(t, cx)?))
 		})?,
-		(v::V1_21_3, v::V1_21_1) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_3, Version::V1_21_1) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.kind = Some(m::tricky_block_entity_down_1_21_1(t, cx)?))
 		})?,
-		(v::V1_21_4, v::V1_21_5) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_4, Version::V1_21_5) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.nbt = m::late_chunk_block_entity_up_1_21_5(t, cx)?)
 		})?,
-		(v::V1_21_5, v::V1_21_4) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_5, Version::V1_21_4) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.nbt = m::late_chunk_block_entity_down_1_21_4(t, cx)?)
 		})?,
-		(v::V1_21_8, v::V1_21_9) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_8, Version::V1_21_9) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.kind = Some(m::late_chunk_block_entity_up_1_21_9(t, cx)?))
 		})?,
-		(v::V1_21_9, v::V1_21_8) => each_modern(col, cx, |e, t, cx| {
+		(Version::V1_21_9, Version::V1_21_8) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.kind = Some(m::late_chunk_block_entity_down_1_21_8(t, cx)?))
 		})?,
 		_ => {}
@@ -307,18 +304,18 @@ fn repack_heightmaps(col: &mut Column, up: bool) {
 	}
 }
 
-fn recounted(a: usize, b: usize) -> bool {
+fn recounted(a: Version, b: Version) -> bool {
 	matches!(
 		(a, b),
-		(v::V1_15_2, v::V1_16)
-			| (v::V1_16, v::V1_15_2)
-			| (v::V1_16_1, v::V1_16_2)
-			| (v::V1_16_2, v::V1_16_1)
-			| (v::V1_16_2, v::V1_17)
+		(Version::V1_15_2, Version::V1_16)
+			| (Version::V1_16, Version::V1_15_2)
+			| (Version::V1_16_1, Version::V1_16_2)
+			| (Version::V1_16_2, Version::V1_16_1)
+			| (Version::V1_16_2, Version::V1_17)
 	)
 }
 
-fn envelope(a: usize, b: usize, col: &mut Column, cx: &mut Session) {
+fn envelope(a: Version, b: Version, col: &mut Column, cx: &mut Session) {
 	if recounted(a, b) {
 		col.sections
 			.iter_mut()
@@ -326,47 +323,47 @@ fn envelope(a: usize, b: usize, col: &mut Column, cx: &mut Session) {
 			.for_each(|s| s.count = None);
 	}
 	match (a, b) {
-		(v::V1_14_4, v::V1_15) => {
+		(Version::V1_14_4, Version::V1_15) => {
 			if let Biomes::Flat(old) = &col.biomes {
 				if old.len() == 256 {
 					col.biomes = Biomes::Cells(m::village_biomes_1_15(old));
 				}
 			}
 		}
-		(v::V1_15, v::V1_14_4) => {
+		(Version::V1_15, Version::V1_14_4) => {
 			if let Biomes::Cells(cells) = &col.biomes {
 				if cells.len() == 1024 {
 					col.biomes = Biomes::Flat(m::village_biomes_1_14_4(cells));
 				}
 			}
 		}
-		(v::V1_15_2, v::V1_16) => {
+		(Version::V1_15_2, Version::V1_16) => {
 			repack_heightmaps(col, true);
 			if let Some(l) = &mut col.light {
 				l.trust = true;
 			}
 		}
-		(v::V1_16, v::V1_15_2) => repack_heightmaps(col, false),
-		(v::V1_16_2, v::V1_16_1) => {
+		(Version::V1_16, Version::V1_15_2) => repack_heightmaps(col, false),
+		(Version::V1_16_2, Version::V1_16_1) => {
 			if let Biomes::Cells(cells) = &mut col.biomes {
 				*cells = m::nether_biomes_1_16_1(cx, std::mem::take(cells));
 			}
 		}
-		(v::V1_18, v::V1_17_1) => {
+		(Version::V1_18, Version::V1_17_1) => {
 			for s in col.sections.iter_mut() {
 				if s.as_ref().is_some_and(|s| s.count == Some(0)) {
 					*s = None;
 				}
 			}
 		}
-		(v::V1_20, v::V1_19_4) => {
+		(Version::V1_20, Version::V1_19_4) => {
 			if let Some(l) = &mut col.light {
 				l.trust = true;
 			}
 		}
-		(v::V1_21_4, v::V1_21_5) => rename_heightmaps(col, true),
-		(v::V1_21_5, v::V1_21_4) => rename_heightmaps(col, false),
-		(v::V1_9, v::V1_8) => {
+		(Version::V1_21_4, Version::V1_21_5) => rename_heightmaps(col, true),
+		(Version::V1_21_5, Version::V1_21_4) => rename_heightmaps(col, false),
+		(Version::V1_9, Version::V1_8) => {
 			if col.full && col.sections.iter().take(16).all(Option::is_none) {
 				if col.sections.is_empty() {
 					col.sections.push(None);
@@ -387,17 +384,17 @@ fn envelope(a: usize, b: usize, col: &mut Column, cx: &mut Session) {
 }
 
 pub(super) fn advance(
-	a: usize,
-	b: usize,
+	a: Version,
+	b: Version,
 	mut col: Column,
 	cx: &mut Session,
 ) -> Result<Vec<Carrier>> {
 	match (a, b) {
-		(v::V1_17, v::V1_16_2) => return m::nether_column_1_16_2(col, cx),
-		(v::V1_12_2, v::V1_13) => return flattening(a, b, col, cx),
-		(v::V1_13_2, v::V1_14) => return village_up(a, b, col, cx),
-		(v::V1_16_2, v::V1_17) if !col.full => return nether_partial(a, b, col),
-		(v::V1_8, v::V1_9) if col.full && col.sections.iter().all(Option::is_none) => {
+		(Version::V1_17, Version::V1_16_2) => return m::nether_column_1_16_2(col, cx),
+		(Version::V1_12_2, Version::V1_13) => return flattening(a, b, col, cx),
+		(Version::V1_13_2, Version::V1_14) => return village_up(a, b, col, cx),
+		(Version::V1_16_2, Version::V1_17) if !col.full => return nether_partial(a, b, col),
+		(Version::V1_8, Version::V1_9) if col.full && col.sections.iter().all(Option::is_none) => {
 			return Ok(vec![wire(encode_unload(b, col.x, col.z)?)])
 		}
 		_ => {}
@@ -405,11 +402,11 @@ pub(super) fn advance(
 	let mut before = Vec::new();
 	let mut after = Vec::new();
 	match (a, b) {
-		(v::V1_14, v::V1_13_2) => village_down(&mut col, cx)?,
-		(v::V1_17_1, v::V1_18) => before = caves_up(&mut col, cx)?,
+		(Version::V1_14, Version::V1_13_2) => village_down(&mut col, cx)?,
+		(Version::V1_17_1, Version::V1_18) => before = caves_up(&mut col, cx)?,
 		_ => entities(a, b, &mut col, cx)?,
 	}
-	if (a, b) == (v::V1_21_1, v::V1_21_3) && m::tricky_resend_1_21_3(cx, col.x, col.z) {
+	if (a, b) == (Version::V1_21_1, Version::V1_21_3) && m::tricky_resend_1_21_3(cx, col.x, col.z) {
 		before.push(wire(bundle_1_21_3()?));
 		before.push(wire(encode_unload(b, col.x, col.z)?));
 		after.push(wire(bundle_1_21_3()?));
@@ -422,12 +419,12 @@ pub(super) fn advance(
 }
 
 pub(super) fn advance_bulk(
-	a: usize,
-	b: usize,
+	a: Version,
+	b: Version,
 	mut columns: Vec<Column>,
 	sky: bool,
 ) -> Result<Vec<Carrier>> {
-	if (a, b) != (v::V1_8, v::V1_9) {
+	if (a, b) != (Version::V1_8, Version::V1_9) {
 		for c in &mut columns {
 			c.at = b;
 		}

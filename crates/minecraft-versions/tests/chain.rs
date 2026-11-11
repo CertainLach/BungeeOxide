@@ -1,16 +1,13 @@
-use minecraft_versions::gen::convert::{convert, index_of, Root};
+use minecraft_versions::gen::convert::{convert, Root};
 use minecraft_versions::gen::convert::{v1_12_2, v1_8};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 use v1_12_2::{play_to_client_packet as newest, play_to_server_packet as newest_server};
 use v1_8::{
 	play_to_client_packet as oldest, play_to_client_packet_map_chunk as chunk_1_8,
 	play_to_server_packet as oldest_server,
 };
-
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
 
 fn encode_1_8(p: &oldest::Ty) -> Vec<u8> {
 	let mut o = Output::new();
@@ -21,8 +18,8 @@ fn encode_1_8(p: &oldest::Ty) -> Vec<u8> {
 fn up(p: &oldest::Ty, cx: &mut Session) -> Vec<newest::Ty> {
 	convert(
 		Root::PlayToClient,
-		at("1.8"),
-		at("1.12.2"),
+		Version::V1_8,
+		Version::V1_12_2,
 		&encode_1_8(p),
 		cx,
 	)
@@ -172,8 +169,8 @@ fn keep_alive_round_trips_through_every_step() {
 	newest_server::serialize(&newest_server::Ty::KeepAlive(1234), &mut o).unwrap();
 	let down = convert(
 		Root::PlayToServer,
-		at("1.12.2"),
-		at("1.8"),
+		Version::V1_12_2,
+		Version::V1_8,
 		&o.into_inner(),
 		&mut cx,
 	)

@@ -29,7 +29,7 @@ fn airs() -> &'static [u32] {
 
 impl Dialect for Modern {
 	type Painting = Painting;
-	const AT: usize = OLD as usize;
+	const AT: Version = OLD;
 
 	fn air() -> u32 {
 		airs().first().copied().unwrap_or(0)
@@ -68,7 +68,7 @@ impl Dialect for Modern {
 
 pub(super) fn window_for(cx: &Session) -> i32 {
 	match cx.client_version() {
-		Some(c) if c <= Version::V1_1 as usize => 128,
+		Some(c) if c <= Version::V1_1 => 128,
 		_ => 256,
 	}
 }
@@ -215,7 +215,7 @@ pub(super) fn wire_chunk(
 ) -> Result<Vec<Out>> {
 	let mut o = Output::new();
 	v1_17::play_to_client_packet::serialize(&New::MapChunk(p), &mut o).map_err(encoding)?;
-	let Some(Packet::Chunk(col)) = decode(NEW as usize, &o.into_inner())? else {
+	let Some(Packet::Chunk(col)) = decode(NEW, &o.into_inner())? else {
 		return unconvertible("1.17 map_chunk does not decode");
 	};
 	match t.column(remapped(col)) {
@@ -230,7 +230,7 @@ pub(super) fn wire_light(
 ) -> Result<v1_16_2::play_to_client_packet_update_light::Ty> {
 	let mut o = Output::new();
 	v1_17::play_to_client_packet::serialize(&New::UpdateLight(v), &mut o).map_err(encoding)?;
-	let Some(Packet::Light(x, z, light)) = decode(NEW as usize, &o.into_inner())? else {
+	let Some(Packet::Light(x, z, light)) = decode(NEW, &o.into_inner())? else {
 		return unconvertible("1.17 update_light does not decode");
 	};
 	let shown = t.light(x, z, &light);

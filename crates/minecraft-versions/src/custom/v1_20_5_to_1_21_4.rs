@@ -491,7 +491,7 @@ fn carry<A, B, T>(
 ) -> Result<T> {
 	let mut out = Output::new();
 	ser(packet, &mut out).map_err(encoding)?;
-	for bytes in crate::gen::convert::step(root, from.index(), to.index(), &out.into_inner(), cx)? {
+	for bytes in crate::gen::convert::step(root, from, to, &out.into_inner(), cx)? {
 		if let Some(v) = pick(de(&mut Input::new(&bytes)).map_err(encoding)?) {
 			return Ok(v);
 		}
@@ -508,7 +508,7 @@ fn send<A>(
 ) -> Result<()> {
 	let mut out = Output::new();
 	ser(packet, &mut out).map_err(encoding)?;
-	cx.send(root, version.index(), out.into_inner());
+	cx.send(root, version, out.into_inner());
 	Ok(())
 }
 

@@ -1,6 +1,4 @@
-use minecraft_versions::gen::convert::{
-	convert, index_of, packet_name, v1_12_2, v1_8, Root, Version,
-};
+use minecraft_versions::gen::convert::{convert, packet_name, v1_12_2, v1_8, Root, Version};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::registry;
 use minecraft_versions::Session;
@@ -37,8 +35,8 @@ fn numeric_sounds_reach_1_8_by_name() {
 	let data = encode(&p, v1_12_2::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
-		index_of("1.12.2").unwrap(),
-		index_of("1.8").unwrap(),
+		Version::V1_12_2,
+		Version::V1_8,
 		&data,
 		&mut Session::new(),
 	)
@@ -73,8 +71,8 @@ fn sounds_without_a_1_8_equivalent_are_dropped() {
 	let data = encode(&p, v1_12_2::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
-		index_of("1.12.2").unwrap(),
-		index_of("1.8").unwrap(),
+		Version::V1_12_2,
+		Version::V1_8,
 		&data,
 		&mut Session::new(),
 	)
@@ -95,10 +93,10 @@ fn legacy_sound_names_reach_26_1() {
 		},
 	);
 	let data = encode(&p, v1_8::play_to_client_packet::serialize);
-	let to = index_of("26.1").unwrap();
+	let to = Version::V26_1;
 	let out = convert(
 		Root::PlayToClient,
-		index_of("1.8").unwrap(),
+		Version::V1_8,
 		to,
 		&data,
 		&mut Session::new(),

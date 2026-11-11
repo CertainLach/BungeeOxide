@@ -1,9 +1,9 @@
 use minecraft_versions::gen::convert::{
-	convert, index_of, v1_0_1, v1_12_2, v1_16, v1_21_11, v1_5_2, v1_8, v26_1 as z, Root, VERSIONS,
+	convert, v1_0_1, v1_12_2, v1_16, v1_21_11, v1_5_2, v1_8, v26_1 as z, Root,
 };
 use minecraft_versions::languages::{self, pieces, Languages, Piece};
 use minecraft_versions::pds::{Input, Output};
-use minecraft_versions::{registry, Session};
+use minecraft_versions::{registry, version_range, Session, Version};
 use nbt::{Entry, List, ListItems, Payload, Tag};
 use serde_json::{json, Value};
 
@@ -18,14 +18,10 @@ const NEW: &[(&str, &str)] = &[
 	("multiplayer.disconnect.kicked", "Kicked by an operator"),
 ];
 
-fn at(v: &str) -> usize {
-	index_of(v).unwrap()
-}
-
 fn setup() {
-	let folder = |v: &str| match at(v) {
-		i if i >= at("1.20.5") => "new",
-		i if i >= at("1.13") => "mid",
+	let folder = |v: Version| match v {
+		version_range!(V1_20_5..) => "new",
+		version_range!(V1_13..) => "mid",
 		_ => "old",
 	};
 	let strings = |sets: &[&[(&str, &str)]]| -> Vec<(String, String)> {
@@ -34,10 +30,9 @@ fn setup() {
 			.map(|(k, v)| (k.to_string(), v.to_string()))
 			.collect()
 	};
-	let index = VERSIONS
+	let index = Version::span(Version::V1_7..)
 		.iter()
-		.filter(|v| at(v) >= at("1.7"))
-		.map(|v| (*v, folder(v)));
+		.map(|&v| (v, folder(v)));
 	let maps = [
 		("old", strings(&[OLD])),
 		("mid", strings(&[OLD, MID])),
@@ -61,14 +56,14 @@ fn decode<T>(b: &[u8], de: fn(&mut Input) -> minecraft_versions::pds::Result<T>)
 
 fn down<T>(
 	p: &z::play_to_client_packet::Ty,
-	to: &str,
+	to: Version,
 	de: fn(&mut Input) -> minecraft_versions::pds::Result<T>,
 ) -> Vec<T> {
 	let bytes = encode(p, z::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
-		at("26.1"),
-		at(to),
+		Version::V26_1,
+		to,
 		&bytes,
 		&mut Session::new(),
 	)
@@ -172,10 +167,10 @@ fn system_chat(content: Value) -> z::play_to_client_packet::Ty {
 fn nested_translations_reach_netty_clients() {
 	setup();
 	for (version, json) in [
-		("1.12.2", {
+		(Version::V1_12_2, {
 			let out = down(
 				&system_chat(death()),
-				"1.12.2",
+				Version::V1_12_2,
 				v1_12_2::play_to_client_packet::deserialize,
 			);
 			let [v1_12_2::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
@@ -183,10 +178,10 @@ fn nested_translations_reach_netty_clients() {
 			};
 			c.message.clone()
 		}),
-		("1.8", {
+		(Version::V1_8, {
 			let out = down(
 				&system_chat(death()),
-				"1.8",
+				Version::V1_8,
 				v1_8::play_to_client_packet::deserialize,
 			);
 			let [v1_8::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
@@ -213,7 +208,7 @@ fn known_translations_stay_for_new_clients() {
 	setup();
 	let out = down(
 		&system_chat(death()),
-		"1.21.11",
+		Version::V1_21_11,
 		v1_21_11::play_to_client_packet::deserialize,
 	);
 	let [v1_21_11::play_to_client_packet::Ty::SystemChat(c)] = out.as_slice() else {
@@ -222,7 +217,7 @@ fn known_translations_stay_for_new_clients() {
 	assert_eq!(c.content, text(death()));
 	let out = down(
 		&system_chat(death()),
-		"1.16",
+		Version::V1_16,
 		v1_16::play_to_client_packet::deserialize,
 	);
 	let [v1_16::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
@@ -243,7 +238,7 @@ fn pre_netty_clients_read_rendered_text() {
 	let expected = "\u{a7}cSteve\u{a7}6 was killed <a> Killed b";
 	let out = down(
 		&system_chat(death()),
-		"1.5.2",
+		Version::V1_5_2,
 		v1_5_2::play_to_client_packet::deserialize,
 	);
 	assert!(
@@ -252,7 +247,7 @@ fn pre_netty_clients_read_rendered_text() {
 	);
 	let out = down(
 		&system_chat(death()),
-		"1.0.1",
+		Version::V1_0_1,
 		v1_0_1::play_to_client_packet::deserialize,
 	);
 	assert!(
@@ -267,7 +262,11 @@ fn kicks_and_titles_are_readable() {
 	let kick = z::play_to_client_packet::Ty::KickDisconnect(text(
 		json!({"translate": "multiplayer.disconnect.kicked"}),
 	));
-	let out = down(&kick, "1.8", v1_8::play_to_client_packet::deserialize);
+	let out = down(
+		&kick,
+		Version::V1_8,
+		v1_8::play_to_client_packet::deserialize,
+	);
 	let [v1_8::play_to_client_packet::Ty::KickDisconnect(reason)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
@@ -275,7 +274,11 @@ fn kicks_and_titles_are_readable() {
 		render(&serde_json::from_str(reason).unwrap(), &[OLD]),
 		"Kicked by an operator"
 	);
-	let out = down(&kick, "1.5.2", v1_5_2::play_to_client_packet::deserialize);
+	let out = down(
+		&kick,
+		Version::V1_5_2,
+		v1_5_2::play_to_client_packet::deserialize,
+	);
 	assert!(
 		matches!(out.as_slice(), [v1_5_2::play_to_client_packet::Ty::KickDisconnect(r)] if r == "Kicked by an operator"),
 		"{out:?}"
@@ -284,9 +287,9 @@ fn kicks_and_titles_are_readable() {
 	let title = z::play_to_client_packet::Ty::SetTitleText(text(
 		json!({"translate": "death.attack.genericKill", "with": ["Alex"]}),
 	));
-	for version in ["1.12.2", "1.8"] {
+	for version in [Version::V1_12_2, Version::V1_8] {
 		let titles: Vec<String> = match version {
-			"1.12.2" => down(&title, version, v1_12_2::play_to_client_packet::deserialize)
+			Version::V1_12_2 => down(&title, version, v1_12_2::play_to_client_packet::deserialize)
 				.into_iter()
 				.filter_map(|p| match p {
 					v1_12_2::play_to_client_packet::Ty::Title(
@@ -317,7 +320,7 @@ fn kicks_and_titles_are_readable() {
 }
 
 fn sword(name: Value) -> z::play_to_client_packet::Ty {
-	let id = registry::names("26.1", "items")
+	let id = registry::names(Version::V26_1, "items")
 		.unwrap()
 		.id("diamond_sword")
 		.unwrap() as i32;
@@ -354,8 +357,8 @@ fn item_names_follow_the_client_language() {
 	let bytes = encode(&p, z::play_to_client_packet::serialize);
 	let to_1_16 = convert(
 		Root::PlayToClient,
-		at("26.1"),
-		at("1.16"),
+		Version::V26_1,
+		Version::V1_16,
 		&bytes,
 		&mut Session::new(),
 	)
@@ -366,8 +369,8 @@ fn item_names_follow_the_client_language() {
 	assert!(contains(item, "commands.kill.success.single"), "{item:?}");
 	let to_1_12_2 = convert(
 		Root::PlayToClient,
-		at("26.1"),
-		at("1.12.2"),
+		Version::V26_1,
+		Version::V1_12_2,
 		&bytes,
 		&mut Session::new(),
 	)

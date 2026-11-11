@@ -1,7 +1,8 @@
 use super::chunk::{self, Old, Shape};
 use super::heights;
-use super::ids::{self, V};
+use super::ids;
 use super::{entities, item_id, legacy_slot, old_meta_item, Kind, OldMetaItem};
+use crate::gen::convert::Version;
 use crate::gen::convert::{v1_0_1, v1_1, v1_2_3};
 use crate::pds::convert::Result;
 use crate::session::Session;
@@ -27,7 +28,7 @@ macro_rules! legacy_items {
 			cx: &mut Session,
 		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
 			p.current_item = item_id(p.current_item, $to);
-			if $to == V::R1_1 {
+			if $to == Version::V1_1 {
 				heights::spawned(
 					cx,
 					p.entity_id,
@@ -43,7 +44,7 @@ macro_rules! legacy_items {
 			cx: &mut Session,
 		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
 			(p.item.id, p.item.item_damage) = ids::item(p.item.id, p.item.item_damage, $to);
-			if $to == V::R1_1 {
+			if $to == Version::V1_1 {
 				heights::spawned(cx, p.entity_id, (p.x, &mut p.y, p.z), None);
 			}
 			Ok(vec![$m::play_to_client_packet::Ty::SpawnEntityItem(p)])
@@ -104,7 +105,7 @@ macro_rules! legacy_windows {
 }
 
 legacy_windows!(
-	V::R1_0,
+	Version::V1_0_1,
 	v1_0_1,
 	prenetty_set_slot_1_0_1,
 	prenetty_window_items_1_0_1,
@@ -115,7 +116,7 @@ legacy_windows!(
 );
 
 legacy_windows!(
-	V::R1_1,
+	Version::V1_1,
 	v1_1,
 	prenetty_set_slot_1_1,
 	prenetty_window_items_1_1,
@@ -126,7 +127,7 @@ legacy_windows!(
 );
 
 legacy_windows!(
-	V::R1_2_3,
+	Version::V1_2_3,
 	v1_2_3,
 	prenetty_set_slot_1_2_3,
 	prenetty_window_items_1_2_3,
@@ -137,7 +138,7 @@ legacy_windows!(
 );
 
 legacy_items!(
-	V::R1_0,
+	Version::V1_0_1,
 	v1_0_1,
 	prenetty_metadata_item_1_0_1,
 	prenetty_entity_equipment_1_0_1,
@@ -146,7 +147,7 @@ legacy_items!(
 );
 
 legacy_items!(
-	V::R1_1,
+	Version::V1_1,
 	v1_1,
 	prenetty_metadata_item_1_1,
 	prenetty_entity_equipment_1_1,
@@ -155,7 +156,7 @@ legacy_items!(
 );
 
 legacy_items!(
-	V::R1_2_3,
+	Version::V1_2_3,
 	v1_2_3,
 	prenetty_metadata_item_1_2_3,
 	prenetty_entity_equipment_1_2_3,
@@ -254,9 +255,9 @@ pub fn prenetty_map_chunk_1_1(
 		shape.sky = false;
 	}
 	let olds = if p.ground_up {
-		vec![chunk::old_full(p.x, p.z, &raw, shape, V::R1_1)?]
+		vec![chunk::old_full(p.x, p.z, &raw, shape, Version::V1_1)?]
 	} else {
-		chunk::old_sections(p.x, p.z, &raw, shape, V::R1_1)?
+		chunk::old_sections(p.x, p.z, &raw, shape, Version::V1_1)?
 	};
 	Ok(olds
 		.into_iter()
@@ -298,7 +299,7 @@ pub fn prenetty_multi_block_change_1_1(
 	let mut block_ids = Vec::new();
 	let mut metadata = Vec::new();
 	for r in p.records.iter().filter(|r| r.y < 128) {
-		let (id, meta) = ids::block(r.block_id >> 4, (r.block_id & 15) as u8, V::R1_1);
+		let (id, meta) = ids::block(r.block_id >> 4, (r.block_id & 15) as u8, Version::V1_1);
 		coordinates.push(
 			v1_1::play_to_client_packet_multi_block_change_coordinates_items::Ty {
 				x: r.horizontal_pos >> 4,
@@ -333,7 +334,7 @@ pub fn prenetty_block_change_1_1(
 	if p.location.y >= 128 {
 		return Ok(vec![]);
 	}
-	let (id, meta) = ids::block(p.r#type as u16, p.metadata, V::R1_1);
+	let (id, meta) = ids::block(p.r#type as u16, p.metadata, Version::V1_1);
 	p.r#type = id as u8;
 	p.metadata = meta;
 	Ok(vec![Client11::BlockChange(p)])
@@ -343,12 +344,12 @@ pub fn prenetty_spawn_entity_living_1_1(
 	mut p: v1_2_3::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	match entities::mob_stand_in(p.r#type, V::R1_1) {
+	match entities::mob_stand_in(p.r#type, Version::V1_1) {
 		Some(with) => {
 			entities::stand_in(cx, p.entity_id, Kind::Mob(with));
 			p.r#type = with;
 		}
-		None if ids::mob_exists(p.r#type, V::R1_1) => {
+		None if ids::mob_exists(p.r#type, Version::V1_1) => {
 			entities::track(cx, p.entity_id, Kind::Mob(p.r#type))
 		}
 		None => return Ok(vec![]),
@@ -378,12 +379,12 @@ pub fn prenetty_spawn_entity_1_1(
 	mut p: v1_2_3::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	match entities::object_stand_in(p.r#type, V::R1_1) {
+	match entities::object_stand_in(p.r#type, Version::V1_1) {
 		Some(with) => {
 			entities::stand_in(cx, p.entity_id, Kind::Object(with, 0));
 			p.r#type = with;
 		}
-		None if ids::object_exists(p.r#type, V::R1_1) => {}
+		None if ids::object_exists(p.r#type, Version::V1_1) => {}
 		None => return Ok(vec![]),
 	}
 	heights::spawned(cx, p.entity_id, (p.x, &mut p.y, p.z), None);

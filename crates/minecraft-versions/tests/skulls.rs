@@ -1,6 +1,7 @@
-use minecraft_versions::gen::convert::{convert, index_of, v1_15_2, v1_16, Root};
+use minecraft_versions::gen::convert::{convert, v1_15_2, v1_16, Root};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 use nbt::{Entry, Payload};
 
 fn owner_id<'a>(root: &'a Entry, key: &str) -> &'a Entry {
@@ -42,7 +43,7 @@ fn skull_owner_ids_keep_matching_nbt_types() {
 	);
 	let mut out = Output::new();
 	v1_15_2::play_to_client_packet::serialize(&p, &mut out).unwrap();
-	let (old, new) = (index_of("1.15.2").unwrap(), index_of("1.16").unwrap());
+	let (old, new) = (Version::V1_15_2, Version::V1_16);
 	let mut cx = Session::new();
 	let up = convert(Root::PlayToClient, old, new, &out.into_inner(), &mut cx).unwrap();
 	let v1_16::play_to_client_packet::Ty::TileEntityData(t) =

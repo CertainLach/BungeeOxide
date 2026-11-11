@@ -4,7 +4,8 @@ use std::ops::Range;
 use minecraft_versions::gen::play::to_client::packet as owned;
 use minecraft_versions::gen::view::play::to_client::packet as view;
 use minecraft_versions::pds::{Input, Output};
-use minecraft_versions::{convert, index_of, Root, Session};
+use minecraft_versions::Version;
+use minecraft_versions::{convert, Root, Session};
 use nbt::gen::view::{list_0 as items, payload};
 
 fn borrowed_strings(p: &payload::Ty, within: &Range<*const u8>) -> usize {
@@ -52,7 +53,7 @@ fn capture() -> Vec<Vec<u8>> {
 
 #[test]
 fn latest_views_match_owned_packets() {
-	let (from, to) = (index_of("1.8").unwrap(), index_of("26.1").unwrap());
+	let (from, to) = (Version::V1_8, Version::V26_1);
 	let mut cx = Session::new();
 	let mut checked = 0;
 	let mut chunks = 0;

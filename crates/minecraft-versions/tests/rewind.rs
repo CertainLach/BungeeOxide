@@ -14,8 +14,8 @@ fn down(p: C12, cx: &mut Session) -> Vec<C8> {
 	v1_12_2::play_to_client_packet::serialize(&p, &mut o).unwrap();
 	convert(
 		Root::PlayToClient,
-		Version::V1_12_2.index(),
-		Version::V1_8.index(),
+		Version::V1_12_2,
+		Version::V1_8,
 		&o.into_inner(),
 		cx,
 	)
@@ -35,8 +35,8 @@ fn up(p: S8, cx: &mut Session) -> Vec<S12> {
 	v1_8::play_to_server_packet::serialize(&p, &mut o).unwrap();
 	convert(
 		Root::PlayToServer,
-		Version::V1_8.index(),
-		Version::V1_12_2.index(),
+		Version::V1_8,
+		Version::V1_12_2,
 		&o.into_inner(),
 		cx,
 	)

@@ -1,9 +1,10 @@
 use super::chunk::{self, Shape};
-use super::ids::{self, V};
+use super::ids;
 use super::{
 	entities, falling_block, item_id, mid_meta_item, old_meta_item, slot, state, world_event_data,
 	Kind, MidMetaItem, OldMetaItem, Pending, Slot,
 };
+use crate::gen::convert::Version;
 use crate::gen::convert::{v1_3_2, v1_4_2, v1_4_5, v1_4_7, v1_5_1};
 use crate::pds::convert::Result;
 use crate::session::Session;
@@ -16,12 +17,12 @@ macro_rules! slot_down {
 	};
 }
 
-slot_down!(prenetty_slot_down_1_3_2, V::R1_3);
-slot_down!(prenetty_slot_down_1_4_2, V::R1_4_2);
-slot_down!(prenetty_slot_down_1_4_5, V::R1_4_5);
-slot_down!(prenetty_slot_down_1_4_7, V::R1_4_7);
-slot_down!(prenetty_slot_down_1_5_2, V::R1_5);
-slot_down!(prenetty_slot_down_1_6_4, V::R1_6_4);
+slot_down!(prenetty_slot_down_1_3_2, Version::V1_3_2);
+slot_down!(prenetty_slot_down_1_4_2, Version::V1_4_2);
+slot_down!(prenetty_slot_down_1_4_5, Version::V1_4_5);
+slot_down!(prenetty_slot_down_1_4_7, Version::V1_4_7);
+slot_down!(prenetty_slot_down_1_5_2, Version::V1_5_2);
+slot_down!(prenetty_slot_down_1_6_4, Version::V1_6_4);
 
 macro_rules! blocks {
 	($to:expr, $m:ident, $block_change:ident, $multi:ident, $map_chunk:ident, $world_event:ident) => {
@@ -88,7 +89,7 @@ pub(super) fn remap_single(
 	bitmap: u16,
 	add: u16,
 	ground_up: bool,
-	to: V,
+	to: Version,
 ) -> Result<Vec<u8>> {
 	if !ids::block_changes(to) || bitmap == 0 {
 		return Ok(data.to_vec());
@@ -111,7 +112,7 @@ pub(super) fn remap_bulk(
 	data: &[u8],
 	columns: &[(i32, i32, u16, u16)],
 	sky: bool,
-	to: V,
+	to: Version,
 ) -> Result<Vec<u8>> {
 	if !ids::block_changes(to) {
 		return Ok(data.to_vec());
@@ -135,7 +136,7 @@ pub(super) fn remap_bulk(
 }
 
 blocks!(
-	V::R1_3,
+	Version::V1_3_2,
 	v1_3_2,
 	prenetty_block_change_1_3_2_down,
 	prenetty_multi_block_change_1_3_2_down,
@@ -181,7 +182,7 @@ pub fn prenetty_named_entity_spawn_1_3_2_down(
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			current_item: item_id(p.current_item, V::R1_3),
+			current_item: item_id(p.current_item, Version::V1_3_2),
 			metadata: meta_1_3_2(p.metadata),
 		},
 	)])
@@ -191,12 +192,12 @@ pub fn prenetty_spawn_entity_living_1_3_2_down(
 	p: v1_4_2::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<v1_3_2::play_to_client_packet::Ty>> {
-	let ty = match entities::mob_stand_in(p.r#type, V::R1_3) {
+	let ty = match entities::mob_stand_in(p.r#type, Version::V1_3_2) {
 		Some(with) => {
 			entities::stand_in(cx, p.entity_id, Kind::Mob(with));
 			with
 		}
-		None if ids::mob_exists(p.r#type, V::R1_3) => {
+		None if ids::mob_exists(p.r#type, Version::V1_3_2) => {
 			entities::track(cx, p.entity_id, Kind::Mob(p.r#type));
 			p.r#type
 		}
@@ -204,7 +205,7 @@ pub fn prenetty_spawn_entity_living_1_3_2_down(
 	};
 	let metadata = meta_1_3_2(p.metadata)
 		.into_iter()
-		.filter(|e| entities::keeps(cx, p.entity_id, e.anon.key, e.anon.r#type, V::R1_3))
+		.filter(|e| entities::keeps(cx, p.entity_id, e.anon.key, e.anon.r#type, Version::V1_3_2))
 		.collect();
 	Ok(vec![v1_3_2::play_to_client_packet::Ty::SpawnEntityLiving(
 		v1_3_2::play_to_client_packet_spawn_entity_living::Ty {
@@ -221,10 +222,14 @@ pub fn prenetty_spawn_entity_living_1_3_2_down(
 		},
 	)])
 }
-named!(prenetty_named_entity_spawn_1_4_7_down, v1_4_7, V::R1_4_7);
+named!(
+	prenetty_named_entity_spawn_1_4_7_down,
+	v1_4_7,
+	Version::V1_4_7
+);
 
 blocks!(
-	V::R1_4_7,
+	Version::V1_4_7,
 	v1_4_7,
 	prenetty_block_change_1_4_7_down,
 	prenetty_multi_block_change_1_4_7_down,
@@ -245,7 +250,7 @@ pub fn prenetty_named_entity_spawn_1_4_2_down(
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			current_item: item_id(p.current_item, V::R1_4_2),
+			current_item: item_id(p.current_item, Version::V1_4_2),
 			metadata: meta_1_4_2(p.metadata),
 		},
 	)])
@@ -255,7 +260,7 @@ pub fn prenetty_named_entity_spawn_1_4_5_down(
 	mut p: v1_4_7::play_to_client_packet_named_entity_spawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<v1_4_5::play_to_client_packet::Ty>> {
-	p.current_item = item_id(p.current_item, V::R1_4_5);
+	p.current_item = item_id(p.current_item, Version::V1_4_5);
 	Ok(vec![v1_4_5::play_to_client_packet::Ty::NamedEntitySpawn(p)])
 }
 
@@ -268,7 +273,8 @@ pub fn prenetty_map_chunk_bulk_1_3_2_down(
 		.iter()
 		.map(|m| (m.x, m.z, m.bit_map, m.add_bit_map))
 		.collect();
-	p.compressed_chunk_data = remap_bulk(&p.compressed_chunk_data, &columns, true, V::R1_3)?;
+	p.compressed_chunk_data =
+		remap_bulk(&p.compressed_chunk_data, &columns, true, Version::V1_3_2)?;
 	Ok(vec![v1_3_2::play_to_client_packet::Ty::MapChunkBulk(p)])
 }
 
@@ -285,7 +291,7 @@ pub fn prenetty_map_chunk_bulk_1_4_7_down(
 		&p.compressed_chunk_data,
 		&columns,
 		p.sky_light_sent,
-		V::R1_4_7,
+		Version::V1_4_7,
 	)?;
 	Ok(vec![v1_4_7::play_to_client_packet::Ty::MapChunkBulk(p)])
 }
@@ -298,12 +304,12 @@ pub fn prenetty_spawn_entity_1_3_2_down(
 		v1_4_2::play_to_client_packet_spawn_entity_object_data::Ty::Default(d, _) => *d,
 		_ => 0,
 	};
-	match entities::object_stand_in(p.r#type, V::R1_3) {
+	match entities::object_stand_in(p.r#type, Version::V1_3_2) {
 		Some(with) => {
 			entities::stand_in(cx, p.entity_id, Kind::Object(with, data));
 			p.r#type = with;
 		}
-		None if ids::object_exists(p.r#type, V::R1_3) => {
+		None if ids::object_exists(p.r#type, Version::V1_3_2) => {
 			entities::track(cx, p.entity_id, Kind::Object(p.r#type, data))
 		}
 		None => return Ok(vec![]),
@@ -313,7 +319,7 @@ pub fn prenetty_spawn_entity_1_3_2_down(
 			p.object_data
 		{
 			p.object_data = v1_4_2::play_to_client_packet_spawn_entity_object_data::Ty::Default(
-				falling_block(data, V::R1_3, false),
+				falling_block(data, Version::V1_3_2, false),
 				v,
 			);
 		}
@@ -352,7 +358,7 @@ pub fn prenetty_metadata_item_1_3_2(v: MidMetaItem, _cx: &mut Session) -> Result
 
 fn meta_item_1_3_2(v: MidMetaItem) -> OldMetaItem {
 	use v1_4_2::entity_metadata_item_v5 as Item;
-	let v = mid_meta_item(v, V::R1_3);
+	let v = mid_meta_item(v, Version::V1_3_2);
 	match v {
 		MidMetaItem::V0(x) => OldMetaItem::V0(x),
 		MidMetaItem::V1(x) => OldMetaItem::V1(x),
@@ -420,7 +426,7 @@ fn meta_item_1_4_2(v: NewMetaItem) -> MidMetaItem {
 		NewMetaItem::V2(x) => MidMetaItem::V2(x),
 		NewMetaItem::V3(x) => MidMetaItem::V3(x),
 		NewMetaItem::V4(x) => MidMetaItem::V4(x),
-		NewMetaItem::V5(s) => match slot(s, V::R1_4_2) {
+		NewMetaItem::V5(s) => match slot(s, Version::V1_4_2) {
 			Slot::Default(id, item) => MidMetaItem::V5(Item::Ty::Default(
 				id,
 				v1_4_2::entity_metadata_item_v5_default::Ty {
@@ -440,7 +446,7 @@ fn meta_item_1_4_2(v: NewMetaItem) -> MidMetaItem {
 }
 
 pub fn prenetty_old_metadata_item_1_3_2(v: OldMetaItem, _cx: &mut Session) -> Result<OldMetaItem> {
-	Ok(old_meta_item(v, V::R1_3))
+	Ok(old_meta_item(v, Version::V1_3_2))
 }
 
 pub fn prenetty_spawn_entity_item_1_4_2(
@@ -477,7 +483,7 @@ pub fn prenetty_spawn_entity_item_1_3_2(
 	p: v1_4_2::play_to_client_packet_spawn_entity_item::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<v1_3_2::play_to_client_packet::Ty>> {
-	let (id, count, damage) = match slot(p.item, V::R1_3) {
+	let (id, count, damage) = match slot(p.item, Version::V1_3_2) {
 		Slot::Default(id, item) => (id, item.item_count, item.item_damage),
 		_ => (-1, 0, 0),
 	};
@@ -507,7 +513,7 @@ pub fn prenetty_world_event_1_3_2(
 		v1_3_2::play_to_client_packet_world_event::Ty {
 			effect_id: p.effect_id,
 			location: p.location,
-			data: world_event_data(p.effect_id, p.data, V::R1_3),
+			data: world_event_data(p.effect_id, p.data, Version::V1_3_2),
 		},
 	)])
 }
@@ -674,7 +680,7 @@ pub fn prenetty_spawn_entity_1_4_5(
 	p: v1_4_7::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<v1_4_5::play_to_client_packet::Ty>> {
-	if !ids::object_exists(p.r#type, V::R1_4_5) {
+	if !ids::object_exists(p.r#type, Version::V1_4_5) {
 		return Ok(vec![]);
 	}
 	if p.r#type == 2 {
@@ -739,7 +745,7 @@ pub fn prenetty_entity_metadata_1_4_5(
 			out.push(v1_4_5::play_to_client_packet::Ty::SpawnEntityItem(
 				v1_4_5::play_to_client_packet_spawn_entity_item::Ty {
 					entity_id: p.entity_id,
-					item: slot(item, V::R1_4_5),
+					item: slot(item, Version::V1_4_5),
 					x: pending.x,
 					y: pending.y,
 					z: pending.z,
@@ -863,10 +869,10 @@ pub fn prenetty_spawn_entity_1_4_7(
 		p.object_data = Data::V0;
 	} else if p.r#type == 70 {
 		if let Data::Default(data, v) = p.object_data {
-			p.object_data = Data::Default(falling_block(data, V::R1_4_7, true), v);
+			p.object_data = Data::Default(falling_block(data, Version::V1_4_7, true), v);
 		}
 	}
-	if !ids::object_exists(p.r#type, V::R1_4_7) {
+	if !ids::object_exists(p.r#type, Version::V1_4_7) {
 		return Ok(vec![]);
 	}
 	Ok(vec![v1_4_7::play_to_client_packet::Ty::SpawnEntity(p)])

@@ -1,4 +1,4 @@
-use minecraft_versions::gen::convert::{convert, index_of, Root};
+use minecraft_versions::gen::convert::{convert, Root, Version};
 use minecraft_versions::Session;
 
 fn main() -> anyhow::Result<()> {
@@ -7,8 +7,8 @@ fn main() -> anyhow::Result<()> {
 		anyhow::bail!("usage: convert_dump <dump> <from version> <to version> <output dump>");
 	};
 	let (from, to) = (
-		index_of(from).ok_or_else(|| anyhow::anyhow!("unknown version {from}"))?,
-		index_of(to).ok_or_else(|| anyhow::anyhow!("unknown version {to}"))?,
+		Version::of(from).ok_or_else(|| anyhow::anyhow!("unknown version {from}"))?,
+		Version::of(to).ok_or_else(|| anyhow::anyhow!("unknown version {to}"))?,
 	);
 	let bytes = std::fs::read(input)?;
 	let mut cx = Session::new();

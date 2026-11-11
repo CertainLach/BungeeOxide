@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -113,7 +114,7 @@ async fn start_proxy_with(target: SocketAddr) -> (SocketAddr, Arc<Config>) {
 		target: target.to_string(),
 		motd: "test bridge".to_owned(),
 		threshold: 32,
-		server_version: "1.8".to_owned(),
+		server_version: Version::V1_8,
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config.clone()));
@@ -200,7 +201,7 @@ async fn status_relays_the_backend() -> Result<()> {
 	);
 	assert_eq!(info["players"]["sample"][0]["name"], "Alex");
 	assert_eq!(info["favicon"], "data:image/png;base64,AAAABBBB");
-	let server = minecraft_versions::index_of("1.8").unwrap();
+	let server = Version::V1_8;
 	let newest = bungeeoxide::protocol_of(bungeeoxide::reach(server).1).unwrap();
 	let stranger = server_info(proxy, 9999).await?;
 	assert_eq!(stranger["version"]["protocol"], newest);

@@ -3,19 +3,19 @@ use std::sync::OnceLock;
 use super::formats::{domain, format, Format};
 use super::model::{Biomes, Column, Light, Section, BLOCKS};
 use super::packets::{decode, encode_chunk, Packet};
-use super::v;
-use crate::gen::convert::{step, Root, VERSIONS};
+use crate::gen::convert::{step, Root, Version};
 use crate::registry;
+use crate::version_range;
 use crate::Session;
 
 type Cache = OnceLock<Vec<OnceLock<Box<[u32]>>>>;
 
-fn slot(cache: &'static Cache, a: usize, b: usize) -> &'static OnceLock<Box<[u32]>> {
-	let n = VERSIONS.len();
-	&cache.get_or_init(|| (0..n * n).map(|_| OnceLock::new()).collect())[a * n + b]
+fn slot(cache: &'static Cache, a: Version, b: Version) -> &'static OnceLock<Box<[u32]>> {
+	let n = Version::ALL.len();
+	&cache.get_or_init(|| (0..n * n).map(|_| OnceLock::new()).collect())[a.index() * n + b.index()]
 }
 
-pub fn probe_column(version: usize) -> Column {
+pub fn probe_column(version: Version) -> Column {
 	let n = domain(version);
 	let mut col = Column::new(0, 0, true, version);
 	col.sections = (0..n / BLOCKS)
@@ -30,18 +30,18 @@ pub fn probe_column(version: usize) -> Column {
 		Format::Legacy7 | Format::Raw8 | Format::Pal9 | Format::Flat13 => {
 			Biomes::Flat(vec![0; 256])
 		}
-		_ if version < v::V1_15 => Biomes::Flat(vec![0; 256]),
+		_ if version < Version::V1_15 => Biomes::Flat(vec![0; 256]),
 		_ => Biomes::Cells(vec![0; col.sections.len().max(16) * 64]),
 	};
 	col.light = match version {
-		v::V1_14..v::V1_18 => None,
+		version_range!(V1_14..V1_18) => None,
 		_ => Some(Light::new(col.sections.len().max(16), true)),
 	};
 	col.heightmaps = Some(Vec::new());
 	col
 }
 
-pub fn probe(a: usize, b: usize) -> Option<Vec<u32>> {
+pub fn probe(a: Version, b: Version) -> Option<Vec<u32>> {
 	let col = probe_column(a);
 	let packets = encode_chunk(a, &col).ok()?;
 	let mut cx = Session::new();
@@ -64,7 +64,7 @@ pub fn probe(a: usize, b: usize) -> Option<Vec<u32>> {
 
 fn legacy_down(state: u32) -> u32 {
 	let known = |id: u32| {
-		registry::blocks(VERSIONS[v::V1_8]).is_some_and(|b| b.list.iter().any(|x| x.id == id))
+		registry::blocks(Version::V1_8).is_some_and(|b| b.list.iter().any(|x| x.id == id))
 	};
 	let (id, meta) = (state >> 4, state & 15);
 	if known(id) {
@@ -97,19 +97,23 @@ fn legacy_down(state: u32) -> u32 {
 	id << 4 | meta
 }
 
-pub fn step_table(a: usize, b: usize) -> &'static [u32] {
+pub fn step_table(a: Version, b: Version) -> &'static [u32] {
 	static CACHE: Cache = OnceLock::new();
 	slot(&CACHE, a, b).get_or_init(|| match probe(a, b) {
 		Some(t) => t.into_boxed_slice(),
-		None if (a, b) == (v::V1_9, v::V1_8) => (0..domain(a) as u32).map(legacy_down).collect(),
+		None if (a, b) == (Version::V1_9, Version::V1_8) => {
+			(0..domain(a) as u32).map(legacy_down).collect()
+		}
 		None => (0..domain(a) as u32).collect(),
 	})
 }
 
-pub fn composed(from: usize, to: usize) -> &'static [u32] {
+pub fn composed(from: Version, to: Version) -> &'static [u32] {
 	static CACHE: Cache = OnceLock::new();
 	slot(&CACHE, from, to).get_or_init(|| {
-		let next = if to > from { from + 1 } else { from - 1 };
+		let Some(next) = (if to > from { from.next() } else { from.prev() }) else {
+			return Box::default();
+		};
 		let first = step_table(from, next);
 		if next == to {
 			return first.into();
@@ -122,7 +126,7 @@ pub fn composed(from: usize, to: usize) -> &'static [u32] {
 	})
 }
 
-pub fn settle(col: &mut Column, to: usize) {
+pub fn settle(col: &mut Column, to: Version) {
 	if col.space == to {
 		return;
 	}

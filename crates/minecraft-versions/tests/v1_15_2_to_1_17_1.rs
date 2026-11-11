@@ -1,8 +1,9 @@
-use minecraft_versions::gen::convert::{convert, index_of, Root};
+use minecraft_versions::gen::convert::{convert, Root};
 use minecraft_versions::gen::convert::{v1_15_2, v1_16, v1_16_2, v1_17, v1_17_1};
 use minecraft_versions::pds::{Input, Output, Result};
 use minecraft_versions::registry;
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 use nbt::gen::entry::Ty as Entry;
 use nbt::gen::list_0::Ty as Items;
 use nbt::gen::payload::Ty as P;
@@ -19,10 +20,6 @@ fn one<T: std::fmt::Debug>(v: Vec<T>) -> T {
 	x
 }
 
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
-
 fn enc<T>(v: &T, f: fn(&T, &mut Output) -> Result<()>) -> Vec<u8> {
 	let mut o = Output::new();
 	f(v, &mut o).unwrap();
@@ -36,14 +33,14 @@ fn dec<T>(b: &[u8], f: fn(&mut Input) -> Result<T>) -> T {
 	v
 }
 
-fn run(root: Root, from: &str, to: &str, data: &[u8], cx: &mut Session) -> Vec<Vec<u8>> {
-	convert(root, at(from), at(to), data, cx).unwrap()
+fn run(root: Root, from: Version, to: Version, data: &[u8], cx: &mut Session) -> Vec<Vec<u8>> {
+	convert(root, from, to, data, cx).unwrap()
 }
 
-fn up_15<T>(p: &C15, to: &str, cx: &mut Session, f: fn(&mut Input) -> Result<T>) -> Vec<T> {
+fn up_15<T>(p: &C15, to: Version, cx: &mut Session, f: fn(&mut Input) -> Result<T>) -> Vec<T> {
 	run(
 		Root::PlayToClient,
-		"1.15.2",
+		Version::V1_15_2,
 		to,
 		&enc(p, v1_15_2::play_to_client_packet::serialize),
 		cx,
@@ -56,8 +53,8 @@ fn up_15<T>(p: &C15, to: &str, cx: &mut Session, f: fn(&mut Input) -> Result<T>)
 fn down_17(p: &C17, cx: &mut Session) -> Vec<C162> {
 	run(
 		Root::PlayToClient,
-		"1.17",
-		"1.16.2",
+		Version::V1_17,
+		Version::V1_16_2,
 		&enc(p, v1_17::play_to_client_packet::serialize),
 		cx,
 	)
@@ -101,22 +98,22 @@ fn int(p: Option<&P>) -> i32 {
 	}
 }
 
-fn state(version: &str, text: &str) -> u32 {
+fn state(version: Version, text: &str) -> u32 {
 	registry::blocks(version)
 		.unwrap()
 		.parse_state(text)
 		.unwrap()
 }
 
-fn describe(version: &str, s: u32) -> String {
+fn describe(version: Version, s: u32) -> String {
 	registry::blocks(version).unwrap().describe(s).unwrap()
 }
 
-fn item(version: &str, name: &str) -> i32 {
+fn item(version: Version, name: &str) -> i32 {
 	registry::names(version, "items").unwrap().id(name).unwrap() as i32
 }
 
-fn entity(version: &str, name: &str) -> i32 {
+fn entity(version: Version, name: &str) -> i32 {
 	registry::names(version, "entities")
 		.unwrap()
 		.id(name)
@@ -238,7 +235,7 @@ fn read_section(d: &[u8], at: &mut usize, global_bits: usize) -> (i16, Option<Ve
 	(count, palette, states)
 }
 
-fn global_bits(version: &str) -> usize {
+fn global_bits(version: Version) -> usize {
 	let n = registry::blocks(version).unwrap().states() as usize;
 	(usize::BITS - (n - 1).leading_zeros()) as usize
 }
@@ -262,7 +259,7 @@ fn join_game_builds_codecs() {
 	let mut cx = Session::new();
 	let C16::Login(l) = one(up_15(
 		&login_15(-1),
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -287,7 +284,7 @@ fn join_game_builds_codecs() {
 
 	let C162::Login(l) = one(up_15(
 		&login_15(-1),
-		"1.16.2",
+		Version::V1_16_2,
 		&mut cx,
 		v1_16_2::play_to_client_packet::deserialize,
 	)) else {
@@ -316,7 +313,7 @@ fn join_game_builds_codecs() {
 
 	let C17::Login(l) = one(up_15(
 		&login_15(0),
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -353,7 +350,7 @@ fn respawn_reaches_every_version() {
 	});
 	let C16::Respawn(r) = one(up_15(
 		&p,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -365,7 +362,7 @@ fn respawn_reaches_every_version() {
 	);
 	let C17::Respawn(r) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -376,8 +373,8 @@ fn respawn_reaches_every_version() {
 	assert_eq!(int(get(dim, "height")), 256);
 	let back = run(
 		Root::PlayToClient,
-		"1.17",
-		"1.15.2",
+		Version::V1_17,
+		Version::V1_15_2,
 		&enc(&C17::Respawn(r), v1_17::play_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -399,7 +396,7 @@ fn chat_and_login_success() {
 			message: "{\"text\":\"hi\"}".to_owned(),
 			position: 1,
 		}),
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -413,8 +410,8 @@ fn chat_and_login_success() {
 		});
 	let out = run(
 		Root::LoginToClient,
-		"1.15.2",
-		"1.17.1",
+		Version::V1_15_2,
+		Version::V1_17_1,
 		&enc(&p, v1_15_2::login_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -435,12 +432,12 @@ fn chunk_15(full: bool) -> (C15, Vec<Vec<u32>>) {
 		"minecraft:grass_path",
 		"minecraft:oak_stairs[facing=east,half=top,shape=outer_left,waterlogged=true]",
 	];
-	let palette: Vec<u32> = names.iter().map(|n| state("1.15.2", n)).collect();
+	let palette: Vec<u32> = names.iter().map(|n| state(Version::V1_15_2, n)).collect();
 	let few: Vec<u32> = (0..4096)
 		.map(|i| palette[(i * 7 / 3) % palette.len()])
 		.collect();
 	let mut data = Vec::new();
-	write_section(&mut data, &many, None, global_bits("1.15.2"), true);
+	write_section(&mut data, &many, None, global_bits(Version::V1_15_2), true);
 	write_section(&mut data, &few, Some(&palette), 4, true);
 	let heights: Vec<u32> = (0..256).map(|i| (i * 3 % 257) as u32).collect();
 	let heightmaps = Entry::new(
@@ -468,7 +465,7 @@ fn chunk_15(full: bool) -> (C15, Vec<Vec<u32>>) {
 	(p, vec![many, few])
 }
 
-fn same_block(from: &str, a: u32, to: &str, b: u32) {
+fn same_block(from: Version, a: u32, to: Version, b: u32) {
 	let (a, b) = (describe(from, a), describe(to, b));
 	let name = |s: &str| {
 		s.split('[')
@@ -485,7 +482,7 @@ fn chunks_keep_blocks_through_1_17() {
 	let (p, sections) = chunk_15(true);
 	let C16::MapChunk(c) = one(up_15(
 		&p,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -502,7 +499,7 @@ fn chunks_keep_blocks_through_1_17() {
 	);
 	let C17::MapChunk(c) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -514,26 +511,29 @@ fn chunks_keep_blocks_through_1_17() {
 	);
 	let mut at = 0;
 	for (n, src) in sections.iter().enumerate() {
-		let (count, palette, states) = read_section(&c.chunk_data, &mut at, global_bits("1.17"));
+		let (count, palette, states) =
+			read_section(&c.chunk_data, &mut at, global_bits(Version::V1_17));
 		assert_eq!(palette.is_none(), n == 0, "section {n} palette kind");
-		let air = state("1.17", "minecraft:air");
+		let air = state(Version::V1_17, "minecraft:air");
 		assert_eq!(count as usize, states.iter().filter(|s| **s != air).count());
 		for (i, (a, b)) in src.iter().zip(&states).enumerate() {
 			if i % 37 == 0 || n == 1 {
-				same_block("1.15.2", *a, "1.17", *b);
+				same_block(Version::V1_15_2, *a, Version::V1_17, *b);
 			}
 		}
 	}
 	assert_eq!(at, c.chunk_data.len());
 	let stairs = state(
-		"1.17",
+		Version::V1_17,
 		"minecraft:oak_stairs[facing=east,half=top,shape=outer_left,waterlogged=true]",
 	);
 	let mut at = 0;
-	read_section(&c.chunk_data, &mut at, global_bits("1.17"));
-	assert!(read_section(&c.chunk_data, &mut at, global_bits("1.17"))
-		.2
-		.contains(&stairs));
+	read_section(&c.chunk_data, &mut at, global_bits(Version::V1_17));
+	assert!(
+		read_section(&c.chunk_data, &mut at, global_bits(Version::V1_17))
+			.2
+			.contains(&stairs)
+	);
 }
 
 #[test]
@@ -542,7 +542,7 @@ fn partial_chunk_becomes_block_changes_in_1_17() {
 	let (p, sections) = chunk_15(false);
 	let out = up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	);
@@ -563,9 +563,9 @@ fn partial_chunk_becomes_block_changes_in_1_17() {
 		for r in m.records.iter().step_by(101) {
 			let (x, z, ly) = ((r >> 8) & 15, (r >> 4) & 15, r & 15);
 			same_block(
-				"1.15.2",
+				Version::V1_15_2,
 				src[(ly << 8 | z << 4 | x) as usize],
-				"1.17",
+				Version::V1_17,
 				(r >> 12) as u32,
 			);
 		}
@@ -591,7 +591,7 @@ fn light_reaches_1_17() {
 	});
 	let C16::UpdateLight(l) = one(up_15(
 		&p,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -600,7 +600,7 @@ fn light_reaches_1_17() {
 	assert!(l.trust_edges);
 	let C17::UpdateLight(l) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -627,22 +627,25 @@ fn light_reaches_1_17() {
 #[test]
 fn block_updates_follow_the_registries() {
 	let mut cx = Session::new();
-	let path = state("1.15.2", "minecraft:grass_path") as i32;
+	let path = state(Version::V1_15_2, "minecraft:grass_path") as i32;
 	let p = C15::BlockChange(v1_15_2::play_to_client_packet_block_change::Ty {
 		location: v1_15_2::position::Ty { x: 1, y: 70, z: -3 },
 		r#type: path,
 	});
 	let C17::BlockChange(b) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
-	assert_eq!(describe("1.17", b.r#type as u32), "minecraft:dirt_path");
+	assert_eq!(
+		describe(Version::V1_17, b.r#type as u32),
+		"minecraft:dirt_path"
+	);
 	assert_eq!(b.location.y, 70);
-	let stone = state("1.15.2", "minecraft:stone") as i32;
+	let stone = state(Version::V1_15_2, "minecraft:stone") as i32;
 	let p = C15::MultiBlockChange(v1_15_2::play_to_client_packet_multi_block_change::Ty {
 		chunk_x: -2,
 		chunk_z: 3,
@@ -661,7 +664,7 @@ fn block_updates_follow_the_registries() {
 	});
 	let out = up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	);
@@ -685,17 +688,17 @@ fn block_updates_follow_the_registries() {
 	assert_eq!(changes[0].0, 0);
 	assert_eq!(changes[0].1 & 0xfff, 0x5a3);
 	assert_eq!(
-		describe("1.17", (changes[0].1 >> 12) as u32),
+		describe(Version::V1_17, (changes[0].1 >> 12) as u32),
 		"minecraft:stone"
 	);
 	assert_eq!((changes[1].0, changes[1].1 & 0xfff), (2, 0x128));
 	assert_eq!(
-		describe("1.17", (changes[1].1 >> 12) as u32),
+		describe(Version::V1_17, (changes[1].1 >> 12) as u32),
 		"minecraft:dirt_path"
 	);
 }
 
-fn slot(version: &str, name: &str, count: i8) -> v1_15_2::slot::Ty {
+fn slot(version: Version, name: &str, count: i8) -> v1_15_2::slot::Ty {
 	v1_15_2::slot::Ty::True(v1_15_2::slot_true::Ty {
 		item_id: item(version, name),
 		item_count: count,
@@ -703,7 +706,7 @@ fn slot(version: &str, name: &str, count: i8) -> v1_15_2::slot::Ty {
 	})
 }
 
-fn slot_name(version: &str, s: &v1_15_2::slot::Ty) -> String {
+fn slot_name(version: Version, s: &v1_15_2::slot::Ty) -> String {
 	match s {
 		v1_15_2::slot::Ty::True(s) => registry::names(version, "items")
 			.unwrap()
@@ -720,7 +723,7 @@ fn entities_and_metadata() {
 	let spawn = C15::SpawnEntity(v1_15_2::play_to_client_packet_spawn_entity::Ty {
 		entity_id: 50,
 		object_uuid: 1,
-		r#type: entity("1.15.2", "arrow"),
+		r#type: entity(Version::V1_15_2, "arrow"),
 		x: 0.5,
 		y: 65.0,
 		z: 0.5,
@@ -731,13 +734,13 @@ fn entities_and_metadata() {
 	});
 	let C17::SpawnEntity(s) = one(up_15(
 		&spawn,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
-	assert_eq!(s.r#type, entity("1.17", "arrow"));
+	assert_eq!(s.r#type, entity(Version::V1_17, "arrow"));
 	use v1_15_2::entity_metadata_item::Ty as M;
 	let entry =
 		|key: u8, r#type: i32, value: M| v1_15_2::entity_metadata_items::Ty { key, r#type, value };
@@ -751,7 +754,7 @@ fn entities_and_metadata() {
 	});
 	let C16::EntityMetadata(m) = one(up_15(
 		&meta,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -761,7 +764,7 @@ fn entities_and_metadata() {
 	assert_eq!(keys, [(0, 0), (8, 0)]);
 	let C17::EntityMetadata(m) = one(up_15(
 		&meta,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -772,7 +775,7 @@ fn entities_and_metadata() {
 	let pig = C15::SpawnEntityLiving(v1_15_2::play_to_client_packet_spawn_entity_living::Ty {
 		entity_id: 51,
 		entity_uuid: 2,
-		r#type: entity("1.15.2", "zombie_pigman"),
+		r#type: entity(Version::V1_15_2, "zombie_pigman"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -783,24 +786,24 @@ fn entities_and_metadata() {
 	});
 	let C171::SpawnEntityLiving(s) = one(up_15(
 		&pig,
-		"1.17.1",
+		Version::V1_17_1,
 		&mut cx,
 		v1_17_1::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
-	assert_eq!(s.r#type, entity("1.17", "zombified_piglin"));
+	assert_eq!(s.r#type, entity(Version::V1_17, "zombified_piglin"));
 
 	let item_entity = C15::EntityMetadata(v1_15_2::play_to_client_packet_entity_metadata::Ty {
 		entity_id: 52,
 		metadata: vec![
-			entry(7, 6, M::V6(slot("1.15.2", "diamond_sword", 1))),
+			entry(7, 6, M::V6(slot(Version::V1_15_2, "diamond_sword", 1))),
 			entry(6, 18, M::V18(6)),
 		],
 	});
 	let C17::EntityMetadata(m) = one(up_15(
 		&item_entity,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -808,14 +811,14 @@ fn entities_and_metadata() {
 	};
 	use v1_17::entity_metadata_item::Ty as M17;
 	assert!(
-		matches!(&m.metadata[0], e if e.key == 8 && matches!(&e.value, M17::V6(s) if slot_name("1.17", s) == "diamond_sword"))
+		matches!(&m.metadata[0], e if e.key == 8 && matches!(&e.value, M17::V6(s) if slot_name(Version::V1_17, s) == "diamond_sword"))
 	);
 	assert!(matches!(&m.metadata[1], e if e.key == 6 && matches!(e.value, M17::V18(7))));
 
 	let wolf = C15::SpawnEntityLiving(v1_15_2::play_to_client_packet_spawn_entity_living::Ty {
 		entity_id: 53,
 		entity_uuid: 3,
-		r#type: entity("1.15.2", "wolf"),
+		r#type: entity(Version::V1_15_2, "wolf"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -826,7 +829,7 @@ fn entities_and_metadata() {
 	});
 	up_15(
 		&wolf,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	);
@@ -836,7 +839,7 @@ fn entities_and_metadata() {
 	});
 	let C16::EntityMetadata(m) = one(up_15(
 		&angry,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -854,12 +857,12 @@ fn equipment_becomes_a_list() {
 	let p = C15::EntityEquipment(v1_15_2::play_to_client_packet_entity_equipment::Ty {
 		entity_id: 3,
 		slot: 5,
-		item: slot("1.15.2", "golden_helmet", 1),
+		item: slot(Version::V1_15_2, "golden_helmet", 1),
 	});
 	let bytes = run(
 		Root::PlayToClient,
-		"1.15.2",
-		"1.16",
+		Version::V1_15_2,
+		Version::V1_16,
 		&enc(&p, v1_15_2::play_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -870,24 +873,27 @@ fn equipment_becomes_a_list() {
 		(e.entity_id, e.equipments.len(), e.equipments[0].slot),
 		(3, 1, 5)
 	);
-	assert_eq!(slot_name("1.16", &e.equipments[0].item), "golden_helmet");
+	assert_eq!(
+		slot_name(Version::V1_16, &e.equipments[0].item),
+		"golden_helmet"
+	);
 	let two = C16::EntityEquipment(v1_16::play_to_client_packet_entity_equipment::Ty {
 		entity_id: 3,
 		equipments: vec![
 			v1_16::play_to_client_packet_entity_equipment_equipments_items::Ty {
 				slot: 0,
-				item: slot("1.16", "netherite_sword", 1),
+				item: slot(Version::V1_16, "netherite_sword", 1),
 			},
 			v1_16::play_to_client_packet_entity_equipment_equipments_items::Ty {
 				slot: 1,
-				item: slot("1.16", "shield", 1),
+				item: slot(Version::V1_16, "shield", 1),
 			},
 		],
 	});
 	let back = run(
 		Root::PlayToClient,
-		"1.16",
-		"1.15.2",
+		Version::V1_16,
+		Version::V1_15_2,
 		&enc(&two, v1_16::play_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -897,7 +903,7 @@ fn equipment_becomes_a_list() {
 		.collect();
 	assert!(
 		matches!(back.as_slice(), [C15::EntityEquipment(a), C15::EntityEquipment(b)]
-		if a.slot == 0 && slot_name("1.15.2", &a.item) == "diamond_sword" && b.slot == 1 && slot_name("1.15.2", &b.item) == "shield")
+		if a.slot == 0 && slot_name(Version::V1_15_2, &a.item) == "diamond_sword" && b.slot == 1 && slot_name(Version::V1_15_2, &b.item) == "shield")
 	);
 }
 
@@ -918,8 +924,8 @@ fn pings_become_transactions_for_1_16_clients() {
 	);
 	let out = run(
 		Root::PlayToServer,
-		"1.16.2",
-		"1.17",
+		Version::V1_16_2,
+		Version::V1_17,
 		&enc(&reply, v1_16_2::play_to_server_packet::serialize),
 		&mut cx,
 	);
@@ -941,13 +947,16 @@ fn lightning_becomes_an_entity() {
 	});
 	let C16::SpawnEntity(s) = one(up_15(
 		&p,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
-	assert_eq!((s.r#type, s.y), (entity("1.16", "lightning_bolt"), 2.0));
+	assert_eq!(
+		(s.r#type, s.y),
+		(entity(Version::V1_16, "lightning_bolt"), 2.0)
+	);
 }
 
 #[test]
@@ -956,31 +965,31 @@ fn items_particles_and_sounds() {
 	let p = C15::SetSlot(v1_15_2::play_to_client_packet_set_slot::Ty {
 		window_id: 0,
 		slot: 36,
-		item: slot("1.15.2", "grass_path", 5),
+		item: slot(Version::V1_15_2, "grass_path", 5),
 	});
 	let C171::SetSlot(s) = one(up_15(
 		&p,
-		"1.17.1",
+		Version::V1_17_1,
 		&mut cx,
 		v1_17_1::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
 	assert_eq!(
-		(slot_name("1.17", &s.item), s.state_id),
+		(slot_name(Version::V1_17, &s.item), s.state_id),
 		("dirt_path".to_owned(), 0)
 	);
 	let p = C15::WindowItems(v1_15_2::play_to_client_packet_window_items::Ty {
 		window_id: 0,
 		items: vec![
-			slot("1.15.2", "zombie_pigman_spawn_egg", 1),
+			slot(Version::V1_15_2, "zombie_pigman_spawn_egg", 1),
 			v1_15_2::slot::Ty::False,
-			slot("1.15.2", "shield", 1),
+			slot(Version::V1_15_2, "shield", 1),
 		],
 	});
 	let C171::WindowItems(w) = one(up_15(
 		&p,
-		"1.17.1",
+		Version::V1_17_1,
 		&mut cx,
 		v1_17_1::play_to_client_packet::deserialize,
 	)) else {
@@ -989,7 +998,7 @@ fn items_particles_and_sounds() {
 	assert_eq!(
 		w.items
 			.iter()
-			.map(|s| slot_name("1.17", s))
+			.map(|s| slot_name(Version::V1_17, s))
 			.collect::<Vec<_>>(),
 		["zombified_piglin_spawn_egg", "empty", "shield"]
 	);
@@ -1006,20 +1015,22 @@ fn items_particles_and_sounds() {
 		offset_z: 0.0,
 		particle_data: 0.0,
 		particles: 1,
-		data: v1_15_2::particle_data::Ty::V32(slot("1.15.2", "apple", 1)),
+		data: v1_15_2::particle_data::Ty::V32(slot(Version::V1_15_2, "apple", 1)),
 	});
 	let C17::WorldParticles(w) = one(up_15(
 		&particle,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
 	assert_eq!(w.particle_id, 36);
-	assert!(matches!(&w.data, v1_17::particle_data::Ty::V36(s) if slot_name("1.17", s) == "apple"));
+	assert!(
+		matches!(&w.data, v1_17::particle_data::Ty::V36(s) if slot_name(Version::V1_17, s) == "apple")
+	);
 
-	let sounds = registry::names("1.16", "sounds").unwrap();
+	let sounds = registry::names(Version::V1_16, "sounds").unwrap();
 	let id = sounds.id("entity.player.levelup").unwrap() as i32;
 	assert!(id > 631);
 	let p = v1_16::play_to_client_packet::Ty::SoundEffect(
@@ -1035,8 +1046,8 @@ fn items_particles_and_sounds() {
 	);
 	let out = run(
 		Root::PlayToClient,
-		"1.16.1",
-		"1.16.2",
+		Version::V1_16_1,
+		Version::V1_16_2,
 		&enc(&p, v1_16_1::play_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -1046,8 +1057,8 @@ fn items_particles_and_sounds() {
 	assert_eq!(s.sound_id, id + 7);
 	let out = run(
 		Root::PlayToClient,
-		"1.16.1",
-		"1.17",
+		Version::V1_16_1,
+		Version::V1_17,
 		&enc(&p, v1_16_1::play_to_client_packet::serialize),
 		&mut cx,
 	);
@@ -1055,7 +1066,7 @@ fn items_particles_and_sounds() {
 		panic!()
 	};
 	assert_eq!(
-		registry::names("1.17", "sounds")
+		registry::names(Version::V1_17, "sounds")
 			.unwrap()
 			.name(s.sound_id as u32),
 		Some("entity.player.levelup")
@@ -1078,7 +1089,7 @@ fn shaped_recipes_keep_ingredient_order() {
 	let ingredients: Vec<Vec<Vec<v1_15_2::slot::Ty>>> = (0..2)
 		.map(|x| {
 			(0..3)
-				.map(|y| vec![slot("1.15.2", names[x * 3 + y], 1)])
+				.map(|y| vec![slot(Version::V1_15_2, names[x * 3 + y], 1)])
 				.collect()
 		})
 		.collect();
@@ -1092,12 +1103,12 @@ fn shaped_recipes_keep_ingredient_order() {
 				height: 3,
 				group: String::new(),
 				ingredients,
-				result: slot("1.15.2", "grass_path", 1),
+				result: slot(Version::V1_15_2, "grass_path", 1),
 			},
 		),
 	}],
 	);
-	let flat = |i: &Vec<Vec<Vec<v1_15_2::slot::Ty>>>, v: &str| {
+	let flat = |i: &Vec<Vec<Vec<v1_15_2::slot::Ty>>>, v: Version| {
 		i.iter()
 			.flatten()
 			.flatten()
@@ -1106,7 +1117,7 @@ fn shaped_recipes_keep_ingredient_order() {
 	};
 	let C162::DeclareRecipes(r) = one(up_15(
 		&p,
-		"1.16.2",
+		Version::V1_16_2,
 		&mut cx,
 		v1_16_2::play_to_client_packet::deserialize,
 	)) else {
@@ -1117,10 +1128,10 @@ fn shaped_recipes_keep_ingredient_order() {
 	else {
 		panic!()
 	};
-	assert_eq!(flat(&s.ingredients, "1.16.2"), names);
+	assert_eq!(flat(&s.ingredients, Version::V1_16_2), names);
 	let C17::DeclareRecipes(r) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -1131,8 +1142,8 @@ fn shaped_recipes_keep_ingredient_order() {
 	else {
 		panic!()
 	};
-	assert_eq!(flat(&s.ingredients, "1.17"), names);
-	assert_eq!(slot_name("1.17", &s.result), "dirt_path");
+	assert_eq!(flat(&s.ingredients, Version::V1_17), names);
+	assert_eq!(slot_name(Version::V1_17, &s.result), "dirt_path");
 }
 
 #[test]
@@ -1146,7 +1157,7 @@ fn tags_gain_required_entries() {
 	let p = C15::Tags(v1_15_2::play_to_client_packet_tags::Ty {
 		block_tags: vec![tag(
 			"minecraft:logs",
-			vec![registry::names("1.15.2", "blocks")
+			vec![registry::names(Version::V1_15_2, "blocks")
 				.unwrap()
 				.id("oak_log")
 				.unwrap() as i32],
@@ -1157,7 +1168,7 @@ fn tags_gain_required_entries() {
 	});
 	let C16::Tags(t) = one(up_15(
 		&p,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -1168,7 +1179,7 @@ fn tags_gain_required_entries() {
 		.iter()
 		.find(|t| t.tag_name == "minecraft:climbable")
 		.unwrap();
-	let blocks = registry::names("1.16", "blocks").unwrap();
+	let blocks = registry::names(Version::V1_16, "blocks").unwrap();
 	assert!(climbable
 		.entries
 		.contains(&(blocks.id("ladder").unwrap() as i32)));
@@ -1178,7 +1189,7 @@ fn tags_gain_required_entries() {
 	);
 	let C17::Tags(groups) = one(up_15(
 		&p,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -1213,13 +1224,13 @@ fn split_packets_in_1_17() {
 		"bar".to_owned(),
 	));
 	assert!(
-		matches!(up_15(&title, "1.17", &mut cx, v1_17::play_to_client_packet::deserialize).as_slice(), [C17::ActionBar(t)] if t == "bar")
+		matches!(up_15(&title, Version::V1_17, &mut cx, v1_17::play_to_client_packet::deserialize).as_slice(), [C17::ActionBar(t)] if t == "bar")
 	);
 	let reset = C15::Title(v1_15_2::play_to_client_packet_title::Ty::Default(5));
 	assert!(matches!(
 		up_15(
 			&reset,
-			"1.17",
+			Version::V1_17,
 			&mut cx,
 			v1_17::play_to_client_packet::deserialize
 		)
@@ -1230,13 +1241,13 @@ fn split_packets_in_1_17() {
 		v1_15_2::play_to_client_packet_world_border_v2::Ty { x: 1.0, z: 2.0 },
 	));
 	assert!(
-		matches!(up_15(&border, "1.17", &mut cx, v1_17::play_to_client_packet::deserialize).as_slice(), [C17::WorldBorderCenter(c)] if (c.x, c.z) == (1.0, 2.0))
+		matches!(up_15(&border, Version::V1_17, &mut cx, v1_17::play_to_client_packet::deserialize).as_slice(), [C17::WorldBorderCenter(c)] if (c.x, c.z) == (1.0, 2.0))
 	);
 	let destroy = C15::EntityDestroy(vec![4, 5]);
 	assert!(matches!(
 		up_15(
 			&destroy,
-			"1.17",
+			Version::V1_17,
 			&mut cx,
 			v1_17::play_to_client_packet::deserialize
 		)
@@ -1244,7 +1255,7 @@ fn split_packets_in_1_17() {
 		[C17::DestroyEntity(4), C17::DestroyEntity(5)]
 	));
 	assert!(
-		matches!(up_15(&destroy, "1.17.1", &mut cx, v1_17_1::play_to_client_packet::deserialize).as_slice(), [C171::EntityDestroy(a), C171::EntityDestroy(b)] if a == &[4] && b == &[5])
+		matches!(up_15(&destroy, Version::V1_17_1, &mut cx, v1_17_1::play_to_client_packet::deserialize).as_slice(), [C171::EntityDestroy(a), C171::EntityDestroy(b)] if a == &[4] && b == &[5])
 	);
 	let rejected = C15::Transaction(v1_15_2::play_to_client_packet_transaction::Ty {
 		window_id: 3,
@@ -1253,7 +1264,7 @@ fn split_packets_in_1_17() {
 	});
 	let C17::Ping(id) = one(up_15(
 		&rejected,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -1261,8 +1272,8 @@ fn split_packets_in_1_17() {
 	};
 	let out = run(
 		Root::PlayToServer,
-		"1.17",
-		"1.15.2",
+		Version::V1_17,
+		Version::V1_15_2,
 		&enc(
 			&v1_17::play_to_server_packet::Ty::Pong(id),
 			v1_17::play_to_server_packet::serialize,
@@ -1282,7 +1293,7 @@ fn split_packets_in_1_17() {
 	});
 	assert!(up_15(
 		&accepted,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize
 	)
@@ -1299,7 +1310,7 @@ fn serverbound_reaches_1_15_2() {
 	});
 	up_15(
 		&abilities,
-		"1.17.1",
+		Version::V1_17_1,
 		&mut cx,
 		v1_17_1::play_to_client_packet::deserialize,
 	);
@@ -1308,8 +1319,8 @@ fn serverbound_reaches_1_15_2() {
 	 -> Vec<v1_15_2::play_to_server_packet::Ty> {
 		run(
 			Root::PlayToServer,
-			"1.17.1",
-			"1.15.2",
+			Version::V1_17_1,
+			Version::V1_15_2,
 			&enc(p, v1_17_1::play_to_server_packet::serialize),
 			cx,
 		)
@@ -1332,14 +1343,14 @@ fn serverbound_reaches_1_15_2() {
 			mouse_button: 0,
 			mode: 0,
 			changed_slots: vec![],
-			cursor_item: slot("1.17", "dirt_path", 2),
+			cursor_item: slot(Version::V1_17, "dirt_path", 2),
 		},
 	);
 	let v1_15_2::play_to_server_packet::Ty::WindowClick(c) = one(server(&click, &mut cx)) else {
 		panic!()
 	};
 	assert_eq!((c.window_id, c.slot, c.action, c.mode), (1, 5, 0, 0));
-	assert_eq!(slot_name("1.15.2", &c.item), "grass_path");
+	assert_eq!(slot_name(Version::V1_15_2, &c.item), "grass_path");
 	let book = v1_17_1::play_to_server_packet::Ty::EditBook(
 		v1_17_1::play_to_server_packet_edit_book::Ty {
 			hand: 40,
@@ -1351,7 +1362,7 @@ fn serverbound_reaches_1_15_2() {
 		panic!()
 	};
 	assert_eq!((b.hand, b.signing), (1, true));
-	assert_eq!(slot_name("1.15.2", &b.new_book), "writable_book");
+	assert_eq!(slot_name(Version::V1_15_2, &b.new_book), "writable_book");
 	let v1_15_2::slot::Ty::True(s) = &b.new_book else {
 		panic!()
 	};
@@ -1387,7 +1398,7 @@ fn serverbound_reaches_1_15_2() {
 fn login_17(min_y: i32, height: i32, cx: &mut Session) -> C17 {
 	let C17::Login(mut l) = one(up_15(
 		&login_15(0),
-		"1.17",
+		Version::V1_17,
 		cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
@@ -1419,11 +1430,11 @@ fn bits(n: usize) -> Vec<i64> {
 }
 
 fn tall_chunk(x: i32, z: i32, sections: usize) -> C17 {
-	let names = registry::names("1.17", "blocks").unwrap();
+	let names = registry::names(Version::V1_17, "blocks").unwrap();
 	let blocks = (0..sections)
 		.map(|k| {
 			Some(
-				registry::blocks("1.17")
+				registry::blocks(Version::V1_17)
 					.unwrap()
 					.block(names.name(1 + k as u32).unwrap())
 					.unwrap()
@@ -1477,16 +1488,19 @@ fn filled_chunk(x: i32, z: i32, blocks: &[Option<u32>]) -> C17 {
 
 fn first_section_block(c: &v1_16_2::play_to_client_packet_map_chunk::Ty) -> String {
 	let mut at = 0;
-	let (_, _, states) = read_section(&c.chunk_data, &mut at, global_bits("1.16.2"));
-	describe("1.16.2", states[0])
+	let (_, _, states) = read_section(&c.chunk_data, &mut at, global_bits(Version::V1_16_2));
+	describe(Version::V1_16_2, states[0])
 }
 
 fn expected_block(k: u32) -> String {
-	let name = registry::names("1.17", "blocks")
+	let name = registry::names(Version::V1_17, "blocks")
 		.unwrap()
 		.name(1 + k)
 		.unwrap();
-	describe("1.16.2", state("1.16.2", &format!("minecraft:{name}")))
+	describe(
+		Version::V1_16_2,
+		state(Version::V1_16_2, &format!("minecraft:{name}")),
+	)
 }
 
 fn position_17(y: f64, flags: i8) -> C17 {
@@ -1603,14 +1617,14 @@ fn order(out: &[C162], f: fn(&C162) -> bool) -> usize {
 fn sections(c: &v1_16_2::play_to_client_packet_map_chunk::Ty) -> Vec<Vec<u32>> {
 	let mut at = 0;
 	(0..(c.bit_map as u32).count_ones())
-		.map(|_| read_section(&c.chunk_data, &mut at, global_bits("1.16.2")).2)
+		.map(|_| read_section(&c.chunk_data, &mut at, global_bits(Version::V1_16_2)).2)
 		.collect()
 }
 
 fn block_change_17(x: i32, y: i32, z: i32, text: &str) -> C17 {
 	C17::BlockChange(v1_17::play_to_client_packet_block_change::Ty {
 		location: v1_17::position::Ty { x, y: y as i16, z },
-		r#type: state("1.17", text) as i32,
+		r#type: state(Version::V1_17, text) as i32,
 	})
 }
 
@@ -1618,7 +1632,7 @@ fn mob_17(id: i32, y: f64) -> C17 {
 	C17::SpawnEntityLiving(v1_17::play_to_client_packet_spawn_entity_living::Ty {
 		entity_id: id,
 		entity_uuid: id as u128,
-		r#type: entity("1.17", "cow"),
+		r#type: entity(Version::V1_17, "cow"),
 		x: 1.0,
 		y,
 		z: 1.0,
@@ -1678,7 +1692,7 @@ fn tall_worlds_switch_windows_on_server_teleports() {
 		panic!()
 	};
 	assert_eq!(
-		(b.location.y, describe("1.16.2", b.r#type as u32)),
+		(b.location.y, describe(Version::V1_16_2, b.r#type as u32)),
 		(0, expected_block(8))
 	);
 	let C162::BlockChange(b) = one(down_17(
@@ -1689,7 +1703,7 @@ fn tall_worlds_switch_windows_on_server_teleports() {
 	};
 	assert_eq!(
 		(b.location.y, b.r#type as u32),
-		(36, state("1.16.2", "minecraft:stone"))
+		(36, state(Version::V1_16_2, "minecraft:stone"))
 	);
 
 	let rel = down_17(&teleport_17(-280.0, 2, 3), &mut cx);
@@ -1698,7 +1712,7 @@ fn tall_worlds_switch_windows_on_server_teleports() {
 	let chunk = map_chunk(&rel, 0, 0).unwrap();
 	assert_eq!(
 		sections(chunk)[0][(14 << 8) | (4 << 4) | 3],
-		state("1.16.2", "minecraft:stone")
+		state(Version::V1_16_2, "minecraft:stone")
 	);
 
 	let (sent, back) = up_16_2(&walk(236.0), &mut cx);
@@ -1735,8 +1749,8 @@ type S17 = v1_17::play_to_server_packet::Ty;
 fn up_16_2(p: &S162, cx: &mut Session) -> (Vec<S17>, Vec<C162>) {
 	let sent = run(
 		Root::PlayToServer,
-		"1.16.2",
-		"1.17",
+		Version::V1_16_2,
+		Version::V1_17,
 		&enc(p, v1_16_2::play_to_server_packet::serialize),
 		cx,
 	)
@@ -1747,7 +1761,7 @@ fn up_16_2(p: &S162, cx: &mut Session) -> (Vec<S17>, Vec<C162>) {
 		.take_outgoing()
 		.into_iter()
 		.map(|o| {
-			assert_eq!((o.root, o.version), (Root::PlayToClient, at("1.16.2")));
+			assert_eq!((o.root, o.version), (Root::PlayToClient, Version::V1_16_2));
 			dec(&o.data, v1_16_2::play_to_client_packet::deserialize)
 		})
 		.collect();
@@ -1942,8 +1956,8 @@ fn very_tall_worlds_use_more_windows() {
 fn window_floors_show_the_ground_below() {
 	let mut cx = Session::new();
 	down_17(&login_17(-64, 384, &mut cx), &mut cx);
-	let deepslate = state("1.17", "minecraft:deepslate[axis=y]");
-	let stone = state("1.17", "minecraft:stone");
+	let deepslate = state(Version::V1_17, "minecraft:deepslate[axis=y]");
+	let stone = state(Version::V1_17, "minecraft:stone");
 	let blocks: Vec<Option<u32>> = (0..24)
 		.map(|k| match k {
 			0..4 => Some(deepslate),
@@ -1954,8 +1968,8 @@ fn window_floors_show_the_ground_below() {
 	let C162::MapChunk(c) = one(down_17(&filled_chunk(0, 0, &blocks), &mut cx)) else {
 		panic!()
 	};
-	let floor = state("1.16.2", "minecraft:blackstone");
-	let air = state("1.16.2", "minecraft:air");
+	let floor = state(Version::V1_16_2, "minecraft:blackstone");
+	let air = state(Version::V1_16_2, "minecraft:air");
 	assert_eq!(c.bit_map, 0xffff);
 	let s = sections(&c);
 	assert!(s[0][..256].iter().all(|b| *b == floor) && s[0][256..].iter().all(|b| *b == air));
@@ -1979,7 +1993,7 @@ fn window_floors_show_the_ground_below() {
 	};
 	assert_eq!(
 		(b.location.y, b.r#type as u32),
-		(0, state("1.16.2", "minecraft:stone"))
+		(0, state(Version::V1_16_2, "minecraft:stone"))
 	);
 	let C162::BlockChange(b) = one(down_17(&block_change_17(3, 0, 4, "minecraft:air"), &mut cx))
 	else {
@@ -2002,14 +2016,14 @@ fn window_floors_show_the_ground_below() {
 	assert_eq!(s[3][(15 << 8) | (4 << 4) | 3], air);
 	assert_eq!(
 		s[4][(5 << 8) | (4 << 4) | 3],
-		state("1.16.2", "minecraft:stone")
+		state(Version::V1_16_2, "minecraft:stone")
 	);
 	assert_eq!(s[4].iter().filter(|b| **b != air).count(), 1);
 	let out = down_17(&teleport_17(300.0, 0, 3), &mut cx);
 	let c = map_chunk(&out, 0, 0).unwrap();
-	assert!(sections(c)
+	assert!(sections(c).iter().all(|s| s
 		.iter()
-		.all(|s| s.iter().all(|b| *b == state("1.16.2", "minecraft:stone"))));
+		.all(|b| *b == state(Version::V1_16_2, "minecraft:stone"))));
 	let mut cx = Session::new();
 	down_17(&login_17(-64, 384, &mut cx), &mut cx);
 	let low: Vec<Option<u32>> = (0..24).map(|k| (k < 8).then_some(stone)).collect();
@@ -2021,7 +2035,7 @@ fn window_floors_show_the_ground_below() {
 	assert!(
 		s[0][..256]
 			.iter()
-			.all(|b| *b == state("1.16.2", "minecraft:stone"))
+			.all(|b| *b == state(Version::V1_16_2, "minecraft:stone"))
 			&& s[0][256..].iter().all(|b| *b == air)
 	);
 	assert!(s[1..].iter().all(|s| s.iter().all(|b| *b == air)));
@@ -2142,7 +2156,7 @@ fn short_worlds_are_not_shifted() {
 	assert_eq!(p.y, 200.0);
 	let change = C17::BlockChange(v1_17::play_to_client_packet_block_change::Ty {
 		location: v1_17::position::Ty { x: 3, y: 5, z: 4 },
-		r#type: state("1.17", "minecraft:stone") as i32,
+		r#type: state(Version::V1_17, "minecraft:stone") as i32,
 	});
 	let C162::BlockChange(b) = one(down_17(&change, &mut cx)) else {
 		panic!()
@@ -2153,8 +2167,8 @@ fn short_worlds_are_not_shifted() {
 fn down_16(p: &C16, cx: &mut Session) -> Vec<C15> {
 	run(
 		Root::PlayToClient,
-		"1.16",
-		"1.15.2",
+		Version::V1_16,
+		Version::V1_15_2,
 		&enc(p, v1_16::play_to_client_packet::serialize),
 		cx,
 	)
@@ -2166,7 +2180,7 @@ fn down_16(p: &C16, cx: &mut Session) -> Vec<C15> {
 fn block_change_15(text: &str) -> C15 {
 	C15::BlockChange(v1_15_2::play_to_client_packet_block_change::Ty {
 		location: v1_15_2::position::Ty { x: 0, y: 64, z: 0 },
-		r#type: state("1.15.2", text) as i32,
+		r#type: state(Version::V1_15_2, text) as i32,
 	})
 }
 
@@ -2176,62 +2190,65 @@ fn changed_block_properties() {
 	let wall = block_change_15("minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]");
 	let C16::BlockChange(b) = one(up_15(
 		&wall,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
-	assert_eq!(describe("1.16", b.r#type as u32), "minecraft:cobblestone_wall[east=low,north=none,south=low,up=true,waterlogged=false,west=none]");
+	assert_eq!(describe(Version::V1_16, b.r#type as u32), "minecraft:cobblestone_wall[east=low,north=none,south=low,up=true,waterlogged=false,west=none]");
 	let C15::BlockChange(b) = one(down_16(&C16::BlockChange(b), &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(describe("1.15.2", b.r#type as u32), "minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]");
+	assert_eq!(describe(Version::V1_15_2, b.r#type as u32), "minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]");
 	let jigsaw = block_change_15("minecraft:jigsaw[facing=up]");
 	let C16::BlockChange(b) = one(up_15(
 		&jigsaw,
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
 	assert_eq!(
-		describe("1.16", b.r#type as u32),
+		describe(Version::V1_16, b.r#type as u32),
 		"minecraft:jigsaw[orientation=up_north]"
 	);
 	let cauldron = block_change_15("minecraft:cauldron[level=2]");
 	let C17::BlockChange(b) = one(up_15(
 		&cauldron,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	)) else {
 		panic!()
 	};
 	assert_eq!(
-		describe("1.17", b.r#type as u32),
+		describe(Version::V1_17, b.r#type as u32),
 		"minecraft:water_cauldron[level=2]"
 	);
 	let lava = C17::BlockChange(v1_17::play_to_client_packet_block_change::Ty {
 		location: v1_17::position::Ty { x: 0, y: 64, z: 0 },
-		r#type: state("1.17", "minecraft:lava_cauldron") as i32,
+		r#type: state(Version::V1_17, "minecraft:lava_cauldron") as i32,
 	});
 	let C162::BlockChange(b) = one(down_17(&lava, &mut cx)) else {
 		panic!()
 	};
 	assert_eq!(
-		describe("1.16.2", b.r#type as u32),
+		describe(Version::V1_16_2, b.r#type as u32),
 		"minecraft:cauldron[level=3]"
 	);
 	let deepslate = C17::BlockChange(v1_17::play_to_client_packet_block_change::Ty {
 		location: v1_17::position::Ty { x: 0, y: 64, z: 0 },
-		r#type: state("1.17", "minecraft:deepslate[axis=y]") as i32,
+		r#type: state(Version::V1_17, "minecraft:deepslate[axis=y]") as i32,
 	});
 	let C162::BlockChange(b) = one(down_17(&deepslate, &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(describe("1.16.2", b.r#type as u32), "minecraft:blackstone");
+	assert_eq!(
+		describe(Version::V1_16_2, b.r#type as u32),
+		"minecraft:blackstone"
+	);
 }
 
 #[test]
@@ -2240,12 +2257,12 @@ fn newer_items_are_substituted_and_restored() {
 	let copper = C17::SetSlot(v1_17::play_to_client_packet_set_slot::Ty {
 		window_id: 0,
 		slot: 36,
-		item: slot("1.17", "copper_ingot", 3),
+		item: slot(Version::V1_17, "copper_ingot", 3),
 	});
 	let C162::SetSlot(s) = one(down_17(&copper, &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(slot_name("1.16.2", &s.item), "brick");
+	assert_eq!(slot_name(Version::V1_16_2, &s.item), "brick");
 	let v1_15_2::slot::Ty::True(item) = &s.item else {
 		panic!()
 	};
@@ -2264,17 +2281,17 @@ fn newer_items_are_substituted_and_restored() {
 	let [S17::WindowClick(c)] = sent.as_slice() else {
 		panic!()
 	};
-	assert_eq!(slot_name("1.17", &c.cursor_item), "copper_ingot");
-	assert_eq!(c.cursor_item, slot("1.17", "copper_ingot", 3));
+	assert_eq!(slot_name(Version::V1_17, &c.cursor_item), "copper_ingot");
+	assert_eq!(c.cursor_item, slot(Version::V1_17, "copper_ingot", 3));
 	let sword = C16::SetSlot(v1_16::play_to_client_packet_set_slot::Ty {
 		window_id: 0,
 		slot: 36,
-		item: slot("1.16", "netherite_sword", 1),
+		item: slot(Version::V1_16, "netherite_sword", 1),
 	});
 	let C15::SetSlot(s) = one(down_16(&sword, &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(slot_name("1.15.2", &s.item), "diamond_sword");
+	assert_eq!(slot_name(Version::V1_15_2, &s.item), "diamond_sword");
 }
 
 #[test]
@@ -2283,7 +2300,7 @@ fn newer_entities_are_substituted() {
 	let goat = C17::SpawnEntityLiving(v1_17::play_to_client_packet_spawn_entity_living::Ty {
 		entity_id: 80,
 		entity_uuid: 3,
-		r#type: entity("1.17", "goat"),
+		r#type: entity(Version::V1_17, "goat"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -2295,7 +2312,7 @@ fn newer_entities_are_substituted() {
 	let C162::SpawnEntityLiving(g) = one(down_17(&goat, &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(g.r#type, entity("1.16.2", "sheep"));
+	assert_eq!(g.r#type, entity(Version::V1_16_2, "sheep"));
 	use v1_17::entity_metadata_item::Ty as M;
 	let entry =
 		|key: u8, r#type: i32, value: M| v1_17::entity_metadata_items::Ty { key, r#type, value };
@@ -2314,7 +2331,7 @@ fn newer_entities_are_substituted() {
 	let marker = C17::SpawnEntity(v1_17::play_to_client_packet_spawn_entity::Ty {
 		entity_id: 81,
 		object_uuid: 4,
-		r#type: entity("1.17", "glow_item_frame"),
+		r#type: entity(Version::V1_17, "glow_item_frame"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -2328,12 +2345,12 @@ fn newer_entities_are_substituted() {
 	};
 	assert_eq!(
 		(f.r#type, f.object_data),
-		(entity("1.16.2", "item_frame"), 2)
+		(entity(Version::V1_16_2, "item_frame"), 2)
 	);
 	let frame = C15::SpawnEntity(v1_15_2::play_to_client_packet_spawn_entity::Ty {
 		entity_id: 82,
 		object_uuid: 5,
-		r#type: entity("1.15.2", "item_frame"),
+		r#type: entity(Version::V1_15_2, "item_frame"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -2344,7 +2361,7 @@ fn newer_entities_are_substituted() {
 	});
 	let out = up_15(
 		&frame,
-		"1.17",
+		Version::V1_17,
 		&mut cx,
 		v1_17::play_to_client_packet::deserialize,
 	);
@@ -2419,7 +2436,7 @@ fn respawns_and_container_data_for_1_15_2() {
 	let mut cx = Session::new();
 	let C16::Login(l) = one(up_15(
 		&login_15(0),
-		"1.16",
+		Version::V1_16,
 		&mut cx,
 		v1_16::play_to_client_packet::deserialize,
 	)) else {
@@ -2464,7 +2481,7 @@ fn respawns_and_container_data_for_1_15_2() {
 		matches!(down_16(&hint(11), &mut cx).as_slice(), [C15::CraftProgressBar(p)] if p.value == -1)
 	);
 	assert!(
-		matches!(up_15(&C15::CraftProgressBar(v1_15_2::play_to_client_packet_craft_progress_bar::Ty { window_id: 1, property: 5, value: 11 }), "1.16", &mut cx, v1_16::play_to_client_packet::deserialize).as_slice(), [C16::CraftProgressBar(p)] if p.value == 12)
+		matches!(up_15(&C15::CraftProgressBar(v1_15_2::play_to_client_packet_craft_progress_bar::Ty { window_id: 1, property: 5, value: 11 }), Version::V1_16, &mut cx, v1_16::play_to_client_packet::deserialize).as_slice(), [C16::CraftProgressBar(p)] if p.value == 12)
 	);
 	let stats = C16::Statistics(vec![v1_16::play_to_client_packet_statistics_items::Ty {
 		category_id: 8,
@@ -2506,12 +2523,12 @@ fn state_ids_follow_the_server() {
 		window_id: 3,
 		state_id: 42,
 		items: vec![],
-		carried_item: slot("1.17", "stone", 1),
+		carried_item: slot(Version::V1_17, "stone", 1),
 	});
 	let out: Vec<C17> = run(
 		Root::PlayToClient,
-		"1.17.1",
-		"1.17",
+		Version::V1_17_1,
+		Version::V1_17,
 		&enc(&items, v1_17_1::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -2519,7 +2536,7 @@ fn state_ids_follow_the_server() {
 	.map(|b| dec(b, v1_17::play_to_client_packet::deserialize))
 	.collect();
 	assert!(
-		matches!(out.as_slice(), [C17::WindowItems(_), C17::SetSlot(s)] if s.window_id == -1 && slot_name("1.17", &s.item) == "stone")
+		matches!(out.as_slice(), [C17::WindowItems(_), C17::SetSlot(s)] if s.window_id == -1 && slot_name(Version::V1_17, &s.item) == "stone")
 	);
 	let click = v1_17::play_to_server_packet::Ty::WindowClick(
 		v1_17::play_to_server_packet_window_click::Ty {
@@ -2533,8 +2550,8 @@ fn state_ids_follow_the_server() {
 	);
 	let out = run(
 		Root::PlayToServer,
-		"1.17",
-		"1.17.1",
+		Version::V1_17,
+		Version::V1_17_1,
 		&enc(&click, v1_17::play_to_server_packet::serialize),
 		&mut cx,
 	);
@@ -2550,7 +2567,7 @@ fn state_ids_follow_the_server() {
 fn particles_fall_back_for_older_clients() {
 	let mut cx = Session::new();
 	let p = C17::WorldParticles(v1_17::play_to_client_packet_world_particles::Ty {
-		particle_id: registry::names("1.17", "particles")
+		particle_id: registry::names(Version::V1_17, "particles")
 			.unwrap()
 			.id("dust_color_transition")
 			.unwrap() as i32,

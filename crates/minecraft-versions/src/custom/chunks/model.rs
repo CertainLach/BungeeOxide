@@ -81,8 +81,8 @@ pub struct Column {
 	pub x: i32,
 	pub z: i32,
 	pub full: bool,
-	pub at: usize,
-	pub space: usize,
+	pub at: Version,
+	pub space: Version,
 	pub sections: Vec<Option<Section>>,
 	pub light: Option<Light>,
 	pub biomes: Biomes,
@@ -92,7 +92,7 @@ pub struct Column {
 }
 
 impl Column {
-	pub fn new(x: i32, z: i32, full: bool, version: usize) -> Self {
+	pub fn new(x: i32, z: i32, full: bool, version: Version) -> Self {
 		Self {
 			x,
 			z,
@@ -115,3 +115,4 @@ impl Column {
 		}
 	}
 }
+use crate::gen::convert::Version;

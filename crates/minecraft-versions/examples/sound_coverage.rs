@@ -1,21 +1,18 @@
 use std::collections::BTreeMap;
 
-use minecraft_versions::gen::convert::{
-	convert, index_of, packet_name, v1_8, v26_1, Root, Version, VERSIONS,
-};
+use minecraft_versions::gen::convert::{convert, packet_name, v1_8, v26_1, Root, Version};
 use minecraft_versions::pds::Input;
 use minecraft_versions::pds::Output;
 use minecraft_versions::registry;
 use minecraft_versions::Session;
 
 fn main() {
-	let to = std::env::args().nth(1).unwrap_or_else(|| "1.8".to_owned());
-	let (top, bottom) = (
-		index_of("26.1").unwrap(),
-		index_of(&to).expect("a known version"),
-	);
+	let to = std::env::args()
+		.nth(1)
+		.map_or(Version::V1_8, |v| Version::of(&v).expect("a known version"));
+	let (top, bottom) = (Version::V26_1, to);
 	let names = registry::names(Version::V26_1, "sounds").unwrap();
-	let mut lost: BTreeMap<usize, Vec<&str>> = BTreeMap::new();
+	let mut lost: BTreeMap<Version, Vec<&str>> = BTreeMap::new();
 	let mut arrived = 0;
 	let mut unknown: Vec<(String, &str)> = Vec::new();
 	let total = names.names.len();
@@ -38,25 +35,24 @@ fn main() {
 		let mut cx = Session::new();
 		let mut at = top;
 		while at > bottom && !packets.is_empty() {
+			let down = at.prev().expect("above bottom");
 			let mut next = Vec::new();
 			for p in &packets {
-				next.extend(
-					convert(Root::PlayToClient, at, at - 1, p, &mut cx).unwrap_or_default(),
-				);
+				next.extend(convert(Root::PlayToClient, at, down, p, &mut cx).unwrap_or_default());
 			}
 			packets = next
 				.into_iter()
 				.filter(|p| {
-					packet_name(Root::PlayToClient, at - 1, p).is_some_and(|n| n.contains("sound"))
+					packet_name(Root::PlayToClient, down, p).is_some_and(|n| n.contains("sound"))
 				})
 				.collect();
-			at -= 1;
+			at = down;
 		}
 		if packets.is_empty() {
-			lost.entry(at + 1).or_default().push(name);
+			lost.entry(at.next().unwrap_or(at)).or_default().push(name);
 		} else {
 			arrived += 1;
-			if bottom == index_of("1.8").unwrap() {
+			if bottom == Version::V1_8 {
 				for p in &packets {
 					if let Ok(v1_8::play_to_client_packet::Ty::NamedSoundEffect(s)) =
 						v1_8::play_to_client_packet::deserialize(&mut Input::new(p))
@@ -83,8 +79,8 @@ fn main() {
 		println!(
 			"{:>4} lost at {} -> {}: {}",
 			names.len(),
-			VERSIONS[at],
-			VERSIONS[at - 1],
+			at,
+			at.prev().unwrap_or(at),
 			names.iter().take(6).copied().collect::<Vec<_>>().join(" ")
 		);
 	}

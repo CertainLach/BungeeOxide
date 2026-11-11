@@ -5,7 +5,7 @@ use super::blocks::{
 use super::items::{
 	item_down, item_up, legacy_item_name, legacy_of_item, slot_earlier, slot_later,
 };
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b};
+use crate::gen::convert::{v1_12_2 as a, v1_13 as b, Version};
 use crate::pds::convert::{Error, Result};
 use crate::registry::{self, renames};
 use crate::session::Session;
@@ -314,10 +314,10 @@ pub fn flattening_event_location_1_13(src: &Event, _cx: &mut Session) -> Result<
 	Ok(at)
 }
 
-fn sound_renames() -> impl Iterator<Item = &'static (&'static str, &'static str, &'static str)> {
+fn sound_renames() -> impl Iterator<Item = &'static (Version, &'static str, &'static str)> {
 	renames::table("sounds")
 		.iter()
-		.filter(|(v, _, _)| *v == FLAT.name())
+		.filter(|(v, _, _)| *v == FLAT)
 }
 
 fn bare(name: &str) -> &str {

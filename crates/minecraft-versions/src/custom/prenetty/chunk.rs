@@ -1,10 +1,11 @@
+use crate::gen::convert::Version;
 use std::io::{Read, Write};
 
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
 use flate2::Compression;
 
-use super::ids::{self, V};
+use super::ids;
 use crate::pds::convert::{unconvertible, Error, Result};
 
 pub const BLOCKS: usize = 4096;
@@ -76,7 +77,7 @@ fn set_nibble(arr: &mut [u8], i: usize, v: u8) {
 	arr[i / 2] = arr[i / 2] & !(15 << shift) | (v & 15) << shift;
 }
 
-pub fn remap(data: &mut [u8], shape: Shape, to: V) -> Result<()> {
+pub fn remap(data: &mut [u8], shape: Shape, to: Version) -> Result<()> {
 	shape.check(data)?;
 	let n = shape.sections();
 	let needs: Vec<bool> = (0..256u16)
@@ -95,7 +96,7 @@ pub fn remap(data: &mut [u8], shape: Shape, to: V) -> Result<()> {
 	Ok(())
 }
 
-pub fn remap_compressed(data: &[u8], shape: Shape, to: V) -> Result<Vec<u8>> {
+pub fn remap_compressed(data: &[u8], shape: Shape, to: Version) -> Result<Vec<u8>> {
 	if !ids::block_changes(to) || shape.bitmap == 0 {
 		return Ok(data.to_vec());
 	}
@@ -176,7 +177,7 @@ fn old_index(x: usize, y: usize, z: usize) -> usize {
 	x << 11 | z << 7 | y
 }
 
-pub fn old_full(chunk_x: i32, chunk_z: i32, data: &[u8], shape: Shape, to: V) -> Result<Old> {
+pub fn old_full(chunk_x: i32, chunk_z: i32, data: &[u8], shape: Shape, to: Version) -> Result<Old> {
 	shape.check(data)?;
 	let n = shape.sections();
 	let mut blocks = vec![0u8; OLD_COLUMN];
@@ -228,7 +229,7 @@ pub fn old_sections(
 	chunk_z: i32,
 	data: &[u8],
 	shape: Shape,
-	to: V,
+	to: Version,
 ) -> Result<Vec<Old>> {
 	shape.check(data)?;
 	let n = shape.sections();
@@ -394,7 +395,7 @@ mod tests {
 			sky: true,
 			full: true,
 		};
-		let old = old_full(2, -3, &data, shape, V::R1_2_3).unwrap();
+		let old = old_full(2, -3, &data, shape, Version::V1_2_3).unwrap();
 		assert_eq!((old.x, old.z, old.size_y), (32, -48, 127));
 		let back = from_old(&old, true).unwrap();
 		let (cx, cz, raw, bitmap) = back.full.unwrap();
@@ -416,7 +417,7 @@ mod tests {
 			full: true,
 		};
 		set_nibble(&mut data[BLOCKS..], 5, 13);
-		remap(&mut data, shape, V::R1_6_4).unwrap();
+		remap(&mut data, shape, Version::V1_6_4).unwrap();
 		assert_eq!((data[5], nibble(&data[BLOCKS..], 5)), (17, 12));
 		assert_eq!(data[6], 1);
 	}

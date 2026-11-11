@@ -1,4 +1,5 @@
 use crate::custom::chunks::padding;
+use crate::gen::convert::Version;
 use crate::pds::convert::{unconvertible, Result};
 
 pub struct Reader<'a> {
@@ -141,7 +142,7 @@ pub struct Remap<'a> {
 	pub biomes: Option<u32>,
 }
 
-pub fn sections(data: &[u8], m: &Remap, version: usize, known: Option<usize>) -> Result<Vec<u8>> {
+pub fn sections(data: &[u8], m: &Remap, version: Version, known: Option<usize>) -> Result<Vec<u8>> {
 	let mut r = Reader::new(data);
 	let mut out = Vec::with_capacity(data.len());
 	let (mut read, mut single) = (0, 0);

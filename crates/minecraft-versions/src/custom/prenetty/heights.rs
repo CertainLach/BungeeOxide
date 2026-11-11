@@ -1,7 +1,7 @@
 use std::collections::{HashMap, VecDeque};
 
 use super::chunk::{self, Shape};
-use super::ids::{self, V};
+use super::ids;
 use crate::custom::chunks::{legacy_column, legacy_data, Column};
 use crate::custom::window::{Dialect, Emit, Teleport, Window};
 use crate::gen::convert::{v1_1, v1_2_3, Root, Version};
@@ -25,7 +25,7 @@ pub(super) struct Old;
 
 impl Dialect for Old {
 	type Painting = Painting;
-	const AT: usize = Version::V1_2_3 as usize;
+	const AT: Version = Version::V1_2_3;
 
 	fn air() -> u32 {
 		0
@@ -58,10 +58,8 @@ pub(super) fn active(cx: &mut Session) -> bool {
 fn reset(cx: &mut Session) {
 	let server = cx
 		.server_version()
-		.is_some_and(|s| (Version::V1_2_3 as usize..Version::V1_17 as usize).contains(&s));
-	let client = cx
-		.client_version()
-		.is_some_and(|c| c <= Version::V1_1 as usize);
+		.is_some_and(|s| (Version::V1_2_3..Version::V1_17).contains(&s));
+	let client = cx.client_version().is_some_and(|c| c <= Version::V1_1);
 	let st = heights(cx);
 	*st = Heights {
 		ids: st.ids,
@@ -102,9 +100,9 @@ fn column_packets(col: &Column) -> Result<Vec<Client11>> {
 		full: col.full,
 	};
 	let olds = if col.full {
-		vec![chunk::old_full(col.x, col.z, &raw, shape, V::R1_1)?]
+		vec![chunk::old_full(col.x, col.z, &raw, shape, Version::V1_1)?]
 	} else {
-		chunk::old_sections(col.x, col.z, &raw, shape, V::R1_1)?
+		chunk::old_sections(col.x, col.z, &raw, shape, Version::V1_1)?
 	};
 	Ok(olds
 		.into_iter()
@@ -211,7 +209,7 @@ fn send(cx: &mut Session, packets: Vec<Client11>) -> Result<()> {
 		let mut o = Output::new();
 		v1_1::play_to_client_packet::serialize(&p, &mut o)
 			.map_err(|e| Error::Encoding(format!("{e:?}")))?;
-		cx.send(Root::PlayToClient, Version::V1_1 as usize, o.into_inner());
+		cx.send(Root::PlayToClient, Version::V1_1, o.into_inner());
 	}
 	Ok(())
 }
@@ -259,7 +257,7 @@ pub(super) fn map_chunk(
 }
 
 fn block(state: u32) -> (u8, u8) {
-	let (id, meta) = ids::block((state >> 4) as u16, (state & 15) as u8, V::R1_1);
+	let (id, meta) = ids::block((state >> 4) as u16, (state & 15) as u8, Version::V1_1);
 	(id as u8, meta)
 }
 

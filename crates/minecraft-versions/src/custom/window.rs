@@ -5,6 +5,7 @@ use nbt::Payload;
 use super::chunks::{
 	Biomes, BlockEntity, Column, Heightmap, Light, Nibbles, Section, BLOCKS, NIBBLES,
 };
+use crate::gen::convert::Version;
 
 const LAYER: usize = 256;
 const LIGHT: usize = 18;
@@ -14,7 +15,7 @@ pub(crate) const SYNTHETIC: i32 = 0x4e00_0000;
 
 pub(crate) trait Dialect: 'static {
 	type Painting: Clone + Send + 'static;
-	const AT: usize;
+	const AT: Version;
 	fn air() -> u32;
 	fn is_air(state: u32) -> bool;
 	fn heightmaps(

@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::sync::OnceLock;
 use std::time::Duration;
 
@@ -9,9 +10,7 @@ use bytes::BytesMut;
 use futures::SinkExt;
 use minecraft_versions::gen;
 use minecraft_versions::pds::{self, Input};
-use minecraft_versions::{
-	legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET, VERSIONS,
-};
+use minecraft_versions::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET};
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use tokio::io::AsyncReadExt;
@@ -20,7 +19,7 @@ use tokio_util::codec::Framed;
 
 use crate::codec::Codec;
 use crate::status::{self, Upstream};
-use crate::{at, join_upstream, next, relay, Config, Conn, Proxy};
+use crate::{join_upstream, next, relay, Config, Conn, Proxy};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Frame {
@@ -29,50 +28,50 @@ pub enum Frame {
 }
 
 macro_rules! lengths {
-	($($v:literal => $ns:ident;)*) => {
-		pub fn packet_len(root: Root, version: usize, data: &[u8]) -> std::result::Result<Frame, String> {
+	($($v:ident => $ns:ident;)*) => {
+		pub fn packet_len(root: Root, version: Version, data: &[u8]) -> std::result::Result<Frame, String> {
 			let mut input = Input::new(data);
-			let read = pds::stack::budget(STACK_BUDGET, || match (VERSIONS[version], root) {
+			let read = pds::stack::budget(STACK_BUDGET, || match (version, root) {
 				$(
-					($v, Root::PlayToClient) => Ok(gen::$ns::play::to_client::packet::deserialize(&mut input).map(drop)),
-					($v, Root::PlayToServer) => Ok(gen::$ns::play::to_server::packet::deserialize(&mut input).map(drop)),
+					(Version::$v, Root::PlayToClient) => Ok(gen::$ns::play::to_client::packet::deserialize(&mut input).map(drop)),
+					(Version::$v, Root::PlayToServer) => Ok(gen::$ns::play::to_server::packet::deserialize(&mut input).map(drop)),
 				)*
 				(v, r) => Err(format!("{v} has no pre-netty {r:?} packets")),
 			})?;
 			match read {
 				Ok(()) => Ok(Frame::Complete(input.offset())),
 				Err(pds::Error::NotEnoughData) => Ok(Frame::Need(input.needed().max(data.len() + 1))),
-				Err(e) => Err(format!("malformed {} packet {:#04x}: {e:?}", VERSIONS[version], data[0])),
+				Err(e) => Err(format!("malformed {} packet {:#04x}: {e:?}", version, data[0])),
 			}
 		}
 	};
 }
 
 lengths! {
-	"1.0.1" => v1_0_1;
-	"1.1" => v1_1;
-	"1.2.3" => v1_2_3;
-	"1.2.5" => v1_2_5;
-	"1.3.2" => v1_3_2;
-	"1.4.2" => v1_4_2;
-	"1.4.5" => v1_4_5;
-	"1.4.7" => v1_4_7;
-	"1.5.1" => v1_5_1;
-	"1.5.2" => v1_5_2;
-	"1.6.1" => v1_6_1;
-	"1.6.2" => v1_6_2;
-	"1.6.4" => v1_6_4;
+	V1_0_1 => v1_0_1;
+	V1_1 => v1_1;
+	V1_2_3 => v1_2_3;
+	V1_2_5 => v1_2_5;
+	V1_3_2 => v1_3_2;
+	V1_4_2 => v1_4_2;
+	V1_4_5 => v1_4_5;
+	V1_4_7 => v1_4_7;
+	V1_5_1 => v1_5_1;
+	V1_5_2 => v1_5_2;
+	V1_6_1 => v1_6_1;
+	V1_6_2 => v1_6_2;
+	V1_6_4 => v1_6_4;
 }
 
-pub fn is_legacy(version: usize) -> bool {
+pub fn is_legacy(version: Version) -> bool {
 	LEGACY_PROTOCOLS.iter().any(|(_, v)| *v == version)
 }
 
 pub fn handshake_len(data: &[u8]) -> std::result::Result<Frame, String> {
 	match data {
 		[] | [0x02] => Ok(Frame::Need(2)),
-		[0x02, 0, ..] => packet_len(Root::PlayToServer, at("1.2.5"), data),
-		[0x02, ..] => packet_len(Root::PlayToServer, at("1.6.4"), data),
+		[0x02, 0, ..] => packet_len(Root::PlayToServer, Version::V1_2_5, data),
+		[0x02, ..] => packet_len(Root::PlayToServer, Version::V1_6_4, data),
 		[0x01, a, b, c, d, ..] => {
 			let protocol = i32::from_be_bytes([*a, *b, *c, *d]);
 			let version = legacy_version_of(protocol)
@@ -126,14 +125,14 @@ impl Cfb8 {
 
 pub struct Legacy {
 	pub root: Root,
-	pub version: Option<usize>,
+	pub version: Option<Version>,
 	pub cipher: Option<(Cfb8, Cfb8)>,
 	pub plain: BytesMut,
 	pub need: usize,
 }
 
 impl Legacy {
-	pub fn new(root: Root, version: Option<usize>) -> Self {
+	pub fn new(root: Root, version: Option<Version>) -> Self {
 		Self {
 			root,
 			version,
@@ -175,8 +174,8 @@ pub fn kick(reason: &str) -> Vec<u8> {
 	out
 }
 
-pub fn served(server: usize) -> Vec<usize> {
-	let mut out: Vec<usize> = LEGACY_PROTOCOLS
+pub fn served(server: Version) -> Vec<Version> {
+	let mut out: Vec<Version> = LEGACY_PROTOCOLS
 		.iter()
 		.map(|(_, v)| *v)
 		.filter(|v| reachable(server, *v))
@@ -186,7 +185,7 @@ pub fn served(server: usize) -> Vec<usize> {
 	out
 }
 
-pub fn protocol_of(version: usize) -> Option<i32> {
+pub fn protocol_of(version: Version) -> Option<i32> {
 	LEGACY_PROTOCOLS
 		.iter()
 		.filter(|(_, v)| *v == version)
@@ -194,10 +193,10 @@ pub fn protocol_of(version: usize) -> Option<i32> {
 		.max()
 }
 
-pub fn range(server: usize) -> String {
+pub fn range(server: Version) -> String {
 	let served = served(server);
 	match (served.first(), served.last()) {
-		(Some(low), Some(high)) => format!("{}-{}", VERSIONS[*low], VERSIONS[*high]),
+		(Some(low), Some(high)) => format!("{}-{}", *low, *high),
 		_ => "none".to_owned(),
 	}
 }
@@ -205,7 +204,7 @@ pub fn range(server: usize) -> String {
 pub fn ping_reply(
 	request: &[u8],
 	config: &Config,
-	server: usize,
+	server: Version,
 	upstream: Option<&Upstream>,
 ) -> String {
 	let (motd, online, max) = match upstream {
@@ -237,7 +236,7 @@ pub fn ping_reply(
 
 async fn ping(mut stream: TcpStream, config: &Config) -> Result<()> {
 	use tokio::io::AsyncWriteExt;
-	let server = config.server()?;
+	let server = config.server_version;
 	let mut request = Vec::new();
 	let mut buf = [0u8; 512];
 	loop {
@@ -277,7 +276,7 @@ pub async fn handle(stream: TcpStream, config: &Config, first: u8) -> Result<()>
 	if first == 0xfe {
 		return ping(stream, config).await;
 	}
-	let sv = config.server()?;
+	let sv = config.server_version;
 	let mut client = Framed::new(
 		stream,
 		Codec {
@@ -393,11 +392,11 @@ pub async fn connect(
 	target: &str,
 	host: &str,
 	port: u16,
-	version: usize,
+	version: Version,
 	username: &str,
 ) -> Result<Conn> {
-	let protocol = protocol_of(version)
-		.ok_or_else(|| anyhow!("{} is not a pre-netty version", VERSIONS[version]))?;
+	let protocol =
+		protocol_of(version).ok_or_else(|| anyhow!("{} is not a pre-netty version", version))?;
 	let stream = TcpStream::connect(target)
 		.await
 		.with_context(|| format!("connecting to {target}"))?;
@@ -478,7 +477,13 @@ pub async fn connect(
 	Ok(conn)
 }
 
-async fn play(client: Conn, config: &Config, cv: usize, sv: usize, username: String) -> Result<()> {
+async fn play(
+	client: Conn,
+	config: &Config,
+	cv: Version,
+	sv: Version,
+	username: String,
+) -> Result<()> {
 	let online = crate::online::Online::new(config.accounts.find(&username, None), &username);
 	let mut p = Proxy::new(client, cv, sv, &config.target, online);
 	if let Err(e) = p.connect(&username, false).await {
@@ -532,7 +537,7 @@ mod tests {
 			motd: "\u{a7}ahi".to_owned(),
 			..Config::default()
 		};
-		let server = at("1.8");
+		let server = Version::V1_8;
 		assert_eq!(
 			ping_reply(&[0xfe], &config, server, None),
 			"hi\u{a7}0\u{a7}0"

@@ -1,5 +1,6 @@
 use minecraft_versions::gen::convert::packet_name;
-use minecraft_versions::{convert, index_of, Root, Session};
+use minecraft_versions::Version;
+use minecraft_versions::{convert, Root, Session};
 
 fn chat_1_8(json: &str) -> Vec<u8> {
 	let mut out = vec![0x02];
@@ -26,7 +27,7 @@ fn contains(haystack: &[u8], needle: &str) -> bool {
 #[test]
 fn legacy_hover_events_reach_26_1() {
 	let json = r#"{"translate":"chat.type.text","with":[{"insertion":"CertainLach","clickEvent":{"action":"suggest_command","value":"/msg CertainLach "},"hoverEvent":{"action":"show_entity","value":{"text":"{name:\"CertainLach\",id:\"83973d76-06af-3046-8341-c8574af3577b\"}"}},"text":"CertainLach"},{"text":"the","hoverEvent":{"action":"show_item","value":{"text":"{id:\"minecraft:stone\",Count:3b}"}}}]}"#;
-	let (from, to) = (index_of("1.8").unwrap(), index_of("26.1").unwrap());
+	let (from, to) = (Version::V1_8, Version::V26_1);
 	let out = convert(
 		Root::PlayToClient,
 		from,

@@ -745,7 +745,7 @@ fn system_chat(
 	content: &Tag,
 ) -> Result<ClientA> {
 	let mut content = decoration(chat).nbt(sender, target, content);
-	localize(&mut content, TO.index(), FROM.index(), cx)?;
+	localize(&mut content, TO, FROM, cx)?;
 	Ok(ClientA::SystemChat(
 		a::play_to_client_packet_system_chat::Ty {
 			content,

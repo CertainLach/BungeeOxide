@@ -1,3 +1,5 @@
+use crate::gen::convert::Version;
+use crate::version_range;
 use std::sync::OnceLock;
 
 use nbt::{Entry, Payload, Tag};
@@ -8,10 +10,9 @@ use super::formats::{
 	encode_18, encode_7, encode_8, encode_9, inflate, size_7, size_8, Bitmask,
 };
 use super::model::{Biomes, BlockEntity, Column, HeightKind, Heightmap, Light, Nibbles, CELLS};
-use super::v;
 use crate::gen::convert::{
 	inspect, v1_14, v1_15, v1_16, v1_16_2, v1_17, v1_18, v1_20, v1_20_2, v1_21_5, v1_21_6, v1_7,
-	v1_8, v1_9, v1_9_4, Root, VERSIONS,
+	v1_8, v1_9, v1_9_4, Root,
 };
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::pds::{Input, Output};
@@ -85,23 +86,23 @@ pub struct Ids {
 	pub unload: Option<i32>,
 }
 
-fn find_id(version: usize, name: &str, body: &[u8]) -> Option<i32> {
+fn find_id(version: Version, name: &str, body: &[u8]) -> Option<i32> {
 	(0..256).find(|id| {
 		let data = framed(*id, body.to_vec());
 		inspect(Root::PlayToClient, version, &data).is_ok_and(|n| n == name)
 	})
 }
 
-pub fn ids(version: usize) -> &'static Ids {
+pub fn ids(version: Version) -> &'static Ids {
 	static IDS: OnceLock<Vec<OnceLock<Ids>>> = OnceLock::new();
-	IDS.get_or_init(|| (0..VERSIONS.len()).map(|_| OnceLock::new()).collect())[version].get_or_init(
-		|| {
-			if version < v::V1_7 {
+	IDS.get_or_init(|| (0..Version::ALL.len()).map(|_| OnceLock::new()).collect())[version.index()]
+		.get_or_init(|| {
+			if version < Version::V1_7 {
 				return Ids::default();
 			}
 			let mut col = Column::new(0, 0, true, version);
 			col.biomes = match version {
-				..v::V1_15 => Biomes::Flat(vec![0; 256]),
+				version_range!(..V1_15) => Biomes::Flat(vec![0; 256]),
 				_ => Biomes::Cells(vec![0; 1024]),
 			};
 			col.heightmaps = Some(Vec::new());
@@ -109,19 +110,19 @@ pub fn ids(version: usize) -> &'static Ids {
 				.ok()
 				.and_then(|b| find_id(version, "map_chunk", &b));
 			let bulk = match version {
-				..v::V1_9 => bulk_body(version, std::slice::from_ref(&col), true)
+				version_range!(..V1_9) => bulk_body(version, std::slice::from_ref(&col), true)
 					.ok()
 					.and_then(|b| find_id(version, "map_chunk_bulk", &b)),
 				_ => None,
 			};
 			let light = match version {
-				v::V1_14.. => light_body(version, 0, 0, &Light::new(16, true))
+				version_range!(V1_14..) => light_body(version, 0, 0, &Light::new(16, true))
 					.ok()
 					.and_then(|b| find_id(version, "update_light", &b)),
 				_ => None,
 			};
 			let unload = match version {
-				v::V1_9.. => unload_body(version, 0, 0)
+				version_range!(V1_9..) => unload_body(version, 0, 0)
 					.ok()
 					.and_then(|b| find_id(version, "unload_chunk", &b)),
 				_ => None,
@@ -132,8 +133,7 @@ pub fn ids(version: usize) -> &'static Ids {
 				light,
 				unload,
 			}
-		},
-	)
+		})
 }
 
 pub fn packet_id(data: &[u8]) -> Option<i32> {
@@ -486,10 +486,10 @@ fn cells_len(col: &Column) -> usize {
 	}
 }
 
-pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
+pub fn chunk_body(version: Version, col: &Column) -> Result<Vec<u8>> {
 	let (x, z) = (col.x, col.z);
 	match version {
-		v::V1_7 => {
+		Version::V1_7 => {
 			let (m, raw) = encode_7(col);
 			body(
 				&C7 {
@@ -503,7 +503,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				v1_7::play_to_client_packet_map_chunk::serialize,
 			)
 		}
-		v::V1_8 => {
+		Version::V1_8 => {
 			let (mask, chunk_data) = encode_8(col);
 			body(
 				&C8 {
@@ -516,7 +516,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				v1_8::play_to_client_packet_map_chunk::serialize,
 			)
 		}
-		v::V1_9..v::V1_9_4 => {
+		version_range!(V1_9..V1_9_4) => {
 			let (mask, chunk_data) = encode_9(col, version);
 			body(
 				&C9 {
@@ -529,7 +529,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				v1_9::play_to_client_packet_map_chunk::serialize,
 			)
 		}
-		v::V1_9_4..v::V1_14 => {
+		version_range!(V1_9_4..V1_14) => {
 			let (mask, chunk_data) = encode_9(col, version);
 			let block_entities = named_list(&col.entities);
 			body(
@@ -544,7 +544,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				v1_9_4::play_to_client_packet_map_chunk::serialize,
 			)
 		}
-		v::V1_14..v::V1_15 => {
+		version_range!(V1_14..V1_15) => {
 			let (mask, chunk_data) = encode_14(col, version, true);
 			let p = C14 {
 				x,
@@ -557,7 +557,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_14::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_15..v::V1_16 => {
+		version_range!(V1_15..V1_16) => {
 			use v1_15::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let (mask, chunk_data) = encode_14(col, version, false);
 			let biomes = if col.full {
@@ -576,7 +576,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_15::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_16..v::V1_16_2 => {
+		version_range!(V1_16..V1_16_2) => {
 			use v1_16::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let (present, chunk_data) = encode_16(col, version);
 			let mask = present.iter().fold(0i32, |m, s| m | 1 << s);
@@ -597,7 +597,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_16::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_16_2 => {
+		Version::V1_16_2 => {
 			use v1_16_2::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let (present, chunk_data) = encode_16(col, version);
 			let mask = present.iter().fold(0i32, |m, s| m | 1 << s);
@@ -617,7 +617,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_16_2::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_17..v::V1_18 => {
+		version_range!(V1_17..V1_18) => {
 			let (_, chunk_data) = encode_16(col, version);
 			let p = C17 {
 				x,
@@ -630,7 +630,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_17::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_18..v::V1_20 => {
+		version_range!(V1_18..V1_20) => {
 			let m = masks(&light_or_empty(col));
 			let p = C18 {
 				x,
@@ -648,7 +648,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_18::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_20 => {
+		Version::V1_20 => {
 			let m = masks(&light_or_empty(col));
 			let p = C20 {
 				x,
@@ -665,7 +665,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_20::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_20_2..v::V1_21_5 => {
+		version_range!(V1_20_2..V1_21_5) => {
 			let m = masks(&light_or_empty(col));
 			let p = C202 {
 				x,
@@ -682,7 +682,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 			};
 			body(&p, v1_20_2::play_to_client_packet_map_chunk::serialize)
 		}
-		v::V1_21_5 => {
+		Version::V1_21_5 => {
 			let m = masks(&light_or_empty(col));
 			let heightmaps = col
 				.heightmaps
@@ -745,7 +745,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 	}
 }
 
-pub fn bulk_body(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8>> {
+pub fn bulk_body(version: Version, columns: &[Column], sky: bool) -> Result<Vec<u8>> {
 	let mut columns = columns.to_vec();
 	for c in &mut columns {
 		c.full = true;
@@ -754,7 +754,7 @@ pub fn bulk_body(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8
 		}
 	}
 	match version {
-		v::V1_7 => {
+		Version::V1_7 => {
 			let mut raw = Vec::new();
 			let mut meta = Vec::new();
 			for c in &columns {
@@ -844,14 +844,14 @@ pub(super) fn from_light_17(sections: usize, p: L17) -> Light {
 	light_from_masks(sections, masks_of!(p), trust)
 }
 
-pub fn light_body(version: usize, x: i32, z: i32, light: &Light) -> Result<Vec<u8>> {
+pub fn light_body(version: Version, x: i32, z: i32, light: &Light) -> Result<Vec<u8>> {
 	let m = masks(light);
 	match version {
-		v::V1_14..v::V1_16 => body(
+		version_range!(V1_14..V1_16) => body(
 			&light_14(x, z, light),
 			v1_14::play_to_client_packet_update_light::serialize,
 		),
-		v::V1_16..v::V1_17 => {
+		version_range!(V1_16..V1_17) => {
 			let (sky, block, empty_sky, empty_block, data) = rest_of(&m);
 			let p = L16 {
 				chunk_x: x,
@@ -865,7 +865,7 @@ pub fn light_body(version: usize, x: i32, z: i32, light: &Light) -> Result<Vec<u
 			};
 			body(&p, v1_16::play_to_client_packet_update_light::serialize)
 		}
-		v::V1_17..v::V1_20 => body(
+		version_range!(V1_17..V1_20) => body(
 			&light_17(x, z, light),
 			v1_17::play_to_client_packet_update_light::serialize,
 		),
@@ -885,9 +885,9 @@ pub fn light_body(version: usize, x: i32, z: i32, light: &Light) -> Result<Vec<u
 	}
 }
 
-pub fn unload_body(version: usize, x: i32, z: i32) -> Result<Vec<u8>> {
+pub fn unload_body(version: Version, x: i32, z: i32) -> Result<Vec<u8>> {
 	match version {
-		..v::V1_20_2 => body(
+		version_range!(..V1_20_2) => body(
 			&U9 {
 				chunk_x: x,
 				chunk_z: z,
@@ -904,14 +904,14 @@ pub fn unload_body(version: usize, x: i32, z: i32) -> Result<Vec<u8>> {
 	}
 }
 
-fn id_of(version: usize, id: Option<i32>, what: &str) -> Result<i32> {
-	id.ok_or_else(|| Error::Encoding(format!("no {what} packet in {}", VERSIONS[version])))
+fn id_of(version: Version, id: Option<i32>, what: &str) -> Result<i32> {
+	id.ok_or_else(|| Error::Encoding(format!("no {what} packet in {version}")))
 }
 
-pub fn encode_chunk(version: usize, col: &Column) -> Result<Vec<Vec<u8>>> {
+pub fn encode_chunk(version: Version, col: &Column) -> Result<Vec<Vec<u8>>> {
 	let ids = ids(version);
 	let mut out = Vec::with_capacity(2);
-	if (v::V1_14..v::V1_18).contains(&version) {
+	if (Version::V1_14..Version::V1_18).contains(&version) {
 		if let Some(light) = &col.light {
 			out.push(framed(
 				id_of(version, ids.light, "update_light")?,
@@ -926,30 +926,30 @@ pub fn encode_chunk(version: usize, col: &Column) -> Result<Vec<Vec<u8>>> {
 	Ok(out)
 }
 
-pub fn encode_bulk(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8>> {
+pub fn encode_bulk(version: Version, columns: &[Column], sky: bool) -> Result<Vec<u8>> {
 	Ok(framed(
 		id_of(version, ids(version).bulk, "map_chunk_bulk")?,
 		bulk_body(version, columns, sky)?,
 	))
 }
 
-pub fn encode_light(version: usize, x: i32, z: i32, light: &Light) -> Result<Vec<u8>> {
+pub fn encode_light(version: Version, x: i32, z: i32, light: &Light) -> Result<Vec<u8>> {
 	Ok(framed(
 		id_of(version, ids(version).light, "update_light")?,
 		light_body(version, x, z, light)?,
 	))
 }
 
-pub fn encode_unload(version: usize, x: i32, z: i32) -> Result<Vec<u8>> {
+pub fn encode_unload(version: Version, x: i32, z: i32) -> Result<Vec<u8>> {
 	Ok(framed(
 		id_of(version, ids(version).unload, "unload_chunk")?,
 		unload_body(version, x, z)?,
 	))
 }
 
-fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Result<Column> {
+fn decode_chunk_body(version: Version, data: &[u8], sections: Option<usize>) -> Result<Column> {
 	match version {
-		v::V1_7 => {
+		Version::V1_7 => {
 			let p = read(data, v1_7::play_to_client_packet_map_chunk::deserialize)?;
 			let raw = inflate(&p.compressed_chunk_data)?;
 			let mut col = Column::new(p.x, p.z, p.ground_up, version);
@@ -958,7 +958,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			decode_7(&mut col, &raw, Bitmask { mask, add }, sky)?;
 			Ok(col)
 		}
-		v::V1_8 => {
+		Version::V1_8 => {
 			let p = read(data, v1_8::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, p.ground_up, version);
 			let mask = p.bit_map as u32;
@@ -966,25 +966,25 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			decode_8(&mut col, &p.chunk_data, mask, sky)?;
 			Ok(col)
 		}
-		v::V1_9..v::V1_9_4 => {
+		version_range!(V1_9..V1_9_4) => {
 			let p = read(data, v1_9::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, p.ground_up, version);
 			decode_9(&mut col, &p.chunk_data, p.bit_map as u32, true)?;
 			Ok(col)
 		}
-		v::V1_9_4..v::V1_14 => {
+		version_range!(V1_9_4..V1_14) => {
 			let p = read(data, v1_9_4::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, p.ground_up, version);
 			decode_9(
 				&mut col,
 				&p.chunk_data,
 				p.bit_map as u32,
-				version < v::V1_13,
+				version < Version::V1_13,
 			)?;
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_14..v::V1_15 => {
+		version_range!(V1_14..V1_15) => {
 			let p = read(data, v1_14::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, p.ground_up, version);
 			decode_14(&mut col, &p.chunk_data, p.bit_map as u32, true)?;
@@ -992,7 +992,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_15..v::V1_16 => {
+		version_range!(V1_15..V1_16) => {
 			use v1_15::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let p = read(data, v1_15::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
@@ -1004,7 +1004,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_16..v::V1_16_2 => {
+		version_range!(V1_16..V1_16_2) => {
 			use v1_16::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let p = read(data, v1_16::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
@@ -1017,7 +1017,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_16_2 => {
+		Version::V1_16_2 => {
 			use v1_16_2::play_to_client_packet_map_chunk_biomes::Ty as B;
 			let p = read(data, v1_16_2::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
@@ -1030,7 +1030,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_17..v::V1_18 => {
+		version_range!(V1_17..V1_18) => {
 			let p = read(data, v1_17::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
 			let present: Vec<usize> = (0..p.bit_map.len() * 64)
@@ -1042,7 +1042,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
-		v::V1_18..v::V1_20 => {
+		version_range!(V1_18..V1_20) => {
 			let p = read(data, v1_18::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
 			decode_18(&mut col, &p.chunk_data, version, sections)?;
@@ -1052,7 +1052,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = entities_18(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
-		v::V1_20 => {
+		Version::V1_20 => {
 			let p = read(data, v1_20::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
 			decode_18(&mut col, &p.chunk_data, version, sections)?;
@@ -1062,7 +1062,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = entities_18(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
-		v::V1_20_2..v::V1_21_5 => {
+		version_range!(V1_20_2..V1_21_5) => {
 			let p = read(data, v1_20_2::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
 			decode_18(&mut col, &p.chunk_data, version, sections)?;
@@ -1072,7 +1072,7 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 			col.entities = entities_202(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
-		v::V1_21_5 => {
+		Version::V1_21_5 => {
 			let p = read(data, v1_21_5::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
 			decode_18(&mut col, &p.chunk_data, version, sections)?;
@@ -1108,10 +1108,10 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 	}
 }
 
-fn decode_bulk_body(version: usize, data: &[u8]) -> Result<(Vec<Column>, bool)> {
+fn decode_bulk_body(version: Version, data: &[u8]) -> Result<(Vec<Column>, bool)> {
 	let mut out = Vec::new();
 	match version {
-		v::V1_7 => {
+		Version::V1_7 => {
 			let p = read(
 				data,
 				v1_7::play_to_client_packet_map_chunk_bulk::deserialize,
@@ -1153,9 +1153,9 @@ fn decode_bulk_body(version: usize, data: &[u8]) -> Result<(Vec<Column>, bool)> 
 	}
 }
 
-fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
+fn decode_light_body(version: Version, data: &[u8]) -> Result<(i32, i32, Light)> {
 	match version {
-		v::V1_14..v::V1_16 => {
+		version_range!(V1_14..V1_16) => {
 			let p = read(data, v1_14::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_rest(
 				p.sky_light_mask,
@@ -1167,7 +1167,7 @@ fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
 			)?;
 			Ok((p.chunk_x, p.chunk_z, l))
 		}
-		v::V1_16..v::V1_17 => {
+		version_range!(V1_16..V1_17) => {
 			let p = read(data, v1_16::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_rest(
 				p.sky_light_mask,
@@ -1179,7 +1179,7 @@ fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
 			)?;
 			Ok((p.chunk_x, p.chunk_z, l))
 		}
-		v::V1_17..v::V1_20 => {
+		version_range!(V1_17..V1_20) => {
 			let p = read(data, v1_17::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_masks(0, masks_of!(p), p.trust_edges);
 			Ok((p.chunk_x, p.chunk_z, l))
@@ -1192,9 +1192,9 @@ fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
 	}
 }
 
-fn decode_unload_body(version: usize, data: &[u8]) -> Result<(i32, i32)> {
+fn decode_unload_body(version: Version, data: &[u8]) -> Result<(i32, i32)> {
 	match version {
-		..v::V1_20_2 => {
+		version_range!(..V1_20_2) => {
 			let p = read(data, v1_9::play_to_client_packet_unload_chunk::deserialize)?;
 			Ok((p.chunk_x, p.chunk_z))
 		}
@@ -1208,11 +1208,11 @@ fn decode_unload_body(version: usize, data: &[u8]) -> Result<(i32, i32)> {
 	}
 }
 
-pub fn decode(version: usize, data: &[u8]) -> Result<Option<Packet>> {
+pub fn decode(version: Version, data: &[u8]) -> Result<Option<Packet>> {
 	decode_in(version, data, None)
 }
 
-pub fn decode_in(version: usize, data: &[u8], sections: Option<usize>) -> Result<Option<Packet>> {
+pub fn decode_in(version: Version, data: &[u8], sections: Option<usize>) -> Result<Option<Packet>> {
 	let mut r = Reader::new(data);
 	let Ok(id) = r.varint() else { return Ok(None) };
 	let body = &data[data.len() - r.remaining()..];

@@ -10,16 +10,16 @@ const KEY: &str = "\"translate\"";
 
 pub struct Target<'a> {
 	languages: &'a Languages,
-	version: usize,
+	version: Version,
 	fallback: bool,
 }
 
 impl<'a> Target<'a> {
-	pub fn new(languages: &'a Languages, version: usize) -> Self {
+	pub fn new(languages: &'a Languages, version: Version) -> Self {
 		Self {
 			languages,
 			version,
-			fallback: version >= Version::V1_19_4.index(),
+			fallback: version >= Version::V1_19_4,
 		}
 	}
 
@@ -127,7 +127,12 @@ impl<T: Data> Data for Option<T> {
 	}
 }
 
-pub fn localize<T: Text>(value: &mut T, _from: usize, to: usize, _cx: &mut Session) -> Result<()> {
+pub fn localize<T: Text>(
+	value: &mut T,
+	_from: Version,
+	to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
 	if value.mentions() {
 		if let Some(languages) = languages::get() {
 			value.rewrite(&Target::new(languages, to));
@@ -138,8 +143,8 @@ pub fn localize<T: Text>(value: &mut T, _from: usize, to: usize, _cx: &mut Sessi
 
 pub fn localize_nbt<T: Data>(
 	value: &mut T,
-	_from: usize,
-	to: usize,
+	_from: Version,
+	to: Version,
 	_cx: &mut Session,
 ) -> Result<()> {
 	if value.mentions() {
@@ -152,8 +157,8 @@ pub fn localize_nbt<T: Data>(
 
 pub fn localize_status(
 	value: &mut String,
-	_from: usize,
-	to: usize,
+	_from: Version,
+	to: Version,
 	_cx: &mut Session,
 ) -> Result<()> {
 	if !value.contains(KEY) {
@@ -424,7 +429,6 @@ fn literal_nbt(entries: &mut Vec<Entry>, pattern: &str) {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::gen::convert::index_of;
 	use serde_json::json;
 
 	fn strings(pairs: &[(&str, &str)]) -> Vec<(String, String)> {
@@ -442,13 +446,9 @@ mod tests {
 			("gui.swap", "%2$s, then %1$s"),
 		];
 		Languages::new(
-			[("1.12.2", "old"), ("1.20.5", "new")],
+			[(Version::V1_12_2, "old"), (Version::V1_20_5, "new")],
 			[("old", strings(&old)), ("new", strings(&new))],
 		)
-	}
-
-	fn at(v: &str) -> usize {
-		index_of(v).unwrap()
 	}
 
 	#[test]
@@ -461,7 +461,7 @@ mod tests {
 			"with": [{"text": "Steve", "color": "red"}],
 			"extra": [" ", {"translate": "chat.type.text", "with": ["a", {"translate": "gui.swap", "with": ["x", 5]}]}]
 		});
-		assert!(json(&mut v, &Target::new(&l, at("1.12.2"))));
+		assert!(json(&mut v, &Target::new(&l, Version::V1_12_2)));
 		assert_eq!(
 			v,
 			json!({
@@ -482,23 +482,23 @@ mod tests {
 	fn known_keys_and_unknown_data_stay() {
 		let l = languages();
 		let mut v = json!({"translate": "gui.swap", "with": ["a", "b"]});
-		assert!(!json(&mut v, &Target::new(&l, at("1.20.5"))));
-		assert!(!json(&mut v, &Target::new(&l, at("26.1"))));
+		assert!(!json(&mut v, &Target::new(&l, Version::V1_20_5)));
+		assert!(!json(&mut v, &Target::new(&l, Version::V26_1)));
 		let mut custom = json!({"translate": "custom.key"});
-		assert!(!json(&mut custom, &Target::new(&l, at("1.12.2"))));
+		assert!(!json(&mut custom, &Target::new(&l, Version::V1_12_2)));
 		let mut text = String::from("{\"text\":\"plain\"}");
-		assert!(!text.rewrite(&Target::new(&l, at("1.12.2"))));
+		assert!(!text.rewrite(&Target::new(&l, Version::V1_12_2)));
 	}
 
 	#[test]
 	fn fallback_wins_and_covers_keys_without_data() {
 		let l = languages();
 		let mut v = json!({"translate": "custom.key", "fallback": "Hi %s", "with": ["you"]});
-		assert!(!json(&mut v.clone(), &Target::new(&l, at("1.19.4"))));
-		assert!(json(&mut v, &Target::new(&l, at("1.19.3"))));
+		assert!(!json(&mut v.clone(), &Target::new(&l, Version::V1_19_4)));
+		assert!(json(&mut v, &Target::new(&l, Version::V1_19_3)));
 		assert_eq!(v, json!({"text": "Hi you"}));
 		let mut known = json!({"translate": "death.attack.genericKill", "fallback": "%s fell", "with": ["Bob"]});
-		assert!(json(&mut known, &Target::new(&l, at("1.12.2"))));
+		assert!(json(&mut known, &Target::new(&l, Version::V1_12_2)));
 		assert_eq!(known, json!({"text": "Bob fell"}));
 	}
 
@@ -524,7 +524,7 @@ mod tests {
 			("extra", ListItems::String(vec!["!".to_owned()]).into()),
 		]));
 		assert!(Text::mentions(&tag));
-		assert!(Text::rewrite(&mut tag, &Target::new(&l, at("1.12.2"))));
+		assert!(Text::rewrite(&mut tag, &Target::new(&l, Version::V1_12_2)));
 		let expected = compound(vec![
 			("bold", Payload::Byte(1)),
 			("text", s("")),
@@ -540,7 +540,10 @@ mod tests {
 		]);
 		assert_eq!(tag.value, expected);
 		let mut known = Tag::new(compound(vec![("translate", s("chat.type.text"))]));
-		assert!(!Text::rewrite(&mut known, &Target::new(&l, at("1.12.2"))));
+		assert!(!Text::rewrite(
+			&mut known,
+			&Target::new(&l, Version::V1_12_2)
+		));
 	}
 
 	#[test]
@@ -559,7 +562,7 @@ mod tests {
 			)]),
 		));
 		assert!(item.mentions());
-		assert!(item.rewrite(&Target::new(&l, at("1.12.2"))));
+		assert!(item.rewrite(&Target::new(&l, Version::V1_12_2)));
 		let Some(Entry {
 			value: Payload::Compound(root),
 			..

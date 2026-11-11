@@ -1,3 +1,5 @@
+use crate::gen::convert::Version;
+use crate::version_range;
 use std::io::{Read, Write};
 use std::sync::OnceLock;
 
@@ -7,8 +9,6 @@ use flate2::Compression;
 
 use super::bits::{bits_for, long_count, pack, palette, put_longs, put_varint, unpack, Reader};
 use super::model::{Biomes, Column, Light, Nibbles, Section, BLOCKS, CELLS, NIBBLES};
-use super::v;
-use crate::gen::convert::VERSIONS;
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::registry;
 
@@ -25,45 +25,46 @@ pub(super) enum Format {
 	Paletted18,
 }
 
-pub(super) fn format(version: usize) -> Format {
+pub(super) fn format(version: Version) -> Format {
 	match version {
-		v::V1_7 => Format::Legacy7,
-		v::V1_8 => Format::Raw8,
-		v::V1_9..v::V1_13 => Format::Pal9,
-		v::V1_13..v::V1_14 => Format::Flat13,
-		v::V1_14..v::V1_16 => Format::Count14,
-		v::V1_16..v::V1_18 => Format::Packed16,
+		Version::V1_7 => Format::Legacy7,
+		Version::V1_8 => Format::Raw8,
+		version_range!(V1_9..V1_13) => Format::Pal9,
+		version_range!(V1_13..V1_14) => Format::Flat13,
+		version_range!(V1_14..V1_16) => Format::Count14,
+		version_range!(V1_16..V1_18) => Format::Packed16,
 		_ => Format::Paletted18,
 	}
 }
 
 fn cached<T: Send + Sync>(
 	cells: &'static OnceLock<Vec<OnceLock<T>>>,
-	version: usize,
+	version: Version,
 	make: impl FnOnce() -> T,
 ) -> &'static T {
-	cells.get_or_init(|| (0..VERSIONS.len()).map(|_| OnceLock::new()).collect())[version]
-		.get_or_init(make)
+	cells.get_or_init(|| (0..Version::ALL.len()).map(|_| OnceLock::new()).collect())
+		[version.index()]
+	.get_or_init(make)
 }
 
-pub(super) fn global_bits(version: usize) -> u32 {
+pub(super) fn global_bits(version: Version) -> u32 {
 	static CACHE: OnceLock<Vec<OnceLock<u32>>> = OnceLock::new();
 	*cached(&CACHE, version, || match format(version) {
 		Format::Legacy7 | Format::Raw8 => 16,
 		Format::Pal9 => 13,
 		Format::Flat13 | Format::Count14 => 14,
-		_ => registry::blocks(VERSIONS[version]).map_or(15, |b| bits_for(b.states() as usize)),
+		_ => registry::blocks(version).map_or(15, |b| bits_for(b.states() as usize)),
 	})
 }
 
-pub(super) fn domain(version: usize) -> usize {
+pub(super) fn domain(version: Version) -> usize {
 	1 << global_bits(version)
 }
 
-fn air(version: usize) -> &'static [u32] {
+fn air(version: Version) -> &'static [u32] {
 	static CACHE: OnceLock<Vec<OnceLock<Vec<u32>>>> = OnceLock::new();
 	cached(&CACHE, version, || {
-		let b = registry::blocks(VERSIONS[version]);
+		let b = registry::blocks(version);
 		let out: Vec<u32> = ["air", "cave_air", "void_air"]
 			.iter()
 			.filter_map(|n| b?.block(n).map(|x| x.default))
@@ -76,7 +77,7 @@ fn air(version: usize) -> &'static [u32] {
 	})
 }
 
-pub(super) fn non_air(version: usize, states: &[u32]) -> i16 {
+pub(super) fn non_air(version: Version, states: &[u32]) -> i16 {
 	match format(version) {
 		Format::Legacy7 | Format::Raw8 | Format::Pal9 => {
 			states.iter().filter(|s| **s >= 16).count() as i16
@@ -88,16 +89,16 @@ pub(super) fn non_air(version: usize, states: &[u32]) -> i16 {
 	}
 }
 
-fn count_of(version: usize, section: &Section) -> i16 {
+fn count_of(version: Version, section: &Section) -> i16 {
 	section
 		.count
 		.unwrap_or_else(|| non_air(version, &section.states))
 }
 
-pub(super) fn biome_bits(version: usize) -> u32 {
+pub(super) fn biome_bits(version: Version) -> u32 {
 	static CACHE: OnceLock<Vec<OnceLock<u32>>> = OnceLock::new();
 	*cached(&CACHE, version, || {
-		let n = registry::names(VERSIONS[version], "biomes").map_or(64, |n| n.names.len());
+		let n = registry::names(version, "biomes").map_or(64, |n| n.names.len());
 		bits_for(n.max(2))
 	})
 }
@@ -416,7 +417,7 @@ pub(super) fn decode_9(col: &mut Column, data: &[u8], mask: u32, pal9: bool) -> 
 	}
 }
 
-pub(super) fn encode_9(col: &Column, version: usize) -> (u32, Vec<u8>) {
+pub(super) fn encode_9(col: &Column, version: Version) -> (u32, Vec<u8>) {
 	let pal9 = format(version) == Format::Pal9;
 	let global = global_bits(version);
 	let list = listed(col);
@@ -464,7 +465,7 @@ pub(super) fn decode_14(
 	Ok(())
 }
 
-pub(super) fn encode_14(col: &Column, version: usize, biomes_inside: bool) -> (u32, Vec<u8>) {
+pub(super) fn encode_14(col: &Column, version: Version, biomes_inside: bool) -> (u32, Vec<u8>) {
 	let mut mask = 0;
 	let mut out = Vec::new();
 	for (s, section) in listed(col) {
@@ -546,11 +547,15 @@ fn write_packed(out: &mut Vec<u8>, states: &[u32], global: u32) {
 	}
 }
 
-pub(super) fn encode_16(col: &Column, version: usize) -> (Vec<usize>, Vec<u8>) {
+pub(super) fn encode_16(col: &Column, version: Version) -> (Vec<usize>, Vec<u8>) {
 	let global = global_bits(version);
 	let mut present = Vec::new();
 	let mut out = Vec::new();
-	let limit = if version < v::V1_17 { 16 } else { usize::MAX };
+	let limit = if version < Version::V1_17 {
+		16
+	} else {
+		usize::MAX
+	};
 	for (s, section) in col.sections.iter().enumerate().take(limit) {
 		let Some(section) = section else { continue };
 		present.push(s);
@@ -565,10 +570,10 @@ pub(super) struct Layout {
 	pub(super) fluids: bool,
 }
 
-pub(super) fn layout(version: usize) -> Layout {
+pub(super) fn layout(version: Version) -> Layout {
 	Layout {
-		lengths: version <= v::V1_21_4,
-		fluids: version >= v::V26_1,
+		lengths: version <= Version::V1_21_4,
+		fluids: version >= Version::V26_1,
 	}
 }
 
@@ -663,12 +668,12 @@ fn write_container(out: &mut Vec<u8>, values: &[u32], blocks: bool, global: u32,
 	}
 }
 
-pub(crate) fn padded(version: usize) -> bool {
-	(v::V1_18..=v::V1_19_4).contains(&version)
+pub(crate) fn padded(version: Version) -> bool {
+	(Version::V1_18..=Version::V1_19_4).contains(&version)
 }
 
 pub(crate) fn padding(
-	version: usize,
+	version: Version,
 	rest: &[u8],
 	read: usize,
 	single: usize,
@@ -682,7 +687,7 @@ pub(crate) fn padding(
 pub(super) fn decode_18(
 	col: &mut Column,
 	data: &[u8],
-	version: usize,
+	version: Version,
 	known: Option<usize>,
 ) -> Result<()> {
 	let l = layout(version);
@@ -713,7 +718,7 @@ pub(super) fn decode_18(
 	Ok(())
 }
 
-pub(super) fn encode_18(col: &Column, version: usize) -> Vec<u8> {
+pub(super) fn encode_18(col: &Column, version: Version) -> Vec<u8> {
 	let l = layout(version);
 	let global = global_bits(version);
 	let biome_global = col.biome_bits.unwrap_or_else(|| biome_bits(version));

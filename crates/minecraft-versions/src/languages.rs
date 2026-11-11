@@ -3,7 +3,7 @@ use std::io;
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
-use crate::gen::convert::{index_of, VERSIONS};
+use crate::gen::convert::Version;
 
 pub struct Languages {
 	folders: Vec<Option<u32>>,
@@ -17,13 +17,11 @@ struct Key {
 
 impl Languages {
 	pub fn new<'a>(
-		index: impl IntoIterator<Item = (&'a str, &'a str)>,
+		index: impl IntoIterator<Item = (Version, &'a str)>,
 		strings: impl IntoIterator<Item = (&'a str, Vec<(String, String)>)>,
 	) -> Self {
-		let index: Vec<(String, String)> = index
-			.into_iter()
-			.map(|(v, f)| (v.to_owned(), f.to_owned()))
-			.collect();
+		let index: Vec<(Version, String)> =
+			index.into_iter().map(|(v, f)| (v, f.to_owned())).collect();
 		let mut strings: HashMap<&str, Vec<(String, String)>> = strings.into_iter().collect();
 		Self::build(index, |folder| {
 			Ok(strings.remove(folder).unwrap_or_default())
@@ -35,7 +33,7 @@ impl Languages {
 		let index = std::fs::read_to_string(dir.join("index.tsv"))?
 			.lines()
 			.filter_map(|l| l.split_once('\t'))
-			.map(|(v, f)| (v.to_owned(), f.to_owned()))
+			.filter_map(|(v, f)| Some((Version::of(v)?, f.to_owned())))
 			.collect();
 		Self::build(index, |folder| {
 			let text = std::fs::read_to_string(dir.join(format!("{folder}.json")))?;
@@ -48,16 +46,12 @@ impl Languages {
 	}
 
 	fn build(
-		index: Vec<(String, String)>,
+		mut rows: Vec<(Version, String)>,
 		mut load: impl FnMut(&str) -> io::Result<Vec<(String, String)>>,
 	) -> io::Result<Self> {
-		let mut rows: Vec<(usize, String)> = index
-			.into_iter()
-			.filter_map(|(v, f)| Some((index_of(&v)?, f)))
-			.collect();
 		rows.sort_by_key(|(v, _)| *v);
 		let mut order: Vec<String> = Vec::new();
-		let mut at = vec![None; VERSIONS.len()];
+		let mut at = vec![None; Version::ALL.len()];
 		for (v, folder) in &rows {
 			let i = match order.iter().position(|f| f == folder) {
 				Some(i) => i,
@@ -66,14 +60,14 @@ impl Languages {
 					order.len() - 1
 				}
 			};
-			at[*v] = Some(i as u32);
+			at[v.index()] = Some(i as u32);
 		}
 		if order.len() > 128 {
 			return Err(io::Error::other("more than 128 language folders"));
 		}
-		let mut folders = vec![None; VERSIONS.len()];
+		let mut folders = vec![None; Version::ALL.len()];
 		let mut next = None;
-		for v in (0..VERSIONS.len()).rev() {
+		for v in (0..Version::ALL.len()).rev() {
 			next = at[v].or(next);
 			folders[v] = next;
 		}
@@ -91,8 +85,8 @@ impl Languages {
 		Ok(Self { folders, keys })
 	}
 
-	pub fn knows(&self, version: usize, key: &str) -> Option<bool> {
-		let folder = (*self.folders.get(version)?)?;
+	pub fn knows(&self, version: Version, key: &str) -> Option<bool> {
+		let folder = (*self.folders.get(version.index())?)?;
 		Some(
 			self.keys
 				.get(key)
@@ -239,7 +233,11 @@ mod tests {
 	#[test]
 	fn versions_without_a_language_borrow_the_next_one() {
 		let l = Languages::new(
-			[("1.7", "a"), ("1.8", "b"), ("1.9", "b")],
+			[
+				(Version::V1_7, "a"),
+				(Version::V1_8, "b"),
+				(Version::V1_9, "b"),
+			],
 			[
 				("a", vec![("old".to_owned(), "Old %s".to_owned())]),
 				(
@@ -251,11 +249,10 @@ mod tests {
 				),
 			],
 		);
-		let at = |v| index_of(v).unwrap();
-		assert_eq!(l.knows(at("1.6.4"), "old"), Some(true));
-		assert_eq!(l.knows(at("1.6.4"), "new"), Some(false));
-		assert_eq!(l.knows(at("1.9"), "new"), Some(true));
-		assert_eq!(l.knows(at("1.12.2"), "new"), None);
+		assert_eq!(l.knows(Version::V1_6_4, "old"), Some(true));
+		assert_eq!(l.knows(Version::V1_6_4, "new"), Some(false));
+		assert_eq!(l.knows(Version::V1_9, "new"), Some(true));
+		assert_eq!(l.knows(Version::V1_12_2, "new"), None);
 		assert_eq!(l.pattern("old"), Some("Older %s"));
 		assert_eq!(l.pattern("missing"), None);
 	}

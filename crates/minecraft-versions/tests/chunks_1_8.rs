@@ -1,5 +1,6 @@
 use minecraft_versions::gen::convert::packet_name;
-use minecraft_versions::{convert, index_of, Root, Session};
+use minecraft_versions::Version;
+use minecraft_versions::{convert, Root, Session};
 
 fn dump() -> Vec<Vec<u8>> {
 	let bytes = std::fs::read(concat!(
@@ -19,7 +20,7 @@ fn dump() -> Vec<Vec<u8>> {
 
 #[test]
 fn chunks_survive_1_9_and_back() {
-	let (v8, v9) = (index_of("1.8").unwrap(), index_of("1.9").unwrap());
+	let (v8, v9) = (Version::V1_8, Version::V1_9);
 	let mut cx = Session::new();
 	let mut checked = 0;
 	for p in dump() {

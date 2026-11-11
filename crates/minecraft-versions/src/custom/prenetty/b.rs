@@ -1,7 +1,8 @@
+use crate::gen::convert::Version;
 use nbt::{Entry, Payload};
 
 use super::chunk::{self, Shape};
-use super::ids::{self, V};
+use super::ids;
 use super::{
 	falling_block, item_id, legacy_slot, old_meta_item, state, world_event_data, LegacySlot,
 	OldMetaItem, Slot,
@@ -17,7 +18,7 @@ type Server125 = v1_2_5::play_to_server_packet::Ty;
 type Server132 = v1_3_2::play_to_server_packet::Ty;
 type Object125 = v1_2_5::play_to_client_packet_spawn_entity_object_data::Ty;
 
-const TO: V = V::R1_2_5;
+const TO: Version = Version::V1_2_5;
 const EVENT_BLOCKS: [u8; 4] = [25, 29, 33, 54];
 
 const ENTITY_NAMES: [(&str, i32); 41] = [

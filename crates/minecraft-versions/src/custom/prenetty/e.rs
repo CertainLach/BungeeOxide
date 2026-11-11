@@ -1,9 +1,9 @@
 use super::c::{remap_bulk, remap_single};
-use super::ids::{self, V};
+use super::ids;
 use super::tables::{SOUNDS_1_4_2, SOUNDS_1_6_1, SOUNDS_1_7, STATS_1_7};
 use super::text;
 use super::{falling_block, item_id, state, world_event_data};
-use crate::gen::convert::{index_of, v1_6_4, v1_7, Root};
+use crate::gen::convert::{v1_6_4, v1_7, Root, Version};
 use crate::pds::convert::Result;
 use crate::pds::Output;
 use crate::session::Session;
@@ -13,7 +13,7 @@ type Client17 = v1_7::play_to_client_packet::Ty;
 type Server164 = v1_6_4::play_to_server_packet::Ty;
 type Server17 = v1_7::play_to_server_packet::Ty;
 
-const TO: V = V::R1_6_4;
+const TO: Version = Version::V1_6_4;
 const EYES: f64 = 1.6200000047683716;
 
 pub fn prenetty_map_chunk_1_6_4_down(
@@ -801,9 +801,7 @@ pub fn prenetty_client_command_1_6_4(
 			)
 			.is_ok()
 			{
-				if let Some(version) = index_of("1.7") {
-					cx.send(Root::PlayToClient, version, out.into_inner());
-				}
+				cx.send(Root::PlayToClient, Version::V1_7, out.into_inner());
 			}
 			Ok(vec![])
 		}

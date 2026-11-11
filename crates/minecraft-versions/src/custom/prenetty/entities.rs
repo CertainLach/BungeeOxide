@@ -1,7 +1,7 @@
 use super::c::meta_1_3_2;
 use super::d::kind;
-use super::ids::V;
 use super::{old_meta_item, state, text, Kind};
+use crate::gen::convert::Version;
 use crate::gen::convert::{v1_0_1, v1_1, v1_2_3, v1_3_2, v1_4_2, v1_5_2, v1_6_4, v1_7};
 use crate::pds::convert::Result;
 use crate::session::Session;
@@ -46,11 +46,11 @@ pub fn prenetty_painting_title_1_3_2(
 	.to_owned())
 }
 
-fn effect_exists(id: i8, to: V) -> bool {
+fn effect_exists(id: i8, to: Version) -> bool {
 	let since = match id {
-		1..=19 => V::R1_0,
-		20 => V::R1_4_2,
-		21..=23 => V::R1_6_1,
+		1..=19 => Version::V1_0_1,
+		20 => Version::V1_4_2,
+		21..=23 => Version::V1_6_1,
 		_ => return false,
 	};
 	since <= to
@@ -81,13 +81,13 @@ macro_rules! effects {
 }
 
 effects!(
-	V::R1_5,
+	Version::V1_5_2,
 	v1_5_2,
 	prenetty_entity_effect_1_5_2,
 	prenetty_remove_entity_effect_1_5_2
 );
 effects!(
-	V::R1_3,
+	Version::V1_3_2,
 	v1_3_2,
 	prenetty_entity_effect_1_3_2,
 	prenetty_remove_entity_effect_1_3_2
@@ -122,41 +122,41 @@ fn object(cx: &mut Session, id: i32) -> bool {
 	matches!(kind(cx, id), Some(Kind::Object(..)))
 }
 
-pub(super) fn mob_stand_in(ty: u8, to: V) -> Option<u8> {
+pub(super) fn mob_stand_in(ty: u8, to: Version) -> Option<u8> {
 	let (since, with) = match ty {
-		100 => (V::R1_6_1, 90),
-		64 => (V::R1_4_2, 56),
-		65 => (V::R1_4_2, 93),
-		66 => (V::R1_4_2, 61),
-		98 => (V::R1_2_3, 95),
-		99 => (V::R1_2_3, 97),
+		100 => (Version::V1_6_1, 90),
+		64 => (Version::V1_4_2, 56),
+		65 => (Version::V1_4_2, 93),
+		66 => (Version::V1_4_2, 61),
+		98 => (Version::V1_2_3, 95),
+		99 => (Version::V1_2_3, 97),
 		_ => return None,
 	};
 	(to < since).then_some(with)
 }
 
-pub(super) fn object_stand_in(ty: i8, to: V) -> Option<i8> {
+pub(super) fn object_stand_in(ty: i8, to: Version) -> Option<i8> {
 	let (since, with) = match ty {
-		66 => (V::R1_4_2, 64),
-		75 => (V::R1_2_3, 61),
+		66 => (Version::V1_4_2, 64),
+		75 => (Version::V1_2_3, 61),
 		_ => return None,
 	};
 	(to < since).then_some(with)
 }
 
-fn base_entry(living: bool, key: u8, ty: u8, to: V) -> bool {
+fn base_entry(living: bool, key: u8, ty: u8, to: Version) -> bool {
 	match (key, ty) {
 		(0, 0) | (1, 1) => true,
 		_ if !living => false,
 		(8, 2) => true,
-		(9, 0) => to >= V::R1_4_2,
-		(10, 0) => to >= V::R1_4_5,
-		(5, 4) | (6, 0) => to >= V::R1_5,
+		(9, 0) => to >= Version::V1_4_2,
+		(10, 0) => to >= Version::V1_4_5,
+		(5, 4) | (6, 0) => to >= Version::V1_5_1,
 		_ => false,
 	}
 }
 
-pub(super) fn keeps(cx: &mut Session, id: i32, key: u8, ty: u8, to: V) -> bool {
+pub(super) fn keeps(cx: &mut Session, id: i32, key: u8, ty: u8, to: Version) -> bool {
 	let st = state(cx);
 	if !st.stand_ins.contains(&id) {
 		return true;
@@ -230,7 +230,7 @@ pub fn prenetty_entity_metadata_1_3_2(
 ) -> Result<Vec<Client132>> {
 	let metadata: Vec<_> = meta_1_3_2(p.metadata)
 		.into_iter()
-		.filter(|e| keeps(cx, p.entity_id, e.anon.key, e.anon.r#type, V::R1_3))
+		.filter(|e| keeps(cx, p.entity_id, e.anon.key, e.anon.r#type, Version::V1_3_2))
 		.collect();
 	if metadata.is_empty() {
 		return Ok(vec![]);
@@ -252,9 +252,9 @@ pub(super) fn meta_1_1(
 ) -> v1_1::entity_metadata::Ty {
 	metadata
 		.into_iter()
-		.filter(|e| keeps(cx, id, e.anon.key, e.anon.r#type, V::R1_1))
+		.filter(|e| keeps(cx, id, e.anon.key, e.anon.r#type, Version::V1_1))
 		.map(|mut e| {
-			e.value = old_meta_item(e.value, V::R1_1);
+			e.value = old_meta_item(e.value, Version::V1_1);
 			e
 		})
 		.collect()

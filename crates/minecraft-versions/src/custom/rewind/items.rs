@@ -3,7 +3,7 @@ use std::sync::OnceLock;
 
 use nbt::{CompoundExt, CompoundVecExt, Entry, Payload};
 
-use crate::gen::convert::{v1_8, Version, VERSIONS};
+use crate::gen::convert::{v1_8, Version};
 use crate::registry;
 
 pub(super) type Slot = v1_8::slot::Ty;
@@ -275,7 +275,7 @@ pub(super) fn mob_id(version: Version, name: &str) -> Option<u32> {
 }
 
 fn mark_key(newer: Version) -> String {
-	format!("pds2|{}", VERSIONS[newer as usize])
+	format!("pds2|{newer}")
 }
 
 fn pretty(version: Version, id: i16) -> String {
@@ -333,11 +333,7 @@ pub(super) fn down(target: Version, newer: Version, slot: Slot, mob: impl Fn(u32
 	let mut named = None;
 	if let Some(mapped) = item_back(target, id, damage) {
 		new = mapped;
-		named = Some(format!(
-			"\u{a7}r{} {}",
-			VERSIONS[newer as usize],
-			pretty(newer, id)
-		));
+		named = Some(format!("\u{a7}r{} {}", newer, pretty(newer, id)));
 	}
 	if target == Version::V1_8 {
 		if matches!(id, 373 | 438 | 441) {

@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
@@ -8,7 +9,7 @@ use minecraft_versions::gen::convert::v26_1::{
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use minecraft_versions::{legacy_version_of, version_of, Session, VERSIONS};
+use minecraft_versions::{legacy_version_of, version_of, Session};
 use serde_json::{json, Map, Value};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
@@ -18,8 +19,7 @@ use tracing::{info, warn};
 
 use crate::codec::Codec;
 use crate::{
-	at, client_version, decode, encode, legacy, next, pivot, protocol_of, reach, split_target,
-	Config,
+	client_version, decode, encode, legacy, next, protocol_of, reach, split_target, Config, PIVOT,
 };
 
 const TIMEOUT: Duration = Duration::from_secs(3);
@@ -59,10 +59,7 @@ pub async fn upstream(config: &Config) -> Option<Arc<Upstream>> {
 		.status
 		.fetches
 		.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-	let fetched = match config.server() {
-		Ok(sv) => ping(&config.target, sv).await,
-		Err(e) => Err(e),
-	};
+	let fetched = ping(&config.target, config.server_version).await;
 	let value = match fetched {
 		Ok(u) => Some(Arc::new(u)),
 		Err(e) => {
@@ -77,13 +74,13 @@ pub async fn upstream(config: &Config) -> Option<Arc<Upstream>> {
 	value
 }
 
-pub async fn ping(target: &str, version: usize) -> Result<Upstream> {
+pub async fn ping(target: &str, version: Version) -> Result<Upstream> {
 	let work = async {
 		if legacy::is_legacy(version) {
 			legacy_ping(target, version).await
 		} else {
 			let protocol = protocol_of(version)
-				.ok_or_else(|| anyhow!("no protocol number for {}", VERSIONS[version]))?;
+				.ok_or_else(|| anyhow!("no protocol number for {}", version))?;
 			netty_ping(target, protocol).await
 		}
 	};
@@ -136,8 +133,8 @@ pub fn parse(info: &str) -> Result<Upstream> {
 	})
 }
 
-pub fn legacy_request(version: usize, host: &str, port: u16) -> Vec<u8> {
-	if version >= at("1.6.1") {
+pub fn legacy_request(version: Version, host: &str, port: u16) -> Vec<u8> {
+	if version >= Version::V1_6_1 {
 		let mut out = vec![0xfe, 0x01, 0xfa];
 		legacy::string16(&mut out, "MC|PingHost");
 		let mut data = vec![legacy::protocol_of(version).unwrap_or(78) as u8];
@@ -146,14 +143,14 @@ pub fn legacy_request(version: usize, host: &str, port: u16) -> Vec<u8> {
 		out.extend_from_slice(&(data.len() as i16).to_be_bytes());
 		out.extend_from_slice(&data);
 		out
-	} else if version >= at("1.4.2") {
+	} else if version >= Version::V1_4_2 {
 		vec![0xfe, 0x01]
 	} else {
 		vec![0xfe]
 	}
 }
 
-async fn legacy_ping(target: &str, version: usize) -> Result<Upstream> {
+async fn legacy_ping(target: &str, version: Version) -> Result<Upstream> {
 	let (host, port) = split_target(target)?;
 	let mut stream = connect(target).await?;
 	stream
@@ -219,9 +216,9 @@ pub fn parse_legacy(reply: &[u8]) -> Result<Upstream> {
 	})
 }
 
-pub async fn probe(target: &str, current: usize) -> Result<usize> {
+pub async fn probe(target: &str, current: Version) -> Result<Version> {
 	let hint = if legacy::is_legacy(current) {
-		pivot()
+		PIVOT
 	} else {
 		current
 	};
@@ -245,7 +242,7 @@ pub async fn probe(target: &str, current: usize) -> Result<usize> {
 	if refused {
 		bail!("{target} refuses connections");
 	}
-	let reply = ping(target, at("1.6.4")).await?;
+	let reply = ping(target, Version::V1_6_4).await?;
 	match reply.protocol {
 		Some(p) => legacy_version_of(p)
 			.ok_or_else(|| anyhow!("{target} answered the pre-netty ping with protocol {p}")),
@@ -254,7 +251,7 @@ pub async fn probe(target: &str, current: usize) -> Result<usize> {
 }
 
 pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) -> Result<String> {
-	let server = config.server()?;
+	let server = config.server_version;
 	let (low, high) = reach(server);
 	let served = client_version(protocol, server);
 	let shown = served.or_else(|| version_of(protocol)).unwrap_or(high);
@@ -272,7 +269,7 @@ pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) 
 		players["sample"] = Value::Array(sample.clone());
 	}
 	let mut reply = json!({
-		"version": { "name": format!("pds2 bridge {}-{}", VERSIONS[low], VERSIONS[high]), "protocol": protocol },
+		"version": { "name": format!("pds2 bridge {}-{}", low, high), "protocol": protocol },
 		"players": players,
 		"description": downgrade(description, shown),
 	});
@@ -281,7 +278,7 @@ pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) 
 	}
 	let mut text = reply.to_string();
 	if let Err(e) =
-		minecraft_versions::custom::localize_status(&mut text, pivot(), shown, &mut Session::new())
+		minecraft_versions::custom::localize_status(&mut text, PIVOT, shown, &mut Session::new())
 	{
 		warn!("can't translate the server list text: {e}");
 	}
@@ -289,7 +286,7 @@ pub fn netty_reply(config: &Config, upstream: Option<&Upstream>, protocol: i32) 
 }
 
 pub fn legacy_motd(description: &Value) -> String {
-	let flat = downgrade(description, at("1.7")).to_string();
+	let flat = downgrade(description, Version::V1_7).to_string();
 	minecraft_versions::custom::localize::legacy(&flat)
 		.chars()
 		.map(|c| if c == '\n' || c == '\r' { ' ' } else { c })
@@ -334,11 +331,11 @@ pub fn legacy_fields(protocol: i32, version: &str, motd: &str, online: i64, max:
 	format!("{head}{}{tail}", fit(motd, room))
 }
 
-pub fn downgrade(value: &Value, version: usize) -> Value {
+pub fn downgrade(value: &Value, version: Version) -> Value {
 	text(value, version, 0)
 }
 
-fn text(value: &Value, v: usize, depth: usize) -> Value {
+fn text(value: &Value, v: Version, depth: usize) -> Value {
 	if depth > 32 {
 		return Value::String(String::new());
 	}
@@ -360,7 +357,7 @@ fn plain(value: &Value) -> String {
 	}
 }
 
-fn components(value: &Value, v: usize, depth: usize) -> Vec<Value> {
+fn components(value: &Value, v: Version, depth: usize) -> Vec<Value> {
 	match value {
 		Value::Array(items) => items.iter().map(|i| text(i, v, depth + 1)).collect(),
 		Value::Null => Vec::new(),
@@ -376,7 +373,7 @@ fn key_name(key: &str) -> String {
 		.unwrap_or_default()
 }
 
-fn component(map: &Map<String, Value>, v: usize, depth: usize) -> Map<String, Value> {
+fn component(map: &Map<String, Value>, v: Version, depth: usize) -> Map<String, Value> {
 	let mut out = Map::new();
 	if let Some(t) = map.get("text") {
 		out.insert("text".to_owned(), Value::String(plain(t)));
@@ -388,15 +385,15 @@ fn component(map: &Map<String, Value>, v: usize, depth: usize) -> Map<String, Va
 				out.insert("with".to_owned(), Value::Array(with));
 			}
 		}
-		if let Some(fallback) = map.get("fallback").filter(|_| v >= at("1.19.4")) {
+		if let Some(fallback) = map.get("fallback").filter(|_| v >= Version::V1_19_4) {
 			out.insert("fallback".to_owned(), Value::String(plain(fallback)));
 		}
 	} else if let Some(key) = map.get("keybind") {
-		match v >= at("1.12") {
+		match v >= Version::V1_12 {
 			true => out.insert("keybind".to_owned(), Value::String(plain(key))),
 			false => out.insert("text".to_owned(), Value::String(key_name(&plain(key)))),
 		};
-	} else if map.contains_key("object") && v >= at("1.21.9") {
+	} else if map.contains_key("object") && v >= Version::V1_21_9 {
 		for (k, value) in map {
 			if ["object", "atlas", "sprite", "player", "hat"].contains(&k.as_str()) {
 				out.insert(k.clone(), value.clone());
@@ -426,10 +423,10 @@ fn component(map: &Map<String, Value>, v: usize, depth: usize) -> Map<String, Va
 				};
 				out.insert(k.clone(), Value::Bool(on));
 			}
-			"font" if v >= at("1.16") => {
+			"font" if v >= Version::V1_16 => {
 				out.insert(k.clone(), value.clone());
 			}
-			"shadow_color" if v >= at("1.21.4") => {
+			"shadow_color" if v >= Version::V1_21_4 => {
 				out.insert(k.clone(), value.clone());
 			}
 			"extra" => {
@@ -463,7 +460,7 @@ const COLORS: [(&str, u32); 16] = [
 	("white", 0xffffff),
 ];
 
-fn color(value: &Value, v: usize) -> Option<String> {
+fn color(value: &Value, v: Version) -> Option<String> {
 	let name = value.as_str()?;
 	let Some(hex) = name.strip_prefix('#') else {
 		return (COLORS.iter().any(|(n, _)| *n == name) || name == "reset")
@@ -472,7 +469,7 @@ fn color(value: &Value, v: usize) -> Option<String> {
 	let rgb = u32::from_str_radix(hex, 16)
 		.ok()
 		.filter(|_| hex.len() == 6)?;
-	if v >= at("1.16") {
+	if v >= Version::V1_16 {
 		return Some(name.to_owned());
 	}
 	let channel = |c: u32, shift: u32| ((c >> shift) & 0xff) as i64;
@@ -504,7 +501,7 @@ mod tests {
 				{"text": 5, "extra": []}
 			]
 		});
-		let old = downgrade(&modern, at("1.8"));
+		let old = downgrade(&modern, Version::V1_8);
 		assert_eq!(
 			old,
 			json!({"text": "", "extra": [
@@ -516,15 +513,15 @@ mod tests {
 				{"text": "5"}
 			]})
 		);
-		let new = downgrade(&modern, at("26.1"));
+		let new = downgrade(&modern, Version::V26_1);
 		assert_eq!(
 			new["extra"][0],
 			json!({"text": "Hex", "color": "#ff5050", "shadow_color": -1, "font": "minecraft:uniform", "bold": true})
 		);
 		assert_eq!(new["extra"][1], json!({"keybind": "key.jump"}));
 		assert_eq!(new["extra"][4], json!({"translate": "k", "fallback": "F"}));
-		assert_eq!(downgrade(&json!("plain"), at("1.7")), json!("plain"));
-		assert_eq!(downgrade(&json!([]), at("1.7")), json!(""));
+		assert_eq!(downgrade(&json!("plain"), Version::V1_7), json!("plain"));
+		assert_eq!(downgrade(&json!([]), Version::V1_7), json!(""));
 	}
 
 	#[test]
@@ -576,9 +573,9 @@ mod tests {
 
 	#[test]
 	fn requests_match_the_server_era() {
-		assert_eq!(legacy_request(at("1.3.2"), "h", 1), [0xfe]);
-		assert_eq!(legacy_request(at("1.5.2"), "h", 1), [0xfe, 0x01]);
-		let host = legacy_request(at("1.6.4"), "h", 1);
+		assert_eq!(legacy_request(Version::V1_3_2, "h", 1), [0xfe]);
+		assert_eq!(legacy_request(Version::V1_5_2, "h", 1), [0xfe, 0x01]);
+		let host = legacy_request(Version::V1_6_4, "h", 1);
 		assert_eq!(&host[..3], [0xfe, 0x01, 0xfa]);
 		assert_eq!(host[host.len() - 9], 78);
 	}

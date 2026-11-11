@@ -1,15 +1,12 @@
-use minecraft_versions::gen::convert::{index_of, step, v1_7, v1_8, Root};
+use minecraft_versions::gen::convert::{step, v1_7, v1_8, Root};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 
 type C7 = v1_7::play_to_client_packet::Ty;
 type C8 = v1_8::play_to_client_packet::Ty;
 type S7 = v1_7::play_to_server_packet::Ty;
 type S8 = v1_8::play_to_server_packet::Ty;
-
-fn at(v: &str) -> usize {
-	index_of(v).unwrap()
-}
 
 macro_rules! codec {
 	($enc:ident, $dec:ident, $m:ident :: $t:ident) => {
@@ -34,35 +31,59 @@ codec!(enc_s8, dec_s8, v1_8::play_to_server_packet);
 codec!(enc_s7, dec_s7, v1_7::play_to_server_packet);
 
 fn down(p: C8, cx: &mut Session) -> Vec<C7> {
-	step(Root::PlayToClient, at("1.8"), at("1.7"), &enc_c8(&p), cx)
-		.unwrap()
-		.iter()
-		.map(|b| dec_c7(b))
-		.collect()
+	step(
+		Root::PlayToClient,
+		Version::V1_8,
+		Version::V1_7,
+		&enc_c8(&p),
+		cx,
+	)
+	.unwrap()
+	.iter()
+	.map(|b| dec_c7(b))
+	.collect()
 }
 
 fn up(p: C7, cx: &mut Session) -> Vec<C8> {
-	step(Root::PlayToClient, at("1.7"), at("1.8"), &enc_c7(&p), cx)
-		.unwrap()
-		.iter()
-		.map(|b| dec_c8(b))
-		.collect()
+	step(
+		Root::PlayToClient,
+		Version::V1_7,
+		Version::V1_8,
+		&enc_c7(&p),
+		cx,
+	)
+	.unwrap()
+	.iter()
+	.map(|b| dec_c8(b))
+	.collect()
 }
 
 fn serve(p: S7, cx: &mut Session) -> Vec<S8> {
-	step(Root::PlayToServer, at("1.7"), at("1.8"), &enc_s7(&p), cx)
-		.unwrap()
-		.iter()
-		.map(|b| dec_s8(b))
-		.collect()
+	step(
+		Root::PlayToServer,
+		Version::V1_7,
+		Version::V1_8,
+		&enc_s7(&p),
+		cx,
+	)
+	.unwrap()
+	.iter()
+	.map(|b| dec_s8(b))
+	.collect()
 }
 
 fn serve_down(p: S8, cx: &mut Session) -> Vec<S7> {
-	step(Root::PlayToServer, at("1.8"), at("1.7"), &enc_s8(&p), cx)
-		.unwrap()
-		.iter()
-		.map(|b| dec_s7(b))
-		.collect()
+	step(
+		Root::PlayToServer,
+		Version::V1_8,
+		Version::V1_7,
+		&enc_s8(&p),
+		cx,
+	)
+	.unwrap()
+	.iter()
+	.map(|b| dec_s7(b))
+	.collect()
 }
 
 fn one<T: std::fmt::Debug>(v: Vec<T>) -> T {
@@ -94,14 +115,21 @@ fn real_traffic_survives_a_round_trip_through_1_7() {
 		let original = dec_c8(&packet);
 		let old = step(
 			Root::PlayToClient,
-			at("1.8"),
-			at("1.7"),
+			Version::V1_8,
+			Version::V1_7,
 			&packet,
 			&mut there,
 		)
 		.unwrap();
 		for b in &old {
-			let again = step(Root::PlayToClient, at("1.7"), at("1.8"), b, &mut back).unwrap();
+			let again = step(
+				Root::PlayToClient,
+				Version::V1_7,
+				Version::V1_8,
+				b,
+				&mut back,
+			)
+			.unwrap();
 			if matches!(
 				original,
 				C8::MapChunk(_)
@@ -125,8 +153,8 @@ fn login_and_join() {
 	v1_8::login_to_client_packet::serialize(&login, &mut o).unwrap();
 	assert!(step(
 		Root::LoginToClient,
-		at("1.8"),
-		at("1.7"),
+		Version::V1_8,
+		Version::V1_7,
 		&o.into_inner(),
 		&mut cx
 	)

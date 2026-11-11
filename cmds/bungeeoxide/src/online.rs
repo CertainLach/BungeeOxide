@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Context as _, Result};
@@ -7,7 +8,7 @@ use minecraft_versions::gen::convert::v26_1::{
 	login_to_server_packet_login_start,
 };
 use minecraft_versions::gen::convert::{v1_19, v1_19_2};
-use minecraft_versions::{Root, VERSIONS};
+use minecraft_versions::Root;
 use rsa::pkcs8::DecodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tracing::{info, warn};
@@ -16,7 +17,7 @@ use crate::accounts::{Account, Credentials};
 use crate::auth::{self, PlayerKeys};
 use crate::codec::Cipher;
 use crate::signing::Chat;
-use crate::{at, encode, legacy, offline_uuid_bits, pivot, Proxy};
+use crate::{encode, legacy, offline_uuid_bits, Proxy, PIVOT};
 
 #[derive(Default)]
 pub struct Online {
@@ -48,7 +49,7 @@ impl Online {
 		}
 	}
 
-	pub async fn prepare(&mut self, sv: usize) -> Result<()> {
+	pub async fn prepare(&mut self, sv: Version) -> Result<()> {
 		self.credentials = None;
 		self.keys = None;
 		self.signed_start = false;
@@ -59,7 +60,7 @@ impl Online {
 		if legacy::is_legacy(sv) {
 			bail!(
 				"{} servers check logins with Mojang's legacy session service, which is gone, so online mode needs a 1.7.2+ server",
-				VERSIONS[sv]
+				sv
 			);
 		}
 		let mut credentials = blocking({
@@ -67,7 +68,7 @@ impl Online {
 			move || account.credentials(false)
 		})
 		.await?;
-		if sv >= at("1.19") {
+		if sv >= Version::V1_19 {
 			let fetched = blocking({
 				let credentials = credentials.clone();
 				move || account.keys(&credentials)
@@ -88,7 +89,7 @@ impl Online {
 		Ok(())
 	}
 
-	pub fn login_start(&mut self, sv: usize, username: &str) -> Result<(usize, Vec<u8>)> {
+	pub fn login_start(&mut self, sv: Version, username: &str) -> Result<(Version, Vec<u8>)> {
 		let (name, uuid) = match &self.credentials {
 			Some(c) => (c.name.clone(), c.uuid),
 			None => (username.to_owned(), offline_uuid_bits(username)),
@@ -96,10 +97,10 @@ impl Online {
 		if let Some(keys) = self
 			.keys
 			.as_ref()
-			.filter(|_| (at("1.19")..at("1.19.3")).contains(&sv))
+			.filter(|_| (Version::V1_19..Version::V1_19_3).contains(&sv))
 		{
 			self.signed_start = true;
-			let data = if sv < at("1.19.2") {
+			let data = if sv < Version::V1_19_2 {
 				let start = v1_19::login_to_server_packet::Ty::LoginStart(
 					v1_19::login_to_server_packet_login_start::Ty {
 						username: name,
@@ -135,10 +136,10 @@ impl Online {
 			username: name,
 			player_uuid: uuid,
 		});
-		Ok((pivot(), encode(&start, login_s::serialize)?))
+		Ok((PIVOT, encode(&start, login_s::serialize)?))
 	}
 
-	pub fn joined(&mut self, sv: usize, profile: &success::Ty) {
+	pub fn joined(&mut self, sv: Version, profile: &success::Ty) {
 		self.chat = None;
 		if self.account.is_none() {
 			return;
@@ -213,7 +214,7 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 					},
 				),
 			};
-			let data = if p.sv < at("1.19.2") {
+			let data = if p.sv < Version::V1_19_2 {
 				encode(
 					&v1_19::login_to_server_packet::Ty::EncryptionBegin(reply),
 					v1_19::login_to_server_packet::serialize,
@@ -238,7 +239,7 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 				shared_secret: shared,
 				verify_token: token,
 			});
-			(pivot(), encode(&reply, login_s::serialize)?)
+			(PIVOT, encode(&reply, login_s::serialize)?)
 		}
 	};
 	p.send(Root::LoginToServer, from, data).await?;
@@ -260,11 +261,11 @@ mod tests {
 			verify_token: vec![3, 4],
 		});
 		let data = encode(&reply, login_s::serialize).unwrap();
-		for (version, signed) in [("1.19", false), ("1.19.2", true)] {
+		for (version, signed) in [(Version::V1_19, false), (Version::V1_19_2, true)] {
 			let out = convert(
 				Root::LoginToServer,
-				pivot(),
-				at(version),
+				PIVOT,
+				version,
 				&data,
 				&mut Session::new(),
 			)
@@ -299,13 +300,21 @@ mod tests {
 	#[test]
 	fn login_starts_reach_every_netty_version() {
 		let mut online = Online::default();
-		let (from, start) = online.login_start(at("1.8"), "Steve").unwrap();
-		assert_eq!(from, pivot());
-		for version in ["1.7", "1.8", "1.12.2", "1.19", "1.19.2", "1.20.2", "26.1"] {
+		let (from, start) = online.login_start(Version::V1_8, "Steve").unwrap();
+		assert_eq!(from, PIVOT);
+		for version in [
+			Version::V1_7,
+			Version::V1_8,
+			Version::V1_12_2,
+			Version::V1_19,
+			Version::V1_19_2,
+			Version::V1_20_2,
+			Version::V26_1,
+		] {
 			let out = convert(
 				Root::LoginToServer,
 				from,
-				at(version),
+				version,
 				&start,
 				&mut Session::new(),
 			)

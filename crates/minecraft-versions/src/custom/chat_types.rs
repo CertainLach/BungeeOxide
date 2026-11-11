@@ -181,6 +181,6 @@ pub fn decorate(
 		Some(t) => (content.to_owned(), t.overlay),
 		None => (content.to_owned(), false),
 	};
-	localize(&mut text, from.index(), to.index(), cx)?;
+	localize(&mut text, from, to, cx)?;
 	Ok((text, overlay))
 }

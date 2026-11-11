@@ -1,7 +1,5 @@
 use minecraft_versions::gen::convert::packet_name;
-use minecraft_versions::{
-	configuration_packets, convert, index_of, Root, Session, CONFIGURATION, VERSIONS,
-};
+use minecraft_versions::{configuration_packets, convert, Root, Session, Version, CONFIGURATION};
 
 fn references(data: &[u8]) -> Vec<String> {
 	let marker = b"#minecraft:";
@@ -37,9 +35,9 @@ fn declared(tags: &[u8], name: &str) -> bool {
 
 #[test]
 fn synthesized_registries_only_reference_sent_tags() {
-	let base = index_of(CONFIGURATION).unwrap();
+	let base = CONFIGURATION;
 	let mut problems = Vec::new();
-	for version in base..VERSIONS.len() {
+	for &version in Version::span(base..) {
 		let mut cx = Session::new();
 		let mut packets = Vec::new();
 		for p in configuration_packets(&mut cx).unwrap() {
@@ -59,7 +57,7 @@ fn synthesized_registries_only_reference_sent_tags() {
 		refs.dedup();
 		let missing: Vec<_> = refs.into_iter().filter(|r| !declared(&tags, r)).collect();
 		if !missing.is_empty() {
-			problems.push(format!("{}: {}", VERSIONS[version], missing.join(" ")));
+			problems.push(format!("{}: {}", version, missing.join(" ")));
 		}
 	}
 	assert!(

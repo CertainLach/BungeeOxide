@@ -5,6 +5,7 @@ use std::time::Duration;
 use bungeeoxide::accounts::Accounts;
 use bungeeoxide::{serve, Config};
 use clap::Parser;
+use minecraft_versions::Version;
 use tokio::net::TcpListener;
 
 #[derive(Parser)]
@@ -26,7 +27,7 @@ struct Opts {
 	compression_threshold: usize,
 	/// Minecraft version of the backend server
 	#[arg(long, default_value = "1.8")]
-	server_version: String,
+	server_version: Version,
 	/// Language files from `just languages`, to show translated text to old clients [default: target/minecraft-languages of the workspace, if present]
 	#[arg(long)]
 	languages: Option<PathBuf>,

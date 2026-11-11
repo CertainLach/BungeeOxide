@@ -1,12 +1,13 @@
+use minecraft_versions::Version;
 use std::collections::BTreeMap;
 
-use minecraft_versions::gen::convert::{index_of, inspect, step, Root, VERSIONS};
+use minecraft_versions::gen::convert::{inspect, step, Root};
 use minecraft_versions::Session;
 
 fn main() -> anyhow::Result<()> {
 	let mut args = std::env::args().skip(1);
 	let path = args.next().expect("dump file");
-	let from = args.next().unwrap_or_else(|| "1.8".to_owned());
+	let from = args.next();
 	let to = args.next();
 	let bytes = std::fs::read(path)?;
 	let mut packets = Vec::new();
@@ -16,20 +17,19 @@ fn main() -> anyhow::Result<()> {
 		packets.push(bytes[at + 4..at + 4 + len].to_vec());
 		at += 4 + len;
 	}
-	let start = index_of(&from).ok_or_else(|| anyhow::anyhow!("unknown version {from}"))?;
-	let end = match to {
-		Some(v) => index_of(&v).ok_or_else(|| anyhow::anyhow!("unknown version {v}"))?,
-		None => VERSIONS.len() - 1,
-	};
+	let version = |v: String| Version::of(&v).ok_or_else(|| anyhow::anyhow!("unknown version {v}"));
+	let start = from.map_or(Ok(Version::V1_8), version)?;
+	let end = to.map_or(Ok(Version::LATEST), version)?;
 	let mut cx = Session::new();
 	let mut current: Vec<Vec<u8>> = packets;
 	let mut version = start;
 	while version != end {
 		let next = if end > version {
-			version + 1
+			version.next()
 		} else {
-			version - 1
-		};
+			version.prev()
+		}
+		.expect("versions between endpoints");
 		let mut out = Vec::new();
 		let mut failed: BTreeMap<String, (usize, String)> = BTreeMap::new();
 		let mut dropped: BTreeMap<String, usize> = BTreeMap::new();
@@ -64,8 +64,8 @@ fn main() -> anyhow::Result<()> {
 		let lost: usize = failed.values().map(|(n, _)| n).sum();
 		println!(
 			"{} -> {}: {} in, {} out, {} dropped, {lost} failed, {:.2?}",
-			VERSIONS[version],
-			VERSIONS[next],
+			version,
+			next,
 			current.len(),
 			out.len(),
 			dropped.values().sum::<usize>(),
@@ -90,6 +90,6 @@ fn main() -> anyhow::Result<()> {
 			.entry(inspect(Root::PlayToClient, end, p).unwrap_or_default())
 			.or_default() += 1;
 	}
-	println!("arrived at {}: {kinds:?}", VERSIONS[end]);
+	println!("arrived at {}: {kinds:?}", end);
 	Ok(())
 }

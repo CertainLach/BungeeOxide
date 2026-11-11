@@ -15,7 +15,7 @@ use minecraft_versions::gen::convert::{
 	v1_0_1, v1_12_2, v1_2_5, v1_3_2, v1_4_7, v1_5_2, v1_6_4, v1_8,
 };
 use minecraft_versions::pds::{Input, Output};
-use minecraft_versions::{index_of, Root};
+use minecraft_versions::{Root, Version};
 use rsa::pkcs8::DecodePublicKey;
 use tokio::net::TcpStream;
 use tokio_util::codec::Framed;
@@ -839,7 +839,7 @@ impl World {
 }
 
 struct Rules {
-	version: &'static str,
+	version: Version,
 	layouts: &'static [(i32, &'static str, &'static str)],
 	objects: &'static [(i8, &'static str)],
 	wither: bool,
@@ -871,7 +871,7 @@ fn records(id: i16, from: i16) -> bool {
 
 const RULES: &[Rules] = &[
 	Rules {
-		version: "1.0.1",
+		version: Version::V1_0_1,
 		layouts: LAYOUTS_1_0,
 		objects: OBJECTS_1_0,
 		wither: false,
@@ -890,7 +890,7 @@ const RULES: &[Rules] = &[
 		walk: walk_1_0_1,
 	},
 	Rules {
-		version: "1.2.5",
+		version: Version::V1_2_5,
 		layouts: LAYOUTS_1_2_5,
 		objects: OBJECTS_1_2_5,
 		wither: false,
@@ -909,7 +909,7 @@ const RULES: &[Rules] = &[
 		walk: walk_1_2_5,
 	},
 	Rules {
-		version: "1.3.2",
+		version: Version::V1_3_2,
 		layouts: LAYOUTS_1_3_2,
 		objects: OBJECTS_1_3_2,
 		wither: false,
@@ -928,7 +928,7 @@ const RULES: &[Rules] = &[
 		walk: walk_1_3_2,
 	},
 	Rules {
-		version: "1.4.7",
+		version: Version::V1_4_7,
 		layouts: LAYOUTS_1_4_7,
 		objects: OBJECTS_1_4_7,
 		wither: true,
@@ -947,7 +947,7 @@ const RULES: &[Rules] = &[
 		walk: walk_1_4_7,
 	},
 	Rules {
-		version: "1.5.2",
+		version: Version::V1_5_2,
 		layouts: LAYOUTS_1_5_2,
 		objects: OBJECTS_1_5_2,
 		wither: true,
@@ -966,7 +966,7 @@ const RULES: &[Rules] = &[
 		walk: walk_1_5_2,
 	},
 	Rules {
-		version: "1.6.4",
+		version: Version::V1_6_4,
 		layouts: LAYOUTS_1_6_4,
 		objects: OBJECTS_1_6_4,
 		wither: true,
@@ -1718,8 +1718,8 @@ fn de<T>(data: &[u8], f: fn(&mut Input) -> minecraft_versions::pds::Result<T>) -
 	f(&mut Input::new(data)).map_err(|e| anyhow!("decoding: {e:?}"))
 }
 
-async fn join_old(addr: &str, name: &str, version: &str) -> Result<Conn> {
-	let v = index_of(version).ok_or_else(|| anyhow!("no {version}"))?;
+async fn join_old(addr: &str, name: &str, version: Version) -> Result<Conn> {
+	let v = version;
 	let protocol =
 		bungeeoxide::legacy::protocol_of(v).ok_or_else(|| anyhow!("{version} is not pre-netty"))?;
 	let (host, port) = addr.rsplit_once(':').ok_or_else(|| anyhow!("host:port"))?;
@@ -1855,9 +1855,10 @@ async fn main() -> Result<()> {
 		}),
 		_ => None,
 	};
-	let era = match version.as_str() {
-		"1.8" => Era::Bountiful,
-		"1.12.2" => Era::Color,
+	let version: Version = version.parse().map_err(|e: String| anyhow!(e))?;
+	let era = match version {
+		Version::V1_8 => Era::Bountiful,
+		Version::V1_12_2 => Era::Color,
 		v => match RULES.iter().find(|r| r.version == v) {
 			Some(r) => Era::Old(r),
 			None => bail!("no checks for {v}"),

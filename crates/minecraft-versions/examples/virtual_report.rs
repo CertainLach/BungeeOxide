@@ -1,13 +1,19 @@
+use minecraft_versions::Version;
 use std::time::{Duration, Instant};
 
-use minecraft_versions::gen::convert::{convert, index_of, inspect, step, Root, VERSIONS};
+use minecraft_versions::gen::convert::{convert, inspect, step, Root};
 use minecraft_versions::Session;
 
-fn chain(from: usize, to: usize, data: &[u8], cx: &mut Session) -> Result<Vec<Vec<u8>>, String> {
+fn chain(
+	from: Version,
+	to: Version,
+	data: &[u8],
+	cx: &mut Session,
+) -> Result<Vec<Vec<u8>>, String> {
 	let mut current = vec![data.to_vec()];
 	let mut v = from;
 	while v != to {
-		let next = if to > v { v + 1 } else { v - 1 };
+		let next = if to > v { v.next() } else { v.prev() }.expect("versions between endpoints");
 		let mut out = Vec::new();
 		for p in &current {
 			out.extend(step(Root::PlayToClient, v, next, p, cx).map_err(|e| e.to_string())?);
@@ -25,7 +31,7 @@ struct Run {
 	failed: usize,
 }
 
-fn run(from: usize, to: usize, packets: &[Vec<u8>], virtual_path: bool) -> Run {
+fn run(from: Version, to: Version, packets: &[Vec<u8>], virtual_path: bool) -> Run {
 	let mut cx = Session::new();
 	let mut r = Run {
 		time: Duration::ZERO,
@@ -56,12 +62,11 @@ fn run(from: usize, to: usize, packets: &[Vec<u8>], virtual_path: bool) -> Run {
 fn main() -> anyhow::Result<()> {
 	let mut args = std::env::args().skip(1);
 	let path = args.next().expect("dump file");
-	let dump_version = args.next().unwrap_or_else(|| "1.8".to_owned());
-	let from = args.next().unwrap_or_else(|| dump_version.clone());
-	let to = args.next().unwrap_or_else(|| "26.1".to_owned());
+	let version = |v: String| Version::of(&v).ok_or_else(|| anyhow::anyhow!("unknown version {v}"));
+	let dump_version = args.next().map_or(Ok(Version::V1_8), version)?;
+	let from = args.next().map_or(Ok(dump_version), version)?;
+	let to = args.next().map_or(Ok(Version::V26_1), version)?;
 	let output = args.next();
-	let version = |v: &str| index_of(v).ok_or_else(|| anyhow::anyhow!("unknown version {v}"));
-	let (dump_version, from, to) = (version(&dump_version)?, version(&from)?, version(&to)?);
 	let bytes = std::fs::read(path)?;
 	let mut packets = Vec::new();
 	let mut at = 0;
@@ -86,8 +91,8 @@ fn main() -> anyhow::Result<()> {
 	let carried = run(from, to, &packets, true);
 	println!(
 		"{} -> {}: {} packets, {chunks} chunk packets",
-		VERSIONS[from],
-		VERSIONS[to],
+		from,
+		to,
 		packets.len()
 	);
 	println!(

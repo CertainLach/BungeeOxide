@@ -57,7 +57,7 @@ pub fn via_step<A, B>(
 	de: impl Fn(&mut crate::pds::Input) -> crate::pds::Result<B>,
 	cx: &mut Session,
 ) -> Result<B> {
-	let out = step(root, from.index(), to.index(), &encode(packet, ser)?, cx)?;
+	let out = step(root, from, to, &encode(packet, ser)?, cx)?;
 	match out.as_slice() {
 		[bytes] => decode(bytes, de),
 		[] => Err(Error::Dropped),

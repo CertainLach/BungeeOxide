@@ -1,6 +1,8 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
+use crate::gen::convert::Version;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Kind {
 	Player,
@@ -11,7 +13,7 @@ pub enum Kind {
 #[derive(Debug)]
 pub struct Outgoing {
 	pub root: crate::gen::convert::Root,
-	pub version: usize,
+	pub version: Version,
 	pub data: Vec<u8>,
 }
 
@@ -22,14 +24,14 @@ enum Payload {
 
 struct Queued {
 	root: crate::gen::convert::Root,
-	version: usize,
+	version: Version,
 	payload: Payload,
 }
 
 #[derive(Default)]
 pub struct Session {
 	outgoing: Vec<Queued>,
-	versions: Option<(usize, usize)>,
+	versions: Option<(Version, Version)>,
 	teleport_id: i32,
 	kinds: HashMap<i32, Kind>,
 	vehicles: HashMap<i32, i32>,
@@ -42,15 +44,15 @@ impl Session {
 		Self::default()
 	}
 
-	pub fn set_versions(&mut self, server: usize, client: usize) {
+	pub fn set_versions(&mut self, server: Version, client: Version) {
 		self.versions = Some((server, client));
 	}
 
-	pub fn server_version(&self) -> Option<usize> {
+	pub fn server_version(&self) -> Option<Version> {
 		self.versions.map(|(s, _)| s)
 	}
 
-	pub fn client_version(&self) -> Option<usize> {
+	pub fn client_version(&self) -> Option<Version> {
 		self.versions.map(|(_, c)| c)
 	}
 
@@ -92,7 +94,7 @@ impl Session {
 			.expect("states are keyed by their type")
 	}
 
-	pub fn send(&mut self, root: crate::gen::convert::Root, version: usize, data: Vec<u8>) {
+	pub fn send(&mut self, root: crate::gen::convert::Root, version: Version, data: Vec<u8>) {
 		self.outgoing.push(Queued {
 			root,
 			version,
@@ -103,7 +105,7 @@ impl Session {
 	pub fn send_model(
 		&mut self,
 		root: crate::gen::convert::Root,
-		version: usize,
+		version: Version,
 		model: crate::custom::Virtual,
 	) {
 		self.outgoing.push(Queued {

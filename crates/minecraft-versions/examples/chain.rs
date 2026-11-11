@@ -1,6 +1,7 @@
+use minecraft_versions::Version;
 use std::collections::BTreeMap;
 
-use minecraft_versions::gen::convert::{convert, index_of, Root};
+use minecraft_versions::gen::convert::{convert, Root};
 use minecraft_versions::gen::convert::{
 	v1_12_2::play_to_client_packet as newest, v1_8::play_to_client_packet as oldest,
 };
@@ -15,7 +16,7 @@ fn kind(p: &impl std::fmt::Debug) -> String {
 fn main() -> anyhow::Result<()> {
 	let path = std::env::args().nth(1).expect("dump file");
 	let bytes = std::fs::read(path)?;
-	let (first, last) = (index_of("1.8").unwrap(), index_of("1.12.2").unwrap());
+	let (first, last) = (Version::V1_8, Version::V1_12_2);
 	let mut cx = Session::new();
 	let mut at = 0;
 	let mut produced: BTreeMap<String, usize> = BTreeMap::new();

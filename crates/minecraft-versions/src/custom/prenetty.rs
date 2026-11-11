@@ -11,6 +11,7 @@ mod ids;
 mod tables;
 mod text;
 
+use crate::gen::convert::Version;
 use std::collections::{HashMap, HashSet};
 
 use crate::gen::convert::{v1_0_1, v1_4_2, v1_6_4};
@@ -25,8 +26,6 @@ pub use e::*;
 pub use entities::*;
 pub use f::*;
 pub use heights::*;
-
-use ids::V;
 
 type LegacySlot = pds_legacySlot::Ty;
 type Slot = v1_6_4::slot::Ty;
@@ -71,7 +70,7 @@ fn state(cx: &mut Session) -> &mut State {
 	cx.state::<State>()
 }
 
-fn legacy_slot(v: LegacySlot, to: V) -> LegacySlot {
+fn legacy_slot(v: LegacySlot, to: Version) -> LegacySlot {
 	v.map(|mut item| {
 		let (id, damage) = ids::item(item.id, item.itemDamage, to);
 		if id != item.id && !pds_legacySlot::has_nbt(id) {
@@ -83,7 +82,7 @@ fn legacy_slot(v: LegacySlot, to: V) -> LegacySlot {
 	})
 }
 
-fn slot(v: Slot, to: V) -> Slot {
+fn slot(v: Slot, to: Version) -> Slot {
 	match v {
 		Slot::Default(id, mut item) => {
 			let (id, damage) = ids::item(id, item.item_damage, to);
@@ -94,7 +93,7 @@ fn slot(v: Slot, to: V) -> Slot {
 	}
 }
 
-fn old_meta_item(v: OldMetaItem, to: V) -> OldMetaItem {
+fn old_meta_item(v: OldMetaItem, to: Version) -> OldMetaItem {
 	match v {
 		OldMetaItem::V5(mut item) => {
 			if item.id >= 0 {
@@ -106,7 +105,7 @@ fn old_meta_item(v: OldMetaItem, to: V) -> OldMetaItem {
 	}
 }
 
-fn mid_meta_item(v: MidMetaItem, to: V) -> MidMetaItem {
+fn mid_meta_item(v: MidMetaItem, to: Version) -> MidMetaItem {
 	use crate::gen::convert::v1_4_2::entity_metadata_item_v5 as Item;
 	match v {
 		MidMetaItem::V5(Item::Ty::Default(id, mut item)) => {
@@ -118,14 +117,14 @@ fn mid_meta_item(v: MidMetaItem, to: V) -> MidMetaItem {
 	}
 }
 
-fn item_id(id: i16, to: V) -> i16 {
+fn item_id(id: i16, to: Version) -> i16 {
 	if id <= 0 {
 		return id;
 	}
 	ids::item(id, 0, to).0
 }
 
-fn falling_block(data: i32, to: V, packed: bool) -> i32 {
+fn falling_block(data: i32, to: Version, packed: bool) -> i32 {
 	let (id, meta) = if packed {
 		((data & 0xffff) as u16, (data >> 16) as u8)
 	} else {
@@ -139,12 +138,12 @@ fn falling_block(data: i32, to: V, packed: bool) -> i32 {
 	}
 }
 
-fn remap_record(block: u16, to: V) -> u16 {
+fn remap_record(block: u16, to: Version) -> u16 {
 	let (id, meta) = ids::block(block >> 4, (block & 15) as u8, to);
 	id << 4 | meta as u16
 }
 
-fn world_event_data(effect: i32, data: i32, to: V) -> i32 {
+fn world_event_data(effect: i32, data: i32, to: Version) -> i32 {
 	if effect != 2001 {
 		return data;
 	}

@@ -185,7 +185,7 @@ pub(super) fn read_1_18(data: &[u8], version: V, sections: Option<usize>) -> Res
 	let mut at = 0;
 	let mut out = Vec::new();
 	let mut single = 0;
-	while at < data.len() && !padding(version.index(), &data[at..], out.len(), single, sections) {
+	while at < data.len() && !padding(version, &data[at..], out.len(), single, sections) {
 		single += usize::from(data.get(at + 2) == Some(&0));
 		out.push(read_section(data, &mut at)?);
 	}

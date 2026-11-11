@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
@@ -18,8 +19,7 @@ use minecraft_versions::gen::convert::v26_1::{
 use minecraft_versions::gen::convert::{packet_name, v1_20_2};
 use minecraft_versions::pds::{self, Input, Output};
 use minecraft_versions::{
-	convert, index_of, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS,
-	STACK_BUDGET, VERSIONS,
+	convert, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS, STACK_BUDGET,
 };
 use serde_json::Value;
 use tokio::net::{TcpListener, TcpStream};
@@ -39,9 +39,9 @@ use codec::{read_varint, Codec};
 
 pub type Conn = Framed<TcpStream, Codec>;
 
-pub const PIVOT: &str = "26.1";
+pub const PIVOT: Version = Version::V26_1;
 
-pub const TRANSFERS: &str = "1.20.5";
+pub const TRANSFERS: Version = Version::V1_20_5;
 
 const MAX_HOPS: usize = 4;
 
@@ -51,7 +51,7 @@ pub struct Config {
 	pub target: String,
 	pub motd: String,
 	pub threshold: usize,
-	pub server_version: String,
+	pub server_version: Version,
 	pub accounts: accounts::Accounts,
 	pub status_cache: Duration,
 	pub status: status::Cache,
@@ -63,18 +63,11 @@ impl Default for Config {
 			target: "127.0.0.1:25565".to_owned(),
 			motd: "pds2 bridge".to_owned(),
 			threshold: 256,
-			server_version: "1.8".to_owned(),
+			server_version: Version::V1_8,
 			accounts: accounts::Accounts::default(),
 			status_cache: Duration::from_secs(5),
 			status: status::Cache::default(),
 		}
-	}
-}
-
-impl Config {
-	pub fn server(&self) -> Result<usize> {
-		index_of(&self.server_version)
-			.ok_or_else(|| anyhow!("unknown server version {}", self.server_version))
 	}
 }
 
@@ -101,15 +94,7 @@ pub async fn next(conn: &mut Conn) -> Result<Vec<u8>> {
 		.context("reading a packet")
 }
 
-pub fn pivot() -> usize {
-	index_of(PIVOT).expect("the pivot version is in the merged schema")
-}
-
-pub(crate) fn at(version: &str) -> usize {
-	index_of(version).expect("a known version")
-}
-
-pub fn protocol_of(version: usize) -> Option<i32> {
+pub fn protocol_of(version: Version) -> Option<i32> {
 	PROTOCOLS
 		.iter()
 		.filter(|(_, v)| *v == version)
@@ -117,20 +102,20 @@ pub fn protocol_of(version: usize) -> Option<i32> {
 		.max()
 }
 
-pub fn client_version(protocol: i32, server: usize) -> Option<usize> {
+pub fn client_version(protocol: i32, server: Version) -> Option<Version> {
 	version_of(protocol).filter(|v| reachable(server, *v))
 }
 
-pub fn reach(server: usize) -> (usize, usize) {
-	let reach = |v: &usize| reachable(server, *v);
-	let low = (0..VERSIONS.len()).find(reach).unwrap_or(server);
-	let high = (0..VERSIONS.len()).rev().find(reach).unwrap_or(server);
+pub fn reach(server: Version) -> (Version, Version) {
+	let reach = |v: &&Version| reachable(server, **v);
+	let low = Version::ALL.iter().find(reach).copied().unwrap_or(server);
+	let high = Version::ALL
+		.iter()
+		.rev()
+		.find(reach)
+		.copied()
+		.unwrap_or(server);
 	(low, high)
-}
-
-pub fn client_range(server: usize) -> (&'static str, &'static str) {
-	let (low, high) = reach(server);
-	(VERSIONS[low], VERSIONS[high])
 }
 
 pub fn text_tag(text: &str) -> nbt::Tag {
@@ -231,14 +216,14 @@ fn elsewhere(world: &play_to_client_spawn_info::Ty) -> (i32, String) {
 	.unwrap_or_else(|| (world.dimension, "pds2:elsewhere".to_owned()))
 }
 
-pub fn trick(login: &play_to_client_packet_login::Ty, cv: usize) -> Result<Vec<Vec<u8>>> {
+pub fn trick(login: &play_to_client_packet_login::Ty, cv: Version) -> Result<Vec<Vec<u8>>> {
 	let mut cx = Session::new();
-	cx.set_versions(pivot(), cv);
+	cx.set_versions(PIVOT, cv);
 	let mut down = |data: Vec<u8>| -> Result<Vec<Vec<u8>>> {
-		match cv == pivot() {
+		match cv == PIVOT {
 			true => Ok(vec![data]),
-			false => convert(Root::PlayToClient, pivot(), cv, &data, &mut cx)
-				.map_err(|e| anyhow!("{PIVOT} -> {}: {e}", VERSIONS[cv])),
+			false => convert(Root::PlayToClient, PIVOT, cv, &data, &mut cx)
+				.map_err(|e| anyhow!("{PIVOT} -> {}: {e}", cv)),
 		}
 	};
 	down(encode(
@@ -302,8 +287,8 @@ fn common(root: Root, packet: &[u8]) -> Result<Option<Common>> {
 pub struct Proxy {
 	pub client: Conn,
 	pub server: Option<Conn>,
-	pub cv: usize,
-	pub sv: usize,
+	pub cv: Version,
+	pub sv: Version,
 	pub target: String,
 	pub cookies: cookies::Jar,
 	cx: Session,
@@ -314,8 +299,8 @@ pub struct Proxy {
 impl Proxy {
 	pub(crate) fn new(
 		client: Conn,
-		cv: usize,
-		sv: usize,
+		cv: Version,
+		sv: Version,
 		target: &str,
 		online: online::Online,
 	) -> Self {
@@ -358,7 +343,7 @@ impl Proxy {
 		Ok(data)
 	}
 
-	fn convert(&mut self, root: Root, from: usize, to: usize, data: Vec<u8>) -> Vec<Vec<u8>> {
+	fn convert(&mut self, root: Root, from: Version, to: Version, data: Vec<u8>) -> Vec<Vec<u8>> {
 		if from == to {
 			return vec![data];
 		}
@@ -368,15 +353,15 @@ impl Proxy {
 				warn!(
 					"{root:?} packet {:#04x} {} -> {}: {e}",
 					packet_id(&data).unwrap_or(-1),
-					VERSIONS[from],
-					VERSIONS[to]
+					from,
+					to
 				);
 				vec![]
 			}
 		}
 	}
 
-	async fn deliver(&mut self, root: Root, from: usize, data: Vec<u8>) -> Result<()> {
+	async fn deliver(&mut self, root: Root, from: Version, data: Vec<u8>) -> Result<()> {
 		if from == self.sv {
 			self.online.observe(root, &data);
 		}
@@ -398,7 +383,7 @@ impl Proxy {
 		Ok(())
 	}
 
-	pub async fn send(&mut self, root: Root, from: usize, data: Vec<u8>) -> Result<()> {
+	pub async fn send(&mut self, root: Root, from: Version, data: Vec<u8>) -> Result<()> {
 		self.deliver(root, from, data).await?;
 		self.drain().await
 	}
@@ -415,7 +400,7 @@ impl Proxy {
 		}
 	}
 
-	pub async fn to_client(&mut self, from: usize, data: Vec<u8>) -> Result<()> {
+	pub async fn to_client(&mut self, from: Version, data: Vec<u8>) -> Result<()> {
 		self.send(Root::PlayToClient, from, data).await
 	}
 
@@ -425,11 +410,11 @@ impl Proxy {
 			.ok_or_else(|| anyhow!("no server connection"))
 	}
 
-	fn at_pivot(&self, root: Root, from: usize, data: &[u8]) -> Vec<Vec<u8>> {
-		if from == pivot() {
+	fn at_pivot(&self, root: Root, from: Version, data: &[u8]) -> Vec<Vec<u8>> {
+		if from == PIVOT {
 			return vec![data.to_vec()];
 		}
-		convert(root, from, pivot(), data, &mut Session::new()).unwrap_or_default()
+		convert(root, from, PIVOT, data, &mut Session::new()).unwrap_or_default()
 	}
 
 	async fn expect_client(&mut self, root: Root, name: &str) -> Result<()> {
@@ -462,11 +447,11 @@ impl Proxy {
 			}
 			_ => encode(&play_s::Ty::CookieResponse(response), play_s::serialize)?,
 		};
-		self.send(root, pivot(), data).await
+		self.send(root, PIVOT, data).await
 	}
 
 	async fn catch(&mut self, root: Root, data: Vec<u8>) -> Result<Caught> {
-		if self.sv < at(TRANSFERS) {
+		if self.sv < TRANSFERS {
 			return Ok(Caught::Pass(data));
 		}
 		let Some("store_cookie" | "cookie_request" | "transfer") =
@@ -509,13 +494,13 @@ impl Proxy {
 			.with_context(|| format!("connecting to {target}"))?;
 		stream.set_nodelay(true)?;
 		self.server = Some(Framed::new(stream, Codec::default()));
-		let protocol = protocol_of(self.sv)
-			.ok_or_else(|| anyhow!("no protocol number for {}", VERSIONS[self.sv]))?;
+		let protocol =
+			protocol_of(self.sv).ok_or_else(|| anyhow!("no protocol number for {}", self.sv))?;
 		let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
 			protocol_version: protocol,
 			server_host: host,
 			server_port: port,
-			next_state: if transfer && self.sv >= at(TRANSFERS) {
+			next_state: if transfer && self.sv >= TRANSFERS {
 				3
 			} else {
 				2
@@ -528,7 +513,7 @@ impl Proxy {
 		self.send(Root::LoginToServer, from, start).await?;
 		loop {
 			let data = self.read_server(Root::LoginToClient).await?;
-			let packets = self.convert(Root::LoginToClient, self.sv, pivot(), data);
+			let packets = self.convert(Root::LoginToClient, self.sv, PIVOT, data);
 			self.drain().await?;
 			for p in packets {
 				match decode(&p, login_c::deserialize)? {
@@ -537,13 +522,13 @@ impl Proxy {
 					}
 					login_c::Ty::Success(profile) => {
 						self.online.joined(self.sv, &profile);
-						if self.sv >= at(CONFIGURATION) {
+						if self.sv >= CONFIGURATION {
 							let ack = login_s::Ty::LoginAcknowledged(
 								login_to_server_packet_login_acknowledged::Ty {},
 							);
 							self.send(
 								Root::LoginToServer,
-								pivot(),
+								PIVOT,
 								encode(&ack, login_s::serialize)?,
 							)
 							.await?;
@@ -571,7 +556,7 @@ impl Proxy {
 						);
 						self.send(
 							Root::LoginToServer,
-							pivot(),
+							PIVOT,
 							encode(&response, login_s::serialize)?,
 						)
 						.await?;
@@ -588,7 +573,7 @@ impl Proxy {
 	async fn reconnect(
 		&mut self,
 		target: &str,
-		version: Option<usize>,
+		version: Option<Version>,
 		username: &str,
 		transfer: bool,
 	) -> Result<()> {
@@ -599,7 +584,7 @@ impl Proxy {
 				Err(e) => {
 					warn!(
 						"can't tell which version {target} runs, trying {}: {e:#}",
-						VERSIONS[self.sv]
+						self.sv
 					);
 					self.sv
 				}
@@ -608,8 +593,8 @@ impl Proxy {
 		if !reachable(sv, self.cv) {
 			bail!(
 				"{target} runs {}, which {} clients can't reach",
-				VERSIONS[sv],
-				VERSIONS[self.cv]
+				sv,
+				self.cv
 			);
 		}
 		self.server = None;
@@ -622,7 +607,7 @@ impl Proxy {
 	}
 
 	async fn answer_configuration(&mut self) -> Result<Option<String>> {
-		let base = at(CONFIGURATION);
+		let base = CONFIGURATION;
 		use v1_20_2::configuration_to_server_packet::Ty as S;
 		let settings = S::Settings(v1_20_2::configuration_to_server_packet_settings::Ty {
 			locale: "en_us".to_owned(),
@@ -709,7 +694,7 @@ impl Proxy {
 	async fn configure(&mut self, modern_client: bool, username: &str) -> Result<()> {
 		let mut hops = 0;
 		loop {
-			let next = match (modern_client, self.sv >= at(CONFIGURATION)) {
+			let next = match (modern_client, self.sv >= CONFIGURATION) {
 				(true, true) => self.relay_configuration().await?,
 				(false, true) => self.answer_configuration().await?,
 				_ => None,
@@ -725,9 +710,9 @@ impl Proxy {
 	}
 
 	async fn configure_client(&mut self) -> Result<()> {
-		let base = at(CONFIGURATION);
+		let base = CONFIGURATION;
 		let packets = minecraft_versions::configuration_packets(&mut self.cx)
-			.map_err(|e| anyhow!("configuring {}: {e}", VERSIONS[self.cv]))?;
+			.map_err(|e| anyhow!("configuring {}: {e}", self.cv))?;
 		for p in packets {
 			self.send(Root::ConfigurationToClient, base, p).await?;
 		}
@@ -747,7 +732,7 @@ impl Proxy {
 	}
 
 	async fn say(&mut self, text: &str) -> Result<()> {
-		self.to_client(pivot(), chat_text(text)?).await
+		self.to_client(PIVOT, chat_text(text)?).await
 	}
 
 	fn join_at_pivot(&self, join: &[u8]) -> Result<play_to_client_packet_login::Ty> {
@@ -764,7 +749,7 @@ impl Proxy {
 			true => trick(&self.join_at_pivot(&join)?, self.cv)?,
 			false => Vec::new(),
 		};
-		if self.cv >= at(CONFIGURATION) && self.sv < at(CONFIGURATION) {
+		if self.cv >= CONFIGURATION && self.sv < CONFIGURATION {
 			let held = self.convert(Root::PlayToClient, self.sv, self.cv, join);
 			self.configure_client().await?;
 			for packet in held {
@@ -787,7 +772,7 @@ impl Proxy {
 	async fn reconfigure_client(&mut self) -> Result<()> {
 		let start =
 			play_c::Ty::StartConfiguration(play_to_client_packet_start_configuration::Ty {});
-		self.to_client(pivot(), encode(&start, play_c::serialize)?)
+		self.to_client(PIVOT, encode(&start, play_c::serialize)?)
 			.await?;
 		self.expect_client(Root::PlayToServer, "configuration_acknowledged")
 			.await
@@ -796,7 +781,7 @@ impl Proxy {
 	async fn switch_server(
 		&mut self,
 		target: &str,
-		version: Option<usize>,
+		version: Option<Version>,
 		username: &str,
 		transfer: bool,
 	) -> Result<(), Switch> {
@@ -804,7 +789,7 @@ impl Proxy {
 		let chat = self.online.chat.take();
 		let (sv, previous) = (self.sv, self.target.clone());
 		let cx = std::mem::take(&mut self.cx);
-		let modern_client = self.cv >= at(CONFIGURATION);
+		let modern_client = self.cv >= CONFIGURATION;
 		let ready = async {
 			self.reconnect(target, version, username, transfer).await?;
 			if modern_client {
@@ -847,7 +832,7 @@ impl Proxy {
 					config_c::serialize,
 				)
 				.map_err(Switch::Lost)?;
-				let _ = self.send(Root::ConfigurationToClient, pivot(), kick).await;
+				let _ = self.send(Root::ConfigurationToClient, PIVOT, kick).await;
 			}
 			return Err(Switch::Lost(e));
 		}
@@ -863,20 +848,20 @@ enum Switch {
 #[derive(Debug, PartialEq)]
 enum Command {
 	Ping,
-	Goto(String, Option<usize>),
+	Goto(String, Option<Version>),
 	Unknown(String),
 }
 
-fn command_of(cv: usize, data: &[u8]) -> Result<Option<Command>> {
+fn command_of(cv: Version, data: &[u8]) -> Result<Option<Command>> {
 	let Some("chat" | "chat_message" | "chat_command" | "chat_command_signed") =
 		packet_name(Root::PlayToServer, cv, data)
 	else {
 		return Ok(None);
 	};
-	let packets = match cv == pivot() {
+	let packets = match cv == PIVOT {
 		true => vec![data.to_vec()],
 		false => {
-			convert(Root::PlayToServer, cv, pivot(), data, &mut Session::new()).unwrap_or_default()
+			convert(Root::PlayToServer, cv, PIVOT, data, &mut Session::new()).unwrap_or_default()
 		}
 	};
 	for p in packets {
@@ -896,7 +881,7 @@ fn command_of(cv: usize, data: &[u8]) -> Result<Option<Command>> {
 		return Ok(Some(match words.as_slice() {
 			["ping", ..] => Command::Ping,
 			["goto", target] => Command::Goto((*target).to_owned(), None),
-			["goto", target, version] => match index_of(version) {
+			["goto", target, version] => match Version::of(version) {
 				Some(v) => Command::Goto((*target).to_owned(), Some(v)),
 				None => Command::Unknown(format!("/{line} (unknown version {version})")),
 			},
@@ -907,7 +892,6 @@ fn command_of(cv: usize, data: &[u8]) -> Result<Option<Command>> {
 }
 
 pub async fn serve(listener: TcpListener, config: Arc<Config>) -> Result<()> {
-	config.server()?;
 	legacy::warm_up().await;
 	loop {
 		let (stream, peer) = listener.accept().await?;
@@ -970,10 +954,7 @@ pub(crate) async fn join_upstream(
 ) -> Result<(Vec<u8>, Vec<Vec<u8>>)> {
 	p.configure(modern_client, username).await?;
 	let (join, early) = p.await_join().await?;
-	info!(
-		"{username} joined {} ({}) with {}",
-		p.target, VERSIONS[p.sv], VERSIONS[p.cv]
-	);
+	info!("{username} joined {} ({}) with {}", p.target, p.sv, p.cv);
 	if p.target != config.target {
 		info!(
 			"{username} was transferred from {} on the way",
@@ -988,10 +969,10 @@ async fn login(
 	config: &Config,
 	hs: handshaking_to_server_packet_set_protocol::Ty,
 ) -> Result<()> {
-	let sv = config.server()?;
+	let sv = config.server_version;
 	let start = next(&mut client).await?;
 	let Some(cv) = client_version(hs.protocol_version, sv) else {
-		let (low, high) = client_range(sv);
+		let (low, high) = reach(sv);
 		let reason = format!(
 			"this proxy speaks {low} to {high}, not protocol {}",
 			hs.protocol_version
@@ -1001,7 +982,7 @@ async fn login(
 	};
 	let mut p = Proxy::new(client, cv, sv, &config.target, online::Online::default());
 	let mut player = None;
-	for data in p.convert(Root::LoginToServer, cv, pivot(), start) {
+	for data in p.convert(Root::LoginToServer, cv, PIVOT, start) {
 		if let login_s::Ty::LoginStart(start) = decode(&data, login_s::deserialize)? {
 			player = Some(start);
 		}
@@ -1013,26 +994,26 @@ async fn login(
 	if let Err(e) = p.connect(&username, false).await {
 		p.send(
 			Root::LoginToClient,
-			pivot(),
+			PIVOT,
 			login_kick(&format!("can't join the server: {e:#}"))?,
 		)
 		.await?;
 		return Err(e);
 	}
-	if cv >= at("1.8") {
+	if cv >= Version::V1_8 {
 		let threshold = config.threshold;
 		let compress = encode(&login_c::Ty::Compress(threshold as i32), login_c::serialize)?;
-		p.send(Root::LoginToClient, pivot(), compress).await?;
+		p.send(Root::LoginToClient, PIVOT, compress).await?;
 		p.client.codec_mut().threshold = Some(threshold);
 	}
 	let success = p.online.success(&username);
 	p.send(
 		Root::LoginToClient,
-		pivot(),
+		PIVOT,
 		encode(&login_c::Ty::Success(success), login_c::serialize)?,
 	)
 	.await?;
-	let modern_client = cv >= at(CONFIGURATION);
+	let modern_client = cv >= CONFIGURATION;
 	if modern_client {
 		p.expect_client(Root::LoginToServer, "login_acknowledged")
 			.await?;
@@ -1052,7 +1033,7 @@ async fn moved(
 	let how = if transfer { "transfer" } else { "move" };
 	match outcome {
 		Ok(()) => {
-			info!("{username} made the {how} to {target} ({})", VERSIONS[p.sv]);
+			info!("{username} made the {how} to {target} ({})", p.sv);
 			Ok(())
 		}
 		Err(Switch::Stayed(e)) => {
@@ -1093,7 +1074,7 @@ async fn relay(mut p: Proxy, username: &str) -> Result<()> {
 			from_server = p.server.as_mut().expect("connected").next() => {
 				let Some(data) = from_server else {
 					let kick = play_c::Ty::KickDisconnect(text_tag("the server closed the connection"));
-					p.to_client(pivot(), encode(&kick, play_c::serialize)?).await?;
+					p.to_client(PIVOT, encode(&kick, play_c::serialize)?).await?;
 					return Ok(());
 				};
 				match p.catch(Root::PlayToClient, data?).await? {
@@ -1199,11 +1180,14 @@ mod tests {
 		}
 	}
 
-	fn clients() -> impl Iterator<Item = usize> {
-		(0..VERSIONS.len()).filter(|v| reachable(pivot(), *v))
+	fn clients() -> impl Iterator<Item = Version> {
+		Version::ALL
+			.iter()
+			.copied()
+			.filter(|v| reachable(PIVOT, *v))
 	}
 
-	fn names(root: Root, version: usize, packets: &[Vec<u8>]) -> Vec<&'static str> {
+	fn names(root: Root, version: Version, packets: &[Vec<u8>]) -> Vec<&'static str> {
 		packets
 			.iter()
 			.map(|p| packet_name(root, version, p).unwrap_or("?"))
@@ -1218,13 +1202,12 @@ mod tests {
 				world(0, "minecraft:overworld"),
 				world(3, "minecraft:the_nether"),
 			] {
-				let out =
-					trick(&login(w), cv).unwrap_or_else(|e| panic!("{}: {e:#}", VERSIONS[cv]));
+				let out = trick(&login(w), cv).unwrap_or_else(|e| panic!("{}: {e:#}", cv));
 				assert_eq!(
 					names(Root::PlayToClient, cv, &out),
 					["respawn", "respawn"],
 					"{}",
-					VERSIONS[cv]
+					cv
 				);
 			}
 		}
@@ -1235,12 +1218,12 @@ mod tests {
 		use minecraft_versions::gen::convert::{v1_0_1, v1_12_2, v1_16, v1_20_3, v1_8};
 		let overworld = login(world(0, "minecraft:overworld"));
 		let nether = login(world(3, "minecraft:the_nether"));
-		let dims = |l: &play_to_client_packet_login::Ty, v: &str| -> Vec<String> {
-			trick(l, at(v))
+		let dims = |l: &play_to_client_packet_login::Ty, v: Version| -> Vec<String> {
+			trick(l, v)
 				.unwrap()
 				.iter()
 				.map(|p| match v {
-					"1.0.1" => {
+					Version::V1_0_1 => {
 						match decode(p, v1_0_1::play_to_client_packet::deserialize).unwrap() {
 							v1_0_1::play_to_client_packet::Ty::Respawn(r) => {
 								r.dimension.to_string()
@@ -1248,11 +1231,13 @@ mod tests {
 							other => panic!("{other:?}"),
 						}
 					}
-					"1.8" => match decode(p, v1_8::play_to_client_packet::deserialize).unwrap() {
-						v1_8::play_to_client_packet::Ty::Respawn(r) => r.dimension.to_string(),
-						other => panic!("{other:?}"),
-					},
-					"1.12.2" => {
+					Version::V1_8 => {
+						match decode(p, v1_8::play_to_client_packet::deserialize).unwrap() {
+							v1_8::play_to_client_packet::Ty::Respawn(r) => r.dimension.to_string(),
+							other => panic!("{other:?}"),
+						}
+					}
+					Version::V1_12_2 => {
 						match decode(p, v1_12_2::play_to_client_packet::deserialize).unwrap() {
 							v1_12_2::play_to_client_packet::Ty::Respawn(r) => {
 								r.dimension.to_string()
@@ -1260,10 +1245,12 @@ mod tests {
 							other => panic!("{other:?}"),
 						}
 					}
-					"1.16" => match decode(p, v1_16::play_to_client_packet::deserialize).unwrap() {
-						v1_16::play_to_client_packet::Ty::Respawn(r) => r.world_name,
-						other => panic!("{other:?}"),
-					},
+					Version::V1_16 => {
+						match decode(p, v1_16::play_to_client_packet::deserialize).unwrap() {
+							v1_16::play_to_client_packet::Ty::Respawn(r) => r.world_name,
+							other => panic!("{other:?}"),
+						}
+					}
 					_ => match decode(p, v1_20_3::play_to_client_packet::deserialize).unwrap() {
 						v1_20_3::play_to_client_packet::Ty::Respawn(r) => {
 							format!("{} {}", r.dimension, r.world_name)
@@ -1273,16 +1260,16 @@ mod tests {
 				})
 				.collect()
 		};
-		for v in ["1.0.1", "1.8", "1.12.2"] {
+		for v in [Version::V1_0_1, Version::V1_8, Version::V1_12_2] {
 			assert_eq!(dims(&overworld, v), ["-1", "0"], "{v}");
 			assert_eq!(dims(&nether, v), ["0", "-1"], "{v}");
 		}
 		assert_eq!(
-			dims(&overworld, "1.16"),
+			dims(&overworld, Version::V1_16),
 			["minecraft:the_nether", "minecraft:overworld"]
 		);
 		assert_eq!(
-			dims(&nether, "1.20.3"),
+			dims(&nether, Version::V1_20_3),
 			[
 				"minecraft:overworld minecraft:overworld",
 				"minecraft:the_nether minecraft:the_nether"
@@ -1313,24 +1300,23 @@ mod tests {
 		)
 		.unwrap();
 		for cv in clients() {
-			let sent =
-				convert(Root::PlayToServer, pivot(), cv, &line, &mut Session::new()).unwrap();
+			let sent = convert(Root::PlayToServer, PIVOT, cv, &line, &mut Session::new()).unwrap();
 			let [sent] = sent.as_slice() else {
-				panic!("{}: {sent:?}", VERSIONS[cv])
+				panic!("{}: {sent:?}", cv)
 			};
 			let command = command_of(cv, sent).unwrap();
 			assert_eq!(
 				command,
 				Some(Command::Goto(
 					"example.org:25565".to_owned(),
-					Some(at("1.8"))
+					Some(Version::V1_8)
 				)),
 				"{}",
-				VERSIONS[cv]
+				cv
 			);
 		}
 		assert_eq!(
-			command_of(pivot(), &plain).unwrap(),
+			command_of(PIVOT, &plain).unwrap(),
 			Some(Command::Unknown("/proxy-goto".to_owned()))
 		);
 	}
@@ -1344,28 +1330,28 @@ mod tests {
 		)
 		.unwrap();
 		for cv in clients() {
-			let out = convert(Root::PlayToClient, pivot(), cv, &chat, &mut Session::new()).unwrap();
+			let out = convert(Root::PlayToClient, PIVOT, cv, &chat, &mut Session::new()).unwrap();
 			assert!(
 				matches!(
 					names(Root::PlayToClient, cv, &out)[..],
 					["chat" | "system_chat"]
 				),
 				"{}",
-				VERSIONS[cv]
+				cv
 			);
-			let out = convert(Root::PlayToClient, pivot(), cv, &kick, &mut Session::new()).unwrap();
+			let out = convert(Root::PlayToClient, PIVOT, cv, &kick, &mut Session::new()).unwrap();
 			assert_eq!(
 				names(Root::PlayToClient, cv, &out),
 				["kick_disconnect"],
 				"{}",
-				VERSIONS[cv]
+				cv
 			);
 		}
 		let refusal = login_kick("no").unwrap();
 		for cv in clients().filter(|v| !legacy::is_legacy(*v)) {
 			let out = convert(
 				Root::LoginToClient,
-				pivot(),
+				PIVOT,
 				cv,
 				&refusal,
 				&mut Session::new(),
@@ -1375,7 +1361,7 @@ mod tests {
 				names(Root::LoginToClient, cv, &out),
 				["disconnect"],
 				"{}",
-				VERSIONS[cv]
+				cv
 			);
 		}
 	}

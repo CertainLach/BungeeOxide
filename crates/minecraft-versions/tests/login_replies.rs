@@ -1,6 +1,7 @@
-use minecraft_versions::gen::convert::{convert, index_of, packet_name, v26_1, Root};
+use minecraft_versions::gen::convert::{convert, packet_name, v26_1, Root};
 use minecraft_versions::pds::Output;
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 
 fn encode(p: &v26_1::login_to_client_packet::Ty) -> Vec<u8> {
 	let mut o = Output::new();
@@ -8,12 +9,12 @@ fn encode(p: &v26_1::login_to_client_packet::Ty) -> Vec<u8> {
 	o.into_inner()
 }
 
-fn replies(p: v26_1::login_to_client_packet::Ty) -> Vec<(Root, usize, Vec<u8>)> {
+fn replies(p: v26_1::login_to_client_packet::Ty) -> Vec<(Root, Version, Vec<u8>)> {
 	let mut cx = Session::new();
 	let out = convert(
 		Root::LoginToClient,
-		index_of("26.1").unwrap(),
-		index_of("1.8").unwrap(),
+		Version::V26_1,
+		Version::V1_8,
 		&encode(&p),
 		&mut cx,
 	)
@@ -25,8 +26,8 @@ fn replies(p: v26_1::login_to_client_packet::Ty) -> Vec<(Root, usize, Vec<u8>)> 
 		.collect()
 }
 
-fn to_server(root: Root, version: usize, data: &[u8]) -> Option<&'static str> {
-	let sv = index_of("26.1").unwrap();
+fn to_server(root: Root, version: Version, data: &[u8]) -> Option<&'static str> {
+	let sv = Version::V26_1;
 	let mut cx = Session::new();
 	let up = convert(root, version, sv, data, &mut cx).ok()?;
 	packet_name(Root::LoginToServer, sv, up.first()?)

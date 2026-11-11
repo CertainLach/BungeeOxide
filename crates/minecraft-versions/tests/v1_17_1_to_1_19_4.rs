@@ -1,11 +1,7 @@
-use minecraft_versions::gen::convert::{convert, index_of, v1_17_1, v1_18, Root};
+use minecraft_versions::gen::convert::{convert, v1_17_1, v1_18, Root, Version};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
 use nbt::{Entry, Payload};
-
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
 
 fn varint(out: &mut Vec<u8>, v: i32) {
 	let mut v = v as u32;
@@ -104,8 +100,8 @@ mod s1_18 {
 	fn up(p: &c17::Ty, cx: &mut Session) -> Vec<c18::Ty> {
 		convert(
 			Root::PlayToClient,
-			at("1.17.1"),
-			at("1.18"),
+			Version::V1_17_1,
+			Version::V1_18,
 			&encode(p, c17::serialize),
 			cx,
 		)
@@ -231,8 +227,8 @@ mod s1_18 {
 		let bytes = encode(&out[0], c18::serialize);
 		let out: Vec<c17::Ty> = convert(
 			Root::PlayToClient,
-			at("1.18"),
-			at("1.17.1"),
+			Version::V1_18,
+			Version::V1_17_1,
 			&bytes,
 			&mut cx,
 		)
@@ -274,8 +270,8 @@ mod chain {
 	fn up(p: &old::Ty, cx: &mut Session) -> Vec<new::Ty> {
 		convert(
 			Root::PlayToClient,
-			at("1.17.1"),
-			at("1.19.4"),
+			Version::V1_17_1,
+			Version::V1_19_4,
 			&encode(p, old::serialize),
 			cx,
 		)
@@ -288,8 +284,8 @@ mod chain {
 	fn down(p: &new_server::Ty, cx: &mut Session) -> Vec<old_server::Ty> {
 		convert(
 			Root::PlayToServer,
-			at("1.19.4"),
-			at("1.17.1"),
+			Version::V1_19_4,
+			Version::V1_17_1,
 			&encode(p, new_server::serialize),
 			cx,
 		)
@@ -457,7 +453,7 @@ mod chain {
 		);
 	}
 
-	fn state(version: &str, text: &str) -> u32 {
+	fn state(version: Version, text: &str) -> u32 {
 		registry::blocks(version)
 			.unwrap()
 			.parse_state(text)
@@ -474,7 +470,7 @@ mod chain {
 			"minecraft:oak_sapling[stage=1]",
 			"minecraft:chest[facing=east,type=single,waterlogged=false]",
 		];
-		let palette: Vec<u32> = names.iter().map(|n| state("1.17.1", n)).collect();
+		let palette: Vec<u32> = names.iter().map(|n| state(Version::V1_17_1, n)).collect();
 		let mut data = Vec::new();
 		data.extend_from_slice(&3000i16.to_be_bytes());
 		data.push(4);
@@ -500,7 +496,7 @@ mod chain {
 		let mut at = 0;
 		at += 2;
 		let states = read_container(&c.chunk_data, &mut at, 4096, 4, 8);
-		let b = registry::blocks("1.19.4").unwrap();
+		let b = registry::blocks(Version::V1_19_4).unwrap();
 		for (i, s) in states.iter().enumerate().take(8) {
 			assert_eq!(b.describe(*s).unwrap(), names[i % 4]);
 		}
@@ -528,7 +524,7 @@ mod chain {
 		}
 	}
 
-	fn entity_id(version: &str, name: &str) -> i32 {
+	fn entity_id(version: Version, name: &str) -> i32 {
 		registry::names(version, "entities")
 			.unwrap()
 			.id(name)
@@ -542,7 +538,7 @@ mod chain {
 			old::Ty::SpawnEntityLiving(v1_17_1::play_to_client_packet_spawn_entity_living::Ty {
 				entity_id: 10,
 				entity_uuid: 5,
-				r#type: entity_id("1.17.1", "zombie"),
+				r#type: entity_id(Version::V1_17_1, "zombie"),
 				x: 1.0,
 				y: 2.0,
 				z: 3.0,
@@ -557,7 +553,7 @@ mod chain {
 		};
 		assert_eq!(
 			(s.r#type, s.yaw, s.pitch, s.head_pitch, s.object_data),
-			(entity_id("1.19.4", "zombie"), 10, 20, 30, 0)
+			(entity_id(Version::V1_19_4, "zombie"), 10, 20, 30, 0)
 		);
 		let painting = old::Ty::SpawnEntityPainting(
 			v1_17_1::play_to_client_packet_spawn_entity_painting::Ty {
@@ -574,7 +570,7 @@ mod chain {
 		};
 		assert_eq!(
 			(s.r#type, s.object_data, s.x, s.y, s.z),
-			(entity_id("1.19.4", "painting"), 4, 4.5, 70.5, -2.5)
+			(entity_id(Version::V1_19_4, "painting"), 4, 4.5, 70.5, -2.5)
 		);
 		assert_eq!(m.entity_id, 11);
 		let [item] = m.metadata.as_slice() else {
@@ -585,11 +581,11 @@ mod chain {
 			item.value,
 			v1_19_4::entity_metadata_item::Ty::PaintingVariant(29)
 		);
-		let sand = state("1.17.1", "minecraft:red_sand");
+		let sand = state(Version::V1_17_1, "minecraft:red_sand");
 		let falling = old::Ty::SpawnEntity(v1_17_1::play_to_client_packet_spawn_entity::Ty {
 			entity_id: 12,
 			object_uuid: 7,
-			r#type: entity_id("1.17.1", "falling_block"),
+			r#type: entity_id(Version::V1_17_1, "falling_block"),
 			x: 0.0,
 			y: 0.0,
 			z: 0.0,
@@ -602,14 +598,18 @@ mod chain {
 		let [new::Ty::SpawnEntity(s)] = out.as_slice() else {
 			panic!("{out:?}")
 		};
-		assert_eq!(s.object_data as u32, state("1.19.4", "minecraft:red_sand"));
+		assert_eq!(
+			s.object_data as u32,
+			state(Version::V1_19_4, "minecraft:red_sand")
+		);
 		assert_eq!(s.head_pitch, 64);
 	}
 
 	#[test]
 	fn item_metadata_follows_the_item_registry() {
 		let mut cx = Session::new();
-		let diamond = |v: &str| registry::names(v, "items").unwrap().id("diamond").unwrap() as i32;
+		let diamond =
+			|v: Version| registry::names(v, "items").unwrap().id("diamond").unwrap() as i32;
 		let metadata =
 			old::Ty::EntityMetadata(v1_17_1::play_to_client_packet_entity_metadata::Ty {
 				entity_id: 3,
@@ -618,7 +618,7 @@ mod chain {
 					r#type: 6,
 					value: v1_17_1::entity_metadata_item::Ty::V6(v1_17_1::slot::Ty::True(
 						v1_17_1::slot_true::Ty {
-							item_id: diamond("1.17.1"),
+							item_id: diamond(Version::V1_17_1),
 							item_count: 3,
 							nbt_data: None,
 						},
@@ -634,8 +634,8 @@ mod chain {
 		else {
 			panic!("{m:?}")
 		};
-		assert_eq!((s.item_id, s.item_count), (diamond("1.19.4"), 3));
-		assert_ne!(diamond("1.17.1"), diamond("1.19.4"));
+		assert_eq!((s.item_id, s.item_count), (diamond(Version::V1_19_4), 3));
+		assert_ne!(diamond(Version::V1_17_1), diamond(Version::V1_19_4));
 	}
 
 	#[test]
@@ -680,7 +680,7 @@ mod chain {
 		let acks: Vec<new::Ty> = convert(
 			Root::PlayToClient,
 			sent.version,
-			at("1.19.4"),
+			Version::V1_19_4,
 			&sent.data,
 			&mut cx,
 		)
@@ -748,7 +748,8 @@ mod chain {
 	#[test]
 	fn client_packets_reach_the_old_server() {
 		let mut cx = Session::new();
-		let diamond = |v: &str| registry::names(v, "items").unwrap().id("diamond").unwrap() as i32;
+		let diamond =
+			|v: Version| registry::names(v, "items").unwrap().id("diamond").unwrap() as i32;
 		let settings = new_server::Ty::Settings(v1_19_4::play_to_server_packet_settings::Ty {
 			locale: "en_us".into(),
 			view_distance: 10,
@@ -771,7 +772,7 @@ mod chain {
 			new_server::Ty::SetCreativeSlot(v1_19_4::play_to_server_packet_set_creative_slot::Ty {
 				slot: 36,
 				item: v1_19_4::slot::Ty::True(v1_19_4::slot_true::Ty {
-					item_id: diamond("1.19.4"),
+					item_id: diamond(Version::V1_19_4),
 					item_count: 64,
 					nbt_data: None,
 				}),
@@ -781,7 +782,7 @@ mod chain {
 			panic!("{out:?}")
 		};
 		assert!(
-			matches!(&c.item, v1_17_1::slot::Ty::True(s) if s.item_id == diamond("1.17.1") && s.item_count == 64)
+			matches!(&c.item, v1_17_1::slot::Ty::True(s) if s.item_id == diamond(Version::V1_17_1) && s.item_count == 64)
 		);
 		let session = new_server::Ty::ChatSessionUpdate(
 			v1_19_4::play_to_server_packet_chat_session_update::Ty {
@@ -880,8 +881,8 @@ mod chain {
 			});
 		let out = convert(
 			Root::LoginToServer,
-			at("1.19.4"),
-			at("1.17.1"),
+			Version::V1_19_4,
+			Version::V1_17_1,
 			&encode(&start, new_login_server::serialize),
 			&mut cx,
 		)
@@ -896,8 +897,8 @@ mod chain {
 		});
 		let out = convert(
 			Root::LoginToClient,
-			at("1.17.1"),
-			at("1.19.4"),
+			Version::V1_17_1,
+			Version::V1_19_4,
 			&encode(&success, old_login::serialize),
 			&mut cx,
 		)
@@ -962,8 +963,8 @@ mod chain {
 	) -> Vec<v1_19_2::play_to_client_packet::Ty> {
 		convert(
 			Root::PlayToClient,
-			at("1.19.4"),
-			to.index(),
+			Version::V1_19_4,
+			to,
 			&encode(p, new::serialize),
 			cx,
 		)
@@ -1044,11 +1045,12 @@ mod chain {
 	#[test]
 	fn particles_keep_their_block() {
 		let mut cx = Session::new();
-		let id = |v: &str, n: &str| registry::names(v, "particles").unwrap().id(n).unwrap() as i32;
-		let gold = state("1.17.1", "minecraft:gold_block");
+		let id =
+			|v: Version, n: &str| registry::names(v, "particles").unwrap().id(n).unwrap() as i32;
+		let gold = state(Version::V1_17_1, "minecraft:gold_block");
 		let particles =
 			old::Ty::WorldParticles(v1_17_1::play_to_client_packet_world_particles::Ty {
-				particle_id: id("1.17.1", "block"),
+				particle_id: id(Version::V1_17_1, "block"),
 				long_distance: false,
 				x: 0.0,
 				y: 0.0,
@@ -1064,10 +1066,10 @@ mod chain {
 		let [new::Ty::WorldParticles(p)] = out.as_slice() else {
 			panic!("{out:?}")
 		};
-		assert_eq!(p.particle_id, id("1.19.4", "block"));
+		assert_eq!(p.particle_id, id(Version::V1_19_4, "block"));
 		assert_eq!(
 			p.data,
-			v1_19_4::particle_data::Ty::V2(state("1.19.4", "minecraft:gold_block") as i32)
+			v1_19_4::particle_data::Ty::V2(state(Version::V1_19_4, "minecraft:gold_block") as i32)
 		);
 	}
 
@@ -1105,8 +1107,8 @@ mod chain {
 			|p: &old::Ty, cx: &mut Session| -> Vec<v1_19_3::play_to_client_packet::Ty> {
 				convert(
 					Root::PlayToClient,
-					at("1.17.1"),
-					at("1.19.3"),
+					Version::V1_17_1,
+					Version::V1_19_3,
 					&encode(p, old::serialize),
 					cx,
 				)
@@ -1162,7 +1164,7 @@ mod chain {
 			old::Ty::SpawnEntityLiving(v1_17_1::play_to_client_packet_spawn_entity_living::Ty {
 				entity_id: 20,
 				entity_uuid: 1,
-				r#type: entity_id("1.17.1", "cat"),
+				r#type: entity_id(Version::V1_17_1, "cat"),
 				x: 0.0,
 				y: 0.0,
 				z: 0.0,
@@ -1182,8 +1184,8 @@ mod chain {
 		let to_1_19 = |p: &old::Ty, cx: &mut Session| -> Vec<v1_19::play_to_client_packet::Ty> {
 			convert(
 				Root::PlayToClient,
-				at("1.17.1"),
-				at("1.19"),
+				Version::V1_17_1,
+				Version::V1_19,
 				&encode(p, old::serialize),
 				cx,
 			)
@@ -1219,8 +1221,8 @@ mod chain {
 	fn down_client(p: &new::Ty, cx: &mut Session) -> Vec<old::Ty> {
 		convert(
 			Root::PlayToClient,
-			at("1.19.4"),
-			at("1.17.1"),
+			Version::V1_19_4,
+			Version::V1_17_1,
 			&encode(p, new::serialize),
 			cx,
 		)
@@ -1234,7 +1236,7 @@ mod chain {
 		new::Ty::SpawnEntity(v1_19_4::play_to_client_packet_spawn_entity::Ty {
 			entity_id: id,
 			object_uuid: id as u128,
-			r#type: entity_id("1.19.4", ty),
+			r#type: entity_id(Version::V1_19_4, ty),
 			x: 4.5,
 			y: 70.5,
 			z: -2.5,
@@ -1290,7 +1292,7 @@ mod chain {
 		let [old::Ty::SpawnEntityLiving(s)] = out.as_slice() else {
 			panic!("{out:?}")
 		};
-		assert_eq!(s.r#type, entity_id("1.17.1", "rabbit"));
+		assert_eq!(s.r#type, entity_id(Version::V1_17_1, "rabbit"));
 		let out = down_client(
 			&metadata_new(31, 17, Type::FrogVariant, Item::FrogVariant(1)),
 			&mut cx,
@@ -1332,7 +1334,7 @@ mod chain {
 				.name(s.item_id as u32),
 			Some("acacia_planks")
 		);
-		let cherry = state("1.19.4", "minecraft:cherry_planks");
+		let cherry = state(Version::V1_19_4, "minecraft:cherry_planks");
 		let change = new::Ty::BlockChange(v1_19_4::play_to_client_packet_block_change::Ty {
 			location: v1_19_4::position::Ty { x: 0, y: 0, z: 0 },
 			r#type: cherry as i32,
@@ -1365,7 +1367,7 @@ mod chain {
 				particle_data: 0.0,
 				particles: 1,
 				data: v1_19_4::particle_data::Ty::V3(state(
-					"1.19.4",
+					Version::V1_19_4,
 					"minecraft:light[level=15,waterlogged=false]",
 				) as i32),
 			});
@@ -1393,8 +1395,8 @@ mod chain {
 			.map(|_| {
 				let out = convert(
 					Root::PlayToServer,
-					at("1.17.1"),
-					at("1.19.4"),
+					Version::V1_17_1,
+					Version::V1_19_4,
 					&encode(&dig, old_server::serialize),
 					&mut cx,
 				)
@@ -1416,7 +1418,8 @@ mod padded_chunks {
 	use serde_json::Value;
 
 	fn login() -> Vec<u8> {
-		let v: Value = serde_json::from_str(registry::login_packet("1.19.2").unwrap()).unwrap();
+		let v: Value =
+			serde_json::from_str(registry::login_packet(Version::V1_19_2).unwrap()).unwrap();
 		let login =
 			v1_19_2::play_to_client_packet::Ty::Login(v1_19_2::play_to_client_packet_login::Ty {
 				entity_id: 1,
@@ -1449,13 +1452,13 @@ mod padded_chunks {
 		nbt::gzip::decompress(&gz).unwrap()
 	}
 
-	fn down(to: &str) -> Vec<Vec<u8>> {
+	fn down(to: Version) -> Vec<Vec<u8>> {
 		let mut cx = Session::new();
-		convert(Root::PlayToClient, at("1.19.2"), at(to), &login(), &mut cx).unwrap();
+		convert(Root::PlayToClient, Version::V1_19_2, to, &login(), &mut cx).unwrap();
 		convert(
 			Root::PlayToClient,
-			at("1.19.2"),
-			at(to),
+			Version::V1_19_2,
+			to,
 			&captured(),
 			&mut cx,
 		)
@@ -1464,7 +1467,7 @@ mod padded_chunks {
 
 	#[test]
 	fn vanilla_padding_after_the_last_section_is_left_out() {
-		let out = down("1.18.2");
+		let out = down(Version::V1_18_2);
 		let [bytes] = out.as_slice() else {
 			panic!("{} packets", out.len())
 		};
@@ -1484,7 +1487,7 @@ mod padded_chunks {
 		let chunks = |packets: Vec<Vec<u8>>, de: fn(&[u8]) -> Option<(i32, i32)>| {
 			packets.iter().filter_map(|b| de(b)).collect::<Vec<_>>()
 		};
-		let at_1_12_2 = chunks(down("1.12.2"), |b| {
+		let at_1_12_2 = chunks(down(Version::V1_12_2), |b| {
 			match decode(b, v1_12_2::play_to_client_packet::deserialize) {
 				v1_12_2::play_to_client_packet::Ty::MapChunk(c) if c.bit_map != 0 => {
 					Some((c.x, c.z))
@@ -1492,7 +1495,7 @@ mod padded_chunks {
 				_ => None,
 			}
 		});
-		let at_1_8 = chunks(down("1.8"), |b| {
+		let at_1_8 = chunks(down(Version::V1_8), |b| {
 			match decode(b, v1_8::play_to_client_packet::deserialize) {
 				v1_8::play_to_client_packet::Ty::MapChunk(c) if c.bit_map != 0 => Some((c.x, c.z)),
 				_ => None,

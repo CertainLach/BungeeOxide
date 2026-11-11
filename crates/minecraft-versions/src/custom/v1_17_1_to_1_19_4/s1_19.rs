@@ -452,7 +452,7 @@ fn acknowledged(cx: &mut Session, sequence: i32) -> Result<()> {
 		&Client19::AcknowledgePlayerDigging(sequence),
 		v1_19::play_to_client_packet::serialize,
 	)?;
-	cx.send(crate::gen::convert::Root::PlayToClient, NEW.index(), ack);
+	cx.send(crate::gen::convert::Root::PlayToClient, NEW, ack);
 	Ok(())
 }
 

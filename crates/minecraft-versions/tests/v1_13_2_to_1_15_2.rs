@@ -20,10 +20,6 @@ const ZOMBIE_13: i32 = 87;
 const VILLAGER_13: i32 = 79;
 const HORSE_13: i32 = 29;
 
-fn at(version: Version) -> usize {
-	version as usize
-}
-
 fn up<T>(
 	p: &C13,
 	to: Version,
@@ -32,7 +28,7 @@ fn up<T>(
 ) -> Vec<T> {
 	let mut o = Output::new();
 	v1_13_2::play_to_client_packet::serialize(p, &mut o).unwrap();
-	convert(Root::PlayToClient, at(V1_13_2), at(to), &o.into_inner(), cx)
+	convert(Root::PlayToClient, V1_13_2, to, &o.into_inner(), cx)
 		.unwrap()
 		.iter()
 		.map(|b| {
@@ -495,8 +491,8 @@ fn chunk_round_trips_back_to_1_13_2() {
 	v1_13_2::play_to_client_packet::serialize(&chunk_1_13_2(&column), &mut o).unwrap();
 	let newest = convert(
 		Root::PlayToClient,
-		at(V1_13_2),
-		at(V1_15_2),
+		V1_13_2,
+		V1_15_2,
 		&o.into_inner(),
 		&mut cx,
 	)
@@ -504,7 +500,7 @@ fn chunk_round_trips_back_to_1_13_2() {
 	let mut back = Session::new();
 	let mut result = Vec::new();
 	for p in &newest {
-		result.extend(convert(Root::PlayToClient, at(V1_15_2), at(V1_13_2), p, &mut back).unwrap());
+		result.extend(convert(Root::PlayToClient, V1_15_2, V1_13_2, p, &mut back).unwrap());
 	}
 	let [bytes] = result.as_slice() else {
 		panic!("{result:?}")
@@ -836,8 +832,8 @@ fn items_are_renamed_and_lore_becomes_json() {
 	.unwrap();
 	let back = convert(
 		Root::PlayToServer,
-		at(V1_15_2),
-		at(V1_13_2),
+		V1_15_2,
+		V1_13_2,
 		&o.into_inner(),
 		&mut Session::new(),
 	)
@@ -980,8 +976,8 @@ fn view_position_follows_the_player() {
 	.unwrap();
 	let sent = convert(
 		Root::PlayToServer,
-		at(V1_15_2),
-		at(V1_13_2),
+		V1_15_2,
+		V1_13_2,
 		&o.into_inner(),
 		&mut cx,
 	)
@@ -1184,8 +1180,8 @@ fn select_trade_forces_an_inventory_resync() {
 	.unwrap();
 	let out = convert(
 		Root::PlayToServer,
-		at(V1_15_2),
-		at(V1_13_2),
+		V1_15_2,
+		V1_13_2,
 		&o.into_inner(),
 		&mut cx,
 	)
@@ -1208,22 +1204,16 @@ type E15 = v1_15_2::entity_metadata_items::Ty;
 fn down(p: &C15, cx: &mut Session) -> Vec<C13> {
 	let mut o = Output::new();
 	v1_15_2::play_to_client_packet::serialize(p, &mut o).unwrap();
-	convert(
-		Root::PlayToClient,
-		at(V1_15_2),
-		at(V1_13_2),
-		&o.into_inner(),
-		cx,
-	)
-	.unwrap()
-	.iter()
-	.map(|b| {
-		let mut input = Input::new(b);
-		let p = v1_13_2::play_to_client_packet::deserialize(&mut input).unwrap();
-		assert_eq!(input.remaining(), 0, "leftover bytes in {p:?}");
-		p
-	})
-	.collect()
+	convert(Root::PlayToClient, V1_15_2, V1_13_2, &o.into_inner(), cx)
+		.unwrap()
+		.iter()
+		.map(|b| {
+			let mut input = Input::new(b);
+			let p = v1_13_2::play_to_client_packet::deserialize(&mut input).unwrap();
+			assert_eq!(input.remaining(), 0, "leftover bytes in {p:?}");
+			p
+		})
+		.collect()
 }
 
 fn login15(cx: &mut Session, respawn_screen: bool) {
@@ -1610,10 +1600,7 @@ fn immediate_respawn_respawns_for_old_clients() {
 	let [packet] = sent.as_slice() else {
 		panic!("{sent:?}")
 	};
-	assert_eq!(
-		(packet.root, packet.version),
-		(Root::PlayToServer, V1_15 as usize)
-	);
+	assert_eq!((packet.root, packet.version), (Root::PlayToServer, V1_15));
 	assert_eq!(
 		v1_15_2::play_to_server_packet::deserialize(&mut Input::new(&packet.data)).unwrap(),
 		v1_15_2::play_to_server_packet::Ty::ClientCommand(
@@ -1628,17 +1615,11 @@ fn old_clients_reach_new_servers() {
 	let send = |p: v1_13_2::play_to_server_packet::Ty, cx: &mut Session| {
 		let mut o = Output::new();
 		v1_13_2::play_to_server_packet::serialize(&p, &mut o).unwrap();
-		convert(
-			Root::PlayToServer,
-			at(V1_13_2),
-			at(V1_15_2),
-			&o.into_inner(),
-			cx,
-		)
-		.unwrap()
-		.iter()
-		.map(|b| v1_15_2::play_to_server_packet::deserialize(&mut Input::new(b)).unwrap())
-		.collect::<Vec<_>>()
+		convert(Root::PlayToServer, V1_13_2, V1_15_2, &o.into_inner(), cx)
+			.unwrap()
+			.iter()
+			.map(|b| v1_15_2::play_to_server_packet::deserialize(&mut Input::new(b)).unwrap())
+			.collect::<Vec<_>>()
 	};
 	let out = send(
 		v1_13_2::play_to_server_packet::Ty::BlockPlace(

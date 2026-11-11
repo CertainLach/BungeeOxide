@@ -36,7 +36,7 @@ pub fn reply<T>(
 	serialize: fn(&T, &mut Output) -> crate::pds::Result<()>,
 ) -> Result<()> {
 	let data = encode(packet, serialize)?;
-	cx.send(root, version.index(), data);
+	cx.send(root, version, data);
 	Ok(())
 }
 
@@ -127,14 +127,14 @@ pub fn entity_kind(cx: &mut Session, entity: i32) -> Option<String> {
 fn renamed<'a>(kind: &str, to: Version, name: &'a str) -> &'a str {
 	renames::table(kind)
 		.iter()
-		.find(|(v, old, _)| *v == to.name() && *old == name)
+		.find(|(v, old, _)| *v == to && *old == name)
 		.map_or(name, |(_, _, new)| new)
 }
 
 fn unrenamed<'a>(kind: &str, from: Version, name: &'a str) -> &'a str {
 	renames::table(kind)
 		.iter()
-		.find(|(v, _, new)| *v == from.name() && *new == name)
+		.find(|(v, _, new)| *v == from && *new == name)
 		.map_or(name, |(_, old, _)| old)
 }
 

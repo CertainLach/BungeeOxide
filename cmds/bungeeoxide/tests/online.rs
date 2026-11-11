@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::net::SocketAddr;
 use std::path::Path;
 use std::sync::Arc;
@@ -156,7 +157,7 @@ async fn backend(
 	}
 }
 
-async fn start_proxy(target: SocketAddr, session: SocketAddr, version: &str) -> SocketAddr {
+async fn start_proxy(target: SocketAddr, session: SocketAddr, version: Version) -> SocketAddr {
 	let accounts = format!(
 		"[endpoints]\nsession = \"http://{session}\"\nservices = \"http://127.0.0.1:1\"\n\n[[account]]\nplayers = [\"Steve\"]\nsource = \"token\"\naccess_token = \"fake-token\"\nuuid = \"{}\"\nname = \"Notch\"\n",
 		hyphenated(PROFILE)
@@ -200,7 +201,7 @@ async fn receive(conn: &mut Conn) -> Result<Vec<u8>> {
 async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
 	let (session, mut joins) = session_server().await;
 	let (backend, mut hashes) = online_backend().await;
-	let proxy = start_proxy(backend, session, "1.8").await;
+	let proxy = start_proxy(backend, session, Version::V1_8).await;
 	let mut conn = login(proxy, "Steve").await?;
 	let login_c::Ty::Compress(threshold) =
 		decode(&receive(&mut conn).await?, login_c::deserialize)?
@@ -241,7 +242,7 @@ async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
 async fn unmapped_players_are_told_how_to_join_online_servers() -> Result<()> {
 	let (session, _joins) = session_server().await;
 	let (backend, _hashes) = online_backend().await;
-	let proxy = start_proxy(backend, session, "1.8").await;
+	let proxy = start_proxy(backend, session, Version::V1_8).await;
 	let mut conn = login(proxy, "Alex").await?;
 	let login_c::Ty::Disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {
@@ -255,7 +256,7 @@ async fn unmapped_players_are_told_how_to_join_online_servers() -> Result<()> {
 async fn pre_netty_servers_are_refused_for_mapped_players() -> Result<()> {
 	let (session, _joins) = session_server().await;
 	let (backend, _hashes) = online_backend().await;
-	let proxy = start_proxy(backend, session, "1.6.4").await;
+	let proxy = start_proxy(backend, session, Version::V1_6_4).await;
 	let mut conn = login(proxy, "Steve").await?;
 	let login_c::Ty::Disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {

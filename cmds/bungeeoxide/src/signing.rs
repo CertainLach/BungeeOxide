@@ -2,13 +2,14 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Result};
 use minecraft_versions::gen::convert::{packet_name, v26_1};
-use minecraft_versions::{convert, Root, Session, VERSIONS};
+use minecraft_versions::{convert, Root, Session};
 use sha2::{Digest, Sha256};
 use tracing::warn;
 
 use crate::auth::{now_millis, PlayerKeys};
 use crate::codec::{read_varint, write_varint};
-use crate::{at, decode};
+use crate::decode;
+use minecraft_versions::Version;
 
 const ACK_AFTER: i32 = 64;
 const LAST_SEEN: usize = 20;
@@ -16,7 +17,7 @@ const LAST_SEEN_1_19_1: usize = 5;
 const SEPARATOR: u8 = 70;
 
 pub struct Chat {
-	sv: usize,
+	sv: Version,
 	keys: Arc<PlayerKeys>,
 	sender: u128,
 	chain: Chain,
@@ -44,12 +45,12 @@ enum Chain {
 }
 
 impl Chat {
-	pub fn new(sv: usize, keys: Arc<PlayerKeys>, sender: u128) -> Option<Self> {
-		let chain = if sv < at("1.19") {
+	pub fn new(sv: Version, keys: Arc<PlayerKeys>, sender: u128) -> Option<Self> {
+		let chain = if sv < Version::V1_19 {
 			return None;
-		} else if sv < at("1.19.2") {
+		} else if sv < Version::V1_19_2 {
 			Chain::Plain
-		} else if sv < at("1.19.3") {
+		} else if sv < Version::V1_19_3 {
 			Chain::Linked {
 				preceding: None,
 				seen: Vec::new(),
@@ -71,9 +72,9 @@ impl Chat {
 			keys,
 			sender,
 			chain,
-			split_commands: sv >= at("1.20.5"),
-			checksums: sv >= at("1.21.5"),
-			global_index: sv >= at("1.21.5"),
+			split_commands: sv >= Version::V1_20_5,
+			checksums: sv >= Version::V1_21_5,
+			global_index: sv >= Version::V1_21_5,
 			last_time: 0,
 			commands: None,
 		})
@@ -86,7 +87,7 @@ impl Chat {
 		match packet_name(Root::PlayToClient, self.sv, data) {
 			Some("player_chat") => {
 				if self.received(data).is_none() {
-					warn!("unreadable {} player_chat packet", VERSIONS[self.sv]);
+					warn!("unreadable {} player_chat packet", self.sv);
 				}
 			}
 			Some("declare_commands") => match Tree::from_packet(self.sv, data) {
@@ -211,7 +212,7 @@ impl Chat {
 
 	fn start(&self, name: &str) -> Result<Vec<u8>> {
 		let id = packet_id(Root::PlayToServer, self.sv, name)
-			.ok_or_else(|| anyhow!("{} has no {name} packet", VERSIONS[self.sv]))?;
+			.ok_or_else(|| anyhow!("{} has no {name} packet", self.sv))?;
 		let mut out = Vec::new();
 		write_varint(&mut out, id);
 		Ok(out)
@@ -387,7 +388,7 @@ fn sized(signature: Vec<u8>) -> Result<Vec<u8>> {
 	Ok(signature)
 }
 
-fn packet_id(root: Root, version: usize, name: &str) -> Option<i32> {
+fn packet_id(root: Root, version: Version, name: &str) -> Option<i32> {
 	(0..256).find(|id| {
 		let mut tag = Vec::new();
 		write_varint(&mut tag, *id);
@@ -619,9 +620,9 @@ pub struct Tree {
 }
 
 impl Tree {
-	fn from_packet(sv: usize, data: &[u8]) -> Result<Self> {
+	fn from_packet(sv: Version, data: &[u8]) -> Result<Self> {
 		use v26_1::play_to_client_packet::{deserialize, Ty};
-		let anchor = at("26.1");
+		let anchor = Version::V26_1;
 		let packets = if sv == anchor {
 			vec![data.to_vec()]
 		} else {
@@ -1107,16 +1108,16 @@ mod tests {
 		assert_eq!(tree.signable("unknown thing"), pairs(&[]));
 	}
 
-	fn inspect(sv: usize, packet: &[u8]) -> String {
+	fn inspect(sv: Version, packet: &[u8]) -> String {
 		minecraft_versions::inspect(Root::PlayToServer, sv, packet)
-			.unwrap_or_else(|e| panic!("{}: {e}", VERSIONS[sv]))
+			.unwrap_or_else(|e| panic!("{}: {e}", sv))
 	}
 
 	#[test]
 	fn rewritten_packets_parse_in_every_signing_version() {
 		let keys = test_keys();
 		let say = "say hi";
-		for (sv, version) in VERSIONS.iter().enumerate().skip(at("1.19")) {
+		for &sv in Version::span(Version::V1_19..) {
 			let mut chat = Chat::new(sv, keys.clone(), SENDER).unwrap();
 			chat.commands = Some(tree());
 			if let Chain::Session { seen, playing, .. } = &mut chat.chain {
@@ -1147,16 +1148,16 @@ mod tests {
 					"chat_message",
 				],
 			};
-			assert_eq!(names, expected, "{version}");
+			assert_eq!(names, expected, "{sv}");
 			let signed = chat.command(say).unwrap();
-			let name = if sv >= at("1.20.5") {
+			let name = if sv >= Version::V1_20_5 {
 				"chat_command_signed"
 			} else {
 				"chat_command"
 			};
-			assert_eq!(inspect(sv, &signed), name, "{version}");
+			assert_eq!(inspect(sv, &signed), name, "{sv}");
 			let unsigned = chat.command("tp ~ ~ ~").unwrap();
-			assert_eq!(inspect(sv, &unsigned), "chat_command", "{version}");
+			assert_eq!(inspect(sv, &unsigned), "chat_command", "{sv}");
 			assert_eq!(first_string(&unsigned).unwrap(), "tp ~ ~ ~");
 		}
 	}
@@ -1164,12 +1165,12 @@ mod tests {
 	#[test]
 	fn player_chat_signatures_are_tracked_in_every_session_version() {
 		let keys = test_keys();
-		for (sv, version) in VERSIONS.iter().enumerate().skip(at("1.19.3")) {
+		for &sv in Version::span(Version::V1_19_3..) {
 			let mut chat = Chat::new(sv, keys.clone(), SENDER).unwrap();
 			let id = packet_id(Root::PlayToClient, sv, "player_chat").unwrap();
 			let mut packet = Vec::new();
 			write_varint(&mut packet, id);
-			if sv >= at("1.21.5") {
+			if sv >= Version::V1_21_5 {
 				write_varint(&mut packet, 0);
 			}
 			packet.extend_from_slice(&SESSION.to_be_bytes());
@@ -1180,7 +1181,7 @@ mod tests {
 			let Chain::Session { seen, .. } = &mut chat.chain else {
 				panic!()
 			};
-			assert_eq!(seen.update().signatures, vec![vec![9; 256]], "{version}");
+			assert_eq!(seen.update().signatures, vec![vec![9; 256]], "{sv}");
 		}
 	}
 }

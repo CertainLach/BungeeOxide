@@ -520,7 +520,7 @@ pub fn village_update_health_1_14_4(
 		);
 		v1_15::play_to_server_packet::serialize(&respawn, &mut o)
 			.map_err(|e| Error::Encoding(format!("{e:?}")))?;
-		cx.send(Root::PlayToServer, NEW as usize, o.into_inner());
+		cx.send(Root::PlayToServer, NEW, o.into_inner());
 	}
 	Ok(vec![Client144::UpdateHealth(p)])
 }

@@ -94,8 +94,9 @@ for await (const e of Deno.readDir(backwards)) {
 
 const unique = [...new Map(entries.map((e) => [`${e[0]} ${e[1]}`, e])).values()];
 const rs = (await Deno.readTextFile(renames)).split("\n");
-const generated = new Set(unique.map(([v, a, b]) => `("${v}", "${a}", "${b}"),`));
+const variant = (v: string) => `Version::V${v.replaceAll(".", "_")}`;
+const generated = new Set(unique.map(([v, a, b]) => `(${variant(v)}, "${a}", "${b}"),`));
 await Deno.writeTextFile(renames, rs.filter((l) => !generated.has(l.trim())).join("\n"));
-const out = `pub const SOUNDS: &[(&str, &str, &str)] = &[\n${unique.map(([v, a, b]) => `\t("${v}", "${a}", "${b}"),`).join("\n")}\n];\n`;
+const out = `use crate::gen::convert::Version;\n\npub const SOUNDS: &[(Version, &str, &str)] = &[\n${unique.map(([v, a, b]) => `\t(${variant(v)}, "${a}", "${b}"),`).join("\n")}\n];\n`;
 await Deno.writeTextFile(renames.replace(/renames\.rs$/, "sounds.rs"), out);
 console.log(`sound lists ${lists.map(([v, n]) => `${v}:${n.length}`).join(" ")}, ${unique.length} sound renames`);

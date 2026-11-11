@@ -5,33 +5,7 @@ mod files;
 pub mod renames;
 mod sounds;
 
-use crate::gen::convert::{index_of, Version, VERSIONS};
-
-pub trait AsVersion: Copy {
-	fn version_index(self) -> Option<usize>;
-
-	fn version_name(self) -> Option<&'static str> {
-		self.version_index().map(|i| VERSIONS[i])
-	}
-}
-
-impl AsVersion for Version {
-	fn version_index(self) -> Option<usize> {
-		Some(self as usize)
-	}
-}
-
-impl AsVersion for &str {
-	fn version_index(self) -> Option<usize> {
-		index_of(self)
-	}
-}
-
-impl AsVersion for &String {
-	fn version_index(self) -> Option<usize> {
-		index_of(self)
-	}
-}
+use crate::gen::convert::Version;
 
 pub fn file(path: &str) -> Option<&'static str> {
 	files::FILES
@@ -70,9 +44,11 @@ struct Registry {
 static REGISTRY: LazyLock<Registry> = LazyLock::new(|| {
 	let mut slots: Vec<Slot> = Vec::new();
 	let mut owned: HashMap<(&str, &str), usize> = HashMap::new();
-	let mut at: Vec<[Option<usize>; KINDS.len()]> = vec![[None; KINDS.len()]; VERSIONS.len()];
+	let mut at: Vec<[Option<usize>; KINDS.len()]> = vec![[None; KINDS.len()]; Version::ALL.len()];
 	let mut add = |version: &str, kind: &str, folder: &'static str| {
-		let Some(v) = index_of(version) else { return };
+		let Some(v) = Version::of(version).map(Version::index) else {
+			return;
+		};
 		let Some(k) = KINDS.iter().position(|x| *x == kind) else {
 			return;
 		};
@@ -106,16 +82,16 @@ fn kind_index(kind: &str) -> Option<usize> {
 	KINDS.iter().position(|k| *k == kind)
 }
 
-fn slot(version: impl AsVersion, kind: &str) -> Option<&'static Slot> {
+fn slot(version: Version, kind: &str) -> Option<&'static Slot> {
 	let r = &*REGISTRY;
-	Some(&r.slots[r.at[version.version_index()?][kind_index(kind)?]?])
+	Some(&r.slots[r.at[version.index()][kind_index(kind)?]?])
 }
 
-pub fn folder(version: impl AsVersion, kind: &str) -> Option<&'static str> {
+pub fn folder(version: Version, kind: &str) -> Option<&'static str> {
 	Some(slot(version, kind)?.folder)
 }
 
-fn data(version: impl AsVersion, kind: &str, ext: &str) -> Option<&'static str> {
+fn data(version: Version, kind: &str, ext: &str) -> Option<&'static str> {
 	file(&format!("{}/{kind}.{ext}", folder(version, kind)?))
 }
 
@@ -282,7 +258,7 @@ impl Blocks {
 	}
 }
 
-pub fn blocks(version: impl AsVersion) -> Option<&'static Blocks> {
+pub fn blocks(version: Version) -> Option<&'static Blocks> {
 	let slot = slot(version, "blocks")?;
 	slot.blocks
 		.get_or_init(|| Some(Blocks::parse(file(&format!("{}/blocks.txt", slot.folder))?)))
@@ -334,7 +310,7 @@ impl Names {
 	}
 }
 
-pub fn names(version: impl AsVersion, kind: &str) -> Option<&'static Names> {
+pub fn names(version: Version, kind: &str) -> Option<&'static Names> {
 	let slot = slot(version, kind)?;
 	let source = if kind == "objects" { "entities" } else { kind };
 	slot.names
@@ -349,16 +325,16 @@ pub fn names(version: impl AsVersion, kind: &str) -> Option<&'static Names> {
 		.as_ref()
 }
 
-pub fn entity_metadata_keys(version: impl AsVersion, entity: u32) -> Option<&'static [String]> {
+pub fn entity_metadata_keys(version: Version, entity: u32) -> Option<&'static [String]> {
 	let extra = names(version, "entities")?.extra.get(&entity)?;
 	Some(&extra[1.min(extra.len())..])
 }
 
-pub fn login_packet(version: impl AsVersion) -> Option<&'static str> {
+pub fn login_packet(version: Version) -> Option<&'static str> {
 	data(version, "loginPacket", "json")
 }
 
-fn renamed<'a>(table: &[(&str, &str, &'a str)], to: &str, name: &'a str) -> &'a str {
+fn renamed<'a>(table: &[(Version, &str, &'a str)], to: Version, name: &'a str) -> &'a str {
 	table
 		.iter()
 		.find(|(v, old, _)| *v == to && *old == name)
@@ -367,23 +343,21 @@ fn renamed<'a>(table: &[(&str, &str, &'a str)], to: &str, name: &'a str) -> &'a 
 
 fn table(
 	slot: usize,
-	from: impl AsVersion,
-	to: impl AsVersion,
+	from: Version,
+	to: Version,
 	make: impl FnOnce() -> Option<Vec<u32>>,
 ) -> Option<&'static [u32]> {
 	let r = &*REGISTRY;
-	let (a, b) = (from.version_index()?, to.version_index()?);
-	let n = VERSIONS.len();
+	let n = Version::ALL.len();
 	let pairs = r.tables[slot].get_or_init(|| (0..n * n).map(|_| OnceLock::new()).collect());
-	pairs[a * n + b]
+	pairs[from.index() * n + to.index()]
 		.get_or_init(|| make().map(Vec::into_boxed_slice))
 		.as_deref()
 }
 
-pub fn name_table(kind: &str, from: impl AsVersion, to: impl AsVersion) -> Option<&'static [u32]> {
+pub fn name_table(kind: &str, from: Version, to: Version) -> Option<&'static [u32]> {
 	table(kind_index(kind)?, from, to, || {
 		let (a, b) = (names(from, kind)?, names(to, kind)?);
-		let to = to.version_name()?;
 		let len = a.names.keys().max().map_or(0, |m| m + 1);
 		Some(
 			(0..len)
@@ -404,17 +378,15 @@ pub fn name_table(kind: &str, from: impl AsVersion, to: impl AsVersion) -> Optio
 	})
 }
 
-pub fn sound_fallback(name: &str, to: impl AsVersion) -> Option<&'static str> {
-	let target = to.version_index()?;
+pub fn sound_fallback(name: &str, to: Version) -> Option<&'static str> {
 	let mut current = name.to_owned();
-	for at in (target..VERSIONS.len()).rev() {
-		let Some(list) = names(Version::at(at)?, "sounds") else {
+	for &version in Version::span(to..).iter().rev() {
+		let Some(list) = names(version, "sounds") else {
 			continue;
 		};
 		if list.id(&current).is_some() {
 			continue;
 		}
-		let version = VERSIONS[at];
 		let next = renamed(renames::table("sounds"), version, &current);
 		let next = if next == current {
 			renamed(sounds::SOUNDS, version, &current)
@@ -423,21 +395,20 @@ pub fn sound_fallback(name: &str, to: impl AsVersion) -> Option<&'static str> {
 		};
 		current = next.to_owned();
 	}
-	let list = names(Version::at(target)?, "sounds")?;
+	let list = names(to, "sounds")?;
 	list.name(list.id(&current)?)
 }
 
-pub fn remap_name(kind: &str, from: impl AsVersion, to: impl AsVersion, id: u32) -> Option<u32> {
+pub fn remap_name(kind: &str, from: Version, to: Version, id: u32) -> Option<u32> {
 	name_table(kind, from, to)?
 		.get(id as usize)
 		.copied()
 		.filter(|v| *v != u32::MAX)
 }
 
-pub fn state_table(from: impl AsVersion, to: impl AsVersion) -> Option<&'static [u32]> {
+pub fn state_table(from: Version, to: Version) -> Option<&'static [u32]> {
 	table(KINDS.len(), from, to, || {
 		let (a, b) = (blocks(from)?, blocks(to)?);
-		let to = to.version_name()?;
 		let air = b.block("air").map_or(0, |x| x.default);
 		Some(
 			(0..a.states())
@@ -454,7 +425,7 @@ pub fn state_table(from: impl AsVersion, to: impl AsVersion) -> Option<&'static 
 	})
 }
 
-pub fn remap_state(from: impl AsVersion, to: impl AsVersion, state: u32) -> u32 {
+pub fn remap_state(from: Version, to: Version, state: u32) -> u32 {
 	state_table(from, to)
 		.and_then(|t| t.get(state as usize).copied())
 		.unwrap_or(0)
@@ -525,7 +496,7 @@ mod tests {
 
 	#[test]
 	fn block_states_round_trip() {
-		let b = blocks("1.21.4").unwrap();
+		let b = blocks(Version::V1_21_4).unwrap();
 		let stairs = b.block("oak_stairs").unwrap();
 		assert_eq!(stairs.state(&[]), stairs.default);
 		assert_eq!(
@@ -541,16 +512,19 @@ mod tests {
 	#[test]
 	fn flattening_uses_legacy_names() {
 		let log = legacy_block(17, 0).unwrap();
-		let b = blocks("1.13").unwrap();
+		let b = blocks(Version::V1_13).unwrap();
 		let state = b.parse_state(log).unwrap();
 		assert_eq!(b.describe(state).unwrap(), log);
 	}
 
 	#[test]
 	fn states_survive_newer_versions() {
-		let (old, new) = (blocks("1.13").unwrap(), blocks("26.1").unwrap());
+		let (old, new) = (
+			blocks(Version::V1_13).unwrap(),
+			blocks(Version::V26_1).unwrap(),
+		);
 		let state = old.parse_state("minecraft:oak_log[axis=x]").unwrap();
-		let moved = remap_state("1.13", "26.1", state);
+		let moved = remap_state(Version::V1_13, Version::V26_1, state);
 		assert_eq!(new.describe(moved).unwrap(), "minecraft:oak_log[axis=x]");
 	}
 }

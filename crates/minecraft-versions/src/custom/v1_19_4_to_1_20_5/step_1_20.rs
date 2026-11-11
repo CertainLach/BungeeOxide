@@ -480,7 +480,7 @@ fn map_chunk(
 		biome: &biome,
 		biomes: None,
 	};
-	let chunk_data = super::chunk::sections(&p.chunk_data, &remap, from.index(), known)?;
+	let chunk_data = super::chunk::sections(&p.chunk_data, &remap, from, known)?;
 	let block_entities = trails_chunk_entities_1_20(p.block_entities, (from, to) == (OLD, NEW));
 	Ok(new::play_to_client_packet_map_chunk::Ty {
 		x: p.x,
@@ -524,7 +524,7 @@ pub fn trails_map_chunk_1_20_to_1_19_4(
 	let chunk_data = super::chunk::sections(
 		&p.chunk_data,
 		&remap,
-		NEW.index(),
+		NEW,
 		crate::custom::caves_known_sections(cx),
 	)?;
 	let block_entities = trails_chunk_entities_1_20(p.block_entities, false);

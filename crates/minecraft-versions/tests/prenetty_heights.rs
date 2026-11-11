@@ -2,9 +2,10 @@ use std::io::Read;
 
 use flate2::read::ZlibDecoder;
 use minecraft_versions::custom::chunks::{encode_chunk, Biomes, Column, Light, Nibbles, Section};
-use minecraft_versions::gen::convert::{convert, index_of, v1_0_1, v1_8, Root};
+use minecraft_versions::gen::convert::{convert, v1_0_1, v1_8, Root};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 
 type C8 = v1_8::play_to_client_packet::Ty;
 type S8 = v1_8::play_to_server_packet::Ty;
@@ -14,14 +15,10 @@ type Cuboid = v1_0_1::play_to_client_packet_map_chunk::Ty;
 
 const IDS: [u32; 16] = [1, 3, 4, 5, 7, 12, 13, 14, 15, 16, 17, 19, 20, 22, 24, 35];
 
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
-
 fn session(versions: bool) -> Session {
 	let mut cx = Session::new();
 	if versions {
-		cx.set_versions(at("1.8"), at("1.0.1"));
+		cx.set_versions(Version::V1_8, Version::V1_0_1);
 	}
 	cx
 }
@@ -34,7 +31,16 @@ fn decoded(packets: Vec<Vec<u8>>) -> Vec<C0> {
 }
 
 fn down_bytes(bytes: &[u8], cx: &mut Session) -> Vec<C0> {
-	decoded(convert(Root::PlayToClient, at("1.8"), at("1.0.1"), bytes, cx).unwrap())
+	decoded(
+		convert(
+			Root::PlayToClient,
+			Version::V1_8,
+			Version::V1_0_1,
+			bytes,
+			cx,
+		)
+		.unwrap(),
+	)
 }
 
 fn down(p: C8, cx: &mut Session) -> Vec<C0> {
@@ -48,8 +54,8 @@ fn up(p: S0, cx: &mut Session) -> (Vec<S8>, Vec<C0>) {
 	v1_0_1::play_to_server_packet::serialize(&p, &mut o).unwrap();
 	let sent = convert(
 		Root::PlayToServer,
-		at("1.0.1"),
-		at("1.8"),
+		Version::V1_0_1,
+		Version::V1_8,
 		&o.into_inner(),
 		cx,
 	)
@@ -62,14 +68,14 @@ fn up(p: S0, cx: &mut Session) -> (Vec<S8>, Vec<C0>) {
 	for o in cx.take_outgoing() {
 		assert_eq!(o.root, Root::PlayToClient);
 		back.extend(decoded(
-			convert(o.root, o.version, at("1.0.1"), &o.data, cx).unwrap(),
+			convert(o.root, o.version, Version::V1_0_1, &o.data, cx).unwrap(),
 		));
 	}
 	(sent, back)
 }
 
 fn column(x: i32, z: i32) -> Vec<u8> {
-	let mut col = Column::new(x, z, true, at("1.8"));
+	let mut col = Column::new(x, z, true, Version::V1_8);
 	col.sections = IDS
 		.iter()
 		.map(|id| Some(Section::new(vec![id << 4; 4096], None)))
@@ -81,7 +87,7 @@ fn column(x: i32, z: i32) -> Vec<u8> {
 	}
 	col.light = Some(light);
 	col.biomes = Biomes::Flat(vec![1; 256]);
-	encode_chunk(at("1.8"), &col).unwrap().remove(0)
+	encode_chunk(Version::V1_8, &col).unwrap().remove(0)
 }
 
 fn login() -> C8 {

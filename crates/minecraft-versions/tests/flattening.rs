@@ -25,8 +25,8 @@ fn decode<T>(bytes: &[u8], f: fn(&mut Input) -> minecraft_versions::pds::Result<
 fn to_1_13(p: Client12, cx: &mut Session) -> Vec<Client13> {
 	let out = convert(
 		Root::PlayToClient,
-		Version::V1_12_2.index(),
-		Version::V1_13.index(),
+		Version::V1_12_2,
+		Version::V1_13,
 		&encode(&p, a::play_to_client_packet::serialize),
 		cx,
 	)
@@ -39,8 +39,8 @@ fn to_1_13(p: Client12, cx: &mut Session) -> Vec<Client13> {
 fn to_1_13_2(p: Client12, cx: &mut Session) -> Vec<Client132> {
 	let out = convert(
 		Root::PlayToClient,
-		Version::V1_12_2.index(),
-		Version::V1_13_2.index(),
+		Version::V1_12_2,
+		Version::V1_13_2,
 		&encode(&p, a::play_to_client_packet::serialize),
 		cx,
 	)
@@ -505,8 +505,8 @@ fn items_flatten_and_come_back() {
 	);
 	let back = convert(
 		Root::PlayToServer,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&click, d::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -675,8 +675,8 @@ fn tab_completion_round_trip() {
 		});
 	let down = convert(
 		Root::PlayToServer,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&ask, d::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -714,8 +714,8 @@ fn plugin_channels_are_renamed_and_books_become_payloads() {
 	});
 	let down = convert(
 		Root::PlayToServer,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&book, d::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -736,8 +736,8 @@ fn plugin_channels_are_renamed_and_books_become_payloads() {
 	});
 	let down = convert(
 		Root::PlayToServer,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&offhand, d::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -752,8 +752,8 @@ fn status_favicons_lose_line_breaks() {
 	let status = a::status_to_client_packet::Ty::ServerInfo(json);
 	let out = convert(
 		Root::StatusToClient,
-		Version::V1_12_2.index(),
-		Version::V1_13_2.index(),
+		Version::V1_12_2,
+		Version::V1_13_2,
 		&encode(&status, a::status_to_client_packet::serialize),
 		&mut Session::new(),
 	)
@@ -853,8 +853,8 @@ fn block_particles_use_states() {
 fn to_1_12_2(p: Client132, cx: &mut Session) -> Vec<Client12> {
 	let out = convert(
 		Root::PlayToClient,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&p, d::play_to_client_packet::serialize),
 		cx,
 	)
@@ -870,8 +870,8 @@ fn from_1_12_2(
 ) -> Vec<d::play_to_server_packet::Ty> {
 	let out = convert(
 		Root::PlayToServer,
-		Version::V1_12_2.index(),
-		Version::V1_13_2.index(),
+		Version::V1_12_2,
+		Version::V1_13_2,
 		&encode(&p, a::play_to_server_packet::serialize),
 		cx,
 	)
@@ -1318,7 +1318,7 @@ fn legacy_clients_complete_commands_and_names() {
 		};
 		assert_eq!(
 			(answer.root, answer.version),
-			(Root::PlayToClient, Version::V1_12_2.index())
+			(Root::PlayToClient, Version::V1_12_2)
 		);
 		assert_eq!(
 			decode(&answer.data, a::play_to_client_packet::deserialize),
@@ -1415,8 +1415,8 @@ fn login_plugin_requests_are_answered_for_legacy_clients() {
 	);
 	let out = convert(
 		Root::LoginToClient,
-		Version::V1_13_2.index(),
-		Version::V1_12_2.index(),
+		Version::V1_13_2,
+		Version::V1_12_2,
 		&encode(&request, d::login_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -1428,7 +1428,7 @@ fn login_plugin_requests_are_answered_for_legacy_clients() {
 	};
 	assert_eq!(
 		(answer.root, answer.version),
-		(Root::LoginToServer, Version::V1_13.index())
+		(Root::LoginToServer, Version::V1_13)
 	);
 	let b::login_to_server_packet::Ty::LoginPluginResponse(r) =
 		decode(&answer.data, b::login_to_server_packet::deserialize)
@@ -1576,8 +1576,8 @@ fn step_1_13_1_down_rewrites_commands_titles_and_effects() {
 	let down = |p: Client132, cx: &mut Session| -> Vec<Client13> {
 		let out = convert(
 			Root::PlayToClient,
-			Version::V1_13_2.index(),
-			Version::V1_13.index(),
+			Version::V1_13_2,
+			Version::V1_13,
 			&encode(&p, d::play_to_client_packet::serialize),
 			cx,
 		)

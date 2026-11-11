@@ -1,8 +1,8 @@
 use super::c::{blocks, remap_bulk};
-use super::ids::{self, V};
+use super::ids;
 use super::text;
 use super::{falling_block, item_id, state, Kind};
-use crate::gen::convert::{index_of, v1_5_2, v1_6_1, v1_6_2, Root};
+use crate::gen::convert::{v1_5_2, v1_6_1, v1_6_2, Root, Version};
 use crate::pds::convert::Result;
 use crate::pds::Output;
 use crate::session::Session;
@@ -13,10 +13,10 @@ type Server152 = v1_5_2::play_to_server_packet::Ty;
 type Entry = v1_6_1::entity_metadata_items::Ty;
 type Value = v1_6_1::entity_metadata_item::Ty;
 
-const TO: V = V::R1_5;
+const TO: Version = Version::V1_5_2;
 
 blocks!(
-	V::R1_5,
+	Version::V1_5_2,
 	v1_5_2,
 	prenetty_block_change_1_5_2_down,
 	prenetty_multi_block_change_1_5_2_down,
@@ -410,9 +410,7 @@ pub fn prenetty_block_place_1_6_1(
 		);
 		let mut out = Output::new();
 		if crate::gen::v1_6_2::play::to_client::packet::serialize(&packet, &mut out).is_ok() {
-			if let Some(version) = index_of("1.6.2") {
-				cx.send(Root::PlayToClient, version, out.into_inner());
-			}
+			cx.send(Root::PlayToClient, Version::V1_6_2, out.into_inner());
 		}
 	}
 	Ok(vec![v1_6_1::play_to_server_packet::Ty::BlockPlace(p)])

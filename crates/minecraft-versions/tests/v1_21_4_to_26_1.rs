@@ -1,15 +1,11 @@
 use minecraft_versions::gen::convert::{
-	convert, index_of, v1_12_2, v1_21_11, v1_21_4 as a, v1_21_5, v1_21_8, v1_21_9, v1_8,
-	v26_1 as z, Root,
+	convert, v1_12_2, v1_21_11, v1_21_4 as a, v1_21_5, v1_21_8, v1_21_9, v1_8, v26_1 as z, Root,
 };
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::registry;
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 use nbt::{Entry, List, ListItems, Payload, Tag};
-
-fn at(v: &str) -> usize {
-	index_of(v).unwrap()
-}
 
 fn encode<T>(v: &T, ser: fn(&T, &mut Output) -> minecraft_versions::pds::Result<()>) -> Vec<u8> {
 	let mut o = Output::new();
@@ -26,14 +22,14 @@ fn decode<T>(b: &[u8], de: fn(&mut Input) -> minecraft_versions::pds::Result<T>)
 
 fn run<A, B>(
 	root: Root,
-	from: &str,
-	to: &str,
+	from: Version,
+	to: Version,
 	packet: &A,
 	ser: fn(&A, &mut Output) -> minecraft_versions::pds::Result<()>,
 	de: fn(&mut Input) -> minecraft_versions::pds::Result<B>,
 	cx: &mut Session,
 ) -> Vec<B> {
-	convert(root, at(from), at(to), &encode(packet, ser), cx)
+	convert(root, from, to, &encode(packet, ser), cx)
 		.unwrap()
 		.iter()
 		.map(|b| decode(b, de))
@@ -43,8 +39,8 @@ fn run<A, B>(
 fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<z::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
-		"1.21.4",
-		"26.1",
+		Version::V1_21_4,
+		Version::V26_1,
 		p,
 		a::play_to_client_packet::serialize,
 		z::play_to_client_packet::deserialize,
@@ -55,8 +51,8 @@ fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<z::play_to_clie
 fn down(p: &z::play_to_server_packet::Ty, cx: &mut Session) -> Vec<a::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
-		"26.1",
-		"1.21.4",
+		Version::V26_1,
+		Version::V1_21_4,
 		p,
 		z::play_to_server_packet::serialize,
 		a::play_to_server_packet::deserialize,
@@ -80,12 +76,12 @@ fn get<'a>(p: &'a Payload, path: &[&str]) -> Option<&'a Payload> {
 	path.iter().try_fold(p, |p, k| p.field(k))
 }
 
-fn id(version: &str, kind: &str, name: &str) -> i32 {
+fn id(version: Version, kind: &str, name: &str) -> i32 {
 	registry::names(version, kind).unwrap().id(name).unwrap() as i32
 }
 
 fn item(
-	version: &str,
+	version: Version,
 	name: &str,
 	count: i32,
 	components: Vec<a::slot_component::Ty>,
@@ -163,8 +159,8 @@ fn configuration_registries_reach_26_1() {
 	for p in &sample_config() {
 		out.extend(run(
 			Root::ConfigurationToClient,
-			"1.21.4",
-			"26.1",
+			Version::V1_21_4,
+			Version::V26_1,
 			p,
 			c4::serialize,
 			c26::deserialize,
@@ -297,7 +293,7 @@ fn read_varint(d: &[u8], at: &mut usize) -> u32 {
 
 #[test]
 fn chunk_sections_reach_26_1() {
-	let blocks = registry::blocks("1.21.4").unwrap();
+	let blocks = registry::blocks(Version::V1_21_4).unwrap();
 	let names = [
 		"minecraft:stone",
 		"minecraft:water[level=0]",
@@ -337,7 +333,7 @@ fn chunk_sections_reach_26_1() {
 	let mut at = 5;
 	let n = read_varint(d, &mut at);
 	let palette: Vec<u32> = (0..n).map(|_| read_varint(d, &mut at)).collect();
-	let new = registry::blocks("26.1").unwrap();
+	let new = registry::blocks(Version::V26_1).unwrap();
 	let described: Vec<String> = palette.iter().map(|p| new.describe(*p).unwrap()).collect();
 	assert_eq!(described[0], "minecraft:stone");
 	assert_eq!(described[1], "minecraft:water[level=0]");
@@ -367,7 +363,7 @@ fn hidden_tooltips_become_tooltip_display() {
 		),
 	])));
 	let sword = item(
-		"1.21.4",
+		Version::V1_21_4,
 		"diamond_sword",
 		1,
 		vec![enchantments, C::HideAdditionalTooltip, name],
@@ -380,8 +376,8 @@ fn hidden_tooltips_become_tooltip_display() {
 	});
 	let out = run(
 		Root::PlayToClient,
-		"1.21.4",
-		"1.21.5",
+		Version::V1_21_4,
+		Version::V1_21_5,
 		&packet,
 		a::play_to_client_packet::serialize,
 		v1_21_5::play_to_client_packet::deserialize,
@@ -393,7 +389,7 @@ fn hidden_tooltips_become_tooltip_display() {
 	let v1_21_5::slot::Ty::Default(1, d) = &s5.item else {
 		panic!()
 	};
-	assert_eq!(d.item_id, id("1.21.5", "items", "diamond_sword"));
+	assert_eq!(d.item_id, id(Version::V1_21_5, "items", "diamond_sword"));
 	assert_eq!(d.added_component_count as usize, d.components.len());
 	let display = d
 		.components
@@ -424,8 +420,11 @@ fn hidden_tooltips_become_tooltip_display() {
 fn containers_become_templates_and_clicks_recover_items() {
 	use a::slot_component::Ty as C;
 	let mut cx = Session::new();
-	let stones = C::Container(vec![item("1.21.4", "stone", 3, vec![]), a::slot::Ty::V0]);
-	let shulker = item("1.21.4", "shulker_box", 1, vec![stones]);
+	let stones = C::Container(vec![
+		item(Version::V1_21_4, "stone", 3, vec![]),
+		a::slot::Ty::V0,
+	]);
+	let shulker = item(Version::V1_21_4, "shulker_box", 1, vec![stones]);
 	let packet =
 		a::play_to_client_packet::Ty::WindowItems(a::play_to_client_packet_window_items::Ty {
 			window_id: 1,
@@ -452,7 +451,7 @@ fn containers_become_templates_and_clicks_recover_items() {
 	let first = container[0].as_ref().unwrap();
 	assert_eq!(
 		(first.item_id, first.item_count),
-		(id("26.1", "items", "stone"), 3)
+		(id(Version::V26_1, "items", "stone"), 3)
 	);
 	assert!(container[1].is_none());
 	let hashed = |v: &z::slot::Ty| match v {
@@ -508,7 +507,7 @@ fn creative_items_are_decoded_down() {
 		anon: z::untrusted_slot_anon::Ty::Default(
 			2,
 			z::untrusted_slot_anon_default::Ty {
-				item_id: id("26.1", "items", "golden_dandelion"),
+				item_id: id(Version::V26_1, "items", "golden_dandelion"),
 				added_component_count: 1,
 				removed_component_count: 0,
 				components: vec![z::untrusted_slot_component::Ty {
@@ -564,7 +563,7 @@ fn spawn_velocity_uses_lp_vec3() {
 		v1_21_8::play_to_client_packet_spawn_entity::Ty {
 			entity_id: 7,
 			object_uuid: 1,
-			r#type: id("1.21.8", "entities", "arrow"),
+			r#type: id(Version::V1_21_8, "entities", "arrow"),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
@@ -581,8 +580,8 @@ fn spawn_velocity_uses_lp_vec3() {
 	);
 	let out = run(
 		Root::PlayToClient,
-		"1.21.8",
-		"1.21.9",
+		Version::V1_21_8,
+		Version::V1_21_9,
 		&packet,
 		v1_21_8::play_to_client_packet::serialize,
 		v1_21_9::play_to_client_packet::deserialize,
@@ -598,8 +597,8 @@ fn spawn_velocity_uses_lp_vec3() {
 	);
 	let back = run(
 		Root::PlayToClient,
-		"1.21.9",
-		"1.21.8",
+		Version::V1_21_9,
+		Version::V1_21_8,
 		&out[0],
 		v1_21_9::play_to_client_packet::serialize,
 		v1_21_8::play_to_client_packet::deserialize,
@@ -615,7 +614,7 @@ fn spawn_velocity_uses_lp_vec3() {
 		"{:?}",
 		b.velocity
 	);
-	assert_eq!(s.r#type, id("1.21.9", "entities", "arrow"));
+	assert_eq!(s.r#type, id(Version::V1_21_9, "entities", "arrow"));
 	let still = v1_21_8::play_to_client_packet::Ty::EntityVelocity(
 		v1_21_8::play_to_client_packet_entity_velocity::Ty {
 			entity_id: 7,
@@ -624,8 +623,8 @@ fn spawn_velocity_uses_lp_vec3() {
 	);
 	let out = run(
 		Root::PlayToClient,
-		"1.21.8",
-		"1.21.9",
+		Version::V1_21_8,
+		Version::V1_21_9,
 		&still,
 		v1_21_8::play_to_client_packet::serialize,
 		v1_21_9::play_to_client_packet::deserialize,
@@ -640,7 +639,7 @@ fn spawn(entity: i32, kind: &str) -> a::play_to_client_packet::Ty {
 	a::play_to_client_packet::Ty::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
 		entity_id: entity,
 		object_uuid: entity as u128,
-		r#type: id("1.21.4", "entities", kind),
+		r#type: id(Version::V1_21_4, "entities", kind),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
@@ -657,7 +656,7 @@ fn pig_metadata_moves_saddle_and_age_index() {
 	let mut cx = Session::new();
 	let out = up(&spawn(3, "pig"), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [z::play_to_client_packet::Ty::SpawnEntity(s)] if s.r#type == id("26.1", "entities", "pig"))
+		matches!(out.as_slice(), [z::play_to_client_packet::Ty::SpawnEntity(s)] if s.r#type == id(Version::V26_1, "entities", "pig"))
 	);
 	use a::entity_metadata_entry_value::Ty as V;
 	let meta = a::play_to_client_packet::Ty::EntityMetadata(
@@ -689,7 +688,7 @@ fn pig_metadata_moves_saddle_and_age_index() {
 	assert_eq!(keys, vec![0, 18]);
 	assert_eq!(e.equipments[0].slot, 7);
 	assert!(
-		matches!(&e.equipments[0].item, z::slot::Ty::Default(1, d) if d.item_id == id("26.1", "items", "saddle"))
+		matches!(&e.equipments[0].item, z::slot::Ty::Default(1, d) if d.item_id == id(Version::V26_1, "items", "saddle"))
 	);
 }
 
@@ -775,11 +774,11 @@ fn time_becomes_clock_updates() {
 fn sample_play() -> Vec<a::play_to_client_packet::Ty> {
 	use a::play_to_client_packet::Ty as P;
 	use a::slot_component::Ty as C;
-	let blocks = registry::blocks("1.21.4").unwrap();
+	let blocks = registry::blocks(Version::V1_21_4).unwrap();
 	let state = |n: &str| blocks.parse_state(n).unwrap() as i32;
 	let pos = a::position::Ty { x: 1, z: 2, y: 64 };
 	let sword = item(
-		"1.21.4",
+		Version::V1_21_4,
 		"diamond_sword",
 		1,
 		vec![
@@ -878,7 +877,7 @@ fn sample_play() -> Vec<a::play_to_client_packet::Ty> {
 		}),
 		P::SoundEffect(a::play_to_client_packet_sound_effect::Ty {
 			sound: a::item_sound_holder::Ty::Id(
-				registry::names("1.21.4", "sounds")
+				registry::names(Version::V1_21_4, "sounds")
 					.unwrap()
 					.id("entity.pig.ambient")
 					.unwrap() as i32
@@ -903,7 +902,7 @@ fn sample_play() -> Vec<a::play_to_client_packet::Ty> {
 			player_knockback: None,
 			explosion_particle: a::particle::Ty::Explosion,
 			sound: a::item_sound_holder::Ty::Id(
-				registry::names("1.21.4", "sounds")
+				registry::names(Version::V1_21_4, "sounds")
 					.unwrap()
 					.id("entity.generic.explode")
 					.unwrap() as i32
@@ -996,15 +995,22 @@ fn write_dumps() {
 		}
 		bytes
 	};
-	for version in ["1.21.5", "1.21.6", "1.21.8", "1.21.9", "1.21.11", "26.1"] {
+	for version in [
+		Version::V1_21_5,
+		Version::V1_21_6,
+		Version::V1_21_8,
+		Version::V1_21_9,
+		Version::V1_21_11,
+		Version::V26_1,
+	] {
 		let mut cx = Session::new();
 		let mut play = Vec::new();
 		for p in sample_play() {
 			play.extend(
 				convert(
 					Root::PlayToClient,
-					at("1.21.4"),
-					at(version),
+					Version::V1_21_4,
+					version,
 					&encode(&p, a::play_to_client_packet::serialize),
 					&mut cx,
 				)
@@ -1018,8 +1024,8 @@ fn write_dumps() {
 			config.extend(
 				convert(
 					Root::ConfigurationToClient,
-					at("1.21.4"),
-					at(version),
+					Version::V1_21_4,
+					version,
 					&data,
 					&mut cx,
 				)
@@ -1037,8 +1043,8 @@ fn write_dumps() {
 			back.extend(
 				convert(
 					Root::ConfigurationToClient,
-					at(version),
-					at("1.21.4"),
+					version,
+					Version::V1_21_4,
 					p,
 					&mut cx,
 				)
@@ -1053,7 +1059,7 @@ fn write_dumps() {
 		let mut back = Vec::new();
 		for p in &play {
 			back.extend(
-				convert(Root::PlayToClient, at(version), at("1.21.4"), p, &mut cx).unwrap(),
+				convert(Root::PlayToClient, version, Version::V1_21_4, p, &mut cx).unwrap(),
 			);
 		}
 		std::fs::write(dir.join(format!("{version}-down.bin")), frame(&back)).unwrap();
@@ -1062,19 +1068,26 @@ fn write_dumps() {
 
 #[test]
 fn sample_packets_convert_to_every_version() {
-	for version in ["1.21.5", "1.21.6", "1.21.8", "1.21.9", "1.21.11", "26.1"] {
+	for version in [
+		Version::V1_21_5,
+		Version::V1_21_6,
+		Version::V1_21_8,
+		Version::V1_21_9,
+		Version::V1_21_11,
+		Version::V26_1,
+	] {
 		let mut cx = Session::new();
 		for p in sample_play() {
 			let out = convert(
 				Root::PlayToClient,
-				at("1.21.4"),
-				at(version),
+				Version::V1_21_4,
+				version,
 				&encode(&p, a::play_to_client_packet::serialize),
 				&mut cx,
 			)
 			.unwrap_or_else(|e| panic!("{version}: {e} for {p:?}"));
 			for b in out {
-				minecraft_versions::gen::convert::inspect(Root::PlayToClient, at(version), &b)
+				minecraft_versions::gen::convert::inspect(Root::PlayToClient, version, &b)
 					.unwrap_or_else(|e| panic!("{version}: {e}"));
 			}
 		}
@@ -1200,8 +1213,8 @@ fn enchantment_registry(cx: &mut Session) {
 	);
 	run(
 		Root::ConfigurationToClient,
-		"1.21.5",
-		"1.21.4",
+		Version::V1_21_5,
+		Version::V1_21_4,
 		&p,
 		v1_21_5::configuration_to_client_packet::serialize,
 		a::configuration_to_client_packet::deserialize,
@@ -1226,8 +1239,8 @@ fn click(item: a::slot::Ty, cx: &mut Session) -> v1_21_5::play_to_server_packet_
 	});
 	let out = run(
 		Root::PlayToServer,
-		"1.21.4",
-		"1.21.5",
+		Version::V1_21_4,
+		Version::V1_21_5,
 		&p,
 		a::play_to_server_packet::serialize,
 		v1_21_5::play_to_server_packet::deserialize,
@@ -1255,7 +1268,7 @@ fn old_client_clicks_send_vanilla_hashes() {
 	let mut cx = Session::new();
 	enchantment_registry(&mut cx);
 	let sword = item(
-		"1.21.4",
+		Version::V1_21_4,
 		"diamond_sword",
 		1,
 		vec![
@@ -1282,7 +1295,7 @@ fn old_client_clicks_send_vanilla_hashes() {
 	let slot = c.cursor_item.as_ref().unwrap();
 	assert_eq!(
 		(slot.item_id, slot.item_count),
-		(id("1.21.5", "items", "diamond_sword"), 1)
+		(id(Version::V1_21_5, "items", "diamond_sword"), 1)
 	);
 }
 
@@ -1301,7 +1314,7 @@ fn clicks_reuse_components_the_server_sent() {
 	let sent = v1_21_5::slot::Ty::Default(
 		1,
 		v1_21_5::slot_default::Ty {
-			item_id: id("1.21.5", "items", "diamond_sword"),
+			item_id: id(Version::V1_21_5, "items", "diamond_sword"),
 			added_component_count: 2,
 			removed_component_count: 0,
 			components: vec![enchantments, hidden],
@@ -1317,8 +1330,8 @@ fn clicks_reuse_components_the_server_sent() {
 		});
 	let out = run(
 		Root::PlayToClient,
-		"1.21.5",
-		"1.21.4",
+		Version::V1_21_5,
+		Version::V1_21_4,
 		&p,
 		v1_21_5::play_to_client_packet::serialize,
 		a::play_to_client_packet::deserialize,
@@ -1392,8 +1405,8 @@ fn new_server_text_reaches_old_client() {
 	});
 	let out = run(
 		Root::PlayToClient,
-		"26.1",
-		"1.21.4",
+		Version::V26_1,
+		Version::V1_21_4,
 		&p,
 		z::play_to_client_packet::serialize,
 		a::play_to_client_packet::deserialize,
@@ -1425,7 +1438,7 @@ fn spawn5(entity: i32, kind: &str, data: i32) -> v1_21_5::play_to_client_packet:
 		v1_21_5::play_to_client_packet_spawn_entity::Ty {
 			entity_id: entity,
 			object_uuid: entity as u128,
-			r#type: id("1.21.5", "entities", kind),
+			r#type: id(Version::V1_21_5, "entities", kind),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
@@ -1444,8 +1457,8 @@ fn down5(
 ) -> Vec<a::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
-		"1.21.5",
-		"1.21.4",
+		Version::V1_21_5,
+		Version::V1_21_4,
 		p,
 		v1_21_5::play_to_client_packet::serialize,
 		a::play_to_client_packet::deserialize,
@@ -1460,7 +1473,7 @@ fn saddles_and_orbs_reach_old_clients() {
 	let saddle = v1_21_5::slot::Ty::Default(
 		1,
 		v1_21_5::slot_default::Ty {
-			item_id: id("1.21.5", "items", "saddle"),
+			item_id: id(Version::V1_21_5, "items", "saddle"),
 			added_component_count: 0,
 			removed_component_count: 0,
 			components: vec![],
@@ -1522,8 +1535,8 @@ fn registries_downgrade_for_old_clients() {
 	let conv = |p: &c5::Ty, cx: &mut Session| {
 		run(
 			Root::ConfigurationToClient,
-			"1.21.5",
-			"1.21.4",
+			Version::V1_21_5,
+			Version::V1_21_4,
 			p,
 			c5::serialize,
 			a::configuration_to_client_packet::deserialize,
@@ -1578,8 +1591,8 @@ fn modern_dimension_types_downgrade() {
 	});
 	let out = run(
 		Root::ConfigurationToClient,
-		"1.21.11",
-		"1.21.9",
+		Version::V1_21_11,
+		Version::V1_21_9,
 		&p,
 		c11::serialize,
 		v1_21_9::configuration_to_client_packet::deserialize,
@@ -1600,8 +1613,8 @@ fn modern_dimension_types_downgrade() {
 		});
 	let out = run(
 		Root::ConfigurationToClient,
-		"1.21.11",
-		"1.21.9",
+		Version::V1_21_11,
+		Version::V1_21_9,
 		&timeline,
 		c11::serialize,
 		v1_21_9::configuration_to_client_packet::deserialize,
@@ -1616,8 +1629,8 @@ fn code_of_conduct_is_accepted_for_old_clients() {
 	let p = v1_21_9::configuration_to_client_packet::Ty::CodeOfConduct("be nice".into());
 	let out = run(
 		Root::ConfigurationToClient,
-		"1.21.9",
-		"1.21.8",
+		Version::V1_21_9,
+		Version::V1_21_8,
 		&p,
 		v1_21_9::configuration_to_client_packet::serialize,
 		v1_21_8::configuration_to_client_packet::deserialize,
@@ -1626,7 +1639,7 @@ fn code_of_conduct_is_accepted_for_old_clients() {
 	assert!(out.is_empty());
 	let sent = cx.take_outgoing();
 	assert_eq!(sent.len(), 1);
-	assert_eq!(sent[0].version, at("1.21.9"));
+	assert_eq!(sent[0].version, Version::V1_21_9);
 	let accept: v1_21_9::configuration_to_server_packet::Ty = decode(
 		&sent[0].data,
 		v1_21_9::configuration_to_server_packet::deserialize,
@@ -1647,8 +1660,8 @@ fn relative_rotation_uses_last_look() {
 	});
 	run(
 		Root::PlayToServer,
-		"1.21.8",
-		"1.21.9",
+		Version::V1_21_8,
+		Version::V1_21_9,
 		&look,
 		v1_21_8::play_to_server_packet::serialize,
 		v1_21_9::play_to_server_packet::deserialize,
@@ -1664,8 +1677,8 @@ fn relative_rotation_uses_last_look() {
 	);
 	let out = run(
 		Root::PlayToClient,
-		"1.21.9",
-		"1.21.8",
+		Version::V1_21_9,
+		Version::V1_21_8,
 		&rotate,
 		v1_21_9::play_to_client_packet::serialize,
 		v1_21_8::play_to_client_packet::deserialize,
@@ -1690,8 +1703,8 @@ fn old_client_interactions_reach_26_1() {
 		);
 		run(
 			Root::PlayToServer,
-			"1.21.11",
-			"26.1",
+			Version::V1_21_11,
+			Version::V26_1,
 			&p,
 			v1_21_11::play_to_server_packet::serialize,
 			z::play_to_server_packet::deserialize,
@@ -1779,7 +1792,7 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 		z::play_to_client_packet::Ty::SpawnEntity(z::play_to_client_packet_spawn_entity::Ty {
 			entity_id: 11,
 			object_uuid: 11,
-			r#type: id("26.1", "entities", "armor_stand"),
+			r#type: id(Version::V26_1, "entities", "armor_stand"),
 			x: 0.5,
 			y: 64.0,
 			z: 0.5,
@@ -1802,8 +1815,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 	let mut cx = Session::new();
 	run(
 		Root::PlayToClient,
-		"26.1",
-		"1.8",
+		Version::V26_1,
+		Version::V1_8,
 		&joined(3),
 		z::play_to_client_packet::serialize,
 		v1_8::play_to_client_packet::deserialize,
@@ -1813,8 +1826,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 	for p in [&stand, &hologram] {
 		old.extend(run(
 			Root::PlayToClient,
-			"26.1",
-			"1.8",
+			Version::V26_1,
+			Version::V1_8,
 			p,
 			z::play_to_client_packet::serialize,
 			v1_8::play_to_client_packet::deserialize,
@@ -1832,8 +1845,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 	let mut cx = Session::new();
 	run(
 		Root::PlayToClient,
-		"26.1",
-		"1.12.2",
+		Version::V26_1,
+		Version::V1_12_2,
 		&joined(3),
 		z::play_to_client_packet::serialize,
 		v1_12_2::play_to_client_packet::deserialize,
@@ -1843,8 +1856,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 	for p in [&stand, &hologram] {
 		old.extend(run(
 			Root::PlayToClient,
-			"26.1",
-			"1.12.2",
+			Version::V26_1,
+			Version::V1_12_2,
 			p,
 			z::play_to_client_packet::serialize,
 			v1_12_2::play_to_client_packet::deserialize,
@@ -1875,8 +1888,8 @@ fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
 	let mut cx = Session::new();
 	run(
 		Root::PlayToClient,
-		"26.1",
-		"1.12.2",
+		Version::V26_1,
+		Version::V1_12_2,
 		&joined(3),
 		z::play_to_client_packet::serialize,
 		v1_12_2::play_to_client_packet::deserialize,
@@ -1884,8 +1897,8 @@ fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
 	);
 	let old = run(
 		Root::PlayToClient,
-		"26.1",
-		"1.12.2",
+		Version::V26_1,
+		Version::V1_12_2,
 		&me,
 		z::play_to_client_packet::serialize,
 		v1_12_2::play_to_client_packet::deserialize,

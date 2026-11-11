@@ -1,16 +1,13 @@
 use minecraft_versions::custom::{configuration_1_20_2, configuration_capture_1_20_2};
 use minecraft_versions::gen::convert::{
-	convert, index_of, inspect, v1_19_4, v1_20, v1_20_2, v1_20_3, v1_20_5, Root,
+	convert, inspect, v1_19_4, v1_20, v1_20_2, v1_20_3, v1_20_5, Root,
 };
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::registry;
 use minecraft_versions::Session;
+use minecraft_versions::Version;
 use nbt::{Entry, List, ListItems, Payload};
 use serde_json::Value;
-
-fn at(v: &str) -> usize {
-	index_of(v).unwrap()
-}
 
 fn encode<T>(v: &T, f: fn(&T, &mut Output) -> minecraft_versions::pds::Result<()>) -> Vec<u8> {
 	let mut o = Output::new();
@@ -29,15 +26,15 @@ fn entry(name: &str, value: Payload) -> Entry {
 	Entry::new(name, value)
 }
 
-fn vanilla_codec(version: &str) -> Entry {
+fn vanilla_codec(version: Version) -> Entry {
 	let v: Value = serde_json::from_str(registry::login_packet(version).unwrap()).unwrap();
 	entry("", nbt::json::typed::read(&v["dimensionCodec"]).unwrap())
 }
 
-fn names(root: Root, version: &str, packets: &[Vec<u8>]) -> Vec<String> {
+fn names(root: Root, version: Version, packets: &[Vec<u8>]) -> Vec<String> {
 	packets
 		.iter()
-		.map(|p| inspect(root, at(version), p).unwrap())
+		.map(|p| inspect(root, version, p).unwrap())
 		.collect()
 }
 
@@ -48,7 +45,7 @@ fn login_1_19_4() -> v1_19_4::play_to_client_packet::Ty {
 		game_mode: 1,
 		previous_game_mode: -1,
 		world_names: vec!["minecraft:overworld".to_owned()],
-		dimension_codec: vanilla_codec("1.19.4"),
+		dimension_codec: vanilla_codec(Version::V1_19_4),
 		world_type: "minecraft:overworld".to_owned(),
 		world_name: "minecraft:overworld".to_owned(),
 		hashed_seed: 7,
@@ -68,7 +65,7 @@ fn configuration_reaches_1_20_5() {
 	let mut cx = Session::new();
 	let packets = configuration_1_20_2(&mut cx).unwrap();
 	assert_eq!(
-		names(Root::ConfigurationToClient, "1.20.2", &packets),
+		names(Root::ConfigurationToClient, Version::V1_20_2, &packets),
 		[
 			"registry_data",
 			"feature_flags",
@@ -81,15 +78,15 @@ fn configuration_reaches_1_20_5() {
 		out.extend(
 			convert(
 				Root::ConfigurationToClient,
-				at("1.20.2"),
-				at("1.20.5"),
+				Version::V1_20_2,
+				Version::V1_20_5,
 				p,
 				&mut cx,
 			)
 			.unwrap(),
 		);
 	}
-	let kinds = names(Root::ConfigurationToClient, "1.20.5", &out);
+	let kinds = names(Root::ConfigurationToClient, Version::V1_20_5, &out);
 	assert_eq!(
 		kinds.first().map(String::as_str),
 		Some("select_known_packs")
@@ -149,13 +146,13 @@ fn join_game_reaches_1_20_5_and_feeds_configuration() {
 	let login = encode(&login_1_19_4(), v1_19_4::play_to_client_packet::serialize);
 	let up = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.2"),
+		Version::V1_19_4,
+		Version::V1_20_2,
 		&login,
 		&mut cx,
 	)
 	.unwrap();
-	assert_eq!(names(Root::PlayToClient, "1.20.2", &up), ["login"]);
+	assert_eq!(names(Root::PlayToClient, Version::V1_20_2, &up), ["login"]);
 	let config = configuration_1_20_2(&mut cx).unwrap();
 	let v1_20_2::configuration_to_client_packet::Ty::RegistryData(codec) = decode(
 		&config[0],
@@ -175,8 +172,8 @@ fn join_game_reaches_1_20_5_and_feeds_configuration() {
 	for p in &config {
 		convert(
 			Root::ConfigurationToClient,
-			at("1.20.2"),
-			at("1.20.5"),
+			Version::V1_20_2,
+			Version::V1_20_5,
 			p,
 			&mut cx,
 		)
@@ -184,14 +181,14 @@ fn join_game_reaches_1_20_5_and_feeds_configuration() {
 	}
 	let out = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.5"),
+		Version::V1_19_4,
+		Version::V1_20_5,
 		&login,
 		&mut cx,
 	)
 	.unwrap();
 	assert_eq!(
-		names(Root::PlayToClient, "1.20.5", &out),
+		names(Root::PlayToClient, Version::V1_20_5, &out),
 		["login", "entity_update_attributes", "game_state_change"]
 	);
 	let v1_20_5::play_to_client_packet::Ty::Login(l) =
@@ -221,8 +218,8 @@ fn chat_becomes_nbt_text() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.5"),
+		Version::V1_19_4,
+		Version::V1_20_5,
 		&encode(&chat, v1_19_4::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -248,8 +245,8 @@ fn chat_becomes_nbt_text() {
 	assert!(matches!(&extra.items, ListItems::Compound(c) if c.len() == 2));
 	let back = convert(
 		Root::PlayToClient,
-		at("1.20.5"),
-		at("1.19.4"),
+		Version::V1_20_5,
+		Version::V1_19_4,
 		&out[0],
 		&mut cx,
 	)
@@ -277,8 +274,8 @@ fn text_edge_cases() {
 		);
 		let out = convert(
 			Root::PlayToClient,
-			at("1.19.4"),
-			at("1.20.3"),
+			Version::V1_19_4,
+			Version::V1_20_3,
 			&encode(&chat, v1_19_4::play_to_client_packet::serialize),
 			&mut cx,
 		)
@@ -317,7 +314,7 @@ fn text_edge_cases() {
 }
 
 fn slot_1_19_4(name: &str, nbt: Vec<Entry>) -> v1_19_4::slot::Ty {
-	let id = registry::names("1.19.4", "items")
+	let id = registry::names(Version::V1_19_4, "items")
 		.unwrap()
 		.id(name)
 		.unwrap() as i32;
@@ -370,8 +367,8 @@ fn items_become_components() {
 		});
 	let out = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.5"),
+		Version::V1_19_4,
+		Version::V1_20_5,
 		&encode(&packet, v1_19_4::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -385,7 +382,7 @@ fn items_become_components() {
 		panic!("{:?}", s.item)
 	};
 	assert_eq!(
-		registry::names("1.20.5", "items")
+		registry::names(Version::V1_20_5, "items")
 			.unwrap()
 			.name(item.item_id as u32),
 		Some("diamond_sword")
@@ -401,7 +398,7 @@ fn items_become_components() {
 	assert!(has(&|c| matches!(c, C::Damage(12))));
 	assert!(has(&|c| matches!(c, C::Unbreakable(true))));
 	assert!(has(&|c| matches!(c, C::CustomModelData(77))));
-	let sharpness = registry::names("1.20.5", "enchantments")
+	let sharpness = registry::names(Version::V1_20_5, "enchantments")
 		.unwrap()
 		.id("sharpness")
 		.unwrap() as i32;
@@ -429,8 +426,8 @@ fn items_become_components() {
 		);
 		let down = convert(
 			Root::PlayToServer,
-			at("1.20.5"),
-			at("1.19.4"),
+			Version::V1_20_5,
+			Version::V1_19_4,
 			&encode(&packet, v1_20_5::play_to_server_packet::serialize),
 			&mut Session::new(),
 		)
@@ -444,7 +441,7 @@ fn items_become_components() {
 			panic!()
 		};
 		assert_eq!(
-			registry::names("1.19.4", "items")
+			registry::names(Version::V1_19_4, "items")
 				.unwrap()
 				.name(s.item_id as u32),
 			Some("diamond_sword")
@@ -522,7 +519,7 @@ fn first_palette(data: &[u8]) -> Vec<u32> {
 #[test]
 fn chunk_states_follow_block_renames() {
 	let mut cx = Session::new();
-	let b = registry::blocks("1.19.4").unwrap();
+	let b = registry::blocks(Version::V1_19_4).unwrap();
 	let palette = [
 		0,
 		b.parse_state("minecraft:stone").unwrap(),
@@ -548,8 +545,8 @@ fn chunk_states_follow_block_renames() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.5"),
+		Version::V1_19_4,
+		Version::V1_20_5,
 		&encode(&chunk, v1_19_4::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -559,7 +556,7 @@ fn chunk_states_follow_block_renames() {
 	else {
 		panic!()
 	};
-	let n = registry::blocks("1.20.5").unwrap();
+	let n = registry::blocks(Version::V1_20_5).unwrap();
 	let described: Vec<String> = first_palette(&c.chunk_data)
 		.into_iter()
 		.map(|s| n.describe(s).unwrap())
@@ -587,8 +584,8 @@ fn player_spawn_and_metadata() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20"),
-		at("1.20.5"),
+		Version::V1_20,
+		Version::V1_20_5,
 		&encode(&spawn, v1_20::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -599,7 +596,7 @@ fn player_spawn_and_metadata() {
 		panic!()
 	};
 	assert_eq!(
-		registry::names("1.20.5", "entities")
+		registry::names(Version::V1_20_5, "entities")
 			.unwrap()
 			.name(s.r#type as u32),
 		Some("player")
@@ -622,8 +619,8 @@ fn player_spawn_and_metadata() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20.3"),
-		at("1.20.5"),
+		Version::V1_20_3,
+		Version::V1_20_5,
 		&encode(&meta, v1_20_3::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -647,8 +644,8 @@ fn commands_and_clicks_reach_1_19_4() {
 	let command = v1_20_5::play_to_server_packet::Ty::ChatCommand("spawn".to_owned());
 	let down = convert(
 		Root::PlayToServer,
-		at("1.20.5"),
-		at("1.19.4"),
+		Version::V1_20_5,
+		Version::V1_19_4,
 		&encode(&command, v1_20_5::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -659,7 +656,7 @@ fn commands_and_clicks_reach_1_19_4() {
 		panic!()
 	};
 	assert_eq!(c.command, "spawn");
-	let stone = registry::names("1.20.5", "items")
+	let stone = registry::names(Version::V1_20_5, "items")
 		.unwrap()
 		.id("stone")
 		.unwrap() as i32;
@@ -685,8 +682,8 @@ fn commands_and_clicks_reach_1_19_4() {
 	);
 	let down = convert(
 		Root::PlayToServer,
-		at("1.20.5"),
-		at("1.19.4"),
+		Version::V1_20_5,
+		Version::V1_19_4,
 		&encode(&click, v1_20_5::play_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -701,7 +698,7 @@ fn commands_and_clicks_reach_1_19_4() {
 	};
 	assert_eq!(
 		(
-			registry::names("1.19.4", "items")
+			registry::names(Version::V1_19_4, "items")
 				.unwrap()
 				.name(s.item_id as u32),
 			s.item_count,
@@ -717,8 +714,8 @@ fn newer_server_configuration_feeds_old_clients() {
 	let login = encode(&login_1_19_4(), v1_19_4::play_to_client_packet::serialize);
 	convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.2"),
+		Version::V1_19_4,
+		Version::V1_20_2,
 		&login,
 		&mut client,
 	)
@@ -728,8 +725,8 @@ fn newer_server_configuration_feeds_old_clients() {
 		server.extend(
 			convert(
 				Root::ConfigurationToClient,
-				at("1.20.2"),
-				at("1.20.5"),
+				Version::V1_20_2,
+				Version::V1_20_5,
 				p,
 				&mut client,
 			)
@@ -738,8 +735,8 @@ fn newer_server_configuration_feeds_old_clients() {
 	}
 	let join = convert(
 		Root::PlayToClient,
-		at("1.19.4"),
-		at("1.20.5"),
+		Version::V1_19_4,
+		Version::V1_20_5,
 		&login,
 		&mut client,
 	)
@@ -752,14 +749,14 @@ fn newer_server_configuration_feeds_old_clients() {
 	for p in &server {
 		for down in convert(
 			Root::ConfigurationToClient,
-			at("1.20.5"),
-			at("1.20.2"),
+			Version::V1_20_5,
+			Version::V1_20_2,
 			p,
 			&mut cx,
 		)
 		.unwrap()
 		{
-			seen.push(inspect(Root::ConfigurationToClient, at("1.20.2"), &down).unwrap());
+			seen.push(inspect(Root::ConfigurationToClient, Version::V1_20_2, &down).unwrap());
 			replies.extend(configuration_capture_1_20_2(&mut cx, &down).unwrap());
 		}
 	}
@@ -776,19 +773,26 @@ fn newer_server_configuration_feeds_old_clients() {
 	assert_eq!(outgoing.len(), 1);
 	assert_eq!(
 		(outgoing[0].root, outgoing[0].version),
-		(Root::ConfigurationToServer, at("1.20.5"))
+		(Root::ConfigurationToServer, Version::V1_20_5)
 	);
 	assert!(
 		matches!(decode(&outgoing[0].data, v1_20_5::configuration_to_server_packet::deserialize), v1_20_5::configuration_to_server_packet::Ty::SelectKnownPacks(p) if p.is_empty())
 	);
 	assert_eq!(
-		names(Root::ConfigurationToServer, "1.20.2", &replies),
+		names(Root::ConfigurationToServer, Version::V1_20_2, &replies),
 		["finish_configuration"]
 	);
 
-	let out = convert(Root::PlayToClient, at("1.20.5"), at("1.20"), &join, &mut cx).unwrap();
+	let out = convert(
+		Root::PlayToClient,
+		Version::V1_20_5,
+		Version::V1_20,
+		&join,
+		&mut cx,
+	)
+	.unwrap();
 	assert_eq!(
-		names(Root::PlayToClient, "1.20", &out),
+		names(Root::PlayToClient, Version::V1_20, &out),
 		["login", "feature_flags", "tags"]
 	);
 	let v1_20::play_to_client_packet::Ty::Login(l) =
@@ -828,7 +832,7 @@ fn newer_server_configuration_feeds_old_clients() {
 		.iter()
 		.find(|t| t.tag_name == "minecraft:mineable/pickaxe")
 		.unwrap();
-	let stone = registry::blocks("1.20")
+	let stone = registry::blocks(Version::V1_20)
 		.unwrap()
 		.list
 		.iter()
@@ -849,8 +853,8 @@ fn old_client_handshake_with_newer_server() {
 	);
 	let up = convert(
 		Root::LoginToServer,
-		at("1.20"),
-		at("1.20.2"),
+		Version::V1_20,
+		Version::V1_20_2,
 		&encode(&hello, v1_20::login_to_server_packet::serialize),
 		&mut cx,
 	)
@@ -865,8 +869,8 @@ fn old_client_handshake_with_newer_server() {
 	let batch = v1_20_2::play_to_client_packet::Ty::ChunkBatchFinished(4);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20.2"),
-		at("1.20"),
+		Version::V1_20_2,
+		Version::V1_20,
 		&encode(&batch, v1_20_2::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -875,8 +879,8 @@ fn old_client_handshake_with_newer_server() {
 	let cookie = v1_20_5::play_to_client_packet::Ty::CookieRequest("k".to_owned());
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20.5"),
-		at("1.20.3"),
+		Version::V1_20_5,
+		Version::V1_20_3,
 		&encode(&cookie, v1_20_5::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -889,8 +893,8 @@ fn old_client_handshake_with_newer_server() {
 			.map(|o| (o.root, o.version))
 			.collect::<Vec<_>>(),
 		[
-			(Root::PlayToServer, at("1.20.2")),
-			(Root::PlayToServer, at("1.20.5"))
+			(Root::PlayToServer, Version::V1_20_2),
+			(Root::PlayToServer, Version::V1_20_5)
 		]
 	);
 	assert!(matches!(
@@ -908,7 +912,7 @@ fn old_client_handshake_with_newer_server() {
 #[test]
 fn item_display_rotates_both_ways() {
 	let mut cx = Session::new();
-	let display = registry::names("1.20", "entities")
+	let display = registry::names(Version::V1_20, "entities")
 		.unwrap()
 		.id("item_display")
 		.unwrap() as i32;
@@ -929,8 +933,8 @@ fn item_display_rotates_both_ways() {
 	);
 	convert(
 		Root::PlayToClient,
-		at("1.20"),
-		at("1.19.4"),
+		Version::V1_20,
+		Version::V1_19_4,
 		&encode(&spawn, v1_20::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -962,8 +966,8 @@ fn item_display_rotates_both_ways() {
 	};
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20"),
-		at("1.19.4"),
+		Version::V1_20,
+		Version::V1_19_4,
 		&meta(vec![decode(
 			&[0, 0, 0],
 			v1_20::entity_metadata_items::deserialize,
@@ -978,8 +982,8 @@ fn item_display_rotates_both_ways() {
 	}
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20"),
-		at("1.19.4"),
+		Version::V1_20,
+		Version::V1_19_4,
 		&meta(vec![decode(&q, v1_20::entity_metadata_items::deserialize)]),
 		&mut cx,
 	)
@@ -987,8 +991,8 @@ fn item_display_rotates_both_ways() {
 	assert_eq!(rotations(&out), [(12, [-0.0, 1.0, 0.0, -0.0])]);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20"),
-		at("1.19.4"),
+		Version::V1_20,
+		Version::V1_19_4,
 		&meta(vec![decode(
 			&[0, 0, 0],
 			v1_20::entity_metadata_items::deserialize,
@@ -1015,8 +1019,8 @@ fn hover_items_switch_between_tag_and_components() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20.2"),
-		at("1.20.5"),
+		Version::V1_20_2,
+		Version::V1_20_5,
 		&encode(&chat, v1_20_2::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -1038,8 +1042,8 @@ fn hover_items_switch_between_tag_and_components() {
 	assert!(!text.contains("\"tag\""));
 	let back = convert(
 		Root::PlayToClient,
-		at("1.20.5"),
-		at("1.20.2"),
+		Version::V1_20_5,
+		Version::V1_20_2,
 		&out[0],
 		&mut cx,
 	)
@@ -1061,7 +1065,7 @@ fn hover_items_switch_between_tag_and_components() {
 #[test]
 fn llama_carpet_becomes_swag() {
 	let mut cx = Session::new();
-	let llama = registry::names("1.20.5", "entities")
+	let llama = registry::names(Version::V1_20_5, "entities")
 		.unwrap()
 		.id("llama")
 		.unwrap() as i32;
@@ -1082,13 +1086,13 @@ fn llama_carpet_becomes_swag() {
 	);
 	convert(
 		Root::PlayToClient,
-		at("1.20.5"),
-		at("1.20.3"),
+		Version::V1_20_5,
+		Version::V1_20_3,
 		&encode(&spawn, v1_20_5::play_to_client_packet::serialize),
 		&mut cx,
 	)
 	.unwrap();
-	let carpet = registry::names("1.20.5", "items")
+	let carpet = registry::names(Version::V1_20_5, "items")
 		.unwrap()
 		.id("red_carpet")
 		.unwrap() as i32;
@@ -1115,8 +1119,8 @@ fn llama_carpet_becomes_swag() {
 	);
 	let out = convert(
 		Root::PlayToClient,
-		at("1.20.5"),
-		at("1.20.3"),
+		Version::V1_20_5,
+		Version::V1_20_3,
 		&encode(&equip, v1_20_5::play_to_client_packet::serialize),
 		&mut cx,
 	)
@@ -1127,8 +1131,8 @@ fn llama_carpet_becomes_swag() {
 		panic!()
 	};
 	let swag = registry::entity_metadata_keys(
-		"1.20.3",
-		registry::names("1.20.3", "entities")
+		Version::V1_20_3,
+		registry::names(Version::V1_20_3, "entities")
 			.unwrap()
 			.id("llama")
 			.unwrap(),

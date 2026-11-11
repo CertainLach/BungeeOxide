@@ -1,5 +1,5 @@
 use minecraft_versions::gen::convert::{
-	convert, index_of, v1_12_2, v1_18_2, v1_19, v1_19_2, v1_19_4, v1_8, Root, VERSIONS,
+	convert, v1_12_2, v1_18_2, v1_19, v1_19_2, v1_19_4, v1_8, Root, Version,
 };
 use minecraft_versions::languages::{self, pieces, Languages, Piece};
 use minecraft_versions::pds::{Input, Output};
@@ -21,11 +21,7 @@ const TEAMS: &[(&str, &str)] = &[
 	("chat.type.team.text", "%s <%s> %s"),
 	("chat.type.team.sent", "-> %s <%s> %s"),
 ];
-const CLIENTS: [&str; 3] = ["1.18.2", "1.12.2", "1.8"];
-
-fn at(v: &str) -> usize {
-	index_of(v).unwrap()
-}
+const CLIENTS: [Version; 3] = [Version::V1_18_2, Version::V1_12_2, Version::V1_8];
 
 fn setup() {
 	let strings = |sets: &[&[(&str, &str)]]| -> Vec<(String, String)> {
@@ -34,18 +30,17 @@ fn setup() {
 			.map(|(k, v)| (k.to_string(), v.to_string()))
 			.collect()
 	};
-	let index = VERSIONS
+	let index = Version::span(Version::V1_7..)
 		.iter()
-		.filter(|v| at(v) >= at("1.7"))
-		.map(|v| (*v, if at(v) >= at("1.13") { "teams" } else { "old" }));
+		.map(|&v| (v, if v >= Version::V1_13 { "teams" } else { "old" }));
 	languages::install(Languages::new(
 		index,
 		[("old", strings(&[OLD])), ("teams", strings(&[OLD, TEAMS]))],
 	));
 }
 
-fn known(version: &str) -> Vec<(&'static str, &'static str)> {
-	let teams: &[(&str, &str)] = if at(version) >= at("1.13") {
+fn known(version: Version) -> Vec<(&'static str, &'static str)> {
+	let teams: &[(&str, &str)] = if version >= Version::V1_13 {
 		TEAMS
 	} else {
 		&[]
@@ -236,7 +231,7 @@ fn registry_of(elements: Vec<(&str, Vec<Entry>)>) -> Payload {
 	])
 }
 
-fn codec(version: &str, chat_types: Payload) -> Entry {
+fn codec(version: Version, chat_types: Payload) -> Entry {
 	let v: Value = serde_json::from_str(registry::login_packet(version).unwrap()).unwrap();
 	let mut root = nbt::json::typed::read(&v["dimensionCodec"])
 		.unwrap()
@@ -246,7 +241,7 @@ fn codec(version: &str, chat_types: Payload) -> Entry {
 	Entry::new("", root)
 }
 
-fn modern_codec(version: &str, kinds: &[&Kind]) -> Entry {
+fn modern_codec(version: Version, kinds: &[&Kind]) -> Entry {
 	let narration = || decoration("chat.type.text.narrate", &["sender", "content"], vec![]);
 	let elements = kinds
 		.iter()
@@ -263,17 +258,17 @@ fn modern_codec(version: &str, kinds: &[&Kind]) -> Entry {
 	codec(version, registry_of(elements))
 }
 
-fn chat_message(version: &str, bytes: &[u8]) -> (Value, i8) {
+fn chat_message(version: Version, bytes: &[u8]) -> (Value, i8) {
 	let (message, position) = match version {
-		"1.18.2" => match decode(bytes, v1_18_2::play_to_client_packet::deserialize) {
+		Version::V1_18_2 => match decode(bytes, v1_18_2::play_to_client_packet::deserialize) {
 			v1_18_2::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
-		"1.12.2" => match decode(bytes, v1_12_2::play_to_client_packet::deserialize) {
+		Version::V1_12_2 => match decode(bytes, v1_12_2::play_to_client_packet::deserialize) {
 			v1_12_2::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
-		"1.8" => match decode(bytes, v1_8::play_to_client_packet::deserialize) {
+		Version::V1_8 => match decode(bytes, v1_8::play_to_client_packet::deserialize) {
 			v1_8::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
@@ -282,16 +277,16 @@ fn chat_message(version: &str, bytes: &[u8]) -> (Value, i8) {
 	(serde_json::from_str(&message).unwrap(), position)
 }
 
-fn down(from: &str, to: &str, packets: &[Vec<u8>]) -> Vec<(Value, i8)> {
+fn down(from: Version, to: Version, packets: &[Vec<u8>]) -> Vec<(Value, i8)> {
 	let mut cx = Session::new();
-	let mut out = convert(Root::PlayToClient, at(from), at(to), &packets[0], &mut cx)
+	let mut out = convert(Root::PlayToClient, from, to, &packets[0], &mut cx)
 		.unwrap()
 		.into_iter();
 	assert!(out.next().is_some(), "{from} login reaches {to}");
 	packets[1..]
 		.iter()
 		.map(|p| {
-			let out = convert(Root::PlayToClient, at(from), at(to), p, &mut cx).unwrap();
+			let out = convert(Root::PlayToClient, from, to, p, &mut cx).unwrap();
 			let [bytes] = out.as_slice() else {
 				panic!("{to}: {} packets", out.len())
 			};
@@ -371,7 +366,7 @@ fn registry_order_picks_the_decoration() {
 	setup();
 	for kinds in orders() {
 		let packets = vec![
-			login_1_19_4(modern_codec("1.19.4", &kinds)),
+			login_1_19_4(modern_codec(Version::V1_19_4, &kinds)),
 			profileless(
 				id(&kinds, "say_command"),
 				"Server",
@@ -401,7 +396,7 @@ fn registry_order_picks_the_decoration() {
 			profileless(id(&kinds, "shout"), "Server", None, "hi"),
 		];
 		for client in CLIENTS {
-			let out = down("1.19.4", client, &packets);
+			let out = down(Version::V1_19_4, client, &packets);
 			let rendered: Vec<String> =
 				out.iter().map(|(v, _)| render(v, &known(client))).collect();
 			assert_eq!(
@@ -432,7 +427,7 @@ fn registry_order_picks_the_decoration() {
 			let teams = serde_json::to_string(&out[3].0).unwrap();
 			assert_eq!(
 				teams.contains("chat.type.team.text"),
-				at(client) >= at("1.13"),
+				client >= Version::V1_13,
 				"{client}: {teams}"
 			);
 		}
@@ -493,7 +488,7 @@ fn signed_chat_era_servers_use_their_registry() {
 	setup();
 	for kinds in orders() {
 		let packets = vec![
-			login_1_19_2(modern_codec("1.19.2", &kinds)),
+			login_1_19_2(modern_codec(Version::V1_19_2, &kinds)),
 			player_chat_1_19_2(id(&kinds, "say_command"), "Server", None, "hi"),
 			player_chat_1_19_2(
 				id(&kinds, "msg_command_incoming"),
@@ -504,7 +499,7 @@ fn signed_chat_era_servers_use_their_registry() {
 			player_chat_1_19_2(id(&kinds, "shout"), "Server", None, "hi"),
 		];
 		for client in CLIENTS {
-			let out = down("1.19.2", client, &packets);
+			let out = down(Version::V1_19_2, client, &packets);
 			let rendered: Vec<String> =
 				out.iter().map(|(v, _)| render(v, &known(client))).collect();
 			assert_eq!(
@@ -611,7 +606,7 @@ fn first_chat_registry_has_decorations_and_overlays() {
 		),
 	]);
 	let packets = vec![
-		login_1_19(codec("1.19", types)),
+		login_1_19(codec(Version::V1_19, types)),
 		player_chat_1_19(3, "Server", None, "hi"),
 		player_chat_1_19(1, "Server", Some("Red"), "go"),
 		player_chat_1_19(2, "Server", None, "hi"),
@@ -620,7 +615,7 @@ fn first_chat_registry_has_decorations_and_overlays() {
 		system_chat_1_19(4, "in the chat"),
 	];
 	for client in CLIENTS {
-		let out = down("1.19", client, &packets);
+		let out = down(Version::V1_19, client, &packets);
 		let rendered: Vec<(String, i8)> = out
 			.iter()
 			.map(|(v, p)| (render(v, &known(client)), *p))

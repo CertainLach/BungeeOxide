@@ -638,7 +638,7 @@ pub fn late_code_of_conduct_down_1_21_8(
 	let data = super::util::encode(&accept, b::configuration_to_server_packet::serialize)?;
 	cx.send(
 		crate::gen::convert::Root::ConfigurationToServer,
-		Version::V1_21_9.index(),
+		Version::V1_21_9,
 		data,
 	);
 	Ok(Vec::new())

@@ -46,7 +46,7 @@ fn send<T>(
 ) {
 	let mut o = Output::new();
 	if f(packet, &mut o).is_ok() {
-		cx.send(root, version.index(), o.into_inner());
+		cx.send(root, version, o.into_inner());
 	}
 }
 

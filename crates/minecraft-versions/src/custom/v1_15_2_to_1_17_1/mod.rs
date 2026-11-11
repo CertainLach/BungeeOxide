@@ -81,7 +81,7 @@ fn same_registry(kind: &str, from: Version, to: Version) -> bool {
 fn renamed<'a>(kind: &str, to: Version, name: &'a str) -> &'a str {
 	registry::renames::table(kind)
 		.iter()
-		.find(|(v, old, _)| *v == to.name() && *old == name)
+		.find(|(v, old, _)| *v == to && *old == name)
 		.map_or(name, |(_, _, new)| new)
 }
 

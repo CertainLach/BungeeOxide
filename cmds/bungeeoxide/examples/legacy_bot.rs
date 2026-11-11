@@ -11,7 +11,7 @@ use bungeeoxide::{decode, encode, next};
 use flate2::read::ZlibDecoder;
 use futures::{SinkExt, StreamExt};
 use minecraft_versions::gen::convert::{packet_name, v1_0_1};
-use minecraft_versions::{index_of, Root};
+use minecraft_versions::{Root, Version};
 use serde_json::{json, Map, Value};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
@@ -217,7 +217,7 @@ struct Link {
 	state: Mutex<State>,
 	out: mpsc::UnboundedSender<Vec<u8>>,
 	tag: String,
-	version: usize,
+	version: Version,
 	ended: Notify,
 }
 
@@ -554,7 +554,7 @@ fn tick(link: &Link, st: &mut State) -> Option<S> {
 }
 
 async fn connect(address: &str, tag: String) -> Result<Arc<Link>> {
-	let version = index_of("1.0.1").ok_or_else(|| anyhow!("1.0.1 is not a known version"))?;
+	let version = Version::V1_0_1;
 	let stream = TcpStream::connect(address)
 		.await
 		.with_context(|| format!("connecting to {address}"))?;

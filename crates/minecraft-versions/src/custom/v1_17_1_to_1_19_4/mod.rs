@@ -172,20 +172,15 @@ pub fn caves_known_sections(cx: &mut Session) -> Option<usize> {
 	world(cx).known_sections()
 }
 
-pub fn caves_track_codec(
-	codec: &mut Entry,
-	_from: usize,
-	_to: usize,
-	cx: &mut Session,
-) -> Result<()> {
+pub fn caves_track_codec(codec: &mut Entry, _from: V, _to: V, cx: &mut Session) -> Result<()> {
 	world(cx).track_codec(codec);
 	Ok(())
 }
 
 pub fn caves_track_dimension(
 	dimension: &mut Entry,
-	_from: usize,
-	_to: usize,
+	_from: V,
+	_to: V,
 	cx: &mut Session,
 ) -> Result<()> {
 	world(cx).track_dimension(dimension);
@@ -194,8 +189,8 @@ pub fn caves_track_dimension(
 
 pub fn caves_track_dimension_key(
 	key: &mut String,
-	_from: usize,
-	_to: usize,
+	_from: V,
+	_to: V,
 	cx: &mut Session,
 ) -> Result<()> {
 	world(cx).track_dimension_key(key);
@@ -300,7 +295,7 @@ fn block(from: V, to: V, id: i32) -> Option<i32> {
 		.or_else(|| a.list.iter().find(|x| x.id == id as u32))?;
 	let renamed = registry::renames::BLOCKS
 		.iter()
-		.find(|(v, o, _)| *v == to.name() && *o == old.name);
+		.find(|(v, o, _)| *v == to && *o == old.name);
 	b.block(renamed.map_or(old.name.as_str(), |r| r.2))
 		.map(|x| x.id as i32)
 }

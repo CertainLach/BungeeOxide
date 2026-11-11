@@ -573,7 +573,7 @@ fn chunk_data(from: Version, to: Version, data: &[u8]) -> Result<Vec<u8>> {
 			biome: &biome,
 			biomes: None,
 		},
-		from.index(),
+		from,
 		None,
 	)
 }

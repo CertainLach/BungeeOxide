@@ -1,17 +1,14 @@
+use minecraft_versions::Version;
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 
 use minecraft_versions::custom::chunks::{
 	decode, encode_chunk, Biomes, BlockEntity, Column, Light, Nibbles, Packet, Section,
 };
-use minecraft_versions::gen::convert::{convert, index_of, step, Root, VERSIONS};
-use minecraft_versions::Session;
+use minecraft_versions::gen::convert::{convert, step, Root};
+use minecraft_versions::{version_range, Session};
 
 const ROOT: Root = Root::PlayToClient;
-
-fn at(version: &str) -> usize {
-	index_of(version).unwrap()
-}
 
 fn dump() -> Vec<Vec<u8>> {
 	let bytes = std::fs::read(concat!(
@@ -29,11 +26,16 @@ fn dump() -> Vec<Vec<u8>> {
 	out
 }
 
-fn chain(from: usize, to: usize, data: &[u8], cx: &mut Session) -> Result<Vec<Vec<u8>>, String> {
+fn chain(
+	from: Version,
+	to: Version,
+	data: &[u8],
+	cx: &mut Session,
+) -> Result<Vec<Vec<u8>>, String> {
 	let mut current = vec![data.to_vec()];
 	let mut v = from;
 	while v != to {
-		let next = if to > v { v + 1 } else { v - 1 };
+		let next = if to > v { v.next() } else { v.prev() }.unwrap();
 		let mut out = Vec::new();
 		for p in &current {
 			out.extend(step(ROOT, v, next, p, cx).map_err(|e| e.to_string())?);
@@ -44,15 +46,15 @@ fn chain(from: usize, to: usize, data: &[u8], cx: &mut Session) -> Result<Vec<Ve
 	Ok(current)
 }
 
-fn traffic(version: usize) -> Vec<Vec<u8>> {
-	static CACHE: OnceLock<HashMap<usize, Vec<Vec<u8>>>> = OnceLock::new();
+fn traffic(version: Version) -> Vec<Vec<u8>> {
+	static CACHE: OnceLock<HashMap<Version, Vec<Vec<u8>>>> = OnceLock::new();
 	let cache = CACHE.get_or_init(|| {
-		let mut stages = HashMap::from([(at("1.8"), dump())]);
-		for to in [VERSIONS.len() - 1, at("1.7")] {
+		let mut stages = HashMap::from([(Version::V1_8, dump())]);
+		for to in [Version::LATEST, Version::V1_7] {
 			let mut cx = Session::new();
-			let mut v = at("1.8");
+			let mut v = Version::V1_8;
 			while v != to {
-				let next = if to > v { v + 1 } else { v - 1 };
+				let next = if to > v { v.next() } else { v.prev() }.unwrap();
 				let out = stages[&v]
 					.iter()
 					.flat_map(|p| step(ROOT, v, next, p, &mut cx).unwrap_or_default())
@@ -90,13 +92,13 @@ fn normal_column(mut c: Column) -> Column {
 	{
 		c.sections.pop();
 	}
-	c.at = 0;
-	c.space = 0;
+	c.at = Version::FIRST;
+	c.space = Version::FIRST;
 	c.biome_bits = None;
 	c
 }
 
-fn normalize(version: usize, data: &[u8]) -> Norm {
+fn normalize(version: Version, data: &[u8]) -> Norm {
 	match decode(version, data) {
 		Ok(Some(Packet::Chunk(c))) => Norm::Chunk(Box::new(normal_column(c))),
 		Ok(Some(Packet::Bulk(c, sky))) => {
@@ -105,9 +107,9 @@ fn normalize(version: usize, data: &[u8]) -> Norm {
 		Ok(Some(Packet::Light(x, z, l))) => Norm::Light(x, z, l),
 		Ok(Some(Packet::Unload(x, z))) => Norm::Unload(x, z),
 		Ok(None) => Norm::Other(data.to_vec()),
-		Err(e) => Norm::Other(
-			format!("undecodable {} packet ({e}): {data:?}", VERSIONS[version]).into_bytes(),
-		),
+		Err(e) => {
+			Norm::Other(format!("undecodable {} packet ({e}): {data:?}", version).into_bytes())
+		}
 	}
 }
 
@@ -209,15 +211,15 @@ struct Report {
 	mismatches: Vec<String>,
 }
 
-fn compare(from: usize, to: usize, packets: &[Vec<u8>]) -> Report {
+fn compare(from: Version, to: Version, packets: &[Vec<u8>]) -> Report {
 	compare_in(from, to, packets, None)
 }
 
 fn compare_in(
-	from: usize,
-	to: usize,
+	from: Version,
+	to: Version,
 	packets: &[Vec<u8>],
-	versions: Option<(usize, usize)>,
+	versions: Option<(Version, Version)>,
 ) -> Report {
 	let (mut a, mut b) = (Session::new(), Session::new());
 	if let Some((server, client)) = versions {
@@ -232,10 +234,9 @@ fn compare_in(
 		match decode(from, p) {
 			Ok(Some(_)) => report.chunks += 1,
 			Ok(None) => {}
-			Err(e) => report.mismatches.push(format!(
-				"#{i} {}: source chunk does not decode: {e}",
-				VERSIONS[from]
-			)),
+			Err(e) => report
+				.mismatches
+				.push(format!("#{i} {}: source chunk does not decode: {e}", from)),
 		}
 		match (expected, got) {
 			(Ok(e), Ok(g)) => {
@@ -247,8 +248,8 @@ fn compare_in(
 				if e.len() != g.len() {
 					report.mismatches.push(format!(
 						"#{i} {} -> {}: {} packets vs {}: {:?} vs {:?}",
-						VERSIONS[from],
-						VERSIONS[to],
+						from,
+						to,
 						e.len(),
 						g.len(),
 						e.iter().map(kind).collect::<Vec<_>>(),
@@ -260,26 +261,25 @@ fn compare_in(
 					if x != y {
 						report.mismatches.push(format!(
 							"#{i} {} -> {}: {}",
-							VERSIONS[from],
-							VERSIONS[to],
+							from,
+							to,
 							describe(x, y)
 						));
 					}
 				}
 			}
 			(Err(_), Ok(_)) => report.only_virtual += 1,
-			(Ok(_), Err(e)) => report.mismatches.push(format!(
-				"#{i} {} -> {}: virtual path failed: {e}",
-				VERSIONS[from], VERSIONS[to]
-			)),
+			(Ok(_), Err(e)) => report
+				.mismatches
+				.push(format!("#{i} {} -> {}: virtual path failed: {e}", from, to)),
 			(Err(_), Err(_)) => {}
 		}
 	}
 	report
 }
 
-fn assert_equivalent(from: &str, to: &str, packets: &[Vec<u8>]) {
-	let r = compare(at(from), at(to), packets);
+fn assert_equivalent(from: Version, to: Version, packets: &[Vec<u8>]) {
+	let r = compare(from, to, packets);
 	assert!(
 		r.mismatches.is_empty(),
 		"{from} -> {to}: {} mismatches:\n{}",
@@ -293,32 +293,32 @@ fn assert_equivalent(from: &str, to: &str, packets: &[Vec<u8>]) {
 	);
 }
 
-fn netty() -> Vec<usize> {
-	(at("1.7")..VERSIONS.len()).collect()
+fn netty() -> &'static [Version] {
+	Version::span(Version::V1_7..)
 }
 
 #[test]
 fn chunk_packets_are_recognized_in_every_version() {
-	for v in netty() {
+	for &v in netty() {
 		let ids = minecraft_versions::custom::chunks::ids(v);
-		assert!(ids.chunk.is_some(), "{} map_chunk", VERSIONS[v]);
+		assert!(ids.chunk.is_some(), "{} map_chunk", v);
 		assert_eq!(
 			ids.bulk.is_some(),
-			v <= at("1.8"),
+			v <= Version::V1_8,
 			"{} map_chunk_bulk",
-			VERSIONS[v]
+			v
 		);
 		assert_eq!(
 			ids.light.is_some(),
-			v >= at("1.14"),
+			v >= Version::V1_14,
 			"{} update_light",
-			VERSIONS[v]
+			v
 		);
 		assert_eq!(
 			ids.unload.is_some(),
-			v >= at("1.9"),
+			v >= Version::V1_9,
 			"{} unload_chunk",
-			VERSIONS[v]
+			v
 		);
 	}
 }
@@ -326,59 +326,46 @@ fn chunk_packets_are_recognized_in_every_version() {
 #[test]
 fn probes_cover_every_native_step() {
 	use minecraft_versions::custom::chunks::{probe, probe_column, step_table};
-	for a in netty() {
-		for b in [a.wrapping_sub(1), a + 1] {
-			if b < at("1.7") || b >= VERSIONS.len() {
+	for &a in netty() {
+		for b in [a.prev(), a.next()].into_iter().flatten() {
+			if b < Version::V1_7 {
 				continue;
 			}
 			let sections = probe_column(a).sections.len();
-			if (a, b) != (at("1.9"), at("1.8")) {
-				let probed = probe(a, b)
-					.unwrap_or_else(|| panic!("{} -> {} probe", VERSIONS[a], VERSIONS[b]));
-				assert_eq!(
-					probed.len(),
-					sections * 4096,
-					"{} -> {}",
-					VERSIONS[a],
-					VERSIONS[b]
-				);
+			if (a, b) != (Version::V1_9, Version::V1_8) {
+				let probed = probe(a, b).unwrap_or_else(|| panic!("{} -> {} probe", a, b));
+				assert_eq!(probed.len(), sections * 4096, "{} -> {}", a, b);
 			}
 			let table = step_table(a, b);
-			assert_eq!(
-				table.len(),
-				sections * 4096,
-				"{} -> {}",
-				VERSIONS[a],
-				VERSIONS[b]
-			);
-			assert_eq!(table[0], 0, "{} -> {} keeps air", VERSIONS[a], VERSIONS[b]);
+			assert_eq!(table.len(), sections * 4096, "{} -> {}", a, b);
+			assert_eq!(table[0], 0, "{} -> {} keeps air", a, b);
 		}
 	}
 }
 
 #[test]
 fn recorded_traffic_up_from_1_8() {
-	let packets = traffic(at("1.8"));
-	for to in ["1.7", "26.1"] {
-		assert_equivalent("1.8", to, &packets);
+	let packets = traffic(Version::V1_8);
+	for to in [Version::V1_7, Version::V26_1] {
+		assert_equivalent(Version::V1_8, to, &packets);
 	}
 }
 
 #[test]
 fn recorded_traffic_down_from_26_1() {
-	assert_equivalent("26.1", "1.9", &traffic(at("26.1")));
+	assert_equivalent(Version::V26_1, Version::V1_9, &traffic(Version::V26_1));
 }
 
 #[test]
 fn recorded_traffic_reaches_1_8() {
-	let packets = traffic(at("26.1"));
-	let r = compare(at("26.1"), at("1.8"), &packets);
+	let packets = traffic(Version::V26_1);
+	let r = compare(Version::V26_1, Version::V1_8, &packets);
 	assert!(r.mismatches.is_empty(), "{:?}", r.mismatches.first());
 	let mut cx = Session::new();
 	let mut columns = 0;
 	for p in &packets {
-		for out in convert(ROOT, at("26.1"), at("1.8"), p, &mut cx).unwrap_or_default() {
-			if let Ok(Some(Packet::Chunk(c))) = decode(at("1.8"), &out) {
+		for out in convert(ROOT, Version::V26_1, Version::V1_8, p, &mut cx).unwrap_or_default() {
+			if let Ok(Some(Packet::Chunk(c))) = decode(Version::V1_8, &out) {
 				columns += 1;
 				assert_eq!(
 					(c.block(0, 0, 0), c.block(0, 3, 0), c.block(0, 4, 0)),
@@ -392,10 +379,14 @@ fn recorded_traffic_reaches_1_8() {
 
 #[test]
 fn chunks_reach_pre_netty_clients() {
-	assert_equivalent("26.1", "1.0.1", &traffic(at("26.1")));
-	assert_equivalent("1.8", "1.2.5", &traffic(at("1.8")));
-	for (from, sections) in [("1.12.2", 16), ("26.1", 24)] {
-		assert_equivalent(from, "1.0.1", &synthetic_packets(at(from), sections, true));
+	assert_equivalent(Version::V26_1, Version::V1_0_1, &traffic(Version::V26_1));
+	assert_equivalent(Version::V1_8, Version::V1_2_5, &traffic(Version::V1_8));
+	for (from, sections) in [(Version::V1_12_2, 16), (Version::V26_1, 24)] {
+		assert_equivalent(
+			from,
+			Version::V1_0_1,
+			&synthetic_packets(from, sections, true),
+		);
 	}
 }
 
@@ -408,17 +399,17 @@ fn recorded_traffic_every_pair() {
 #[test]
 #[ignore]
 fn synthetic_every_pair() {
-	every_pair(|v| synthetic_packets(v, if v >= at("1.18") { 24 } else { 16 }, true));
+	every_pair(|v| synthetic_packets(v, if v >= Version::V1_18 { 24 } else { 16 }, true));
 }
 
-fn every_pair(packets: impl Fn(usize) -> Vec<Vec<u8>> + Sync) {
-	let pairs: Vec<(usize, usize)> = netty()
-		.into_iter()
-		.flat_map(|a| {
+fn every_pair(packets: impl Fn(Version) -> Vec<Vec<u8>> + Sync) {
+	let pairs: Vec<(Version, Version)> = netty()
+		.iter()
+		.flat_map(|&a| {
 			netty()
-				.into_iter()
-				.filter(move |b| a != *b)
-				.map(move |b| (a, b))
+				.iter()
+				.filter(move |&&b| a != b)
+				.map(move |&b| (a, b))
 		})
 		.collect();
 	let next = std::sync::atomic::AtomicUsize::new(0);
@@ -435,8 +426,8 @@ fn every_pair(packets: impl Fn(usize) -> Vec<Vec<u8>> + Sync) {
 				if !r.mismatches.is_empty() {
 					failures.lock().unwrap().push(format!(
 						"{} -> {}: {} mismatches, first: {}",
-						VERSIONS[from],
-						VERSIONS[to],
+						from,
+						to,
 						r.mismatches.len(),
 						r.mismatches[0]
 					));
@@ -464,13 +455,13 @@ fn noise(seed: u64) -> impl FnMut() -> u64 {
 	}
 }
 
-fn states_of(version: usize) -> u32 {
-	minecraft_versions::registry::blocks(VERSIONS[version]).map_or(4096, |b| b.states().max(1))
+fn states_of(version: Version) -> u32 {
+	minecraft_versions::registry::blocks(version).map_or(4096, |b| b.states().max(1))
 }
 
-fn synthetic(version: usize, x: i32, z: i32, sections: usize, seed: u64) -> Column {
+fn synthetic(version: Version, x: i32, z: i32, sections: usize, seed: u64) -> Column {
 	let mut rng = noise(seed);
-	let legacy = version < at("1.13");
+	let legacy = version < Version::V1_13;
 	let pick = |r: u64| -> u32 {
 		match legacy {
 			true => (((r % 160) as u32 + 1) << 4) | ((r >> 32) as u32 % 16),
@@ -495,7 +486,7 @@ fn synthetic(version: usize, x: i32, z: i32, sections: usize, seed: u64) -> Colu
 			Some(Section::new(states, None))
 		});
 	}
-	if version >= at("1.18") {
+	if version >= Version::V1_18 {
 		for s in col.sections.iter_mut() {
 			s.get_or_insert_with(|| Section::filled(0, Some(0)));
 		}
@@ -515,7 +506,7 @@ fn synthetic(version: usize, x: i32, z: i32, sections: usize, seed: u64) -> Colu
 			_ => Nibbles::Data((0..2048).map(|_| rng() as u8 & 0x77).collect()),
 		};
 	}
-	if version < at("1.14") {
+	if version < Version::V1_14 {
 		for (i, s) in col.sections.iter().enumerate() {
 			if s.is_some() {
 				light.block[i + 1] = Nibbles::Data((0..2048).map(|_| rng() as u8).collect());
@@ -525,8 +516,8 @@ fn synthetic(version: usize, x: i32, z: i32, sections: usize, seed: u64) -> Colu
 	}
 	col.light = Some(light);
 	col.biomes = match version {
-		v if v < at("1.15") => Biomes::Flat((0..256).map(|_| (rng() % 20) as i32).collect()),
-		v if v < at("1.18") => Biomes::Cells(
+		version_range!(..V1_15) => Biomes::Flat((0..256).map(|_| (rng() % 20) as i32).collect()),
+		version_range!(..V1_18) => Biomes::Cells(
 			(0..sections.max(16) * 64)
 				.map(|_| (rng() % 20) as i32)
 				.collect(),
@@ -537,7 +528,7 @@ fn synthetic(version: usize, x: i32, z: i32, sections: usize, seed: u64) -> Colu
 				.collect(),
 		),
 	};
-	if version >= at("1.14") {
+	if version >= Version::V1_14 {
 		col.heightmaps = Some(vec![]);
 	}
 	col
@@ -636,7 +627,7 @@ const NAMED: &[&str] = &[
 ];
 const TYPED: &[i32] = &[0, 1, 7, 8, 9, 14, 15, 18, 19, 23, 24, 33, 38, 40, 44];
 
-fn block_entities(version: usize, cx: i32, cz: i32) -> Vec<BlockEntity> {
+fn block_entities(version: Version, cx: i32, cz: i32) -> Vec<BlockEntity> {
 	let at_index = |i: usize| {
 		(
 			cx * 16 + (i as i32 * 5) % 16,
@@ -645,7 +636,7 @@ fn block_entities(version: usize, cx: i32, cz: i32) -> Vec<BlockEntity> {
 		)
 	};
 	match version {
-		v if v < at("1.18") => NAMED
+		version_range!(..V1_18) => NAMED
 			.iter()
 			.enumerate()
 			.map(|(i, id)| {
@@ -685,11 +676,11 @@ fn block_entities(version: usize, cx: i32, cz: i32) -> Vec<BlockEntity> {
 	}
 }
 
-fn synthetic_packets(version: usize, sections: usize, entities: bool) -> Vec<Vec<u8>> {
+fn synthetic_packets(version: Version, sections: usize, entities: bool) -> Vec<Vec<u8>> {
 	let mut out = Vec::new();
 	for (i, (x, z)) in [(0, 0), (1, 0), (-1, 2), (5, -7)].into_iter().enumerate() {
 		let mut col = synthetic(version, x, z, sections, 11 + i as u64);
-		if entities && version >= at("1.9.4") {
+		if entities && version >= Version::V1_9_4 {
 			col.entities = block_entities(version, x, z);
 		}
 		out.extend(encode_chunk(version, &col).unwrap());
@@ -705,7 +696,7 @@ fn set_height(dimension: &mut nbt::Entry, min_y: i32, height: i32) {
 	}
 }
 
-fn tall_login(version: usize, min_y: i32, height: i32) -> Vec<u8> {
+fn tall_login(version: Version, min_y: i32, height: i32) -> Vec<u8> {
 	use minecraft_versions::gen::convert::{v1_17_1, v1_18};
 	use minecraft_versions::pds::{Input, Output};
 	let login = traffic(version)
@@ -714,7 +705,7 @@ fn tall_login(version: usize, min_y: i32, height: i32) -> Vec<u8> {
 		.unwrap();
 	let mut o = Output::new();
 	match version {
-		v if v == at("1.18") => {
+		Version::V1_18 => {
 			let v1_18::play_to_client_packet::Ty::Login(mut p) =
 				v1_18::play_to_client_packet::deserialize(&mut Input::new(&login)).unwrap()
 			else {
@@ -747,11 +738,11 @@ fn tall_login(version: usize, min_y: i32, height: i32) -> Vec<u8> {
 #[test]
 fn tall_worlds_with_block_entities() {
 	for (from, targets) in [
-		("1.18", ["1.16.2", "1.12.2"]),
-		("1.17.1", ["1.20.2", "1.15.2"]),
+		(Version::V1_18, [Version::V1_16_2, Version::V1_12_2]),
+		(Version::V1_17_1, [Version::V1_20_2, Version::V1_15_2]),
 	] {
-		let mut packets = vec![tall_login(at(from), -64, 384)];
-		packets.extend(synthetic_packets(at(from), 24, true));
+		let mut packets = vec![tall_login(from, -64, 384)];
+		packets.extend(synthetic_packets(from, 24, true));
 		for to in targets {
 			assert_equivalent(from, to, &packets);
 		}
@@ -766,7 +757,7 @@ macro_rules! switches {
 			m::play_to_client_packet::serialize(&p, &mut o).unwrap();
 			o.into_inner()
 		};
-		let blocks = minecraft_versions::registry::blocks(VERSIONS[$version]).unwrap();
+		let blocks = minecraft_versions::registry::blocks($version).unwrap();
 		let state = |name: &str| blocks.block(name).unwrap().default as i64;
 		let position = |y: f64, flags: i8, id: i32| {
 			ser(m::play_to_client_packet::Ty::Position(
@@ -832,23 +823,39 @@ macro_rules! switches {
 	}};
 }
 
-fn switch_packets(version: usize) -> Vec<Vec<u8>> {
+fn switch_packets(version: Version) -> Vec<Vec<u8>> {
 	match version {
-		v if v == at("1.18") => switches!(v1_18, v, i32),
-		v => switches!(v1_17_1, v, u32),
+		Version::V1_18 => switches!(v1_18, version, i32),
+		_ => switches!(v1_17_1, version, u32),
 	}
 }
 
 #[test]
 fn tall_world_switches_and_floors() {
 	for (from, targets) in [
-		("1.18", ["1.16.2", "1.13", "1.8", "1.0.1"]),
-		("1.17.1", ["1.16.2", "1.12.2", "1.8", "1.2.5"]),
+		(
+			Version::V1_18,
+			[
+				Version::V1_16_2,
+				Version::V1_13,
+				Version::V1_8,
+				Version::V1_0_1,
+			],
+		),
+		(
+			Version::V1_17_1,
+			[
+				Version::V1_16_2,
+				Version::V1_12_2,
+				Version::V1_8,
+				Version::V1_2_5,
+			],
+		),
 	] {
-		let packets = switch_packets(at(from));
+		let packets = switch_packets(from);
 		for to in targets {
 			assert_equivalent(from, to, &packets);
-			let r = compare_in(at(from), at(to), &packets, Some((at(from), at("1.1"))));
+			let r = compare_in(from, to, &packets, Some((from, Version::V1_1)));
 			assert!(
 				r.mismatches.is_empty(),
 				"{from} -> {to} in 128-high windows: {:?}",
@@ -864,13 +871,13 @@ fn switch_columns_skip_the_wire() {
 	use minecraft_versions::gen::convert::Carrier;
 	let mut cx = Session::new();
 	let mut columns = Vec::new();
-	for p in &switch_packets(at("1.18")) {
-		if !minecraft_versions::inspect(ROOT, at("1.18"), p).is_ok_and(|n| n == "position") {
-			convert(ROOT, at("1.18"), at("1.8"), p, &mut cx).unwrap();
+	for p in &switch_packets(Version::V1_18) {
+		if !minecraft_versions::inspect(ROOT, Version::V1_18, p).is_ok_and(|n| n == "position") {
+			convert(ROOT, Version::V1_18, Version::V1_8, p, &mut cx).unwrap();
 			continue;
 		}
-		let down = convert(ROOT, at("1.18"), at("1.17"), p, &mut cx).unwrap();
-		let carried = virtual_wire(ROOT, at("1.17"), at("1.16.2"), &down[0], &mut cx)
+		let down = convert(ROOT, Version::V1_18, Version::V1_17, p, &mut cx).unwrap();
+		let carried = virtual_wire(ROOT, Version::V1_17, Version::V1_16_2, &down[0], &mut cx)
 			.unwrap()
 			.unwrap();
 		columns.push(
@@ -886,16 +893,16 @@ fn switch_columns_skip_the_wire() {
 #[test]
 #[ignore]
 fn tall_worlds_every_target() {
-	for from in [at("1.17.1"), at("1.18")] {
+	for from in [Version::V1_17_1, Version::V1_18] {
 		let mut packets = vec![tall_login(from, -64, 384)];
 		packets.extend(synthetic_packets(from, 24, true));
-		for to in netty().into_iter().filter(|to| *to != from) {
+		for &to in netty().iter().filter(|to| **to != from) {
 			let r = compare(from, to, &packets);
 			assert!(
 				r.mismatches.is_empty(),
 				"{} -> {}: {:?}",
-				VERSIONS[from],
-				VERSIONS[to],
+				from,
+				to,
 				r.mismatches.first()
 			);
 		}
@@ -945,42 +952,43 @@ fn captured(name: &str) -> Vec<u8> {
 fn padded_server_chunks_stay_on_the_chunk_model() {
 	for (from, login, chunk) in [
 		(
-			"1.19.2",
-			vanilla_login!(v1_19_2, "1.19.2"),
+			Version::V1_19_2,
+			vanilla_login!(v1_19_2, Version::V1_19_2),
 			"1.19.2-map_chunk.bin.gz",
 		),
 		(
-			"1.19.2",
-			vanilla_login!(v1_19_2, "1.19.2"),
+			Version::V1_19_2,
+			vanilla_login!(v1_19_2, Version::V1_19_2),
 			"1.19.2-map_chunk-16.bin.gz",
 		),
 		(
-			"1.19.4",
-			vanilla_login!(v1_19_4, "1.19.4"),
+			Version::V1_19_4,
+			vanilla_login!(v1_19_4, Version::V1_19_4),
 			"1.19.4-map_chunk.bin.gz",
 		),
 	] {
 		let chunk = captured(chunk);
-		let Ok(Some(Packet::Chunk(c))) = decode(at(from), &chunk) else {
+		let Ok(Some(Packet::Chunk(c))) = decode(from, &chunk) else {
 			panic!("{from}: chunk does not decode")
 		};
 		assert_eq!(c.sections.len(), 24, "{from}");
 		let packets = vec![login, chunk];
 		for to in [
-			"1.8", "1.12.2", "1.16.2", "1.18.2", "1.19.3", "1.20.2", "26.1",
+			Version::V1_8,
+			Version::V1_12_2,
+			Version::V1_16_2,
+			Version::V1_18_2,
+			Version::V1_19_3,
+			Version::V1_20_2,
+			Version::V26_1,
 		] {
 			let mut cx = Session::new();
-			convert(ROOT, at(from), at(to), &packets[0], &mut cx).unwrap();
-			let model = minecraft_versions::custom::virtual_start(
-				ROOT,
-				at(from),
-				at(to),
-				&packets[1],
-				&mut cx,
-			)
-			.unwrap();
+			convert(ROOT, from, to, &packets[0], &mut cx).unwrap();
+			let model =
+				minecraft_versions::custom::virtual_start(ROOT, from, to, &packets[1], &mut cx)
+					.unwrap();
 			assert!(model.is_some(), "{from} -> {to}: chunk left the model");
-			let r = compare(at(from), at(to), &packets);
+			let r = compare(from, to, &packets);
 			assert!(
 				r.mismatches.is_empty() && r.only_virtual == 0 && r.compared == 2,
 				"{from} -> {to}: {r:?}"
@@ -992,13 +1000,33 @@ fn padded_server_chunks_stay_on_the_chunk_model() {
 #[test]
 fn synthetic_chunks_both_directions() {
 	for (from, sections, targets) in [
-		("1.8", 16, ["1.7", "1.13", "1.21.5"]),
-		("1.12.2", 16, ["1.9", "1.14", "26.1"]),
-		("1.15.2", 16, ["1.12.2", "1.17.1", "1.20"]),
-		("1.18", 24, ["1.16.2", "1.13.2", "1.21.3"]),
-		("26.1", 24, ["1.20.2", "1.17.1", "1.12.2"]),
+		(
+			Version::V1_8,
+			16,
+			[Version::V1_7, Version::V1_13, Version::V1_21_5],
+		),
+		(
+			Version::V1_12_2,
+			16,
+			[Version::V1_9, Version::V1_14, Version::V26_1],
+		),
+		(
+			Version::V1_15_2,
+			16,
+			[Version::V1_12_2, Version::V1_17_1, Version::V1_20],
+		),
+		(
+			Version::V1_18,
+			24,
+			[Version::V1_16_2, Version::V1_13_2, Version::V1_21_3],
+		),
+		(
+			Version::V26_1,
+			24,
+			[Version::V1_20_2, Version::V1_17_1, Version::V1_12_2],
+		),
 	] {
-		let packets = synthetic_packets(at(from), sections, true);
+		let packets = synthetic_packets(from, sections, true);
 		for to in targets {
 			assert_equivalent(from, to, &packets);
 		}

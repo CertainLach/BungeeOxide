@@ -1,3 +1,4 @@
+use minecraft_versions::Version;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
@@ -24,7 +25,7 @@ use minecraft_versions::gen::convert::v26_1::{
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use minecraft_versions::{index_of, Root};
+use minecraft_versions::Root;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::mpsc;
@@ -32,12 +33,12 @@ use tokio_util::codec::Framed;
 
 const WAIT: Duration = Duration::from_secs(10);
 
-fn modern() -> usize {
-	index_of("26.1").unwrap()
+fn modern() -> Version {
+	Version::V26_1
 }
 
-fn protocol(version: &str) -> i32 {
-	protocol_of(index_of(version).unwrap()).unwrap()
+fn protocol(version: Version) -> i32 {
+	protocol_of(version).unwrap()
 }
 
 #[derive(Clone)]
@@ -113,7 +114,7 @@ fn cookie_text(value: &Option<Vec<u8>>) -> String {
 async fn until(conn: &mut Conn, root: Root, name: &str) -> Result<Vec<u8>> {
 	loop {
 		let data = tokio::time::timeout(WAIT, next(conn)).await??;
-		if packet_name(root, index_of("26.1").unwrap(), &data) == Some(name) {
+		if packet_name(root, Version::V26_1, &data) == Some(name) {
 			return Ok(data);
 		}
 	}
@@ -286,7 +287,7 @@ impl Mock {
 			bail!("status request");
 		};
 		let info = serde_json::json!({
-			"version": { "name": "26.1", "protocol": protocol("26.1") },
+			"version": { "name": Version::V26_1.name(), "protocol": protocol(Version::V26_1) },
 			"players": { "max": 100, "online": 3, "sample": [{ "name": "Steve", "id": "8667ba71-b85a-4004-af54-457a9734eed7" }] },
 			"description": { "text": "", "extra": [
 				{ "text": "Modern ", "color": "#ff5555", "shadow_color": -16777216 },
@@ -310,7 +311,7 @@ async fn bridge(target: SocketAddr) -> SocketAddr {
 		target: target.to_string(),
 		motd: "modern bridge".to_owned(),
 		threshold: 64,
-		server_version: "26.1".to_owned(),
+		server_version: Version::V26_1,
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));
@@ -338,7 +339,7 @@ impl Client {
 	async fn join(proxy: SocketAddr) -> Result<Client> {
 		let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
 		let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
-			protocol_version: protocol("26.1"),
+			protocol_version: protocol(Version::V26_1),
 			server_host: "localhost".to_owned(),
 			server_port: proxy.port(),
 			next_state: 2,
@@ -755,8 +756,8 @@ async fn legacy_ping(proxy: SocketAddr, request: &[u8]) -> Result<String> {
 async fn the_server_list_shows_a_modern_backend_to_every_era() -> Result<()> {
 	let (a, _events) = mock("a", 0, "minecraft:overworld", false).await;
 	let proxy = bridge(a).await;
-	let new = server_info(proxy, protocol("26.1")).await?;
-	assert_eq!(new["version"]["protocol"], protocol("26.1"));
+	let new = server_info(proxy, protocol(Version::V26_1)).await?;
+	assert_eq!(new["version"]["protocol"], protocol(Version::V26_1));
 	assert!(
 		new["version"]["name"]
 			.as_str()
@@ -778,12 +779,17 @@ async fn the_server_list_shows_a_modern_backend_to_every_era() -> Result<()> {
 	);
 	assert_eq!(new["players"]["sample"][0]["name"], "Steve");
 	assert_eq!(new["favicon"], "data:image/png;base64,iVBORw0KGgo=");
-	let nether_update = server_info(proxy, protocol("1.16")).await?;
+	let nether_update = server_info(proxy, protocol(Version::V1_16)).await?;
 	assert_eq!(
 		nether_update["description"]["extra"][0],
 		serde_json::json!({ "text": "Modern ", "color": "#ff5555" })
 	);
-	for old in ["1.7", "1.8", "1.12.2", "1.15.2"] {
+	for old in [
+		Version::V1_7,
+		Version::V1_8,
+		Version::V1_12_2,
+		Version::V1_15_2,
+	] {
 		let info = server_info(proxy, protocol(old)).await?;
 		assert_eq!(info["version"]["protocol"], protocol(old), "{old}");
 		assert_eq!(
