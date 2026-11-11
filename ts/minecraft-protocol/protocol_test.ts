@@ -30,7 +30,7 @@ function encode<T>(codec: Codec<T>, v: T): Uint8Array {
 const hex = (s: string) => s.match(/../g)!.map((b) => parseInt(b, 16));
 
 Deno.test("handshake", () => {
-	const t = gen.pds_handshaking_toServer_packet_set_protocol;
+	const t = gen.handshaking.toServer.packet_set_protocol;
 	const v = { protocolVersion: 774, serverHost: "localhost", serverPort: 25565, nextState: 2 };
 	const bytes = encode(t, v);
 	assertEquals(bytes.length, t.size_of(v));
@@ -38,7 +38,7 @@ Deno.test("handshake", () => {
 });
 
 Deno.test("position bitfield", () => {
-	const t = gen.pds_position;
+	const t = gen.position;
 	const v = { x: -123456, z: 654321, y: -42 };
 	const bytes = encode(t, v);
 	assertEquals(bytes.length, 8);
@@ -46,19 +46,19 @@ Deno.test("position bitfield", () => {
 });
 
 Deno.test("inline tag mapper", () => {
-	const t = gen.pds_soundSource;
+	const t = gen.soundSource;
 	assertEquals([...encode(t, { kind: "hostile" })], [5]);
 	assertEquals(roundtrip(t, [5]), { kind: "hostile" });
 });
 
 Deno.test("merged mapper switch", () => {
-	const t = gen.pds_SlotComponent_30;
+	const t = gen.SlotComponent_30;
 	assertEquals([...encode(t, { kind: "hidden" })], [1]);
 	assertEquals(roundtrip(t, [1]), { kind: "hidden" });
 });
 
 Deno.test("scalar tag merged into union", () => {
-	const t = gen.pds_play_toClient_packet_hide_message;
+	const t = gen.play.toClient.packet_hide_message;
 	const v = { kind: "v0" as const, value: new Uint8Array(256).fill(7) };
 	const bytes = encode(t, v);
 	assertEquals([bytes[0], bytes.length], [0, 257]);
@@ -67,7 +67,7 @@ Deno.test("scalar tag merged into union", () => {
 });
 
 Deno.test("option tag derived from union", () => {
-	const t = gen.pds_play_toClient_packet_scoreboard_score;
+	const t = gen.play.toClient.packet_scoreboard_score;
 	const end = { type: 0, value: { kind: "end" as const } };
 	const v = {
 		itemName: "a",
@@ -84,13 +84,13 @@ Deno.test("option tag derived from union", () => {
 });
 
 Deno.test("top bit set terminated equipment", () => {
-	const t = gen.pds_play_toClient_packet_entity_equipment;
+	const t = gen.play.toClient.packet_entity_equipment;
 	const v = roundtrip(t, [7, 0x80, 0, 0x85, 0, 3, 0]);
 	assertEquals(v.equipments.map((e) => e.slot), [0, 5, 3]);
 });
 
 Deno.test("entity metadata loop", () => {
-	const t = gen.pds_play_toClient_packet_entity_metadata;
+	const t = gen.play.toClient.packet_entity_metadata;
 	const v = roundtrip(t, [1, 0, 0, 7, 0xff]);
 	assertEquals(v.metadata.length, 1);
 	assertEquals(v.metadata[0].key, 0);

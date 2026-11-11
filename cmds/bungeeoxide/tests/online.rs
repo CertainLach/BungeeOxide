@@ -10,11 +10,11 @@ use bungeeoxide::codec::{Cipher, Codec};
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toClient_packet_encryption_begin,
-	login_toClient_packet_success, login_toServer_packet as login_s,
-	play_toClient_packet as play_c, play_toClient_packet_chat, play_toClient_packet_login,
-	play_toServer_packet as play_s,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
+	login_to_client_packet_success, login_to_server_packet as login_s,
+	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
+	play_to_server_packet as play_s,
 };
 use rsa::pkcs8::EncodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey};
@@ -92,62 +92,62 @@ async fn backend(
 	key: RsaPrivateKey,
 	hashes: mpsc::UnboundedSender<String>,
 ) -> Result<()> {
-	let handshake::Ty::set_protocol(_) = decode(&next(&mut conn).await?, handshake::deserialize)?
+	let handshake::Ty::SetProtocol(_) = decode(&next(&mut conn).await?, handshake::deserialize)?
 	else {
 		bail!("handshake");
 	};
-	let login_s::Ty::login_start(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
+	let login_s::Ty::LoginStart(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
 	else {
 		bail!("login start");
 	};
 	let public = key.to_public_key().to_public_key_der()?.into_vec();
-	let request = login_toClient_packet_encryption_begin::Ty {
-		serverId: String::new(),
-		publicKey: public.clone(),
-		verifyToken: vec![1, 2, 3, 4],
+	let request = login_to_client_packet_encryption_begin::Ty {
+		server_id: String::new(),
+		public_key: public.clone(),
+		verify_token: vec![1, 2, 3, 4],
 	};
 	conn.send(encode(
-		&login_c::Ty::encryption_begin(request),
+		&login_c::Ty::EncryptionBegin(request),
 		login_c::serialize,
 	)?)
 	.await?;
-	let login_s::Ty::encryption_begin(response) =
+	let login_s::Ty::EncryptionBegin(response) =
 		decode(&next(&mut conn).await?, login_s::deserialize)?
 	else {
 		bail!("encryption response");
 	};
 	assert_eq!(
-		key.decrypt(Pkcs1v15Encrypt, &response.verifyToken)?,
+		key.decrypt(Pkcs1v15Encrypt, &response.verify_token)?,
 		[1, 2, 3, 4]
 	);
 	let secret: [u8; 16] = key
-		.decrypt(Pkcs1v15Encrypt, &response.sharedSecret)?
+		.decrypt(Pkcs1v15Encrypt, &response.shared_secret)?
 		.try_into()
 		.unwrap();
 	hashes.send(server_hash("", &secret, &public))?;
 	conn.codec_mut().cipher = Some(Cipher::new(&secret));
-	conn.send(encode(&login_c::Ty::compress(64), login_c::serialize)?)
+	conn.send(encode(&login_c::Ty::Compress(64), login_c::serialize)?)
 		.await?;
 	conn.codec_mut().threshold = Some(64);
-	let success = login_toClient_packet_success::Ty {
+	let success = login_to_client_packet_success::Ty {
 		uuid: hyphenated(PROFILE),
 		username,
 	};
-	conn.send(encode(&login_c::Ty::success(success), login_c::serialize)?)
+	conn.send(encode(&login_c::Ty::Success(success), login_c::serialize)?)
 		.await?;
-	let join = play_c::Ty::login(play_toClient_packet_login::Ty {
-		entityId: 7,
-		gameMode: 1,
+	let join = play_c::Ty::Login(play_to_client_packet_login::Ty {
+		entity_id: 7,
+		game_mode: 1,
 		dimension: 0,
 		difficulty: 2,
-		maxPlayers: 20,
-		levelType: "flat".to_owned(),
-		reducedDebugInfo: false,
+		max_players: 20,
+		level_type: "flat".to_owned(),
+		reduced_debug_info: false,
 	});
 	conn.send(encode(&join, play_c::serialize)?).await?;
 	loop {
-		if let play_s::Ty::chat(message) = decode(&next(&mut conn).await?, play_s::deserialize)? {
-			let echo = play_c::Ty::chat(play_toClient_packet_chat::Ty {
+		if let play_s::Ty::Chat(message) = decode(&next(&mut conn).await?, play_s::deserialize)? {
+			let echo = play_c::Ty::Chat(play_to_client_packet_chat::Ty {
 				message: serde_json::json!({ "text": format!("echo: {message}") }).to_string(),
 				position: 0,
 			});
@@ -177,15 +177,15 @@ async fn start_proxy(target: SocketAddr, session: SocketAddr, version: &str) -> 
 
 async fn login(proxy: SocketAddr, name: &str) -> Result<Conn> {
 	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: PROTOCOL_1_8,
-		serverHost: "localhost".to_owned(),
-		serverPort: proxy.port(),
-		nextState: 2,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: PROTOCOL_1_8,
+		server_host: "localhost".to_owned(),
+		server_port: proxy.port(),
+		next_state: 2,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start(name.to_owned()),
+		&login_s::Ty::LoginStart(name.to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
@@ -202,13 +202,13 @@ async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
 	let (backend, mut hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, "1.8").await;
 	let mut conn = login(proxy, "Steve").await?;
-	let login_c::Ty::compress(threshold) =
+	let login_c::Ty::Compress(threshold) =
 		decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected compression");
 	};
 	conn.codec_mut().threshold = Some(usize::try_from(threshold)?);
-	let login_c::Ty::success(success) = decode(&receive(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Success(success) = decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected login success");
 	};
@@ -218,15 +218,15 @@ async fn mapped_players_log_in_upstream_with_their_account() -> Result<()> {
 	assert_eq!(join["accessToken"], "fake-token");
 	assert_eq!(join["selectedProfile"], format!("{PROFILE:032x}"));
 	assert_eq!(join["serverId"], hashes.recv().await.unwrap());
-	let play_c::Ty::login(_) = decode(&receive(&mut conn).await?, play_c::deserialize)? else {
+	let play_c::Ty::Login(_) = decode(&receive(&mut conn).await?, play_c::deserialize)? else {
 		bail!("expected join game");
 	};
 	conn.send(encode(
-		&play_s::Ty::chat("through the cipher".to_owned()),
+		&play_s::Ty::Chat("through the cipher".to_owned()),
 		play_s::serialize,
 	)?)
 	.await?;
-	let play_c::Ty::chat(chat) = decode(&receive(&mut conn).await?, play_c::deserialize)? else {
+	let play_c::Ty::Chat(chat) = decode(&receive(&mut conn).await?, play_c::deserialize)? else {
 		bail!("expected chat");
 	};
 	assert!(
@@ -243,7 +243,7 @@ async fn unmapped_players_are_told_how_to_join_online_servers() -> Result<()> {
 	let (backend, _hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, "1.8").await;
 	let mut conn = login(proxy, "Alex").await?;
-	let login_c::Ty::disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected a disconnect");
 	};
@@ -257,7 +257,7 @@ async fn pre_netty_servers_are_refused_for_mapped_players() -> Result<()> {
 	let (backend, _hashes) = online_backend().await;
 	let proxy = start_proxy(backend, session, "1.6.4").await;
 	let mut conn = login(proxy, "Steve").await?;
-	let login_c::Ty::disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Disconnect(reason) = decode(&receive(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected a disconnect");
 	};

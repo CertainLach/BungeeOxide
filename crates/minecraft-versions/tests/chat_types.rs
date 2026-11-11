@@ -101,7 +101,7 @@ fn decode<T>(b: &[u8], de: fn(&mut Input) -> minecraft_versions::pds::Result<T>)
 }
 
 fn strings(values: &[&str]) -> Payload {
-	ListItems::string(values.iter().map(|s| s.to_string()).collect()).into()
+	ListItems::String(values.iter().map(|s| s.to_string()).collect()).into()
 }
 
 fn decoration(key: &str, parameters: &[&str], style: Vec<Entry>) -> Vec<Entry> {
@@ -230,9 +230,9 @@ fn registry_of(elements: Vec<(&str, Vec<Entry>)>) -> Payload {
 			]
 		})
 		.collect();
-	Payload::compound(vec![
+	Payload::Compound(vec![
 		Entry::new("type", "minecraft:chat_type"),
-		Entry::new("value", List::new(ListItems::compound(list))),
+		Entry::new("value", List::new(ListItems::Compound(list))),
 	])
 }
 
@@ -265,16 +265,16 @@ fn modern_codec(version: &str, kinds: &[&Kind]) -> Entry {
 
 fn chat_message(version: &str, bytes: &[u8]) -> (Value, i8) {
 	let (message, position) = match version {
-		"1.18.2" => match decode(bytes, v1_18_2::play_toClient_packet::deserialize) {
-			v1_18_2::play_toClient_packet::Ty::chat(c) => (c.message, c.position),
+		"1.18.2" => match decode(bytes, v1_18_2::play_to_client_packet::deserialize) {
+			v1_18_2::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
-		"1.12.2" => match decode(bytes, v1_12_2::play_toClient_packet::deserialize) {
-			v1_12_2::play_toClient_packet::Ty::chat(c) => (c.message, c.position),
+		"1.12.2" => match decode(bytes, v1_12_2::play_to_client_packet::deserialize) {
+			v1_12_2::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
-		"1.8" => match decode(bytes, v1_8::play_toClient_packet::deserialize) {
-			v1_8::play_toClient_packet::Ty::chat(c) => (c.message, c.position),
+		"1.8" => match decode(bytes, v1_8::play_to_client_packet::deserialize) {
+			v1_8::play_to_client_packet::Ty::Chat(c) => (c.message, c.position),
 			p => panic!("{p:?}"),
 		},
 		v => panic!("{v}"),
@@ -306,63 +306,63 @@ fn text(s: &str) -> String {
 
 fn login_1_19_4(codec: Entry) -> Vec<u8> {
 	encode(
-		&v1_19_4::play_toClient_packet::Ty::login(v1_19_4::play_toClient_packet_login::Ty {
-			entityId: 1,
-			isHardcore: false,
-			gameMode: 1,
-			previousGameMode: -1,
-			worldNames: vec!["minecraft:overworld".to_owned()],
-			dimensionCodec: codec,
-			worldType: "minecraft:overworld".to_owned(),
-			worldName: "minecraft:overworld".to_owned(),
-			hashedSeed: 0,
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			isDebug: false,
-			isFlat: false,
+		&v1_19_4::play_to_client_packet::Ty::Login(v1_19_4::play_to_client_packet_login::Ty {
+			entity_id: 1,
+			is_hardcore: false,
+			game_mode: 1,
+			previous_game_mode: -1,
+			world_names: vec!["minecraft:overworld".to_owned()],
+			dimension_codec: codec,
+			world_type: "minecraft:overworld".to_owned(),
+			world_name: "minecraft:overworld".to_owned(),
+			hashed_seed: 0,
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			is_debug: false,
+			is_flat: false,
 			death: None,
 		}),
-		v1_19_4::play_toClient_packet::serialize,
+		v1_19_4::play_to_client_packet::serialize,
 	)
 }
 
 fn profileless(r#type: i32, name: &str, target: Option<&str>, message: &str) -> Vec<u8> {
 	encode(
-		&v1_19_4::play_toClient_packet::Ty::profileless_chat(
-			v1_19_4::play_toClient_packet_profileless_chat::Ty {
+		&v1_19_4::play_to_client_packet::Ty::ProfilelessChat(
+			v1_19_4::play_to_client_packet_profileless_chat::Ty {
 				message: text(message),
 				r#type,
 				name: text(name),
 				target: target.map(text),
 			},
 		),
-		v1_19_4::play_toClient_packet::serialize,
+		v1_19_4::play_to_client_packet::serialize,
 	)
 }
 
 fn player_chat(r#type: i32, name: &str, message: &str) -> Vec<u8> {
 	encode(
-		&v1_19_4::play_toClient_packet::Ty::player_chat(
-			v1_19_4::play_toClient_packet_player_chat::Ty {
-				senderUuid: 7,
+		&v1_19_4::play_to_client_packet::Ty::PlayerChat(
+			v1_19_4::play_to_client_packet_player_chat::Ty {
+				sender_uuid: 7,
 				index: 0,
 				signature: None,
-				plainMessage: message.to_owned(),
+				plain_message: message.to_owned(),
 				timestamp: 0,
 				salt: 0,
-				previousMessages: vec![],
-				unsignedChatContent: None,
-				filterTypeMask:
-					v1_19_4::play_toClient_packet_player_chat__filterTypeMask::Ty::default(0),
+				previous_messages: vec![],
+				unsigned_chat_content: None,
+				filter_type_mask:
+					v1_19_4::play_to_client_packet_player_chat_filter_type_mask::Ty::Default(0),
 				r#type,
-				networkName: text(name),
-				networkTargetName: None,
+				network_name: text(name),
+				network_target_name: None,
 			},
 		),
-		v1_19_4::play_toClient_packet::serialize,
+		v1_19_4::play_to_client_packet::serialize,
 	)
 }
 
@@ -441,50 +441,50 @@ fn registry_order_picks_the_decoration() {
 
 fn login_1_19_2(codec: Entry) -> Vec<u8> {
 	encode(
-		&v1_19_2::play_toClient_packet::Ty::login(v1_19_2::play_toClient_packet_login::Ty {
-			entityId: 1,
-			isHardcore: false,
-			gameMode: 1,
-			previousGameMode: -1,
-			worldNames: vec!["minecraft:overworld".to_owned()],
-			dimensionCodec: codec,
-			worldType: "minecraft:overworld".to_owned(),
-			worldName: "minecraft:overworld".to_owned(),
-			hashedSeed: 0,
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			isDebug: false,
-			isFlat: false,
+		&v1_19_2::play_to_client_packet::Ty::Login(v1_19_2::play_to_client_packet_login::Ty {
+			entity_id: 1,
+			is_hardcore: false,
+			game_mode: 1,
+			previous_game_mode: -1,
+			world_names: vec!["minecraft:overworld".to_owned()],
+			dimension_codec: codec,
+			world_type: "minecraft:overworld".to_owned(),
+			world_name: "minecraft:overworld".to_owned(),
+			hashed_seed: 0,
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			is_debug: false,
+			is_flat: false,
 			death: None,
 		}),
-		v1_19_2::play_toClient_packet::serialize,
+		v1_19_2::play_to_client_packet::serialize,
 	)
 }
 
 fn player_chat_1_19_2(r#type: i32, name: &str, target: Option<&str>, message: &str) -> Vec<u8> {
 	encode(
-		&v1_19_2::play_toClient_packet::Ty::player_chat(
-			v1_19_2::play_toClient_packet_player_chat::Ty {
-				previousSignature: None,
-				senderUuid: 0,
+		&v1_19_2::play_to_client_packet::Ty::PlayerChat(
+			v1_19_2::play_to_client_packet_player_chat::Ty {
+				previous_signature: None,
+				sender_uuid: 0,
 				signature: vec![],
-				plainMessage: message.to_owned(),
-				formattedMessage: Some(text(message)),
+				plain_message: message.to_owned(),
+				formatted_message: Some(text(message)),
 				timestamp: 0,
 				salt: 0,
-				previousMessages: vec![],
-				unsignedChatContent: None,
-				filterTypeMask:
-					v1_19_2::play_toClient_packet_player_chat__filterTypeMask::Ty::default(0),
+				previous_messages: vec![],
+				unsigned_chat_content: None,
+				filter_type_mask:
+					v1_19_2::play_to_client_packet_player_chat_filter_type_mask::Ty::Default(0),
 				r#type,
-				networkName: text(name),
-				networkTargetName: target.map(text),
+				network_name: text(name),
+				network_target_name: target.map(text),
 			},
 		),
-		v1_19_2::play_toClient_packet::serialize,
+		v1_19_2::play_to_client_packet::serialize,
 	)
 }
 
@@ -522,57 +522,57 @@ fn signed_chat_era_servers_use_their_registry() {
 
 fn login_1_19(codec: Entry) -> Vec<u8> {
 	encode(
-		&v1_19::play_toClient_packet::Ty::login(v1_19::play_toClient_packet_login::Ty {
-			entityId: 1,
-			isHardcore: false,
-			gameMode: 1,
-			previousGameMode: -1,
-			worldNames: vec!["minecraft:overworld".to_owned()],
-			dimensionCodec: codec,
-			worldType: "minecraft:overworld".to_owned(),
-			worldName: "minecraft:overworld".to_owned(),
-			hashedSeed: 0,
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			isDebug: false,
-			isFlat: false,
+		&v1_19::play_to_client_packet::Ty::Login(v1_19::play_to_client_packet_login::Ty {
+			entity_id: 1,
+			is_hardcore: false,
+			game_mode: 1,
+			previous_game_mode: -1,
+			world_names: vec!["minecraft:overworld".to_owned()],
+			dimension_codec: codec,
+			world_type: "minecraft:overworld".to_owned(),
+			world_name: "minecraft:overworld".to_owned(),
+			hashed_seed: 0,
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			is_debug: false,
+			is_flat: false,
 			death: None,
 		}),
-		v1_19::play_toClient_packet::serialize,
+		v1_19::play_to_client_packet::serialize,
 	)
 }
 
 fn player_chat_1_19(r#type: i32, name: &str, team: Option<&str>, message: &str) -> Vec<u8> {
 	encode(
-		&v1_19::play_toClient_packet::Ty::player_chat(
-			v1_19::play_toClient_packet_player_chat::Ty {
-				signedChatContent: text(message),
-				unsignedChatContent: None,
+		&v1_19::play_to_client_packet::Ty::PlayerChat(
+			v1_19::play_to_client_packet_player_chat::Ty {
+				signed_chat_content: text(message),
+				unsigned_chat_content: None,
 				r#type,
-				senderUuid: 0,
-				senderName: text(name),
-				senderTeam: team.map(text),
+				sender_uuid: 0,
+				sender_name: text(name),
+				sender_team: team.map(text),
 				timestamp: 0,
 				salt: 0,
 				signature: vec![],
 			},
 		),
-		v1_19::play_toClient_packet::serialize,
+		v1_19::play_to_client_packet::serialize,
 	)
 }
 
 fn system_chat_1_19(r#type: i32, message: &str) -> Vec<u8> {
 	encode(
-		&v1_19::play_toClient_packet::Ty::system_chat(
-			v1_19::play_toClient_packet_system_chat::Ty {
+		&v1_19::play_to_client_packet::Ty::SystemChat(
+			v1_19::play_to_client_packet_system_chat::Ty {
 				content: text(message),
 				r#type,
 			},
 		),
-		v1_19::play_toClient_packet::serialize,
+		v1_19::play_to_client_packet::serialize,
 	)
 }
 

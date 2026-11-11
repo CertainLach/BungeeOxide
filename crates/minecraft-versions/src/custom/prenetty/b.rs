@@ -11,11 +11,11 @@ use crate::pds::convert::{Error, Result};
 use crate::pds_native::pds_legacySlot::{self, Item};
 use crate::session::Session;
 
-type Client125 = v1_2_5::play_toClient_packet::Ty;
-type Client132 = v1_3_2::play_toClient_packet::Ty;
-type Server125 = v1_2_5::play_toServer_packet::Ty;
-type Server132 = v1_3_2::play_toServer_packet::Ty;
-type Object125 = v1_2_5::play_toClient_packet_spawn_entity__objectData::Ty;
+type Client125 = v1_2_5::play_to_client_packet::Ty;
+type Client132 = v1_3_2::play_to_client_packet::Ty;
+type Server125 = v1_2_5::play_to_server_packet::Ty;
+type Server132 = v1_3_2::play_to_server_packet::Ty;
+type Object125 = v1_2_5::play_to_client_packet_spawn_entity_object_data::Ty;
 
 const TO: V = V::R1_2_5;
 const EVENT_BLOCKS: [u8; 4] = [25, 29, 33, 54];
@@ -67,12 +67,12 @@ const ENTITY_NAMES: [(&str, i32); 41] = [
 fn slot_up(v: LegacySlot) -> Slot {
 	match v {
 		None => Slot::_1,
-		Some(item) => Slot::default(
+		Some(item) => Slot::Default(
 			item.id,
-			v1_3_2::slot__default::Ty {
-				itemCount: item.itemCount,
-				itemDamage: item.itemDamage,
-				nbtData: item.nbtData,
+			v1_3_2::slot_default::Ty {
+				item_count: item.itemCount,
+				item_damage: item.itemDamage,
+				nbt_data: item.nbtData,
 			},
 		),
 	}
@@ -80,13 +80,13 @@ fn slot_up(v: LegacySlot) -> Slot {
 
 fn slot_down(v: Slot) -> LegacySlot {
 	match v {
-		Slot::default(id, item) if id >= 0 => {
+		Slot::Default(id, item) if id >= 0 => {
 			let mut out = legacy_slot(
 				Some(Item {
 					id,
-					itemCount: item.itemCount,
-					itemDamage: item.itemDamage,
-					nbtData: item.nbtData,
+					itemCount: item.item_count,
+					itemDamage: item.item_damage,
+					nbtData: item.nbt_data,
 				}),
 				TO,
 			);
@@ -104,12 +104,12 @@ fn slot_down(v: Slot) -> LegacySlot {
 macro_rules! windows {
 	($set_slot:ident, $items:ident, $creative:ident, $creative_server:ident, $click:ident, $place:ident, $from:ident, $to:ident, $conv:ident) => {
 		pub fn $set_slot(
-			p: $from::play_toClient_packet_set_slot::Ty,
+			p: $from::play_to_client_packet_set_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
-			Ok(vec![$to::play_toClient_packet::Ty::set_slot(
-				$to::play_toClient_packet_set_slot::Ty {
-					windowId: p.windowId,
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			Ok(vec![$to::play_to_client_packet::Ty::SetSlot(
+				$to::play_to_client_packet_set_slot::Ty {
+					window_id: p.window_id,
 					slot: p.slot,
 					item: $conv(p.item),
 				},
@@ -117,23 +117,23 @@ macro_rules! windows {
 		}
 
 		pub fn $items(
-			p: $from::play_toClient_packet_window_items::Ty,
+			p: $from::play_to_client_packet_window_items::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
-			Ok(vec![$to::play_toClient_packet::Ty::window_items(
-				$to::play_toClient_packet_window_items::Ty {
-					windowId: p.windowId,
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			Ok(vec![$to::play_to_client_packet::Ty::WindowItems(
+				$to::play_to_client_packet_window_items::Ty {
+					window_id: p.window_id,
 					items: p.items.into_iter().map($conv).collect(),
 				},
 			)])
 		}
 
 		pub fn $creative(
-			p: $from::play_toClient_packet_set_creative_slot::Ty,
+			p: $from::play_to_client_packet_set_creative_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
-			Ok(vec![$to::play_toClient_packet::Ty::set_creative_slot(
-				$to::play_toClient_packet_set_creative_slot::Ty {
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			Ok(vec![$to::play_to_client_packet::Ty::SetCreativeSlot(
+				$to::play_to_client_packet_set_creative_slot::Ty {
 					slot: p.slot,
 					item: $conv(p.item),
 				},
@@ -141,11 +141,11 @@ macro_rules! windows {
 		}
 
 		pub fn $creative_server(
-			p: $from::play_toServer_packet_set_creative_slot::Ty,
+			p: $from::play_to_server_packet_set_creative_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
-			Ok(vec![$to::play_toServer_packet::Ty::set_creative_slot(
-				$to::play_toServer_packet_set_creative_slot::Ty {
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
+			Ok(vec![$to::play_to_server_packet::Ty::SetCreativeSlot(
+				$to::play_to_server_packet_set_creative_slot::Ty {
 					slot: p.slot,
 					item: $conv(p.item),
 				},
@@ -153,14 +153,14 @@ macro_rules! windows {
 		}
 
 		pub fn $click(
-			p: $from::play_toServer_packet_window_click::Ty,
+			p: $from::play_to_server_packet_window_click::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
-			Ok(vec![$to::play_toServer_packet::Ty::window_click(
-				$to::play_toServer_packet_window_click::Ty {
-					windowId: p.windowId,
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
+			Ok(vec![$to::play_to_server_packet::Ty::WindowClick(
+				$to::play_to_server_packet_window_click::Ty {
+					window_id: p.window_id,
 					slot: p.slot,
-					mouseButton: p.mouseButton,
+					mouse_button: p.mouse_button,
 					action: p.action,
 					mode: p.mode,
 					item: $conv(p.item),
@@ -169,13 +169,13 @@ macro_rules! windows {
 		}
 
 		pub fn $place(
-			p: $from::play_toServer_packet_block_place::Ty,
+			p: $from::play_to_server_packet_block_place::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
-			Ok(vec![$to::play_toServer_packet::Ty::block_place(place(
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
+			Ok(vec![$to::play_to_server_packet::Ty::BlockPlace(place(
 				p.location,
 				p.direction,
-				$conv(p.heldItem),
+				$conv(p.held_item),
 			))])
 		}
 	};
@@ -185,14 +185,14 @@ fn place_up(
 	location: v1_2_5::position_ibi::Ty,
 	direction: i8,
 	held: Slot,
-) -> v1_3_2::play_toServer_packet_block_place::Ty {
-	v1_3_2::play_toServer_packet_block_place::Ty {
+) -> v1_3_2::play_to_server_packet_block_place::Ty {
+	v1_3_2::play_to_server_packet_block_place::Ty {
 		location,
 		direction,
-		heldItem: held,
-		cursorX: 8,
-		cursorY: 8,
-		cursorZ: 8,
+		held_item: held,
+		cursor_x: 8,
+		cursor_y: 8,
+		cursor_z: 8,
 	}
 }
 
@@ -200,11 +200,11 @@ fn place_down(
 	location: v1_2_5::position_ibi::Ty,
 	direction: i8,
 	held: LegacySlot,
-) -> v1_2_5::play_toServer_packet_block_place::Ty {
-	v1_2_5::play_toServer_packet_block_place::Ty {
+) -> v1_2_5::play_to_server_packet_block_place::Ty {
+	v1_2_5::play_to_server_packet_block_place::Ty {
 		location,
 		direction,
-		heldItem: held,
+		held_item: held,
 	}
 }
 
@@ -248,22 +248,22 @@ pub fn prenetty_metadata_item_1_2_5(v: OldMetaItem, _cx: &mut Session) -> Result
 }
 
 pub fn prenetty_entity_equipment_1_3_2(
-	p: v1_2_5::play_toClient_packet_entity_equipment::Ty,
+	p: v1_2_5::play_to_client_packet_entity_equipment::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	let item = if p.itemId < 0 {
+	let item = if p.item_id < 0 {
 		None
 	} else {
 		Some(Item {
-			id: p.itemId,
+			id: p.item_id,
 			itemCount: 1,
-			itemDamage: p.itemDamage,
+			itemDamage: p.item_damage,
 			nbtData: None,
 		})
 	};
-	Ok(vec![Client132::entity_equipment(
-		v1_3_2::play_toClient_packet_entity_equipment::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client132::EntityEquipment(
+		v1_3_2::play_to_client_packet_entity_equipment::Ty {
+			entity_id: p.entity_id,
 			slot: p.slot,
 			item: slot_up(item),
 		},
@@ -271,57 +271,57 @@ pub fn prenetty_entity_equipment_1_3_2(
 }
 
 pub fn prenetty_entity_equipment_1_2_5(
-	p: v1_3_2::play_toClient_packet_entity_equipment::Ty,
+	p: v1_3_2::play_to_client_packet_entity_equipment::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	let (item_id, item_damage) = match slot_down(p.item) {
 		Some(item) => (item.id, item.itemDamage),
 		None => (-1, 0),
 	};
-	Ok(vec![Client125::entity_equipment(
-		v1_2_5::play_toClient_packet_entity_equipment::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client125::EntityEquipment(
+		v1_2_5::play_to_client_packet_entity_equipment::Ty {
+			entity_id: p.entity_id,
 			slot: p.slot,
-			itemId: item_id,
-			itemDamage: item_damage,
+			item_id: item_id,
+			item_damage: item_damage,
 		},
 	)])
 }
 
 pub fn prenetty_named_entity_spawn_1_2_5(
-	p: v1_3_2::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_3_2::play_to_client_packet_named_entity_spawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
-	Ok(vec![Client125::named_entity_spawn(
-		v1_2_5::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerName: p.playerName,
+	Ok(vec![Client125::NamedEntitySpawn(
+		v1_2_5::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_name: p.player_name,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			currentItem: item_id(p.currentItem, TO),
+			current_item: item_id(p.current_item, TO),
 		},
 	)])
 }
 
 pub fn prenetty_spawn_entity_item_1_2_5(
-	mut p: v1_3_2::play_toClient_packet_spawn_entity_item::Ty,
+	mut p: v1_3_2::play_to_client_packet_spawn_entity_item::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	if p.item.id >= 0 {
-		(p.item.id, p.item.itemDamage) = ids::item(p.item.id, p.item.itemDamage, TO);
+		(p.item.id, p.item.item_damage) = ids::item(p.item.id, p.item.item_damage, TO);
 	}
-	Ok(vec![Client125::spawn_entity_item(p)])
+	Ok(vec![Client125::SpawnEntityItem(p)])
 }
 
 pub fn prenetty_entity_destroy_1_3_2(id: i32, _cx: &mut Session) -> Result<Vec<Client132>> {
-	Ok(vec![Client132::entity_destroy(vec![id])])
+	Ok(vec![Client132::EntityDestroy(vec![id])])
 }
 
 pub fn prenetty_entity_destroy_1_2_5(ids: Vec<i32>, _cx: &mut Session) -> Result<Vec<Client125>> {
-	Ok(ids.into_iter().map(Client125::entity_destroy).collect())
+	Ok(ids.into_iter().map(Client125::EntityDestroy).collect())
 }
 
 fn track_column(cx: &mut Session, x: i32, z: i32, data: Option<(&[u8], Shape)>) {
@@ -356,58 +356,58 @@ fn track_block(cx: &mut Session, pos: (i32, i32, i32), id: u16) {
 }
 
 pub fn prenetty_pre_chunk_1_3_2(
-	p: v1_2_5::play_toClient_packet_pre_chunk::Ty,
+	p: v1_2_5::play_to_client_packet_pre_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	if p.mode {
 		return Ok(vec![]);
 	}
 	track_column(cx, p.x, p.z, None);
-	Ok(vec![Client132::map_chunk(
-		v1_3_2::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client132::MapChunk(
+		v1_3_2::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp: true,
-			bitMap: 0,
-			addBitMap: 0,
-			compressedChunkData: chunk::deflate(&[])?,
+			ground_up: true,
+			bit_map: 0,
+			add_bit_map: 0,
+			compressed_chunk_data: chunk::deflate(&[])?,
 		},
 	)])
 }
 
 pub fn prenetty_map_chunk_1_3_2(
-	p: v1_2_5::play_toClient_packet_map_chunk::Ty,
+	p: v1_2_5::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	if p.groundUp && p.bitMap == 0 {
+	if p.ground_up && p.bit_map == 0 {
 		track_column(cx, p.x, p.z, None);
-		return Ok(vec![Client132::map_chunk(
-			v1_3_2::play_toClient_packet_map_chunk::Ty {
+		return Ok(vec![Client132::MapChunk(
+			v1_3_2::play_to_client_packet_map_chunk::Ty {
 				x: p.x,
 				z: p.z,
-				groundUp: true,
-				bitMap: 1,
-				addBitMap: 0,
-				compressedChunkData: chunk::deflate(&chunk::empty_column(true))?,
+				ground_up: true,
+				bit_map: 1,
+				add_bit_map: 0,
+				compressed_chunk_data: chunk::deflate(&chunk::empty_column(true))?,
 			},
 		)]);
 	}
-	let raw = chunk::inflate(&p.compressedChunkData)?;
+	let raw = chunk::inflate(&p.compressed_chunk_data)?;
 	let shape = Shape {
-		bitmap: p.bitMap,
-		add: p.addBitMap,
+		bitmap: p.bit_map,
+		add: p.add_bit_map,
 		sky: true,
-		full: p.groundUp,
+		full: p.ground_up,
 	};
-	if p.groundUp {
+	if p.ground_up {
 		track_column(cx, p.x, p.z, Some((&raw, shape)));
 	} else {
 		let events = &mut state(cx).events;
 		let (x, z) = (p.x, p.z);
 		events.retain(|pos, _| {
-			(pos.0 >> 4, pos.2 >> 4) != (x, z) || p.bitMap & 1 << (pos.1 >> 4) == 0
+			(pos.0 >> 4, pos.2 >> 4) != (x, z) || p.bit_map & 1 << (pos.1 >> 4) == 0
 		});
-		for (k, s) in (0..16).filter(|s| p.bitMap & 1 << s != 0).enumerate() {
+		for (k, s) in (0..16).filter(|s| p.bit_map & 1 << s != 0).enumerate() {
 			let base = k * chunk::BLOCKS;
 			if let Some(blocks) = raw.get(base..base + chunk::BLOCKS) {
 				for (i, id) in blocks.iter().enumerate() {
@@ -423,14 +423,14 @@ pub fn prenetty_map_chunk_1_3_2(
 			}
 		}
 	}
-	Ok(vec![Client132::map_chunk(
-		v1_3_2::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client132::MapChunk(
+		v1_3_2::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp: p.groundUp,
-			bitMap: p.bitMap,
-			addBitMap: p.addBitMap,
-			compressedChunkData: p.compressedChunkData,
+			ground_up: p.ground_up,
+			bit_map: p.bit_map,
+			add_bit_map: p.add_bit_map,
+			compressed_chunk_data: p.compressed_chunk_data,
 		},
 	)])
 }
@@ -444,43 +444,43 @@ fn column_1_2_5(
 	data: Vec<u8>,
 ) -> Vec<Client125> {
 	if ground_up && bitmap == 0 {
-		return vec![Client125::pre_chunk(
-			v1_2_5::play_toClient_packet_pre_chunk::Ty { x, z, mode: false },
+		return vec![Client125::PreChunk(
+			v1_2_5::play_to_client_packet_pre_chunk::Ty { x, z, mode: false },
 		)];
 	}
 	let mut out = Vec::with_capacity(2);
 	if ground_up {
-		out.push(Client125::pre_chunk(
-			v1_2_5::play_toClient_packet_pre_chunk::Ty { x, z, mode: true },
+		out.push(Client125::PreChunk(
+			v1_2_5::play_to_client_packet_pre_chunk::Ty { x, z, mode: true },
 		));
 	}
-	out.push(Client125::map_chunk(
-		v1_2_5::play_toClient_packet_map_chunk::Ty {
+	out.push(Client125::MapChunk(
+		v1_2_5::play_to_client_packet_map_chunk::Ty {
 			x,
 			z,
-			groundUp: ground_up,
-			bitMap: bitmap,
-			addBitMap: add,
+			ground_up: ground_up,
+			bit_map: bitmap,
+			add_bit_map: add,
 			unused: 0,
-			compressedChunkData: data,
+			compressed_chunk_data: data,
 		},
 	));
 	out
 }
 
 pub fn prenetty_map_chunk_1_2_5(
-	p: v1_3_2::play_toClient_packet_map_chunk::Ty,
+	p: v1_3_2::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
-	if p.groundUp && p.bitMap == 0 {
+	if p.ground_up && p.bit_map == 0 {
 		return Ok(column_1_2_5(p.x, p.z, true, 0, 0, vec![]));
 	}
-	let raw = chunk::inflate(&p.compressedChunkData)?;
+	let raw = chunk::inflate(&p.compressed_chunk_data)?;
 	let mut shape = Shape {
-		bitmap: p.bitMap,
-		add: p.addBitMap,
+		bitmap: p.bit_map,
+		add: p.add_bit_map,
 		sky: true,
-		full: p.groundUp,
+		full: p.ground_up,
 	};
 	if raw.len() < shape.len() {
 		shape.sky = false;
@@ -490,22 +490,22 @@ pub fn prenetty_map_chunk_1_2_5(
 	Ok(column_1_2_5(
 		p.x,
 		p.z,
-		p.groundUp,
-		p.bitMap,
-		p.addBitMap,
+		p.ground_up,
+		p.bit_map,
+		p.add_bit_map,
 		chunk::deflate(&raw)?,
 	))
 }
 
 pub fn prenetty_map_chunk_bulk_1_2_5(
-	p: v1_3_2::play_toClient_packet_map_chunk_bulk::Ty,
+	p: v1_3_2::play_to_client_packet_map_chunk_bulk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
-	let raw = chunk::inflate(&p.compressedChunkData)?;
+	let raw = chunk::inflate(&p.compressed_chunk_data)?;
 	let columns: Vec<_> = p
 		.meta
 		.iter()
-		.map(|m| (m.x, m.z, m.bitMap, m.addBitMap))
+		.map(|m| (m.x, m.z, m.bit_map, m.add_bit_map))
 		.collect();
 	let mut out = Vec::new();
 	for (x, z, bitmap, add, mut data) in chunk::split(&raw, &columns, true)? {
@@ -529,7 +529,7 @@ pub fn prenetty_map_chunk_bulk_1_2_5(
 }
 
 pub fn prenetty_block_change_1_3_2(
-	p: v1_2_5::play_toClient_packet_block_change::Ty,
+	p: v1_2_5::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	track_block(
@@ -537,8 +537,8 @@ pub fn prenetty_block_change_1_3_2(
 		(p.location.x, p.location.y as i32, p.location.z),
 		p.r#type as u16,
 	);
-	Ok(vec![Client132::block_change(
-		v1_3_2::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client132::BlockChange(
+		v1_3_2::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: p.r#type as i16,
 			metadata: p.metadata,
@@ -547,12 +547,12 @@ pub fn prenetty_block_change_1_3_2(
 }
 
 pub fn prenetty_block_change_1_2_5(
-	p: v1_3_2::play_toClient_packet_block_change::Ty,
+	p: v1_3_2::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	let (id, meta) = ids::block(p.r#type as u16, p.metadata, TO);
-	Ok(vec![Client125::block_change(
-		v1_2_5::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client125::BlockChange(
+		v1_2_5::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: id as u8,
 			metadata: meta,
@@ -561,32 +561,32 @@ pub fn prenetty_block_change_1_2_5(
 }
 
 pub fn prenetty_multi_block_change_1_3_2(
-	p: v1_2_5::play_toClient_packet_multi_block_change::Ty,
+	p: v1_2_5::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	for r in &p.records {
 		let pos = (
-			p.chunkX * 16 + (r.horizontalPos >> 4) as i32,
+			p.chunk_x * 16 + (r.horizontal_pos >> 4) as i32,
 			r.y as i32,
-			p.chunkZ * 16 + (r.horizontalPos & 15) as i32,
+			p.chunk_z * 16 + (r.horizontal_pos & 15) as i32,
 		);
-		track_block(cx, pos, r.blockId >> 4);
+		track_block(cx, pos, r.block_id >> 4);
 	}
-	Ok(vec![Client132::multi_block_change(p)])
+	Ok(vec![Client132::MultiBlockChange(p)])
 }
 
 pub fn prenetty_multi_block_change_1_2_5(
-	mut p: v1_3_2::play_toClient_packet_multi_block_change::Ty,
+	mut p: v1_3_2::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	for r in &mut p.records {
-		r.blockId = super::remap_record(r.blockId, TO);
+		r.block_id = super::remap_record(r.block_id, TO);
 	}
-	Ok(vec![Client125::multi_block_change(p)])
+	Ok(vec![Client125::MultiBlockChange(p)])
 }
 
 pub fn prenetty_block_action_1_3_2(
-	p: v1_2_5::play_toClient_packet_block_action::Ty,
+	p: v1_2_5::play_to_client_packet_block_action::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	let pos = (p.location.x, p.location.y as i32, p.location.z);
@@ -595,22 +595,22 @@ pub fn prenetty_block_action_1_3_2(
 		.get(&pos)
 		.copied()
 		.unwrap_or(if p.byte1 == 1 && p.byte2 > 5 { 54 } else { 25 });
-	Ok(vec![Client132::block_action(
-		v1_3_2::play_toClient_packet_block_action::Ty {
+	Ok(vec![Client132::BlockAction(
+		v1_3_2::play_to_client_packet_block_action::Ty {
 			location: p.location,
 			byte1: p.byte1,
 			byte2: p.byte2,
-			blockId: block as i16,
+			block_id: block as i16,
 		},
 	)])
 }
 
 pub fn prenetty_block_action_1_2_5(
-	p: v1_3_2::play_toClient_packet_block_action::Ty,
+	p: v1_3_2::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
-	Ok(vec![Client125::block_action(
-		v1_2_5::play_toClient_packet_block_action::Ty {
+	Ok(vec![Client125::BlockAction(
+		v1_2_5::play_to_client_packet_block_action::Ty {
 			location: p.location,
 			byte1: p.byte1,
 			byte2: p.byte2,
@@ -619,7 +619,7 @@ pub fn prenetty_block_action_1_2_5(
 }
 
 pub fn prenetty_spawn_entity_1_3_2(
-	mut p: v1_2_5::play_toClient_packet_spawn_entity::Ty,
+	mut p: v1_2_5::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	let block = match p.r#type {
@@ -630,26 +630,26 @@ pub fn prenetty_spawn_entity_1_3_2(
 	};
 	if let Some(block) = block {
 		p.r#type = 70;
-		let velocity = match p.objectData {
-			Object125::default(_, v) => v,
-			_ => v1_2_5::play_toClient_packet_spawn_entity__objectData__default::Ty {
-				velocityX: 0,
-				velocityY: 0,
-				velocityZ: 0,
+		let velocity = match p.object_data {
+			Object125::Default(_, v) => v,
+			_ => v1_2_5::play_to_client_packet_spawn_entity_object_data_default::Ty {
+				velocity_x: 0,
+				velocity_y: 0,
+				velocity_z: 0,
 			},
 		};
-		p.objectData = Object125::default(block, velocity);
+		p.object_data = Object125::Default(block, velocity);
 	}
-	Ok(vec![Client132::spawn_entity(p)])
+	Ok(vec![Client132::SpawnEntity(p)])
 }
 
 pub fn prenetty_spawn_entity_1_2_5(
-	mut p: v1_3_2::play_toClient_packet_spawn_entity::Ty,
+	mut p: v1_3_2::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	if p.r#type == 70 {
-		let data = match &p.objectData {
-			Object125::default(data, _) => falling_block(*data, TO, false),
+		let data = match &p.object_data {
+			Object125::Default(data, _) => falling_block(*data, TO, false),
 			_ => 12,
 		};
 		p.r#type = match data {
@@ -657,74 +657,74 @@ pub fn prenetty_spawn_entity_1_2_5(
 			122 => 74,
 			_ => 70,
 		};
-		p.objectData = Object125::v0;
+		p.object_data = Object125::V0;
 	}
 	if !ids::object_exists(p.r#type, TO) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client125::spawn_entity(p)])
+	Ok(vec![Client125::SpawnEntity(p)])
 }
 
 pub fn prenetty_world_event_1_2_5(
-	mut p: v1_3_2::play_toClient_packet_world_event::Ty,
+	mut p: v1_3_2::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
-	p.data = world_event_data(p.effectId, p.data, TO);
-	Ok(vec![Client125::world_event(p)])
+	p.data = world_event_data(p.effect_id, p.data, TO);
+	Ok(vec![Client125::WorldEvent(p)])
 }
 
 pub fn prenetty_abilities_1_3_2(
-	p: v1_2_5::play_toClient_packet_abilities::Ty,
+	p: v1_2_5::play_to_client_packet_abilities::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	Ok(vec![Client132::abilities(flags_up(
+	Ok(vec![Client132::Abilities(flags_up(
 		p.invulnerable,
 		p.flying,
-		p.canFly,
-		p.instantBuild,
+		p.can_fly,
+		p.instant_build,
 	))])
 }
 
 pub fn prenetty_abilities_1_2_5(
-	p: v1_3_2::play_toClient_packet_abilities::Ty,
+	p: v1_3_2::play_to_client_packet_abilities::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	let f = p.flags;
-	Ok(vec![Client125::abilities(
-		v1_2_5::play_toClient_packet_abilities::Ty {
+	Ok(vec![Client125::Abilities(
+		v1_2_5::play_to_client_packet_abilities::Ty {
 			invulnerable: f & 1 != 0,
 			flying: f & 2 != 0,
-			canFly: f & 4 != 0,
-			instantBuild: f & 8 != 0,
+			can_fly: f & 4 != 0,
+			instant_build: f & 8 != 0,
 		},
 	)])
 }
 
 pub fn prenetty_abilities_server_1_3_2(
-	p: v1_2_5::play_toServer_packet_abilities::Ty,
+	p: v1_2_5::play_to_server_packet_abilities::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server132>> {
-	let a = flags_up(p.invulnerable, p.flying, p.canFly, p.instantBuild);
-	Ok(vec![Server132::abilities(
-		v1_3_2::play_toServer_packet_abilities::Ty {
+	let a = flags_up(p.invulnerable, p.flying, p.can_fly, p.instant_build);
+	Ok(vec![Server132::Abilities(
+		v1_3_2::play_to_server_packet_abilities::Ty {
 			flags: a.flags,
-			flyingSpeed: a.flyingSpeed,
-			walkingSpeed: a.walkingSpeed,
+			flying_speed: a.flying_speed,
+			walking_speed: a.walking_speed,
 		},
 	)])
 }
 
 pub fn prenetty_abilities_server_1_2_5(
-	p: v1_3_2::play_toServer_packet_abilities::Ty,
+	p: v1_3_2::play_to_server_packet_abilities::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server125>> {
 	let f = p.flags;
-	Ok(vec![Server125::abilities(
-		v1_2_5::play_toServer_packet_abilities::Ty {
+	Ok(vec![Server125::Abilities(
+		v1_2_5::play_to_server_packet_abilities::Ty {
 			invulnerable: f & 1 != 0,
 			flying: f & 2 != 0,
-			canFly: f & 4 != 0,
-			instantBuild: f & 8 != 0,
+			can_fly: f & 4 != 0,
+			instant_build: f & 8 != 0,
 		},
 	)])
 }
@@ -734,13 +734,13 @@ fn flags_up(
 	flying: bool,
 	can_fly: bool,
 	creative: bool,
-) -> v1_3_2::play_toClient_packet_abilities::Ty {
+) -> v1_3_2::play_to_client_packet_abilities::Ty {
 	let flags =
 		invulnerable as i8 | (flying as i8) << 1 | (can_fly as i8) << 2 | (creative as i8) << 3;
-	v1_3_2::play_toClient_packet_abilities::Ty {
+	v1_3_2::play_to_client_packet_abilities::Ty {
 		flags,
-		flyingSpeed: (0.05f32 * 255.0) as i8,
-		walkingSpeed: (0.1f32 * 255.0) as i8,
+		flying_speed: (0.05f32 * 255.0) as i8,
+		walking_speed: (0.1f32 * 255.0) as i8,
 	}
 }
 
@@ -771,7 +771,7 @@ fn entity_id(data: &[u8]) -> Result<Option<String>> {
 }
 
 pub fn prenetty_tile_entity_data_1_3_2(
-	p: v1_2_5::play_toClient_packet_tile_entity_data::Ty,
+	p: v1_2_5::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	if p.action != 1 {
@@ -782,23 +782,23 @@ pub fn prenetty_tile_entity_data_1_3_2(
 		.find(|(_, id)| *id == p.custom1)
 		.map_or("Pig", |(name, _)| *name);
 	let nbt = spawner_nbt(p.location.x, p.location.y as i32, p.location.z, name);
-	Ok(vec![Client132::tile_entity_data(
-		v1_3_2::play_toClient_packet_tile_entity_data::Ty {
+	Ok(vec![Client132::TileEntityData(
+		v1_3_2::play_to_client_packet_tile_entity_data::Ty {
 			location: p.location,
 			action: p.action,
-			nbtData: Some(nbt::gzip::write(&nbt).map_err(|e| Error::Encoding(e.to_string()))?),
+			nbt_data: Some(nbt::gzip::write(&nbt).map_err(|e| Error::Encoding(e.to_string()))?),
 		},
 	)])
 }
 
 pub fn prenetty_tile_entity_data_1_2_5(
-	p: v1_3_2::play_toClient_packet_tile_entity_data::Ty,
+	p: v1_3_2::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client125>> {
 	if p.action != 1 {
 		return Ok(vec![]);
 	}
-	let Some(nbt) = p.nbtData else {
+	let Some(nbt) = p.nbt_data else {
 		return Ok(vec![]);
 	};
 	let Some(name) = entity_id(&nbt)? else {
@@ -807,8 +807,8 @@ pub fn prenetty_tile_entity_data_1_2_5(
 	let Some((_, id)) = ENTITY_NAMES.iter().find(|(n, _)| *n == name) else {
 		return Ok(vec![]);
 	};
-	Ok(vec![Client125::tile_entity_data(
-		v1_2_5::play_toClient_packet_tile_entity_data::Ty {
+	Ok(vec![Client125::TileEntityData(
+		v1_2_5::play_to_client_packet_tile_entity_data::Ty {
 			location: p.location,
 			action: p.action,
 			custom1: *id,
@@ -819,62 +819,62 @@ pub fn prenetty_tile_entity_data_1_2_5(
 }
 
 pub fn prenetty_set_protocol_1_3_2(
-	p: v1_2_5::play_toServer_packet_set_protocol::Ty,
+	p: v1_2_5::play_to_server_packet_set_protocol::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server132>> {
 	let (username, address) = p
-		.usernameAndHost
+		.username_and_host
 		.split_once(';')
-		.unwrap_or((&p.usernameAndHost, ""));
+		.unwrap_or((&p.username_and_host, ""));
 	let (host, port) = address.rsplit_once(':').unwrap_or((address, "25565"));
-	Ok(vec![Server132::set_protocol(
-		v1_3_2::play_toServer_packet_set_protocol::Ty {
-			protocolVersion: 39,
+	Ok(vec![Server132::SetProtocol(
+		v1_3_2::play_to_server_packet_set_protocol::Ty {
+			protocol_version: 39,
 			username: username.to_owned(),
-			serverHost: host.to_owned(),
-			serverPort: port.parse().unwrap_or(25565),
+			server_host: host.to_owned(),
+			server_port: port.parse().unwrap_or(25565),
 		},
 	)])
 }
 
 pub fn prenetty_set_protocol_1_2_5(
-	p: v1_3_2::play_toServer_packet_set_protocol::Ty,
+	p: v1_3_2::play_to_server_packet_set_protocol::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server125>> {
-	Ok(vec![Server125::set_protocol(
-		v1_2_5::play_toServer_packet_set_protocol::Ty {
-			usernameAndHost: format!("{};{}:{}", p.username, p.serverHost, p.serverPort),
+	Ok(vec![Server125::SetProtocol(
+		v1_2_5::play_to_server_packet_set_protocol::Ty {
+			username_and_host: format!("{};{}:{}", p.username, p.server_host, p.server_port),
 		},
 	)])
 }
 
 pub fn prenetty_client_command_1_2_5(
-	p: v1_3_2::play_toServer_packet_client_command::Ty,
+	p: v1_3_2::play_to_server_packet_client_command::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server125>> {
 	if !matches!(
 		p,
-		v1_3_2::play_toServer_packet_client_command::Ty::perform_respawn
+		v1_3_2::play_to_server_packet_client_command::Ty::PerformRespawn
 	) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Server125::respawn(
-		v1_2_5::play_toServer_packet_respawn::Ty {
+	Ok(vec![Server125::Respawn(
+		v1_2_5::play_to_server_packet_respawn::Ty {
 			dimension: 0,
 			difficulty: 0,
 			gamemode: 0,
-			worldHeight: 0,
-			levelType: String::new(),
+			world_height: 0,
+			level_type: String::new(),
 		},
 	)])
 }
 
 pub fn prenetty_respawn_server_1_3_2(
-	_p: v1_2_5::play_toServer_packet_respawn::Ty,
+	_p: v1_2_5::play_to_server_packet_respawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server132>> {
-	Ok(vec![Server132::client_command(
-		v1_3_2::play_toServer_packet_client_command::Ty::perform_respawn,
+	Ok(vec![Server132::ClientCommand(
+		v1_3_2::play_to_server_packet_client_command::Ty::PerformRespawn,
 	)])
 }
 
@@ -914,23 +914,27 @@ mod tests {
 	#[test]
 	fn handshake_strings_split_into_fields() {
 		let mut cx = Session::new();
-		let p = v1_2_5::play_toServer_packet_set_protocol::Ty {
-			usernameAndHost: "Notch;example.com:25566".into(),
+		let p = v1_2_5::play_to_server_packet_set_protocol::Ty {
+			username_and_host: "Notch;example.com:25566".into(),
 		};
-		let Server132::set_protocol(hs) =
+		let Server132::SetProtocol(hs) =
 			super::super::one(prenetty_set_protocol_1_3_2(p, &mut cx).unwrap())
 		else {
 			panic!()
 		};
 		assert_eq!(
-			(hs.username.as_str(), hs.serverHost.as_str(), hs.serverPort),
+			(
+				hs.username.as_str(),
+				hs.server_host.as_str(),
+				hs.server_port
+			),
 			("Notch", "example.com", 25566)
 		);
-		let Server125::set_protocol(back) =
+		let Server125::SetProtocol(back) =
 			super::super::one(prenetty_set_protocol_1_2_5(hs, &mut cx).unwrap())
 		else {
 			panic!()
 		};
-		assert_eq!(back.usernameAndHost, "Notch;example.com:25566");
+		assert_eq!(back.username_and_host, "Notch;example.com:25566");
 	}
 }

@@ -5,15 +5,15 @@ use anyhow::{anyhow, bail, Context as _, Result};
 use futures::{SinkExt, StreamExt};
 use md5::{Digest, Md5};
 use minecraft_versions::gen::convert::v26_1::{
-	configuration_toClient_packet as config_c, configuration_toServer_packet as config_s,
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toServer_packet as login_s,
-	login_toServer_packet_login_acknowledged, login_toServer_packet_login_plugin_response,
+	configuration_to_client_packet as config_c, configuration_to_server_packet as config_s,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_server_packet as login_s,
+	login_to_server_packet_login_acknowledged, login_to_server_packet_login_plugin_response,
 	packet_common_cookie_response, packet_common_store_cookie, packet_common_transfer,
-	play_toClient_SpawnInfo, play_toClient_packet as play_c, play_toClient_packet_login,
-	play_toClient_packet_respawn, play_toClient_packet_start_configuration,
-	play_toClient_packet_system_chat, play_toServer_packet as play_s,
-	status_toClient_packet as status_c, status_toServer_packet as status_s,
+	play_to_client_packet as play_c, play_to_client_packet_login, play_to_client_packet_respawn,
+	play_to_client_packet_start_configuration, play_to_client_packet_system_chat,
+	play_to_client_spawn_info, play_to_server_packet as play_s,
+	status_to_client_packet as status_c, status_to_server_packet as status_s,
 };
 use minecraft_versions::gen::convert::{packet_name, v1_20_2};
 use minecraft_versions::pds::{self, Input, Output};
@@ -139,9 +139,9 @@ pub fn text_tag(text: &str) -> nbt::Tag {
 
 pub fn chat_text(text: &str) -> Result<Vec<u8>> {
 	encode(
-		&play_c::Ty::system_chat(play_toClient_packet_system_chat::Ty {
+		&play_c::Ty::SystemChat(play_to_client_packet_system_chat::Ty {
 			content: text_tag(text),
-			isActionBar: false,
+			is_action_bar: false,
 		}),
 		play_c::serialize,
 	)
@@ -149,7 +149,7 @@ pub fn chat_text(text: &str) -> Result<Vec<u8>> {
 
 pub fn login_kick(reason: &str) -> Result<Vec<u8>> {
 	let reason = serde_json::json!({ "text": reason }).to_string();
-	encode(&login_c::Ty::disconnect(reason), login_c::serialize)
+	encode(&login_c::Ty::Disconnect(reason), login_c::serialize)
 }
 
 pub fn offline_uuid_bits(name: &str) -> u128 {
@@ -210,7 +210,7 @@ fn dimension_types() -> &'static [String] {
 	})
 }
 
-fn elsewhere(world: &play_toClient_SpawnInfo::Ty) -> (i32, String) {
+fn elsewhere(world: &play_to_client_spawn_info::Ty) -> (i32, String) {
 	let types = dimension_types();
 	let current = usize::try_from(world.dimension)
 		.ok()
@@ -231,7 +231,7 @@ fn elsewhere(world: &play_toClient_SpawnInfo::Ty) -> (i32, String) {
 	.unwrap_or_else(|| (world.dimension, "pds2:elsewhere".to_owned()))
 }
 
-pub fn trick(login: &play_toClient_packet_login::Ty, cv: usize) -> Result<Vec<Vec<u8>>> {
+pub fn trick(login: &play_to_client_packet_login::Ty, cv: usize) -> Result<Vec<Vec<u8>>> {
 	let mut cx = Session::new();
 	cx.set_versions(pivot(), cv);
 	let mut down = |data: Vec<u8>| -> Result<Vec<Vec<u8>>> {
@@ -242,30 +242,30 @@ pub fn trick(login: &play_toClient_packet_login::Ty, cv: usize) -> Result<Vec<Ve
 		}
 	};
 	down(encode(
-		&play_c::Ty::login(login.clone()),
+		&play_c::Ty::Login(login.clone()),
 		play_c::serialize,
 	)?)?;
 	let mut out = Vec::new();
-	for respawn in respawns(&login.worldState) {
+	for respawn in respawns(&login.world_state) {
 		out.extend(down(encode(
-			&play_c::Ty::respawn(respawn),
+			&play_c::Ty::Respawn(respawn),
 			play_c::serialize,
 		)?)?);
 	}
 	Ok(out)
 }
 
-pub fn respawns(world: &play_toClient_SpawnInfo::Ty) -> [play_toClient_packet_respawn::Ty; 2] {
+pub fn respawns(world: &play_to_client_spawn_info::Ty) -> [play_to_client_packet_respawn::Ty; 2] {
 	let (dimension, name) = elsewhere(world);
-	let bounce = play_toClient_SpawnInfo::Ty {
+	let bounce = play_to_client_spawn_info::Ty {
 		dimension,
 		name,
 		death: None,
 		..world.clone()
 	};
-	[bounce, world.clone()].map(|w| play_toClient_packet_respawn::Ty {
-		worldState: w,
-		copyMetadata: 0,
+	[bounce, world.clone()].map(|w| play_to_client_packet_respawn::Ty {
+		world_state: w,
+		copy_metadata: 0,
 	})
 }
 
@@ -284,15 +284,15 @@ enum Common {
 fn common(root: Root, packet: &[u8]) -> Result<Option<Common>> {
 	Ok(match root {
 		Root::ConfigurationToClient => match decode(packet, config_c::deserialize)? {
-			config_c::Ty::store_cookie(c) => Some(Common::Store(c)),
-			config_c::Ty::cookie_request(key) => Some(Common::Request(key)),
-			config_c::Ty::transfer(t) => Some(Common::Transfer(t)),
+			config_c::Ty::StoreCookie(c) => Some(Common::Store(c)),
+			config_c::Ty::CookieRequest(key) => Some(Common::Request(key)),
+			config_c::Ty::Transfer(t) => Some(Common::Transfer(t)),
 			_ => None,
 		},
 		Root::PlayToClient => match decode(packet, play_c::deserialize)? {
-			play_c::Ty::store_cookie(c) => Some(Common::Store(c)),
-			play_c::Ty::cookie_request(key) => Some(Common::Request(key)),
-			play_c::Ty::transfer(t) => Some(Common::Transfer(t)),
+			play_c::Ty::StoreCookie(c) => Some(Common::Store(c)),
+			play_c::Ty::CookieRequest(key) => Some(Common::Request(key)),
+			play_c::Ty::Transfer(t) => Some(Common::Transfer(t)),
 			_ => None,
 		},
 		_ => None,
@@ -455,13 +455,12 @@ impl Proxy {
 		let response = packet_common_cookie_response::Ty { key, value };
 		let data = match root {
 			Root::LoginToServer => {
-				encode(&login_s::Ty::cookie_response(response), login_s::serialize)?
+				encode(&login_s::Ty::CookieResponse(response), login_s::serialize)?
 			}
-			Root::ConfigurationToServer => encode(
-				&config_s::Ty::cookie_response(response),
-				config_s::serialize,
-			)?,
-			_ => encode(&play_s::Ty::cookie_response(response), play_s::serialize)?,
+			Root::ConfigurationToServer => {
+				encode(&config_s::Ty::CookieResponse(response), config_s::serialize)?
+			}
+			_ => encode(&play_s::Ty::CookieResponse(response), play_s::serialize)?,
 		};
 		self.send(root, pivot(), data).await
 	}
@@ -512,11 +511,11 @@ impl Proxy {
 		self.server = Some(Framed::new(stream, Codec::default()));
 		let protocol = protocol_of(self.sv)
 			.ok_or_else(|| anyhow!("no protocol number for {}", VERSIONS[self.sv]))?;
-		let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-			protocolVersion: protocol,
-			serverHost: host,
-			serverPort: port,
-			nextState: if transfer && self.sv >= at(TRANSFERS) {
+		let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+			protocol_version: protocol,
+			server_host: host,
+			server_port: port,
+			next_state: if transfer && self.sv >= at(TRANSFERS) {
 				3
 			} else {
 				2
@@ -533,14 +532,14 @@ impl Proxy {
 			self.drain().await?;
 			for p in packets {
 				match decode(&p, login_c::deserialize)? {
-					login_c::Ty::compress(t) => {
+					login_c::Ty::Compress(t) => {
 						self.server()?.codec_mut().threshold = usize::try_from(t).ok()
 					}
-					login_c::Ty::success(profile) => {
+					login_c::Ty::Success(profile) => {
 						self.online.joined(self.sv, &profile);
 						if self.sv >= at(CONFIGURATION) {
-							let ack = login_s::Ty::login_acknowledged(
-								login_toServer_packet_login_acknowledged::Ty {},
+							let ack = login_s::Ty::LoginAcknowledged(
+								login_to_server_packet_login_acknowledged::Ty {},
 							);
 							self.send(
 								Root::LoginToServer,
@@ -551,22 +550,22 @@ impl Proxy {
 						}
 						return Ok(());
 					}
-					login_c::Ty::disconnect(reason) if reason.contains(TRANSFERS_DISABLED) => {
+					login_c::Ty::Disconnect(reason) if reason.contains(TRANSFERS_DISABLED) => {
 						bail!("{target} does not accept transfers (accepts-transfers=false)")
 					}
-					login_c::Ty::disconnect(reason) => {
+					login_c::Ty::Disconnect(reason) => {
 						bail!(
 							"server refused the login: {}",
 							minecraft_versions::custom::localize::legacy(&reason)
 						)
 					}
-					login_c::Ty::encryption_begin(request) => {
+					login_c::Ty::EncryptionBegin(request) => {
 						online::encrypt(self, request, username).await?
 					}
-					login_c::Ty::login_plugin_request(request) => {
-						let response = login_s::Ty::login_plugin_response(
-							login_toServer_packet_login_plugin_response::Ty {
-								messageId: request.messageId,
+					login_c::Ty::LoginPluginRequest(request) => {
+						let response = login_s::Ty::LoginPluginResponse(
+							login_to_server_packet_login_plugin_response::Ty {
+								message_id: request.message_id,
 								data: None,
 							},
 						);
@@ -577,10 +576,10 @@ impl Proxy {
 						)
 						.await?;
 					}
-					login_c::Ty::cookie_request(key) => {
+					login_c::Ty::CookieRequest(key) => {
 						self.answer_cookie(Root::LoginToServer, key).await?
 					}
-					login_c::Ty::default(id) => bail!("unexpected login packet {id}"),
+					login_c::Ty::Default(id) => bail!("unexpected login packet {id}"),
 				}
 			}
 		}
@@ -624,20 +623,20 @@ impl Proxy {
 
 	async fn answer_configuration(&mut self) -> Result<Option<String>> {
 		let base = at(CONFIGURATION);
-		use v1_20_2::configuration_toServer_packet::Ty as S;
-		let settings = S::settings(v1_20_2::configuration_toServer_packet_settings::Ty {
+		use v1_20_2::configuration_to_server_packet::Ty as S;
+		let settings = S::Settings(v1_20_2::configuration_to_server_packet_settings::Ty {
 			locale: "en_us".to_owned(),
-			viewDistance: 8,
-			chatFlags: 0,
-			chatColors: true,
-			skinParts: 0x7f,
-			mainHand: 1,
-			enableTextFiltering: false,
-			enableServerListing: true,
+			view_distance: 8,
+			chat_flags: 0,
+			chat_colors: true,
+			skin_parts: 0x7f,
+			main_hand: 1,
+			enable_text_filtering: false,
+			enable_server_listing: true,
 		});
 		let mut brand = vec![7];
 		brand.extend_from_slice(b"vanilla");
-		let brand = S::custom_payload(v1_20_2::configuration_toServer_packet_custom_payload::Ty {
+		let brand = S::CustomPayload(v1_20_2::configuration_to_server_packet_custom_payload::Ty {
 			channel: "minecraft:brand".to_owned(),
 			data: brand,
 		});
@@ -645,7 +644,7 @@ impl Proxy {
 			self.send(
 				Root::ConfigurationToServer,
 				base,
-				encode(&p, v1_20_2::configuration_toServer_packet::serialize)?,
+				encode(&p, v1_20_2::configuration_to_server_packet::serialize)?,
 			)
 			.await?;
 		}
@@ -659,7 +658,7 @@ impl Proxy {
 			let name = packet_name(Root::ConfigurationToClient, self.sv, &data);
 			if name == Some("disconnect") {
 				for p in self.at_pivot(Root::ConfigurationToClient, self.sv, &data) {
-					if let config_c::Ty::disconnect(reason) = decode(&p, config_c::deserialize)? {
+					if let config_c::Ty::Disconnect(reason) = decode(&p, config_c::deserialize)? {
 						let reason = nbt::json::text_from_nbt(&reason.value).to_string();
 						bail!(
 							"the server disconnected: {}",
@@ -751,9 +750,9 @@ impl Proxy {
 		self.to_client(pivot(), chat_text(text)?).await
 	}
 
-	fn join_at_pivot(&self, join: &[u8]) -> Result<play_toClient_packet_login::Ty> {
+	fn join_at_pivot(&self, join: &[u8]) -> Result<play_to_client_packet_login::Ty> {
 		for p in self.at_pivot(Root::PlayToClient, self.sv, join) {
-			if let play_c::Ty::login(login) = decode(&p, play_c::deserialize)? {
+			if let play_c::Ty::Login(login) = decode(&p, play_c::deserialize)? {
 				return Ok(login);
 			}
 		}
@@ -787,7 +786,7 @@ impl Proxy {
 
 	async fn reconfigure_client(&mut self) -> Result<()> {
 		let start =
-			play_c::Ty::start_configuration(play_toClient_packet_start_configuration::Ty {});
+			play_c::Ty::StartConfiguration(play_to_client_packet_start_configuration::Ty {});
 		self.to_client(pivot(), encode(&start, play_c::serialize)?)
 			.await?;
 		self.expect_client(Root::PlayToServer, "configuration_acknowledged")
@@ -844,7 +843,7 @@ impl Proxy {
 			if modern_client {
 				let reason = format!("can't move to {target}: {e:#}");
 				let kick = encode(
-					&config_c::Ty::disconnect(text_tag(&reason)),
+					&config_c::Ty::Disconnect(text_tag(&reason)),
 					config_c::serialize,
 				)
 				.map_err(Switch::Lost)?;
@@ -882,9 +881,9 @@ fn command_of(cv: usize, data: &[u8]) -> Result<Option<Command>> {
 	};
 	for p in packets {
 		let line = match decode(&p, play_s::deserialize)? {
-			play_s::Ty::chat_command(command) => command,
-			play_s::Ty::chat_command_signed(signed) => signed.command,
-			play_s::Ty::chat_message(message) => match message.message.strip_prefix('/') {
+			play_s::Ty::ChatCommand(command) => command,
+			play_s::Ty::ChatCommandSigned(signed) => signed.command,
+			play_s::Ty::ChatMessage(message) => match message.message.strip_prefix('/') {
 				Some(command) => command.to_owned(),
 				None => continue,
 			},
@@ -928,13 +927,12 @@ async fn handle(stream: TcpStream, config: &Config) -> Result<()> {
 		return legacy::handle(stream, config, first[0]).await;
 	}
 	let mut client = Framed::new(stream, Codec::default());
-	let handshake::Ty::set_protocol(hs) =
-		decode(&next(&mut client).await?, handshake::deserialize)?
+	let handshake::Ty::SetProtocol(hs) = decode(&next(&mut client).await?, handshake::deserialize)?
 	else {
 		bail!("expected a handshake");
 	};
-	match hs.nextState {
-		1 => status(client, config, hs.protocolVersion).await,
+	match hs.next_state {
+		1 => status(client, config, hs.protocol_version).await,
 		2 | 3 => login(client, config, hs).await,
 		n => bail!("unknown next state {n}"),
 	}
@@ -943,23 +941,23 @@ async fn handle(stream: TcpStream, config: &Config) -> Result<()> {
 async fn status(mut client: Conn, config: &Config, protocol: i32) -> Result<()> {
 	loop {
 		match decode(&next(&mut client).await?, status_s::deserialize)? {
-			status_s::Ty::ping_start(_) => {
+			status_s::Ty::PingStart(_) => {
 				let upstream = status::upstream(config).await;
 				let info = status::netty_reply(config, upstream.as_deref(), protocol)?;
 				client
 					.send(encode(
-						&status_c::Ty::server_info(info),
+						&status_c::Ty::ServerInfo(info),
 						status_c::serialize,
 					)?)
 					.await?;
 			}
-			status_s::Ty::ping(time) => {
+			status_s::Ty::Ping(time) => {
 				client
-					.send(encode(&status_c::Ty::ping(time), status_c::serialize)?)
+					.send(encode(&status_c::Ty::Ping(time), status_c::serialize)?)
 					.await?;
 				return Ok(());
 			}
-			status_s::Ty::default(id) => bail!("unexpected status packet {id}"),
+			status_s::Ty::Default(id) => bail!("unexpected status packet {id}"),
 		}
 	}
 }
@@ -988,15 +986,15 @@ pub(crate) async fn join_upstream(
 async fn login(
 	mut client: Conn,
 	config: &Config,
-	hs: handshaking_toServer_packet_set_protocol::Ty,
+	hs: handshaking_to_server_packet_set_protocol::Ty,
 ) -> Result<()> {
 	let sv = config.server()?;
 	let start = next(&mut client).await?;
-	let Some(cv) = client_version(hs.protocolVersion, sv) else {
+	let Some(cv) = client_version(hs.protocol_version, sv) else {
 		let (low, high) = client_range(sv);
 		let reason = format!(
 			"this proxy speaks {low} to {high}, not protocol {}",
-			hs.protocolVersion
+			hs.protocol_version
 		);
 		client.send(login_kick(&reason)?).await?;
 		bail!("{reason}");
@@ -1004,13 +1002,13 @@ async fn login(
 	let mut p = Proxy::new(client, cv, sv, &config.target, online::Online::default());
 	let mut player = None;
 	for data in p.convert(Root::LoginToServer, cv, pivot(), start) {
-		if let login_s::Ty::login_start(start) = decode(&data, login_s::deserialize)? {
+		if let login_s::Ty::LoginStart(start) = decode(&data, login_s::deserialize)? {
 			player = Some(start);
 		}
 	}
 	let player = player.ok_or_else(|| anyhow!("expected login start"))?;
 	let username = player.username;
-	let claimed = Some(player.playerUUID).filter(|uuid| *uuid != 0);
+	let claimed = Some(player.player_uuid).filter(|uuid| *uuid != 0);
 	p.online = online::Online::new(config.accounts.find(&username, claimed), &username);
 	if let Err(e) = p.connect(&username, false).await {
 		p.send(
@@ -1023,7 +1021,7 @@ async fn login(
 	}
 	if cv >= at("1.8") {
 		let threshold = config.threshold;
-		let compress = encode(&login_c::Ty::compress(threshold as i32), login_c::serialize)?;
+		let compress = encode(&login_c::Ty::Compress(threshold as i32), login_c::serialize)?;
 		p.send(Root::LoginToClient, pivot(), compress).await?;
 		p.client.codec_mut().threshold = Some(threshold);
 	}
@@ -1031,7 +1029,7 @@ async fn login(
 	p.send(
 		Root::LoginToClient,
 		pivot(),
-		encode(&login_c::Ty::success(success), login_c::serialize)?,
+		encode(&login_c::Ty::Success(success), login_c::serialize)?,
 	)
 	.await?;
 	let modern_client = cv >= at(CONFIGURATION);
@@ -1094,7 +1092,7 @@ async fn relay(mut p: Proxy, username: &str) -> Result<()> {
 			}
 			from_server = p.server.as_mut().expect("connected").next() => {
 				let Some(data) = from_server else {
-					let kick = play_c::Ty::kick_disconnect(text_tag("the server closed the connection"));
+					let kick = play_c::Ty::KickDisconnect(text_tag("the server closed the connection"));
 					p.to_client(pivot(), encode(&kick, play_c::serialize)?).await?;
 					return Ok(());
 				};
@@ -1118,18 +1116,18 @@ async fn relay(mut p: Proxy, username: &str) -> Result<()> {
 mod tests {
 	use super::*;
 
-	fn world(dimension: i32, name: &str) -> play_toClient_SpawnInfo::Ty {
-		play_toClient_SpawnInfo::Ty {
+	fn world(dimension: i32, name: &str) -> play_to_client_spawn_info::Ty {
+		play_to_client_spawn_info::Ty {
 			dimension,
 			name: name.to_owned(),
-			hashedSeed: 5,
-			gamemode: minecraft_versions::gen::convert::v26_1::play_toClient_SpawnInfo__gamemode::Ty::creative,
-			previousGamemode: 255,
-			isDebug: false,
-			isFlat: true,
+			hashed_seed: 5,
+			gamemode: minecraft_versions::gen::convert::v26_1::play_to_client_spawn_info_gamemode::Ty::Creative,
+			previous_gamemode: 255,
+			is_debug: false,
+			is_flat: true,
 			death: None,
-			portalCooldown: 0,
-			seaLevel: 63,
+			portal_cooldown: 0,
+			sea_level: 63,
 		}
 	}
 
@@ -1146,46 +1144,58 @@ mod tests {
 		);
 		let [bounce, back] = respawns(&world(0, "minecraft:overworld"));
 		assert_eq!(
-			(bounce.worldState.dimension, bounce.worldState.name.as_str()),
+			(
+				bounce.world_state.dimension,
+				bounce.world_state.name.as_str()
+			),
 			(3, "minecraft:the_nether")
 		);
-		assert_eq!(back.worldState, world(0, "minecraft:overworld"));
+		assert_eq!(back.world_state, world(0, "minecraft:overworld"));
 		let [bounce, _] = respawns(&world(3, "minecraft:the_nether"));
 		assert_eq!(
-			(bounce.worldState.dimension, bounce.worldState.name.as_str()),
+			(
+				bounce.world_state.dimension,
+				bounce.world_state.name.as_str()
+			),
 			(0, "minecraft:overworld")
 		);
 		let [bounce, _] = respawns(&world(0, "minecraft:the_nether"));
 		assert_eq!(
-			(bounce.worldState.dimension, bounce.worldState.name.as_str()),
+			(
+				bounce.world_state.dimension,
+				bounce.world_state.name.as_str()
+			),
 			(2, "minecraft:the_end")
 		);
 		let [bounce, _] = respawns(&world(2, "custom:end"));
 		assert_eq!(
-			(bounce.worldState.dimension, bounce.worldState.name.as_str()),
+			(
+				bounce.world_state.dimension,
+				bounce.world_state.name.as_str()
+			),
 			(3, "minecraft:the_nether")
 		);
 	}
 
-	fn login(world: play_toClient_SpawnInfo::Ty) -> play_toClient_packet_login::Ty {
-		play_toClient_packet_login::Ty {
-			entityId: 7,
-			isHardcore: false,
-			worldNames: [
+	fn login(world: play_to_client_spawn_info::Ty) -> play_to_client_packet_login::Ty {
+		play_to_client_packet_login::Ty {
+			entity_id: 7,
+			is_hardcore: false,
+			world_names: [
 				"minecraft:overworld",
 				"minecraft:the_nether",
 				"minecraft:the_end",
 			]
 			.map(str::to_owned)
 			.to_vec(),
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			doLimitedCrafting: false,
-			worldState: world,
-			enforcesSecureChat: false,
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			do_limited_crafting: false,
+			world_state: world,
+			enforces_secure_chat: false,
 		}
 	}
 
@@ -1225,36 +1235,38 @@ mod tests {
 		use minecraft_versions::gen::convert::{v1_0_1, v1_12_2, v1_16, v1_20_3, v1_8};
 		let overworld = login(world(0, "minecraft:overworld"));
 		let nether = login(world(3, "minecraft:the_nether"));
-		let dims = |l: &play_toClient_packet_login::Ty, v: &str| -> Vec<String> {
+		let dims = |l: &play_to_client_packet_login::Ty, v: &str| -> Vec<String> {
 			trick(l, at(v))
 				.unwrap()
 				.iter()
 				.map(|p| match v {
 					"1.0.1" => {
-						match decode(p, v1_0_1::play_toClient_packet::deserialize).unwrap() {
-							v1_0_1::play_toClient_packet::Ty::respawn(r) => r.dimension.to_string(),
-							other => panic!("{other:?}"),
-						}
-					}
-					"1.8" => match decode(p, v1_8::play_toClient_packet::deserialize).unwrap() {
-						v1_8::play_toClient_packet::Ty::respawn(r) => r.dimension.to_string(),
-						other => panic!("{other:?}"),
-					},
-					"1.12.2" => {
-						match decode(p, v1_12_2::play_toClient_packet::deserialize).unwrap() {
-							v1_12_2::play_toClient_packet::Ty::respawn(r) => {
+						match decode(p, v1_0_1::play_to_client_packet::deserialize).unwrap() {
+							v1_0_1::play_to_client_packet::Ty::Respawn(r) => {
 								r.dimension.to_string()
 							}
 							other => panic!("{other:?}"),
 						}
 					}
-					"1.16" => match decode(p, v1_16::play_toClient_packet::deserialize).unwrap() {
-						v1_16::play_toClient_packet::Ty::respawn(r) => r.worldName,
+					"1.8" => match decode(p, v1_8::play_to_client_packet::deserialize).unwrap() {
+						v1_8::play_to_client_packet::Ty::Respawn(r) => r.dimension.to_string(),
 						other => panic!("{other:?}"),
 					},
-					_ => match decode(p, v1_20_3::play_toClient_packet::deserialize).unwrap() {
-						v1_20_3::play_toClient_packet::Ty::respawn(r) => {
-							format!("{} {}", r.dimension, r.worldName)
+					"1.12.2" => {
+						match decode(p, v1_12_2::play_to_client_packet::deserialize).unwrap() {
+							v1_12_2::play_to_client_packet::Ty::Respawn(r) => {
+								r.dimension.to_string()
+							}
+							other => panic!("{other:?}"),
+						}
+					}
+					"1.16" => match decode(p, v1_16::play_to_client_packet::deserialize).unwrap() {
+						v1_16::play_to_client_packet::Ty::Respawn(r) => r.world_name,
+						other => panic!("{other:?}"),
+					},
+					_ => match decode(p, v1_20_3::play_to_client_packet::deserialize).unwrap() {
+						v1_20_3::play_to_client_packet::Ty::Respawn(r) => {
+							format!("{} {}", r.dimension, r.world_name)
 						}
 						other => panic!("{other:?}"),
 					},
@@ -1281,13 +1293,13 @@ mod tests {
 	#[test]
 	fn proxy_commands_are_read_from_every_client() {
 		let line = encode(
-			&play_s::Ty::chat_command("proxy-goto example.org:25565 1.8".to_owned()),
+			&play_s::Ty::ChatCommand("proxy-goto example.org:25565 1.8".to_owned()),
 			play_s::serialize,
 		)
 		.unwrap();
 		let plain = encode(
-			&play_s::Ty::chat_message(
-				minecraft_versions::gen::convert::v26_1::play_toServer_packet_chat_message::Ty {
+			&play_s::Ty::ChatMessage(
+				minecraft_versions::gen::convert::v26_1::play_to_server_packet_chat_message::Ty {
 					message: "/proxy-goto".to_owned(),
 					timestamp: 0,
 					salt: 0,
@@ -1327,7 +1339,7 @@ mod tests {
 	fn replies_and_kicks_reach_every_client() {
 		let chat = chat_text("Pong").unwrap();
 		let kick = encode(
-			&play_c::Ty::kick_disconnect(text_tag("closed")),
+			&play_c::Ty::KickDisconnect(text_tag("closed")),
 			play_c::serialize,
 		)
 		.unwrap();

@@ -552,17 +552,17 @@ fn entry(name: &str, value: nbt::Payload) -> nbt::Entry {
 }
 
 fn string(s: &str) -> nbt::Payload {
-	nbt::Payload::string(s.to_owned())
+	nbt::Payload::String(s.to_owned())
 }
 
 fn compound(entries: Vec<nbt::Entry>) -> nbt::Payload {
-	nbt::Payload::compound(entries)
+	nbt::Payload::Compound(entries)
 }
 
 fn rich_fields() -> Vec<nbt::Entry> {
 	let text = |s: &str| string(&format!("{{\"text\":\"{s}\"}}"));
 	let lines = |s: &str| {
-		nbt::Payload::list(nbt::List::new(nbt::ListItems::string(vec![
+		nbt::Payload::List(nbt::List::new(nbt::ListItems::String(vec![
 			format!("\"{s}\""),
 			"\"\"".into(),
 			"\"\"".into(),
@@ -570,7 +570,7 @@ fn rich_fields() -> Vec<nbt::Entry> {
 		])))
 	};
 	let pattern = vec![
-		entry("Color", nbt::Payload::int(3)),
+		entry("Color", nbt::Payload::Int(3)),
 		entry("Pattern", string("bs")),
 	];
 	vec![
@@ -586,15 +586,15 @@ fn rich_fields() -> Vec<nbt::Entry> {
 			]),
 		),
 		entry("CustomName", string("Chest of things")),
-		entry("Base", nbt::Payload::int(4)),
+		entry("Base", nbt::Payload::Int(4)),
 		entry(
 			"Patterns",
-			nbt::Payload::list(nbt::List::new(nbt::ListItems::compound(vec![pattern]))),
+			nbt::Payload::List(nbt::List::new(nbt::ListItems::Compound(vec![pattern]))),
 		),
 		entry(
 			"Owner",
 			compound(vec![
-				entry("Id", nbt::Payload::intArray(vec![1, 2, 3, 4])),
+				entry("Id", nbt::Payload::IntArray(vec![1, 2, 3, 4])),
 				entry("Name", string("Notch")),
 			]),
 		),
@@ -614,10 +614,10 @@ fn rich_fields() -> Vec<nbt::Entry> {
 			string("069a79f4-44e9-4726-a5be-fca90e38aaf5"),
 		),
 		entry("Item", string("minecraft:red_flower")),
-		entry("Data", nbt::Payload::int(2)),
-		entry("color", nbt::Payload::int(14)),
-		entry("SkullType", nbt::Payload::int(3)),
-		entry("Rot", nbt::Payload::int(5)),
+		entry("Data", nbt::Payload::Int(2)),
+		entry("color", nbt::Payload::Int(14)),
+		entry("SkullType", nbt::Payload::Int(3)),
+		entry("Rot", nbt::Payload::Int(5)),
 	]
 }
 
@@ -653,9 +653,9 @@ fn block_entities(version: usize, cx: i32, cz: i32) -> Vec<BlockEntity> {
 				let mut fields = rich_fields();
 				fields.extend([
 					entry("id", string(id)),
-					entry("x", nbt::Payload::int(x)),
-					entry("y", nbt::Payload::int(y)),
-					entry("z", nbt::Payload::int(z)),
+					entry("x", nbt::Payload::Int(x)),
+					entry("y", nbt::Payload::Int(y)),
+					entry("z", nbt::Payload::Int(z)),
 				]);
 				BlockEntity {
 					x,
@@ -698,10 +698,10 @@ fn synthetic_packets(version: usize, sections: usize, entities: bool) -> Vec<Vec
 }
 
 fn set_height(dimension: &mut nbt::Entry, min_y: i32, height: i32) {
-	if let nbt::Payload::compound(c) = &mut dimension.value {
+	if let nbt::Payload::Compound(c) = &mut dimension.value {
 		c.retain(|e| e.name != "min_y" && e.name != "height");
-		c.push(entry("min_y", nbt::Payload::int(min_y)));
-		c.push(entry("height", nbt::Payload::int(height)));
+		c.push(entry("min_y", nbt::Payload::Int(min_y)));
+		c.push(entry("height", nbt::Payload::Int(height)));
 	}
 }
 
@@ -715,27 +715,27 @@ fn tall_login(version: usize, min_y: i32, height: i32) -> Vec<u8> {
 	let mut o = Output::new();
 	match version {
 		v if v == at("1.18") => {
-			let v1_18::play_toClient_packet::Ty::login(mut p) =
-				v1_18::play_toClient_packet::deserialize(&mut Input::new(&login)).unwrap()
+			let v1_18::play_to_client_packet::Ty::Login(mut p) =
+				v1_18::play_to_client_packet::deserialize(&mut Input::new(&login)).unwrap()
 			else {
 				panic!()
 			};
 			set_height(&mut p.dimension, min_y, height);
-			v1_18::play_toClient_packet::serialize(
-				&v1_18::play_toClient_packet::Ty::login(p),
+			v1_18::play_to_client_packet::serialize(
+				&v1_18::play_to_client_packet::Ty::Login(p),
 				&mut o,
 			)
 			.unwrap();
 		}
 		_ => {
-			let v1_17_1::play_toClient_packet::Ty::login(mut p) =
-				v1_17_1::play_toClient_packet::deserialize(&mut Input::new(&login)).unwrap()
+			let v1_17_1::play_to_client_packet::Ty::Login(mut p) =
+				v1_17_1::play_to_client_packet::deserialize(&mut Input::new(&login)).unwrap()
 			else {
 				panic!()
 			};
 			set_height(&mut p.dimension, min_y, height);
-			v1_17_1::play_toClient_packet::serialize(
-				&v1_17_1::play_toClient_packet::Ty::login(p),
+			v1_17_1::play_to_client_packet::serialize(
+				&v1_17_1::play_to_client_packet::Ty::Login(p),
 				&mut o,
 			)
 			.unwrap();
@@ -761,45 +761,45 @@ fn tall_worlds_with_block_entities() {
 macro_rules! switches {
 	($m:ident, $version:expr, $section:ty) => {{
 		use minecraft_versions::gen::convert::$m as m;
-		let ser = |p: m::play_toClient_packet::Ty| {
+		let ser = |p: m::play_to_client_packet::Ty| {
 			let mut o = minecraft_versions::pds::Output::new();
-			m::play_toClient_packet::serialize(&p, &mut o).unwrap();
+			m::play_to_client_packet::serialize(&p, &mut o).unwrap();
 			o.into_inner()
 		};
 		let blocks = minecraft_versions::registry::blocks(VERSIONS[$version]).unwrap();
 		let state = |name: &str| blocks.block(name).unwrap().default as i64;
 		let position = |y: f64, flags: i8, id: i32| {
-			ser(m::play_toClient_packet::Ty::position(
-				m::play_toClient_packet_position::Ty {
+			ser(m::play_to_client_packet::Ty::Position(
+				m::play_to_client_packet_position::Ty {
 					x: 8.5,
 					y,
 					z: 8.5,
 					yaw: 0.0,
 					pitch: 0.0,
 					flags,
-					teleportId: id,
-					dismountVehicle: false,
+					teleport_id: id,
+					dismount_vehicle: false,
 				},
 			))
 		};
 		let block = |x: i32, y: i16, z: i32, s: i64| {
-			ser(m::play_toClient_packet::Ty::block_change(
-				m::play_toClient_packet_block_change::Ty {
+			ser(m::play_to_client_packet::Ty::BlockChange(
+				m::play_to_client_packet_block_change::Ty {
 					location: m::position::Ty { x, z, y },
 					r#type: s as i32,
 				},
 			))
 		};
 		let multi = |cx: i32, sy: i32, cz: i32, records: Vec<i64>| {
-			ser(m::play_toClient_packet::Ty::multi_block_change(
-				m::play_toClient_packet_multi_block_change::Ty {
-					chunkCoordinates:
-						m::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
+			ser(m::play_to_client_packet::Ty::MultiBlockChange(
+				m::play_to_client_packet_multi_block_change::Ty {
+					chunk_coordinates:
+						m::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
 							x: cx,
 							z: cz,
 							y: sy as $section,
 						},
-					notTrustEdges: false,
+					not_trust_edges: false,
 					records,
 				},
 			))
@@ -908,30 +908,30 @@ macro_rules! vanilla_login {
 		let v: serde_json::Value =
 			serde_json::from_str(minecraft_versions::registry::login_packet($version).unwrap())
 				.unwrap();
-		let login = m::play_toClient_packet::Ty::login(m::play_toClient_packet_login::Ty {
-			entityId: 1,
-			isHardcore: false,
-			gameMode: 0,
-			previousGameMode: -1,
-			worldNames: vec!["minecraft:overworld".into()],
-			dimensionCodec: nbt::Entry::new(
+		let login = m::play_to_client_packet::Ty::Login(m::play_to_client_packet_login::Ty {
+			entity_id: 1,
+			is_hardcore: false,
+			game_mode: 0,
+			previous_game_mode: -1,
+			world_names: vec!["minecraft:overworld".into()],
+			dimension_codec: nbt::Entry::new(
 				"",
 				nbt::json::typed::read(&v["dimensionCodec"]).unwrap(),
 			),
-			worldType: "minecraft:overworld".into(),
-			worldName: "minecraft:overworld".into(),
-			hashedSeed: 0,
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 6,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			isDebug: false,
-			isFlat: false,
+			world_type: "minecraft:overworld".into(),
+			world_name: "minecraft:overworld".into(),
+			hashed_seed: 0,
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 6,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			is_debug: false,
+			is_flat: false,
 			death: None,
 		});
 		let mut o = minecraft_versions::pds::Output::new();
-		m::play_toClient_packet::serialize(&login, &mut o).unwrap();
+		m::play_to_client_packet::serialize(&login, &mut o).unwrap();
 		o.into_inner()
 	}};
 }

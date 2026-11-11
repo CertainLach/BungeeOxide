@@ -176,9 +176,9 @@ fn enchantments_up(list: &mut Payload) {
 			|| format!("{LEGACY_ENCHANTMENT}{id}"),
 			|n| format!("minecraft:{n}"),
 		);
-		e.put("id", Payload::string(name));
+		e.put("id", Payload::String(name));
 		let lvl = e.field("lvl").and_then(Payload::to_i32).unwrap_or(0);
-		e.put("lvl", Payload::short(lvl as i16));
+		e.put("lvl", Payload::Short(lvl as i16));
 	}
 }
 
@@ -202,9 +202,9 @@ fn enchantments_down(list: &mut Payload) -> Vec<Vec<Entry>> {
 			unknown.push(e.clone());
 			return false;
 		};
-		e.put("id", Payload::short(old as i16));
+		e.put("id", Payload::Short(old as i16));
 		let lvl = e.field("lvl").and_then(Payload::to_i32).unwrap_or(0);
-		e.put("lvl", Payload::short(lvl as i16));
+		e.put("lvl", Payload::Short(lvl as i16));
 		true
 	});
 	unknown
@@ -240,7 +240,7 @@ fn predicates_up(tag: &mut Vec<Entry>, key: &str, backup: &str) {
 			}
 		}
 	}
-	tag.put(key, ListItems::string(out));
+	tag.put(key, ListItems::String(out));
 }
 
 fn predicates_down(tag: &mut Vec<Entry>, key: &str, backup: &str) {
@@ -263,7 +263,7 @@ fn predicates_down(tag: &mut Vec<Entry>, key: &str, backup: &str) {
 			out.push(old);
 		}
 	}
-	tag.put(key, ListItems::string(out));
+	tag.put(key, ListItems::String(out));
 }
 
 fn name_up(tag: &mut Vec<Entry>) {
@@ -288,9 +288,9 @@ fn name_up(tag: &mut Vec<Entry>) {
 				.and_then(Payload::as_str)
 				.map_or_else(|| legacy_to_json(&name, true), str::to_owned);
 			if backup.is_none() {
-				display.put(NAME, Payload::string(name));
+				display.put(NAME, Payload::String(name));
 			}
-			display.put("Name", Payload::string(json));
+			display.put("Name", Payload::String(json));
 		}
 	}
 }
@@ -308,9 +308,9 @@ fn name_down(tag: &mut Vec<Entry>) {
 				.and_then(Payload::as_str)
 				.map_or_else(|| json_to_legacy(&name), str::to_owned);
 			if backup.is_none() {
-				display.put(NAME, Payload::string(name));
+				display.put(NAME, Payload::String(name));
 			}
-			display.put("Name", Payload::string(legacy));
+			display.put("Name", Payload::String(legacy));
 		}
 	}
 }
@@ -322,17 +322,17 @@ fn lore_down(tag: &mut Vec<Entry>, lines: Vec<String>) {
 	let display = match tag.compound_mut("display") {
 		Some(d) => d,
 		None => {
-			tag.put("display", Payload::compound(Vec::new()));
+			tag.put("display", Payload::Compound(Vec::new()));
 			tag.compound_mut("display").expect("display was just added")
 		}
 	};
 	let old = display.field("Lore").cloned();
 	let mut lore = lines;
 	lore.extend(old.as_ref().map(nbtx::strings).unwrap_or_default());
-	display.put("Lore", ListItems::string(lore));
+	display.put("Lore", ListItems::String(lore));
 	match old {
 		Some(old) => tag.put(LORE, old),
-		None => tag.put(LORE_ADDED, Payload::byte(1)),
+		None => tag.put(LORE_ADDED, Payload::Byte(1)),
 	}
 }
 
@@ -357,8 +357,8 @@ fn lore_up(tag: &mut Vec<Entry>) {
 }
 
 fn unknown_back(tag: &mut Vec<Entry>, key: &str, side: &str) {
-	let Some(Payload::list(List {
-		items: ListItems::compound(extra),
+	let Some(Payload::List(List {
+		items: ListItems::Compound(extra),
 		..
 	})) = tag.take(side)
 	else {
@@ -366,7 +366,7 @@ fn unknown_back(tag: &mut Vec<Entry>, key: &str, side: &str) {
 	};
 	match tag.compounds_mut(key) {
 		Some(list) => list.extend(extra),
-		None => tag.put(key, ListItems::compound(extra)),
+		None => tag.put(key, ListItems::Compound(extra)),
 	}
 }
 
@@ -382,10 +382,10 @@ pub(super) fn item_up(id: i16, damage: i16, nbt: Option<Entry>) -> (i16, Option<
 		.and_then(item_named);
 	let original = (id as i32) << 16 | damage as u16 as i32;
 	if damageable(id) {
-		tag.put("Damage", Payload::int(damage as i32));
+		tag.put("Damage", Payload::Int(damage as i32));
 	}
 	if id == 358 {
-		tag.put("map", Payload::int(damage as i32));
+		tag.put("map", Payload::Int(damage as i32));
 	}
 	let mut key = (id, damage);
 	if id == 425 || id == 442 {
@@ -418,7 +418,7 @@ pub(super) fn item_up(id: i16, damage: i16, nbt: Option<Entry>) -> (i16, Option<
 		Some(n) => n,
 		None => {
 			if !damageable(id) && id != 358 {
-				tag.put(ORIGINAL, Payload::int(original));
+				tag.put(ORIGINAL, Payload::Int(original));
 			}
 			match (id, damage) {
 				(31, 0) => legacy_item(32, 0),
@@ -448,19 +448,19 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 						.find(|(_, e)| *e == egg)
 						.map_or(egg, |(old, _)| *old);
 					let mut entity_tag = match tag.take("EntityTag") {
-						Some(Payload::compound(c)) => c,
+						Some(Payload::Compound(c)) => c,
 						_ => Vec::new(),
 					};
 					if entity_tag.field("id").is_none() {
-						entity_tag.put("id", Payload::string(format!("minecraft:{entity}")));
+						entity_tag.put("id", Payload::String(format!("minecraft:{entity}")));
 					}
-					tag.put("EntityTag", Payload::compound(entity_tag));
+					tag.put("EntityTag", Payload::Compound(entity_tag));
 					(383, 0)
 				}
 				None => match legacy_of_item(id.max(0) as u32) {
 					Some(found) => found,
 					None => {
-						tag.put(FLAT, Payload::string(format!("minecraft:{name}")));
+						tag.put(FLAT, Payload::String(format!("minecraft:{name}")));
 						if tag
 							.compound_mut("display")
 							.and_then(|d| d.field("Name").cloned())
@@ -469,16 +469,16 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 							let display =
 								format!("{{\"text\":\"1.13 {}\",\"italic\":false}}", pretty(name));
 							match tag.compound_mut("display") {
-								Some(d) => d.put("Name", Payload::string(display.clone())),
+								Some(d) => d.put("Name", Payload::String(display.clone())),
 								None => tag.put(
 									"display",
-									Payload::compound(vec![Entry::new(
+									Payload::Compound(vec![Entry::new(
 										"Name",
-										Payload::string(display.clone()),
+										Payload::String(display.clone()),
 									)]),
 								),
 							}
-							tag.put(NAME_ADDED, Payload::byte(1));
+							tag.put(NAME_ADDED, Payload::Byte(1));
 						}
 						substitute_of_item(id.max(0) as u32).unwrap_or((1, 0))
 					}
@@ -499,7 +499,7 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 				damage = (m & 0x7fff) as i16;
 			}
 			if m > i16::MAX as i32 {
-				tag.put("map", Payload::int(m));
+				tag.put("map", Payload::Int(m));
 			}
 		}
 	}
@@ -521,7 +521,7 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 			));
 		}
 		if !unknown.is_empty() {
-			tag.put(ENCHANTS, ListItems::compound(unknown));
+			tag.put(ENCHANTS, ListItems::Compound(unknown));
 		}
 		tag.put("ench", ench);
 	}
@@ -530,7 +530,7 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 		.map(|mut s| enchantments_down(&mut s))
 		.unwrap_or_default();
 	if !unknown.is_empty() {
-		tag.put(STORED, ListItems::compound(unknown));
+		tag.put(STORED, ListItems::Compound(unknown));
 	}
 	lore_down(&mut tag, lore);
 	predicates_down(&mut tag, "CanPlaceOn", PLACE);
@@ -540,13 +540,13 @@ pub(super) fn item_down(id: i16, nbt: Option<Entry>) -> (i16, i16, Option<Entry>
 
 pub(super) fn slot_up(v: a::slot::Ty) -> b::slot::Ty {
 	match v {
-		a::slot::Ty::default(id, s) => {
-			let (id, nbtData) = item_up(id, s.itemDamage, s.nbtData);
-			b::slot::Ty::default(
+		a::slot::Ty::Default(id, s) => {
+			let (id, nbt_data) = item_up(id, s.item_damage, s.nbt_data);
+			b::slot::Ty::Default(
 				id,
-				b::slot__default::Ty {
-					itemCount: s.itemCount,
-					nbtData,
+				b::slot_default::Ty {
+					item_count: s.item_count,
+					nbt_data,
 				},
 			)
 		}
@@ -556,14 +556,14 @@ pub(super) fn slot_up(v: a::slot::Ty) -> b::slot::Ty {
 
 pub(super) fn slot_down(v: b::slot::Ty) -> a::slot::Ty {
 	match v {
-		b::slot::Ty::default(id, s) => {
-			let (id, itemDamage, nbtData) = item_down(id, s.nbtData);
-			a::slot::Ty::default(
+		b::slot::Ty::Default(id, s) => {
+			let (id, item_damage, nbt_data) = item_down(id, s.nbt_data);
+			a::slot::Ty::Default(
 				id,
-				a::slot__default::Ty {
-					itemCount: s.itemCount,
-					itemDamage,
-					nbtData,
+				a::slot_default::Ty {
+					item_count: s.item_count,
+					item_damage,
+					nbt_data,
 				},
 			)
 		}
@@ -584,21 +584,21 @@ fn later_items() -> &'static registry::Names {
 }
 
 pub(super) fn slot_later(v: b::slot::Ty) -> c::slot::Ty {
-	let b::slot::Ty::default(id, s) = v else {
+	let b::slot::Ty::Default(id, s) = v else {
 		return c::slot::Ty::_1;
 	};
-	let mut tag = children(s.nbtData);
+	let mut tag = children(s.nbt_data);
 	let restored = tag
 		.take(LATER_FLAT)
 		.as_ref()
 		.and_then(Payload::as_str)
 		.and_then(|n| later_items().id(n));
 	match restored.map(|i| i as i32).or_else(|| item_later(id as i32)) {
-		Some(id) => c::slot::Ty::default(
+		Some(id) => c::slot::Ty::Default(
 			id as i16,
-			c::slot__default::Ty {
-				itemCount: s.itemCount,
-				nbtData: root(tag),
+			c::slot_default::Ty {
+				item_count: s.item_count,
+				nbt_data: root(tag),
 			},
 		),
 		None => c::slot::Ty::_1,
@@ -606,24 +606,24 @@ pub(super) fn slot_later(v: b::slot::Ty) -> c::slot::Ty {
 }
 
 pub(super) fn slot_earlier(v: c::slot::Ty) -> b::slot::Ty {
-	let c::slot::Ty::default(id, s) = v else {
+	let c::slot::Ty::Default(id, s) = v else {
 		return b::slot::Ty::_1;
 	};
 	let name = later_items().name(id.max(0) as u32).unwrap_or("stone");
 	if let Some(same) = item_named(name) {
-		return b::slot::Ty::default(same as i16, s);
+		return b::slot::Ty::Default(same as i16, s);
 	}
 	let substitute = item_earlier(id as i32)
 		.map(|i| i as u32)
 		.or_else(|| item_named("stone"))
 		.unwrap_or(1);
-	let mut tag = children(s.nbtData);
-	tag.put(LATER_FLAT, Payload::string(format!("minecraft:{name}")));
-	b::slot::Ty::default(
+	let mut tag = children(s.nbt_data);
+	tag.put(LATER_FLAT, Payload::String(format!("minecraft:{name}")));
+	b::slot::Ty::Default(
 		substitute as i16,
-		b::slot__default::Ty {
-			itemCount: s.itemCount,
-			nbtData: root(tag),
+		b::slot_default::Ty {
+			item_count: s.item_count,
+			nbt_data: root(tag),
 		},
 	)
 }
@@ -638,25 +638,25 @@ pub fn flattening_item_ids_1_13(v: c::slot::Ty, _cx: &mut Session) -> Result<b::
 
 fn present(v: c::slot::Ty) -> d::slot::Ty {
 	match v {
-		c::slot::Ty::default(id, s) if id >= 0 => d::slot::Ty::r#true(d::slot__true::Ty {
-			itemId: id as i32,
-			itemCount: s.itemCount,
-			nbtData: s.nbtData,
+		c::slot::Ty::Default(id, s) if id >= 0 => d::slot::Ty::True(d::slot_true::Ty {
+			item_id: id as i32,
+			item_count: s.item_count,
+			nbt_data: s.nbt_data,
 		}),
-		_ => d::slot::Ty::r#false,
+		_ => d::slot::Ty::False,
 	}
 }
 
 fn absent(v: d::slot::Ty) -> c::slot::Ty {
 	match v {
-		d::slot::Ty::r#true(s) => c::slot::Ty::default(
-			s.itemId as i16,
-			c::slot__default::Ty {
-				itemCount: s.itemCount,
-				nbtData: s.nbtData,
+		d::slot::Ty::True(s) => c::slot::Ty::Default(
+			s.item_id as i16,
+			c::slot_default::Ty {
+				item_count: s.item_count,
+				nbt_data: s.nbt_data,
 			},
 		),
-		d::slot::Ty::r#false => c::slot::Ty::_1,
+		d::slot::Ty::False => c::slot::Ty::_1,
 	}
 }
 
@@ -713,7 +713,7 @@ pub(super) fn trader_down(data: &[u8]) -> Result<Vec<u8>> {
 	})
 }
 
-type Plugin = b::play_toClient_packet_custom_payload::Ty;
+type Plugin = b::play_to_client_packet_custom_payload::Ty;
 
 fn trader(mut p: Plugin, f: &dyn Fn(&mut Reader, &mut Vec<u8>) -> Result<()>) -> Result<Plugin> {
 	if p.channel == "minecraft:trader_list" {
@@ -725,7 +725,7 @@ fn trader(mut p: Plugin, f: &dyn Fn(&mut Reader, &mut Vec<u8>) -> Result<()>) ->
 pub fn flattening_trader_ids_1_13_1(
 	p: Plugin,
 	_cx: &mut Session,
-) -> Result<c::play_toClient_packet_custom_payload::Ty> {
+) -> Result<c::play_to_client_packet_custom_payload::Ty> {
 	trader(p, &|r, out| {
 		put_value(
 			out,
@@ -736,7 +736,7 @@ pub fn flattening_trader_ids_1_13_1(
 }
 
 pub fn flattening_trader_ids_1_13(
-	p: c::play_toClient_packet_custom_payload::Ty,
+	p: c::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Plugin> {
 	trader(p, &|r, out| {
@@ -749,9 +749,9 @@ pub fn flattening_trader_ids_1_13(
 }
 
 pub fn flattening_trader_slots_1_13_2(
-	p: c::play_toClient_packet_custom_payload::Ty,
+	p: c::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
-) -> Result<d::play_toClient_packet_custom_payload::Ty> {
+) -> Result<d::play_to_client_packet_custom_payload::Ty> {
 	trader(p, &|r, out| {
 		put_value(
 			out,
@@ -762,9 +762,9 @@ pub fn flattening_trader_slots_1_13_2(
 }
 
 pub fn flattening_trader_slots_1_13_1(
-	p: d::play_toClient_packet_custom_payload::Ty,
+	p: d::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
-) -> Result<c::play_toClient_packet_custom_payload::Ty> {
+) -> Result<c::play_to_client_packet_custom_payload::Ty> {
 	trader(p, &|r, out| {
 		put_value(
 			out,

@@ -4,24 +4,24 @@ use std::ops::{Deref, DerefMut};
 impl Payload {
 	pub fn kind(&self) -> u8 {
 		match self {
-			Payload::end => 0,
-			Payload::byte(_) => 1,
-			Payload::short(_) => 2,
-			Payload::int(_) => 3,
-			Payload::long(_) => 4,
-			Payload::float(_) => 5,
-			Payload::double(_) => 6,
-			Payload::byteArray(_) => 7,
-			Payload::string(_) => 8,
-			Payload::list(_) => 9,
-			Payload::compound(_) => 10,
-			Payload::intArray(_) => 11,
-			Payload::longArray(_) => 12,
+			Payload::End => 0,
+			Payload::Byte(_) => 1,
+			Payload::Short(_) => 2,
+			Payload::Int(_) => 3,
+			Payload::Long(_) => 4,
+			Payload::Float(_) => 5,
+			Payload::Double(_) => 6,
+			Payload::ByteArray(_) => 7,
+			Payload::String(_) => 8,
+			Payload::List(_) => 9,
+			Payload::Compound(_) => 10,
+			Payload::IntArray(_) => 11,
+			Payload::LongArray(_) => 12,
 		}
 	}
 
 	pub fn uuid(u: u128) -> Payload {
-		Payload::intArray(vec![
+		Payload::IntArray(vec![
 			(u >> 96) as i32,
 			(u >> 64) as i32,
 			(u >> 32) as i32,
@@ -30,7 +30,7 @@ impl Payload {
 	}
 
 	pub fn as_uuid(&self) -> Option<u128> {
-		let Payload::intArray(v) = self else {
+		let Payload::IntArray(v) = self else {
 			return None;
 		};
 		let [a, b, c, d] = v.as_slice() else {
@@ -46,61 +46,61 @@ impl Payload {
 
 	pub fn as_str(&self) -> Option<&str> {
 		match self {
-			Payload::string(s) => Some(s),
+			Payload::String(s) => Some(s),
 			_ => None,
 		}
 	}
 
 	pub fn as_compound(&self) -> Option<&Vec<Entry>> {
 		match self {
-			Payload::compound(c) => Some(c),
+			Payload::Compound(c) => Some(c),
 			_ => None,
 		}
 	}
 
 	pub fn as_compound_mut(&mut self) -> Option<&mut Vec<Entry>> {
 		match self {
-			Payload::compound(c) => Some(c),
+			Payload::Compound(c) => Some(c),
 			_ => None,
 		}
 	}
 
 	pub fn into_compound(self) -> Option<Vec<Entry>> {
 		match self {
-			Payload::compound(c) => Some(c),
+			Payload::Compound(c) => Some(c),
 			_ => None,
 		}
 	}
 
 	pub fn as_list(&self) -> Option<&List> {
 		match self {
-			Payload::list(l) => Some(l),
+			Payload::List(l) => Some(l),
 			_ => None,
 		}
 	}
 
 	pub fn as_i64(&self) -> Option<i64> {
 		match self {
-			Payload::byte(v) => Some(*v as i64),
-			Payload::short(v) => Some(*v as i64),
-			Payload::int(v) => Some(*v as i64),
-			Payload::long(v) => Some(*v),
+			Payload::Byte(v) => Some(*v as i64),
+			Payload::Short(v) => Some(*v as i64),
+			Payload::Int(v) => Some(*v as i64),
+			Payload::Long(v) => Some(*v),
 			_ => None,
 		}
 	}
 
 	pub fn as_f64(&self) -> Option<f64> {
 		match self {
-			Payload::float(v) => Some(*v as f64),
-			Payload::double(v) => Some(*v),
+			Payload::Float(v) => Some(*v as f64),
+			Payload::Double(v) => Some(*v),
 			p => p.as_i64().map(|v| v as f64),
 		}
 	}
 
 	pub fn to_i32(&self) -> Option<i32> {
 		match self {
-			Payload::float(v) => Some(*v as i32),
-			Payload::double(v) => Some(*v as i32),
+			Payload::Float(v) => Some(*v as i32),
+			Payload::Double(v) => Some(*v as i32),
 			p => p.as_i64().map(|v| v as i32),
 		}
 	}
@@ -115,7 +115,7 @@ impl Payload {
 
 	pub fn compounds_mut(&mut self) -> Option<&mut Vec<Vec<Entry>>> {
 		match self {
-			Payload::list(l) => l.compounds_mut(),
+			Payload::List(l) => l.compounds_mut(),
 			_ => None,
 		}
 	}
@@ -141,67 +141,67 @@ impl Payload {
 
 impl From<i8> for Payload {
 	fn from(v: i8) -> Self {
-		Payload::byte(v)
+		Payload::Byte(v)
 	}
 }
 
 impl From<i16> for Payload {
 	fn from(v: i16) -> Self {
-		Payload::short(v)
+		Payload::Short(v)
 	}
 }
 
 impl From<i32> for Payload {
 	fn from(v: i32) -> Self {
-		Payload::int(v)
+		Payload::Int(v)
 	}
 }
 
 impl From<i64> for Payload {
 	fn from(v: i64) -> Self {
-		Payload::long(v)
+		Payload::Long(v)
 	}
 }
 
 impl From<f32> for Payload {
 	fn from(v: f32) -> Self {
-		Payload::float(v)
+		Payload::Float(v)
 	}
 }
 
 impl From<f64> for Payload {
 	fn from(v: f64) -> Self {
-		Payload::double(v)
+		Payload::Double(v)
 	}
 }
 
 impl From<&str> for Payload {
 	fn from(v: &str) -> Self {
-		Payload::string(v.to_owned())
+		Payload::String(v.to_owned())
 	}
 }
 
 impl From<String> for Payload {
 	fn from(v: String) -> Self {
-		Payload::string(v)
+		Payload::String(v)
 	}
 }
 
 impl From<Vec<Entry>> for Payload {
 	fn from(v: Vec<Entry>) -> Self {
-		Payload::compound(v)
+		Payload::Compound(v)
 	}
 }
 
 impl From<List> for Payload {
 	fn from(v: List) -> Self {
-		Payload::list(v)
+		Payload::List(v)
 	}
 }
 
 impl From<ListItems> for Payload {
 	fn from(v: ListItems) -> Self {
-		Payload::list(List::new(v))
+		Payload::List(List::new(v))
 	}
 }
 
@@ -254,11 +254,11 @@ impl Entry {
 
 	pub fn root(tag: &mut Option<Entry>) -> &mut Vec<Entry> {
 		let e = tag.get_or_insert_with(|| Entry::new("", Vec::new()));
-		if !matches!(e.value, Payload::compound(_)) {
+		if !matches!(e.value, Payload::Compound(_)) {
 			*e = Entry::new("", Vec::new());
 		}
 		match &mut e.value {
-			Payload::compound(c) => c,
+			Payload::Compound(c) => c,
 			_ => unreachable!(),
 		}
 	}
@@ -305,37 +305,37 @@ impl From<Tag> for Entry {
 impl ListItems {
 	pub fn kind(&self) -> u8 {
 		match self {
-			ListItems::end(_) => 0,
-			ListItems::byte(_) => 1,
-			ListItems::short(_) => 2,
-			ListItems::int(_) => 3,
-			ListItems::long(_) => 4,
-			ListItems::float(_) => 5,
-			ListItems::double(_) => 6,
-			ListItems::byteArray(_) => 7,
-			ListItems::string(_) => 8,
-			ListItems::list(_) => 9,
-			ListItems::compound(_) => 10,
-			ListItems::intArray(_) => 11,
-			ListItems::longArray(_) => 12,
+			ListItems::End(_) => 0,
+			ListItems::Byte(_) => 1,
+			ListItems::Short(_) => 2,
+			ListItems::Int(_) => 3,
+			ListItems::Long(_) => 4,
+			ListItems::Float(_) => 5,
+			ListItems::Double(_) => 6,
+			ListItems::ByteArray(_) => 7,
+			ListItems::String(_) => 8,
+			ListItems::List(_) => 9,
+			ListItems::Compound(_) => 10,
+			ListItems::IntArray(_) => 11,
+			ListItems::LongArray(_) => 12,
 		}
 	}
 
 	pub fn len(&self) -> usize {
 		match self {
-			ListItems::end(_) => 0,
-			ListItems::byte(v) => v.len(),
-			ListItems::short(v) => v.len(),
-			ListItems::int(v) => v.len(),
-			ListItems::long(v) => v.len(),
-			ListItems::float(v) => v.len(),
-			ListItems::double(v) => v.len(),
-			ListItems::byteArray(v) => v.len(),
-			ListItems::string(v) => v.len(),
-			ListItems::list(v) => v.len(),
-			ListItems::compound(v) => v.len(),
-			ListItems::intArray(v) => v.len(),
-			ListItems::longArray(v) => v.len(),
+			ListItems::End(_) => 0,
+			ListItems::Byte(v) => v.len(),
+			ListItems::Short(v) => v.len(),
+			ListItems::Int(v) => v.len(),
+			ListItems::Long(v) => v.len(),
+			ListItems::Float(v) => v.len(),
+			ListItems::Double(v) => v.len(),
+			ListItems::ByteArray(v) => v.len(),
+			ListItems::String(v) => v.len(),
+			ListItems::List(v) => v.len(),
+			ListItems::Compound(v) => v.len(),
+			ListItems::IntArray(v) => v.len(),
+			ListItems::LongArray(v) => v.len(),
 		}
 	}
 
@@ -370,19 +370,19 @@ impl List {
 			};
 		}
 		List::new(match values.first().map_or(0, Payload::kind) {
-			1 => collect!(byte),
-			2 => collect!(short),
-			3 => collect!(int),
-			4 => collect!(long),
-			5 => collect!(float),
-			6 => collect!(double),
-			7 => collect!(byteArray),
-			8 => collect!(string),
-			9 => collect!(list),
-			10 => collect!(compound),
-			11 => collect!(intArray),
-			12 => collect!(longArray),
-			_ => ListItems::end(0),
+			1 => collect!(Byte),
+			2 => collect!(Short),
+			3 => collect!(Int),
+			4 => collect!(Long),
+			5 => collect!(Float),
+			6 => collect!(Double),
+			7 => collect!(ByteArray),
+			8 => collect!(String),
+			9 => collect!(List),
+			10 => collect!(Compound),
+			11 => collect!(IntArray),
+			12 => collect!(LongArray),
+			_ => ListItems::End(0),
 		})
 	}
 
@@ -407,46 +407,46 @@ impl List {
 			v.into_iter().map(f).collect()
 		}
 		match self.items {
-			ListItems::end(_) => Vec::new(),
-			ListItems::byte(v) => all(v, Payload::byte),
-			ListItems::short(v) => all(v, Payload::short),
-			ListItems::int(v) => all(v, Payload::int),
-			ListItems::long(v) => all(v, Payload::long),
-			ListItems::float(v) => all(v, Payload::float),
-			ListItems::double(v) => all(v, Payload::double),
-			ListItems::byteArray(v) => all(v, Payload::byteArray),
-			ListItems::string(v) => all(v, Payload::string),
-			ListItems::list(v) => all(v, Payload::list),
-			ListItems::compound(v) => all(v, Payload::compound),
-			ListItems::intArray(v) => all(v, Payload::intArray),
-			ListItems::longArray(v) => all(v, Payload::longArray),
+			ListItems::End(_) => Vec::new(),
+			ListItems::Byte(v) => all(v, Payload::Byte),
+			ListItems::Short(v) => all(v, Payload::Short),
+			ListItems::Int(v) => all(v, Payload::Int),
+			ListItems::Long(v) => all(v, Payload::Long),
+			ListItems::Float(v) => all(v, Payload::Float),
+			ListItems::Double(v) => all(v, Payload::Double),
+			ListItems::ByteArray(v) => all(v, Payload::ByteArray),
+			ListItems::String(v) => all(v, Payload::String),
+			ListItems::List(v) => all(v, Payload::List),
+			ListItems::Compound(v) => all(v, Payload::Compound),
+			ListItems::IntArray(v) => all(v, Payload::IntArray),
+			ListItems::LongArray(v) => all(v, Payload::LongArray),
 		}
 	}
 
 	pub fn strings(&self) -> Option<&[String]> {
 		match &self.items {
-			ListItems::string(s) => Some(s),
+			ListItems::String(s) => Some(s),
 			_ => None,
 		}
 	}
 
 	pub fn strings_mut(&mut self) -> Option<&mut Vec<String>> {
 		match &mut self.items {
-			ListItems::string(s) => Some(s),
+			ListItems::String(s) => Some(s),
 			_ => None,
 		}
 	}
 
 	pub fn compounds(&self) -> &[Vec<Entry>] {
 		match &self.items {
-			ListItems::compound(c) => c,
+			ListItems::Compound(c) => c,
 			_ => &[],
 		}
 	}
 
 	pub fn compounds_mut(&mut self) -> Option<&mut Vec<Vec<Entry>>> {
 		match &mut self.items {
-			ListItems::compound(c) => Some(c),
+			ListItems::Compound(c) => Some(c),
 			_ => None,
 		}
 	}
@@ -518,7 +518,7 @@ impl CompoundVecExt for Vec<Entry> {
 	}
 
 	fn compound_or_insert(&mut self, name: &str) -> &mut Vec<Entry> {
-		if !matches!(self.field(name), Some(Payload::compound(_))) {
+		if !matches!(self.field(name), Some(Payload::Compound(_))) {
 			self.put(name, Vec::new());
 		}
 		self.compound_mut(name).expect("compound was just put")
@@ -540,30 +540,30 @@ mod tests {
 	#[test]
 	fn constructors_set_the_type_byte() {
 		let cases: [(Payload, u8); 13] = [
-			(Payload::end, 0),
+			(Payload::End, 0),
 			(1i8.into(), 1),
 			(1i16.into(), 2),
 			(1i32.into(), 3),
 			(1i64.into(), 4),
 			(1f32.into(), 5),
 			(1f64.into(), 6),
-			(Payload::byteArray(vec![1]), 7),
+			(Payload::ByteArray(vec![1]), 7),
 			("s".into(), 8),
-			(ListItems::int(vec![1]).into(), 9),
+			(ListItems::Int(vec![1]).into(), 9),
 			(Vec::<Entry>::new().into(), 10),
-			(Payload::intArray(vec![1]), 11),
-			(Payload::longArray(vec![1]), 12),
+			(Payload::IntArray(vec![1]), 11),
+			(Payload::LongArray(vec![1]), 12),
 		];
 		for (value, kind) in cases {
 			assert_eq!(Entry::new("x", value.clone()).r#type, kind);
 			assert_eq!(Tag::new(value.clone()).r#type, kind);
 			assert_eq!(value.kind(), kind);
 		}
-		assert_eq!(List::new(ListItems::compound(vec![])).r#type, 10);
+		assert_eq!(List::new(ListItems::Compound(vec![])).r#type, 10);
 		assert_eq!(List::of(vec![]).r#type, 0);
 		assert_eq!(
-			List::of(vec![Payload::string("a".into()), 1i32.into(), "b".into()]),
-			List::new(ListItems::string(vec!["a".into(), "b".into()]))
+			List::of(vec![Payload::String("a".into()), 1i32.into(), "b".into()]),
+			List::new(ListItems::String(vec!["a".into(), "b".into()]))
 		);
 	}
 
@@ -573,24 +573,24 @@ mod tests {
 		*c.field_mut("a").unwrap() = "now a string".into();
 		assert_eq!(c[0].r#type, 8);
 		c.put("b", 5i64);
-		assert_eq!((c[1].r#type, &c[1].value), (4, &Payload::long(5)));
-		if let Some(Payload::compound(inner)) = c.field_mut("c").as_deref_mut() {
+		assert_eq!((c[1].r#type, &c[1].value), (4, &Payload::Long(5)));
+		if let Some(Payload::Compound(inner)) = c.field_mut("c").as_deref_mut() {
 			inner.put("d", 3i16);
 		}
 		assert_eq!(
 			c.field("c").and_then(|p| p.field("d")),
-			Some(&Payload::short(3))
+			Some(&Payload::Short(3))
 		);
 		let mut e = Entry::new("e", 1i32);
-		e.set(Payload::double(1.5));
+		e.set(Payload::Double(1.5));
 		assert_eq!(e.r#type, 6);
-		*e.value_mut() = Payload::compound(vec![]);
+		*e.value_mut() = Payload::Compound(vec![]);
 		assert_eq!(e.r#type, 10);
 		let mut t = Tag::new(1i32);
-		*t.value_mut() = Payload::end;
+		*t.value_mut() = Payload::End;
 		assert_eq!(t.r#type, 0);
-		let mut l = List::new(ListItems::int(vec![1]));
-		l.set(ListItems::string(vec![]));
+		let mut l = List::new(ListItems::Int(vec![1]));
+		l.set(ListItems::String(vec![]));
 		assert_eq!(l.r#type, 8);
 	}
 
@@ -608,10 +608,10 @@ mod tests {
 			c.iter().map(|e| e.name.as_str()).collect::<Vec<_>>(),
 			["b", "c", "z", "a"]
 		);
-		assert_eq!(c.take("b"), Some(Payload::string("text".into())));
+		assert_eq!(c.take("b"), Some(Payload::String("text".into())));
 		assert_eq!(c.take("b"), None);
 		c.rename("z", "y");
-		assert_eq!(c.field("y"), Some(&Payload::int(0)));
+		assert_eq!(c.field("y"), Some(&Payload::Int(0)));
 		c.compound_mut("c").unwrap().push(Entry::new("x", 1i32));
 		assert!(c.compounds_mut("c").is_none());
 		c.put("s", 1i8);
@@ -620,13 +620,13 @@ mod tests {
 		c.compound_or_insert("new");
 		assert_eq!(
 			c.field("s"),
-			Some(&Payload::compound(vec![
+			Some(&Payload::Compound(vec![
 				Entry::new("in", 1i8),
 				Entry::new("again", 2i8)
 			]))
 		);
 		assert_eq!(c.last(), Some(&Entry::new("new", Vec::new())));
-		c.put("l", ListItems::compound(vec![]));
+		c.put("l", ListItems::Compound(vec![]));
 		c.compounds_mut("l")
 			.unwrap()
 			.push(vec![Entry::new("n", 1i8)]);
@@ -642,40 +642,40 @@ mod tests {
 
 	#[test]
 	fn payload_accessors() {
-		let mut p = Payload::compound(sample());
+		let mut p = Payload::Compound(sample());
 		assert_eq!(p.field("b").and_then(Payload::as_str), Some("text"));
 		assert_eq!(p.field("a").and_then(Payload::as_i64), Some(1));
-		p.put("f", Payload::float(2.9));
+		p.put("f", Payload::Float(2.9));
 		assert_eq!(p.field("f").and_then(Payload::as_i64), None);
 		assert_eq!(p.field("f").and_then(Payload::to_i32), Some(2));
 		assert_eq!(p.field("f").and_then(Payload::as_f64), Some(2.9f32 as f64));
-		assert_eq!(Payload::long(1 << 33 | 5).to_i32(), Some(5));
-		assert_eq!(p.take("a"), Some(Payload::int(1)));
-		let mut s = Payload::string("x".into());
+		assert_eq!(Payload::Long(1 << 33 | 5).to_i32(), Some(5));
+		assert_eq!(p.take("a"), Some(Payload::Int(1)));
+		let mut s = Payload::String("x".into());
 		s.put("a", 1i32);
 		assert_eq!(s.take("a"), None);
 		let u = 0x0123_4567_89ab_cdef_fedc_ba98_7654_3210u128;
 		assert_eq!(Payload::uuid(u).as_uuid(), Some(u));
-		assert_eq!(Payload::intArray(vec![1, 2]).as_uuid(), None);
+		assert_eq!(Payload::IntArray(vec![1, 2]).as_uuid(), None);
 	}
 
 	#[test]
 	fn list_views() {
-		let mut p: Payload = ListItems::compound(vec![vec![Entry::new("a", 1i32)]]).into();
+		let mut p: Payload = ListItems::Compound(vec![vec![Entry::new("a", 1i32)]]).into();
 		assert_eq!(p.compounds().len(), 1);
 		p.compounds_mut().unwrap().push(vec![]);
 		assert_eq!(
 			p.values(),
 			vec![
-				Payload::compound(vec![Entry::new("a", 1i32)]),
-				Payload::compound(vec![])
+				Payload::Compound(vec![Entry::new("a", 1i32)]),
+				Payload::Compound(vec![])
 			]
 		);
-		assert!(Payload::int(1).compounds().is_empty());
-		let l = List::new(ListItems::string(vec!["a".into()]));
+		assert!(Payload::Int(1).compounds().is_empty());
+		let l = List::new(ListItems::String(vec!["a".into()]));
 		assert_eq!(l.strings(), Some(&["a".to_owned()][..]));
 		assert_eq!((l.len(), l.is_empty()), (1, false));
-		assert!(List::new(ListItems::end(0)).into_values().is_empty());
+		assert!(List::new(ListItems::End(0)).into_values().is_empty());
 	}
 
 	#[test]

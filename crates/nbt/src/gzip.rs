@@ -1,4 +1,4 @@
-use crate::gen::pds_Entry;
+use crate::gen::entry;
 use crate::pds::{Input, Output};
 use crate::Entry;
 use flate2::read::GzDecoder;
@@ -38,13 +38,13 @@ pub fn decompress(data: &[u8]) -> io::Result<Vec<u8>> {
 
 pub fn write(entry: &Entry) -> Result<Vec<u8>, Error> {
 	let mut o = Output::new();
-	pds_Entry::serialize(entry, &mut o).map_err(Error::Nbt)?;
+	entry::serialize(entry, &mut o).map_err(Error::Nbt)?;
 	compress(&o.into_inner()).map_err(Error::Io)
 }
 
 pub fn read(data: &[u8]) -> Result<Entry, Error> {
 	let raw = decompress(data).map_err(Error::Io)?;
-	pds_Entry::deserialize(&mut Input::new(&raw)).map_err(Error::Nbt)
+	entry::deserialize(&mut Input::new(&raw)).map_err(Error::Nbt)
 }
 
 #[cfg(test)]
@@ -60,12 +60,12 @@ mod tests {
 				Entry::new("Delay", 20i16),
 				Entry::new(
 					"ench",
-					ListItems::compound(vec![vec![
+					ListItems::Compound(vec![vec![
 						Entry::new("id", 16i16),
 						Entry::new("lvl", 2i16),
 					]]),
 				),
-				Entry::new("big", Payload::longArray(vec![1, -1])),
+				Entry::new("big", Payload::LongArray(vec![1, -1])),
 			],
 		)
 	}

@@ -1,7 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::sync::{LazyLock, OnceLock};
 
-use nbt::gen::{pds_Entry, pds_List, pds_List_0, pds_Payload, pds_Tag};
 use nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload, Tag};
 use serde_json::Value;
 
@@ -22,12 +21,12 @@ pub use step_1_21_1::*;
 pub use step_1_21_3::*;
 pub use step_1_21_4::*;
 
-type RegistryData = v1_21_1::configuration_toClient_packet_registry_data::Ty;
-type RegistryEntry = v1_21_1::configuration_toClient_packet_registry_data__entries__items::Ty;
-type TagList = v1_21_1::configuration_toClient_packet__tags__items__tags__items::Ty;
-type SoundHolder = v1_21_1::ItemSoundHolder::Ty;
-type IdSet = v1_21_1::IDSet::Ty;
-type Fix = fn(&str, &mut pds_Tag::Ty);
+type RegistryData = v1_21_1::configuration_to_client_packet_registry_data::Ty;
+type RegistryEntry = v1_21_1::configuration_to_client_packet_registry_data_entries_items::Ty;
+type TagList = v1_21_1::configuration_to_client_packet_tags_items_tags_items::Ty;
+type SoundHolder = v1_21_1::item_sound_holder::Ty;
+type IdSet = v1_21_1::id_set::Ty;
+type Fix = fn(&str, &mut Tag);
 
 fn remap(kind: &str, from: Version, to: Version, id: i32) -> Option<i32> {
 	registry::remap_name(kind, from, to, u32::try_from(id).ok()?).map(|v| v as i32)
@@ -77,9 +76,9 @@ fn sound(from: Version, to: Version, holder: SoundHolder) -> SoundHolder {
 	match sound_name(from, id) {
 		Some(name) => match sound_id(to, name) {
 			Some(id) => SoundHolder::Id(id),
-			None => SoundHolder::Inline(v1_21_1::ItemSoundEvent::Ty {
-				soundName: format!("minecraft:{name}"),
-				fixedRange: None,
+			None => SoundHolder::Inline(v1_21_1::item_sound_event::Ty {
+				sound_name: format!("minecraft:{name}"),
+				fixed_range: None,
 			}),
 		},
 		None => SoundHolder::Id(id),
@@ -116,9 +115,9 @@ fn remap_tags(from: Version, to: Version, registry: &str, tags: &mut [TagList]) 
 
 fn ensure_tags(tags: &mut Vec<TagList>, wanted: &[(&str, Vec<i32>)]) {
 	for (name, entries) in wanted {
-		if !tags.iter().any(|t| strip(&t.tagName) == *name) {
+		if !tags.iter().any(|t| strip(&t.tag_name) == *name) {
 			tags.push(TagList {
-				tagName: format!("minecraft:{name}"),
+				tag_name: format!("minecraft:{name}"),
 				entries: entries.clone(),
 			});
 		}
@@ -134,7 +133,7 @@ fn store_item_tags(cx: &mut Session, version: Version, registry: &str, tags: &[T
 	}
 	let stored = cx.state::<ItemTags>().0.entry(version).or_default();
 	for t in tags {
-		stored.insert(strip(&t.tagName).to_owned(), t.entries.clone());
+		stored.insert(strip(&t.tag_name).to_owned(), t.entries.clone());
 	}
 }
 
@@ -184,7 +183,7 @@ fn read_varint(data: &[u8], at: &mut usize) -> Option<i32> {
 
 struct Vanilla {
 	id: String,
-	entries: Vec<(String, pds_Tag::Ty)>,
+	entries: Vec<(String, Tag)>,
 }
 
 static VANILLA: LazyLock<Vec<OnceLock<Vec<Vanilla>>>> =
@@ -233,7 +232,7 @@ const VANILLA_ONLY: &[&str] = &[
 #[derive(Default)]
 struct Registries {
 	seen: HashMap<Version, HashSet<String>>,
-	keys: HashMap<(Version, String), Vec<(String, Option<pds_Tag::Ty>)>>,
+	keys: HashMap<(Version, String), Vec<(String, Option<Tag>)>>,
 }
 
 fn remember(cx: &mut Session, version: Version, p: &RegistryData) {
@@ -260,12 +259,7 @@ fn registry_key(cx: &mut Session, version: Version, registry: &str, id: i32) -> 
 	reg.entries.get(index).map(|(k, _)| strip(k).to_owned())
 }
 
-fn registry_entry(
-	cx: &mut Session,
-	version: Version,
-	registry: &str,
-	id: i32,
-) -> Option<pds_Tag::Ty> {
+fn registry_entry(cx: &mut Session, version: Version, registry: &str, id: i32) -> Option<Tag> {
 	let index = usize::try_from(id).ok()?;
 	let key = match cx
 		.state::<Registries>()
@@ -384,7 +378,7 @@ fn missing_registries(cx: &mut Session, version: Version, fix: Fix) -> Vec<Regis
 	out
 }
 
-fn no_fix(_: &str, _: &mut pds_Tag::Ty) {}
+fn no_fix(_: &str, _: &mut Tag) {}
 
 fn registry_down(
 	cx: &mut Session,
@@ -405,34 +399,34 @@ fn registry_down(
 	Ok(p)
 }
 
-fn effects<'a>(registry: &str, tag: &'a mut pds_Tag::Ty) -> Option<&'a mut Vec<pds_Entry::Ty>> {
+fn effects<'a>(registry: &str, tag: &'a mut Tag) -> Option<&'a mut Vec<Entry>> {
 	if strip(registry) != "worldgen/biome" {
 		return None;
 	}
 	tag.value.as_compound_mut()?.compound_mut("effects")
 }
 
-fn wrap_music(registry: &str, tag: &mut pds_Tag::Ty) {
+fn wrap_music(registry: &str, tag: &mut Tag) {
 	let Some(m) = effects(registry, tag).and_then(|e| {
 		e.iter_mut()
-			.find(|e| e.name == "music" && matches!(e.value, Payload::compound(_)))
+			.find(|e| e.name == "music" && matches!(e.value, Payload::Compound(_)))
 	}) else {
 		return;
 	};
-	let data = std::mem::replace(&mut m.value, Payload::end);
-	m.set(ListItems::compound(vec![vec![
+	let data = std::mem::replace(&mut m.value, Payload::End);
+	m.set(ListItems::Compound(vec![vec![
 		Entry::new("data", data),
-		Entry::new("weight", Payload::int(1)),
+		Entry::new("weight", Payload::Int(1)),
 	]]));
 }
 
-fn unwrap_music(registry: &str, tag: &mut pds_Tag::Ty) {
+fn unwrap_music(registry: &str, tag: &mut Tag) {
 	let Some(effects) = effects(registry, tag) else {
 		return;
 	};
 	let Some(at) = effects
 		.iter()
-		.position(|e| e.name == "music" && matches!(e.value, Payload::list(_)))
+		.position(|e| e.name == "music" && matches!(e.value, Payload::List(_)))
 	else {
 		return;
 	};
@@ -442,7 +436,7 @@ fn unwrap_music(registry: &str, tag: &mut pds_Tag::Ty) {
 		.and_then(|list| list.first_mut())
 		.and_then(|e| {
 			e.iter_mut()
-				.find(|f| f.name == "data" && matches!(f.value, Payload::compound(_)))
+				.find(|f| f.name == "data" && matches!(f.value, Payload::Compound(_)))
 		})
 		.and_then(|f| f.value.as_compound_mut())
 		.map(std::mem::take);
@@ -454,24 +448,24 @@ fn unwrap_music(registry: &str, tag: &mut pds_Tag::Ty) {
 	}
 }
 
-fn rename_strings(value: &mut pds_Payload::Ty, from: &str, to: &str) {
+fn rename_strings(value: &mut Payload, from: &str, to: &str) {
 	match value {
-		pds_Payload::Ty::string(s) if strip(s) == from => *s = format!("minecraft:{to}"),
-		pds_Payload::Ty::compound(entries) => {
+		Payload::String(s) if strip(s) == from => *s = format!("minecraft:{to}"),
+		Payload::Compound(entries) => {
 			for e in entries {
 				rename_strings(&mut e.value, from, to);
 			}
 		}
-		pds_Payload::Ty::list(pds_List::Ty {
-			items: pds_List_0::Ty::compound(list),
+		Payload::List(List {
+			items: ListItems::Compound(list),
 			..
 		}) => {
 			for c in list.iter_mut().flatten() {
 				rename_strings(&mut c.value, from, to);
 			}
 		}
-		pds_Payload::Ty::list(pds_List::Ty {
-			items: pds_List_0::Ty::string(list),
+		Payload::List(List {
+			items: ListItems::String(list),
 			..
 		}) => {
 			for s in list.iter_mut().filter(|s| strip(s) == from) {

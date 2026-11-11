@@ -20,10 +20,10 @@ fn main() {
 	let mut unknown: Vec<(String, &str)> = Vec::new();
 	let total = names.names.len();
 	for (&id, name) in &names.names {
-		let p = v26_1::play_toClient_packet::Ty::sound_effect(
-			v26_1::play_toClient_packet_sound_effect::Ty {
-				sound: v26_1::ItemSoundHolder::Ty::Id(id as i32 - 1),
-				soundCategory: v26_1::soundSource::Ty::hostile,
+		let p = v26_1::play_to_client_packet::Ty::SoundEffect(
+			v26_1::play_to_client_packet_sound_effect::Ty {
+				sound: v26_1::item_sound_holder::Ty::Id(id as i32 - 1),
+				sound_category: v26_1::sound_source::Ty::Hostile,
 				x: 0,
 				y: 512,
 				z: 0,
@@ -33,7 +33,7 @@ fn main() {
 			},
 		);
 		let mut out = Output::new();
-		v26_1::play_toClient_packet::serialize(&p, &mut out).unwrap();
+		v26_1::play_to_client_packet::serialize(&p, &mut out).unwrap();
 		let mut packets = vec![out.into_inner()];
 		let mut cx = Session::new();
 		let mut at = top;
@@ -58,14 +58,14 @@ fn main() {
 			arrived += 1;
 			if bottom == index_of("1.8").unwrap() {
 				for p in &packets {
-					if let Ok(v1_8::play_toClient_packet::Ty::named_sound_effect(s)) =
-						v1_8::play_toClient_packet::deserialize(&mut Input::new(p))
+					if let Ok(v1_8::play_to_client_packet::Ty::NamedSoundEffect(s)) =
+						v1_8::play_to_client_packet::deserialize(&mut Input::new(p))
 					{
 						if registry::names(Version::V1_8, "sounds")
-							.and_then(|n| n.id(&s.soundName))
+							.and_then(|n| n.id(&s.sound_name))
 							.is_none()
 						{
-							unknown.push((s.soundName, name));
+							unknown.push((s.sound_name, name));
 						}
 					}
 				}

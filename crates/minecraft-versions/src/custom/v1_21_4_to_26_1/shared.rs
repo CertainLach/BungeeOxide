@@ -1,6 +1,6 @@
 use super::util::{decode, encode};
 use super::world;
-use crate::gen::convert::v1_21_5::configuration_toClient_packet_registry_data as registry_data;
+use crate::gen::convert::v1_21_5::configuration_to_client_packet_registry_data as registry_data;
 use crate::gen::convert::{step, Root, Version};
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::Session;
@@ -91,7 +91,7 @@ pub fn registry(id: &str, entries: Vec<(String, Option<nbt::Tag>)>) -> registry_
 		id: format!("minecraft:{id}"),
 		entries: entries
 			.into_iter()
-			.map(|(key, value)| crate::gen::convert::v1_21_5::configuration_toClient_packet_registry_data__entries__items::Ty { key, value })
+			.map(|(key, value)| crate::gen::convert::v1_21_5::configuration_to_client_packet_registry_data_entries_items::Ty { key, value })
 			.collect(),
 	}
 }
@@ -134,29 +134,29 @@ macro_rules! text_down {
 			}
 		)*
 
-		pub fn $config_links(v: super::s1_21_5::Links, _cx: &mut crate::Session) -> crate::pds::convert::Result<Vec<$a::configuration_toClient_packet::Ty>> {
-			Ok(vec![$a::configuration_toClient_packet::Ty::server_links(super::s1_21_5::links(v, $f))])
+		pub fn $config_links(v: super::s1_21_5::Links, _cx: &mut crate::Session) -> crate::pds::convert::Result<Vec<$a::configuration_to_client_packet::Ty>> {
+			Ok(vec![$a::configuration_to_client_packet::Ty::ServerLinks(super::s1_21_5::links(v, $f))])
 		}
 
-		pub fn $play_links(v: super::s1_21_5::Links, _cx: &mut crate::Session) -> crate::pds::convert::Result<Vec<$a::play_toClient_packet::Ty>> {
-			Ok(vec![$a::play_toClient_packet::Ty::server_links(super::s1_21_5::links(v, $f))])
+		pub fn $play_links(v: super::s1_21_5::Links, _cx: &mut crate::Session) -> crate::pds::convert::Result<Vec<$a::play_to_client_packet::Ty>> {
+			Ok(vec![$a::play_to_client_packet::Ty::ServerLinks(super::s1_21_5::links(v, $f))])
 		}
 
 		pub fn $window(
-			mut v: $b::play_toClient_packet_open_window::Ty,
+			mut v: $b::play_to_client_packet_open_window::Ty,
 			_cx: &mut crate::Session,
-		) -> crate::pds::convert::Result<$a::play_toClient_packet_open_window::Ty> {
-			v.windowTitle = $f(v.windowTitle);
+		) -> crate::pds::convert::Result<$a::play_to_client_packet_open_window::Ty> {
+			v.window_title = $f(v.window_title);
 			Ok(v)
 		}
 
 		pub fn $chat(
-			mut v: $b::play_toClient_packet_player_chat::Ty,
+			mut v: $b::play_to_client_packet_player_chat::Ty,
 			_cx: &mut crate::Session,
-		) -> crate::pds::convert::Result<$a::play_toClient_packet_player_chat::Ty> {
-			v.unsignedChatContent = v.unsignedChatContent.map($f);
-			v.networkName = $f(v.networkName);
-			v.networkTargetName = v.networkTargetName.map($f);
+		) -> crate::pds::convert::Result<$a::play_to_client_packet_player_chat::Ty> {
+			v.unsigned_chat_content = v.unsigned_chat_content.map($f);
+			v.network_name = $f(v.network_name);
+			v.network_target_name = v.network_target_name.map($f);
 			Ok(v)
 		}
 	};

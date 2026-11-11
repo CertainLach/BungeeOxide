@@ -6,7 +6,7 @@ use std::time::Duration;
 
 use flate2::write::ZlibEncoder;
 use flate2::Compression;
-use minecraft_protocol::gen::*;
+use minecraft_protocol::gen;
 use minecraft_protocol::pds::{self, Output};
 
 const THRESHOLD: usize = 64;
@@ -63,13 +63,13 @@ fn fake_server(listener: TcpListener) {
 	let mut r = BufReader::new(s.try_clone().unwrap());
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	use pds_login_toClient_packet as login;
+	use gen::login::to_client::packet as login;
 	s.write_all(&frame(
-		&ser(&login::Ty::compress(THRESHOLD as i32), login::serialize),
+		&ser(&login::Ty::Compress(THRESHOLD as i32), login::serialize),
 		false,
 	))
 	.unwrap();
-	let success = login::Ty::success(pds_login_toClient_packet_success::Ty {
+	let success = login::Ty::Success(gen::login::to_client::PacketSuccess {
 		uuid: 0x1234,
 		username: "pds".to_owned(),
 		properties: vec![],
@@ -77,22 +77,22 @@ fn fake_server(listener: TcpListener) {
 	s.write_all(&frame(&ser(&success, login::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
-	use pds_configuration_toClient_packet as config;
-	let brand = config::Ty::custom_payload(pds_configuration_toClient_packet_custom_payload::Ty {
+	use gen::configuration::to_client::packet as config;
+	let brand = config::Ty::CustomPayload(gen::configuration::to_client::PacketCustomPayload {
 		channel: "minecraft:brand".to_owned(),
 		data: vec![7; 300],
 	});
 	s.write_all(&frame(&ser(&brand, config::serialize), true))
 		.unwrap();
-	let finish = config::Ty::finish_configuration(
-		pds_configuration_toClient_packet_finish_configuration::Ty {},
+	let finish = config::Ty::FinishConfiguration(
+		gen::configuration::to_client::PacketFinishConfiguration {},
 	);
 	s.write_all(&frame(&ser(&finish, config::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
-	use pds_play_toClient_packet as play;
+	use gen::play::to_client::packet as play;
 	s.write_all(&frame(
-		&ser(&play::Ty::keep_alive(42), play::serialize),
+		&ser(&play::Ty::KeepAlive(42), play::serialize),
 		true,
 	))
 	.unwrap();
@@ -103,32 +103,32 @@ fn fake_server(listener: TcpListener) {
 fn fake_client(port: u16) {
 	let mut c = TcpStream::connect(("127.0.0.1", port)).unwrap();
 	let mut r = BufReader::new(c.try_clone().unwrap());
-	use pds_handshaking_toServer_packet as hs;
-	let handshake = hs::Ty::set_protocol(pds_handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: 774,
-		serverHost: "localhost".to_owned(),
-		serverPort: 25565,
-		nextState: 2,
+	use gen::handshaking::to_server::packet as hs;
+	let handshake = hs::Ty::SetProtocol(gen::handshaking::to_server::PacketSetProtocol {
+		protocol_version: 774,
+		server_host: "localhost".to_owned(),
+		server_port: 25565,
+		next_state: 2,
 	});
 	c.write_all(&frame(&ser(&handshake, hs::serialize), false))
 		.unwrap();
-	use pds_login_toServer_packet as login;
-	let start = login::Ty::login_start(pds_login_toServer_packet_login_start::Ty {
+	use gen::login::to_server::packet as login;
+	let start = login::Ty::LoginStart(gen::login::to_server::PacketLoginStart {
 		username: "pds".to_owned(),
-		playerUUID: 0x1234,
+		player_uuid: 0x1234,
 	});
 	c.write_all(&frame(&ser(&start, login::serialize), false))
 		.unwrap();
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	let ack = login::Ty::login_acknowledged(pds_login_toServer_packet_login_acknowledged::Ty {});
+	let ack = login::Ty::LoginAcknowledged(gen::login::to_server::PacketLoginAcknowledged {});
 	c.write_all(&frame(&ser(&ack, login::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	use pds_configuration_toServer_packet as config;
-	let finish = config::Ty::finish_configuration(
-		pds_configuration_toServer_packet_finish_configuration::Ty {},
+	use gen::configuration::to_server::packet as config;
+	let finish = config::Ty::FinishConfiguration(
+		gen::configuration::to_server::PacketFinishConfiguration {},
 	);
 	c.write_all(&frame(&ser(&finish, config::serialize), true))
 		.unwrap();
@@ -169,15 +169,15 @@ fn proxies_login_through_compression_into_play() {
 		assert!(!log.contains(bad), "found {bad:?} in proxy log");
 	}
 	for (dir, state, packet) in [
-		("c2s", "Handshaking", "set_protocol"),
-		("c2s", "Login", "login_start"),
-		("s2c", "Login", "compress"),
-		("s2c", "Login", "success"),
-		("c2s", "Login", "login_acknowledged"),
-		("s2c", "Configuration", "custom_payload"),
-		("s2c", "Configuration", "finish_configuration"),
-		("c2s", "Configuration", "finish_configuration"),
-		("s2c", "Play", "keep_alive"),
+		("c2s", "Handshaking", "SetProtocol"),
+		("c2s", "Login", "LoginStart"),
+		("s2c", "Login", "Compress"),
+		("s2c", "Login", "Success"),
+		("c2s", "Login", "LoginAcknowledged"),
+		("s2c", "Configuration", "CustomPayload"),
+		("s2c", "Configuration", "FinishConfiguration"),
+		("c2s", "Configuration", "FinishConfiguration"),
+		("s2c", "Play", "KeepAlive"),
 	] {
 		assert!(
 			log.lines()

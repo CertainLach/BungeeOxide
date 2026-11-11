@@ -2,11 +2,11 @@ use super::chunk::{self, Section};
 use super::*;
 use crate::gen::convert::{v1_18, v1_18_2};
 
-type Client17 = v1_17_1::play_toClient_packet::Ty;
-type Client18 = v1_18::play_toClient_packet::Ty;
-type Chunk17 = v1_17_1::play_toClient_packet_map_chunk::Ty;
-type Chunk18 = v1_18::play_toClient_packet_map_chunk::Ty;
-type BlockEntity18 = v1_18::chunkBlockEntity::Ty;
+type Client17 = v1_17_1::play_to_client_packet::Ty;
+type Client18 = v1_18::play_to_client_packet::Ty;
+type Chunk17 = v1_17_1::play_to_client_packet_map_chunk::Ty;
+type Chunk18 = v1_18::play_to_client_packet_map_chunk::Ty;
+type BlockEntity18 = v1_18::chunk_block_entity::Ty;
 
 const OLD: V = V::V1_17_1;
 const NEW: V = V::V1_18;
@@ -46,76 +46,76 @@ pub fn caves_particle_down_1_17_1(
 }
 
 pub fn caves_world_particles_1_18(
-	v: v1_17_1::play_toClient_packet_world_particles::Ty,
+	v: v1_17_1::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_18::play_toClient_packet_world_particles::Ty> {
-	let data = encode(&v.data, v1_17_1::particleData::serialize)?;
-	let Some((id, data)) = particle_data(OLD, NEW, v.particleId, &data)? else {
+) -> Result<v1_18::play_to_client_packet_world_particles::Ty> {
+	let data = encode(&v.data, v1_17_1::particle_data::serialize)?;
+	let Some((id, data)) = particle_data(OLD, NEW, v.particle_id, &data)? else {
 		return Err(Error::Dropped);
 	};
-	let data = v1_18::particleData::deserialize(
+	let data = v1_18::particle_data::deserialize(
 		&mut Input::new(&data),
-		v1_18::particleData::Args { compareTo: &id },
+		v1_18::particle_data::Args { compare_to: &id },
 	)
 	.map_err(encoding)?;
-	Ok(v1_18::play_toClient_packet_world_particles::Ty {
-		particleId: id,
-		longDistance: v.longDistance,
+	Ok(v1_18::play_to_client_packet_world_particles::Ty {
+		particle_id: id,
+		long_distance: v.long_distance,
 		x: v.x,
 		y: v.y,
 		z: v.z,
-		offsetX: v.offsetX,
-		offsetY: v.offsetY,
-		offsetZ: v.offsetZ,
-		particleData: v.particleData,
+		offset_x: v.offset_x,
+		offset_y: v.offset_y,
+		offset_z: v.offset_z,
+		particle_data: v.particle_data,
 		particles: v.particles,
 		data,
 	})
 }
 
 pub fn caves_world_particles_down_1_17_1(
-	v: v1_18::play_toClient_packet_world_particles::Ty,
+	v: v1_18::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_17_1::play_toClient_packet_world_particles::Ty> {
-	let data = encode(&v.data, v1_18::particleData::serialize)?;
-	let Some((id, data)) = particle_data(NEW, OLD, v.particleId, &data)? else {
+) -> Result<v1_17_1::play_to_client_packet_world_particles::Ty> {
+	let data = encode(&v.data, v1_18::particle_data::serialize)?;
+	let Some((id, data)) = particle_data(NEW, OLD, v.particle_id, &data)? else {
 		return Err(Error::Dropped);
 	};
-	let data = v1_17_1::particleData::deserialize(
+	let data = v1_17_1::particle_data::deserialize(
 		&mut Input::new(&data),
-		v1_17_1::particleData::Args { compareTo: &id },
+		v1_17_1::particle_data::Args { compare_to: &id },
 	)
 	.map_err(encoding)?;
-	Ok(v1_17_1::play_toClient_packet_world_particles::Ty {
-		particleId: id,
-		longDistance: v.longDistance,
+	Ok(v1_17_1::play_to_client_packet_world_particles::Ty {
+		particle_id: id,
+		long_distance: v.long_distance,
 		x: v.x,
 		y: v.y,
 		z: v.z,
-		offsetX: v.offsetX,
-		offsetY: v.offsetY,
-		offsetZ: v.offsetZ,
-		particleData: v.particleData,
+		offset_x: v.offset_x,
+		offset_y: v.offset_y,
+		offset_z: v.offset_z,
+		particle_data: v.particle_data,
 		particles: v.particles,
 		data,
 	})
 }
 
 pub fn caves_simulation_distance_1_18(
-	src: &v1_17_1::play_toClient_packet_login::Ty,
+	src: &v1_17_1::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	let w = world(cx);
-	w.track_codec(&src.dimensionCodec);
+	w.track_codec(&src.dimension_codec);
 	w.track_dimension(&src.dimension);
 	w.forget_chunks();
-	Ok(src.viewDistance)
+	Ok(src.view_distance)
 }
 
 pub fn caves_respawn_1_18(
-	v: v1_17_1::play_toClient_packet_respawn::Ty,
+	v: v1_17_1::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
-) -> Result<v1_18::play_toClient_packet_respawn::Ty> {
+) -> Result<v1_18::play_to_client_packet_respawn::Ty> {
 	let w = world(cx);
 	w.track_dimension(&v.dimension);
 	w.forget_chunks();
@@ -123,20 +123,20 @@ pub fn caves_respawn_1_18(
 }
 
 pub fn caves_unload_chunk_1_18(
-	v: v1_17_1::play_toClient_packet_unload_chunk::Ty,
+	v: v1_17_1::play_to_client_packet_unload_chunk::Ty,
 	cx: &mut Session,
-) -> Result<v1_18::play_toClient_packet_unload_chunk::Ty> {
+) -> Result<v1_18::play_to_client_packet_unload_chunk::Ty> {
 	let w = world(cx);
-	w.loaded.remove(&(v.chunkX, v.chunkZ));
-	w.light.remove(&(v.chunkX, v.chunkZ));
+	w.loaded.remove(&(v.chunk_x, v.chunk_z));
+	w.light.remove(&(v.chunk_x, v.chunk_z));
 	Ok(v)
 }
 
 pub fn caves_update_light_1_18(p: Light, cx: &mut Session) -> Result<Vec<Client18>> {
 	let w = world(cx);
-	let at = (p.chunkX, p.chunkZ);
+	let at = (p.chunk_x, p.chunk_z);
 	if w.loaded.contains(&at) {
-		return Ok(vec![Client18::update_light(p)]);
+		return Ok(vec![Client18::UpdateLight(p)]);
 	}
 	w.light.insert(at, p);
 	Ok(vec![])
@@ -150,20 +150,20 @@ fn empty_light(x: i32, z: i32, sections: usize) -> Light {
 		})
 		.collect();
 	Light {
-		chunkX: x,
-		chunkZ: z,
-		trustEdges: false,
-		skyLightMask: vec![],
-		blockLightMask: vec![],
-		emptySkyLightMask: all.clone(),
-		emptyBlockLightMask: all,
-		skyLight: vec![],
-		blockLight: vec![],
+		chunk_x: x,
+		chunk_z: z,
+		trust_edges: false,
+		sky_light_mask: vec![],
+		block_light_mask: vec![],
+		empty_sky_light_mask: all.clone(),
+		empty_block_light_mask: all,
+		sky_light: vec![],
+		block_light: vec![],
 	}
 }
 
 fn wrap_spawn_data(tag: &mut Entry) {
-	if let Payload::compound(c) = &mut tag.value {
+	if let Payload::Compound(c) = &mut tag.value {
 		if let Some(spawn) = c.take("SpawnData") {
 			c.push(Entry::new("SpawnData", vec![Entry::new("entity", spawn)]));
 		}
@@ -180,10 +180,10 @@ fn unwrap_spawn_data(c: &mut Vec<Entry>) {
 }
 
 pub fn caves_tile_entity_nbt_1_18(
-	src: &v1_17_1::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_17_1::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<Entry>> {
-	let mut tag = src.nbtData.clone();
+	let mut tag = src.nbt_data.clone();
 	if let (1, Some(t)) = (src.action, &mut tag) {
 		wrap_spawn_data(t);
 	}
@@ -191,14 +191,14 @@ pub fn caves_tile_entity_nbt_1_18(
 }
 
 pub fn caves_tile_entity_nbt_down_1_17_1(
-	src: &v1_18::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_18::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<Entry>> {
-	let mut tag = src.nbtData.clone();
+	let mut tag = src.nbt_data.clone();
 	if let (
 		8,
 		Some(Entry {
-			value: Payload::compound(c),
+			value: Payload::Compound(c),
 			..
 		}),
 	) = (src.action, &mut tag)
@@ -224,30 +224,30 @@ fn block_entity_1_18(mut tag: Entry) -> Option<BlockEntity18> {
 		wrap_spawn_data(&mut tag);
 	}
 	Some(BlockEntity18 {
-		ANON: v1_18::chunkBlockEntity__ANON::Ty {
+		anon: v1_18::chunk_block_entity_anon::Ty {
 			x: (bx & 15) as u8,
 			z: (bz & 15) as u8,
 		},
 		y: by as i16,
 		r#type: ty,
-		nbtData: Some(tag),
+		nbt_data: Some(tag),
 	})
 }
 
 fn block_entity_down_1_17_1(x: i32, z: i32, be: BlockEntity18) -> Option<Entry> {
 	let id = *block_entity_types(NEW).get(be.r#type as usize)?;
-	let mut c = match be.nbtData.map(|e| e.value) {
-		Some(Payload::compound(c)) => c,
+	let mut c = match be.nbt_data.map(|e| e.value) {
+		Some(Payload::Compound(c)) => c,
 		_ => Vec::new(),
 	};
 	if id == "mob_spawner" {
 		unwrap_spawn_data(&mut c);
 	}
-	c.put("id", Payload::string(format!("minecraft:{id}")));
-	c.put("x", Payload::int(x * 16 + be.ANON.x as i32));
-	c.put("y", Payload::int(be.y as i32));
-	c.put("z", Payload::int(z * 16 + be.ANON.z as i32));
-	Some(Entry::new("", Payload::compound(c)))
+	c.put("id", Payload::String(format!("minecraft:{id}")));
+	c.put("x", Payload::Int(x * 16 + be.anon.x as i32));
+	c.put("y", Payload::Int(be.y as i32));
+	c.put("z", Payload::Int(z * 16 + be.anon.z as i32));
+	Some(Entry::new("", Payload::Compound(c)))
 }
 
 pub fn caves_block_entities_1_18(list: Vec<Entry>) -> Vec<BlockEntity18> {
@@ -283,7 +283,7 @@ pub fn caves_column_1_18(cx: &mut Session, x: i32, z: i32) -> CavesColumn {
 
 pub fn caves_map_chunk_1_18(p: Chunk17, cx: &mut Session) -> Result<Vec<Client18>> {
 	let n = world(cx).sections();
-	let old = chunk::read_1_17(&p.chunkData, &p.bitMap, n)?;
+	let old = chunk::read_1_17(&p.chunk_data, &p.bit_map, n)?;
 	let biome = |i: usize| p.biomes.get(i).map_or(0, |b| (*b).max(0) as u32);
 	let sections: Vec<Section> = old
 		.into_iter()
@@ -303,50 +303,50 @@ pub fn caves_map_chunk_1_18(p: Chunk17, cx: &mut Session) -> Result<Vec<Client18
 	let column = caves_column_1_18(cx, p.x, p.z);
 	let data = chunk::write_1_18(&sections, chunk::global_bits(NEW), column.biome_bits);
 	let light = column.light;
-	Ok(vec![Client18::map_chunk(Chunk18 {
+	Ok(vec![Client18::MapChunk(Chunk18 {
 		x: p.x,
 		z: p.z,
 		heightmaps: p.heightmaps,
-		chunkData: data,
-		blockEntities: caves_block_entities_1_18(p.blockEntities),
-		trustEdges: light.trustEdges,
-		skyLightMask: light.skyLightMask,
-		blockLightMask: light.blockLightMask,
-		emptySkyLightMask: light.emptySkyLightMask,
-		emptyBlockLightMask: light.emptyBlockLightMask,
-		skyLight: light.skyLight,
-		blockLight: light.blockLight,
+		chunk_data: data,
+		block_entities: caves_block_entities_1_18(p.block_entities),
+		trust_edges: light.trust_edges,
+		sky_light_mask: light.sky_light_mask,
+		block_light_mask: light.block_light_mask,
+		empty_sky_light_mask: light.empty_sky_light_mask,
+		empty_block_light_mask: light.empty_block_light_mask,
+		sky_light: light.sky_light,
+		block_light: light.block_light,
 	})])
 }
 
 pub fn caves_map_chunk_down_1_17_1(p: Chunk18, cx: &mut Session) -> Result<Vec<Client17>> {
-	let sections = chunk::read_1_18(&p.chunkData, NEW, world(cx).known_sections())?;
+	let sections = chunk::read_1_18(&p.chunk_data, NEW, world(cx).known_sections())?;
 	let biomes = sections
 		.iter()
 		.flat_map(|s| s.biomes.iter().map(|b| *b as i32))
 		.collect();
 	let (mask, data) = chunk::write_1_17(&sections, chunk::global_bits(OLD));
 	let light = Light {
-		chunkX: p.x,
-		chunkZ: p.z,
-		trustEdges: p.trustEdges,
-		skyLightMask: p.skyLightMask,
-		blockLightMask: p.blockLightMask,
-		emptySkyLightMask: p.emptySkyLightMask,
-		emptyBlockLightMask: p.emptyBlockLightMask,
-		skyLight: p.skyLight,
-		blockLight: p.blockLight,
+		chunk_x: p.x,
+		chunk_z: p.z,
+		trust_edges: p.trust_edges,
+		sky_light_mask: p.sky_light_mask,
+		block_light_mask: p.block_light_mask,
+		empty_sky_light_mask: p.empty_sky_light_mask,
+		empty_block_light_mask: p.empty_block_light_mask,
+		sky_light: p.sky_light,
+		block_light: p.block_light,
 	};
 	Ok(vec![
-		Client17::update_light(light),
-		Client17::map_chunk(Chunk17 {
+		Client17::UpdateLight(light),
+		Client17::MapChunk(Chunk17 {
 			x: p.x,
 			z: p.z,
-			bitMap: mask,
+			bit_map: mask,
 			heightmaps: p.heightmaps,
 			biomes,
-			chunkData: data,
-			blockEntities: caves_block_entities_1_17_1(p.x, p.z, p.blockEntities),
+			chunk_data: data,
+			block_entities: caves_block_entities_1_17_1(p.x, p.z, p.block_entities),
 		}),
 	])
 }
@@ -368,7 +368,7 @@ const TILE_ACTIONS: [(u8, &str); 13] = [
 ];
 
 pub fn caves_tile_entity_action_1_18(
-	src: &v1_17_1::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_17_1::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	let name = TILE_ACTIONS
@@ -384,7 +384,7 @@ pub fn caves_tile_entity_action_1_18(
 }
 
 pub fn caves_tile_entity_action_down_1_17_1(
-	src: &v1_18::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_18::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
 	let name = block_entity_types(NEW)
@@ -399,45 +399,45 @@ pub fn caves_tile_entity_action_down_1_17_1(
 }
 
 pub fn caves_sound_1_18(
-	src: &v1_17_1::play_toClient_packet_sound_effect::Ty,
+	src: &v1_17_1::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(OLD, NEW, src.soundId)
+	sound(OLD, NEW, src.sound_id)
 }
 
 pub fn caves_sound_down_1_17_1(
-	src: &v1_18::play_toClient_packet_sound_effect::Ty,
+	src: &v1_18::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(NEW, OLD, src.soundId)
+	sound(NEW, OLD, src.sound_id)
 }
 
 pub fn caves_entity_sound_1_18(
-	src: &v1_17_1::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_17_1::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(OLD, NEW, src.soundId)
+	sound(OLD, NEW, src.sound_id)
 }
 
 pub fn caves_entity_sound_down_1_17_1(
-	src: &v1_18::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_18::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(NEW, OLD, src.soundId)
+	sound(NEW, OLD, src.sound_id)
 }
 
 pub fn caves_cooldown_item_1_18(
-	src: &v1_17_1::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_17_1::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(OLD, NEW, src.itemID).ok_or(Error::Dropped)
+	item(OLD, NEW, src.item_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_cooldown_item_down_1_17_1(
-	src: &v1_18::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_18::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(NEW, OLD, src.itemID).ok_or(Error::Dropped)
+	item(NEW, OLD, src.item_id).ok_or(Error::Dropped)
 }
 
 const LAVA_POOL: (&str, &str) = (
@@ -446,7 +446,7 @@ const LAVA_POOL: (&str, &str) = (
 );
 
 pub fn caves_tags_1_18(p: Tags, _cx: &mut Session) -> Result<Vec<Client18>> {
-	Ok(vec![Client18::tags(tags(
+	Ok(vec![Client18::Tags(tags(
 		OLD,
 		NEW,
 		p,
@@ -456,7 +456,7 @@ pub fn caves_tags_1_18(p: Tags, _cx: &mut Session) -> Result<Vec<Client18>> {
 }
 
 pub fn caves_tags_down_1_17_1(p: Tags, _cx: &mut Session) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::tags(tags(
+	Ok(vec![Client17::Tags(tags(
 		NEW,
 		OLD,
 		p,
@@ -466,15 +466,15 @@ pub fn caves_tags_down_1_17_1(p: Tags, _cx: &mut Session) -> Result<Vec<Client17
 }
 
 pub fn caves_statistics_1_18(p: Stats, _cx: &mut Session) -> Result<Vec<Client18>> {
-	Ok(vec![Client18::statistics(statistics(OLD, NEW, p))])
+	Ok(vec![Client18::Statistics(statistics(OLD, NEW, p))])
 }
 
 pub fn caves_statistics_down_1_17_1(p: Stats, _cx: &mut Session) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::statistics(statistics(NEW, OLD, p))])
+	Ok(vec![Client17::Statistics(statistics(NEW, OLD, p))])
 }
 
 fn infiniburn(c: &mut [Entry], up: bool) {
-	if let Some(Payload::string(s)) = c.field_mut("infiniburn").as_deref_mut() {
+	if let Some(Payload::String(s)) = c.field_mut("infiniburn").as_deref_mut() {
 		match (up, s.strip_prefix('#')) {
 			(true, None) => s.insert(0, '#'),
 			(false, Some(rest)) => *s = rest.to_owned(),
@@ -484,7 +484,7 @@ fn infiniburn(c: &mut [Entry], up: bool) {
 }
 
 fn dimension_infiniburn(dimension: &mut Entry, up: bool) {
-	if let Payload::compound(c) = &mut dimension.value {
+	if let Payload::Compound(c) = &mut dimension.value {
 		infiniburn(c, up);
 	}
 }
@@ -501,19 +501,19 @@ fn codec_infiniburn(codec: &mut Entry, up: bool) {
 }
 
 pub fn caves_codec_1_18_2(
-	src: &v1_18::play_toClient_packet_login::Ty,
+	src: &v1_18::play_to_client_packet_login::Ty,
 	_cx: &mut Session,
 ) -> Result<Entry> {
-	let mut codec = src.dimensionCodec.clone();
+	let mut codec = src.dimension_codec.clone();
 	codec_infiniburn(&mut codec, true);
 	Ok(codec)
 }
 
 pub fn caves_codec_down_1_18(
-	src: &v1_18::play_toClient_packet_login::Ty,
+	src: &v1_18::play_to_client_packet_login::Ty,
 	_cx: &mut Session,
 ) -> Result<Entry> {
-	let mut codec = src.dimensionCodec.clone();
+	let mut codec = src.dimension_codec.clone();
 	codec_infiniburn(&mut codec, false);
 	Ok(codec)
 }
@@ -526,28 +526,28 @@ fn tracked_dimension(cx: &mut Session, dimension: &Entry, up: bool) -> Result<En
 }
 
 pub fn caves_login_dimension_1_18_2(
-	src: &v1_18::play_toClient_packet_login::Ty,
+	src: &v1_18::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	tracked_dimension(cx, &src.dimension, true)
 }
 
 pub fn caves_login_dimension_down_1_18(
-	src: &v1_18::play_toClient_packet_login::Ty,
+	src: &v1_18::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	tracked_dimension(cx, &src.dimension, false)
 }
 
 pub fn caves_respawn_dimension_1_18_2(
-	src: &v1_18::play_toClient_packet_respawn::Ty,
+	src: &v1_18::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	tracked_dimension(cx, &src.dimension, true)
 }
 
 pub fn caves_respawn_dimension_down_1_18(
-	src: &v1_18::play_toClient_packet_respawn::Ty,
+	src: &v1_18::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	tracked_dimension(cx, &src.dimension, false)
@@ -570,13 +570,13 @@ const FALL_DAMAGE_RESETTING: &[&str] = &[
 pub fn caves_tags_1_18_2(
 	p: Tags,
 	_cx: &mut Session,
-) -> Result<Vec<v1_18_2::play_toClient_packet::Ty>> {
+) -> Result<Vec<v1_18_2::play_to_client_packet::Ty>> {
 	let added = [(
 		"minecraft:block",
 		"minecraft:fall_damage_resetting",
 		FALL_DAMAGE_RESETTING,
 	)];
-	Ok(vec![v1_18_2::play_toClient_packet::Ty::tags(tags(
+	Ok(vec![v1_18_2::play_to_client_packet::Ty::Tags(tags(
 		NEW,
 		V::V1_18_2,
 		p,

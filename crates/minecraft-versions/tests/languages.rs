@@ -60,11 +60,11 @@ fn decode<T>(b: &[u8], de: fn(&mut Input) -> minecraft_versions::pds::Result<T>)
 }
 
 fn down<T>(
-	p: &z::play_toClient_packet::Ty,
+	p: &z::play_to_client_packet::Ty,
 	to: &str,
 	de: fn(&mut Input) -> minecraft_versions::pds::Result<T>,
 ) -> Vec<T> {
-	let bytes = encode(p, z::play_toClient_packet::serialize);
+	let bytes = encode(p, z::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
 		at("26.1"),
@@ -87,18 +87,18 @@ fn entries(m: &serde_json::Map<String, Value>) -> Vec<Entry> {
 
 fn nbt(v: &Value) -> Payload {
 	match v {
-		Value::String(s) => Payload::string(s.clone()),
-		Value::Bool(b) => Payload::byte(*b as i8),
-		Value::Number(n) => Payload::int(n.as_i64().unwrap() as i32),
+		Value::String(s) => Payload::String(s.clone()),
+		Value::Bool(b) => Payload::Byte(*b as i8),
+		Value::Number(n) => Payload::Int(n.as_i64().unwrap() as i32),
 		Value::Array(items) if items.iter().all(Value::is_string) => {
-			Payload::list(List::new(ListItems::string(
+			Payload::List(List::new(ListItems::String(
 				items
 					.iter()
 					.map(|s| s.as_str().unwrap().to_owned())
 					.collect(),
 			)))
 		}
-		Value::Array(items) => Payload::list(List::new(ListItems::compound(
+		Value::Array(items) => Payload::List(List::new(ListItems::Compound(
 			items
 				.iter()
 				.map(|i| match i {
@@ -107,8 +107,8 @@ fn nbt(v: &Value) -> Payload {
 				})
 				.collect(),
 		))),
-		Value::Object(m) => Payload::compound(entries(m)),
-		Value::Null => Payload::string(String::new()),
+		Value::Object(m) => Payload::Compound(entries(m)),
+		Value::Null => Payload::String(String::new()),
 	}
 }
 
@@ -161,10 +161,10 @@ fn death() -> Value {
 	})
 }
 
-fn system_chat(content: Value) -> z::play_toClient_packet::Ty {
-	z::play_toClient_packet::Ty::system_chat(z::play_toClient_packet_system_chat::Ty {
+fn system_chat(content: Value) -> z::play_to_client_packet::Ty {
+	z::play_to_client_packet::Ty::SystemChat(z::play_to_client_packet_system_chat::Ty {
 		content: text(content),
-		isActionBar: false,
+		is_action_bar: false,
 	})
 }
 
@@ -176,9 +176,9 @@ fn nested_translations_reach_netty_clients() {
 			let out = down(
 				&system_chat(death()),
 				"1.12.2",
-				v1_12_2::play_toClient_packet::deserialize,
+				v1_12_2::play_to_client_packet::deserialize,
 			);
-			let [v1_12_2::play_toClient_packet::Ty::chat(c)] = out.as_slice() else {
+			let [v1_12_2::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
 				panic!("{out:?}")
 			};
 			c.message.clone()
@@ -187,9 +187,9 @@ fn nested_translations_reach_netty_clients() {
 			let out = down(
 				&system_chat(death()),
 				"1.8",
-				v1_8::play_toClient_packet::deserialize,
+				v1_8::play_to_client_packet::deserialize,
 			);
-			let [v1_8::play_toClient_packet::Ty::chat(c)] = out.as_slice() else {
+			let [v1_8::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
 				panic!("{out:?}")
 			};
 			c.message.clone()
@@ -214,18 +214,18 @@ fn known_translations_stay_for_new_clients() {
 	let out = down(
 		&system_chat(death()),
 		"1.21.11",
-		v1_21_11::play_toClient_packet::deserialize,
+		v1_21_11::play_to_client_packet::deserialize,
 	);
-	let [v1_21_11::play_toClient_packet::Ty::system_chat(c)] = out.as_slice() else {
+	let [v1_21_11::play_to_client_packet::Ty::SystemChat(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(c.content, text(death()));
 	let out = down(
 		&system_chat(death()),
 		"1.16",
-		v1_16::play_toClient_packet::deserialize,
+		v1_16::play_to_client_packet::deserialize,
 	);
-	let [v1_16::play_toClient_packet::Ty::chat(c)] = out.as_slice() else {
+	let [v1_16::play_to_client_packet::Ty::Chat(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let v: Value = serde_json::from_str(&c.message).unwrap();
@@ -244,19 +244,19 @@ fn pre_netty_clients_read_rendered_text() {
 	let out = down(
 		&system_chat(death()),
 		"1.5.2",
-		v1_5_2::play_toClient_packet::deserialize,
+		v1_5_2::play_to_client_packet::deserialize,
 	);
 	assert!(
-		matches!(out.as_slice(), [v1_5_2::play_toClient_packet::Ty::chat(m)] if m == expected),
+		matches!(out.as_slice(), [v1_5_2::play_to_client_packet::Ty::Chat(m)] if m == expected),
 		"{out:?}"
 	);
 	let out = down(
 		&system_chat(death()),
 		"1.0.1",
-		v1_0_1::play_toClient_packet::deserialize,
+		v1_0_1::play_to_client_packet::deserialize,
 	);
 	assert!(
-		matches!(out.as_slice(), [v1_0_1::play_toClient_packet::Ty::chat(m)] if m == expected),
+		matches!(out.as_slice(), [v1_0_1::play_to_client_packet::Ty::Chat(m)] if m == expected),
 		"{out:?}"
 	);
 }
@@ -264,42 +264,42 @@ fn pre_netty_clients_read_rendered_text() {
 #[test]
 fn kicks_and_titles_are_readable() {
 	setup();
-	let kick = z::play_toClient_packet::Ty::kick_disconnect(text(
+	let kick = z::play_to_client_packet::Ty::KickDisconnect(text(
 		json!({"translate": "multiplayer.disconnect.kicked"}),
 	));
-	let out = down(&kick, "1.8", v1_8::play_toClient_packet::deserialize);
-	let [v1_8::play_toClient_packet::Ty::kick_disconnect(reason)] = out.as_slice() else {
+	let out = down(&kick, "1.8", v1_8::play_to_client_packet::deserialize);
+	let [v1_8::play_to_client_packet::Ty::KickDisconnect(reason)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
 		render(&serde_json::from_str(reason).unwrap(), &[OLD]),
 		"Kicked by an operator"
 	);
-	let out = down(&kick, "1.5.2", v1_5_2::play_toClient_packet::deserialize);
+	let out = down(&kick, "1.5.2", v1_5_2::play_to_client_packet::deserialize);
 	assert!(
-		matches!(out.as_slice(), [v1_5_2::play_toClient_packet::Ty::kick_disconnect(r)] if r == "Kicked by an operator"),
+		matches!(out.as_slice(), [v1_5_2::play_to_client_packet::Ty::KickDisconnect(r)] if r == "Kicked by an operator"),
 		"{out:?}"
 	);
 
-	let title = z::play_toClient_packet::Ty::set_title_text(text(
+	let title = z::play_to_client_packet::Ty::SetTitleText(text(
 		json!({"translate": "death.attack.genericKill", "with": ["Alex"]}),
 	));
 	for version in ["1.12.2", "1.8"] {
 		let titles: Vec<String> = match version {
-			"1.12.2" => down(&title, version, v1_12_2::play_toClient_packet::deserialize)
+			"1.12.2" => down(&title, version, v1_12_2::play_to_client_packet::deserialize)
 				.into_iter()
 				.filter_map(|p| match p {
-					v1_12_2::play_toClient_packet::Ty::title(
-						v1_12_2::play_toClient_packet_title::Ty::v0(t),
+					v1_12_2::play_to_client_packet::Ty::Title(
+						v1_12_2::play_to_client_packet_title::Ty::V0(t),
 					) => Some(t),
 					_ => None,
 				})
 				.collect(),
-			_ => down(&title, version, v1_8::play_toClient_packet::deserialize)
+			_ => down(&title, version, v1_8::play_to_client_packet::deserialize)
 				.into_iter()
 				.filter_map(|p| match p {
-					v1_8::play_toClient_packet::Ty::title(
-						v1_8::play_toClient_packet_title::Ty::v0(t),
+					v1_8::play_to_client_packet::Ty::Title(
+						v1_8::play_to_client_packet_title::Ty::V0(t),
 					) => Some(t),
 					_ => None,
 				})
@@ -316,24 +316,24 @@ fn kicks_and_titles_are_readable() {
 	}
 }
 
-fn sword(name: Value) -> z::play_toClient_packet::Ty {
+fn sword(name: Value) -> z::play_to_client_packet::Ty {
 	let id = registry::names("26.1", "items")
 		.unwrap()
 		.id("diamond_sword")
 		.unwrap() as i32;
-	let item = z::Slot::Ty::default(
+	let item = z::slot::Ty::Default(
 		1,
-		z::Slot__default::Ty {
-			itemId: id,
-			addedComponentCount: 1,
-			removedComponentCount: 0,
-			components: vec![z::SlotComponent::Ty::custom_name(text(name))],
-			removeComponents: vec![],
+		z::slot_default::Ty {
+			item_id: id,
+			added_component_count: 1,
+			removed_component_count: 0,
+			components: vec![z::slot_component::Ty::CustomName(text(name))],
+			remove_components: vec![],
 		},
 	);
-	z::play_toClient_packet::Ty::set_slot(z::play_toClient_packet_set_slot::Ty {
-		windowId: 0,
-		stateId: 1,
+	z::play_to_client_packet::Ty::SetSlot(z::play_to_client_packet_set_slot::Ty {
+		window_id: 0,
+		state_id: 1,
 		slot: 36,
 		item,
 	})
@@ -351,7 +351,7 @@ fn item_names_follow_the_client_language() {
 	let p = sword(
 		json!({"translate": "commands.kill.success.single", "with": ["Sword"], "color": "aqua"}),
 	);
-	let bytes = encode(&p, z::play_toClient_packet::serialize);
+	let bytes = encode(&p, z::play_to_client_packet::serialize);
 	let to_1_16 = convert(
 		Root::PlayToClient,
 		at("26.1"),

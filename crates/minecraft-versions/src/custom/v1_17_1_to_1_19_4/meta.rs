@@ -249,7 +249,7 @@ fn skip(version: V, kind: Kind, data: &[u8], at: &mut usize) -> Result<()> {
 				*at += 16
 			}
 		}
-		Nbt => skip_with(data, at, nbt::gen::pds_Entry::deserialize)?,
+		Nbt => skip_with(data, at, nbt::gen::entry::deserialize)?,
 		Particle => *at += particle_len(version, &data[*at..])?,
 		Villager => {
 			for _ in 0..3 {

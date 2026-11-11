@@ -10,16 +10,16 @@ use crate::pds::{Input, Output};
 use crate::registry;
 use crate::session::Session;
 
-type Client14 = v1_14::play_toClient_packet::Ty;
-type Client141 = v1_14_1::play_toClient_packet::Ty;
-type Client143 = v1_14_3::play_toClient_packet::Ty;
-type Client144 = v1_14_4::play_toClient_packet::Ty;
-type Client15 = v1_15::play_toClient_packet::Ty;
+type Client14 = v1_14::play_to_client_packet::Ty;
+type Client141 = v1_14_1::play_to_client_packet::Ty;
+type Client143 = v1_14_3::play_to_client_packet::Ty;
+type Client144 = v1_14_4::play_to_client_packet::Ty;
+type Client15 = v1_15::play_to_client_packet::Ty;
 type Slot = v1_14::slot::Ty;
-type M14 = v1_14::entityMetadataItem::Ty;
-type E14 = v1_14::entityMetadata__items::Ty;
-type P14 = v1_14::particleData::Ty;
-type Recipe = v1_14::play_toClient_packet__declare_recipes__items::Ty;
+type M14 = v1_14::entity_metadata_item::Ty;
+type E14 = v1_14::entity_metadata_items::Ty;
+type P14 = v1_14::particle_data::Ty;
+type Recipe = v1_14::play_to_client_packet_declare_recipes_items::Ty;
 
 const OLD: Version = Version::V1_14_4;
 const NEW: Version = Version::V1_15;
@@ -51,34 +51,34 @@ fn head_shake(items: Vec<E14>, up: bool) -> Vec<E14> {
 }
 
 fn trader_spawn(
-	p: v1_14::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_14::play_to_client_packet_spawn_entity_living::Ty,
 	up: bool,
 	cx: &mut Session,
-) -> v1_14::play_toClient_packet_spawn_entity_living::Ty {
+) -> v1_14::play_to_client_packet_spawn_entity_living::Ty {
 	let traders = &mut cx.state::<Traders>().0;
 	match is_trader(p.r#type) {
 		true => {
-			traders.insert(p.entityId);
-			v1_14::play_toClient_packet_spawn_entity_living::Ty {
+			traders.insert(p.entity_id);
+			v1_14::play_to_client_packet_spawn_entity_living::Ty {
 				metadata: head_shake(p.metadata, up),
 				..p
 			}
 		}
 		false => {
-			traders.remove(&p.entityId);
+			traders.remove(&p.entity_id);
 			p
 		}
 	}
 }
 
 fn trader_metadata(
-	p: v1_14::play_toClient_packet_entity_metadata::Ty,
+	p: v1_14::play_to_client_packet_entity_metadata::Ty,
 	up: bool,
 	cx: &mut Session,
-) -> v1_14::play_toClient_packet_entity_metadata::Ty {
-	match cx.state::<Traders>().0.contains(&p.entityId) {
-		true => v1_14::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+) -> v1_14::play_to_client_packet_entity_metadata::Ty {
+	match cx.state::<Traders>().0.contains(&p.entity_id) {
+		true => v1_14::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata: head_shake(p.metadata, up),
 		},
 		false => p,
@@ -93,68 +93,68 @@ fn forget_traders(ids: &[i32], cx: &mut Session) {
 }
 
 pub fn village_trader_spawn_1_14_1(
-	p: v1_14::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_14::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client141>> {
-	Ok(vec![Client141::spawn_entity_living(trader_spawn(
+	Ok(vec![Client141::SpawnEntityLiving(trader_spawn(
 		p, true, cx,
 	))])
 }
 
 pub fn village_trader_spawn_1_14(
-	p: v1_14_1::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_14_1::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	Ok(vec![Client14::spawn_entity_living(trader_spawn(
+	Ok(vec![Client14::SpawnEntityLiving(trader_spawn(
 		p, false, cx,
 	))])
 }
 
 pub fn village_trader_metadata_1_14_1(
-	p: v1_14::play_toClient_packet_entity_metadata::Ty,
+	p: v1_14::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client141>> {
-	Ok(vec![Client141::entity_metadata(trader_metadata(
+	Ok(vec![Client141::EntityMetadata(trader_metadata(
 		p, true, cx,
 	))])
 }
 
 pub fn village_trader_metadata_1_14(
-	p: v1_14_1::play_toClient_packet_entity_metadata::Ty,
+	p: v1_14_1::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	Ok(vec![Client14::entity_metadata(trader_metadata(
+	Ok(vec![Client14::EntityMetadata(trader_metadata(
 		p, false, cx,
 	))])
 }
 
 pub fn village_trader_destroy_1_14_1(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client141>> {
 	forget_traders(&ids, cx);
-	Ok(vec![Client141::entity_destroy(ids)])
+	Ok(vec![Client141::EntityDestroy(ids)])
 }
 
 pub fn village_trader_destroy_1_14(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client14>> {
 	forget_traders(&ids, cx);
-	Ok(vec![Client14::entity_destroy(ids)])
+	Ok(vec![Client14::EntityDestroy(ids)])
 }
 
 pub fn village_recipe_1_14_1(r: Recipe, _cx: &mut Session) -> Result<Recipe> {
-	use v1_14::play_toClient_packet__declare_recipes__items__data::Ty as Data;
+	use v1_14::play_to_client_packet_declare_recipes_items_data::Ty as Data;
 	match r.data {
-		Data::minecraft_crafting_special_repairitem => Err(Error::Dropped),
+		Data::MinecraftCraftingSpecialRepairitem => Err(Error::Dropped),
 		_ => Ok(r),
 	}
 }
 
 pub fn village_digging_ack_1_14_3(
-	p: v1_14_4::play_toClient_packet_acknowledge_player_digging::Ty,
+	p: v1_14_4::play_to_client_packet_acknowledge_player_digging::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client143>> {
 	if p.successful && p.status == 0 {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client143::block_change(
-		v1_14_3::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client143::BlockChange(
+		v1_14_3::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: p.block,
 		},
@@ -197,9 +197,9 @@ fn particle_data(id: i32, data: P14, from: Version, to: Version) -> Result<(i32,
 	Ok((
 		id,
 		match data {
-			P14::v3(s) => P14::v3(state(from, to, s)),
-			P14::v23(s) => P14::v23(state(from, to, s)),
-			P14::v32(s) => P14::v32(item(from, to, s)),
+			P14::V3(s) => P14::V3(state(from, to, s)),
+			P14::V23(s) => P14::V23(state(from, to, s)),
+			P14::V32(s) => P14::V32(item(from, to, s)),
 			d => d,
 		},
 	))
@@ -207,11 +207,11 @@ fn particle_data(id: i32, data: P14, from: Version, to: Version) -> Result<(i32,
 
 fn value(v: M14, from: Version, to: Version) -> Option<M14> {
 	Some(match v {
-		M14::v6(s) => M14::v6(item(from, to, s)),
-		M14::v13(s) => M14::v13(state(from, to, s)),
-		M14::v15(p) => {
-			let (particleId, data) = particle_data(p.particleId, p.data, from, to).ok()?;
-			M14::v15(v1_14::particle::Ty { particleId, data })
+		M14::V6(s) => M14::V6(item(from, to, s)),
+		M14::V13(s) => M14::V13(state(from, to, s)),
+		M14::V15(p) => {
+			let (particle_id, data) = particle_data(p.particle_id, p.data, from, to).ok()?;
+			M14::V15(v1_14::particle::Ty { particle_id, data })
 		}
 		v => v,
 	})
@@ -229,14 +229,14 @@ fn metadata(name: &str, items: Vec<E14>, up: bool) -> Vec<E14> {
 			continue;
 		};
 		let v = match (e.value, name.ends_with("minecart") && e.key == 10) {
-			(M14::v1(s), true) => M14::v1(state(from, to, s)),
+			(M14::V1(s), true) => M14::V1(state(from, to, s)),
 			(v, _) => match value(v, from, to) {
 				Some(v) => v,
 				None => continue,
 			},
 		};
-		if let (false, "wolf", 8, M14::v2(health)) = (up, name, key, &v) {
-			out.push(entry_14(17, M14::v2(*health)));
+		if let (false, "wolf", 8, M14::V2(health)) = (up, name, key, &v) {
+			out.push(entry_14(17, M14::V2(*health)));
 		}
 		out.push(entry_14(key, v));
 	}
@@ -246,7 +246,7 @@ fn metadata(name: &str, items: Vec<E14>, up: bool) -> Vec<E14> {
 fn custom_name(text: &str) -> E14 {
 	entry_14(
 		2,
-		M14::v5(Some(serde_json::json!({ "text": text }).to_string())),
+		M14::V5(Some(serde_json::json!({ "text": text }).to_string())),
 	)
 }
 
@@ -258,54 +258,54 @@ fn track(cx: &mut Session, id: i32, name: &'static str) {
 	cx.state::<State15>().types.insert(id, name);
 }
 
-fn metadata_packet_15(entityId: i32, metadata: Vec<E14>) -> Option<Client15> {
+fn metadata_packet_15(entity_id: i32, metadata: Vec<E14>) -> Option<Client15> {
 	(!metadata.is_empty()).then(|| {
-		Client15::entity_metadata(v1_15::play_toClient_packet_entity_metadata::Ty {
-			entityId,
+		Client15::EntityMetadata(v1_15::play_to_client_packet_entity_metadata::Ty {
+			entity_id,
 			metadata,
 		})
 	})
 }
 
 pub fn village_spawn_entity_living_1_15(
-	p: v1_14_4::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_14_4::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
 	let Some(ty) = remap("entities", OLD, NEW, p.r#type) else {
 		return Ok(vec![]);
 	};
 	let name = entity_name(NEW, ty);
-	track(cx, p.entityId, name);
-	let mut out = vec![Client15::spawn_entity_living(
-		v1_15::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
-			entityUUID: p.entityUUID,
+	track(cx, p.entity_id, name);
+	let mut out = vec![Client15::SpawnEntityLiving(
+		v1_15::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
+			entity_uuid: p.entity_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 		},
 	)];
 	out.extend(metadata_packet_15(
-		p.entityId,
+		p.entity_id,
 		metadata(name, p.metadata, true),
 	));
 	Ok(out)
 }
 
 pub fn village_named_entity_spawn_1_15(
-	p: v1_14_4::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_14_4::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
-	track(cx, p.entityId, "player");
-	let mut out = vec![Client15::named_entity_spawn(
-		v1_15::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: p.playerUUID,
+	track(cx, p.entity_id, "player");
+	let mut out = vec![Client15::NamedEntitySpawn(
+		v1_15::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: p.player_uuid,
 			x: p.x,
 			y: p.y,
 			z: p.z,
@@ -314,40 +314,40 @@ pub fn village_named_entity_spawn_1_15(
 		},
 	)];
 	out.extend(metadata_packet_15(
-		p.entityId,
+		p.entity_id,
 		metadata("player", p.metadata, true),
 	));
 	Ok(out)
 }
 
 pub fn village_spawn_entity_living_1_14_4(
-	p: v1_15::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_15::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
 	let Some(ty) = remap("entities", NEW, OLD, p.r#type) else {
 		return Ok(vec![]);
 	};
 	let name = entity_name(NEW, p.r#type);
-	track(cx, p.entityId, name);
+	track(cx, p.entity_id, name);
 	let metadata = match name {
 		"bee" => vec![
-			entry_14(14, M14::v7(false)),
-			entry_14(15, M14::v1(2)),
+			entry_14(14, M14::V7(false)),
+			entry_14(15, M14::V1(2)),
 			custom_name("Bee"),
 		],
 		_ => Vec::new(),
 	};
-	Ok(vec![Client144::spawn_entity_living(
-		v1_14_4::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
-			entityUUID: p.entityUUID,
+	Ok(vec![Client144::SpawnEntityLiving(
+		v1_14_4::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
+			entity_uuid: p.entity_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 			metadata,
 		},
@@ -355,14 +355,14 @@ pub fn village_spawn_entity_living_1_14_4(
 }
 
 pub fn village_named_entity_spawn_1_14_4(
-	p: v1_15::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_15::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
-	track(cx, p.entityId, "player");
-	Ok(vec![Client144::named_entity_spawn(
-		v1_14_4::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: p.playerUUID,
+	track(cx, p.entity_id, "player");
+	Ok(vec![Client144::NamedEntitySpawn(
+		v1_14_4::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: p.player_uuid,
 			x: p.x,
 			y: p.y,
 			z: p.z,
@@ -374,70 +374,70 @@ pub fn village_named_entity_spawn_1_14_4(
 }
 
 pub fn village_spawn_entity_1_15(
-	p: v1_14_4::play_toClient_packet_spawn_entity::Ty,
+	p: v1_14_4::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
 	let Some(ty) = remap("entities", OLD, NEW, p.r#type) else {
 		return Ok(vec![]);
 	};
 	let name = entity_name(NEW, ty);
-	track(cx, p.entityId, name);
-	let objectData = match name {
-		"falling_block" => state(OLD, NEW, p.objectData),
-		_ => p.objectData,
+	track(cx, p.entity_id, name);
+	let object_data = match name {
+		"falling_block" => state(OLD, NEW, p.object_data),
+		_ => p.object_data,
 	};
-	Ok(vec![Client15::spawn_entity(
-		v1_15::play_toClient_packet_spawn_entity::Ty {
+	Ok(vec![Client15::SpawnEntity(
+		v1_15::play_to_client_packet_spawn_entity::Ty {
 			r#type: ty,
-			objectData,
+			object_data,
 			..p
 		},
 	)])
 }
 
 pub fn village_spawn_entity_1_14_4(
-	p: v1_15::play_toClient_packet_spawn_entity::Ty,
+	p: v1_15::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
 	let Some(ty) = remap("entities", NEW, OLD, p.r#type) else {
 		return Ok(vec![]);
 	};
 	let name = entity_name(NEW, p.r#type);
-	track(cx, p.entityId, name);
-	let objectData = match name {
-		"falling_block" => state(NEW, OLD, p.objectData),
-		_ => p.objectData,
+	track(cx, p.entity_id, name);
+	let object_data = match name {
+		"falling_block" => state(NEW, OLD, p.object_data),
+		_ => p.object_data,
 	};
-	Ok(vec![Client144::spawn_entity(
-		v1_14_4::play_toClient_packet_spawn_entity::Ty {
+	Ok(vec![Client144::SpawnEntity(
+		v1_14_4::play_to_client_packet_spawn_entity::Ty {
 			r#type: ty,
-			objectData,
+			object_data,
 			..p
 		},
 	)])
 }
 
 pub fn village_entity_metadata_1_15(
-	p: v1_14_4::play_toClient_packet_entity_metadata::Ty,
+	p: v1_14_4::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
-	let name = named(cx, p.entityId);
-	Ok(vec![Client15::entity_metadata(
-		v1_15::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	let name = named(cx, p.entity_id);
+	Ok(vec![Client15::EntityMetadata(
+		v1_15::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata: metadata(name, p.metadata, true),
 		},
 	)])
 }
 
 pub fn village_entity_metadata_1_14_4(
-	p: v1_15::play_toClient_packet_entity_metadata::Ty,
+	p: v1_15::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
-	let name = named(cx, p.entityId);
-	Ok(vec![Client144::entity_metadata(
-		v1_14_4::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	let name = named(cx, p.entity_id);
+	Ok(vec![Client144::EntityMetadata(
+		v1_14_4::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata: metadata(name, p.metadata, false),
 		},
 	)])
@@ -452,12 +452,12 @@ fn forget(ids: &[i32], cx: &mut Session) {
 
 pub fn village_entity_destroy_1_15(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client15>> {
 	forget(&ids, cx);
-	Ok(vec![Client15::entity_destroy(ids)])
+	Ok(vec![Client15::EntityDestroy(ids)])
 }
 
 pub fn village_entity_destroy_1_14_4(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client144>> {
 	forget(&ids, cx);
-	Ok(vec![Client144::entity_destroy(ids)])
+	Ok(vec![Client144::EntityDestroy(ids)])
 }
 
 fn reset(cx: &mut Session, self_id: Option<i32>) {
@@ -468,107 +468,107 @@ fn reset(cx: &mut Session, self_id: Option<i32>) {
 }
 
 pub fn village_login_1_15(
-	p: v1_14_4::play_toClient_packet_login::Ty,
+	p: v1_14_4::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
-	reset(cx, Some(p.entityId));
-	Ok(vec![Client15::login(
-		v1_15::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			gameMode: p.gameMode,
+	reset(cx, Some(p.entity_id));
+	Ok(vec![Client15::Login(
+		v1_15::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
-			hashedSeed: 0,
-			maxPlayers: p.maxPlayers,
-			levelType: p.levelType,
-			viewDistance: p.viewDistance,
-			reducedDebugInfo: p.reducedDebugInfo,
-			enableRespawnScreen: true,
+			hashed_seed: 0,
+			max_players: p.max_players,
+			level_type: p.level_type,
+			view_distance: p.view_distance,
+			reduced_debug_info: p.reduced_debug_info,
+			enable_respawn_screen: true,
 		},
 	)])
 }
 
 pub fn village_game_state_change_1_14_4(
-	p: v1_15::play_toClient_packet_game_state_change::Ty,
+	p: v1_15::play_to_client_packet_game_state_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
-	let reason = v1_15::play_toClient_packet_game_state_change__reason::virtual_tag(&p.reason);
+	let reason = v1_15::play_to_client_packet_game_state_change_reason::virtual_tag(&p.reason);
 	if reason == 11 {
-		cx.state::<State15>().immediate_respawn = p.gameMode == 1.0;
+		cx.state::<State15>().immediate_respawn = p.game_mode == 1.0;
 		return Ok(vec![]);
 	}
 	let reason =
-		v1_14_4::play_toClient_packet_game_state_change__reason::deserialize(&mut Input::new(&[
+		v1_14_4::play_to_client_packet_game_state_change_reason::deserialize(&mut Input::new(&[
 			reason,
 		]))
 		.map_err(|e| Error::Unconvertible(format!("game state {reason}: {e:?}")))?;
-	Ok(vec![Client144::game_state_change(
-		v1_14_4::play_toClient_packet_game_state_change::Ty {
+	Ok(vec![Client144::GameStateChange(
+		v1_14_4::play_to_client_packet_game_state_change::Ty {
 			reason,
-			gameMode: p.gameMode,
+			game_mode: p.game_mode,
 		},
 	)])
 }
 
 pub fn village_update_health_1_14_4(
-	p: v1_15::play_toClient_packet_update_health::Ty,
+	p: v1_15::play_to_client_packet_update_health::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
 	if p.health <= 0.0 && cx.state::<State15>().immediate_respawn {
 		let mut o = Output::new();
-		let respawn = v1_15::play_toServer_packet::Ty::client_command(
-			v1_15::play_toServer_packet_client_command::Ty::perform_respawn,
+		let respawn = v1_15::play_to_server_packet::Ty::ClientCommand(
+			v1_15::play_to_server_packet_client_command::Ty::PerformRespawn,
 		);
-		v1_15::play_toServer_packet::serialize(&respawn, &mut o)
+		v1_15::play_to_server_packet::serialize(&respawn, &mut o)
 			.map_err(|e| Error::Encoding(format!("{e:?}")))?;
 		cx.send(Root::PlayToServer, NEW as usize, o.into_inner());
 	}
-	Ok(vec![Client144::update_health(p)])
+	Ok(vec![Client144::UpdateHealth(p)])
 }
 
 pub fn village_login_1_14_4(
-	p: v1_15::play_toClient_packet_login::Ty,
+	p: v1_15::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
-	reset(cx, Some(p.entityId));
-	cx.state::<State15>().immediate_respawn = !p.enableRespawnScreen;
-	Ok(vec![Client144::login(
-		v1_14_4::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			gameMode: p.gameMode,
+	reset(cx, Some(p.entity_id));
+	cx.state::<State15>().immediate_respawn = !p.enable_respawn_screen;
+	Ok(vec![Client144::Login(
+		v1_14_4::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
-			maxPlayers: p.maxPlayers,
-			levelType: p.levelType,
-			viewDistance: p.viewDistance,
-			reducedDebugInfo: p.reducedDebugInfo,
+			max_players: p.max_players,
+			level_type: p.level_type,
+			view_distance: p.view_distance,
+			reduced_debug_info: p.reduced_debug_info,
 		},
 	)])
 }
 
 pub fn village_respawn_1_15(
-	p: v1_14_4::play_toClient_packet_respawn::Ty,
+	p: v1_14_4::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client15>> {
 	reset(cx, None);
-	Ok(vec![Client15::respawn(
-		v1_15::play_toClient_packet_respawn::Ty {
+	Ok(vec![Client15::Respawn(
+		v1_15::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
-			hashedSeed: 0,
+			hashed_seed: 0,
 			gamemode: p.gamemode,
-			levelType: p.levelType,
+			level_type: p.level_type,
 		},
 	)])
 }
 
 pub fn village_respawn_1_14_4(
-	p: v1_15::play_toClient_packet_respawn::Ty,
+	p: v1_15::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client144>> {
 	reset(cx, None);
-	Ok(vec![Client144::respawn(
-		v1_14_4::play_toClient_packet_respawn::Ty {
+	Ok(vec![Client144::Respawn(
+		v1_14_4::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
 			gamemode: p.gamemode,
-			levelType: p.levelType,
+			level_type: p.level_type,
 		},
 	)])
 }
@@ -600,109 +600,109 @@ pub fn village_biomes_1_14_4(new: &[i32]) -> Vec<i32> {
 }
 
 pub fn village_map_chunk_1_15(
-	p: v1_14_4::play_toClient_packet_map_chunk::Ty,
+	p: v1_14_4::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client15>> {
-	use v1_15::play_toClient_packet_map_chunk__biomes::Ty as Biomes;
-	let (chunkData, rest) = sections(&p.chunkData, p.bitMap, OLD, NEW)?;
-	let biomes = match (p.groundUp, rest.len()) {
+	use v1_15::play_to_client_packet_map_chunk_biomes::Ty as Biomes;
+	let (chunk_data, rest) = sections(&p.chunk_data, p.bit_map, OLD, NEW)?;
+	let biomes = match (p.ground_up, rest.len()) {
 		(true, 1024) => {
 			let old: Vec<i32> = rest
 				.chunks_exact(4)
 				.map(|c| i32::from_be_bytes(c.try_into().expect("4 bytes")))
 				.collect();
-			Biomes::r#true(village_biomes_1_15(&old))
+			Biomes::True(village_biomes_1_15(&old))
 		}
-		(false, 0) => Biomes::r#false,
+		(false, 0) => Biomes::False,
 		(_, n) => return unconvertible(format!("{n} bytes follow the chunk sections")),
 	};
-	Ok(vec![Client15::map_chunk(
-		v1_15::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client15::MapChunk(
+		v1_15::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			bitMap: p.bitMap,
+			bit_map: p.bit_map,
 			heightmaps: p.heightmaps,
 			biomes,
-			chunkData,
-			blockEntities: p.blockEntities,
+			chunk_data,
+			block_entities: p.block_entities,
 		},
 	)])
 }
 
 pub fn village_map_chunk_1_14_4(
-	p: v1_15::play_toClient_packet_map_chunk::Ty,
+	p: v1_15::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client144>> {
-	use v1_15::play_toClient_packet_map_chunk__biomes::Ty as Biomes;
-	let (mut chunkData, rest) = sections(&p.chunkData, p.bitMap, NEW, OLD)?;
+	use v1_15::play_to_client_packet_map_chunk_biomes::Ty as Biomes;
+	let (mut chunk_data, rest) = sections(&p.chunk_data, p.bit_map, NEW, OLD)?;
 	if !rest.is_empty() {
 		return unconvertible(format!("{} bytes follow the chunk sections", rest.len()));
 	}
-	let groundUp = match p.biomes {
-		Biomes::r#true(b) if b.len() == 1024 => {
+	let ground_up = match p.biomes {
+		Biomes::True(b) if b.len() == 1024 => {
 			for v in village_biomes_1_14_4(&b) {
-				chunkData.extend(v.to_be_bytes());
+				chunk_data.extend(v.to_be_bytes());
 			}
 			true
 		}
-		Biomes::r#true(b) => return unconvertible(format!("{} biomes instead of 1024", b.len())),
-		Biomes::r#false => false,
+		Biomes::True(b) => return unconvertible(format!("{} biomes instead of 1024", b.len())),
+		Biomes::False => false,
 	};
-	Ok(vec![Client144::map_chunk(
-		v1_14_4::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client144::MapChunk(
+		v1_14_4::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp,
-			bitMap: p.bitMap,
+			ground_up,
+			bit_map: p.bit_map,
 			heightmaps: p.heightmaps,
-			chunkData,
-			blockEntities: p.blockEntities,
+			chunk_data,
+			block_entities: p.block_entities,
 		},
 	)])
 }
 
 pub fn village_world_particles_1_15(
-	p: v1_14_4::play_toClient_packet_world_particles::Ty,
+	p: v1_14_4::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_15::play_toClient_packet_world_particles::Ty> {
-	let (particleId, data) = particle_data(p.particleId, p.data, OLD, NEW)?;
-	Ok(v1_15::play_toClient_packet_world_particles::Ty {
-		particleId,
-		longDistance: p.longDistance,
+) -> Result<v1_15::play_to_client_packet_world_particles::Ty> {
+	let (particle_id, data) = particle_data(p.particle_id, p.data, OLD, NEW)?;
+	Ok(v1_15::play_to_client_packet_world_particles::Ty {
+		particle_id,
+		long_distance: p.long_distance,
 		x: p.x as f64,
 		y: p.y as f64,
 		z: p.z as f64,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
 		data,
 	})
 }
 
 pub fn village_world_particles_1_14_4(
-	p: v1_15::play_toClient_packet_world_particles::Ty,
+	p: v1_15::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_14_4::play_toClient_packet_world_particles::Ty> {
-	let (particleId, data) = particle_data(p.particleId, p.data, NEW, OLD)?;
-	Ok(v1_14_4::play_toClient_packet_world_particles::Ty {
-		particleId,
-		longDistance: p.longDistance,
+) -> Result<v1_14_4::play_to_client_packet_world_particles::Ty> {
+	let (particle_id, data) = particle_data(p.particle_id, p.data, NEW, OLD)?;
+	Ok(v1_14_4::play_to_client_packet_world_particles::Ty {
+		particle_id,
+		long_distance: p.long_distance,
 		x: p.x as f32,
 		y: p.y as f32,
 		z: p.z as f32,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
 		data,
 	})
 }
 
 fn retag(
-	tags: &mut [v1_14::play_toClient_packet_tags__blockTags__items::Ty],
+	tags: &mut [v1_14::play_to_client_packet_tags_block_tags_items::Ty],
 	f: impl Fn(i32) -> Option<i32>,
 ) {
 	for t in tags {
@@ -711,31 +711,31 @@ fn retag(
 }
 
 fn tags(
-	mut p: v1_14::play_toClient_packet_tags::Ty,
+	mut p: v1_14::play_to_client_packet_tags::Ty,
 	from: Version,
 	to: Version,
-) -> v1_14::play_toClient_packet_tags::Ty {
-	retag(&mut p.blockTags, |id| remap("blocks", from, to, id));
-	retag(&mut p.itemTags, |id| remap("items", from, to, id));
-	retag(&mut p.entityTags, |id| remap("entities", from, to, id));
+) -> v1_14::play_to_client_packet_tags::Ty {
+	retag(&mut p.block_tags, |id| remap("blocks", from, to, id));
+	retag(&mut p.item_tags, |id| remap("items", from, to, id));
+	retag(&mut p.entity_tags, |id| remap("entities", from, to, id));
 	p
 }
 
 pub fn village_tags_1_15(
-	p: v1_14_4::play_toClient_packet_tags::Ty,
+	p: v1_14_4::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<v1_15::play_toClient_packet_tags::Ty> {
+) -> Result<v1_15::play_to_client_packet_tags::Ty> {
 	Ok(tags(p, OLD, NEW))
 }
 
 pub fn village_tags_1_14_4(
-	p: v1_15::play_toClient_packet_tags::Ty,
+	p: v1_15::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<v1_14_4::play_toClient_packet_tags::Ty> {
+) -> Result<v1_14_4::play_to_client_packet_tags::Ty> {
 	Ok(tags(p, NEW, OLD))
 }
 
-type Statistic = v1_14::play_toClient_packet__statistics__items::Ty;
+type Statistic = v1_14::play_to_client_packet_statistics_items::Ty;
 
 pub fn village_statistic_1_15(s: Statistic, _cx: &mut Session) -> Result<Statistic> {
 	statistic(s, OLD, NEW, CUSTOM_STATISTICS)
@@ -746,113 +746,113 @@ pub fn village_statistic_1_14_4(s: Statistic, _cx: &mut Session) -> Result<Stati
 }
 
 pub fn village_block_change_1_15(
-	p: &v1_14_4::play_toClient_packet_block_change::Ty,
+	p: &v1_14_4::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(OLD, NEW, p.r#type))
 }
 
 pub fn village_block_change_1_14_4(
-	p: &v1_15::play_toClient_packet_block_change::Ty,
+	p: &v1_15::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(NEW, OLD, p.r#type))
 }
 
 pub fn village_multi_block_change_1_15(
-	r: &v1_14_4::play_toClient_packet_multi_block_change__records__items::Ty,
+	r: &v1_14_4::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(OLD, NEW, r.blockId))
+	Ok(state(OLD, NEW, r.block_id))
 }
 
 pub fn village_multi_block_change_1_14_4(
-	r: &v1_15::play_toClient_packet_multi_block_change__records__items::Ty,
+	r: &v1_15::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(NEW, OLD, r.blockId))
+	Ok(state(NEW, OLD, r.block_id))
 }
 
 pub fn village_digging_ack_1_15(
-	p: &v1_14_4::play_toClient_packet_acknowledge_player_digging::Ty,
+	p: &v1_14_4::play_to_client_packet_acknowledge_player_digging::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(OLD, NEW, p.block))
 }
 
 pub fn village_digging_ack_1_14_4(
-	p: &v1_15::play_toClient_packet_acknowledge_player_digging::Ty,
+	p: &v1_15::play_to_client_packet_acknowledge_player_digging::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(NEW, OLD, p.block))
 }
 
 pub fn village_block_action_1_15(
-	p: &v1_14_4::play_toClient_packet_block_action::Ty,
+	p: &v1_14_4::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("blocks", OLD, NEW, p.blockId).ok_or(Error::Dropped)
+	remap("blocks", OLD, NEW, p.block_id).ok_or(Error::Dropped)
 }
 
 pub fn village_block_action_1_14_4(
-	p: &v1_15::play_toClient_packet_block_action::Ty,
+	p: &v1_15::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("blocks", NEW, OLD, p.blockId).ok_or(Error::Dropped)
+	remap("blocks", NEW, OLD, p.block_id).ok_or(Error::Dropped)
 }
 
 pub fn village_world_event_1_15(
-	p: &v1_14_4::play_toClient_packet_world_event::Ty,
+	p: &v1_14_4::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	world_event(p.effectId, p.data, OLD, NEW)
+	world_event(p.effect_id, p.data, OLD, NEW)
 }
 
 pub fn village_world_event_1_14_4(
-	p: &v1_15::play_toClient_packet_world_event::Ty,
+	p: &v1_15::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	world_event(p.effectId, p.data, NEW, OLD)
+	world_event(p.effect_id, p.data, NEW, OLD)
 }
 
 pub fn village_sound_effect_1_15(
-	p: &v1_14_4::play_toClient_packet_sound_effect::Ty,
+	p: &v1_14_4::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", OLD, NEW, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", OLD, NEW, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_sound_effect_1_14_4(
-	p: &v1_15::play_toClient_packet_sound_effect::Ty,
+	p: &v1_15::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", NEW, OLD, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", NEW, OLD, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_entity_sound_effect_1_15(
-	p: &v1_14_4::play_toClient_packet_entity_sound_effect::Ty,
+	p: &v1_14_4::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", OLD, NEW, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", OLD, NEW, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_entity_sound_effect_1_14_4(
-	p: &v1_15::play_toClient_packet_entity_sound_effect::Ty,
+	p: &v1_15::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", NEW, OLD, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", NEW, OLD, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_set_cooldown_1_15(
-	p: &v1_14_4::play_toClient_packet_set_cooldown::Ty,
+	p: &v1_14_4::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("items", OLD, NEW, p.itemID).ok_or(Error::Dropped)
+	remap("items", OLD, NEW, p.item_id).ok_or(Error::Dropped)
 }
 
 pub fn village_set_cooldown_1_14_4(
-	p: &v1_15::play_toClient_packet_set_cooldown::Ty,
+	p: &v1_15::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("items", NEW, OLD, p.itemID).ok_or(Error::Dropped)
+	remap("items", NEW, OLD, p.item_id).ok_or(Error::Dropped)
 }

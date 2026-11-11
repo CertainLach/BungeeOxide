@@ -9,11 +9,11 @@ use bungeeoxide::{decode, encode, next, serve, Config, Conn};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::packet_name;
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, login_toClient_packet as login_c,
-	login_toClient_packet_success, login_toServer_packet as login_s,
-	play_toClient_packet as play_c, play_toClient_packet_chat, play_toClient_packet_login,
-	play_toServer_packet as play_s, status_toClient_packet as status_c,
-	status_toServer_packet as status_s,
+	handshaking_to_server_packet as handshake, login_to_client_packet as login_c,
+	login_to_client_packet_success, login_to_server_packet as login_s,
+	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
+	play_to_server_packet as play_s, status_to_client_packet as status_c,
+	status_to_server_packet as status_s,
 };
 use minecraft_versions::{index_of, Root};
 use rsa::pkcs8::DecodePublicKey;
@@ -37,8 +37,7 @@ async fn mock_server(name: &'static str, dimension: i8) -> SocketAddr {
 }
 
 async fn answer_status(mut conn: Conn, name: &str) -> Result<()> {
-	let status_s::Ty::ping_start(_) = decode(&next(&mut conn).await?, status_s::deserialize)?
-	else {
+	let status_s::Ty::PingStart(_) = decode(&next(&mut conn).await?, status_s::deserialize)? else {
 		bail!("status request");
 	};
 	let info = serde_json::json!({
@@ -47,7 +46,7 @@ async fn answer_status(mut conn: Conn, name: &str) -> Result<()> {
 		"description": { "text": "", "extra": [{ "text": "Mock ", "color": "#ff0000" }, { "text": name, "bold": true }] },
 	});
 	conn.send(encode(
-		&status_c::Ty::server_info(info.to_string()),
+		&status_c::Ty::ServerInfo(info.to_string()),
 		status_c::serialize,
 	)?)
 	.await?;
@@ -55,48 +54,48 @@ async fn answer_status(mut conn: Conn, name: &str) -> Result<()> {
 }
 
 async fn backend(mut conn: Conn, name: &str, dimension: i8) -> Result<()> {
-	let handshake::Ty::set_protocol(hs) = decode(&next(&mut conn).await?, handshake::deserialize)?
+	let handshake::Ty::SetProtocol(hs) = decode(&next(&mut conn).await?, handshake::deserialize)?
 	else {
 		bail!("handshake");
 	};
-	if hs.nextState == 1 {
+	if hs.next_state == 1 {
 		return answer_status(conn, name).await;
 	}
-	let login_s::Ty::login_start(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
+	let login_s::Ty::LoginStart(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
 	else {
 		bail!("login start");
 	};
-	let success = login_toClient_packet_success::Ty {
+	let success = login_to_client_packet_success::Ty {
 		uuid: bungeeoxide::offline_uuid(&username),
 		username,
 	};
-	conn.send(encode(&login_c::Ty::success(success), login_c::serialize)?)
+	conn.send(encode(&login_c::Ty::Success(success), login_c::serialize)?)
 		.await?;
-	let join = play_c::Ty::login(play_toClient_packet_login::Ty {
-		entityId: 7,
-		gameMode: 1,
+	let join = play_c::Ty::Login(play_to_client_packet_login::Ty {
+		entity_id: 7,
+		game_mode: 1,
 		dimension,
 		difficulty: 2,
-		maxPlayers: 20,
-		levelType: "flat".to_owned(),
-		reducedDebugInfo: false,
+		max_players: 20,
+		level_type: "flat".to_owned(),
+		reduced_debug_info: false,
 	});
 	conn.send(encode(&join, play_c::serialize)?).await?;
-	conn.send(encode(&play_c::Ty::keep_alive(1234), play_c::serialize)?)
+	conn.send(encode(&play_c::Ty::KeepAlive(1234), play_c::serialize)?)
 		.await?;
 	loop {
 		match decode(&next(&mut conn).await?, play_s::deserialize)? {
-			play_s::Ty::chat(message) if message == "bye" => return Ok(()),
-			play_s::Ty::chat(message) => {
-				let echo = play_c::Ty::chat(play_toClient_packet_chat::Ty {
+			play_s::Ty::Chat(message) if message == "bye" => return Ok(()),
+			play_s::Ty::Chat(message) => {
+				let echo = play_c::Ty::Chat(play_to_client_packet_chat::Ty {
 					message: serde_json::json!({ "text": format!("{name}: {message}") })
 						.to_string(),
 					position: 0,
 				});
 				conn.send(encode(&echo, play_c::serialize)?).await?;
 			}
-			play_s::Ty::keep_alive(id) => {
-				let echo = play_c::Ty::chat(play_toClient_packet_chat::Ty {
+			play_s::Ty::KeepAlive(id) => {
+				let echo = play_c::Ty::Chat(play_to_client_packet_chat::Ty {
 					message: serde_json::json!({ "text": format!("{name}: keep alive {id}") })
 						.to_string(),
 					position: 0,

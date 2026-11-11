@@ -19,8 +19,8 @@ use tokio::sync::{mpsc, Notify};
 use tokio::time::{sleep, MissedTickBehavior};
 use tokio_util::codec::Framed;
 
-use v1_0_1::play_toClient_packet::Ty as C;
-use v1_0_1::play_toServer_packet::Ty as S;
+use v1_0_1::play_to_client_packet::Ty as C;
+use v1_0_1::play_to_server_packet::Ty as S;
 
 const NAME: &str = "legacy_bot";
 const PROTOCOL: i32 = 22;
@@ -227,7 +227,7 @@ impl Link {
 	}
 
 	fn send(&self, packet: S) {
-		match encode(&packet, v1_0_1::play_toServer_packet::serialize) {
+		match encode(&packet, v1_0_1::play_to_server_packet::serialize) {
 			Ok(data) => {
 				let _ = self.out.send(data);
 			}
@@ -250,17 +250,17 @@ impl Link {
 
 fn map_chunk(
 	st: &mut State,
-	m: &v1_0_1::play_toClient_packet_map_chunk::Ty,
+	m: &v1_0_1::play_to_client_packet_map_chunk::Ty,
 ) -> std::result::Result<(), (&'static str, String)> {
 	let (sx, sy, sz) = (
-		usize::from(m.sizeX) + 1,
-		usize::from(m.sizeY) + 1,
-		usize::from(m.sizeZ) + 1,
+		usize::from(m.size_x) + 1,
+		usize::from(m.size_y) + 1,
+		usize::from(m.size_z) + 1,
 	);
 	let volume = sx * sy * sz;
 	let half = volume / 2;
 	let mut raw = Vec::new();
-	ZlibDecoder::new(&m.compressedChunkData[..])
+	ZlibDecoder::new(&m.compressed_chunk_data[..])
 		.read_to_end(&mut raw)
 		.map_err(|e| ("map_chunk data does not inflate", e.to_string()))?;
 	if raw.len() < volume + 3 * half {
@@ -318,7 +318,7 @@ fn map_chunk(
 fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 	let name = packet_name(Root::PlayToClient, link.version, data).unwrap_or("unknown");
 	*st.packets.entry(name).or_default() += 1;
-	let packet = match decode(data, v1_0_1::play_toClient_packet::deserialize) {
+	let packet = match decode(data, v1_0_1::play_to_client_packet::deserialize) {
 		Ok(p) => p,
 		Err(e) => {
 			link.issue(st, "undecodable packet", format!("{name}: {e:#}"));
@@ -326,21 +326,21 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 		}
 	};
 	match packet {
-		C::keep_alive(id) => link.send(S::keep_alive(id)),
-		C::login(l) => {
+		C::KeepAlive(id) => link.send(S::KeepAlive(id)),
+		C::Login(l) => {
 			st.join = Some(Join {
 				seed: l.seed,
-				mode: l.gameMode,
+				mode: l.game_mode,
 				dimension: l.dimension,
 				difficulty: l.difficulty,
-				height: l.worldHeight,
+				height: l.world_height,
 			});
 			link.log(format!(
 				"login {}",
-				json!({ "entity": l.entityId, "mode": l.gameMode, "dimension": l.dimension, "worldHeight": l.worldHeight })
+				json!({ "entity": l.entity_id, "mode": l.game_mode, "dimension": l.dimension, "worldHeight": l.world_height })
 			));
 		}
-		C::position(p) => {
+		C::Position(p) => {
 			let feet = p.y - EYES;
 			if (p.stance - feet).abs() > 0.01 {
 				link.issue(
@@ -350,47 +350,47 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 				);
 			}
 			st.moved([p.x, feet, p.z]);
-			link.send(S::position_look(
-				v1_0_1::play_toServer_packet_position_look::Ty {
+			link.send(S::PositionLook(
+				v1_0_1::play_to_server_packet_position_look::Ty {
 					x: p.x,
 					y: feet,
 					stance: p.y,
 					z: p.z,
 					yaw: p.yaw,
 					pitch: p.pitch,
-					onGround: p.onGround,
+					on_ground: p.on_ground,
 				},
 			));
 		}
-		C::position_only(p) => {
+		C::PositionOnly(p) => {
 			let feet = p.y - EYES;
 			st.moved([p.x, feet, p.z]);
-			link.send(S::position(v1_0_1::play_toServer_packet_position::Ty {
+			link.send(S::Position(v1_0_1::play_to_server_packet_position::Ty {
 				x: p.x,
 				y: feet,
 				stance: p.y,
 				z: p.z,
-				onGround: p.onGround,
+				on_ground: p.on_ground,
 			}));
 		}
-		C::look(p) => link.send(S::look(v1_0_1::play_toServer_packet_look::Ty {
+		C::Look(p) => link.send(S::Look(v1_0_1::play_to_server_packet_look::Ty {
 			yaw: p.yaw,
 			pitch: p.pitch,
-			onGround: p.onGround,
+			on_ground: p.on_ground,
 		})),
-		C::map_chunk(m) => {
+		C::MapChunk(m) => {
 			if let Err((kind, detail)) = map_chunk(st, &m) {
 				link.issue(st, kind, detail);
 			}
 		}
-		C::pre_chunk(p) => {
+		C::PreChunk(p) => {
 			if p.mode {
 				st.chunks.insert((p.x, p.z), Column::new());
 			} else {
 				st.chunks.remove(&(p.x, p.z));
 			}
 		}
-		C::block_change(b) => {
+		C::BlockChange(b) => {
 			let (x, y, z) = (b.location.x, i32::from(b.location.y), b.location.z);
 			if y >= HEIGHT {
 				link.issue(
@@ -404,12 +404,12 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 					.or_default() += 1;
 			}
 		}
-		C::multi_block_change(m) => {
+		C::MultiBlockChange(m) => {
 			for (i, c) in m.coordinates.iter().enumerate() {
 				let (x, y, z) = (
-					m.chunkX * 16 + i32::from(c.x),
+					m.chunk_x * 16 + i32::from(c.x),
 					i32::from(c.y),
-					m.chunkZ * 16 + i32::from(c.z),
+					m.chunk_z * 16 + i32::from(c.z),
 				);
 				if y >= HEIGHT {
 					link.issue(
@@ -419,7 +419,7 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 					);
 					continue;
 				}
-				let id = m.blockIds.get(i).copied().unwrap_or(0);
+				let id = m.block_ids.get(i).copied().unwrap_or(0);
 				if !st.set_block(x, y, z, id) {
 					*st.packets
 						.entry("multi_block_change outside loaded chunks")
@@ -427,7 +427,7 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 				}
 			}
 		}
-		C::update_health(h) => {
+		C::UpdateHealth(h) => {
 			if h.health <= 0 && !st.dead {
 				st.dead = true;
 				st.respawn_tries = 0;
@@ -435,7 +435,7 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 				link.send(respawn_request(st));
 			}
 		}
-		C::respawn(r) => {
+		C::Respawn(r) => {
 			let previous = st.join.map(|j| j.dimension);
 			if previous != Some(r.dimension) {
 				st.chunks.clear();
@@ -453,20 +453,20 @@ fn on_packet(link: &Link, st: &mut State, data: &[u8]) {
 			st.respawns += 1;
 			link.log(format!(
 				"respawn {}",
-				json!({ "dimension": r.dimension, "gamemode": r.gamemode, "worldHeight": r.worldHeight })
+				json!({ "dimension": r.dimension, "gamemode": r.gamemode, "worldHeight": r.world_height })
 			));
 		}
-		C::game_state_change(g) => {
-			use v1_0_1::play_toClient_packet_game_state_change__reason::Ty as Reason;
-			if matches!(g.reason, Reason::change_game_mode) {
+		C::GameStateChange(g) => {
+			use v1_0_1::play_to_client_packet_game_state_change_reason::Ty as Reason;
+			if matches!(g.reason, Reason::ChangeGameMode) {
 				if let Some(join) = st.join.as_mut() {
-					join.mode = i32::from(g.gameMode);
+					join.mode = i32::from(g.game_mode);
 				}
-				link.log(format!("game mode {}", g.gameMode));
+				link.log(format!("game mode {}", g.game_mode));
 			}
 		}
-		C::kick_disconnect(reason) => st.kicked = Some(reason),
-		C::chat(text) => link.log(format!("chat {text:?}")),
+		C::KickDisconnect(reason) => st.kicked = Some(reason),
+		C::Chat(text) => link.log(format!("chat {text:?}")),
 		_ => {}
 	}
 }
@@ -505,11 +505,11 @@ fn respawn_request(st: &mut State) -> S {
 	st.respawn_requests += 1;
 	st.respawn_tries += 1;
 	st.respawn_sent = Some(Instant::now());
-	S::respawn(v1_0_1::play_toServer_packet_respawn::Ty {
+	S::Respawn(v1_0_1::play_to_server_packet_respawn::Ty {
 		dimension: join.dimension,
 		difficulty: join.difficulty,
 		gamemode: join.mode as u8,
-		worldHeight: i16::from(join.height),
+		world_height: i16::from(join.height),
 		seed: join.seed,
 	})
 }
@@ -544,12 +544,12 @@ fn tick(link: &Link, st: &mut State) -> Option<S> {
 		fall(st);
 	}
 	let [x, y, z] = st.pos;
-	Some(S::position(v1_0_1::play_toServer_packet_position::Ty {
+	Some(S::Position(v1_0_1::play_to_server_packet_position::Ty {
 		x,
 		y,
 		stance: y + EYES,
 		z,
-		onGround: st.ground,
+		on_ground: st.ground,
 	}))
 }
 
@@ -571,9 +571,9 @@ async fn connect(address: &str, tag: String) -> Result<Arc<Link>> {
 	string16(&mut hello, NAME);
 	conn.send(hello).await?;
 	let reply = next(&mut conn).await?;
-	match decode(&reply, v1_0_1::play_toClient_packet::deserialize)? {
-		C::handshake(_) => {}
-		C::kick_disconnect(reason) => bail!("the bridge refused the handshake: {reason}"),
+	match decode(&reply, v1_0_1::play_to_client_packet::deserialize)? {
+		C::Handshake(_) => {}
+		C::KickDisconnect(reason) => bail!("the bridge refused the handshake: {reason}"),
 		_ => bail!("unexpected reply {:#04x} to the handshake", reply[0]),
 	}
 	conn.send(login_request(PROTOCOL, NAME)).await?;
@@ -1121,7 +1121,7 @@ impl Bot {
 				}
 			} else {
 				self.link
-					.send(S::block_dig(v1_0_1::play_toServer_packet_block_dig::Ty {
+					.send(S::BlockDig(v1_0_1::play_to_server_packet_block_dig::Ty {
 						status: 0,
 						location: v1_0_1::position_ibi::Ty {
 							x: bx,
@@ -1364,7 +1364,7 @@ impl Bot {
 		self.report.insert("problems".into(), json!(self.problems));
 		println!("{}", Value::Object(self.report.clone()));
 		let _ = self.cmd(&format!("gamemode creative {NAME}")).await;
-		self.link.send(S::kick_disconnect("Quitting".to_owned()));
+		self.link.send(S::KickDisconnect("Quitting".to_owned()));
 		sleep(Duration::from_millis(300)).await;
 		i32::from(!self.problems.is_empty() || !self.report.contains_key("done"))
 	}

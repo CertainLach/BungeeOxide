@@ -3,10 +3,10 @@ use crate::gen::convert::{v1_7, v1_8};
 use crate::pds::convert::Result;
 use crate::session::Kind;
 
-type M7 = v1_7::entityMetadataItem::Ty;
-type M8 = v1_8::entityMetadataItem::Ty;
-type E7 = v1_7::entityMetadata__items::Ty;
-type E8 = v1_8::entityMetadata__items::Ty;
+type M7 = v1_7::entity_metadata_item::Ty;
+type M8 = v1_8::entity_metadata_item::Ty;
+type E7 = v1_7::entity_metadata_items::Ty;
+type E8 = v1_8::entity_metadata_items::Ty;
 
 const AGEABLE: &[u8] = &[90, 91, 92, 93, 95, 96, 98, 100, 101, 120];
 
@@ -40,52 +40,52 @@ fn object_keys(ty: u8) -> &'static [u8] {
 
 fn same_down(v: M8) -> Result<Option<M7>> {
 	Ok(Some(match v {
-		M8::v0(n) => M7::v0(n),
-		M8::v1(n) => M7::v1(n),
-		M8::v2(n) => M7::v2(n),
-		M8::v3(n) => M7::v3(n),
-		M8::v4(s) => M7::v4(s),
-		M8::v5(s) => M7::v5(item::down(s)?),
-		M8::v6(p) => M7::v6(v1_7::entityMetadataItem__v6::Ty {
+		M8::V0(n) => M7::V0(n),
+		M8::V1(n) => M7::V1(n),
+		M8::V2(n) => M7::V2(n),
+		M8::V3(n) => M7::V3(n),
+		M8::V4(s) => M7::V4(s),
+		M8::V5(s) => M7::V5(item::down(s)?),
+		M8::V6(p) => M7::V6(v1_7::entity_metadata_item_v6::Ty {
 			x: p.x,
 			y: p.y,
 			z: p.z,
 		}),
-		M8::v7(_) | M8::default(_) => return Ok(None),
+		M8::V7(_) | M8::Default(_) => return Ok(None),
 	}))
 }
 
 fn same_up(v: M7) -> Result<Option<M8>> {
 	Ok(Some(match v {
-		M7::v0(n) => M8::v0(n),
-		M7::v1(n) => M8::v1(n),
-		M7::v2(n) => M8::v2(n),
-		M7::v3(n) => M8::v3(n),
-		M7::v4(s) => M8::v4(s),
-		M7::v5(s) => M8::v5(item::up(s)?),
-		M7::v6(p) => M8::v6(v1_8::entityMetadataItem__v6::Ty {
+		M7::V0(n) => M8::V0(n),
+		M7::V1(n) => M8::V1(n),
+		M7::V2(n) => M8::V2(n),
+		M7::V3(n) => M8::V3(n),
+		M7::V4(s) => M8::V4(s),
+		M7::V5(s) => M8::V5(item::up(s)?),
+		M7::V6(p) => M8::V6(v1_8::entity_metadata_item_v6::Ty {
 			x: p.x,
 			y: p.y,
 			z: p.z,
 		}),
-		M7::v7(_) | M7::default(_) => return Ok(None),
+		M7::V7(_) | M7::Default(_) => return Ok(None),
 	}))
 }
 
 fn int8(v: &M8) -> Option<i32> {
 	match v {
-		M8::v0(n) => Some(*n as i32),
-		M8::v1(n) => Some(*n as i32),
-		M8::v2(n) => Some(*n),
+		M8::V0(n) => Some(*n as i32),
+		M8::V1(n) => Some(*n as i32),
+		M8::V2(n) => Some(*n),
 		_ => None,
 	}
 }
 
 fn int7(v: &M7) -> Option<i32> {
 	match v {
-		M7::v0(n) => Some(*n as i32),
-		M7::v1(n) => Some(*n as i32),
-		M7::v2(n) => Some(*n),
+		M7::V0(n) => Some(*n as i32),
+		M7::V1(n) => Some(*n as i32),
+		M7::V2(n) => Some(*n),
 		_ => None,
 	}
 }
@@ -104,19 +104,19 @@ fn key_down(kind: Kind, key: u8, v: M8) -> Result<Option<(u8, M7)>> {
 	match (kind, key) {
 		(_, 0 | 1) => keep(key, v),
 		(Kind::Player | Kind::Mob(_), 6..=9) => keep(key, v),
-		(Kind::Player, 10) => Ok(int8(&v).map(|f| (16, M7::v0(if f & 1 != 0 { 0 } else { 2 })))),
+		(Kind::Player, 10) => Ok(int8(&v).map(|f| (16, M7::V0(if f & 1 != 0 { 0 } else { 2 })))),
 		(Kind::Player, 17 | 18) => keep(key, v),
 		(Kind::Mob(_), 2) => keep(10, v),
 		(Kind::Mob(_), 3) => keep(11, v),
-		(Kind::Mob(t), 12) if AGEABLE.contains(&t) => Ok(int8(&v).map(|n| (12, M7::v2(n)))),
+		(Kind::Mob(t), 12) if AGEABLE.contains(&t) => Ok(int8(&v).map(|n| (12, M7::V2(n)))),
 		(Kind::Mob(58), 16) => {
-			Ok(int8(&v).map(|id| (16, M7::v0(item::block_1_7(id as u16, 0).0 as i8))))
+			Ok(int8(&v).map(|id| (16, M7::V0(item::block_1_7(id as u16, 0).0 as i8))))
 		}
 		(Kind::Mob(t), k) if mob_keys(t).contains(&k) => keep(k, v),
 		(Kind::Object(71), 8) => keep(2, v),
-		(Kind::Object(71), 9) => Ok(int8(&v).map(|r| (3, M7::v0((r.rem_euclid(8) / 2) as i8)))),
+		(Kind::Object(71), 9) => Ok(int8(&v).map(|r| (3, M7::V0((r.rem_euclid(8) / 2) as i8)))),
 		(Kind::Object(2), 10) | (Kind::Object(76), 8) => keep(key, v),
-		(Kind::Object(10), 20) => Ok(int8(&v).map(|s| (20, M7::v2(block_data_1_7(s))))),
+		(Kind::Object(10), 20) => Ok(int8(&v).map(|s| (20, M7::V2(block_data_1_7(s))))),
 		(Kind::Object(t), k) if object_keys(t).contains(&k) => keep(k, v),
 		_ => Ok(None),
 	}
@@ -128,20 +128,20 @@ fn key_up(kind: Kind, key: u8, v: M7) -> Result<Option<(u8, M8)>> {
 		(_, 0 | 1) => keep(key, v),
 		(Kind::Player | Kind::Mob(_), 6..=9) => keep(key, v),
 		(Kind::Player, 16) => {
-			Ok(int7(&v).map(|f| (10, M8::v0(if f & 2 != 0 { 0x7e } else { 0x7f }))))
+			Ok(int7(&v).map(|f| (10, M8::V0(if f & 2 != 0 { 0x7e } else { 0x7f }))))
 		}
 		(Kind::Player, 17 | 18) => keep(key, v),
 		(Kind::Mob(_), 10) => keep(2, v),
 		(Kind::Mob(_), 11) => keep(3, v),
 		(Kind::Mob(t), 12) if AGEABLE.contains(&t) => {
-			Ok(int7(&v).map(|n| (12, M8::v0(n.signum() as i8))))
+			Ok(int7(&v).map(|n| (12, M8::V0(n.signum() as i8))))
 		}
-		(Kind::Mob(58), 16) => Ok(int7(&v).map(|id| (16, M8::v1(id as u8 as i16)))),
+		(Kind::Mob(58), 16) => Ok(int7(&v).map(|id| (16, M8::V1(id as u8 as i16)))),
 		(Kind::Mob(t), k) if mob_keys(t).contains(&k) => keep(k, v),
 		(Kind::Object(71), 2) => keep(8, v),
-		(Kind::Object(71), 3) => Ok(int7(&v).map(|r| (9, M8::v0((r.rem_euclid(4) * 2) as i8)))),
+		(Kind::Object(71), 3) => Ok(int7(&v).map(|r| (9, M8::V0((r.rem_euclid(4) * 2) as i8)))),
 		(Kind::Object(2), 10) | (Kind::Object(76), 8) => keep(key, v),
-		(Kind::Object(10), 20) => Ok(int7(&v).map(|d| (20, M8::v2(block_data_1_8(d))))),
+		(Kind::Object(10), 20) => Ok(int7(&v).map(|d| (20, M8::V2(block_data_1_8(d))))),
 		(Kind::Object(t), k) if object_keys(t).contains(&k) => keep(k, v),
 		_ => Ok(None),
 	}
@@ -149,38 +149,38 @@ fn key_up(kind: Kind, key: u8, v: M7) -> Result<Option<(u8, M8)>> {
 
 fn tag7(v: &M7) -> u8 {
 	match v {
-		M7::v0(_) => 0,
-		M7::v1(_) => 1,
-		M7::v2(_) => 2,
-		M7::v3(_) => 3,
-		M7::v4(_) => 4,
-		M7::v5(_) => 5,
-		M7::v6(_) => 6,
-		M7::v7(_) => 7,
-		M7::default(t) => *t,
+		M7::V0(_) => 0,
+		M7::V1(_) => 1,
+		M7::V2(_) => 2,
+		M7::V3(_) => 3,
+		M7::V4(_) => 4,
+		M7::V5(_) => 5,
+		M7::V6(_) => 6,
+		M7::V7(_) => 7,
+		M7::Default(t) => *t,
 	}
 }
 
 fn tag8(v: &M8) -> u8 {
 	match v {
-		M8::v0(_) => 0,
-		M8::v1(_) => 1,
-		M8::v2(_) => 2,
-		M8::v3(_) => 3,
-		M8::v4(_) => 4,
-		M8::v5(_) => 5,
-		M8::v6(_) => 6,
-		M8::v7(_) => 7,
-		M8::default(t) => *t,
+		M8::V0(_) => 0,
+		M8::V1(_) => 1,
+		M8::V2(_) => 2,
+		M8::V3(_) => 3,
+		M8::V4(_) => 4,
+		M8::V5(_) => 5,
+		M8::V6(_) => 6,
+		M8::V7(_) => 7,
+		M8::Default(t) => *t,
 	}
 }
 
 pub(super) fn down(kind: Kind, items: Vec<E8>) -> Result<Vec<E7>> {
 	let mut out = Vec::with_capacity(items.len());
 	for e in items {
-		if let Some((key, value)) = key_down(kind, e.ANON.key, e.value)? {
+		if let Some((key, value)) = key_down(kind, e.anon.key, e.value)? {
 			out.push(E7 {
-				ANON: v1_7::entityMetadata__items__ANON::Ty {
+				anon: v1_7::entity_metadata_items_anon::Ty {
 					r#type: tag7(&value),
 					key,
 				},
@@ -194,9 +194,9 @@ pub(super) fn down(kind: Kind, items: Vec<E8>) -> Result<Vec<E7>> {
 pub(super) fn up(kind: Kind, items: Vec<E7>) -> Result<Vec<E8>> {
 	let mut out = Vec::with_capacity(items.len());
 	for e in items {
-		if let Some((key, value)) = key_up(kind, e.ANON.key, e.value)? {
+		if let Some((key, value)) = key_up(kind, e.anon.key, e.value)? {
 			out.push(E8 {
-				ANON: v1_8::entityMetadata__items__ANON::Ty {
+				anon: v1_8::entity_metadata_items_anon::Ty {
 					r#type: tag8(&value),
 					key,
 				},
@@ -213,7 +213,7 @@ mod tests {
 
 	fn e8(key: u8, value: M8) -> E8 {
 		E8 {
-			ANON: v1_8::entityMetadata__items__ANON::Ty {
+			anon: v1_8::entity_metadata_items_anon::Ty {
 				r#type: tag8(&value),
 				key,
 			},
@@ -223,7 +223,7 @@ mod tests {
 
 	fn pairs(v: &[E7]) -> Vec<(u8, u8, M7)> {
 		v.iter()
-			.map(|e| (e.ANON.key, e.ANON.r#type, e.value.clone()))
+			.map(|e| (e.anon.key, e.anon.r#type, e.value.clone()))
 			.collect()
 	}
 
@@ -232,30 +232,30 @@ mod tests {
 		let out = down(
 			Kind::Mob(92),
 			vec![
-				e8(0, M8::v0(0)),
-				e8(2, M8::v4("Bessie".into())),
-				e8(3, M8::v0(1)),
-				e8(4, M8::v0(1)),
-				e8(12, M8::v0(-1)),
-				e8(15, M8::v0(0)),
+				e8(0, M8::V0(0)),
+				e8(2, M8::V4("Bessie".into())),
+				e8(3, M8::V0(1)),
+				e8(4, M8::V0(1)),
+				e8(12, M8::V0(-1)),
+				e8(15, M8::V0(0)),
 			],
 		)
 		.unwrap();
 		assert_eq!(
 			pairs(&out),
 			vec![
-				(0, 0, M7::v0(0)),
-				(10, 4, M7::v4("Bessie".into())),
-				(11, 0, M7::v0(1)),
-				(12, 2, M7::v2(-1))
+				(0, 0, M7::V0(0)),
+				(10, 4, M7::V4("Bessie".into())),
+				(11, 0, M7::V0(1)),
+				(12, 2, M7::V2(-1))
 			]
 		);
 		let back = up(Kind::Mob(92), out).unwrap();
 		assert_eq!(
-			back.iter().map(|e| e.ANON.key).collect::<Vec<_>>(),
+			back.iter().map(|e| e.anon.key).collect::<Vec<_>>(),
 			vec![0, 2, 3, 12]
 		);
-		assert_eq!(back[3].value, M8::v0(-1));
+		assert_eq!(back[3].value, M8::V0(-1));
 	}
 
 	#[test]
@@ -263,24 +263,24 @@ mod tests {
 		let out = down(
 			Kind::Player,
 			vec![
-				e8(10, M8::v0(0x7f)),
-				e8(16, M8::v0(0)),
-				e8(2, M8::v4("x".into())),
-				e8(17, M8::v3(2.0)),
+				e8(10, M8::V0(0x7f)),
+				e8(16, M8::V0(0)),
+				e8(2, M8::V4("x".into())),
+				e8(17, M8::V3(2.0)),
 			],
 		)
 		.unwrap();
-		assert_eq!(pairs(&out), vec![(16, 0, M7::v0(0)), (17, 3, M7::v3(2.0))]);
+		assert_eq!(pairs(&out), vec![(16, 0, M7::V0(0)), (17, 3, M7::V3(2.0))]);
 		let frame = down(
 			Kind::Object(71),
-			vec![e8(8, M8::v5(v1_8::slot::Ty::_1)), e8(9, M8::v0(6))],
+			vec![e8(8, M8::V5(v1_8::slot::Ty::_1)), e8(9, M8::V0(6))],
 		)
 		.unwrap();
 		assert_eq!(
 			pairs(&frame),
-			vec![(2, 5, M7::v5(v1_7::slot::Ty::_1)), (3, 0, M7::v0(3))]
+			vec![(2, 5, M7::V5(v1_7::slot::Ty::_1)), (3, 0, M7::V0(3))]
 		);
-		let cart = down(Kind::Object(10), vec![e8(20, M8::v2(54 | 2 << 12))]).unwrap();
-		assert_eq!(pairs(&cart), vec![(20, 2, M7::v2(54 | 2 << 16))]);
+		let cart = down(Kind::Object(10), vec![e8(20, M8::V2(54 | 2 << 12))]).unwrap();
+		assert_eq!(pairs(&cart), vec![(20, 2, M7::V2(54 | 2 << 16))]);
 	}
 }

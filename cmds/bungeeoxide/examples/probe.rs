@@ -6,9 +6,9 @@ use bungeeoxide::codec::Codec;
 use bungeeoxide::{decode, encode, next};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toServer_packet as login_s,
-	play_toClient_packet as play_c, play_toServer_packet as play_s,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_server_packet as login_s,
+	play_to_client_packet as play_c, play_to_server_packet as play_s,
 };
 use tokio::net::TcpStream;
 use tokio_util::codec::Framed;
@@ -31,22 +31,22 @@ async fn main() -> Result<()> {
 	};
 	let (host, port) = addr.rsplit_once(':').expect("host:port");
 	let mut conn = Framed::new(TcpStream::connect(&addr).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: PROTOCOL,
-		serverHost: host.to_owned(),
-		serverPort: port.parse()?,
-		nextState: 2,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: PROTOCOL,
+		server_host: host.to_owned(),
+		server_port: port.parse()?,
+		next_state: 2,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start("probe".to_owned()),
+		&login_s::Ty::LoginStart("probe".to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
 	loop {
 		match decode(&next(&mut conn).await?, login_c::deserialize)? {
-			login_c::Ty::compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
-			login_c::Ty::success(s) => {
+			login_c::Ty::Compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
+			login_c::Ty::Success(s) => {
 				println!("logged in as {} {}", s.username, s.uuid);
 				break;
 			}
@@ -66,18 +66,18 @@ async fn main() -> Result<()> {
 		}
 		match decode(&data, play_c::deserialize) {
 			Ok(packet) => {
-				if let play_c::Ty::keep_alive(id) = packet {
-					conn.send(encode(&play_s::Ty::keep_alive(id), play_s::serialize)?)
+				if let play_c::Ty::KeepAlive(id) = packet {
+					conn.send(encode(&play_s::Ty::KeepAlive(id), play_s::serialize)?)
 						.await?;
 				}
-				if let play_c::Ty::chat(c) = &packet {
+				if let play_c::Ty::Chat(c) = &packet {
 					println!("chat: {}", c.message);
 				}
-				if !greeted && matches!(packet, play_c::Ty::position(_)) {
+				if !greeted && matches!(packet, play_c::Ty::Position(_)) {
 					greeted = true;
 					for message in ["/proxy-ping", "hello from the probe"] {
 						conn.send(encode(
-							&play_s::Ty::chat(message.to_owned()),
+							&play_s::Ty::Chat(message.to_owned()),
 							play_s::serialize,
 						)?)
 						.await?;

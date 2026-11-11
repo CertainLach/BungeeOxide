@@ -620,7 +620,7 @@ pub struct Tree {
 
 impl Tree {
 	fn from_packet(sv: usize, data: &[u8]) -> Result<Self> {
-		use v26_1::play_toClient_packet::{deserialize, Ty};
+		use v26_1::play_to_client_packet::{deserialize, Ty};
 		let anchor = at("26.1");
 		let packets = if sv == anchor {
 			vec![data.to_vec()]
@@ -629,31 +629,31 @@ impl Tree {
 				.map_err(|e| anyhow!("{e}"))?
 		};
 		for packet in packets {
-			if let Ty::declare_commands(commands) = decode(&packet, deserialize)? {
+			if let Ty::DeclareCommands(commands) = decode(&packet, deserialize)? {
 				return Self::new(commands);
 			}
 		}
 		bail!("the command tree did not survive conversion to 26.1")
 	}
 
-	fn new(commands: v26_1::play_toClient_packet_declare_commands::Ty) -> Result<Self> {
-		use v26_1::command_node__extraNodeData::Ty as Data;
-		use v26_1::command_node__extraNodeData__v2__properties::Ty as P;
-		use v26_1::command_node__extraNodeData__v2__properties__brigadier_string::Ty as Mode;
-		use v26_1::command_node__redirectNode::Ty as Redirect;
+	fn new(commands: v26_1::play_to_client_packet_declare_commands::Ty) -> Result<Self> {
+		use v26_1::command_node_extra_node_data::Ty as Data;
+		use v26_1::command_node_extra_node_data_v2_properties::Ty as P;
+		use v26_1::command_node_extra_node_data_v2_properties_brigadier_string::Ty as Mode;
+		use v26_1::command_node_redirect_node::Ty as Redirect;
 		let count = commands.nodes.len();
 		let index = |i: i32| usize::try_from(i).ok().filter(|i| *i < count);
 		let mut nodes = Vec::with_capacity(count);
 		for node in commands.nodes {
-			let kind = match node.extraNodeData {
-				Data::v1(name) => Kind::Literal(name),
-				Data::v2(argument) => {
+			let kind = match node.extra_node_data {
+				Data::V1(name) => Kind::Literal(name),
+				Data::V2(argument) => {
 					let parser = match argument.properties {
-						P::minecraft_message => Parser::Message,
-						P::brigadier_string(Mode::GREEDY_PHRASE) => Parser::Greedy,
-						P::brigadier_string(Mode::QUOTABLE_PHRASE) => Parser::Quotable,
-						P::minecraft_vec3 | P::minecraft_block_pos => Parser::Words(3),
-						P::minecraft_vec2 | P::minecraft_column_pos | P::minecraft_rotation => {
+						P::MinecraftMessage => Parser::Message,
+						P::BrigadierString(Mode::GreedyPhrase) => Parser::Greedy,
+						P::BrigadierString(Mode::QuotablePhrase) => Parser::Quotable,
+						P::MinecraftVec3 | P::MinecraftBlockPos => Parser::Words(3),
+						P::MinecraftVec2 | P::MinecraftColumnPos | P::MinecraftRotation => {
 							Parser::Words(2)
 						}
 						_ => Parser::Word,
@@ -665,14 +665,14 @@ impl Tree {
 			nodes.push(Node {
 				kind,
 				children: node.children.into_iter().filter_map(index).collect(),
-				redirect: match node.redirectNode {
-					Redirect::v1(target) => index(target),
+				redirect: match node.redirect_node {
+					Redirect::V1(target) => index(target),
 					_ => None,
 				},
 			});
 		}
 		let root =
-			index(commands.rootIndex).ok_or_else(|| anyhow!("the command tree has no root"))?;
+			index(commands.root_index).ok_or_else(|| anyhow!("the command tree has no root"))?;
 		Ok(Self { nodes, root })
 	}
 

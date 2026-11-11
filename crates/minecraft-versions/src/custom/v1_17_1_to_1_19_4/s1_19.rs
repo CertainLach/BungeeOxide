@@ -3,13 +3,13 @@ use super::meta::{self, Kind, Meta, MINECARTS};
 use super::*;
 use crate::gen::convert::{v1_18_2, v1_19, v1_19_2};
 
-type Client18 = v1_18_2::play_toClient_packet::Ty;
-type Client19 = v1_19::play_toClient_packet::Ty;
-type Client192 = v1_19_2::play_toClient_packet::Ty;
-type Server18 = v1_18_2::play_toServer_packet::Ty;
-type Server19 = v1_19::play_toServer_packet::Ty;
-type Login18 = v1_18_2::login_toServer_packet::Ty;
-type Login19 = v1_19::login_toServer_packet::Ty;
+type Client18 = v1_18_2::play_to_client_packet::Ty;
+type Client19 = v1_19::play_to_client_packet::Ty;
+type Client192 = v1_19_2::play_to_client_packet::Ty;
+type Server18 = v1_18_2::play_to_server_packet::Ty;
+type Server19 = v1_19::play_to_server_packet::Ty;
+type Login18 = v1_18_2::login_to_server_packet::Ty;
+type Login19 = v1_19::login_to_server_packet::Ty;
 
 const OLD: V = V::V1_18_2;
 const NEW: V = V::V1_19;
@@ -116,10 +116,10 @@ pub(super) fn greedy_string() -> (&'static str, Vec<u8>) {
 	("brigadier:string", vec![2])
 }
 
-fn parser_down(src: &v1_19::command_node__extraNodeData__v2::Ty) -> Result<(String, Vec<u8>)> {
+fn parser_down(src: &v1_19::command_node_extra_node_data_v2::Ty) -> Result<(String, Vec<u8>)> {
 	let bytes = encode(
 		&src.properties,
-		v1_19::command_node__extraNodeData__v2__properties::serialize,
+		v1_19::command_node_extra_node_data_v2_properties::serialize,
 	)?;
 	let mut at = 0;
 	let id = read_varint(&bytes, &mut at)?;
@@ -131,19 +131,19 @@ fn parser_down(src: &v1_19::command_node__extraNodeData__v2::Ty) -> Result<(Stri
 }
 
 pub fn caves_parser_down_1_18_2(
-	src: &v1_19::command_node__extraNodeData__v2::Ty,
+	src: &v1_19::command_node_extra_node_data_v2::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(parser_down(src)?.0)
 }
 
 pub fn caves_parser_properties_down_1_18_2(
-	src: &v1_19::command_node__extraNodeData__v2::Ty,
+	src: &v1_19::command_node_extra_node_data_v2::Ty,
 	_cx: &mut Session,
-) -> Result<v1_18_2::command_node__extraNodeData__v2__properties::Ty> {
+) -> Result<v1_18_2::command_node_extra_node_data_v2_properties::Ty> {
 	let (name, payload) = parser_down(src)?;
-	let args = v1_18_2::command_node__extraNodeData__v2__properties::Args { parser: &name };
-	v1_18_2::command_node__extraNodeData__v2__properties::deserialize(
+	let args = v1_18_2::command_node_extra_node_data_v2_properties::Args { parser: &name };
+	v1_18_2::command_node_extra_node_data_v2_properties::deserialize(
 		&mut Input::new(&payload),
 		args,
 	)
@@ -151,12 +151,12 @@ pub fn caves_parser_properties_down_1_18_2(
 }
 
 pub fn caves_parser_properties_1_19(
-	src: &v1_18_2::command_node__extraNodeData__v2::Ty,
+	src: &v1_18_2::command_node_extra_node_data_v2::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19::command_node__extraNodeData__v2__properties::Ty> {
+) -> Result<v1_19::command_node_extra_node_data_v2_properties::Ty> {
 	let payload = encode(
 		&src.properties,
-		v1_18_2::command_node__extraNodeData__v2__properties::serialize,
+		v1_18_2::command_node_extra_node_data_v2_properties::serialize,
 	)?;
 	let (name, payload) = match PARSERS_1_19.contains(&src.parser.as_str()) {
 		true => (src.parser.as_str(), payload),
@@ -170,13 +170,13 @@ pub fn caves_parser_properties_1_19(
 	out.extend(payload);
 	decode(
 		&out,
-		v1_19::command_node__extraNodeData__v2__properties::deserialize,
+		v1_19::command_node_extra_node_data_v2_properties::deserialize,
 	)
 }
 
 pub fn caves_login_start_1_19(username: String, _cx: &mut Session) -> Result<Vec<Login19>> {
-	Ok(vec![Login19::login_start(
-		v1_19::login_toServer_packet_login_start::Ty {
+	Ok(vec![Login19::LoginStart(
+		v1_19::login_to_server_packet_login_start::Ty {
 			username,
 			signature: None,
 		},
@@ -184,27 +184,25 @@ pub fn caves_login_start_1_19(username: String, _cx: &mut Session) -> Result<Vec
 }
 
 pub fn caves_login_start_down_1_18_2(
-	p: v1_19::login_toServer_packet_login_start::Ty,
+	p: v1_19::login_to_server_packet_login_start::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Login18>> {
-	Ok(vec![Login18::login_start(p.username)])
+	Ok(vec![Login18::LoginStart(p.username)])
 }
 
 pub fn caves_encryption_crypto_1_19(
-	src: &v1_18_2::login_toServer_packet_encryption_begin::Ty,
+	src: &v1_18_2::login_to_server_packet_encryption_begin::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19::login_toServer_packet_encryption_begin__crypto::Ty> {
-	Ok(v1_19::login_toServer_packet_encryption_begin__crypto::Ty::r#true(src.verifyToken.clone()))
+) -> Result<v1_19::login_to_server_packet_encryption_begin_crypto::Ty> {
+	Ok(v1_19::login_to_server_packet_encryption_begin_crypto::Ty::True(src.verify_token.clone()))
 }
 
 pub fn caves_encryption_verify_token_down_1_18_2(
-	src: &v1_19::login_toServer_packet_encryption_begin::Ty,
+	src: &v1_19::login_to_server_packet_encryption_begin::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<u8>> {
 	match &src.crypto {
-		v1_19::login_toServer_packet_encryption_begin__crypto::Ty::r#true(token) => {
-			Ok(token.clone())
-		}
+		v1_19::login_to_server_packet_encryption_begin_crypto::Ty::True(token) => Ok(token.clone()),
 		_ => unconvertible(
 			"a signed nonce can't become the verify token without the server's private key",
 		),
@@ -212,11 +210,11 @@ pub fn caves_encryption_verify_token_down_1_18_2(
 }
 
 pub fn caves_chat_1_19(
-	p: v1_18_2::play_toClient_packet_chat::Ty,
+	p: v1_18_2::play_to_client_packet_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client19>> {
-	Ok(vec![Client19::system_chat(
-		v1_19::play_toClient_packet_system_chat::Ty {
+	Ok(vec![Client19::SystemChat(
+		v1_19::play_to_client_packet_system_chat::Ty {
 			content: p.message,
 			r#type: if p.position == 2 { 2 } else { 1 },
 		},
@@ -228,11 +226,11 @@ fn overlay_1_19(cx: &mut Session, ty: i32) -> bool {
 }
 
 pub fn caves_system_chat_down_1_18_2(
-	p: v1_19::play_toClient_packet_system_chat::Ty,
+	p: v1_19::play_to_client_packet_system_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client18>> {
-	Ok(vec![Client18::chat(
-		v1_18_2::play_toClient_packet_chat::Ty {
+	Ok(vec![Client18::Chat(
+		v1_18_2::play_to_client_packet_chat::Ty {
 			message: p.content,
 			position: if overlay_1_19(cx, p.r#type) { 2 } else { 1 },
 			sender: 0,
@@ -241,48 +239,48 @@ pub fn caves_system_chat_down_1_18_2(
 }
 
 pub fn caves_player_chat_down_1_18_2(
-	p: v1_19::play_toClient_packet_player_chat::Ty,
+	p: v1_19::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client18>> {
 	let content = p
-		.unsignedChatContent
+		.unsigned_chat_content
 		.as_deref()
-		.unwrap_or(&p.signedChatContent);
+		.unwrap_or(&p.signed_chat_content);
 	let (message, overlay) = chat_types::decorate(
 		cx,
 		(NEW, OLD),
 		p.r#type,
-		&p.senderName,
-		p.senderTeam.as_deref(),
+		&p.sender_name,
+		p.sender_team.as_deref(),
 		content,
 	)?;
-	Ok(vec![Client18::chat(
-		v1_18_2::play_toClient_packet_chat::Ty {
+	Ok(vec![Client18::Chat(
+		v1_18_2::play_to_client_packet_chat::Ty {
 			message,
 			position: if overlay { 2 } else { 0 },
-			sender: p.senderUuid,
+			sender: p.sender_uuid,
 		},
 	)])
 }
 
 pub fn caves_spawn_entity_living_1_19(
-	p: v1_18_2::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_18_2::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
-	world(cx).spawned(p.entityId, OLD, p.r#type);
+	world(cx).spawned(p.entity_id, OLD, p.r#type);
 	let ty = entity_type(OLD, NEW, p.r#type).ok_or(Error::Dropped)?;
-	Ok(vec![Client19::spawn_entity(
-		v1_19::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.entityUUID,
+	Ok(vec![Client19::SpawnEntity(
+		v1_19::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.entity_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			headPitch: p.headPitch,
-			objectData: 0,
+			head_pitch: p.head_pitch,
+			object_data: 0,
 			velocity: p.velocity,
 		},
 	)])
@@ -307,13 +305,13 @@ fn painting_motive_1_18_2(variant: i32) -> i32 {
 }
 
 pub fn caves_spawn_entity_painting_1_19(
-	p: v1_18_2::play_toClient_packet_spawn_entity_painting::Ty,
+	p: v1_18_2::play_to_client_packet_spawn_entity_painting::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
 	let ty = registry::names(NEW, "entities")
 		.and_then(|n| n.id("painting"))
 		.ok_or(Error::Dropped)? as i32;
-	world(cx).entities.insert(p.entityId, "painting".into());
+	world(cx).entities.insert(p.entity_id, "painting".into());
 	let data = match p.direction {
 		2 => 2,
 		0 => 3,
@@ -331,49 +329,49 @@ pub fn caves_spawn_entity_painting_1_19(
 		)],
 	);
 	Ok(vec![
-		Client19::spawn_entity(v1_19::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.entityUUID,
+		Client19::SpawnEntity(v1_19::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.entity_uuid,
 			r#type: ty,
 			x: l.x as f64 + 0.5,
 			y: l.y as f64 + 0.5,
 			z: l.z as f64 + 0.5,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: data,
+			head_pitch: 0,
+			object_data: data,
 			velocity: v1_19::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		}),
-		Client19::entity_metadata(v1_19::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
-			metadata: decode(&variant, v1_19::entityMetadata::deserialize)?,
+		Client19::EntityMetadata(v1_19::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
+			metadata: decode(&variant, v1_19::entity_metadata::deserialize)?,
 		}),
 	])
 }
 
 pub fn caves_spawn_entity_1_19(
-	p: v1_18_2::play_toClient_packet_spawn_entity::Ty,
+	p: v1_18_2::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
 	let w = world(cx);
-	w.spawned(p.entityId, OLD, p.r#type);
-	let falling = w.is(p.entityId, &["falling_block"]);
+	w.spawned(p.entity_id, OLD, p.r#type);
+	let falling = w.is(p.entity_id, &["falling_block"]);
 	let ty = entity_type(OLD, NEW, p.r#type).ok_or(Error::Dropped)?;
-	Ok(vec![Client19::spawn_entity(
-		v1_19::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.objectUUID,
+	Ok(vec![Client19::SpawnEntity(
+		v1_19::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.object_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			headPitch: p.yaw,
-			objectData: if falling {
-				state(OLD, NEW, p.objectData)
+			head_pitch: p.yaw,
+			object_data: if falling {
+				state(OLD, NEW, p.object_data)
 			} else {
-				p.objectData
+				p.object_data
 			},
 			velocity: p.velocity,
 		},
@@ -381,10 +379,10 @@ pub fn caves_spawn_entity_1_19(
 }
 
 pub fn caves_spawn_entity_down_1_18_2(
-	p: v1_19::play_toClient_packet_spawn_entity::Ty,
+	p: v1_19::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client18>> {
-	world(cx).spawned(p.entityId, NEW, p.r#type);
+	world(cx).spawned(p.entity_id, NEW, p.r#type);
 	let names = registry::names(NEW, "entities").ok_or(Error::Dropped)?;
 	let name = names.name(p.r#type as u32).ok_or(Error::Dropped)?;
 	let category = names
@@ -395,45 +393,45 @@ pub fn caves_spawn_entity_down_1_18_2(
 	let ty = entity_type(NEW, OLD, p.r#type).ok_or(Error::Dropped)?;
 	if name == "painting" {
 		world(cx).paintings.insert(
-			p.entityId,
+			p.entity_id,
 			Painting {
-				uuid: p.objectUUID,
+				uuid: p.object_uuid,
 				position: (p.x, p.y, p.z),
-				direction: p.objectData,
+				direction: p.object_data,
 			},
 		);
 		return Ok(vec![]);
 	}
 	if !matches!(category, "other" | "projectile" | "player") {
-		return Ok(vec![Client18::spawn_entity_living(
-			v1_18_2::play_toClient_packet_spawn_entity_living::Ty {
-				entityId: p.entityId,
-				entityUUID: p.objectUUID,
+		return Ok(vec![Client18::SpawnEntityLiving(
+			v1_18_2::play_to_client_packet_spawn_entity_living::Ty {
+				entity_id: p.entity_id,
+				entity_uuid: p.object_uuid,
 				r#type: ty,
 				x: p.x,
 				y: p.y,
 				z: p.z,
 				yaw: p.yaw,
 				pitch: p.pitch,
-				headPitch: p.headPitch,
+				head_pitch: p.head_pitch,
 				velocity: p.velocity,
 			},
 		)]);
 	}
-	Ok(vec![Client18::spawn_entity(
-		v1_18_2::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.objectUUID,
+	Ok(vec![Client18::SpawnEntity(
+		v1_18_2::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.object_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			objectData: if name == "falling_block" {
-				state(NEW, OLD, p.objectData)
+			object_data: if name == "falling_block" {
+				state(NEW, OLD, p.object_data)
 			} else {
-				p.objectData
+				p.object_data
 			},
 			velocity: p.velocity,
 		},
@@ -451,8 +449,8 @@ fn acknowledged(cx: &mut Session, sequence: i32) -> Result<()> {
 		return Ok(());
 	}
 	let ack = encode(
-		&Client19::acknowledge_player_digging(sequence),
-		v1_19::play_toClient_packet::serialize,
+		&Client19::AcknowledgePlayerDigging(sequence),
+		v1_19::play_to_client_packet::serialize,
 	)?;
 	cx.send(crate::gen::convert::Root::PlayToClient, NEW.index(), ack);
 	Ok(())
@@ -462,7 +460,7 @@ fn acknowledge(cx: &mut Session, mut out: Vec<Client19>, now: bool) -> Vec<Clien
 	let w = world(cx);
 	match w.ack {
 		Some((sequence, aged)) if now || aged => {
-			out.push(Client19::acknowledge_player_digging(sequence));
+			out.push(Client19::AcknowledgePlayerDigging(sequence));
 			w.ack = None;
 		}
 		Some((sequence, _)) => w.ack = Some((sequence, true)),
@@ -472,17 +470,17 @@ fn acknowledge(cx: &mut Session, mut out: Vec<Client19>, now: bool) -> Vec<Clien
 }
 
 pub fn caves_digging_ack_1_19(
-	_p: v1_18_2::play_toClient_packet_acknowledge_player_digging::Ty,
+	_p: v1_18_2::play_to_client_packet_acknowledge_player_digging::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
 	Ok(acknowledge(cx, vec![], true))
 }
 
 pub fn caves_block_change_1_19(
-	p: v1_18_2::play_toClient_packet_block_change::Ty,
+	p: v1_18_2::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
-	let packet = Client19::block_change(v1_19::play_toClient_packet_block_change::Ty {
+	let packet = Client19::BlockChange(v1_19::play_to_client_packet_block_change::Ty {
 		location: p.location,
 		r#type: state(OLD, NEW, p.r#type),
 	});
@@ -490,11 +488,11 @@ pub fn caves_block_change_1_19(
 }
 
 pub fn caves_block_change_down_1_18_2(
-	p: v1_19::play_toClient_packet_block_change::Ty,
+	p: v1_19::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client18>> {
-	Ok(vec![Client18::block_change(
-		v1_18_2::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client18::BlockChange(
+		v1_18_2::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: state(NEW, OLD, p.r#type),
 		},
@@ -510,50 +508,50 @@ pub(super) fn section_records(from: V, to: V, records: &[i64]) -> Vec<i64> {
 }
 
 pub fn caves_multi_block_change_1_19(
-	p: v1_18_2::play_toClient_packet_multi_block_change::Ty,
+	p: v1_18_2::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
-	let c = &p.chunkCoordinates;
-	let packet = Client19::multi_block_change(v1_19::play_toClient_packet_multi_block_change::Ty {
-		chunkCoordinates: v1_19::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
+	let c = &p.chunk_coordinates;
+	let packet = Client19::MultiBlockChange(v1_19::play_to_client_packet_multi_block_change::Ty {
+		chunk_coordinates: v1_19::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
 			x: c.x,
 			z: c.z,
 			y: c.y,
 		},
-		notTrustEdges: p.notTrustEdges,
+		not_trust_edges: p.not_trust_edges,
 		records: section_records(OLD, NEW, &p.records),
 	});
 	Ok(acknowledge(cx, vec![packet], true))
 }
 
 pub fn caves_multi_block_change_down_1_18_2(
-	p: v1_19::play_toClient_packet_multi_block_change::Ty,
+	p: v1_19::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client18>> {
-	let c = &p.chunkCoordinates;
-	Ok(vec![Client18::multi_block_change(
-		v1_18_2::play_toClient_packet_multi_block_change::Ty {
-			chunkCoordinates:
-				v1_18_2::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
+	let c = &p.chunk_coordinates;
+	Ok(vec![Client18::MultiBlockChange(
+		v1_18_2::play_to_client_packet_multi_block_change::Ty {
+			chunk_coordinates:
+				v1_18_2::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
 					x: c.x,
 					z: c.z,
 					y: c.y,
 				},
-			notTrustEdges: p.notTrustEdges,
+			not_trust_edges: p.not_trust_edges,
 			records: section_records(NEW, OLD, &p.records),
 		},
 	)])
 }
 
 pub fn caves_update_time_1_19(
-	p: v1_18_2::play_toClient_packet_update_time::Ty,
+	p: v1_18_2::play_to_client_packet_update_time::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
-	Ok(acknowledge(cx, vec![Client19::update_time(p)], false))
+	Ok(acknowledge(cx, vec![Client19::UpdateTime(p)], false))
 }
 
 pub fn caves_keep_alive_1_19(p: i64, cx: &mut Session) -> Result<Vec<Client19>> {
-	Ok(acknowledge(cx, vec![Client19::keep_alive(p)], false))
+	Ok(acknowledge(cx, vec![Client19::KeepAlive(p)], false))
 }
 
 pub fn caves_entity_destroy_1_19(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client19>> {
@@ -561,7 +559,7 @@ pub fn caves_entity_destroy_1_19(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<
 	for id in &ids {
 		w.entities.remove(id);
 	}
-	Ok(vec![Client19::entity_destroy(ids)])
+	Ok(vec![Client19::EntityDestroy(ids)])
 }
 
 const TAG_RENAMES_1_19: &[(&str, &str)] = &[
@@ -573,7 +571,7 @@ const TAG_RENAMES_1_19: &[(&str, &str)] = &[
 ];
 
 pub fn caves_tags_1_19(p: Tags, _cx: &mut Session) -> Result<Vec<Client19>> {
-	Ok(vec![Client19::tags(tags(
+	Ok(vec![Client19::Tags(tags(
 		OLD,
 		NEW,
 		p,
@@ -584,42 +582,42 @@ pub fn caves_tags_1_19(p: Tags, _cx: &mut Session) -> Result<Vec<Client19>> {
 
 pub fn caves_tags_down_1_18_2(p: Tags, _cx: &mut Session) -> Result<Vec<Client18>> {
 	let back: Vec<(&str, &str)> = TAG_RENAMES_1_19.iter().map(|(a, b)| (*b, *a)).collect();
-	Ok(vec![Client18::tags(tags(NEW, OLD, p, &back, &[]))])
+	Ok(vec![Client18::Tags(tags(NEW, OLD, p, &back, &[]))])
 }
 
 pub fn caves_statistics_1_19(p: Stats, _cx: &mut Session) -> Result<Vec<Client19>> {
-	Ok(vec![Client19::statistics(statistics(OLD, NEW, p))])
+	Ok(vec![Client19::Statistics(statistics(OLD, NEW, p))])
 }
 
 pub fn caves_statistics_down_1_18_2(p: Stats, _cx: &mut Session) -> Result<Vec<Client18>> {
-	Ok(vec![Client18::statistics(statistics(NEW, OLD, p))])
+	Ok(vec![Client18::Statistics(statistics(NEW, OLD, p))])
 }
 
 fn monster_spawning(c: &mut Vec<Entry>) {
 	if c.field("monster_spawn_light_level").is_none() {
-		c.put("monster_spawn_light_level", Payload::int(11));
+		c.put("monster_spawn_light_level", Payload::Int(11));
 	}
 	if c.field("monster_spawn_block_light_limit").is_none() {
-		c.put("monster_spawn_block_light_limit", Payload::int(0));
+		c.put("monster_spawn_block_light_limit", Payload::Int(0));
 	}
 }
 
 pub fn caves_codec_1_19(
-	src: &v1_18_2::play_toClient_packet_login::Ty,
+	src: &v1_18_2::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	let w = world(cx);
-	w.track_codec(&src.dimensionCodec);
+	w.track_codec(&src.dimension_codec);
 	w.track_dimension(&src.dimension);
 	w.entities.clear();
 	w.ack = None;
 	let key = w.dimension_key(&src.dimension);
-	let mut codec = src.dimensionCodec.clone();
+	let mut codec = src.dimension_codec.clone();
 	for d in registry_entries(&mut codec, "minecraft:dimension_type")
 		.into_iter()
 		.flatten()
 	{
-		if let (true, Payload::compound(own)) = (
+		if let (true, Payload::Compound(own)) = (
 			d.field("name").and_then(Payload::as_str) == Some(key.as_str()),
 			&src.dimension.value,
 		) {
@@ -634,27 +632,27 @@ pub fn caves_codec_1_19(
 }
 
 pub fn caves_codec_down_1_18_2(
-	src: &v1_19::play_toClient_packet_login::Ty,
+	src: &v1_19::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
-	chat_types::track(cx, NEW, &src.dimensionCodec);
+	chat_types::track(cx, NEW, &src.dimension_codec);
 	let w = world(cx);
-	w.track_codec(&src.dimensionCodec);
+	w.track_codec(&src.dimension_codec);
 	w.entities.clear();
 	w.paintings.clear();
-	let mut codec = src.dimensionCodec.clone();
-	if let Payload::compound(root) = &mut codec.value {
+	let mut codec = src.dimension_codec.clone();
+	if let Payload::Compound(root) = &mut codec.value {
 		root.retain(|e| e.name != "minecraft:chat_type");
 	}
 	Ok(codec)
 }
 
 pub fn caves_world_type_1_19(
-	src: &v1_18_2::play_toClient_packet_login::Ty,
+	src: &v1_18_2::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<String> {
 	let w = world(cx);
-	w.track_codec(&src.dimensionCodec);
+	w.track_codec(&src.dimension_codec);
 	Ok(w.dimension_key(&src.dimension))
 }
 
@@ -668,15 +666,15 @@ fn known_dimension(cx: &mut Session, key: &str) -> Result<Entry> {
 }
 
 pub fn caves_login_dimension_down_1_18_2(
-	src: &v1_19::play_toClient_packet_login::Ty,
+	src: &v1_19::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
-	world(cx).track_codec(&src.dimensionCodec);
-	known_dimension(cx, &src.worldType)
+	world(cx).track_codec(&src.dimension_codec);
+	known_dimension(cx, &src.world_type)
 }
 
 pub fn caves_respawn_dimension_1_19(
-	src: &v1_18_2::play_toClient_packet_respawn::Ty,
+	src: &v1_18_2::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<String> {
 	let w = world(cx);
@@ -685,32 +683,32 @@ pub fn caves_respawn_dimension_1_19(
 }
 
 pub fn caves_respawn_dimension_down_1_18_2(
-	src: &v1_19::play_toClient_packet_respawn::Ty,
+	src: &v1_19::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
 	known_dimension(cx, &src.dimension)
 }
 
 pub fn caves_map_chunk_1_19(
-	mut p: v1_18_2::play_toClient_packet_map_chunk::Ty,
+	mut p: v1_18_2::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
-) -> Result<v1_19::play_toClient_packet_map_chunk::Ty> {
-	p.chunkData = chunk::remap_states(&p.chunkData, world(cx).known_sections(), OLD, NEW)?;
+) -> Result<v1_19::play_to_client_packet_map_chunk::Ty> {
+	p.chunk_data = chunk::remap_states(&p.chunk_data, world(cx).known_sections(), OLD, NEW)?;
 	Ok(p)
 }
 
 pub fn caves_map_chunk_down_1_18_2(
-	mut p: v1_19::play_toClient_packet_map_chunk::Ty,
+	mut p: v1_19::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
-) -> Result<v1_18_2::play_toClient_packet_map_chunk::Ty> {
-	p.chunkData = chunk::remap_states(&p.chunkData, world(cx).known_sections(), NEW, OLD)?;
-	p.blockEntities = caves_chunk_entities_1_18_2(p.blockEntities);
+) -> Result<v1_18_2::play_to_client_packet_map_chunk::Ty> {
+	p.chunk_data = chunk::remap_states(&p.chunk_data, world(cx).known_sections(), NEW, OLD)?;
+	p.block_entities = caves_chunk_entities_1_18_2(p.block_entities);
 	Ok(p)
 }
 
 pub fn caves_chunk_entities_1_18_2(
-	mut list: Vec<v1_19::chunkBlockEntity::Ty>,
-) -> Vec<v1_19::chunkBlockEntity::Ty> {
+	mut list: Vec<v1_19::chunk_block_entity::Ty>,
+) -> Vec<v1_19::chunk_block_entity::Ty> {
 	list.retain(|b| block_entity_type(NEW, OLD, b.r#type).is_some());
 	list
 }
@@ -731,16 +729,19 @@ pub(super) fn minecart_block(
 }
 
 pub fn caves_metadata_1_19(
-	src: &v1_18_2::play_toClient_packet_entity_metadata::Ty,
+	src: &v1_18_2::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<v1_19::entityMetadata::Ty> {
+) -> Result<v1_19::entity_metadata::Ty> {
 	let w = world(cx);
-	let (minecart, cat) = (w.is(src.entityId, MINECARTS), w.is(src.entityId, &["cat"]));
+	let (minecart, cat) = (
+		w.is(src.entity_id, MINECARTS),
+		w.is(src.entity_id, &["cat"]),
+	);
 	let mut minecart = minecart_block(OLD, NEW, minecart);
 	let bytes = meta::convert(
 		OLD,
 		NEW,
-		&encode(&src.metadata, v1_18_2::entityMetadata::serialize)?,
+		&encode(&src.metadata, v1_18_2::entity_metadata::serialize)?,
 		|m| match (cat, m.key, m.kind) {
 			(true, 19, Kind::Int) => Ok(Some(Meta {
 				kind: Kind::Cat,
@@ -749,7 +750,7 @@ pub fn caves_metadata_1_19(
 			_ => minecart(m),
 		},
 	)?;
-	decode(&bytes, v1_19::entityMetadata::deserialize)
+	decode(&bytes, v1_19::entity_metadata::deserialize)
 }
 
 pub(super) fn dropped_keys(name: Option<&str>, keys: &[(&str, &'static [u8])]) -> &'static [u8] {
@@ -766,18 +767,18 @@ const NEW_KEYS_1_19: &[(&str, &[u8])] = &[
 ];
 
 pub fn caves_entity_metadata_down_1_18_2(
-	p: v1_19::play_toClient_packet_entity_metadata::Ty,
+	p: v1_19::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client18>> {
 	let w = world(cx);
-	let (minecart, cat) = (w.is(p.entityId, MINECARTS), w.is(p.entityId, &["cat"]));
-	let dropped = dropped_keys(w.name(p.entityId), NEW_KEYS_1_19);
+	let (minecart, cat) = (w.is(p.entity_id, MINECARTS), w.is(p.entity_id, &["cat"]));
+	let dropped = dropped_keys(w.name(p.entity_id), NEW_KEYS_1_19);
 	let mut painting = None;
 	let mut minecart = minecart_block(NEW, OLD, minecart);
 	let bytes = meta::convert(
 		NEW,
 		OLD,
-		&encode(&p.metadata, v1_19::entityMetadata::serialize)?,
+		&encode(&p.metadata, v1_19::entity_metadata::serialize)?,
 		|m| match (m.key, m.kind) {
 			(_, Kind::Painting) => {
 				painting = m.int();
@@ -796,12 +797,12 @@ pub fn caves_entity_metadata_down_1_18_2(
 	)?;
 	let mut out = Vec::new();
 	if let Some(variant) = painting {
-		if let Some(stored) = world(cx).paintings.remove(&p.entityId) {
+		if let Some(stored) = world(cx).paintings.remove(&p.entity_id) {
 			let (x, y, z) = stored.position;
-			out.push(Client18::spawn_entity_painting(
-				v1_18_2::play_toClient_packet_spawn_entity_painting::Ty {
-					entityId: p.entityId,
-					entityUUID: stored.uuid,
+			out.push(Client18::SpawnEntityPainting(
+				v1_18_2::play_to_client_packet_spawn_entity_painting::Ty {
+					entity_id: p.entity_id,
+					entity_uuid: stored.uuid,
 					title: painting_motive_1_18_2(variant),
 					location: v1_18_2::position::Ty {
 						x: x.floor() as i32,
@@ -819,11 +820,11 @@ pub fn caves_entity_metadata_down_1_18_2(
 			));
 		}
 	}
-	let metadata = decode(&bytes, v1_18_2::entityMetadata::deserialize)?;
+	let metadata = decode(&bytes, v1_18_2::entity_metadata::deserialize)?;
 	if !metadata.is_empty() || out.is_empty() {
-		out.push(Client18::entity_metadata(
-			v1_18_2::play_toClient_packet_entity_metadata::Ty {
-				entityId: p.entityId,
+		out.push(Client18::EntityMetadata(
+			v1_18_2::play_to_client_packet_entity_metadata::Ty {
+				entity_id: p.entity_id,
 				metadata,
 			},
 		));
@@ -832,65 +833,65 @@ pub fn caves_entity_metadata_down_1_18_2(
 }
 
 pub fn caves_sound_1_19(
-	src: &v1_18_2::play_toClient_packet_sound_effect::Ty,
+	src: &v1_18_2::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(OLD, NEW, src.soundId)
+	sound(OLD, NEW, src.sound_id)
 }
 
 pub fn caves_sound_down_1_18_2(
-	src: &v1_19::play_toClient_packet_sound_effect::Ty,
+	src: &v1_19::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(NEW, OLD, src.soundId)
+	sound(NEW, OLD, src.sound_id)
 }
 
 pub fn caves_entity_sound_1_19(
-	src: &v1_18_2::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_18_2::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(OLD, NEW, src.soundId)
+	sound(OLD, NEW, src.sound_id)
 }
 
 pub fn caves_entity_sound_down_1_18_2(
-	src: &v1_19::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_19::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound(NEW, OLD, src.soundId)
+	sound(NEW, OLD, src.sound_id)
 }
 
 macro_rules! player_info {
 	($name:ident, $from:ident, $to:ident $(, $field:ident: $value:expr)*) => {
 		pub fn $name(
-			v: $from::play_toClient_packet_player_info::Ty,
+			v: $from::play_to_client_packet_player_info::Ty,
 			_cx: &mut Session,
-		) -> Result<$to::play_toClient_packet_player_info::Ty> {
-			use $from::play_toClient_packet_player_info__action::Ty as A;
-			use $from::play_toClient_packet_player_info__data__items__ANON::Ty as D;
-			use $to::play_toClient_packet_player_info__action::Ty as B;
-			use $to::play_toClient_packet_player_info__data__items__ANON::Ty as E;
+		) -> Result<$to::play_to_client_packet_player_info::Ty> {
+			use $from::play_to_client_packet_player_info_action::Ty as A;
+			use $from::play_to_client_packet_player_info_data_items_anon::Ty as D;
+			use $to::play_to_client_packet_player_info_action::Ty as B;
+			use $to::play_to_client_packet_player_info_data_items_anon::Ty as E;
 			let action = |a: &A| match a {
-				A::add_player => B::add_player,
-				A::update_game_mode => B::update_game_mode,
-				A::update_latency => B::update_latency,
-				A::update_display_name => B::update_display_name,
-				A::remove_player => B::remove_player,
-				A::default(t) => B::default(*t),
+				A::AddPlayer => B::AddPlayer,
+				A::UpdateGameMode => B::UpdateGameMode,
+				A::UpdateLatency => B::UpdateLatency,
+				A::UpdateDisplayName => B::UpdateDisplayName,
+				A::RemovePlayer => B::RemovePlayer,
+				A::Default(t) => B::Default(*t),
 			};
-			Ok($to::play_toClient_packet_player_info::Ty {
+			Ok($to::play_to_client_packet_player_info::Ty {
 				action: action(&v.action),
 				data: v
 					.data
 					.into_iter()
-					.map(|d| $to::play_toClient_packet_player_info__data__items::Ty {
+					.map(|d| $to::play_to_client_packet_player_info_data_items::Ty {
 						uuid: d.uuid,
-						ANON: match d.ANON {
-							D::add_player(p) => E::add_player($to::play_toClient_packet_player_info__data__items__ANON__add_player::Ty {
+						anon: match d.anon {
+							D::AddPlayer(p) => E::AddPlayer($to::play_to_client_packet_player_info_data_items_anon_add_player::Ty {
 								name: p.name,
 								properties: p
 									.properties
 									.into_iter()
-									.map(|x| $to::play_toClient_packet_player_info__data__items__ANON__add_player__properties__items::Ty {
+									.map(|x| $to::play_to_client_packet_player_info_data_items_anon_add_player_properties_items::Ty {
 										name: x.name,
 										value: x.value,
 										signature: x.signature,
@@ -898,14 +899,14 @@ macro_rules! player_info {
 									.collect(),
 								gamemode: p.gamemode,
 								ping: p.ping,
-								displayName: p.displayName,
+								display_name: p.display_name,
 								$($field: $value,)*
 							}),
-							D::remove_player => E::remove_player,
-							D::update_display_name(n) => E::update_display_name(n),
-							D::update_game_mode(g) => E::update_game_mode(g),
-							D::update_latency(l) => E::update_latency(l),
-							D::default(t) => E::default(action(&t)),
+							D::RemovePlayer => E::RemovePlayer,
+							D::UpdateDisplayName(n) => E::UpdateDisplayName(n),
+							D::UpdateGameMode(g) => E::UpdateGameMode(g),
+							D::UpdateLatency(l) => E::UpdateLatency(l),
+							D::Default(t) => E::Default(action(&t)),
 						},
 					})
 					.collect(),
@@ -918,21 +919,21 @@ player_info!(caves_player_info_1_19, v1_18_2, v1_19, crypto: None);
 player_info!(caves_player_info_down_1_18_2, v1_19, v1_18_2);
 
 pub fn caves_trade_second_input_1_19(
-	src: &v1_18_2::play_toClient_packet_trade_list__trades__items::Ty,
+	src: &v1_18_2::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
 ) -> Result<Slot> {
 	Ok(src
-		.inputItem2
+		.input_item2
 		.clone()
-		.map_or(Slot::r#false, |s| slot(OLD, NEW, s)))
+		.map_or(Slot::False, |s| slot(OLD, NEW, s)))
 }
 
 pub fn caves_trade_second_input_down_1_18_2(
-	src: &v1_19::play_toClient_packet_trade_list__trades__items::Ty,
+	src: &v1_19::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<Slot>> {
-	Ok(match slot(NEW, OLD, src.inputItem2.clone()) {
-		Slot::r#false => None,
+	Ok(match slot(NEW, OLD, src.input_item2.clone()) {
+		Slot::False => None,
 		s => Some(s),
 	})
 }
@@ -940,28 +941,28 @@ pub fn caves_trade_second_input_down_1_18_2(
 macro_rules! world_particles {
 	($name:ident, $from:ident, $to:ident, $a:expr, $b:expr) => {
 		pub fn $name(
-			v: $from::play_toClient_packet_world_particles::Ty,
+			v: $from::play_to_client_packet_world_particles::Ty,
 			_cx: &mut Session,
-		) -> Result<$to::play_toClient_packet_world_particles::Ty> {
-			let data = encode(&v.data, $from::particleData::serialize)?;
-			let Some((id, data)) = particle_data($a, $b, v.particleId as i32, &data)? else {
+		) -> Result<$to::play_to_client_packet_world_particles::Ty> {
+			let data = encode(&v.data, $from::particle_data::serialize)?;
+			let Some((id, data)) = particle_data($a, $b, v.particle_id as i32, &data)? else {
 				return Err(Error::Dropped);
 			};
-			let args = $to::particleData::Args {
-				compareTo: &(id as _),
+			let args = $to::particle_data::Args {
+				compare_to: &(id as _),
 			};
 			let data =
-				$to::particleData::deserialize(&mut Input::new(&data), args).map_err(encoding)?;
-			Ok($to::play_toClient_packet_world_particles::Ty {
-				particleId: id as _,
-				longDistance: v.longDistance,
+				$to::particle_data::deserialize(&mut Input::new(&data), args).map_err(encoding)?;
+			Ok($to::play_to_client_packet_world_particles::Ty {
+				particle_id: id as _,
+				long_distance: v.long_distance,
 				x: v.x,
 				y: v.y,
 				z: v.z,
-				offsetX: v.offsetX,
-				offsetY: v.offsetY,
-				offsetZ: v.offsetZ,
-				particleData: v.particleData,
+				offset_x: v.offset_x,
+				offset_y: v.offset_y,
+				offset_z: v.offset_z,
+				particle_data: v.particle_data,
 				particles: v.particles,
 				data,
 			})
@@ -983,45 +984,45 @@ pub(super) fn world_event(from: V, to: V, effect: i32, data: i32) -> i32 {
 }
 
 pub fn caves_world_event_data_1_19(
-	src: &v1_18_2::play_toClient_packet_world_event::Ty,
+	src: &v1_18_2::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(world_event(OLD, NEW, src.effectId, src.data))
+	Ok(world_event(OLD, NEW, src.effect_id, src.data))
 }
 
 pub fn caves_world_event_data_down_1_18_2(
-	src: &v1_19::play_toClient_packet_world_event::Ty,
+	src: &v1_19::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(world_event(NEW, OLD, src.effectId, src.data))
+	Ok(world_event(NEW, OLD, src.effect_id, src.data))
 }
 
 pub fn caves_block_action_id_1_19(
-	src: &v1_18_2::play_toClient_packet_block_action::Ty,
+	src: &v1_18_2::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	block(OLD, NEW, src.blockId).ok_or(Error::Dropped)
+	block(OLD, NEW, src.block_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_block_action_id_down_1_18_2(
-	src: &v1_19::play_toClient_packet_block_action::Ty,
+	src: &v1_19::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	block(NEW, OLD, src.blockId).ok_or(Error::Dropped)
+	block(NEW, OLD, src.block_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_cooldown_item_1_19(
-	src: &v1_18_2::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_18_2::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(OLD, NEW, src.itemID).ok_or(Error::Dropped)
+	item(OLD, NEW, src.item_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_cooldown_item_down_1_18_2(
-	src: &v1_19::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_19::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(NEW, OLD, src.itemID).ok_or(Error::Dropped)
+	item(NEW, OLD, src.item_id).ok_or(Error::Dropped)
 }
 
 pub(super) fn now_millis() -> i64 {
@@ -1032,35 +1033,35 @@ pub(super) fn now_millis() -> i64 {
 
 pub fn caves_chat_input_1_19(message: String, _cx: &mut Session) -> Result<Vec<Server19>> {
 	Ok(vec![match message.strip_prefix('/') {
-		Some(command) => Server19::chat_command(v1_19::play_toServer_packet_chat_command::Ty {
+		Some(command) => Server19::ChatCommand(v1_19::play_to_server_packet_chat_command::Ty {
 			command: command.to_owned(),
 			timestamp: now_millis(),
 			salt: 0,
-			argumentSignatures: vec![],
-			signedPreview: false,
+			argument_signatures: vec![],
+			signed_preview: false,
 		}),
-		None => Server19::chat_message(v1_19::play_toServer_packet_chat_message::Ty {
+		None => Server19::ChatMessage(v1_19::play_to_server_packet_chat_message::Ty {
 			message,
 			timestamp: now_millis(),
 			salt: 0,
 			signature: vec![],
-			signedPreview: false,
+			signed_preview: false,
 		}),
 	}])
 }
 
 pub fn caves_chat_command_down_1_18_2(
-	p: v1_19::play_toServer_packet_chat_command::Ty,
+	p: v1_19::play_to_server_packet_chat_command::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server18>> {
-	Ok(vec![Server18::chat(format!("/{}", p.command))])
+	Ok(vec![Server18::Chat(format!("/{}", p.command))])
 }
 
 pub fn caves_chat_message_down_1_18_2(
-	p: v1_19::play_toServer_packet_chat_message::Ty,
+	p: v1_19::play_to_server_packet_chat_message::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server18>> {
-	Ok(vec![Server18::chat(p.message)])
+	Ok(vec![Server18::Chat(p.message)])
 }
 
 pub fn caves_sequence_1_19<S>(_src: &S, cx: &mut Session) -> Result<i32> {
@@ -1071,29 +1072,29 @@ pub fn caves_sequence_1_19<S>(_src: &S, cx: &mut Session) -> Result<i32> {
 
 pub fn caves_use_item_1_19(hand: i32, cx: &mut Session) -> Result<Vec<Server19>> {
 	let sequence = caves_sequence_1_19(&(), cx)?;
-	Ok(vec![Server19::use_item(
-		v1_19::play_toServer_packet_use_item::Ty { hand, sequence },
+	Ok(vec![Server19::UseItem(
+		v1_19::play_to_server_packet_use_item::Ty { hand, sequence },
 	)])
 }
 
 pub fn caves_use_item_down_1_18_2(
-	p: v1_19::play_toServer_packet_use_item::Ty,
+	p: v1_19::play_to_server_packet_use_item::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server18>> {
 	acknowledged(cx, p.sequence)?;
-	Ok(vec![Server18::use_item(p.hand)])
+	Ok(vec![Server18::UseItem(p.hand)])
 }
 
 pub fn caves_block_dig_down_1_18_2(
-	p: v1_19::play_toServer_packet_block_dig::Ty,
+	p: v1_19::play_to_server_packet_block_dig::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server18>> {
 	match p.status {
 		0..=2 => requested(cx, p.sequence),
 		_ => acknowledged(cx, p.sequence)?,
 	}
-	Ok(vec![Server18::block_dig(
-		v1_18_2::play_toServer_packet_block_dig::Ty {
+	Ok(vec![Server18::BlockDig(
+		v1_18_2::play_to_server_packet_block_dig::Ty {
 			status: p.status,
 			location: p.location,
 			face: p.face,
@@ -1102,85 +1103,85 @@ pub fn caves_block_dig_down_1_18_2(
 }
 
 pub fn caves_block_place_down_1_18_2(
-	p: v1_19::play_toServer_packet_block_place::Ty,
+	p: v1_19::play_to_server_packet_block_place::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server18>> {
 	requested(cx, p.sequence);
-	Ok(vec![Server18::block_place(
-		v1_18_2::play_toServer_packet_block_place::Ty {
+	Ok(vec![Server18::BlockPlace(
+		v1_18_2::play_to_server_packet_block_place::Ty {
 			hand: p.hand,
 			location: p.location,
 			direction: p.direction,
-			cursorX: p.cursorX,
-			cursorY: p.cursorY,
-			cursorZ: p.cursorZ,
-			insideBlock: p.insideBlock,
+			cursor_x: p.cursor_x,
+			cursor_y: p.cursor_y,
+			cursor_z: p.cursor_z,
+			inside_block: p.inside_block,
 		},
 	)])
 }
 
 pub fn caves_beacon_1_19(
-	v: v1_18_2::play_toServer_packet_set_beacon_effect::Ty,
+	v: v1_18_2::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19::play_toServer_packet_set_beacon_effect::Ty> {
-	Ok(v1_19::play_toServer_packet_set_beacon_effect::Ty {
+) -> Result<v1_19::play_to_server_packet_set_beacon_effect::Ty> {
+	Ok(v1_19::play_to_server_packet_set_beacon_effect::Ty {
 		primary_effect: (v.primary_effect >= 0).then_some(v.primary_effect),
 		secondary_effect: (v.secondary_effect >= 0).then_some(v.secondary_effect),
 	})
 }
 
 pub fn caves_beacon_down_1_18_2(
-	v: v1_19::play_toServer_packet_set_beacon_effect::Ty,
+	v: v1_19::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_18_2::play_toServer_packet_set_beacon_effect::Ty> {
-	Ok(v1_18_2::play_toServer_packet_set_beacon_effect::Ty {
+) -> Result<v1_18_2::play_to_server_packet_set_beacon_effect::Ty> {
+	Ok(v1_18_2::play_to_server_packet_set_beacon_effect::Ty {
 		primary_effect: v.primary_effect.unwrap_or(-1),
 		secondary_effect: v.secondary_effect.unwrap_or(-1),
 	})
 }
 
 pub fn caves_player_chat_1_19_2(
-	p: v1_19::play_toClient_packet_player_chat::Ty,
+	p: v1_19::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client192>> {
 	let content = p
-		.unsignedChatContent
+		.unsigned_chat_content
 		.as_deref()
-		.unwrap_or(&p.signedChatContent);
-	let (content, isActionBar) = chat_types::decorate(
+		.unwrap_or(&p.signed_chat_content);
+	let (content, is_action_bar) = chat_types::decorate(
 		cx,
 		(NEW, NEWER),
 		p.r#type,
-		&p.senderName,
-		p.senderTeam.as_deref(),
+		&p.sender_name,
+		p.sender_team.as_deref(),
 		content,
 	)?;
-	Ok(vec![Client192::system_chat(
-		v1_19_2::play_toClient_packet_system_chat::Ty {
+	Ok(vec![Client192::SystemChat(
+		v1_19_2::play_to_client_packet_system_chat::Ty {
 			content,
-			isActionBar,
+			is_action_bar,
 		},
 	)])
 }
 
 pub fn caves_player_chat_down_1_19(
-	p: v1_19_2::play_toClient_packet_player_chat::Ty,
+	p: v1_19_2::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client19>> {
 	let content = p
-		.unsignedChatContent
-		.or(p.formattedMessage)
-		.unwrap_or_else(|| chat_text(&p.plainMessage));
+		.unsigned_chat_content
+		.or(p.formatted_message)
+		.unwrap_or_else(|| chat_text(&p.plain_message));
 	let (content, overlay) = chat_types::decorate(
 		cx,
 		(NEWER, NEW),
 		p.r#type,
-		&p.networkName,
-		p.networkTargetName.as_deref(),
+		&p.network_name,
+		p.network_target_name.as_deref(),
 		&content,
 	)?;
-	Ok(vec![Client19::system_chat(
-		v1_19::play_toClient_packet_system_chat::Ty {
+	Ok(vec![Client19::SystemChat(
+		v1_19::play_to_client_packet_system_chat::Ty {
 			content,
 			r#type: if overlay { 2 } else { 1 },
 		},
@@ -1188,49 +1189,49 @@ pub fn caves_player_chat_down_1_19(
 }
 
 pub fn caves_action_bar_1_19_2(
-	src: &v1_19::play_toClient_packet_system_chat::Ty,
+	src: &v1_19::play_to_client_packet_system_chat::Ty,
 	cx: &mut Session,
 ) -> Result<bool> {
 	Ok(overlay_1_19(cx, src.r#type))
 }
 
 pub fn caves_system_chat_type_down_1_19(
-	src: &v1_19_2::play_toClient_packet_system_chat::Ty,
+	src: &v1_19_2::play_to_client_packet_system_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(if src.isActionBar { 2 } else { 1 })
+	Ok(if src.is_action_bar { 2 } else { 1 })
 }
 
 pub fn caves_codec_1_19_2(
-	src: &v1_19::play_toClient_packet_login::Ty,
+	src: &v1_19::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
-	chat_types::track(cx, NEW, &src.dimensionCodec);
-	let mut codec = src.dimensionCodec.clone();
+	chat_types::track(cx, NEW, &src.dimension_codec);
+	let mut codec = src.dimension_codec.clone();
 	put_registry(&mut codec, NEWER, "minecraft:chat_type")?;
 	Ok(codec)
 }
 
 pub fn caves_codec_down_1_19(
-	src: &v1_19_2::play_toClient_packet_login::Ty,
+	src: &v1_19_2::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Entry> {
-	chat_types::track(cx, NEWER, &src.dimensionCodec);
-	let mut codec = src.dimensionCodec.clone();
+	chat_types::track(cx, NEWER, &src.dimension_codec);
+	let mut codec = src.dimension_codec.clone();
 	put_registry(&mut codec, NEW, "minecraft:chat_type")?;
 	Ok(codec)
 }
 
 pub fn caves_metadata_down_1_19(
-	src: &v1_19_2::play_toClient_packet_entity_metadata::Ty,
+	src: &v1_19_2::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<v1_19::entityMetadata::Ty> {
-	let dropped = dropped_keys(world(cx).name(src.entityId), &[("allay", &[16, 17])]);
+) -> Result<v1_19::entity_metadata::Ty> {
+	let dropped = dropped_keys(world(cx).name(src.entity_id), &[("allay", &[16, 17])]);
 	let bytes = meta::convert(
 		NEWER,
 		NEW,
-		&encode(&src.metadata, v1_19_2::entityMetadata::serialize)?,
+		&encode(&src.metadata, v1_19_2::entity_metadata::serialize)?,
 		|m| Ok((!dropped.contains(&m.key)).then_some(m)),
 	)?;
-	decode(&bytes, v1_19::entityMetadata::deserialize)
+	decode(&bytes, v1_19::entity_metadata::deserialize)
 }

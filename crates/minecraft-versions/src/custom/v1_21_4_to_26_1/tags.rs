@@ -1,8 +1,8 @@
 use super::util::remap;
-use crate::gen::convert::v1_21_5::configuration_toClient_packet__tags__items__tags__items as tag;
+use crate::gen::convert::v1_21_5::configuration_to_client_packet_tags_items_tags_items as tag;
 use crate::gen::convert::v1_21_5::{
-	configuration_toClient_packet__tags__items as config_tags,
-	play_toClient_packet__tags__items as play_tags,
+	configuration_to_client_packet_tags_items as config_tags,
+	play_to_client_packet_tags_items as play_tags,
 };
 use crate::gen::convert::Version;
 
@@ -42,13 +42,13 @@ fn convert(
 	let short = registry.strip_prefix("minecraft:").unwrap_or(registry);
 	tags.into_iter()
 		.map(|t| {
-			let bare = t.tagName.strip_prefix("minecraft:").unwrap_or(&t.tagName);
-			let tagName = match renames
+			let bare = t.tag_name.strip_prefix("minecraft:").unwrap_or(&t.tag_name);
+			let tag_name = match renames
 				.iter()
 				.find(|(r, old, _)| *r == short && *old == bare)
 			{
 				Some((_, _, new)) => format!("minecraft:{new}"),
-				None => t.tagName,
+				None => t.tag_name,
 			};
 			let entries = match kind {
 				Some(k) => t
@@ -58,7 +58,7 @@ fn convert(
 					.collect(),
 				None => t.entries,
 			};
-			tag::Ty { tagName, entries }
+			tag::Ty { tag_name, entries }
 		})
 		.collect()
 }
@@ -70,10 +70,10 @@ pub fn config(
 	v: Vec<config_tags::Ty>,
 ) -> Vec<config_tags::Ty> {
 	v.into_iter()
-		.filter(|r| known(to, &r.tagType))
+		.filter(|r| known(to, &r.tag_type))
 		.map(|r| config_tags::Ty {
-			tags: convert(from, to, &r.tagType, renames, r.tags),
-			tagType: r.tagType,
+			tags: convert(from, to, &r.tag_type, renames, r.tags),
+			tag_type: r.tag_type,
 		})
 		.collect()
 }
@@ -85,10 +85,10 @@ pub fn play(
 	v: Vec<play_tags::Ty>,
 ) -> Vec<play_tags::Ty> {
 	v.into_iter()
-		.filter(|r| known(to, &r.tagType))
+		.filter(|r| known(to, &r.tag_type))
 		.map(|r| play_tags::Ty {
-			tags: convert(from, to, &r.tagType, renames, r.tags),
-			tagType: r.tagType,
+			tags: convert(from, to, &r.tag_type, renames, r.tags),
+			tag_type: r.tag_type,
 		})
 		.collect()
 }

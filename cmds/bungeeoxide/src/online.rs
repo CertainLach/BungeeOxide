@@ -2,9 +2,9 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Context as _, Result};
 use minecraft_versions::gen::convert::v26_1::{
-	login_toClient_packet_encryption_begin as begin, login_toClient_packet_success as success,
-	login_toServer_packet as login_s, login_toServer_packet_encryption_begin as response,
-	login_toServer_packet_login_start,
+	login_to_client_packet_encryption_begin as begin, login_to_client_packet_success as success,
+	login_to_server_packet as login_s, login_to_server_packet_encryption_begin as response,
+	login_to_server_packet_login_start,
 };
 use minecraft_versions::gen::convert::{v1_19, v1_19_2};
 use minecraft_versions::{Root, VERSIONS};
@@ -100,40 +100,40 @@ impl Online {
 		{
 			self.signed_start = true;
 			let data = if sv < at("1.19.2") {
-				let start = v1_19::login_toServer_packet::Ty::login_start(
-					v1_19::login_toServer_packet_login_start::Ty {
+				let start = v1_19::login_to_server_packet::Ty::LoginStart(
+					v1_19::login_to_server_packet_login_start::Ty {
 						username: name,
 						signature: Some(
-							v1_19::login_toServer_packet_login_start__signature__items::Ty {
+							v1_19::login_to_server_packet_login_start_signature_items::Ty {
 								timestamp: keys.expires_at,
-								publicKey: keys.public.clone(),
+								public_key: keys.public.clone(),
 								signature: keys.legacy_signature.clone(),
 							},
 						),
 					},
 				);
-				encode(&start, v1_19::login_toServer_packet::serialize)?
+				encode(&start, v1_19::login_to_server_packet::serialize)?
 			} else {
-				let start = v1_19_2::login_toServer_packet::Ty::login_start(
-					v1_19_2::login_toServer_packet_login_start::Ty {
+				let start = v1_19_2::login_to_server_packet::Ty::LoginStart(
+					v1_19_2::login_to_server_packet_login_start::Ty {
 						username: name,
 						signature: Some(
-							v1_19_2::login_toServer_packet_login_start__signature__items::Ty {
+							v1_19_2::login_to_server_packet_login_start_signature_items::Ty {
 								timestamp: keys.expires_at,
-								publicKey: keys.public.clone(),
+								public_key: keys.public.clone(),
 								signature: keys.signature.clone(),
 							},
 						),
-						playerUUID: Some(uuid),
+						player_uuid: Some(uuid),
 					},
 				);
-				encode(&start, v1_19_2::login_toServer_packet::serialize)?
+				encode(&start, v1_19_2::login_to_server_packet::serialize)?
 			};
 			return Ok((sv, data));
 		}
-		let start = login_s::Ty::login_start(login_toServer_packet_login_start::Ty {
+		let start = login_s::Ty::LoginStart(login_to_server_packet_login_start::Ty {
 			username: name,
-			playerUUID: uuid,
+			player_uuid: uuid,
 		});
 		Ok((pivot(), encode(&start, login_s::serialize)?))
 	}
@@ -180,9 +180,9 @@ impl Online {
 
 pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Result<()> {
 	let key =
-		RsaPublicKey::from_public_key_der(&request.publicKey).context("reading the server key")?;
+		RsaPublicKey::from_public_key_der(&request.public_key).context("reading the server key")?;
 	let secret: [u8; 16] = rand::random();
-	if request.shouldAuthenticate {
+	if request.should_authenticate {
 		let Some(account) = p.online.account.clone() else {
 			bail!("the server is in online mode, map {username} to an account with --accounts or set online-mode=false");
 		};
@@ -191,7 +191,7 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 			.credentials
 			.clone()
 			.ok_or_else(|| anyhow!("no credentials for {username}"))?;
-		let hash = auth::server_hash(&request.serverId, &secret, &request.publicKey);
+		let hash = auth::server_hash(&request.server_id, &secret, &request.public_key);
 		let credentials = blocking(move || account.join(&credentials, &hash)).await?;
 		p.online.credentials = Some(credentials);
 	}
@@ -202,26 +202,26 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 	let (from, data) = match signer {
 		Some(keys) => {
 			let salt: i64 = rand::random();
-			let mut nonce = request.verifyToken.clone();
+			let mut nonce = request.verify_token.clone();
 			nonce.extend_from_slice(&salt.to_be_bytes());
-			let reply = v1_19::login_toServer_packet_encryption_begin::Ty {
-				sharedSecret: shared,
-				crypto: v1_19::login_toServer_packet_encryption_begin__crypto::Ty::r#false(
-					v1_19::login_toServer_packet_encryption_begin__crypto__false::Ty {
+			let reply = v1_19::login_to_server_packet_encryption_begin::Ty {
+				shared_secret: shared,
+				crypto: v1_19::login_to_server_packet_encryption_begin_crypto::Ty::False(
+					v1_19::login_to_server_packet_encryption_begin_crypto_false::Ty {
 						salt,
-						messageSignature: keys.sign(&nonce)?,
+						message_signature: keys.sign(&nonce)?,
 					},
 				),
 			};
 			let data = if p.sv < at("1.19.2") {
 				encode(
-					&v1_19::login_toServer_packet::Ty::encryption_begin(reply),
-					v1_19::login_toServer_packet::serialize,
+					&v1_19::login_to_server_packet::Ty::EncryptionBegin(reply),
+					v1_19::login_to_server_packet::serialize,
 				)?
 			} else {
 				encode(
-					&v1_19_2::login_toServer_packet::Ty::encryption_begin(reply),
-					v1_19_2::login_toServer_packet::serialize,
+					&v1_19_2::login_to_server_packet::Ty::EncryptionBegin(reply),
+					v1_19_2::login_to_server_packet::serialize,
 				)?
 			};
 			(p.sv, data)
@@ -231,12 +231,12 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 				.encrypt(
 					&mut rand::thread_rng(),
 					Pkcs1v15Encrypt,
-					&request.verifyToken,
+					&request.verify_token,
 				)
 				.context("encrypting the verify token")?;
-			let reply = login_s::Ty::encryption_begin(response::Ty {
-				sharedSecret: shared,
-				verifyToken: token,
+			let reply = login_s::Ty::EncryptionBegin(response::Ty {
+				shared_secret: shared,
+				verify_token: token,
 			});
 			(pivot(), encode(&reply, login_s::serialize)?)
 		}
@@ -255,9 +255,9 @@ mod tests {
 
 	#[test]
 	fn verify_token_responses_reach_signing_versions_unsigned() {
-		let reply = login_s::Ty::encryption_begin(response::Ty {
-			sharedSecret: vec![1, 2],
-			verifyToken: vec![3, 4],
+		let reply = login_s::Ty::EncryptionBegin(response::Ty {
+			shared_secret: vec![1, 2],
+			verify_token: vec![3, 4],
 		});
 		let data = encode(&reply, login_s::serialize).unwrap();
 		for (version, signed) in [("1.19", false), ("1.19.2", true)] {
@@ -273,23 +273,23 @@ mod tests {
 				panic!("{version}: {out:?}")
 			};
 			let begin = if signed {
-				let v1_19_2::login_toServer_packet::Ty::encryption_begin(b) =
-					decode(packet, v1_19_2::login_toServer_packet::deserialize).unwrap()
+				let v1_19_2::login_to_server_packet::Ty::EncryptionBegin(b) =
+					decode(packet, v1_19_2::login_to_server_packet::deserialize).unwrap()
 				else {
 					panic!()
 				};
 				b
 			} else {
-				let v1_19::login_toServer_packet::Ty::encryption_begin(b) =
-					decode(packet, v1_19::login_toServer_packet::deserialize).unwrap()
+				let v1_19::login_to_server_packet::Ty::EncryptionBegin(b) =
+					decode(packet, v1_19::login_to_server_packet::deserialize).unwrap()
 				else {
 					panic!()
 				};
 				b
 			};
-			assert_eq!(begin.sharedSecret, vec![1, 2], "{version}");
+			assert_eq!(begin.shared_secret, vec![1, 2], "{version}");
 			assert!(
-				matches!(begin.crypto, v1_19::login_toServer_packet_encryption_begin__crypto::Ty::r#true(ref t) if *t == vec![3, 4]),
+				matches!(begin.crypto, v1_19::login_to_server_packet_encryption_begin_crypto::Ty::True(ref t) if *t == vec![3, 4]),
 				"{version}: {:?}",
 				begin.crypto
 			);

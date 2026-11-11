@@ -8,10 +8,10 @@ use crate::gen::convert::{v1_12_2 as a, v1_13 as b};
 use crate::pds::convert::{Error, Result};
 use crate::session::Session;
 
-type M12 = a::entityMetadataItem::Ty;
-type M13 = b::entityMetadataItem::Ty;
-type Meta12 = a::entityMetadata::Ty;
-type Meta13 = b::entityMetadata::Ty;
+type M12 = a::entity_metadata_item::Ty;
+type M13 = b::entity_metadata_item::Ty;
+type Meta12 = a::entity_metadata::Ty;
+type Meta13 = b::entity_metadata::Ty;
 
 pub(super) const MOBS: &[(i32, &str, i32)] = &[
 	(1, "item", 32),
@@ -212,56 +212,56 @@ fn remember_flat(cx: &mut Session, id: i32, k: Kind) {
 
 fn type_13(v: &M13) -> i32 {
 	match v {
-		M13::v0(_) => 0,
-		M13::v1(_) => 1,
-		M13::v2(_) => 2,
-		M13::v3(_) => 3,
-		M13::v4(_) => 4,
-		M13::v5(_) => 5,
-		M13::v6(_) => 6,
-		M13::v7(_) => 7,
-		M13::v8(_) => 8,
-		M13::v9(_) => 9,
-		M13::v10(_) => 10,
-		M13::v11(_) => 11,
-		M13::v12(_) => 12,
-		M13::v13(_) => 13,
-		M13::v14(_) => 14,
-		M13::v15(_) => 15,
-		M13::default(t) => *t,
+		M13::V0(_) => 0,
+		M13::V1(_) => 1,
+		M13::V2(_) => 2,
+		M13::V3(_) => 3,
+		M13::V4(_) => 4,
+		M13::V5(_) => 5,
+		M13::V6(_) => 6,
+		M13::V7(_) => 7,
+		M13::V8(_) => 8,
+		M13::V9(_) => 9,
+		M13::V10(_) => 10,
+		M13::V11(_) => 11,
+		M13::V12(_) => 12,
+		M13::V13(_) => 13,
+		M13::V14(_) => 14,
+		M13::V15(_) => 15,
+		M13::Default(t) => *t,
 	}
 }
 
 fn type_12(v: &M12) -> i8 {
 	match v {
-		M12::v0(_) => 0,
-		M12::v1(_) => 1,
-		M12::v2(_) => 2,
-		M12::v3(_) => 3,
-		M12::v4(_) => 4,
-		M12::v5(_) => 5,
-		M12::v6(_) => 6,
-		M12::v7(_) => 7,
-		M12::v8(_) => 8,
-		M12::v9(_) => 9,
-		M12::v10(_) => 10,
-		M12::v11(_) => 11,
-		M12::v12(_) => 12,
-		M12::v13(_) => 13,
-		M12::default(t) => *t,
+		M12::V0(_) => 0,
+		M12::V1(_) => 1,
+		M12::V2(_) => 2,
+		M12::V3(_) => 3,
+		M12::V4(_) => 4,
+		M12::V5(_) => 5,
+		M12::V6(_) => 6,
+		M12::V7(_) => 7,
+		M12::V8(_) => 8,
+		M12::V9(_) => 9,
+		M12::V10(_) => 10,
+		M12::V11(_) => 11,
+		M12::V12(_) => 12,
+		M12::V13(_) => 13,
+		M12::Default(t) => *t,
 	}
 }
 
-fn entry_13(key: u8, value: M13) -> b::entityMetadata__items::Ty {
-	b::entityMetadata__items::Ty {
+fn entry_13(key: u8, value: M13) -> b::entity_metadata_items::Ty {
+	b::entity_metadata_items::Ty {
 		key,
 		r#type: type_13(&value),
 		value,
 	}
 }
 
-fn entry_12(key: u8, value: M12) -> a::entityMetadata__items::Ty {
-	a::entityMetadata__items::Ty {
+fn entry_12(key: u8, value: M12) -> a::entity_metadata_items::Ty {
+	a::entity_metadata_items::Ty {
 		key,
 		r#type: type_12(&value),
 		value,
@@ -270,55 +270,55 @@ fn entry_12(key: u8, value: M12) -> a::entityMetadata__items::Ty {
 
 fn value_up(v: M12) -> M13 {
 	match v {
-		M12::v0(x) => M13::v0(x),
-		M12::v1(x) => M13::v1(x),
-		M12::v2(x) => M13::v2(x),
-		M12::v3(x) => M13::v3(x),
-		M12::v4(x) => M13::v4(x),
-		M12::v5(s) => M13::v6(slot_up(s)),
-		M12::v6(x) => M13::v7(x),
-		M12::v7(r) => M13::v8(b::entityMetadataItem__v8::Ty {
+		M12::V0(x) => M13::V0(x),
+		M12::V1(x) => M13::V1(x),
+		M12::V2(x) => M13::V2(x),
+		M12::V3(x) => M13::V3(x),
+		M12::V4(x) => M13::V4(x),
+		M12::V5(s) => M13::V6(slot_up(s)),
+		M12::V6(x) => M13::V7(x),
+		M12::V7(r) => M13::V8(b::entity_metadata_item_v8::Ty {
 			pitch: r.pitch,
 			yaw: r.yaw,
 			roll: r.roll,
 		}),
-		M12::v8(p) => M13::v9(p),
-		M12::v9(p) => M13::v10(p),
-		M12::v10(d) => M13::v11(d),
-		M12::v11(u) => M13::v12(u),
-		M12::v12(s) => M13::v13(state_of_packed(s) as i32),
-		M12::v13(n) => M13::v14(n),
-		M12::default(t) => M13::default(if t > 4 { t as i32 + 1 } else { t as i32 }),
+		M12::V8(p) => M13::V9(p),
+		M12::V9(p) => M13::V10(p),
+		M12::V10(d) => M13::V11(d),
+		M12::V11(u) => M13::V12(u),
+		M12::V12(s) => M13::V13(state_of_packed(s) as i32),
+		M12::V13(n) => M13::V14(n),
+		M12::Default(t) => M13::Default(if t > 4 { t as i32 + 1 } else { t as i32 }),
 	}
 }
 
 fn value_down(v: M13) -> Option<M12> {
 	Some(match v {
-		M13::v0(x) => M12::v0(x),
-		M13::v1(x) => M12::v1(x),
-		M13::v2(x) => M12::v2(x),
-		M13::v3(x) => M12::v3(x),
-		M13::v4(x) => M12::v4(x),
-		M13::v5(text) => M12::v3(text.map(|t| json_to_legacy(&t)).unwrap_or_default()),
-		M13::v15(_) => return None,
-		M13::v6(s) => M12::v5(slot_down(s)),
-		M13::v7(x) => M12::v6(x),
-		M13::v8(r) => M12::v7(a::entityMetadataItem__v7::Ty {
+		M13::V0(x) => M12::V0(x),
+		M13::V1(x) => M12::V1(x),
+		M13::V2(x) => M12::V2(x),
+		M13::V3(x) => M12::V3(x),
+		M13::V4(x) => M12::V4(x),
+		M13::V5(text) => M12::V3(text.map(|t| json_to_legacy(&t)).unwrap_or_default()),
+		M13::V15(_) => return None,
+		M13::V6(s) => M12::V5(slot_down(s)),
+		M13::V7(x) => M12::V6(x),
+		M13::V8(r) => M12::V7(a::entity_metadata_item_v7::Ty {
 			pitch: r.pitch,
 			yaw: r.yaw,
 			roll: r.roll,
 		}),
-		M13::v9(p) => M12::v8(p),
-		M13::v10(p) => M12::v9(p),
-		M13::v11(d) => M12::v10(d),
-		M13::v12(u) => M12::v11(u),
-		M13::v13(s) => M12::v12(if s == 0 {
+		M13::V9(p) => M12::V8(p),
+		M13::V10(p) => M12::V9(p),
+		M13::V11(d) => M12::V10(d),
+		M13::V12(u) => M12::V11(u),
+		M13::V13(s) => M12::V12(if s == 0 {
 			0
 		} else {
 			packed_of_state(s.max(0) as u32)
 		}),
-		M13::v14(n) => M12::v13(n),
-		M13::default(t) => M12::default(if t > 5 { t - 1 } else { t } as i8),
+		M13::V14(n) => M12::V13(n),
+		M13::Default(t) => M12::Default(if t > 5 { t - 1 } else { t } as i8),
 	})
 }
 
@@ -328,8 +328,8 @@ const FISH: [i32; 4] = [8, 57, 52, 72];
 
 fn int_12(v: &M12) -> i32 {
 	match v {
-		M12::v0(n) => *n as i32,
-		M12::v1(n) => *n,
+		M12::V0(n) => *n as i32,
+		M12::V1(n) => *n,
 		_ => 0,
 	}
 }
@@ -354,18 +354,18 @@ fn meta_up(kind: Option<Kind>, items: Meta12) -> Meta13 {
 			continue;
 		}
 		let value = match (key, e.value) {
-			(0, M12::v0(flags)) => M13::v0(flags & !0x10),
-			(2, M12::v3(name)) => M13::v5((!name.is_empty()).then(|| legacy_to_json(&name, false))),
-			(17, M12::v1(color)) if wolf => M13::v1(15 - color),
-			(9, M12::v1(block)) if minecart => M13::v1(state_of_packed(block) as i32),
+			(0, M12::V0(flags)) => M13::V0(flags & !0x10),
+			(2, M12::V3(name)) => M13::V5((!name.is_empty()).then(|| legacy_to_json(&name, false))),
+			(17, M12::V1(color)) if wolf => M13::V1(15 - color),
+			(9, M12::V1(block)) if minecart => M13::V1(state_of_packed(block) as i32),
 			(_, v) => value_up(v),
 		};
 		let key = if zombie && key >= 15 { key + 1 } else { key };
 		out.push(entry_13(key, value));
 	}
 	if let Some((id, args)) = particle {
-		if let Some((particleId, data)) = particle_up(id, &args) {
-			out.push(entry_13(9, M13::v15(b::particle::Ty { particleId, data })));
+		if let Some((particle_id, data)) = particle_up(id, &args) {
+			out.push(entry_13(9, M13::V15(b::particle::Ty { particle_id, data })));
 		}
 	}
 	out
@@ -396,18 +396,18 @@ fn meta_down(kind: Option<Kind>, items: Meta13) -> Meta12 {
 		}
 		let key = if zombie && key > 15 { key - 1 } else { key };
 		let value = match (key, e.value) {
-			(0, M13::v0(flags)) => M12::v0(flags & !0x10),
-			(17, M13::v1(color)) if wolf => M12::v1(15 - color),
-			(9, M13::v1(state)) if minecart => M12::v1(packed_of_state(state.max(0) as u32)),
-			(9, M13::v15(p)) if cloud => {
-				let (id, args) = particle_data_down(p.data, p.particleId).unwrap_or((0, vec![]));
+			(0, M13::V0(flags)) => M12::V0(flags & !0x10),
+			(17, M13::V1(color)) if wolf => M12::V1(15 - color),
+			(9, M13::V1(state)) if minecart => M12::V1(packed_of_state(state.max(0) as u32)),
+			(9, M13::V15(p)) if cloud => {
+				let (id, args) = particle_data_down(p.data, p.particle_id).unwrap_or((0, vec![]));
 				let first = match (id, args.first()) {
 					(37 | 38 | 46, Some(0)) => 102,
 					(_, a) => a.copied().unwrap_or(0),
 				};
-				out.push(entry_12(9, M12::v1(id)));
-				out.push(entry_12(10, M12::v1(first)));
-				out.push(entry_12(11, M12::v1(args.get(1).copied().unwrap_or(0))));
+				out.push(entry_12(9, M12::V1(id)));
+				out.push(entry_12(10, M12::V1(first)));
+				out.push(entry_12(11, M12::V1(args.get(1).copied().unwrap_or(0))));
 				continue;
 			}
 			(_, v) => match value_down(v) {
@@ -421,11 +421,11 @@ fn meta_down(kind: Option<Kind>, items: Meta13) -> Meta12 {
 }
 
 pub fn flattening_object_data_1_13(
-	src: &a::play_toClient_packet_spawn_entity::Ty,
+	src: &a::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	remember(cx, src.entityId, Kind::Object(src.r#type));
-	Ok(match (src.r#type, src.objectData) {
+	remember(cx, src.entity_id, Kind::Object(src.r#type));
+	Ok(match (src.r#type, src.object_data) {
 		(70, data) => state_of_packed(data) as i32,
 		(71, 0) => 3,
 		(71, 1) => 4,
@@ -435,11 +435,11 @@ pub fn flattening_object_data_1_13(
 }
 
 pub fn flattening_object_data_1_12_2(
-	src: &b::play_toClient_packet_spawn_entity::Ty,
+	src: &b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	remember_flat(cx, src.entityId, Kind::Object(src.r#type));
-	Ok(match (src.r#type, src.objectData) {
+	remember_flat(cx, src.entity_id, Kind::Object(src.r#type));
+	Ok(match (src.r#type, src.object_data) {
 		(70, data) => packed_of_state(data.max(0) as u32),
 		(71, 3) => 0,
 		(71, 4) => 1,
@@ -449,17 +449,17 @@ pub fn flattening_object_data_1_12_2(
 }
 
 pub fn flattening_object_type_1_12_2(
-	src: &b::play_toClient_packet_spawn_entity::Ty,
+	src: &b::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<i8> {
 	Ok(if src.r#type == 94 { 60 } else { src.r#type })
 }
 
 pub fn flattening_mob_type_1_13(
-	src: &a::play_toClient_packet_spawn_entity_living::Ty,
+	src: &a::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	remember(cx, src.entityId, Kind::Mob(src.r#type));
+	remember(cx, src.entity_id, Kind::Mob(src.r#type));
 	MOBS.iter()
 		.find(|(old, _, _)| *old == src.r#type)
 		.map(|(_, _, new)| *new)
@@ -467,83 +467,83 @@ pub fn flattening_mob_type_1_13(
 }
 
 pub fn flattening_mob_type_1_12_2(
-	src: &b::play_toClient_packet_spawn_entity_living::Ty,
+	src: &b::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	remember_flat(cx, src.entityId, Kind::Mob(src.r#type));
+	remember_flat(cx, src.entity_id, Kind::Mob(src.r#type));
 	mob_down(src.r#type).ok_or(Error::Dropped)
 }
 
 pub fn flattening_mob_metadata_1_13(
-	src: &a::play_toClient_packet_spawn_entity_living::Ty,
+	src: &a::play_to_client_packet_spawn_entity_living::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta13> {
 	Ok(meta_up(Some(Kind::Mob(src.r#type)), src.metadata.clone()))
 }
 
 pub fn flattening_mob_metadata_1_12_2(
-	src: &b::play_toClient_packet_spawn_entity_living::Ty,
+	src: &b::play_to_client_packet_spawn_entity_living::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta12> {
 	let mut out = meta_down(Some(Kind::Mob(src.r#type)), src.metadata.clone());
 	if src.r#type == 90 {
-		out.push(entry_12(15, M12::v1(3)));
+		out.push(entry_12(15, M12::V1(3)));
 	}
 	Ok(out)
 }
 
 pub fn flattening_player_metadata_1_13(
-	src: &a::play_toClient_packet_named_entity_spawn::Ty,
+	src: &a::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Meta13> {
-	remember(cx, src.entityId, Kind::Player);
+	remember(cx, src.entity_id, Kind::Player);
 	Ok(meta_up(Some(Kind::Player), src.metadata.clone()))
 }
 
 pub fn flattening_player_metadata_1_12_2(
-	src: &b::play_toClient_packet_named_entity_spawn::Ty,
+	src: &b::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Meta12> {
-	remember_flat(cx, src.entityId, Kind::Player);
+	remember_flat(cx, src.entity_id, Kind::Player);
 	Ok(meta_down(Some(Kind::Player), src.metadata.clone()))
 }
 
 pub fn flattening_entity_metadata_1_13(
-	src: &a::play_toClient_packet_entity_metadata::Ty,
+	src: &a::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Meta13> {
-	let k = kind(cx, src.entityId);
+	let k = kind(cx, src.entity_id);
 	Ok(meta_up(k, src.metadata.clone()))
 }
 
 pub fn flattening_entity_metadata_1_12_2(
-	src: &b::play_toClient_packet_entity_metadata::Ty,
+	src: &b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Meta12> {
-	let k = flat_kind(cx, src.entityId);
+	let k = flat_kind(cx, src.entity_id);
 	Ok(meta_down(k, src.metadata.clone()))
 }
 
 pub fn flattening_entity_destroy_1_13(
 	ids: Vec<i32>,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let kinds = &mut cx.state::<Entities>().kinds;
 	for id in &ids {
 		kinds.remove(id);
 	}
-	Ok(vec![b::play_toClient_packet::Ty::entity_destroy(ids)])
+	Ok(vec![b::play_to_client_packet::Ty::EntityDestroy(ids)])
 }
 
 pub fn flattening_entity_destroy_1_12_2(
 	ids: Vec<i32>,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
 	let kinds = &mut cx.state::<FlatEntities>().kinds;
 	for id in &ids {
 		kinds.remove(id);
 	}
-	Ok(vec![a::play_toClient_packet::Ty::entity_destroy(ids)])
+	Ok(vec![a::play_to_client_packet::Ty::EntityDestroy(ids)])
 }
 
 const ARROWS: [i8; 3] = [60, 91, 94];
@@ -563,15 +563,15 @@ fn meta_later(object: Option<i8>, items: Meta13, up: bool) -> Meta13 {
 			}
 		}
 		let value = match (key, e.value) {
-			(9, M13::v1(s)) if minecart => M13::v1(state(s.max(0) as u32) as i32),
-			(_, M13::v13(s)) => M13::v13(state(s.max(0) as u32) as i32),
-			(_, M13::v6(slot)) => M13::v6(if up {
+			(9, M13::V1(s)) if minecart => M13::V1(state(s.max(0) as u32) as i32),
+			(_, M13::V13(s)) => M13::V13(state(s.max(0) as u32) as i32),
+			(_, M13::V6(slot)) => M13::V6(if up {
 				slot_later(slot)
 			} else {
 				slot_earlier(slot)
 			}),
-			(_, M13::v15(p)) => M13::v15(b::particle::Ty {
-				particleId: p.particleId,
+			(_, M13::V15(p)) => M13::V15(b::particle::Ty {
+				particle_id: p.particle_id,
 				data: if up {
 					particle_data_later(p.data)
 				} else {
@@ -590,92 +590,92 @@ fn object(cx: &mut Session, id: i32) -> Option<i8> {
 }
 
 fn spawn_object(
-	src: &b::play_toClient_packet_spawn_entity::Ty,
+	src: &b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 	f: fn(u32) -> u32,
 ) -> i32 {
 	cx.state::<LaterEntities>()
 		.objects
-		.insert(src.entityId, src.r#type);
+		.insert(src.entity_id, src.r#type);
 	match src.r#type {
-		70 => f(src.objectData.max(0) as u32) as i32,
-		_ => src.objectData,
+		70 => f(src.object_data.max(0) as u32) as i32,
+		_ => src.object_data,
 	}
 }
 
 pub fn flattening_spawn_object_data_1_13_1(
-	src: &b::play_toClient_packet_spawn_entity::Ty,
+	src: &b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	Ok(spawn_object(src, cx, state_later))
 }
 
 pub fn flattening_spawn_object_data_1_13(
-	src: &b::play_toClient_packet_spawn_entity::Ty,
+	src: &b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	Ok(spawn_object(src, cx, state_earlier))
 }
 
 pub fn flattening_spawn_mob_metadata_1_13_1(
-	src: &b::play_toClient_packet_spawn_entity_living::Ty,
+	src: &b::play_to_client_packet_spawn_entity_living::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta13> {
 	Ok(meta_later(None, src.metadata.clone(), true))
 }
 
 pub fn flattening_spawn_mob_metadata_1_13(
-	src: &b::play_toClient_packet_spawn_entity_living::Ty,
+	src: &b::play_to_client_packet_spawn_entity_living::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta13> {
 	Ok(meta_later(None, src.metadata.clone(), false))
 }
 
 pub fn flattening_spawn_player_metadata_1_13_1(
-	src: &b::play_toClient_packet_named_entity_spawn::Ty,
+	src: &b::play_to_client_packet_named_entity_spawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta13> {
 	Ok(meta_later(None, src.metadata.clone(), true))
 }
 
 pub fn flattening_spawn_player_metadata_1_13(
-	src: &b::play_toClient_packet_named_entity_spawn::Ty,
+	src: &b::play_to_client_packet_named_entity_spawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Meta13> {
 	Ok(meta_later(None, src.metadata.clone(), false))
 }
 
 pub fn flattening_update_metadata_1_13_1(
-	src: &b::play_toClient_packet_entity_metadata::Ty,
+	src: &b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Meta13> {
-	let o = object(cx, src.entityId);
+	let o = object(cx, src.entity_id);
 	Ok(meta_later(o, src.metadata.clone(), true))
 }
 
 pub fn flattening_update_metadata_1_13(
-	src: &b::play_toClient_packet_entity_metadata::Ty,
+	src: &b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Meta13> {
-	let o = object(cx, src.entityId);
+	let o = object(cx, src.entity_id);
 	Ok(meta_later(o, src.metadata.clone(), false))
 }
 
 pub fn flattening_forget_entities_1_13_1(
 	ids: Vec<i32>,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let objects = &mut cx.state::<LaterEntities>().objects;
 	for id in &ids {
 		objects.remove(id);
 	}
-	Ok(vec![b::play_toClient_packet::Ty::entity_destroy(ids)])
+	Ok(vec![b::play_to_client_packet::Ty::EntityDestroy(ids)])
 }
 
 pub fn flattening_forget_entities_1_13(
 	ids: Vec<i32>,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	flattening_forget_entities_1_13_1(ids, cx)
 }
 
@@ -694,7 +694,7 @@ fn track(cx: &mut Session, x: f64, y: f64, z: f64) {
 }
 
 pub fn flattening_moved_1_13(
-	src: &a::play_toServer_packet_position::Ty,
+	src: &a::play_to_server_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	track(cx, src.x, src.y, src.z);
@@ -702,7 +702,7 @@ pub fn flattening_moved_1_13(
 }
 
 pub fn flattening_moved_look_1_13(
-	src: &a::play_toServer_packet_position_look::Ty,
+	src: &a::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	track(cx, src.x, src.y, src.z);
@@ -710,7 +710,7 @@ pub fn flattening_moved_look_1_13(
 }
 
 pub fn flattening_vehicle_moved_1_13(
-	src: &a::play_toServer_packet_vehicle_move::Ty,
+	src: &a::play_to_server_packet_vehicle_move::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	track(cx, src.x, src.y, src.z);
@@ -718,7 +718,7 @@ pub fn flattening_vehicle_moved_1_13(
 }
 
 pub fn flattening_teleported_1_12_2(
-	src: &b::play_toClient_packet_position::Ty,
+	src: &b::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	let p = cx.state::<Position>();
@@ -728,9 +728,9 @@ pub fn flattening_teleported_1_12_2(
 }
 
 pub fn flattening_face_player_1_12_2(
-	p: b::play_toClient_packet_face_player::Ty,
+	p: b::play_to_client_packet_face_player::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
 	let at = cx.state::<Position>();
 	let eyes = if p.feet_eyes == 1 { 1.62 } else { 0.0 };
 	let (dx, dy, dz) = (p.x - at.x, p.y - (at.y + eyes), p.z - at.z);
@@ -738,15 +738,15 @@ pub fn flattening_face_player_1_12_2(
 	let yaw = -dx.atan2(dz).to_degrees();
 	let yaw = if yaw < 0.0 { 360.0 + yaw } else { yaw } as f32;
 	let pitch = -(dy / r).asin().to_degrees() as f32;
-	Ok(vec![a::play_toClient_packet::Ty::position(
-		a::play_toClient_packet_position::Ty {
+	Ok(vec![a::play_to_client_packet::Ty::Position(
+		a::play_to_client_packet_position::Ty {
 			x: 0.0,
 			y: 0.0,
 			z: 0.0,
 			yaw,
 			pitch,
 			flags: 7,
-			teleportId: -1,
+			teleport_id: -1,
 		},
 	)])
 }

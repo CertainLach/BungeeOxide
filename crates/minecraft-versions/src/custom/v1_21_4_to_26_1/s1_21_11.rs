@@ -10,8 +10,8 @@ use crate::pds::convert::{Error, Result};
 use crate::Session;
 use nbt::{CompoundExt, Entry, List, ListItems, Payload};
 
-remaps!(Version::V1_21_9 => Version::V1_21_11 { late_sound_up_1_21_11: a::ItemSoundHolder::Ty = remap::sound; });
-remaps!(Version::V1_21_11 => Version::V1_21_9 { late_sound_down_1_21_9: a::ItemSoundHolder::Ty = remap::sound; });
+remaps!(Version::V1_21_9 => Version::V1_21_11 { late_sound_up_1_21_11: a::item_sound_holder::Ty = remap::sound; });
+remaps!(Version::V1_21_11 => Version::V1_21_9 { late_sound_down_1_21_9: a::item_sound_holder::Ty = remap::sound; });
 
 items!(a => b, Version::V1_21_9 => Version::V1_21_11 {
 	slot: late_slot_item_up_1_21_11, hashed: late_hashed_item_up_1_21_11, trade1: late_trade1_up_1_21_11, trade2: late_trade2_up_1_21_11,
@@ -37,32 +37,32 @@ untrusted_step!(late_untrusted_up_1_21_11: a => b, Version::V1_21_9 => Version::
 untrusted_step!(late_untrusted_down_1_21_9: b => a, Version::V1_21_11 => Version::V1_21_9, slots::late_to_slot_1_21_11, slots::late_to_untrusted_1_21_9);
 
 pub fn late_matchers_up_1_21_11(
-	v: &a::ItemBlockPredicate::Ty,
+	v: &a::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<b::DataComponentMatchers::Ty> {
-	let mut exactMatchers = Vec::new();
-	for c in &v.components.exactMatchers {
+) -> Result<b::data_component_matchers::Ty> {
+	let mut exact_matchers = Vec::new();
+	for c in &v.components.exact_matchers {
 		let map = |t| components::remap(Version::V1_21_9, Version::V1_21_11, t);
-		exactMatchers.extend(components::retag(
+		exact_matchers.extend(components::retag(
 			map,
 			c,
-			v1_21_5::SlotComponent::serialize,
-			b::SlotComponent::deserialize,
+			v1_21_5::slot_component::serialize,
+			b::slot_component::deserialize,
 		)?);
 	}
-	let partialMatchers = v
+	let partial_matchers = v
 		.components
-		.partialMatchers
+		.partial_matchers
 		.iter()
-		.map(|p| b::DataComponentMatchers__partialMatchers__items::Ty {
-			isPredicateType: true,
+		.map(|p| b::data_component_matchers_partial_matchers_items::Ty {
+			is_predicate_type: true,
 			r#type: p.r#type,
 			predicate: p.predicate.clone(),
 		})
 		.collect();
-	Ok(b::DataComponentMatchers::Ty {
-		exactMatchers,
-		partialMatchers,
+	Ok(b::data_component_matchers::Ty {
+		exact_matchers,
+		partial_matchers,
 	})
 }
 
@@ -70,32 +70,32 @@ hidden!(a, Version::V1_21_9 => Version::V1_21_11, late_hidden_up_1_21_11);
 hidden!(b, Version::V1_21_11 => Version::V1_21_9, late_hidden_down_1_21_9);
 
 pub fn late_matchers_down_1_21_9(
-	v: &b::ItemBlockPredicate::Ty,
+	v: &b::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<a::DataComponentMatchers::Ty> {
-	let mut exactMatchers = Vec::new();
-	for c in &v.components.exactMatchers {
+) -> Result<a::data_component_matchers::Ty> {
+	let mut exact_matchers = Vec::new();
+	for c in &v.components.exact_matchers {
 		let map = |t| components::remap(Version::V1_21_11, Version::V1_21_9, t);
-		exactMatchers.extend(components::retag(
+		exact_matchers.extend(components::retag(
 			map,
 			c,
-			b::SlotComponent::serialize,
-			v1_21_5::SlotComponent::deserialize,
+			b::slot_component::serialize,
+			v1_21_5::slot_component::deserialize,
 		)?);
 	}
-	let partialMatchers = v
+	let partial_matchers = v
 		.components
-		.partialMatchers
+		.partial_matchers
 		.iter()
-		.filter(|p| p.isPredicateType)
-		.map(|p| a::DataComponentMatchers__partialMatchers__items::Ty {
+		.filter(|p| p.is_predicate_type)
+		.map(|p| a::data_component_matchers_partial_matchers_items::Ty {
 			r#type: p.r#type,
 			predicate: p.predicate.clone(),
 		})
 		.collect();
-	Ok(a::DataComponentMatchers::Ty {
-		exactMatchers,
-		partialMatchers,
+	Ok(a::data_component_matchers::Ty {
+		exact_matchers,
+		partial_matchers,
 	})
 }
 
@@ -113,45 +113,45 @@ fn late_known_in_1_21_9<T>(
 	.is_some())
 }
 
-pub fn late_added_count_down_1_21_9(v: &b::Slot__default::Ty, _cx: &mut Session) -> Result<i32> {
+pub fn late_added_count_down_1_21_9(v: &b::slot_default::Ty, _cx: &mut Session) -> Result<i32> {
 	let mut n = 0;
 	for c in &v.components {
-		n += late_known_in_1_21_9(c, b::SlotComponent::serialize)? as i32;
+		n += late_known_in_1_21_9(c, b::slot_component::serialize)? as i32;
 	}
 	Ok(n)
 }
 
-pub fn late_removed_count_down_1_21_9(v: &b::Slot__default::Ty, _cx: &mut Session) -> Result<i32> {
+pub fn late_removed_count_down_1_21_9(v: &b::slot_default::Ty, _cx: &mut Session) -> Result<i32> {
 	let mut n = 0;
-	for c in &v.removeComponents {
-		n += late_known_in_1_21_9(c, b::SlotComponentType::serialize)? as i32;
+	for c in &v.remove_components {
+		n += late_known_in_1_21_9(c, b::slot_component_type::serialize)? as i32;
 	}
 	Ok(n)
 }
 
 pub fn late_border_speed_up_1_21_11(
-	v: &a::play_toClient_packet_initialize_world_border::Ty,
+	v: &a::play_to_client_packet_initialize_world_border::Ty,
 	_cx: &mut Session,
 ) -> Result<i64> {
 	Ok(v.speed / 50)
 }
 
 pub fn late_border_speed_down_1_21_9(
-	v: &b::play_toClient_packet_initialize_world_border::Ty,
+	v: &b::play_to_client_packet_initialize_world_border::Ty,
 	_cx: &mut Session,
 ) -> Result<i64> {
 	Ok(v.speed.saturating_mul(50))
 }
 
 pub fn late_lerp_speed_up_1_21_11(
-	v: &a::play_toClient_packet_world_border_lerp_size::Ty,
+	v: &a::play_to_client_packet_world_border_lerp_size::Ty,
 	_cx: &mut Session,
 ) -> Result<i64> {
 	Ok(v.speed / 50)
 }
 
 pub fn late_lerp_speed_down_1_21_9(
-	v: &b::play_toClient_packet_world_border_lerp_size::Ty,
+	v: &b::play_to_client_packet_world_border_lerp_size::Ty,
 	_cx: &mut Session,
 ) -> Result<i64> {
 	Ok(v.speed.saturating_mul(50))
@@ -161,7 +161,7 @@ pub fn late_lerp_speed_down_1_21_9(
 struct GameTime(i64);
 
 pub fn late_game_time_up_1_21_11(
-	v: &a::play_toClient_packet_update_time::Ty,
+	v: &a::play_to_client_packet_update_time::Ty,
 	cx: &mut Session,
 ) -> Result<i64> {
 	cx.state::<GameTime>().0 = v.age;
@@ -169,15 +169,15 @@ pub fn late_game_time_up_1_21_11(
 }
 
 pub fn late_tick_end_down_1_21_9(
-	v: b::play_toServer_packet_tick_end::Ty,
+	v: b::play_to_server_packet_tick_end::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toServer_packet::Ty>> {
+) -> Result<Vec<a::play_to_server_packet::Ty>> {
 	cx.state::<GameTime>().0 += 1;
-	Ok(vec![a::play_toServer_packet::Ty::tick_end(v)])
+	Ok(vec![a::play_to_server_packet::Ty::TickEnd(v)])
 }
 
 pub fn late_dig_status_down_1_21_9(
-	v: &b::play_toServer_packet_block_dig::Ty,
+	v: &b::play_to_server_packet_block_dig::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	match v.status {
@@ -187,27 +187,27 @@ pub fn late_dig_status_down_1_21_9(
 }
 
 pub fn late_meta_entity_up_1_21_11(
-	p: &a::play_toClient_packet_entity_metadata::Ty,
+	p: &a::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	shared::meta_entity(cx, Version::V1_21_9, p.entityId);
-	Ok(p.entityId)
+	shared::meta_entity(cx, Version::V1_21_9, p.entity_id);
+	Ok(p.entity_id)
 }
 
 pub fn late_meta_entity_down_1_21_9(
-	p: &b::play_toClient_packet_entity_metadata::Ty,
+	p: &b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	shared::meta_entity(cx, Version::V1_21_11, p.entityId);
-	Ok(p.entityId)
+	shared::meta_entity(cx, Version::V1_21_11, p.entity_id);
+	Ok(p.entity_id)
 }
 
-pub fn late_meta_key_up_1_21_11(e: &a::entityMetadataEntry::Ty, cx: &mut Session) -> Result<u8> {
+pub fn late_meta_key_up_1_21_11(e: &a::entity_metadata_entry::Ty, cx: &mut Session) -> Result<u8> {
 	meta(cx).key = e.key;
 	Ok(e.key)
 }
 
-pub fn late_meta_key_down_1_21_9(e: &b::entityMetadataEntry::Ty, cx: &mut Session) -> Result<u8> {
+pub fn late_meta_key_down_1_21_9(e: &b::entity_metadata_entry::Ty, cx: &mut Session) -> Result<u8> {
 	if let Some(key) = shared::fallback_key(cx, Version::V1_21_11, Version::V1_21_9, e.key) {
 		return key;
 	}
@@ -227,53 +227,53 @@ fn main_hand(cx: &mut Session) -> bool {
 pub fn late_meta_int_up_1_21_11(
 	v: i32,
 	cx: &mut Session,
-) -> Result<b::entityMetadataEntry__value::Ty> {
+) -> Result<b::entity_metadata_entry_value::Ty> {
 	if !anger(cx) {
-		return Ok(b::entityMetadataEntry__value::Ty::int(v));
+		return Ok(b::entity_metadata_entry_value::Ty::Int(v));
 	}
 	let end = if v > 0 {
 		cx.state::<GameTime>().0 + v as i64
 	} else {
 		0
 	};
-	Ok(b::entityMetadataEntry__value::Ty::long(end))
+	Ok(b::entity_metadata_entry_value::Ty::Long(end))
 }
 
 pub fn late_meta_long_down_1_21_9(
 	v: i64,
 	cx: &mut Session,
-) -> Result<a::entityMetadataEntry__value::Ty> {
+) -> Result<a::entity_metadata_entry_value::Ty> {
 	if !anger(cx) {
-		return Ok(a::entityMetadataEntry__value::Ty::long(v));
+		return Ok(a::entity_metadata_entry_value::Ty::Long(v));
 	}
 	let left = (v - cx.state::<GameTime>().0).clamp(0, i32::MAX as i64);
-	Ok(a::entityMetadataEntry__value::Ty::int(left as i32))
+	Ok(a::entity_metadata_entry_value::Ty::Int(left as i32))
 }
 
 pub fn late_meta_byte_up_1_21_11(
 	v: i8,
 	cx: &mut Session,
-) -> Result<b::entityMetadataEntry__value::Ty> {
-	use b::entityMetadataEntry__value__humanoid_arm::Ty as Arm;
+) -> Result<b::entity_metadata_entry_value::Ty> {
+	use b::entity_metadata_entry_value_humanoid_arm::Ty as Arm;
 	if !main_hand(cx) {
-		return Ok(b::entityMetadataEntry__value::Ty::byte(v));
+		return Ok(b::entity_metadata_entry_value::Ty::Byte(v));
 	}
-	Ok(b::entityMetadataEntry__value::Ty::humanoid_arm(if v == 0 {
-		Arm::left
+	Ok(b::entity_metadata_entry_value::Ty::HumanoidArm(if v == 0 {
+		Arm::Left
 	} else {
-		Arm::right
+		Arm::Right
 	}))
 }
 
 pub fn late_meta_arm_down_1_21_9(
-	v: b::entityMetadataEntry__value__humanoid_arm::Ty,
+	v: b::entity_metadata_entry_value_humanoid_arm::Ty,
 	_cx: &mut Session,
-) -> Result<a::entityMetadataEntry__value::Ty> {
-	use b::entityMetadataEntry__value__humanoid_arm::Ty as Arm;
-	Ok(a::entityMetadataEntry__value::Ty::byte(match v {
-		Arm::left => 0,
-		Arm::right => 1,
-		Arm::default(t) => t as i8,
+) -> Result<a::entity_metadata_entry_value::Ty> {
+	use b::entity_metadata_entry_value_humanoid_arm::Ty as Arm;
+	Ok(a::entity_metadata_entry_value::Ty::Byte(match v {
+		Arm::Left => 0,
+		Arm::Right => 1,
+		Arm::Default(t) => t as i8,
 	}))
 }
 
@@ -296,29 +296,29 @@ fn copy(
 }
 
 fn strings(values: &[&str]) -> Payload {
-	ListItems::string(values.iter().map(|s| (*s).to_owned()).collect()).into()
+	ListItems::String(values.iter().map(|s| (*s).to_owned()).collect()).into()
 }
 
 fn mood() -> Payload {
-	Payload::compound(vec![Entry::new(
+	Payload::Compound(vec![Entry::new(
 		"mood",
-		Payload::compound(vec![
-			Entry::new("tick_delay", Payload::int(6000)),
-			Entry::new("offset", Payload::float(2.0)),
+		Payload::Compound(vec![
+			Entry::new("tick_delay", Payload::Int(6000)),
+			Entry::new("offset", Payload::Float(2.0)),
 			Entry::new("sound", Payload::from("ambient.cave")),
-			Entry::new("block_search_extent", Payload::int(8)),
+			Entry::new("block_search_extent", Payload::Int(8)),
 		]),
 	)])
 }
 
 fn music(sound: &str, replace: bool, min: i32) -> Payload {
-	let mut m = Payload::compound(vec![
-		Entry::new("max_delay", Payload::int(24000)),
+	let mut m = Payload::Compound(vec![
+		Entry::new("max_delay", Payload::Int(24000)),
 		Entry::new("sound", Payload::from(sound)),
-		Entry::new("min_delay", Payload::int(min)),
+		Entry::new("min_delay", Payload::Int(min)),
 	]);
 	if replace {
-		m.put("replace_current_music", Payload::byte(1));
+		m.put("replace_current_music", Payload::Byte(1));
 	}
 	m
 }
@@ -330,7 +330,7 @@ fn truthy(p: &Payload, field: &str) -> bool {
 }
 
 fn dimension_type(key: &str, tag: &mut Payload) {
-	let mut attributes = Payload::compound(vec![]);
+	let mut attributes = Payload::Compound(vec![]);
 	match key.strip_prefix("minecraft:").unwrap_or(key) {
 		"the_nether" => {
 			tag.put("timelines", strings(&["villager_schedule"]));
@@ -344,17 +344,17 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 			attribute(
 				&mut attributes,
 				"visual/fog_start_distance",
-				Payload::float(10.0),
+				Payload::Float(10.0),
 			);
 			attribute(
 				&mut attributes,
 				"visual/fog_end_distance",
-				Payload::float(96.0),
+				Payload::Float(96.0),
 			);
 			attribute(
 				&mut attributes,
 				"gameplay/sky_light_level",
-				Payload::float(4.0),
+				Payload::Float(4.0),
 			);
 		}
 		"the_end" => {
@@ -379,7 +379,7 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 			attribute(
 				&mut attributes,
 				"audio/background_music",
-				Payload::compound(vec![Entry::new("default", music("music.end", true, 6000))]),
+				Payload::Compound(vec![Entry::new("default", music("music.end", true, 6000))]),
 			);
 		}
 		_ => {
@@ -398,7 +398,7 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 			attribute(
 				&mut attributes,
 				"audio/background_music",
-				Payload::compound(vec![
+				Payload::Compound(vec![
 					Entry::new("default", music("music.game", false, 12000)),
 					Entry::new("creative", music("music.creative", false, 12000)),
 				]),
@@ -406,13 +406,13 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 		}
 	}
 	if tag.take("fixed_time").is_some() {
-		tag.put("has_fixed_time", Payload::byte(1));
+		tag.put("has_fixed_time", Payload::Byte(1));
 	}
 	if !truthy(tag, "natural") {
 		attribute(
 			&mut attributes,
 			"visual/sky_light_factor",
-			Payload::float(0.0),
+			Payload::Float(0.0),
 		);
 	}
 	let ultrawarm = truthy(tag, "ultrawarm");
@@ -420,7 +420,7 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 		attribute(
 			&mut attributes,
 			"visual/default_dripstone_particle",
-			Payload::compound(vec![Entry::new(
+			Payload::Compound(vec![Entry::new(
 				"type",
 				Payload::from("dripping_dripstone_lava"),
 			)]),
@@ -435,7 +435,7 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 		attribute(
 			&mut attributes,
 			"visual/cloud_height",
-			Payload::float(height as f32),
+			Payload::Float(height as f32),
 		);
 	}
 	copy(
@@ -443,7 +443,7 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 		"has_raids",
 		&mut attributes,
 		"gameplay/can_start_raid",
-		Some(Payload::byte(1)),
+		Some(Payload::Byte(1)),
 	);
 	let zombify = tag
 		.field("piglin_safe")
@@ -452,24 +452,24 @@ fn dimension_type(key: &str, tag: &mut Payload) {
 	attribute(
 		&mut attributes,
 		"gameplay/piglins_zombify",
-		Payload::byte(zombify as i8),
+		Payload::Byte(zombify as i8),
 	);
 	copy(
 		tag,
 		"respawn_anchor_works",
 		&mut attributes,
 		"gameplay/respawn_anchor_works",
-		Some(Payload::byte(1)),
+		Some(Payload::Byte(1)),
 	);
 	attribute(
 		&mut attributes,
 		"gameplay/fast_lava",
-		Payload::byte(ultrawarm as i8),
+		Payload::Byte(ultrawarm as i8),
 	);
 	attribute(
 		&mut attributes,
 		"gameplay/water_evaporates",
-		Payload::byte(ultrawarm as i8),
+		Payload::Byte(ultrawarm as i8),
 	);
 	tag.put("attributes", attributes);
 }
@@ -487,15 +487,15 @@ fn biome(key: &str, tag: &mut Payload) {
 	let effects = tag
 		.field("effects")
 		.cloned()
-		.unwrap_or_else(|| Payload::compound(vec![]));
-	let mut attributes = Payload::compound(vec![]);
+		.unwrap_or_else(|| Payload::Compound(vec![]));
+	let mut attributes = Payload::Compound(vec![]);
 	if !NO_SKY_COLOR.contains(&key) {
 		copy(
 			&effects,
 			"sky_color",
 			&mut attributes,
 			"visual/sky_color",
-			Some(Payload::int(0)),
+			Some(Payload::Int(0)),
 		);
 	}
 	if key != "the_end" {
@@ -504,85 +504,85 @@ fn biome(key: &str, tag: &mut Payload) {
 			"water_fog_color",
 			&mut attributes,
 			"visual/water_fog_color",
-			Some(Payload::int(-16448205)),
+			Some(Payload::Int(-16448205)),
 		);
 		copy(
 			&effects,
 			"fog_color",
 			&mut attributes,
 			"visual/fog_color",
-			Some(Payload::int(0)),
+			Some(Payload::Int(0)),
 		);
 	}
-	if let Some(Payload::list(nbt::List {
-		items: nbt::ListItems::compound(entries),
+	if let Some(Payload::List(nbt::List {
+		items: nbt::ListItems::Compound(entries),
 		..
 	})) = effects.field("music")
 	{
 		if let Some(data) = entries.first().and_then(|e| e.field("data")) {
-			let mut music = Payload::compound(vec![]);
+			let mut music = Payload::Compound(vec![]);
 			for field in ["max_delay", "min_delay", "sound"] {
 				copy(data, field, &mut music, field, None);
 			}
 			attribute(
 				&mut attributes,
 				"audio/background_music",
-				Payload::compound(vec![Entry::new("default", music)]),
+				Payload::Compound(vec![Entry::new("default", music)]),
 			);
 		}
 	}
-	let mut ambient = Payload::compound(vec![]);
+	let mut ambient = Payload::Compound(vec![]);
 	copy(&effects, "mood_sound", &mut ambient, "mood", None);
 	copy(&effects, "additions_sound", &mut ambient, "additions", None);
 	copy(&effects, "ambient_sound", &mut ambient, "loop", None);
-	if !matches!(&ambient, Payload::compound(e) if e.is_empty()) {
+	if !matches!(&ambient, Payload::Compound(e) if e.is_empty()) {
 		attribute(&mut attributes, "audio/ambient_sounds", ambient);
 	}
 	if let Some(particle) = effects.field("particle") {
-		let mut entry = Payload::compound(vec![]);
+		let mut entry = Payload::Compound(vec![]);
 		copy(particle, "probability", &mut entry, "probability", None);
 		copy(particle, "options", &mut entry, "particle", None);
-		let Payload::compound(entry) = entry else {
+		let Payload::Compound(entry) = entry else {
 			unreachable!("compound")
 		};
 		attribute(
 			&mut attributes,
 			"visual/ambient_particles",
-			Payload::list(List::new(nbt::ListItems::compound(vec![entry]))),
+			Payload::List(List::new(nbt::ListItems::Compound(vec![entry]))),
 		);
 	}
 	tag.put("attributes", attributes);
 }
 
 pub fn late_registry_data_up_1_21_11(
-	mut p: a::configuration_toClient_packet_registry_data::Ty,
+	mut p: a::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	shared::registry_entries(&mut p, "dimension_type", dimension_type);
 	shared::registry_entries(&mut p, "worldgen/biome", biome);
-	Ok(vec![b::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![b::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
 pub fn late_finish_configuration_up_1_21_11(
-	p: a::configuration_toClient_packet_finish_configuration::Ty,
+	p: a::configuration_to_client_packet_finish_configuration::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
 	let mut out = Vec::new();
 	for id in ["zombie_nautilus_variant", "timeline"] {
 		let entries = registries::vanilla(Version::V1_21_11, &format!("minecraft:{id}"))?;
-		out.push(b::configuration_toClient_packet::Ty::registry_data(
+		out.push(b::configuration_to_client_packet::Ty::RegistryData(
 			shared::registry(id, entries),
 		));
 	}
-	out.push(b::configuration_toClient_packet::Ty::finish_configuration(
+	out.push(b::configuration_to_client_packet::Ty::FinishConfiguration(
 		p,
 	));
 	Ok(out)
 }
 
 pub fn late_game_time_down_1_21_9(
-	v: &b::play_toClient_packet_update_time::Ty,
+	v: &b::play_to_client_packet_update_time::Ty,
 	cx: &mut Session,
 ) -> Result<i64> {
 	cx.state::<GameTime>().0 = v.age;
@@ -591,22 +591,22 @@ pub fn late_game_time_down_1_21_9(
 
 fn color(p: &Payload) -> Payload {
 	match p {
-		Payload::string(s) => {
-			Payload::int(u32::from_str_radix(s.trim_start_matches('#'), 16).unwrap_or(0) as i32)
+		Payload::String(s) => {
+			Payload::Int(u32::from_str_radix(s.trim_start_matches('#'), 16).unwrap_or(0) as i32)
 		}
-		Payload::list(l) => {
+		Payload::List(l) => {
 			let channels: Vec<f32> = l
 				.values()
 				.iter()
 				.map(|c| match c {
-					Payload::float(f) => *f,
-					Payload::double(d) => *d as f32,
+					Payload::Float(f) => *f,
+					Payload::Double(d) => *d as f32,
 					_ => 0.0,
 				})
 				.collect();
 			let at =
 				|i: usize| (channels.get(i).copied().unwrap_or(0.0).clamp(0.0, 1.0) * 255.0) as i32;
-			Payload::int((0xFF00_0000u32 as i32) | at(0) << 16 | at(1) << 8 | at(2))
+			Payload::Int((0xFF00_0000u32 as i32) | at(0) << 16 | at(1) << 8 | at(2))
 		}
 		other => other.clone(),
 	}
@@ -645,17 +645,17 @@ fn dimension_type_down(key: &str, tag: &mut Payload) {
 		tag.put("effects", Payload::from(effects));
 	}
 	if tag.field("natural").is_none() {
-		tag.put("natural", Payload::byte(natural as i8));
+		tag.put("natural", Payload::Byte(natural as i8));
 	}
 	let attributes = tag.take("attributes");
 	let attributes = attributes.as_ref();
 	let same = |p: &Payload| p.clone();
 	let cloud = |p: &Payload| match p {
-		Payload::float(f) => Payload::int(*f as i32),
-		Payload::double(d) => Payload::int(*d as i32),
+		Payload::Float(f) => Payload::Int(*f as i32),
+		Payload::Double(d) => Payload::Int(*d as i32),
 		other => other.clone(),
 	};
-	let not = |p: &Payload| Payload::byte(matches!(p, Payload::byte(0)) as i8);
+	let not = |p: &Payload| Payload::Byte(matches!(p, Payload::Byte(0)) as i8);
 	move_attribute(
 		tag,
 		attributes,
@@ -670,7 +670,7 @@ fn dimension_type_down(key: &str, tag: &mut Payload) {
 		"gameplay/can_start_raid",
 		"has_raids",
 		same,
-		Some(Payload::byte(1)),
+		Some(Payload::Byte(1)),
 	);
 	move_attribute(
 		tag,
@@ -678,7 +678,7 @@ fn dimension_type_down(key: &str, tag: &mut Payload) {
 		"gameplay/piglins_zombify",
 		"piglin_safe",
 		not,
-		Some(Payload::byte(0)),
+		Some(Payload::Byte(0)),
 	);
 	move_attribute(
 		tag,
@@ -686,7 +686,7 @@ fn dimension_type_down(key: &str, tag: &mut Payload) {
 		"gameplay/respawn_anchor_works",
 		"respawn_anchor_works",
 		same,
-		Some(Payload::byte(0)),
+		Some(Payload::Byte(0)),
 	);
 	move_attribute(
 		tag,
@@ -694,21 +694,21 @@ fn dimension_type_down(key: &str, tag: &mut Payload) {
 		"gameplay/fast_lava",
 		"ultrawarm",
 		same,
-		Some(Payload::byte(0)),
+		Some(Payload::Byte(0)),
 	);
 	if tag.field("bed_works").is_none() {
 		let works = attribute_of(attributes, "gameplay/bed_rule")
 			.is_none_or(|r| truthy(r, "can_sleep") || truthy(r, "can_set_spawn"));
-		tag.put("bed_works", Payload::byte(works as i8));
+		tag.put("bed_works", Payload::Byte(works as i8));
 	}
 	if tag
 		.take("has_fixed_time")
-		.is_some_and(|v| !matches!(v, Payload::byte(0)))
+		.is_some_and(|v| !matches!(v, Payload::Byte(0)))
 		&& tag.field("fixed_time").is_none()
 	{
 		tag.put(
 			"fixed_time",
-			Payload::long(if key == "the_nether" { 18000 } else { 6000 }),
+			Payload::Long(if key == "the_nether" { 18000 } else { 6000 }),
 		);
 	}
 	for field in ["timelines", "skybox", "cardinal_light"] {
@@ -720,7 +720,7 @@ fn biome_down(key: &str, tag: &mut Payload) {
 	let key = key.strip_prefix("minecraft:").unwrap_or(key);
 	let mut effects = tag
 		.take("effects")
-		.unwrap_or_else(|| Payload::compound(vec![]));
+		.unwrap_or_else(|| Payload::Compound(vec![]));
 	for field in [
 		"water_color",
 		"foliage_color",
@@ -732,7 +732,7 @@ fn biome_down(key: &str, tag: &mut Payload) {
 		}
 	}
 	if effects.field("water_color").is_none() {
-		effects.put("water_color", Payload::int(4159204));
+		effects.put("water_color", Payload::Int(4159204));
 	}
 	let attributes = tag.take("attributes");
 	let attributes = attributes.as_ref();
@@ -743,7 +743,7 @@ fn biome_down(key: &str, tag: &mut Payload) {
 		"visual/sky_color",
 		"sky_color",
 		color,
-		Some(Payload::int(0)),
+		Some(Payload::Int(0)),
 	);
 	move_attribute(
 		&mut effects,
@@ -751,7 +751,7 @@ fn biome_down(key: &str, tag: &mut Payload) {
 		"visual/water_fog_color",
 		"water_fog_color",
 		color,
-		Some(Payload::int(-16448205)),
+		Some(Payload::Int(-16448205)),
 	);
 	move_attribute(
 		&mut effects,
@@ -759,13 +759,13 @@ fn biome_down(key: &str, tag: &mut Payload) {
 		"visual/fog_color",
 		"fog_color",
 		color,
-		Some(Payload::int(fog)),
+		Some(Payload::Int(fog)),
 	);
 	if let Some(default) =
 		attribute_of(attributes, "audio/background_music").and_then(|m| m.field("default"))
 	{
 		let mut data =
-			Payload::compound(vec![Entry::new("replace_current_music", Payload::byte(0))]);
+			Payload::Compound(vec![Entry::new("replace_current_music", Payload::Byte(0))]);
 		for field in ["max_delay", "min_delay", "sound", "replace_current_music"] {
 			if let Some(v) = default.field(field) {
 				data.put(field, v.clone());
@@ -773,9 +773,9 @@ fn biome_down(key: &str, tag: &mut Payload) {
 		}
 		let entry = vec![
 			Entry::new("data", data),
-			Entry::new("weight", Payload::int(1)),
+			Entry::new("weight", Payload::Int(1)),
 		];
-		effects.put("music", List::new(nbt::ListItems::compound(vec![entry])));
+		effects.put("music", List::new(nbt::ListItems::Compound(vec![entry])));
 	}
 	if let Some(ambient) = attribute_of(attributes, "audio/ambient_sounds") {
 		for (from, to) in [
@@ -788,9 +788,9 @@ fn biome_down(key: &str, tag: &mut Payload) {
 			}
 		}
 	}
-	if let Some(Payload::list(l)) = attribute_of(attributes, "visual/ambient_particles") {
+	if let Some(Payload::List(l)) = attribute_of(attributes, "visual/ambient_particles") {
 		if let Some(first) = l.values().into_iter().next() {
-			let mut particle = Payload::compound(vec![]);
+			let mut particle = Payload::Compound(vec![]);
 			if let Some(p) = first.field("probability") {
 				particle.put("probability", p.clone());
 			}
@@ -807,14 +807,14 @@ const REMOVED_EFFECTS: &[&str] = &["apply_exhaustion", "apply_impulse"];
 
 fn strip_effects(p: &mut Payload) {
 	match p {
-		Payload::compound(entries) => {
+		Payload::Compound(entries) => {
 			let removed = entries.iter().any(|e| {
-				e.name == "type" && matches!(&e.value, Payload::string(t) if REMOVED_EFFECTS.contains(&t.strip_prefix("minecraft:").unwrap_or(t)))
+				e.name == "type" && matches!(&e.value, Payload::String(t) if REMOVED_EFFECTS.contains(&t.strip_prefix("minecraft:").unwrap_or(t)))
 			});
 			if removed {
-				*p = Payload::compound(vec![
+				*p = Payload::Compound(vec![
 					Entry::new("type", Payload::from("minecraft:all_of")),
-					Entry::new("effects", List::new(nbt::ListItems::compound(Vec::new()))),
+					Entry::new("effects", List::new(nbt::ListItems::Compound(Vec::new()))),
 				]);
 				return;
 			}
@@ -825,15 +825,15 @@ fn strip_effects(p: &mut Payload) {
 				strip_effects(&mut e.value_mut());
 			}
 		}
-		Payload::list(l) => {
+		Payload::List(l) => {
 			let mut items = l.values();
 			items.iter_mut().for_each(strip_effects);
-			if let nbt::ListItems::compound(_) = l.items {
-				*p = Payload::list(List::new(nbt::ListItems::compound(
+			if let nbt::ListItems::Compound(_) = l.items {
+				*p = Payload::List(List::new(nbt::ListItems::Compound(
 					items
 						.into_iter()
 						.map(|i| match i {
-							Payload::compound(c) => c,
+							Payload::Compound(c) => c,
 							_ => Vec::new(),
 						})
 						.collect(),
@@ -845,9 +845,9 @@ fn strip_effects(p: &mut Payload) {
 }
 
 pub fn late_registry_data_down_1_21_9(
-	mut p: b::configuration_toClient_packet_registry_data::Ty,
+	mut p: b::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	if matches!(
 		p.id.strip_prefix("minecraft:").unwrap_or(&p.id),
@@ -863,5 +863,5 @@ pub fn late_registry_data_down_1_21_9(
 			e.put("effects", effects);
 		}
 	});
-	Ok(vec![a::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![a::configuration_to_client_packet::Ty::RegistryData(p)])
 }

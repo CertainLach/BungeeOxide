@@ -19,7 +19,7 @@ mod tests {
 
 	#[test]
 	fn roundtrip_vec3f() {
-		use crate::gen::pds_vec3f as t;
+		use crate::gen::vec3f as t;
 		let v = t::Ty {
 			x: 1.5,
 			y: -2.0,
@@ -35,7 +35,7 @@ mod tests {
 
 	#[test]
 	fn roundtrip_position_bitfield() {
-		use crate::gen::pds_position as t;
+		use crate::gen::position as t;
 		let v = t::Ty {
 			x: -123456,
 			z: 654321,
@@ -54,35 +54,35 @@ mod tests {
 	fn roundtrip_inline_tag_mapper() {
 		// soundSource is a mapper union: self-contained, reads its own varint tag,
 		// all arms are the single deduplicated void type.
-		use crate::gen::pds_soundSource as t;
+		use crate::gen::sound_source as t;
 		// void arms are value-less enum variants
-		let v = t::Ty::hostile;
+		let v = t::Ty::Hostile;
 		let mut out = Output::new();
 		t::serialize(&v, &mut out).unwrap();
 		let bytes = out.into_inner();
 		assert_eq!(bytes, vec![5]); // hostile has `match: 5`
 		assert_eq!(bytes.len(), t::size_of(&v));
 		let v2 = t::deserialize(&mut Input::new(&bytes)).unwrap();
-		assert!(matches!(v2, t::Ty::hostile));
+		assert!(matches!(v2, t::Ty::Hostile));
 	}
 
 	#[test]
 	fn roundtrip_merged_mapper_switch() {
 		// SlotComponent_57: a mapper+switch merged into one self-contained inline-tag
 		// union (mixed void / payload arms).
-		use crate::gen::pds_SlotComponent_30 as t;
-		let v = t::Ty::hidden; // tag 1, void payload
+		use crate::gen::slot_component_30 as t;
+		let v = t::Ty::Hidden; // tag 1, void payload
 		let mut out = Output::new();
 		t::serialize(&v, &mut out).unwrap();
 		assert_eq!(out.into_inner(), vec![1]);
 		let v2 = t::deserialize(&mut Input::new(&[1])).unwrap();
-		assert!(matches!(v2, t::Ty::hidden));
+		assert!(matches!(v2, t::Ty::Hidden));
 	}
 
 	#[test]
 	fn scalar_tag_merged_into_union() {
-		use crate::gen::pds_play_toClient_packet_hide_message as t;
-		let v = t::Ty::v0(vec![7u8; 256]);
+		use crate::gen::play::to_client::packet_hide_message as t;
+		let v = t::Ty::V0(vec![7u8; 256]);
 		let mut out = Output::new();
 		t::serialize(&v, &mut out).unwrap();
 		let bytes = out.into_inner();
@@ -91,23 +91,23 @@ mod tests {
 		assert_eq!(t::deserialize(&mut Input::new(&bytes)).unwrap(), v);
 
 		let unknown = t::deserialize(&mut Input::new(&[5])).unwrap();
-		assert_eq!(unknown, t::Ty::default(5));
+		assert_eq!(unknown, t::Ty::Default(5));
 	}
 
 	#[test]
 	fn option_tag_derived_from_union() {
-		use crate::gen::pds_play_toClient_packet_scoreboard_score as t;
-		use crate::gen::pds_play_toClient_packet_scoreboard_score_38 as styling;
+		use crate::gen::play::to_client::packet_scoreboard_score as t;
+		use crate::gen::play::to_client::packet_scoreboard_score_38 as styling;
 		let end = nbt::Tag {
 			r#type: 0,
-			value: nbt::Payload::end,
+			value: nbt::Payload::End,
 		};
 		let v = t::Ty {
-			itemName: "a".into(),
-			scoreName: "b".into(),
+			item_name: "a".into(),
+			score_name: "b".into(),
 			value: 3,
 			display_name: None,
-			styling: styling::Ty::v1(end),
+			styling: styling::Ty::V1(end),
 		};
 		let mut out = Output::new();
 		t::serialize(&v, &mut out).unwrap();
@@ -117,7 +117,7 @@ mod tests {
 		assert_eq!(t::deserialize(&mut Input::new(&bytes)).unwrap(), v);
 
 		let none = t::Ty {
-			styling: styling::Ty::default(None),
+			styling: styling::Ty::Default(None),
 			..v
 		};
 		let mut out = Output::new();
@@ -137,7 +137,7 @@ mod tests {
 		let mut input = Input::new(&bytes);
 		let v = pds_anonymousNbt::deserialize(&mut input).unwrap();
 		assert_eq!(input.offset(), nbt.len());
-		let nbt::Payload::compound(entries) = &v.value else {
+		let nbt::Payload::Compound(entries) = &v.value else {
 			panic!("{v:?}")
 		};
 		assert_eq!(entries[0].name, "text");
@@ -146,12 +146,12 @@ mod tests {
 		assert_eq!(out.into_inner(), nbt);
 
 		let empty = pds_anonOptionalNbt::deserialize(&mut Input::new(&[0, 0xff])).unwrap();
-		assert!(matches!(empty.value, nbt::Payload::end));
+		assert!(matches!(empty.value, nbt::Payload::End));
 	}
 
 	#[test]
 	fn top_bit_set_terminated_equipment() {
-		use crate::gen::pds_play_toClient_packet_entity_equipment as t;
+		use crate::gen::play::to_client::packet_entity_equipment as t;
 		let bytes = [7, 0x80, 0, 0x85, 0, 3, 0];
 		let mut input = Input::new(&bytes);
 		let v = t::deserialize(&mut input).unwrap();
@@ -194,20 +194,20 @@ mod tests {
 
 	#[test]
 	fn roundtrip_handshake() {
-		use crate::gen::pds_handshaking_toServer_packet_set_protocol as t;
+		use crate::gen::handshaking::to_server::packet_set_protocol as t;
 		let v = t::Ty {
-			protocolVersion: 774,
-			serverHost: "localhost".to_owned(),
-			serverPort: 25565,
-			nextState: 2,
+			protocol_version: 774,
+			server_host: "localhost".to_owned(),
+			server_port: 25565,
+			next_state: 2,
 		};
 		let mut out = Output::new();
 		t::serialize(&v, &mut out).unwrap();
 		let bytes = out.into_inner();
 		assert_eq!(bytes.len(), t::size_of(&v));
 		let v2 = t::deserialize(&mut Input::new(&bytes)).unwrap();
-		assert_eq!(v.protocolVersion, v2.protocolVersion);
-		assert_eq!(v.serverHost, v2.serverHost);
-		assert_eq!(v.serverPort, v2.serverPort);
+		assert_eq!(v.protocol_version, v2.protocol_version);
+		assert_eq!(v.server_host, v2.server_host);
+		assert_eq!(v.server_port, v2.server_port);
 	}
 }

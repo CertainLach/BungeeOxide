@@ -1,11 +1,11 @@
 use std::borrow::Cow;
 use std::ops::Range;
 
-use minecraft_versions::gen::pds_play_toClient_packet_v26_1 as owned;
-use minecraft_versions::gen::view::pds_play_toClient_packet_v26_1 as view;
+use minecraft_versions::gen::play::to_client::packet_v26_1 as owned;
+use minecraft_versions::gen::view::play::to_client::packet_v26_1 as view;
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::{convert, index_of, Root, Session};
-use nbt::gen::view::{pds_List_0 as items, pds_Payload as payload};
+use nbt::gen::view::{list_0 as items, payload};
 
 fn borrowed_strings(p: &payload::Ty, within: &Range<*const u8>) -> usize {
 	let check = |s: &Cow<str>| match s {
@@ -16,14 +16,14 @@ fn borrowed_strings(p: &payload::Ty, within: &Range<*const u8>) -> usize {
 		Cow::Owned(_) => 0,
 	};
 	match p {
-		payload::Ty::string(s) => check(s),
-		payload::Ty::compound(c) => c
+		payload::Ty::String(s) => check(s),
+		payload::Ty::Compound(c) => c
 			.iter()
 			.map(|e| check(&e.name) + borrowed_strings(&e.value, within))
 			.sum(),
-		payload::Ty::list(l) => match &l.items {
-			items::Ty::string(v) => v.iter().map(check).sum(),
-			items::Ty::compound(v) => v
+		payload::Ty::List(l) => match &l.items {
+			items::Ty::String(v) => v.iter().map(check).sum(),
+			items::Ty::Compound(v) => v
 				.iter()
 				.flatten()
 				.map(|e| check(&e.name) + borrowed_strings(&e.value, within))
@@ -76,28 +76,28 @@ fn latest_views_match_owned_packets() {
 
 			let mut taken = full.clone();
 			let mask = match &taken {
-				owned::Ty::map_chunk(c) => Some(c.skyLightMask.as_ptr()),
+				owned::Ty::MapChunk(c) => Some(c.sky_light_mask.as_ptr()),
 				_ => None,
 			};
 			let moved = view::into_view(&mut taken);
 			assert_eq!(moved, parsed, "{}", view::name(&parsed));
-			if let (Some(mask), view::Ty::map_chunk(c)) = (mask, &moved) {
-				assert_eq!(c.skyLightMask.as_ptr(), mask);
+			if let (Some(mask), view::Ty::MapChunk(c)) = (mask, &moved) {
+				assert_eq!(c.sky_light_mask.as_ptr(), mask);
 			}
 			drop(moved);
 
-			if let view::Ty::map_chunk(c) = &parsed {
-				assert!(bytes.as_ptr_range().contains(&c.chunkData.as_ptr()));
-				let owned::Ty::map_chunk(o) = &full else {
+			if let view::Ty::MapChunk(c) = &parsed {
+				assert!(bytes.as_ptr_range().contains(&c.chunk_data.as_ptr()));
+				let owned::Ty::MapChunk(o) = &full else {
 					unreachable!()
 				};
-				let view::Ty::map_chunk(a) = &adapted else {
+				let view::Ty::MapChunk(a) = &adapted else {
 					unreachable!()
 				};
-				assert_eq!(a.chunkData.as_ptr(), o.chunkData.as_ptr());
+				assert_eq!(a.chunk_data.as_ptr(), o.chunk_data.as_ptr());
 				chunks += 1;
 			}
-			if let view::Ty::system_chat(c) = &parsed {
+			if let view::Ty::SystemChat(c) = &parsed {
 				texts += borrowed_strings(&c.content.value, &bytes.as_ptr_range());
 			}
 			checked += 1;

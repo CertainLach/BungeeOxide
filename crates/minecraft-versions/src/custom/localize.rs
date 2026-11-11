@@ -269,46 +269,46 @@ fn mentions(p: &Payload, strings: bool) -> bool {
 	}
 	fn list(l: &List, strings: bool) -> bool {
 		match &l.items {
-			ListItems::string(ss) => strings && ss.iter().any(|s| s.contains(KEY)),
-			ListItems::compound(cs) => cs.iter().any(|c| entries(c, strings)),
-			ListItems::list(ls) => ls.iter().any(|l| list(l, strings)),
+			ListItems::String(ss) => strings && ss.iter().any(|s| s.contains(KEY)),
+			ListItems::Compound(cs) => cs.iter().any(|c| entries(c, strings)),
+			ListItems::List(ls) => ls.iter().any(|l| list(l, strings)),
 			_ => false,
 		}
 	}
 	match p {
-		Payload::string(s) => strings && s.contains(KEY),
-		Payload::compound(c) => entries(c, strings),
-		Payload::list(l) => list(l, strings),
+		Payload::String(s) => strings && s.contains(KEY),
+		Payload::Compound(c) => entries(c, strings),
+		Payload::List(l) => list(l, strings),
 		_ => false,
 	}
 }
 
 pub fn nbt(p: &mut Payload, target: &Target) -> bool {
 	match p {
-		Payload::compound(entries) => compound(entries, target, false),
-		Payload::list(l) => list(l, target, false),
+		Payload::Compound(entries) => compound(entries, target, false),
+		Payload::List(l) => list(l, target, false),
 		_ => false,
 	}
 }
 
 fn data(p: &mut Payload, target: &Target) -> bool {
 	match p {
-		Payload::string(s) => json_text(s, target),
-		Payload::compound(entries) => compound(entries, target, true),
-		Payload::list(l) => list(l, target, true),
+		Payload::String(s) => json_text(s, target),
+		Payload::Compound(entries) => compound(entries, target, true),
+		Payload::List(l) => list(l, target, true),
 		_ => false,
 	}
 }
 
 fn list(l: &mut List, target: &Target, strings: bool) -> bool {
 	match &mut l.items {
-		ListItems::string(ss) if strings => ss
+		ListItems::String(ss) if strings => ss
 			.iter_mut()
 			.fold(false, |changed, s| json_text(s, target) | changed),
-		ListItems::compound(cs) => cs
+		ListItems::Compound(cs) => cs
 			.iter_mut()
 			.fold(false, |changed, c| compound(c, target, strings) | changed),
-		ListItems::list(ls) => ls
+		ListItems::List(ls) => ls
 			.iter_mut()
 			.fold(false, |changed, l| list(l, target, strings) | changed),
 		_ => false,
@@ -338,29 +338,29 @@ fn compound(entries: &mut Vec<Entry>, target: &Target, strings: bool) -> bool {
 }
 
 fn plain(text: String) -> Vec<Entry> {
-	vec![Entry::new("text", Payload::string(text))]
+	vec![Entry::new("text", Payload::String(text))]
 }
 
 pub(super) fn component(p: Payload) -> Vec<Entry> {
 	match p {
-		Payload::compound(mut c) if c.len() == 1 && c[0].name.is_empty() => {
+		Payload::Compound(mut c) if c.len() == 1 && c[0].name.is_empty() => {
 			component(c.remove(0).value)
 		}
-		Payload::compound(c) => c,
-		Payload::string(s) => plain(s),
-		Payload::list(l) => {
+		Payload::Compound(c) => c,
+		Payload::String(s) => plain(s),
+		Payload::List(l) => {
 			let parts: Vec<Vec<Entry>> = l.into_values().into_iter().map(component).collect();
 			vec![
 				Entry::new("text", ""),
-				Entry::new("extra", ListItems::compound(parts)),
+				Entry::new("extra", ListItems::Compound(parts)),
 			]
 		}
-		Payload::byte(v) => plain(v.to_string()),
-		Payload::short(v) => plain(v.to_string()),
-		Payload::int(v) => plain(v.to_string()),
-		Payload::long(v) => plain(v.to_string()),
-		Payload::float(v) => plain(v.to_string()),
-		Payload::double(v) => plain(v.to_string()),
+		Payload::Byte(v) => plain(v.to_string()),
+		Payload::Short(v) => plain(v.to_string()),
+		Payload::Int(v) => plain(v.to_string()),
+		Payload::Long(v) => plain(v.to_string()),
+		Payload::Float(v) => plain(v.to_string()),
+		Payload::Double(v) => plain(v.to_string()),
 		_ => plain(String::new()),
 	}
 }
@@ -369,7 +369,7 @@ fn plain_text(c: &mut [Entry]) -> Option<&mut String> {
 	match c {
 		[Entry {
 			name,
-			value: Payload::string(s),
+			value: Payload::String(s),
 			..
 		}] if name == "text" => Some(s),
 		_ => None,
@@ -378,7 +378,7 @@ fn plain_text(c: &mut [Entry]) -> Option<&mut String> {
 
 fn literal_nbt(entries: &mut Vec<Entry>, pattern: &str) {
 	let args = match entries.take("with") {
-		Some(Payload::list(l)) => l.into_values(),
+		Some(Payload::List(l)) => l.into_values(),
 		Some(arg) => vec![arg],
 		None => vec![],
 	};
@@ -410,14 +410,14 @@ fn literal_nbt(entries: &mut Vec<Entry>, pattern: &str) {
 		None => String::new(),
 	};
 	match entries.take("extra") {
-		Some(Payload::list(l)) => parts.extend(l.into_values().into_iter().map(component)),
+		Some(Payload::List(l)) => parts.extend(l.into_values().into_iter().map(component)),
 		Some(extra) => parts.push(component(extra)),
 		None => {}
 	}
 	entries.take("text");
-	entries.push(Entry::new("text", Payload::string(text)));
+	entries.push(Entry::new("text", Payload::String(text)));
 	if !parts.is_empty() {
-		entries.push(Entry::new("extra", ListItems::compound(parts)));
+		entries.push(Entry::new("extra", ListItems::Compound(parts)));
 	}
 }
 
@@ -503,11 +503,11 @@ mod tests {
 	}
 
 	fn compound(entries: Vec<(&str, Payload)>) -> Payload {
-		Payload::compound(entries.into_iter().map(|(n, v)| Entry::new(n, v)).collect())
+		Payload::Compound(entries.into_iter().map(|(n, v)| Entry::new(n, v)).collect())
 	}
 
 	fn s(v: &str) -> Payload {
-		Payload::string(v.to_owned())
+		Payload::String(v.to_owned())
 	}
 
 	#[test]
@@ -519,18 +519,18 @@ mod tests {
 		];
 		let mut tag = Tag::new(compound(vec![
 			("translate", s("death.attack.genericKill")),
-			("bold", Payload::byte(1)),
-			("with", ListItems::compound(vec![arg.clone()]).into()),
-			("extra", ListItems::string(vec!["!".to_owned()]).into()),
+			("bold", Payload::Byte(1)),
+			("with", ListItems::Compound(vec![arg.clone()]).into()),
+			("extra", ListItems::String(vec!["!".to_owned()]).into()),
 		]));
 		assert!(Text::mentions(&tag));
 		assert!(Text::rewrite(&mut tag, &Target::new(&l, at("1.12.2"))));
 		let expected = compound(vec![
-			("bold", Payload::byte(1)),
+			("bold", Payload::Byte(1)),
 			("text", s("")),
 			(
 				"extra",
-				ListItems::compound(vec![
+				ListItems::Compound(vec![
 					arg,
 					plain(" was killed".to_owned()),
 					plain("!".to_owned()),
@@ -547,7 +547,7 @@ mod tests {
 	fn item_data_holds_components_as_json_strings() {
 		let l = languages();
 		let name = r#"{"translate":"gui.swap","with":["a","b"],"italic":false}"#;
-		let lore = Payload::from(ListItems::string(vec![
+		let lore = Payload::from(ListItems::String(vec![
 			name.to_owned(),
 			"\"plain\"".to_owned(),
 		]));
@@ -561,16 +561,16 @@ mod tests {
 		assert!(item.mentions());
 		assert!(item.rewrite(&Target::new(&l, at("1.12.2"))));
 		let Some(Entry {
-			value: Payload::compound(root),
+			value: Payload::Compound(root),
 			..
 		}) = &item
 		else {
 			panic!()
 		};
-		let Payload::compound(display) = &root[0].value else {
+		let Payload::Compound(display) = &root[0].value else {
 			panic!()
 		};
-		let Payload::string(name) = &display[0].value else {
+		let Payload::String(name) = &display[0].value else {
 			panic!()
 		};
 		assert_eq!(

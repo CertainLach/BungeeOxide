@@ -62,14 +62,14 @@ impl Reader<'_> {
 				self.at += 1;
 				let mut c = Vec::new();
 				if self.eat(b'}') {
-					return Some(Payload::compound(c));
+					return Some(Payload::Compound(c));
 				}
 				loop {
 					let k = self.key()?;
 					self.eat(b':').then_some(())?;
 					c.push(Entry::new(k, self.value()?));
 					if self.eat(b'}') {
-						return Some(Payload::compound(c));
+						return Some(Payload::Compound(c));
 					}
 					self.eat(b',').then_some(())?;
 				}
@@ -95,13 +95,13 @@ impl Reader<'_> {
 				}
 				let num = |p: &Payload| p.as_i64().unwrap_or(0);
 				Some(match typed {
-					Some(b'B') => Payload::byteArray(values.iter().map(|v| num(v) as i8).collect()),
-					Some(b'I') => Payload::intArray(values.iter().map(|v| num(v) as i32).collect()),
-					Some(_) => Payload::longArray(values.iter().map(num).collect()),
-					None => Payload::list(List::of(values)),
+					Some(b'B') => Payload::ByteArray(values.iter().map(|v| num(v) as i8).collect()),
+					Some(b'I') => Payload::IntArray(values.iter().map(|v| num(v) as i32).collect()),
+					Some(_) => Payload::LongArray(values.iter().map(num).collect()),
+					None => Payload::List(List::of(values)),
 				})
 			}
-			q @ (b'"' | b'\'') => self.quoted(q).map(Payload::string),
+			q @ (b'"' | b'\'') => self.quoted(q).map(Payload::String),
 			_ => Some(scalar(self.bare())),
 		}
 	}
@@ -120,20 +120,20 @@ fn scalar(s: &str) -> Payload {
 		_ => (s, None),
 	};
 	let parsed = match suffix {
-		Some(b'b') => body.parse().ok().map(Payload::byte),
-		Some(b's') => body.parse().ok().map(Payload::short),
-		Some(b'l') => body.parse().ok().map(Payload::long),
-		Some(b'f') => body.parse().ok().map(Payload::float),
-		Some(_) => body.parse().ok().map(Payload::double),
-		None if lower == "true" => Some(Payload::byte(1)),
-		None if lower == "false" => Some(Payload::byte(0)),
-		None => s.parse().ok().map(Payload::int).or_else(|| {
+		Some(b'b') => body.parse().ok().map(Payload::Byte),
+		Some(b's') => body.parse().ok().map(Payload::Short),
+		Some(b'l') => body.parse().ok().map(Payload::Long),
+		Some(b'f') => body.parse().ok().map(Payload::Float),
+		Some(_) => body.parse().ok().map(Payload::Double),
+		None if lower == "true" => Some(Payload::Byte(1)),
+		None if lower == "false" => Some(Payload::Byte(0)),
+		None => s.parse().ok().map(Payload::Int).or_else(|| {
 			s.contains(['.', 'e', 'E'])
-				.then(|| s.parse().ok().map(Payload::double))
+				.then(|| s.parse().ok().map(Payload::Double))
 				.flatten()
 		}),
 	};
-	parsed.unwrap_or_else(|| Payload::string(s.to_owned()))
+	parsed.unwrap_or_else(|| Payload::String(s.to_owned()))
 }
 
 pub fn parse(s: &str) -> Option<Payload> {
@@ -162,19 +162,19 @@ fn join<T>(values: impl Iterator<Item = T>, f: impl Fn(T) -> String) -> String {
 
 pub fn write(p: &Payload) -> String {
 	match p {
-		Payload::end => String::new(),
-		Payload::byte(v) => format!("{v}b"),
-		Payload::short(v) => format!("{v}s"),
-		Payload::int(v) => v.to_string(),
-		Payload::long(v) => format!("{v}L"),
-		Payload::float(v) => format!("{v}f"),
-		Payload::double(v) => format!("{v}d"),
-		Payload::string(s) => quote(s),
-		Payload::byteArray(v) => format!("[B;{}]", join(v.iter(), |x| format!("{x}b"))),
-		Payload::intArray(v) => format!("[I;{}]", join(v.iter(), |x| x.to_string())),
-		Payload::longArray(v) => format!("[L;{}]", join(v.iter(), |x| format!("{x}L"))),
-		Payload::list(l) => format!("[{}]", join(l.values().iter(), write)),
-		Payload::compound(c) => format!(
+		Payload::End => String::new(),
+		Payload::Byte(v) => format!("{v}b"),
+		Payload::Short(v) => format!("{v}s"),
+		Payload::Int(v) => v.to_string(),
+		Payload::Long(v) => format!("{v}L"),
+		Payload::Float(v) => format!("{v}f"),
+		Payload::Double(v) => format!("{v}d"),
+		Payload::String(s) => quote(s),
+		Payload::ByteArray(v) => format!("[B;{}]", join(v.iter(), |x| format!("{x}b"))),
+		Payload::IntArray(v) => format!("[I;{}]", join(v.iter(), |x| x.to_string())),
+		Payload::LongArray(v) => format!("[L;{}]", join(v.iter(), |x| format!("{x}L"))),
+		Payload::List(l) => format!("[{}]", join(l.values().iter(), write)),
+		Payload::Compound(c) => format!(
 			"{{{}}}",
 			join(c.iter(), |e| format!(
 				"{}:{}",
@@ -191,61 +191,61 @@ mod tests {
 	use crate::ListItems;
 
 	fn compound(entries: Vec<(&str, Payload)>) -> Payload {
-		Payload::compound(entries.into_iter().map(|(k, v)| Entry::new(k, v)).collect())
+		Payload::Compound(entries.into_iter().map(|(k, v)| Entry::new(k, v)).collect())
 	}
 
 	#[test]
 	fn number_suffixes() {
 		let cases: [(&str, Payload); 16] = [
-			("1b", Payload::byte(1)),
-			("-3B", Payload::byte(-3)),
-			("7s", Payload::short(7)),
-			("7S", Payload::short(7)),
-			("42", Payload::int(42)),
-			("-42", Payload::int(-42)),
-			("9000000000L", Payload::long(9000000000)),
-			("5l", Payload::long(5)),
-			("1.5f", Payload::float(1.5)),
-			("2F", Payload::float(2.0)),
-			("1.25d", Payload::double(1.25)),
-			("1.25", Payload::double(1.25)),
-			("1e3", Payload::double(1000.0)),
-			("true", Payload::byte(1)),
-			("FALSE", Payload::byte(0)),
-			("300b", Payload::string("300b".into())),
+			("1b", Payload::Byte(1)),
+			("-3B", Payload::Byte(-3)),
+			("7s", Payload::Short(7)),
+			("7S", Payload::Short(7)),
+			("42", Payload::Int(42)),
+			("-42", Payload::Int(-42)),
+			("9000000000L", Payload::Long(9000000000)),
+			("5l", Payload::Long(5)),
+			("1.5f", Payload::Float(1.5)),
+			("2F", Payload::Float(2.0)),
+			("1.25d", Payload::Double(1.25)),
+			("1.25", Payload::Double(1.25)),
+			("1e3", Payload::Double(1000.0)),
+			("true", Payload::Byte(1)),
+			("FALSE", Payload::Byte(0)),
+			("300b", Payload::String("300b".into())),
 		];
 		for (text, value) in cases {
 			assert_eq!(parse(text), Some(value), "{text}");
 		}
 		assert_eq!(
 			parse("9000000000"),
-			Some(Payload::string("9000000000".into()))
+			Some(Payload::String("9000000000".into()))
 		);
-		assert_eq!(parse("bed"), Some(Payload::string("bed".into())));
-		assert_eq!(parse("d"), Some(Payload::string("d".into())));
+		assert_eq!(parse("bed"), Some(Payload::String("bed".into())));
+		assert_eq!(parse("d"), Some(Payload::String("d".into())));
 	}
 
 	#[test]
 	fn strings_quotes_and_escapes() {
 		assert_eq!(
 			parse(r#""a \"b\" \\ c""#),
-			Some(Payload::string(r#"a "b" \ c"#.into()))
+			Some(Payload::String(r#"a "b" \ c"#.into()))
 		);
 		assert_eq!(
 			parse(r#"'it\'s "x"'"#),
-			Some(Payload::string(r#"it's "x""#.into()))
+			Some(Payload::String(r#"it's "x""#.into()))
 		);
 		assert_eq!(
 			parse("minecraft.stone_1"),
-			Some(Payload::string("minecraft.stone_1".into()))
+			Some(Payload::String("minecraft.stone_1".into()))
 		);
 		assert_eq!(
 			parse("\"caf\u{e9}\""),
-			Some(Payload::string("caf\u{e9}".into()))
+			Some(Payload::String("caf\u{e9}".into()))
 		);
 		assert_eq!(parse("\"open"), None);
 		assert_eq!(
-			write(&Payload::string(r#"say "hi" \o/"#.into())),
+			write(&Payload::String(r#"say "hi" \o/"#.into())),
 			r#""say \"hi\" \\o/""#
 		);
 		assert_eq!(quote("a\"b"), r#""a\"b""#);
@@ -256,16 +256,16 @@ mod tests {
 		let parsed = parse(r#" { id : "minecraft:stone", Count: 1b, 'odd key': [1, 2, 3], "": {}, tag: {display: {Lore: ["a", 'b']}} } "#).unwrap();
 		let expected = compound(vec![
 			("id", "minecraft:stone".into()),
-			("Count", Payload::byte(1)),
-			("odd key", ListItems::int(vec![1, 2, 3]).into()),
-			("", Payload::compound(vec![])),
+			("Count", Payload::Byte(1)),
+			("odd key", ListItems::Int(vec![1, 2, 3]).into()),
+			("", Payload::Compound(vec![])),
 			(
 				"tag",
 				compound(vec![(
 					"display",
 					compound(vec![(
 						"Lore",
-						ListItems::string(vec!["a".into(), "b".into()]).into(),
+						ListItems::String(vec!["a".into(), "b".into()]).into(),
 					)]),
 				)]),
 			),
@@ -276,17 +276,17 @@ mod tests {
 			r#"{id:"minecraft:stone",Count:1b,"odd key":[1,2,3],"":{},tag:{display:{Lore:["a","b"]}}}"#
 		);
 		assert_eq!(parse(&write(&parsed)), Some(parsed));
-		assert_eq!(parse("[]"), Some(Payload::list(List::of(vec![]))));
-		assert_eq!(parse("[1, 2b]"), Some(ListItems::int(vec![1]).into()));
+		assert_eq!(parse("[]"), Some(Payload::List(List::of(vec![]))));
+		assert_eq!(parse("[1, 2b]"), Some(ListItems::Int(vec![1]).into()));
 		assert_eq!(parse("{a:1,}"), None);
 		assert_eq!(parse("{a:1} x"), None);
 		assert_eq!(parse("{:1}"), None);
 		assert_eq!(
 			parse("[[1],[2s]]"),
 			Some(
-				ListItems::list(vec![
-					List::new(ListItems::int(vec![1])),
-					List::new(ListItems::short(vec![2]))
+				ListItems::List(vec![
+					List::new(ListItems::Int(vec![1])),
+					List::new(ListItems::Short(vec![2]))
 				])
 				.into()
 			)
@@ -295,21 +295,21 @@ mod tests {
 
 	#[test]
 	fn typed_arrays() {
-		assert_eq!(parse("[B;1b,-2b]"), Some(Payload::byteArray(vec![1, -2])));
+		assert_eq!(parse("[B;1b,-2b]"), Some(Payload::ByteArray(vec![1, -2])));
 		assert_eq!(
 			parse("[I; 1, 2 ,3]"),
-			Some(Payload::intArray(vec![1, 2, 3]))
+			Some(Payload::IntArray(vec![1, 2, 3]))
 		);
-		assert_eq!(parse("[L;1L,2l]"), Some(Payload::longArray(vec![1, 2])));
-		assert_eq!(parse("[I;]"), Some(Payload::intArray(vec![])));
-		assert_eq!(parse("[I;x]"), Some(Payload::intArray(vec![0])));
-		assert_eq!(write(&Payload::byteArray(vec![1, -2])), "[B;1b,-2b]");
-		assert_eq!(write(&Payload::intArray(vec![1, 2])), "[I;1,2]");
-		assert_eq!(write(&Payload::longArray(vec![])), "[L;]");
+		assert_eq!(parse("[L;1L,2l]"), Some(Payload::LongArray(vec![1, 2])));
+		assert_eq!(parse("[I;]"), Some(Payload::IntArray(vec![])));
+		assert_eq!(parse("[I;x]"), Some(Payload::IntArray(vec![0])));
+		assert_eq!(write(&Payload::ByteArray(vec![1, -2])), "[B;1b,-2b]");
+		assert_eq!(write(&Payload::IntArray(vec![1, 2])), "[I;1,2]");
+		assert_eq!(write(&Payload::LongArray(vec![])), "[L;]");
 		for v in [
-			Payload::byteArray(vec![1, -2]),
-			Payload::intArray(vec![7]),
-			Payload::longArray(vec![1 << 40]),
+			Payload::ByteArray(vec![1, -2]),
+			Payload::IntArray(vec![7]),
+			Payload::LongArray(vec![1 << 40]),
 		] {
 			assert_eq!(parse(&write(&v)), Some(v));
 		}
@@ -318,15 +318,15 @@ mod tests {
 	#[test]
 	fn numbers_write_with_suffixes() {
 		let v = compound(vec![
-			("b", Payload::byte(-1)),
-			("s", Payload::short(2)),
-			("i", Payload::int(3)),
-			("l", Payload::long(4)),
-			("f", Payload::float(1.5)),
-			("d", Payload::double(2.0)),
+			("b", Payload::Byte(-1)),
+			("s", Payload::Short(2)),
+			("i", Payload::Int(3)),
+			("l", Payload::Long(4)),
+			("f", Payload::Float(1.5)),
+			("d", Payload::Double(2.0)),
 		]);
 		assert_eq!(write(&v), "{b:-1b,s:2s,i:3,l:4L,f:1.5f,d:2d}");
 		assert_eq!(parse(&write(&v)), Some(v));
-		assert_eq!(write(&Payload::end), "");
+		assert_eq!(write(&Payload::End), "");
 	}
 }

@@ -1,7 +1,7 @@
 import { assertEquals, assertThrows } from "@std/assert";
 import { Input, Output } from "./pds.ts";
 import { mutf8_decode, mutf8_encode } from "./pds_native.ts";
-import * as pds_Tag from "./gen/pds_Tag.ts";
+import * as pds_Tag from "./gen/Tag.ts";
 import type { Tag } from "./mod.ts";
 
 function roundtrip(bytes: number[]): Tag {

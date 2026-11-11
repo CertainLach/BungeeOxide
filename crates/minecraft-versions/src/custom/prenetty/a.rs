@@ -13,35 +13,40 @@ macro_rules! legacy_items {
 		}
 
 		pub fn $equip(
-			mut p: $m::play_toClient_packet_entity_equipment::Ty,
+			mut p: $m::play_to_client_packet_entity_equipment::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
-			if p.itemId >= 0 {
-				(p.itemId, p.itemDamage) = ids::item(p.itemId, p.itemDamage, $to);
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
+			if p.item_id >= 0 {
+				(p.item_id, p.item_damage) = ids::item(p.item_id, p.item_damage, $to);
 			}
-			Ok(vec![$m::play_toClient_packet::Ty::entity_equipment(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::EntityEquipment(p)])
 		}
 
 		pub fn $named(
-			mut p: $m::play_toClient_packet_named_entity_spawn::Ty,
+			mut p: $m::play_to_client_packet_named_entity_spawn::Ty,
 			cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
-			p.currentItem = item_id(p.currentItem, $to);
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
+			p.current_item = item_id(p.current_item, $to);
 			if $to == V::R1_1 {
-				heights::spawned(cx, p.entityId, (p.x, &mut p.y, p.z), Some((p.yaw, p.pitch)));
+				heights::spawned(
+					cx,
+					p.entity_id,
+					(p.x, &mut p.y, p.z),
+					Some((p.yaw, p.pitch)),
+				);
 			}
-			Ok(vec![$m::play_toClient_packet::Ty::named_entity_spawn(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::NamedEntitySpawn(p)])
 		}
 
 		pub fn $item(
-			mut p: $m::play_toClient_packet_spawn_entity_item::Ty,
+			mut p: $m::play_to_client_packet_spawn_entity_item::Ty,
 			cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
-			(p.item.id, p.item.itemDamage) = ids::item(p.item.id, p.item.itemDamage, $to);
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
+			(p.item.id, p.item.item_damage) = ids::item(p.item.id, p.item.item_damage, $to);
 			if $to == V::R1_1 {
-				heights::spawned(cx, p.entityId, (p.x, &mut p.y, p.z), None);
+				heights::spawned(cx, p.entity_id, (p.x, &mut p.y, p.z), None);
 			}
-			Ok(vec![$m::play_toClient_packet::Ty::spawn_entity_item(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::SpawnEntityItem(p)])
 		}
 	};
 }
@@ -49,51 +54,51 @@ macro_rules! legacy_items {
 macro_rules! legacy_windows {
 	($to:expr, $m:ident, $set_slot:ident, $items:ident, $creative:ident, $creative_server:ident, $click:ident, $place:ident) => {
 		pub fn $set_slot(
-			mut p: $m::play_toClient_packet_set_slot::Ty,
+			mut p: $m::play_to_client_packet_set_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
 			p.item = legacy_slot(p.item, $to);
-			Ok(vec![$m::play_toClient_packet::Ty::set_slot(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::SetSlot(p)])
 		}
 
 		pub fn $items(
-			mut p: $m::play_toClient_packet_window_items::Ty,
+			mut p: $m::play_to_client_packet_window_items::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
 			p.items = p.items.into_iter().map(|i| legacy_slot(i, $to)).collect();
-			Ok(vec![$m::play_toClient_packet::Ty::window_items(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::WindowItems(p)])
 		}
 
 		pub fn $creative(
-			mut p: $m::play_toClient_packet_set_creative_slot::Ty,
+			mut p: $m::play_to_client_packet_set_creative_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
 			p.item = legacy_slot(p.item, $to);
-			Ok(vec![$m::play_toClient_packet::Ty::set_creative_slot(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::SetCreativeSlot(p)])
 		}
 
 		pub fn $creative_server(
-			mut p: $m::play_toServer_packet_set_creative_slot::Ty,
+			mut p: $m::play_to_server_packet_set_creative_slot::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toServer_packet::Ty>> {
+		) -> Result<Vec<$m::play_to_server_packet::Ty>> {
 			p.item = legacy_slot(p.item, $to);
-			Ok(vec![$m::play_toServer_packet::Ty::set_creative_slot(p)])
+			Ok(vec![$m::play_to_server_packet::Ty::SetCreativeSlot(p)])
 		}
 
 		pub fn $click(
-			mut p: $m::play_toServer_packet_window_click::Ty,
+			mut p: $m::play_to_server_packet_window_click::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toServer_packet::Ty>> {
+		) -> Result<Vec<$m::play_to_server_packet::Ty>> {
 			p.item = legacy_slot(p.item, $to);
-			Ok(vec![$m::play_toServer_packet::Ty::window_click(p)])
+			Ok(vec![$m::play_to_server_packet::Ty::WindowClick(p)])
 		}
 
 		pub fn $place(
-			mut p: $m::play_toServer_packet_block_place::Ty,
+			mut p: $m::play_to_server_packet_block_place::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toServer_packet::Ty>> {
-			p.heldItem = legacy_slot(p.heldItem, $to);
-			Ok(vec![$m::play_toServer_packet::Ty::block_place(p)])
+		) -> Result<Vec<$m::play_to_server_packet::Ty>> {
+			p.held_item = legacy_slot(p.held_item, $to);
+			Ok(vec![$m::play_to_server_packet::Ty::BlockPlace(p)])
 		}
 	};
 }
@@ -158,9 +163,9 @@ legacy_items!(
 	prenetty_spawn_entity_item_1_2_3
 );
 
-type Client11 = v1_1::play_toClient_packet::Ty;
-type Client12 = v1_2_3::play_toClient_packet::Ty;
-type Records = v1_2_3::play_toClient_packet_multi_block_change__records__items::Ty;
+type Client11 = v1_1::play_to_client_packet::Ty;
+type Client12 = v1_2_3::play_to_client_packet::Ty;
+type Records = v1_2_3::play_to_client_packet_multi_block_change_records_items::Ty;
 
 const MAX_RECORDS: usize = i16::MAX as usize;
 
@@ -168,10 +173,10 @@ fn records_packets(chunk_x: i32, chunk_z: i32, records: Vec<Records>) -> Vec<Cli
 	records
 		.chunks(MAX_RECORDS)
 		.map(|part| {
-			Client12::multi_block_change(v1_2_3::play_toClient_packet_multi_block_change::Ty {
-				chunkX: chunk_x,
-				chunkZ: chunk_z,
-				dataLength: part.len() as i32 * 4,
+			Client12::MultiBlockChange(v1_2_3::play_to_client_packet_multi_block_change::Ty {
+				chunk_x: chunk_x,
+				chunk_z: chunk_z,
+				data_length: part.len() as i32 * 4,
 				records: part.to_vec(),
 			})
 		})
@@ -180,36 +185,36 @@ fn records_packets(chunk_x: i32, chunk_z: i32, records: Vec<Records>) -> Vec<Cli
 
 fn record(x: i32, y: i32, z: i32, id: u8, meta: u8) -> Records {
 	Records {
-		horizontalPos: ((x & 15) << 4 | z & 15) as u8,
+		horizontal_pos: ((x & 15) << 4 | z & 15) as u8,
 		y: y as u8,
-		blockId: (id as u16) << 4 | (meta & 15) as u16,
+		block_id: (id as u16) << 4 | (meta & 15) as u16,
 	}
 }
 
 pub fn prenetty_map_chunk_1_2_3(
-	p: v1_1::play_toClient_packet_map_chunk::Ty,
+	p: v1_1::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let old = Old {
 		x: p.x,
 		y: p.y,
 		z: p.z,
-		size_x: p.sizeX,
-		size_y: p.sizeY,
-		size_z: p.sizeZ,
-		data: p.compressedChunkData,
+		size_x: p.size_x,
+		size_y: p.size_y,
+		size_z: p.size_z,
+		data: p.compressed_chunk_data,
 	};
 	let cuboid = chunk::from_old(&old, true)?;
 	if let Some((x, z, data, bitmap)) = cuboid.full {
-		return Ok(vec![Client12::map_chunk(
-			v1_2_3::play_toClient_packet_map_chunk::Ty {
+		return Ok(vec![Client12::MapChunk(
+			v1_2_3::play_to_client_packet_map_chunk::Ty {
 				x,
 				z,
-				groundUp: true,
-				bitMap: bitmap,
-				addBitMap: 0,
+				ground_up: true,
+				bit_map: bitmap,
+				add_bit_map: 0,
 				unused: 0,
-				compressedChunkData: chunk::deflate(&data)?,
+				compressed_chunk_data: chunk::deflate(&data)?,
 			},
 		)]);
 	}
@@ -230,7 +235,7 @@ pub fn prenetty_map_chunk_1_2_3(
 }
 
 pub fn prenetty_map_chunk_1_1(
-	p: v1_2_3::play_toClient_packet_map_chunk::Ty,
+	p: v1_2_3::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	if heights::active(cx) {
@@ -238,17 +243,17 @@ pub fn prenetty_map_chunk_1_1(
 			return Ok(out);
 		}
 	}
-	let raw = chunk::inflate(&p.compressedChunkData)?;
+	let raw = chunk::inflate(&p.compressed_chunk_data)?;
 	let mut shape = Shape {
-		bitmap: p.bitMap,
-		add: p.addBitMap,
+		bitmap: p.bit_map,
+		add: p.add_bit_map,
 		sky: true,
-		full: p.groundUp,
+		full: p.ground_up,
 	};
 	if raw.len() < shape.len() {
 		shape.sky = false;
 	}
-	let olds = if p.groundUp {
+	let olds = if p.ground_up {
 		vec![chunk::old_full(p.x, p.z, &raw, shape, V::R1_1)?]
 	} else {
 		chunk::old_sections(p.x, p.z, &raw, shape, V::R1_1)?
@@ -256,34 +261,34 @@ pub fn prenetty_map_chunk_1_1(
 	Ok(olds
 		.into_iter()
 		.map(|o| {
-			Client11::map_chunk(v1_1::play_toClient_packet_map_chunk::Ty {
+			Client11::MapChunk(v1_1::play_to_client_packet_map_chunk::Ty {
 				x: o.x,
 				y: o.y,
 				z: o.z,
-				sizeX: o.size_x,
-				sizeY: o.size_y,
-				sizeZ: o.size_z,
-				compressedChunkData: o.data,
+				size_x: o.size_x,
+				size_y: o.size_y,
+				size_z: o.size_z,
+				compressed_chunk_data: o.data,
 			})
 		})
 		.collect())
 }
 
 pub fn prenetty_multi_block_change_1_2_3(
-	p: v1_1::play_toClient_packet_multi_block_change::Ty,
+	p: v1_1::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let records = p
 		.coordinates
 		.iter()
-		.zip(p.blockIds.iter().zip(&p.metadata))
+		.zip(p.block_ids.iter().zip(&p.metadata))
 		.map(|(c, (id, meta))| record(c.x as i32, c.y as i32, c.z as i32, *id, *meta & 15))
 		.collect();
-	Ok(records_packets(p.chunkX, p.chunkZ, records))
+	Ok(records_packets(p.chunk_x, p.chunk_z, records))
 }
 
 pub fn prenetty_multi_block_change_1_1(
-	p: v1_2_3::play_toClient_packet_multi_block_change::Ty,
+	p: v1_2_3::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	if heights::active(cx) {
@@ -293,11 +298,11 @@ pub fn prenetty_multi_block_change_1_1(
 	let mut block_ids = Vec::new();
 	let mut metadata = Vec::new();
 	for r in p.records.iter().filter(|r| r.y < 128) {
-		let (id, meta) = ids::block(r.blockId >> 4, (r.blockId & 15) as u8, V::R1_1);
+		let (id, meta) = ids::block(r.block_id >> 4, (r.block_id & 15) as u8, V::R1_1);
 		coordinates.push(
-			v1_1::play_toClient_packet_multi_block_change__coordinates__items::Ty {
-				x: r.horizontalPos >> 4,
-				z: r.horizontalPos & 15,
+			v1_1::play_to_client_packet_multi_block_change_coordinates_items::Ty {
+				x: r.horizontal_pos >> 4,
+				z: r.horizontal_pos & 15,
 				y: r.y,
 			},
 		);
@@ -307,19 +312,19 @@ pub fn prenetty_multi_block_change_1_1(
 	if coordinates.is_empty() {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client11::multi_block_change(
-		v1_1::play_toClient_packet_multi_block_change::Ty {
-			chunkX: p.chunkX,
-			chunkZ: p.chunkZ,
+	Ok(vec![Client11::MultiBlockChange(
+		v1_1::play_to_client_packet_multi_block_change::Ty {
+			chunk_x: p.chunk_x,
+			chunk_z: p.chunk_z,
 			coordinates,
-			blockIds: block_ids,
+			block_ids: block_ids,
 			metadata,
 		},
 	)])
 }
 
 pub fn prenetty_block_change_1_1(
-	mut p: v1_2_3::play_toClient_packet_block_change::Ty,
+	mut p: v1_2_3::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	if heights::active(cx) {
@@ -331,28 +336,33 @@ pub fn prenetty_block_change_1_1(
 	let (id, meta) = ids::block(p.r#type as u16, p.metadata, V::R1_1);
 	p.r#type = id as u8;
 	p.metadata = meta;
-	Ok(vec![Client11::block_change(p)])
+	Ok(vec![Client11::BlockChange(p)])
 }
 
 pub fn prenetty_spawn_entity_living_1_1(
-	mut p: v1_2_3::play_toClient_packet_spawn_entity_living::Ty,
+	mut p: v1_2_3::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	match entities::mob_stand_in(p.r#type, V::R1_1) {
 		Some(with) => {
-			entities::stand_in(cx, p.entityId, Kind::Mob(with));
+			entities::stand_in(cx, p.entity_id, Kind::Mob(with));
 			p.r#type = with;
 		}
 		None if ids::mob_exists(p.r#type, V::R1_1) => {
-			entities::track(cx, p.entityId, Kind::Mob(p.r#type))
+			entities::track(cx, p.entity_id, Kind::Mob(p.r#type))
 		}
 		None => return Ok(vec![]),
 	}
-	heights::spawned(cx, p.entityId, (p.x, &mut p.y, p.z), Some((p.yaw, p.pitch)));
-	let metadata = entities::meta_1_1(cx, p.entityId, p.metadata);
-	Ok(vec![Client11::spawn_entity_living(
-		v1_1::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
+	heights::spawned(
+		cx,
+		p.entity_id,
+		(p.x, &mut p.y, p.z),
+		Some((p.yaw, p.pitch)),
+	);
+	let metadata = entities::meta_1_1(cx, p.entity_id, p.metadata);
+	Ok(vec![Client11::SpawnEntityLiving(
+		v1_1::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
 			r#type: p.r#type,
 			x: p.x,
 			y: p.y,
@@ -365,26 +375,26 @@ pub fn prenetty_spawn_entity_living_1_1(
 }
 
 pub fn prenetty_spawn_entity_1_1(
-	mut p: v1_2_3::play_toClient_packet_spawn_entity::Ty,
+	mut p: v1_2_3::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	match entities::object_stand_in(p.r#type, V::R1_1) {
 		Some(with) => {
-			entities::stand_in(cx, p.entityId, Kind::Object(with, 0));
+			entities::stand_in(cx, p.entity_id, Kind::Object(with, 0));
 			p.r#type = with;
 		}
 		None if ids::object_exists(p.r#type, V::R1_1) => {}
 		None => return Ok(vec![]),
 	}
-	heights::spawned(cx, p.entityId, (p.x, &mut p.y, p.z), None);
-	Ok(vec![Client11::spawn_entity(p)])
+	heights::spawned(cx, p.entity_id, (p.x, &mut p.y, p.z), None);
+	Ok(vec![Client11::SpawnEntity(p)])
 }
 
 pub fn prenetty_username_1_1(
-	p: &v1_2_3::play_toServer_packet_set_protocol::Ty,
+	p: &v1_2_3::play_to_server_packet_set_protocol::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(p.usernameAndHost
+	Ok(p.username_and_host
 		.split(';')
 		.next()
 		.unwrap_or_default()
@@ -398,26 +408,26 @@ mod tests {
 	#[test]
 	fn records_survive_the_parallel_arrays() {
 		let mut cx = Session::new();
-		let p = v1_2_3::play_toClient_packet_multi_block_change::Ty {
-			chunkX: 1,
-			chunkZ: -1,
-			dataLength: 8,
+		let p = v1_2_3::play_to_client_packet_multi_block_change::Ty {
+			chunk_x: 1,
+			chunk_z: -1,
+			data_length: 8,
 			records: vec![record(5, 70, 10, 123, 0), record(0, 200, 0, 1, 0)],
 		};
-		let Client11::multi_block_change(old) =
+		let Client11::MultiBlockChange(old) =
 			super::super::one(prenetty_multi_block_change_1_1(p, &mut cx).unwrap())
 		else {
 			panic!()
 		};
-		assert_eq!((old.coordinates.len(), old.blockIds[0]), (1, 1));
-		let Client12::multi_block_change(back) =
+		assert_eq!((old.coordinates.len(), old.block_ids[0]), (1, 1));
+		let Client12::MultiBlockChange(back) =
 			super::super::one(prenetty_multi_block_change_1_2_3(old, &mut cx).unwrap())
 		else {
 			panic!()
 		};
 		let r = &back.records[0];
 		assert_eq!(
-			(r.horizontalPos, r.y, r.blockId, back.dataLength),
+			(r.horizontal_pos, r.y, r.block_id, back.data_length),
 			(0x5a, 70, 1 << 4, 4)
 		);
 	}

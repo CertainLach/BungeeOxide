@@ -4,12 +4,12 @@ use super::s1_19::{dropped_keys, minecart_block, section_records, world_event, w
 use super::*;
 use crate::gen::convert::{v1_19_2, v1_19_3};
 
-type Client192 = v1_19_2::play_toClient_packet::Ty;
-type Client193 = v1_19_3::play_toClient_packet::Ty;
-type Properties192 = v1_19_2::command_node__extraNodeData__v2__properties::Ty;
-type Properties193 = v1_19_3::command_node__extraNodeData__v2__properties::Ty;
-type Info192 = v1_19_2::play_toClient_packet_player_info::Ty;
-type Info193 = v1_19_3::play_toClient_packet_player_info::Ty;
+type Client192 = v1_19_2::play_to_client_packet::Ty;
+type Client193 = v1_19_3::play_to_client_packet::Ty;
+type Properties192 = v1_19_2::command_node_extra_node_data_v2_properties::Ty;
+type Properties193 = v1_19_3::command_node_extra_node_data_v2_properties::Ty;
+type Info192 = v1_19_2::play_to_client_packet_player_info::Ty;
+type Info193 = v1_19_3::play_to_client_packet_player_info::Ty;
 
 const OLD: V = V::V1_19_2;
 const NEW: V = V::V1_19_3;
@@ -74,26 +74,26 @@ world_particles!(
 );
 
 pub fn caves_entity_summon_parser_1_19_3(_p: (), _cx: &mut Session) -> Result<Properties193> {
-	Ok(Properties193::minecraft_resource(
+	Ok(Properties193::MinecraftResource(
 		"minecraft:entity_type".into(),
 	))
 }
 
 pub fn caves_enchantment_parser_1_19_3(_p: (), _cx: &mut Session) -> Result<Properties193> {
-	Ok(Properties193::minecraft_resource(
+	Ok(Properties193::MinecraftResource(
 		"minecraft:enchantment".into(),
 	))
 }
 
 pub fn caves_mob_effect_parser_1_19_3(_p: (), _cx: &mut Session) -> Result<Properties193> {
-	Ok(Properties193::minecraft_resource(
+	Ok(Properties193::MinecraftResource(
 		"minecraft:mob_effect".into(),
 	))
 }
 
 pub fn caves_gamemode_parser_down_1_19_2(_p: (), _cx: &mut Session) -> Result<Properties192> {
-	Ok(Properties192::brigadier_string(
-		v1_19_2::command_node__extraNodeData__v2__properties__brigadier_string::Ty::SINGLE_WORD,
+	Ok(Properties192::BrigadierString(
+		v1_19_2::command_node_extra_node_data_v2_properties_brigadier_string::Ty::SingleWord,
 	))
 }
 
@@ -101,22 +101,22 @@ pub fn caves_resource_key_parser_down_1_19_2(
 	registry: String,
 	_cx: &mut Session,
 ) -> Result<Properties192> {
-	Ok(Properties192::minecraft_resource(registry))
+	Ok(Properties192::MinecraftResource(registry))
 }
 
 pub fn caves_resource_or_tag_key_parser_down_1_19_2(
 	registry: String,
 	_cx: &mut Session,
 ) -> Result<Properties192> {
-	Ok(Properties192::minecraft_resource_or_tag(registry))
+	Ok(Properties192::MinecraftResourceOrTag(registry))
 }
 
 pub fn caves_encryption_verify_token_1_19_3(
-	src: &v1_19_2::login_toServer_packet_encryption_begin::Ty,
+	src: &v1_19_2::login_to_server_packet_encryption_begin::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<u8>> {
 	match &src.crypto {
-		v1_19_2::login_toServer_packet_encryption_begin__crypto::Ty::r#true(token) => {
+		v1_19_2::login_to_server_packet_encryption_begin_crypto::Ty::True(token) => {
 			Ok(token.clone())
 		}
 		_ => unconvertible("a 1.19.3 server only accepts the verify token, not a signed nonce"),
@@ -124,14 +124,10 @@ pub fn caves_encryption_verify_token_1_19_3(
 }
 
 pub fn caves_encryption_crypto_down_1_19_2(
-	src: &v1_19_3::login_toServer_packet_encryption_begin::Ty,
+	src: &v1_19_3::login_to_server_packet_encryption_begin::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19_2::login_toServer_packet_encryption_begin__crypto::Ty> {
-	Ok(
-		v1_19_2::login_toServer_packet_encryption_begin__crypto::Ty::r#true(
-			src.verifyToken.clone(),
-		),
-	)
+) -> Result<v1_19_2::login_to_server_packet_encryption_begin_crypto::Ty> {
+	Ok(v1_19_2::login_to_server_packet_encryption_begin_crypto::Ty::True(src.verify_token.clone()))
 }
 
 fn sound_name(version: V, id: i32) -> Result<String> {
@@ -171,50 +167,50 @@ fn sound_down(id: Option<i32>, name: Option<&str>) -> Result<Sound> {
 	}
 }
 
-fn holder(sound: Sound) -> v1_19_3::ItemSoundHolder::Ty {
+fn holder(sound: Sound) -> v1_19_3::item_sound_holder::Ty {
 	match sound {
-		Sound::Id(id) => v1_19_3::ItemSoundHolder::Ty::Id(id),
-		Sound::Named(soundName) => {
-			v1_19_3::ItemSoundHolder::Ty::Inline(v1_19_3::ItemSoundEvent::Ty {
-				soundName,
-				fixedRange: None,
+		Sound::Id(id) => v1_19_3::item_sound_holder::Ty::Id(id),
+		Sound::Named(sound_name) => {
+			v1_19_3::item_sound_holder::Ty::Inline(v1_19_3::item_sound_event::Ty {
+				sound_name,
+				fixed_range: None,
 			})
 		}
 	}
 }
 
-fn source(category: i32) -> Result<v1_19_3::soundSource::Ty> {
+fn source(category: i32) -> Result<v1_19_3::sound_source::Ty> {
 	let mut b = Vec::new();
 	write_varint(&mut b, category);
-	decode(&b, v1_19_3::soundSource::deserialize)
+	decode(&b, v1_19_3::sound_source::deserialize)
 }
 
-fn category(source: &v1_19_3::soundSource::Ty) -> Result<i32> {
-	let b = encode(source, v1_19_3::soundSource::serialize)?;
+fn category(source: &v1_19_3::sound_source::Ty) -> Result<i32> {
+	let b = encode(source, v1_19_3::sound_source::serialize)?;
 	read_varint(&b, &mut 0)
 }
 
 pub fn caves_sound_holder_1_19_3(
-	src: &v1_19_2::play_toClient_packet_sound_effect::Ty,
+	src: &v1_19_2::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19_3::ItemSoundHolder::Ty> {
-	Ok(holder(sound_up(src.soundId)?))
+) -> Result<v1_19_3::item_sound_holder::Ty> {
+	Ok(holder(sound_up(src.sound_id)?))
 }
 
 pub fn caves_sound_effect_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_sound_effect::Ty,
+	p: v1_19_3::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client192>> {
 	let sound = match &p.sound {
-		v1_19_3::ItemSoundHolder::Ty::Id(id) => sound_down(Some(*id), None)?,
-		v1_19_3::ItemSoundHolder::Ty::Inline(e) => sound_down(None, Some(&e.soundName))?,
+		v1_19_3::item_sound_holder::Ty::Id(id) => sound_down(Some(*id), None)?,
+		v1_19_3::item_sound_holder::Ty::Inline(e) => sound_down(None, Some(&e.sound_name))?,
 	};
-	let soundCategory = category(&p.soundCategory)?;
+	let sound_category = category(&p.sound_category)?;
 	Ok(vec![match sound {
-		Sound::Id(soundId) => {
-			Client192::sound_effect(v1_19_2::play_toClient_packet_sound_effect::Ty {
-				soundId,
-				soundCategory,
+		Sound::Id(sound_id) => {
+			Client192::SoundEffect(v1_19_2::play_to_client_packet_sound_effect::Ty {
+				sound_id,
+				sound_category,
 				x: p.x,
 				y: p.y,
 				z: p.z,
@@ -223,10 +219,10 @@ pub fn caves_sound_effect_down_1_19_2(
 				seed: p.seed,
 			})
 		}
-		Sound::Named(soundName) => {
-			Client192::named_sound_effect(v1_19_2::play_toClient_packet_named_sound_effect::Ty {
-				soundName,
-				soundCategory,
+		Sound::Named(sound_name) => {
+			Client192::NamedSoundEffect(v1_19_2::play_to_client_packet_named_sound_effect::Ty {
+				sound_name,
+				sound_category,
 				x: p.x,
 				y: p.y,
 				z: p.z,
@@ -239,21 +235,21 @@ pub fn caves_sound_effect_down_1_19_2(
 }
 
 pub fn caves_sound_source_1_19_3(
-	src: &v1_19_2::play_toClient_packet_sound_effect::Ty,
+	src: &v1_19_2::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19_3::soundSource::Ty> {
-	source(src.soundCategory)
+) -> Result<v1_19_3::sound_source::Ty> {
+	source(src.sound_category)
 }
 
 pub fn caves_entity_sound_event_1_19_3(
-	src: &v1_19_2::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_19_2::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19_3::play_toClient_packet_entity_sound_effect__soundEvent::Ty> {
-	use v1_19_3::play_toClient_packet_entity_sound_effect__soundEvent::Ty as Event;
-	Ok(match sound_up(src.soundId)? {
-		Sound::Id(id) => Event::default(id + 1),
-		Sound::Named(resource) => Event::v0(
-			v1_19_3::play_toClient_packet_entity_sound_effect__soundEvent__v0::Ty {
+) -> Result<v1_19_3::play_to_client_packet_entity_sound_effect_sound_event::Ty> {
+	use v1_19_3::play_to_client_packet_entity_sound_effect_sound_event::Ty as Event;
+	Ok(match sound_up(src.sound_id)? {
+		Sound::Id(id) => Event::Default(id + 1),
+		Sound::Named(resource) => Event::V0(
+			v1_19_3::play_to_client_packet_entity_sound_effect_sound_event_v0::Ty {
 				resource,
 				range: None,
 			},
@@ -262,13 +258,13 @@ pub fn caves_entity_sound_event_1_19_3(
 }
 
 pub fn caves_entity_sound_id_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_19_3::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	use v1_19_3::play_toClient_packet_entity_sound_effect__soundEvent::Ty as Event;
-	let sound = match &src.soundEvent {
-		Event::v0(e) => sound_down(None, Some(&e.resource))?,
-		Event::default(t) => sound_down(Some(t - 1), None)?,
+	use v1_19_3::play_to_client_packet_entity_sound_effect_sound_event::Ty as Event;
+	let sound = match &src.sound_event {
+		Event::V0(e) => sound_down(None, Some(&e.resource))?,
+		Event::Default(t) => sound_down(Some(t - 1), None)?,
 	};
 	match sound {
 		Sound::Id(id) => Ok(id),
@@ -277,28 +273,28 @@ pub fn caves_entity_sound_id_down_1_19_2(
 }
 
 pub fn caves_entity_sound_source_1_19_3(
-	src: &v1_19_2::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_19_2::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
-) -> Result<v1_19_3::soundSource::Ty> {
-	source(src.soundCategory)
+) -> Result<v1_19_3::sound_source::Ty> {
+	source(src.sound_category)
 }
 
 pub fn caves_entity_sound_source_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_entity_sound_effect::Ty,
+	src: &v1_19_3::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	category(&src.soundCategory)
+	category(&src.sound_category)
 }
 
 pub fn caves_named_sound_1_19_3(
-	p: v1_19_2::play_toClient_packet_named_sound_effect::Ty,
+	p: v1_19_2::play_to_client_packet_named_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client193>> {
-	let sound = sound_id(NEW, &p.soundName).map_or(Sound::Named(p.soundName), Sound::Id);
-	Ok(vec![Client193::sound_effect(
-		v1_19_3::play_toClient_packet_sound_effect::Ty {
+	let sound = sound_id(NEW, &p.sound_name).map_or(Sound::Named(p.sound_name), Sound::Id);
+	Ok(vec![Client193::SoundEffect(
+		v1_19_3::play_to_client_packet_sound_effect::Ty {
 			sound: holder(sound),
-			soundCategory: source(p.soundCategory)?,
+			sound_category: source(p.sound_category)?,
 			x: p.x,
 			y: p.y,
 			z: p.z,
@@ -311,20 +307,20 @@ pub fn caves_named_sound_1_19_3(
 
 pub fn caves_hide_message_1_19_3(signature: Vec<u8>, _cx: &mut Session) -> Result<Vec<Client193>> {
 	match signature.len() {
-		256 => Ok(vec![Client193::hide_message(
-			v1_19_3::play_toClient_packet_hide_message::Ty::v0(signature),
+		256 => Ok(vec![Client193::HideMessage(
+			v1_19_3::play_to_client_packet_hide_message::Ty::V0(signature),
 		)]),
 		_ => Ok(vec![]),
 	}
 }
 
 pub fn caves_hide_message_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_hide_message::Ty,
+	p: v1_19_3::play_to_client_packet_hide_message::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client192>> {
 	Ok(match p {
-		v1_19_3::play_toClient_packet_hide_message::Ty::v0(signature) => {
-			vec![Client192::hide_message(signature)]
+		v1_19_3::play_to_client_packet_hide_message::Ty::V0(signature) => {
+			vec![Client192::HideMessage(signature)]
 		}
 		_ => vec![],
 	})
@@ -337,171 +333,170 @@ fn decorate_1_19_2(
 	target: Option<&str>,
 	content: &str,
 ) -> Result<Vec<Client192>> {
-	let (content, isActionBar) = chat_types::decorate(cx, (NEW, OLD), ty, sender, target, content)?;
-	Ok(vec![Client192::system_chat(
-		v1_19_2::play_toClient_packet_system_chat::Ty {
+	let (content, is_action_bar) =
+		chat_types::decorate(cx, (NEW, OLD), ty, sender, target, content)?;
+	Ok(vec![Client192::SystemChat(
+		v1_19_2::play_to_client_packet_system_chat::Ty {
 			content,
-			isActionBar,
+			is_action_bar,
 		},
 	)])
 }
 
 pub fn caves_player_chat_1_19_3(
-	p: v1_19_2::play_toClient_packet_player_chat::Ty,
+	p: v1_19_2::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client193>> {
 	let message = p
-		.unsignedChatContent
-		.or(p.formattedMessage)
-		.unwrap_or_else(|| chat_text(&p.plainMessage));
-	Ok(vec![Client193::profileless_chat(
-		v1_19_3::play_toClient_packet_profileless_chat::Ty {
+		.unsigned_chat_content
+		.or(p.formatted_message)
+		.unwrap_or_else(|| chat_text(&p.plain_message));
+	Ok(vec![Client193::ProfilelessChat(
+		v1_19_3::play_to_client_packet_profileless_chat::Ty {
 			message,
 			r#type: p.r#type,
-			name: p.networkName,
-			target: p.networkTargetName,
+			name: p.network_name,
+			target: p.network_target_name,
 		},
 	)])
 }
 
 pub fn caves_player_chat_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_player_chat::Ty,
+	p: v1_19_3::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client192>> {
 	let content = p
-		.unsignedChatContent
-		.unwrap_or_else(|| chat_text(&p.plainMessage));
+		.unsigned_chat_content
+		.unwrap_or_else(|| chat_text(&p.plain_message));
 	decorate_1_19_2(
 		cx,
 		p.r#type,
-		&p.networkName,
-		p.networkTargetName.as_deref(),
+		&p.network_name,
+		p.network_target_name.as_deref(),
 		&content,
 	)
 }
 
 pub fn caves_profileless_chat_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_profileless_chat::Ty,
+	p: v1_19_3::play_to_client_packet_profileless_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client192>> {
 	decorate_1_19_2(cx, p.r#type, &p.name, p.target.as_deref(), &p.message)
 }
 
 pub fn caves_login_1_19_3(
-	p: v1_19_2::play_toClient_packet_login::Ty,
+	p: v1_19_2::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client193>> {
-	world(cx).enter(&p.dimensionCodec, &p.worldType);
+	world(cx).enter(&p.dimension_codec, &p.world_type);
 	Ok(vec![
-		Client193::login(p),
-		Client193::feature_flags(vec!["minecraft:vanilla".into()]),
+		Client193::Login(p),
+		Client193::FeatureFlags(vec!["minecraft:vanilla".into()]),
 	])
 }
 
 pub fn caves_login_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_login::Ty,
+	p: v1_19_3::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client192>> {
-	chat_types::track(cx, NEW, &p.dimensionCodec);
-	world(cx).enter(&p.dimensionCodec, &p.worldType);
-	Ok(vec![Client192::login(p)])
+	chat_types::track(cx, NEW, &p.dimension_codec);
+	world(cx).enter(&p.dimension_codec, &p.world_type);
+	Ok(vec![Client192::Login(p)])
 }
 
 pub fn caves_player_info_1_19_3(p: Info192, _cx: &mut Session) -> Result<Vec<Client193>> {
-	use v1_19_2::play_toClient_packet_player_info__action::Ty as A;
-	use v1_19_2::play_toClient_packet_player_info__data__items__ANON::Ty as D;
-	use v1_19_3::play_toClient_packet_player_info__data__items__chatSession::Ty as Chat;
-	use v1_19_3::play_toClient_packet_player_info__data__items__displayName::Ty as Name;
-	use v1_19_3::play_toClient_packet_player_info__data__items__gamemode::Ty as Mode;
-	use v1_19_3::play_toClient_packet_player_info__data__items__latency::Ty as Latency;
-	use v1_19_3::play_toClient_packet_player_info__data__items__listed::Ty as Listed;
-	use v1_19_3::play_toClient_packet_player_info__data__items__player::Ty as Player;
-	if let A::remove_player = p.action {
-		return Ok(vec![Client193::player_remove(
+	use v1_19_2::play_to_client_packet_player_info_action::Ty as A;
+	use v1_19_2::play_to_client_packet_player_info_data_items_anon::Ty as D;
+	use v1_19_3::play_to_client_packet_player_info_data_items_chat_session::Ty as Chat;
+	use v1_19_3::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
+	use v1_19_3::play_to_client_packet_player_info_data_items_gamemode::Ty as Mode;
+	use v1_19_3::play_to_client_packet_player_info_data_items_latency::Ty as Latency;
+	use v1_19_3::play_to_client_packet_player_info_data_items_listed::Ty as Listed;
+	use v1_19_3::play_to_client_packet_player_info_data_items_player::Ty as Player;
+	if let A::RemovePlayer = p.action {
+		return Ok(vec![Client193::PlayerRemove(
 			p.data.into_iter().map(|d| d.uuid).collect(),
 		)]);
 	}
-	let add = matches!(p.action, A::add_player);
-	let action = v1_19_3::play_toClient_packet_player_info__action::Ty {
+	let add = matches!(p.action, A::AddPlayer);
+	let action = v1_19_3::play_to_client_packet_player_info_action::Ty {
 		add_player: add,
 		initialize_chat: add,
-		update_game_mode: add || matches!(p.action, A::update_game_mode),
+		update_game_mode: add || matches!(p.action, A::UpdateGameMode),
 		update_listed: add,
-		update_latency: add || matches!(p.action, A::update_latency),
-		update_display_name: add || matches!(p.action, A::update_display_name),
+		update_latency: add || matches!(p.action, A::UpdateLatency),
+		update_display_name: add || matches!(p.action, A::UpdateDisplayName),
 	};
 	let data = p
 		.data
 		.into_iter()
 		.map(|d| {
-			let mut e = v1_19_3::play_toClient_packet_player_info__data__items::Ty {
+			let mut e = v1_19_3::play_to_client_packet_player_info_data_items::Ty {
 				uuid: d.uuid,
-				player: Player::default(false),
-				chatSession: Chat::default(false),
-				gamemode: Mode::default(false),
-				listed: Listed::default(false),
-				latency: Latency::default(false),
-				displayName: Name::default(false),
+				player: Player::Default(false),
+				chat_session: Chat::Default(false),
+				gamemode: Mode::Default(false),
+				listed: Listed::Default(false),
+				latency: Latency::Default(false),
+				display_name: Name::Default(false),
 			};
-			match d.ANON {
-				D::add_player(a) => {
-					e.player = Player::r#true(v1_19_3::game_profile::Ty {
+			match d.anon {
+				D::AddPlayer(a) => {
+					e.player = Player::True(v1_19_3::game_profile::Ty {
 						name: a.name,
 						properties: a
 							.properties
 							.into_iter()
-							.map(|x| v1_19_3::game_profile__properties__items::Ty {
+							.map(|x| v1_19_3::game_profile_properties_items::Ty {
 								name: x.name,
 								value: x.value,
 								signature: x.signature,
 							})
 							.collect(),
 					});
-					e.chatSession = Chat::r#true(None);
-					e.gamemode = Mode::r#true(a.gamemode);
-					e.listed = Listed::r#true(1);
-					e.latency = Latency::r#true(a.ping);
-					e.displayName = Name::r#true(a.displayName);
+					e.chat_session = Chat::True(None);
+					e.gamemode = Mode::True(a.gamemode);
+					e.listed = Listed::True(1);
+					e.latency = Latency::True(a.ping);
+					e.display_name = Name::True(a.display_name);
 				}
-				D::update_game_mode(g) => e.gamemode = Mode::r#true(g),
-				D::update_latency(l) => e.latency = Latency::r#true(l),
-				D::update_display_name(n) => e.displayName = Name::r#true(n),
+				D::UpdateGameMode(g) => e.gamemode = Mode::True(g),
+				D::UpdateLatency(l) => e.latency = Latency::True(l),
+				D::UpdateDisplayName(n) => e.display_name = Name::True(n),
 				_ => {}
 			}
 			e
 		})
 		.collect();
-	Ok(vec![Client193::player_info(Info193 { action, data })])
+	Ok(vec![Client193::PlayerInfo(Info193 { action, data })])
 }
 
 pub fn caves_player_info_down_1_19_2(p: Info193, _cx: &mut Session) -> Result<Vec<Client192>> {
-	use v1_19_2::play_toClient_packet_player_info__action::Ty as A;
-	use v1_19_2::play_toClient_packet_player_info__data__items__ANON::Ty as D;
-	use v1_19_3::play_toClient_packet_player_info__data__items__displayName::Ty as Name;
-	use v1_19_3::play_toClient_packet_player_info__data__items__gamemode::Ty as Mode;
-	use v1_19_3::play_toClient_packet_player_info__data__items__latency::Ty as Latency;
-	use v1_19_3::play_toClient_packet_player_info__data__items__player::Ty as Player;
-	let item = |uuid, anon| v1_19_2::play_toClient_packet_player_info__data__items::Ty {
-		uuid,
-		ANON: anon,
-	};
-	let packet = |action, data| Client192::player_info(Info192 { action, data });
+	use v1_19_2::play_to_client_packet_player_info_action::Ty as A;
+	use v1_19_2::play_to_client_packet_player_info_data_items_anon::Ty as D;
+	use v1_19_3::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
+	use v1_19_3::play_to_client_packet_player_info_data_items_gamemode::Ty as Mode;
+	use v1_19_3::play_to_client_packet_player_info_data_items_latency::Ty as Latency;
+	use v1_19_3::play_to_client_packet_player_info_data_items_player::Ty as Player;
+	let item =
+		|uuid, anon| v1_19_2::play_to_client_packet_player_info_data_items::Ty { uuid, anon: anon };
+	let packet = |action, data| Client192::PlayerInfo(Info192 { action, data });
 	let mode = |m: &Mode| {
-		if let Mode::r#true(g) = m {
+		if let Mode::True(g) = m {
 			Some(*g)
 		} else {
 			None
 		}
 	};
 	let latency = |l: &Latency| {
-		if let Latency::r#true(v) = l {
+		if let Latency::True(v) = l {
 			Some(*v)
 		} else {
 			None
 		}
 	};
 	let name = |n: &Name| {
-		if let Name::r#true(v) = n {
+		if let Name::True(v) = n {
 			Some(v.clone())
 		} else {
 			None
@@ -512,15 +507,15 @@ pub fn caves_player_info_down_1_19_2(p: Info193, _cx: &mut Session) -> Result<Ve
 			.data
 			.iter()
 			.filter_map(|d| {
-				let Player::r#true(profile) = &d.player else { return None };
+				let Player::True(profile) = &d.player else { return None };
 				Some(item(
 					d.uuid,
-					D::add_player(v1_19_2::play_toClient_packet_player_info__data__items__ANON__add_player::Ty {
+					D::AddPlayer(v1_19_2::play_to_client_packet_player_info_data_items_anon_add_player::Ty {
 						name: profile.name.clone(),
 						properties: profile
 							.properties
 							.iter()
-							.map(|x| v1_19_2::play_toClient_packet_player_info__data__items__ANON__add_player__properties__items::Ty {
+							.map(|x| v1_19_2::play_to_client_packet_player_info_data_items_anon_add_player_properties_items::Ty {
 								name: x.name.clone(),
 								value: x.value.clone(),
 								signature: x.signature.clone(),
@@ -528,30 +523,30 @@ pub fn caves_player_info_down_1_19_2(p: Info193, _cx: &mut Session) -> Result<Ve
 							.collect(),
 						gamemode: mode(&d.gamemode).unwrap_or(0),
 						ping: latency(&d.latency).unwrap_or(0),
-						displayName: name(&d.displayName).flatten(),
+						display_name: name(&d.display_name).flatten(),
 						crypto: None,
 					}),
 				))
 			})
 			.collect();
-		return Ok(vec![packet(A::add_player, data)]);
+		return Ok(vec![packet(A::AddPlayer, data)]);
 	}
 	let mut out = Vec::new();
 	if p.action.update_game_mode {
 		out.push(packet(
-			A::update_game_mode,
+			A::UpdateGameMode,
 			p.data
 				.iter()
-				.filter_map(|d| Some(item(d.uuid, D::update_game_mode(mode(&d.gamemode)?))))
+				.filter_map(|d| Some(item(d.uuid, D::UpdateGameMode(mode(&d.gamemode)?))))
 				.collect(),
 		));
 	}
 	if p.action.update_latency {
 		out.push(packet(
-			A::update_latency,
+			A::UpdateLatency,
 			p.data
 				.iter()
-				.filter_map(|d| Some(item(d.uuid, D::update_latency(latency(&d.latency)?))))
+				.filter_map(|d| Some(item(d.uuid, D::UpdateLatency(latency(&d.latency)?))))
 				.collect(),
 		));
 	}
@@ -559,9 +554,9 @@ pub fn caves_player_info_down_1_19_2(p: Info193, _cx: &mut Session) -> Result<Ve
 		let data = p
 			.data
 			.iter()
-			.filter_map(|d| Some(item(d.uuid, D::update_display_name(name(&d.displayName)?))))
+			.filter_map(|d| Some(item(d.uuid, D::UpdateDisplayName(name(&d.display_name)?))))
 			.collect();
-		out.push(packet(A::update_display_name, data));
+		out.push(packet(A::UpdateDisplayName, data));
 	}
 	Ok(out)
 }
@@ -570,15 +565,15 @@ pub fn caves_player_remove_down_1_19_2(
 	uuids: Vec<u128>,
 	_cx: &mut Session,
 ) -> Result<Vec<Client192>> {
-	use v1_19_2::play_toClient_packet_player_info__data__items__ANON::Ty as D;
-	Ok(vec![Client192::player_info(Info192 {
-		action: v1_19_2::play_toClient_packet_player_info__action::Ty::remove_player,
+	use v1_19_2::play_to_client_packet_player_info_data_items_anon::Ty as D;
+	Ok(vec![Client192::PlayerInfo(Info192 {
+		action: v1_19_2::play_to_client_packet_player_info_action::Ty::RemovePlayer,
 		data: uuids
 			.into_iter()
 			.map(
-				|uuid| v1_19_2::play_toClient_packet_player_info__data__items::Ty {
+				|uuid| v1_19_2::play_to_client_packet_player_info_data_items::Ty {
 					uuid,
-					ANON: D::remove_player,
+					anon: D::RemovePlayer,
 				},
 			)
 			.collect(),
@@ -586,11 +581,11 @@ pub fn caves_player_remove_down_1_19_2(
 }
 
 pub fn caves_block_change_1_19_3(
-	p: v1_19_2::play_toClient_packet_block_change::Ty,
+	p: v1_19_2::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client193>> {
-	Ok(vec![Client193::block_change(
-		v1_19_3::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client193::BlockChange(
+		v1_19_3::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: state(OLD, NEW, p.r#type),
 		},
@@ -598,11 +593,11 @@ pub fn caves_block_change_1_19_3(
 }
 
 pub fn caves_block_change_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_block_change::Ty,
+	p: v1_19_3::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client192>> {
-	Ok(vec![Client192::block_change(
-		v1_19_2::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client192::BlockChange(
+		v1_19_2::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: state(NEW, OLD, p.r#type),
 		},
@@ -610,14 +605,14 @@ pub fn caves_block_change_down_1_19_2(
 }
 
 pub fn caves_section_records_1_19_3(
-	src: &v1_19_2::play_toClient_packet_multi_block_change::Ty,
+	src: &v1_19_2::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<i64>> {
 	Ok(section_records(OLD, NEW, &src.records))
 }
 
 pub fn caves_section_records_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_multi_block_change::Ty,
+	src: &v1_19_3::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<i64>> {
 	Ok(section_records(NEW, OLD, &src.records))
@@ -641,38 +636,38 @@ pub(super) fn block_entities<T>(
 pub fn caves_chunk_entities(
 	from: V,
 	to: V,
-	list: Vec<v1_19_3::chunkBlockEntity::Ty>,
-) -> Vec<v1_19_3::chunkBlockEntity::Ty> {
+	list: Vec<v1_19_3::chunk_block_entity::Ty>,
+) -> Vec<v1_19_3::chunk_block_entity::Ty> {
 	block_entities(from, to, list, |b| &mut b.r#type)
 }
 
 pub fn caves_map_chunk_1_19_3(
-	mut p: v1_19_2::play_toClient_packet_map_chunk::Ty,
+	mut p: v1_19_2::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_3::play_toClient_packet_map_chunk::Ty> {
-	p.chunkData = chunk::remap_states(&p.chunkData, world(cx).known_sections(), OLD, NEW)?;
-	p.blockEntities = block_entities(OLD, NEW, p.blockEntities, |b| &mut b.r#type);
+) -> Result<v1_19_3::play_to_client_packet_map_chunk::Ty> {
+	p.chunk_data = chunk::remap_states(&p.chunk_data, world(cx).known_sections(), OLD, NEW)?;
+	p.block_entities = block_entities(OLD, NEW, p.block_entities, |b| &mut b.r#type);
 	Ok(p)
 }
 
 pub fn caves_map_chunk_down_1_19_2(
-	mut p: v1_19_3::play_toClient_packet_map_chunk::Ty,
+	mut p: v1_19_3::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_2::play_toClient_packet_map_chunk::Ty> {
-	p.chunkData = chunk::remap_states(&p.chunkData, world(cx).known_sections(), NEW, OLD)?;
-	p.blockEntities = block_entities(NEW, OLD, p.blockEntities, |b| &mut b.r#type);
+) -> Result<v1_19_2::play_to_client_packet_map_chunk::Ty> {
+	p.chunk_data = chunk::remap_states(&p.chunk_data, world(cx).known_sections(), NEW, OLD)?;
+	p.block_entities = block_entities(NEW, OLD, p.block_entities, |b| &mut b.r#type);
 	Ok(p)
 }
 
 pub fn caves_tile_entity_action_1_19_3(
-	src: &v1_19_2::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_19_2::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	block_entity_type(OLD, NEW, src.action).ok_or(Error::Dropped)
 }
 
 pub fn caves_tile_entity_action_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_tile_entity_data::Ty,
+	src: &v1_19_3::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	block_entity_type(NEW, OLD, src.action).ok_or(Error::Dropped)
@@ -681,29 +676,29 @@ pub fn caves_tile_entity_action_down_1_19_2(
 pub(super) fn spawn(
 	from: V,
 	to: V,
-	mut p: v1_19_3::play_toClient_packet_spawn_entity::Ty,
+	mut p: v1_19_3::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_3::play_toClient_packet_spawn_entity::Ty> {
+) -> Result<v1_19_3::play_to_client_packet_spawn_entity::Ty> {
 	let w = world(cx);
-	w.spawned(p.entityId, from, p.r#type);
-	if w.is(p.entityId, &["falling_block"]) {
-		p.objectData = state(from, to, p.objectData);
+	w.spawned(p.entity_id, from, p.r#type);
+	if w.is(p.entity_id, &["falling_block"]) {
+		p.object_data = state(from, to, p.object_data);
 	}
 	p.r#type = entity_type(from, to, p.r#type).ok_or(Error::Dropped)?;
 	Ok(p)
 }
 
 pub fn caves_spawn_entity_1_19_3(
-	p: v1_19_2::play_toClient_packet_spawn_entity::Ty,
+	p: v1_19_2::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_3::play_toClient_packet_spawn_entity::Ty> {
+) -> Result<v1_19_3::play_to_client_packet_spawn_entity::Ty> {
 	spawn(OLD, NEW, p, cx)
 }
 
 pub fn caves_spawn_entity_down_1_19_2(
-	p: v1_19_3::play_toClient_packet_spawn_entity::Ty,
+	p: v1_19_3::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_2::play_toClient_packet_spawn_entity::Ty> {
+) -> Result<v1_19_2::play_to_client_packet_spawn_entity::Ty> {
 	spawn(NEW, OLD, p, cx)
 }
 
@@ -725,37 +720,37 @@ fn pose(up: bool, m: Meta) -> Meta {
 }
 
 pub fn caves_metadata_1_19_3(
-	src: &v1_19_2::play_toClient_packet_entity_metadata::Ty,
+	src: &v1_19_2::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_3::entityMetadata::Ty> {
-	let mut minecart = minecart_block(OLD, NEW, world(cx).is(src.entityId, MINECARTS));
+) -> Result<v1_19_3::entity_metadata::Ty> {
+	let mut minecart = minecart_block(OLD, NEW, world(cx).is(src.entity_id, MINECARTS));
 	let bytes = meta::convert(
 		OLD,
 		NEW,
-		&encode(&src.metadata, v1_19_2::entityMetadata::serialize)?,
+		&encode(&src.metadata, v1_19_2::entity_metadata::serialize)?,
 		|m| minecart(pose(true, m)),
 	)?;
-	decode(&bytes, v1_19_3::entityMetadata::deserialize)
+	decode(&bytes, v1_19_3::entity_metadata::deserialize)
 }
 
 pub fn caves_metadata_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_entity_metadata::Ty,
+	src: &v1_19_3::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<v1_19_2::entityMetadata::Ty> {
+) -> Result<v1_19_2::entity_metadata::Ty> {
 	let w = world(cx);
-	let dropped = dropped_keys(w.name(src.entityId), &[("camel", &[19, 20])]);
-	let mut minecart = minecart_block(NEW, OLD, w.is(src.entityId, MINECARTS));
+	let dropped = dropped_keys(w.name(src.entity_id), &[("camel", &[19, 20])]);
+	let mut minecart = minecart_block(NEW, OLD, w.is(src.entity_id, MINECARTS));
 	let bytes = meta::convert(
 		NEW,
 		OLD,
-		&encode(&src.metadata, v1_19_3::entityMetadata::serialize)?,
+		&encode(&src.metadata, v1_19_3::entity_metadata::serialize)?,
 		|m| match m.kind {
 			Kind::Long => Ok(None),
 			_ if dropped.contains(&m.key) => Ok(None),
 			_ => minecart(pose(false, m)),
 		},
 	)?;
-	decode(&bytes, v1_19_2::entityMetadata::deserialize)
+	decode(&bytes, v1_19_2::entity_metadata::deserialize)
 }
 
 fn removed_event_sound(effect: i32) -> Option<&'static str> {
@@ -775,25 +770,25 @@ fn removed_event_sound(effect: i32) -> Option<&'static str> {
 }
 
 pub fn caves_world_event_1_19_3(
-	p: v1_19_2::play_toClient_packet_world_event::Ty,
+	p: v1_19_2::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client193>> {
-	let Some(sound) = removed_event_sound(p.effectId) else {
-		return Ok(vec![Client193::world_event(
-			v1_19_3::play_toClient_packet_world_event::Ty {
-				data: world_event(OLD, NEW, p.effectId, p.data),
+	let Some(sound) = removed_event_sound(p.effect_id) else {
+		return Ok(vec![Client193::WorldEvent(
+			v1_19_3::play_to_client_packet_world_event::Ty {
+				data: world_event(OLD, NEW, p.effect_id, p.data),
 				..p
 			},
 		)]);
 	};
 	let seed = world(cx).random();
 	let l = &p.location;
-	Ok(vec![Client193::sound_effect(
-		v1_19_3::play_toClient_packet_sound_effect::Ty {
+	Ok(vec![Client193::SoundEffect(
+		v1_19_3::play_to_client_packet_sound_effect::Ty {
 			sound: holder(
 				sound_id(NEW, sound).map_or_else(|| Sound::Named(sound.into()), Sound::Id),
 			),
-			soundCategory: v1_19_3::soundSource::Ty::block,
+			sound_category: v1_19_3::sound_source::Ty::Block,
 			x: l.x * 8 + 4,
 			y: l.y as i32 * 8 + 4,
 			z: l.z * 8 + 4,
@@ -805,42 +800,42 @@ pub fn caves_world_event_1_19_3(
 }
 
 pub fn caves_world_event_data_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_world_event::Ty,
+	src: &v1_19_3::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(world_event(NEW, OLD, src.effectId, src.data))
+	Ok(world_event(NEW, OLD, src.effect_id, src.data))
 }
 
 pub fn caves_block_action_id_1_19_3(
-	src: &v1_19_2::play_toClient_packet_block_action::Ty,
+	src: &v1_19_2::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	block(OLD, NEW, src.blockId).ok_or(Error::Dropped)
+	block(OLD, NEW, src.block_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_block_action_id_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_block_action::Ty,
+	src: &v1_19_3::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	block(NEW, OLD, src.blockId).ok_or(Error::Dropped)
+	block(NEW, OLD, src.block_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_cooldown_item_1_19_3(
-	src: &v1_19_2::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_19_2::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(OLD, NEW, src.itemID).ok_or(Error::Dropped)
+	item(OLD, NEW, src.item_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_cooldown_item_down_1_19_2(
-	src: &v1_19_3::play_toClient_packet_set_cooldown::Ty,
+	src: &v1_19_3::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	item(NEW, OLD, src.itemID).ok_or(Error::Dropped)
+	item(NEW, OLD, src.item_id).ok_or(Error::Dropped)
 }
 
 pub fn caves_tags_1_19_3(p: Tags, _cx: &mut Session) -> Result<Vec<Client193>> {
-	Ok(vec![Client193::tags(tags(
+	Ok(vec![Client193::Tags(tags(
 		OLD,
 		NEW,
 		p,
@@ -850,13 +845,13 @@ pub fn caves_tags_1_19_3(p: Tags, _cx: &mut Session) -> Result<Vec<Client193>> {
 }
 
 pub fn caves_tags_down_1_19_2(p: Tags, _cx: &mut Session) -> Result<Vec<Client192>> {
-	Ok(vec![Client192::tags(tags(NEW, OLD, p, &[], &[]))])
+	Ok(vec![Client192::Tags(tags(NEW, OLD, p, &[], &[]))])
 }
 
 pub fn caves_statistics_1_19_3(p: Stats, _cx: &mut Session) -> Result<Vec<Client193>> {
-	Ok(vec![Client193::statistics(statistics(OLD, NEW, p))])
+	Ok(vec![Client193::Statistics(statistics(OLD, NEW, p))])
 }
 
 pub fn caves_statistics_down_1_19_2(p: Stats, _cx: &mut Session) -> Result<Vec<Client192>> {
-	Ok(vec![Client192::statistics(statistics(NEW, OLD, p))])
+	Ok(vec![Client192::Statistics(statistics(NEW, OLD, p))])
 }

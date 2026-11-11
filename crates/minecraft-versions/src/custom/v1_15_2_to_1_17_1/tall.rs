@@ -15,10 +15,10 @@ const OLD: Version = Version::V1_16_2;
 const NEW: Version = Version::V1_17;
 const LAYER: usize = 256;
 
-pub(super) type Out = v1_16_2::play_toClient_packet::Ty;
-pub(super) type Painting = v1_16_2::play_toClient_packet_spawn_entity_painting::Ty;
+pub(super) type Out = v1_16_2::play_to_client_packet::Ty;
+pub(super) type Painting = v1_16_2::play_to_client_packet_spawn_entity_painting::Ty;
 pub(super) type Tall = Window<Modern>;
-type New = v1_17::play_toClient_packet::Ty;
+type New = v1_17::play_to_client_packet::Ty;
 
 pub(super) struct Modern;
 
@@ -79,25 +79,25 @@ fn encoding(e: crate::pds::Error) -> Error {
 
 pub(super) fn framed(p: &Out) -> Result<Vec<u8>> {
 	let mut o = Output::new();
-	v1_16_2::play_toClient_packet::serialize(p, &mut o).map_err(encoding)?;
+	v1_16_2::play_to_client_packet::serialize(p, &mut o).map_err(encoding)?;
 	Ok(o.into_inner())
 }
 
 fn typed(bytes: &[u8]) -> Result<Out> {
-	v1_16_2::play_toClient_packet::deserialize(&mut Input::new(bytes)).map_err(encoding)
+	v1_16_2::play_to_client_packet::deserialize(&mut Input::new(bytes)).map_err(encoding)
 }
 
 fn packets(e: Emit<Painting>, view: i32) -> Vec<Out> {
 	match e {
 		Emit::Column(_) => vec![],
-		Emit::Teleport(t) => vec![Out::position(v1_16_2::play_toClient_packet_position::Ty {
+		Emit::Teleport(t) => vec![Out::Position(v1_16_2::play_to_client_packet_position::Ty {
 			x: t.x,
 			y: t.y,
 			z: t.z,
 			yaw: t.yaw,
 			pitch: t.pitch,
 			flags: t.flags,
-			teleportId: t.id,
+			teleport_id: t.id,
 		})],
 		Emit::Vehicle {
 			x,
@@ -105,8 +105,8 @@ fn packets(e: Emit<Painting>, view: i32) -> Vec<Out> {
 			z,
 			yaw,
 			pitch,
-		} => vec![Out::vehicle_move(
-			v1_16_2::play_toClient_packet_vehicle_move::Ty {
+		} => vec![Out::VehicleMove(
+			v1_16_2::play_to_client_packet_vehicle_move::Ty {
 				x,
 				y,
 				z,
@@ -114,22 +114,22 @@ fn packets(e: Emit<Painting>, view: i32) -> Vec<Out> {
 				pitch,
 			},
 		)],
-		Emit::Entity(m) => vec![Out::entity_teleport(
-			v1_16_2::play_toClient_packet_entity_teleport::Ty {
-				entityId: m.id,
+		Emit::Entity(m) => vec![Out::EntityTeleport(
+			v1_16_2::play_to_client_packet_entity_teleport::Ty {
+				entity_id: m.id,
 				x: m.x,
 				y: m.y,
 				z: m.z,
 				yaw: m.yaw,
 				pitch: m.pitch,
-				onGround: m.ground,
+				on_ground: m.ground,
 			},
 		)],
 		Emit::Painting(id, p) => vec![
-			Out::entity_destroy(vec![id]),
-			Out::spawn_entity_painting(shifted_painting(p, view)),
+			Out::EntityDestroy(vec![id]),
+			Out::SpawnEntityPainting(shifted_painting(p, view)),
 		],
-		Emit::Spawn(x, y, z) => vec![Out::spawn_position(Pos { x, y: y as i16, z })],
+		Emit::Spawn(x, y, z) => vec![Out::SpawnPosition(Pos { x, y: y as i16, z })],
 	}
 }
 
@@ -210,11 +210,11 @@ pub(super) fn native(mut col: Column, t: &mut Tall) -> Result<Vec<Carrier>> {
 }
 
 pub(super) fn wire_chunk(
-	p: v1_17::play_toClient_packet_map_chunk::Ty,
+	p: v1_17::play_to_client_packet_map_chunk::Ty,
 	t: &mut Tall,
 ) -> Result<Vec<Out>> {
 	let mut o = Output::new();
-	v1_17::play_toClient_packet::serialize(&New::map_chunk(p), &mut o).map_err(encoding)?;
+	v1_17::play_to_client_packet::serialize(&New::MapChunk(p), &mut o).map_err(encoding)?;
 	let Some(Packet::Chunk(col)) = decode(NEW as usize, &o.into_inner())? else {
 		return unconvertible("1.17 map_chunk does not decode");
 	};
@@ -225,17 +225,17 @@ pub(super) fn wire_chunk(
 }
 
 pub(super) fn wire_light(
-	v: v1_17::play_toClient_packet_update_light::Ty,
+	v: v1_17::play_to_client_packet_update_light::Ty,
 	t: &mut Tall,
-) -> Result<v1_16_2::play_toClient_packet_update_light::Ty> {
+) -> Result<v1_16_2::play_to_client_packet_update_light::Ty> {
 	let mut o = Output::new();
-	v1_17::play_toClient_packet::serialize(&New::update_light(v), &mut o).map_err(encoding)?;
+	v1_17::play_to_client_packet::serialize(&New::UpdateLight(v), &mut o).map_err(encoding)?;
 	let Some(Packet::Light(x, z, light)) = decode(NEW as usize, &o.into_inner())? else {
 		return unconvertible("1.17 update_light does not decode");
 	};
 	let shown = t.light(x, z, &light);
 	match typed(&encode_light(Modern::AT, x, z, &shown)?)? {
-		Out::update_light(l) => Ok(l),
+		Out::UpdateLight(l) => Ok(l),
 		_ => unconvertible("1.16.2 update_light does not decode"),
 	}
 }

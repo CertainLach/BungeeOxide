@@ -16,9 +16,9 @@ use crate::pds::convert::{unconvertible, Result};
 use crate::registry;
 use crate::session::Session;
 
-type Client12 = a::play_toClient_packet::Ty;
-type Client13 = b::play_toClient_packet::Ty;
-type Chunk = b::play_toClient_packet_map_chunk::Ty;
+type Client12 = a::play_to_client_packet::Ty;
+type Client13 = b::play_to_client_packet::Ty;
+type Chunk = b::play_to_client_packet_map_chunk::Ty;
 type Position = b::position::Ty;
 
 const BLOCKS: usize = 4096;
@@ -247,7 +247,7 @@ fn pot_content(te: &[Entry]) -> u32 {
 	let b = new_blocks();
 	let empty = b.block("flower_pot").map_or(0, |p| p.default);
 	let item = match te.field("Item") {
-		Some(Payload::string(s)) => old_items().id(s).map(|i| i as i32),
+		Some(Payload::String(s)) => old_items().id(s).map(|i| i as i32),
 		Some(p) => p.to_i32(),
 		None => None,
 	};
@@ -333,7 +333,7 @@ fn fix_te(te: &mut Vec<Entry>) {
 			.and_then(Payload::as_str)
 			.map(str::to_owned)
 		{
-			te.put("CustomName", Payload::string(legacy_to_json(&name, false)));
+			te.put("CustomName", Payload::String(legacy_to_json(&name, false)));
 		}
 	}
 	if id == "banner" {
@@ -348,7 +348,7 @@ fn fix_te(te: &mut Vec<Entry>) {
 			{
 				spawn.put(
 					"id",
-					Payload::string(super::entities::flat_entity_name(&name)),
+					Payload::String(super::entities::flat_entity_name(&name)),
 				);
 			}
 		}
@@ -491,15 +491,21 @@ fn flatten(
 }
 
 pub fn flattening_map_chunk_1_13(
-	p: a::play_toClient_packet_map_chunk::Ty,
+	p: a::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let mut sky = sky_of(cx);
-	let mut column = parse(&p.chunkData, p.bitMap, p.groundUp, &mut sky, Format::Legacy)?;
+	let mut column = parse(
+		&p.chunk_data,
+		p.bit_map,
+		p.ground_up,
+		&mut sky,
+		Format::Legacy,
+	)?;
 	let at = FlatChunk {
 		x: p.x,
 		z: p.z,
-		full: p.groundUp,
+		full: p.ground_up,
 		sky,
 	};
 	let (entities, neighbors) = flatten(
@@ -507,15 +513,15 @@ pub fn flattening_map_chunk_1_13(
 		at,
 		&mut column.sections,
 		column.biomes.as_mut(),
-		p.blockEntities,
+		p.block_entities,
 	);
-	let mut out = vec![Client13::map_chunk(Chunk {
+	let mut out = vec![Client13::MapChunk(Chunk {
 		x: p.x,
 		z: p.z,
-		groundUp: p.groundUp,
-		bitMap: p.bitMap,
-		chunkData: write(&column, Format::Flat),
-		blockEntities: entities,
+		ground_up: p.ground_up,
+		bit_map: p.bit_map,
+		chunk_data: write(&column, Format::Flat),
+		block_entities: entities,
 	})];
 	out.extend(neighbors);
 	Ok(out)
@@ -551,29 +557,26 @@ pub fn flattening_column_1_13(
 }
 
 fn changes(updates: Vec<((i32, i32, i32), u32)>) -> Vec<Client13> {
-	let mut chunks: Vec<b::play_toClient_packet_multi_block_change::Ty> = Vec::new();
+	let mut chunks: Vec<b::play_to_client_packet_multi_block_change::Ty> = Vec::new();
 	for ((x, y, z), state) in updates {
-		let record = b::play_toClient_packet_multi_block_change__records__items::Ty {
-			horizontalPos: ((x & 15) << 4 | (z & 15)) as u8,
+		let record = b::play_to_client_packet_multi_block_change_records_items::Ty {
+			horizontal_pos: ((x & 15) << 4 | (z & 15)) as u8,
 			y: y as u8,
-			blockId: state as i32,
+			block_id: state as i32,
 		};
 		match chunks
 			.iter_mut()
-			.find(|c| (c.chunkX, c.chunkZ) == (x >> 4, z >> 4))
+			.find(|c| (c.chunk_x, c.chunk_z) == (x >> 4, z >> 4))
 		{
 			Some(c) => c.records.push(record),
-			None => chunks.push(b::play_toClient_packet_multi_block_change::Ty {
-				chunkX: x >> 4,
-				chunkZ: z >> 4,
+			None => chunks.push(b::play_to_client_packet_multi_block_change::Ty {
+				chunk_x: x >> 4,
+				chunk_z: z >> 4,
 				records: vec![record],
 			}),
 		}
 	}
-	chunks
-		.into_iter()
-		.map(Client13::multi_block_change)
-		.collect()
+	chunks.into_iter().map(Client13::MultiBlockChange).collect()
 }
 
 impl World {
@@ -651,48 +654,60 @@ impl World {
 }
 
 pub fn flattening_explosion_1_13(
-	p: a::play_toClient_packet_explosion::Ty,
+	p: a::play_to_client_packet_explosion::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let world = cx.state::<World>();
 	let (x, y, z) = (p.x.floor() as i32, p.y.floor() as i32, p.z.floor() as i32);
 	let positions: Vec<(i32, i32, i32)> = p
-		.affectedBlockOffsets
+		.affected_block_offsets
 		.iter()
 		.map(|o| (x + o.x as i32, y + o.y as i32, z + o.z as i32))
 		.collect();
 	for pos in &positions {
 		world.columns.set(pos.0, pos.1, pos.2, 0);
 	}
-	let mut out = vec![Client13::explosion(p)];
+	let mut out = vec![Client13::Explosion(p)];
 	out.extend(world.around(&positions));
 	Ok(out)
 }
 
 pub fn flattening_map_chunk_1_12_2(p: Chunk, cx: &mut Session) -> Result<Vec<Client12>> {
 	let mut sky = sky_of(cx);
-	let mut column = parse(&p.chunkData, p.bitMap, p.groundUp, &mut sky, Format::Flat)?;
+	let mut column = parse(
+		&p.chunk_data,
+		p.bit_map,
+		p.ground_up,
+		&mut sky,
+		Format::Flat,
+	)?;
 	cx.state::<World>().no_sky = !sky;
 	for section in &mut column.sections {
 		for s in section.states.iter_mut() {
 			*s = raw_of_state(*s);
 		}
 	}
-	Ok(vec![Client12::map_chunk(
-		a::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client12::MapChunk(
+		a::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp: p.groundUp,
-			bitMap: p.bitMap,
-			chunkData: write(&column, Format::Legacy),
-			blockEntities: p.blockEntities,
+			ground_up: p.ground_up,
+			bit_map: p.bit_map,
+			chunk_data: write(&column, Format::Legacy),
+			block_entities: p.block_entities,
 		},
 	)])
 }
 
 fn restate(p: Chunk, cx: &mut Session, table: &[u32]) -> Result<Chunk> {
 	let mut sky = sky_of(cx);
-	let mut column = parse(&p.chunkData, p.bitMap, p.groundUp, &mut sky, Format::Flat)?;
+	let mut column = parse(
+		&p.chunk_data,
+		p.bit_map,
+		p.ground_up,
+		&mut sky,
+		Format::Flat,
+	)?;
 	cx.state::<World>().no_sky = !sky;
 	for section in &mut column.sections {
 		for s in section.states.iter_mut() {
@@ -700,7 +715,7 @@ fn restate(p: Chunk, cx: &mut Session, table: &[u32]) -> Result<Chunk> {
 		}
 	}
 	Ok(Chunk {
-		chunkData: write(&column, Format::Flat),
+		chunk_data: write(&column, Format::Flat),
 		..p
 	})
 }
@@ -708,8 +723,8 @@ fn restate(p: Chunk, cx: &mut Session, table: &[u32]) -> Result<Chunk> {
 pub fn flattening_chunk_states_1_13_1(
 	p: Chunk,
 	cx: &mut Session,
-) -> Result<Vec<c::play_toClient_packet::Ty>> {
-	Ok(vec![c::play_toClient_packet::Ty::map_chunk(restate(
+) -> Result<Vec<c::play_to_client_packet::Ty>> {
+	Ok(vec![c::play_to_client_packet::Ty::MapChunk(restate(
 		p,
 		cx,
 		later_states(),
@@ -717,29 +732,29 @@ pub fn flattening_chunk_states_1_13_1(
 }
 
 pub fn flattening_chunk_states_1_13(p: Chunk, cx: &mut Session) -> Result<Vec<Client13>> {
-	Ok(vec![Client13::map_chunk(restate(p, cx, earlier_states())?)])
+	Ok(vec![Client13::MapChunk(restate(p, cx, earlier_states())?)])
 }
 
 pub fn flattening_unload_chunk_1_13(
-	p: a::play_toClient_packet_unload_chunk::Ty,
+	p: a::play_to_client_packet_unload_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let world = cx.state::<World>();
-	world.stored.remove(&(p.chunkX, p.chunkZ));
-	world.columns.unload(p.chunkX, p.chunkZ);
-	Ok(vec![Client13::unload_chunk(p)])
+	world.stored.remove(&(p.chunk_x, p.chunk_z));
+	world.columns.unload(p.chunk_x, p.chunk_z);
+	Ok(vec![Client13::UnloadChunk(p)])
 }
 
 pub fn flattening_block_change_1_13(
-	p: a::play_toClient_packet_block_change::Ty,
+	p: a::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let world = cx.state::<World>();
 	let pos = position(&p.location);
 	let state = world.check(pos, state_of_raw(p.r#type.max(0) as u32));
 	let state = world.place(pos, state);
-	let mut out = vec![Client13::block_change(
-		b::play_toClient_packet_block_change::Ty {
+	let mut out = vec![Client13::BlockChange(
+		b::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: state as i32,
 		},
@@ -809,12 +824,12 @@ fn pot_te(pos: (i32, i32, i32), state: u32) -> Option<nbt::Entry> {
 		None => return None,
 	};
 	root(vec![
-		Entry::new("id", Payload::string("minecraft:flower_pot".to_owned())),
-		Entry::new("x", Payload::int(pos.0)),
-		Entry::new("y", Payload::int(pos.1)),
-		Entry::new("z", Payload::int(pos.2)),
-		Entry::new("Item", Payload::string(item)),
-		Entry::new("Data", Payload::int(data)),
+		Entry::new("id", Payload::String("minecraft:flower_pot".to_owned())),
+		Entry::new("x", Payload::Int(pos.0)),
+		Entry::new("y", Payload::Int(pos.1)),
+		Entry::new("z", Payload::Int(pos.2)),
+		Entry::new("Item", Payload::String(item)),
+		Entry::new("Data", Payload::Int(data)),
 	])
 }
 
@@ -827,7 +842,7 @@ fn legacy_block_packets(
 	backwards.store(pos, state);
 	let raw = raw_of_state(state) as i32;
 	let change = |r#type: i32| {
-		Client12::block_change(a::play_toClient_packet_block_change::Ty {
+		Client12::BlockChange(a::play_to_client_packet_block_change::Ty {
 			location: location.clone(),
 			r#type,
 		})
@@ -836,10 +851,10 @@ fn legacy_block_packets(
 		Some(te) => vec![
 			change(0),
 			change(raw),
-			Client12::tile_entity_data(a::play_toClient_packet_tile_entity_data::Ty {
+			Client12::TileEntityData(a::play_to_client_packet_tile_entity_data::Ty {
 				location: location.clone(),
 				action: 5,
-				nbtData: Some(te),
+				nbt_data: Some(te),
 			}),
 		],
 		None => vec![change(raw)],
@@ -847,7 +862,7 @@ fn legacy_block_packets(
 }
 
 pub fn flattening_block_change_1_12_2(
-	p: b::play_toClient_packet_block_change::Ty,
+	p: b::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	Ok(legacy_block_packets(
@@ -858,13 +873,13 @@ pub fn flattening_block_change_1_12_2(
 }
 
 pub fn flattening_unload_chunk_1_12_2(
-	p: b::play_toClient_packet_unload_chunk::Ty,
+	p: b::play_to_client_packet_unload_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	cx.state::<Backwards>()
 		.blocks
-		.retain(|(x, _, z), _| (x >> 4, z >> 4) != (p.chunkX, p.chunkZ));
-	Ok(vec![Client12::unload_chunk(p)])
+		.retain(|(x, _, z), _| (x >> 4, z >> 4) != (p.chunk_x, p.chunk_z));
+	Ok(vec![Client12::UnloadChunk(p)])
 }
 
 const SKULL_TYPES: [&str; 6] = [
@@ -877,13 +892,13 @@ const SKULL_TYPES: [&str; 6] = [
 ];
 
 pub fn flattening_tile_entity_data_1_12_2(
-	p: b::play_toClient_packet_tile_entity_data::Ty,
+	p: b::play_to_client_packet_tile_entity_data::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	if p.action == 5 {
 		return Ok(vec![]);
 	}
-	let mut tag = children(p.nbtData);
+	let mut tag = children(p.nbt_data);
 	let state = cx
 		.state::<Backwards>()
 		.blocks
@@ -902,17 +917,17 @@ pub fn flattening_tile_entity_data_1_12_2(
 	match te_id(&tag).as_str() {
 		"bed" => {
 			if let Some(c) = color {
-				tag.put("color", Payload::int(c as i32));
+				tag.put("color", Payload::Int(c as i32));
 			}
 		}
 		"banner" => {
 			if let Some(c) = color {
-				tag.put("Base", Payload::int(15 - c as i32));
+				tag.put("Base", Payload::Int(15 - c as i32));
 			}
 			if let Some(patterns) = tag.compounds_mut("Patterns") {
 				for pat in patterns {
 					if let Some(c) = pat.field("Color").and_then(Payload::to_i32) {
-						pat.put("Color", Payload::int(15 - c));
+						pat.put("Color", Payload::Int(15 - c));
 					}
 				}
 			}
@@ -923,12 +938,12 @@ pub fn flattening_tile_entity_data_1_12_2(
 				.iter()
 				.position(|k| name.starts_with(&format!("{k}_")))
 				.unwrap_or(0);
-			tag.put("SkullType", Payload::byte(kind as i8));
+			tag.put("SkullType", Payload::Byte(kind as i8));
 			if let Some(rot) = state
 				.and_then(|s| property(s, "rotation"))
 				.and_then(|r| r.parse::<i8>().ok())
 			{
-				tag.put("Rot", Payload::byte(rot));
+				tag.put("Rot", Payload::Byte(rot));
 			}
 		}
 		"mob_spawner" => {
@@ -940,7 +955,7 @@ pub fn flattening_tile_entity_data_1_12_2(
 				{
 					spawn.put(
 						"id",
-						Payload::string(super::entities::legacy_entity_name(&id)),
+						Payload::String(super::entities::legacy_entity_name(&id)),
 					);
 				}
 			}
@@ -948,17 +963,17 @@ pub fn flattening_tile_entity_data_1_12_2(
 		"piston" => {
 			let block = tag.compound_mut("blockState").map(|s| piston_state(s));
 			if let Some(raw) = block.flatten() {
-				tag.put("blockId", Payload::int((raw >> 4) as i32));
-				tag.put("blockData", Payload::int((raw & 15) as i32));
+				tag.put("blockId", Payload::Int((raw >> 4) as i32));
+				tag.put("blockData", Payload::Int((raw & 15) as i32));
 			}
 		}
 		_ => unname(&mut tag),
 	}
-	Ok(vec![Client12::tile_entity_data(
-		a::play_toClient_packet_tile_entity_data::Ty {
+	Ok(vec![Client12::TileEntityData(
+		a::play_to_client_packet_tile_entity_data::Ty {
 			location: p.location,
 			action: p.action,
-			nbtData: root(tag),
+			nbt_data: root(tag),
 		},
 	)])
 }
@@ -971,7 +986,7 @@ fn unname(tag: &mut Vec<nbt::Entry>) {
 	{
 		tag.put(
 			"CustomName",
-			Payload::string(super::text::json_to_legacy(&name)),
+			Payload::String(super::text::json_to_legacy(&name)),
 		);
 	}
 }
@@ -979,7 +994,7 @@ fn unname(tag: &mut Vec<nbt::Entry>) {
 fn piston_state(state: &[nbt::Entry]) -> Option<u32> {
 	let name = state.field("Name").and_then(Payload::as_str)?;
 	let props: Vec<String> = match state.field("Properties") {
-		Some(Payload::compound(p)) => p
+		Some(Payload::Compound(p)) => p
 			.iter()
 			.filter_map(|e| Some(format!("{}={}", e.name, e.value.as_str()?)))
 			.collect(),
@@ -994,50 +1009,50 @@ fn piston_state(state: &[nbt::Entry]) -> Option<u32> {
 }
 
 pub fn flattening_multi_block_change_1_13(
-	mut p: a::play_toClient_packet_multi_block_change::Ty,
+	mut p: a::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let world = cx.state::<World>();
 	let mut positions = Vec::with_capacity(p.records.len());
 	for r in &mut p.records {
 		let pos = (
-			p.chunkX * 16 + (r.horizontalPos >> 4) as i32,
+			p.chunk_x * 16 + (r.horizontal_pos >> 4) as i32,
 			r.y as i32,
-			p.chunkZ * 16 + (r.horizontalPos & 15) as i32,
+			p.chunk_z * 16 + (r.horizontal_pos & 15) as i32,
 		);
-		let state = world.check(pos, state_of_raw(r.blockId.max(0) as u32));
+		let state = world.check(pos, state_of_raw(r.block_id.max(0) as u32));
 		world.columns.set(pos.0, pos.1, pos.2, state);
-		r.blockId = state as i32;
+		r.block_id = state as i32;
 		positions.push(pos);
 	}
 	for (r, pos) in p.records.iter_mut().zip(&positions) {
-		r.blockId = world.place(*pos, r.blockId as u32) as i32;
+		r.block_id = world.place(*pos, r.block_id as u32) as i32;
 	}
-	let mut out = vec![Client13::multi_block_change(p)];
+	let mut out = vec![Client13::MultiBlockChange(p)];
 	out.extend(world.around(&positions));
 	Ok(out)
 }
 
 pub fn flattening_multi_block_change_1_12_2(
-	mut p: b::play_toClient_packet_multi_block_change::Ty,
+	mut p: b::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let backwards = cx.state::<Backwards>();
 	let mut extra = Vec::new();
 	for r in &mut p.records {
 		let location = Position {
-			x: p.chunkX * 16 + (r.horizontalPos >> 4) as i32,
+			x: p.chunk_x * 16 + (r.horizontal_pos >> 4) as i32,
 			y: r.y as i16,
-			z: p.chunkZ * 16 + (r.horizontalPos & 15) as i32,
+			z: p.chunk_z * 16 + (r.horizontal_pos & 15) as i32,
 		};
-		let state = r.blockId.max(0) as u32;
-		r.blockId = raw_of_state(state) as i32;
+		let state = r.block_id.max(0) as u32;
+		r.block_id = raw_of_state(state) as i32;
 		let mut packets = legacy_block_packets(&location, state, backwards);
 		if packets.len() > 1 {
 			extra.append(&mut packets);
 		}
 	}
-	let mut out = vec![Client12::multi_block_change(p)];
+	let mut out = vec![Client12::MultiBlockChange(p)];
 	out.extend(extra);
 	Ok(out)
 }
@@ -1056,12 +1071,12 @@ const INSTRUMENTS: [&str; 10] = [
 ];
 
 pub fn flattening_block_action_1_13(
-	p: a::play_toClient_packet_block_action::Ty,
+	p: a::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	let block = block_of_legacy(p.blockId);
+	let block = block_of_legacy(p.block_id);
 	let mut out = Vec::new();
-	if p.blockId == 25 {
+	if p.block_id == 25 {
 		let note = new_blocks().block("note_block").map(|n| {
 			n.state(&[
 				(
@@ -1073,17 +1088,17 @@ pub fn flattening_block_action_1_13(
 			])
 		});
 		if let Some(state) = note {
-			out.push(Client13::block_change(
-				b::play_toClient_packet_block_change::Ty {
+			out.push(Client13::BlockChange(
+				b::play_to_client_packet_block_change::Ty {
 					location: p.location.clone(),
 					r#type: state as i32,
 				},
 			));
 		}
 	}
-	out.push(Client13::block_action(
-		b::play_toClient_packet_block_action::Ty {
-			blockId: block,
+	out.push(Client13::BlockAction(
+		b::play_to_client_packet_block_action::Ty {
+			block_id: block,
 			..p
 		},
 	));
@@ -1091,10 +1106,10 @@ pub fn flattening_block_action_1_13(
 }
 
 pub fn flattening_block_action_1_12_2(
-	p: b::play_toClient_packet_block_action::Ty,
+	p: b::play_to_client_packet_block_action::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
-	let blockId = legacy_of_block(p.blockId);
+	let block_id = legacy_of_block(p.block_id);
 	let state = cx
 		.state::<Backwards>()
 		.blocks
@@ -1111,9 +1126,9 @@ pub fn flattening_block_action_1_12_2(
 		),
 		None => (p.byte1, p.byte2),
 	};
-	Ok(vec![Client12::block_action(
-		a::play_toClient_packet_block_action::Ty {
-			blockId,
+	Ok(vec![Client12::BlockAction(
+		a::play_to_client_packet_block_action::Ty {
+			block_id,
 			byte1,
 			byte2,
 			..p
@@ -1122,10 +1137,10 @@ pub fn flattening_block_action_1_12_2(
 }
 
 pub fn flattening_tile_entity_data_1_13(
-	p: a::play_toClient_packet_tile_entity_data::Ty,
+	p: a::play_to_client_packet_tile_entity_data::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	let mut tag = children(p.nbtData);
+	let mut tag = children(p.nbt_data);
 	let pos = position(&p.location);
 	let world = cx.state::<World>();
 	let mut out = Vec::new();
@@ -1136,8 +1151,8 @@ pub fn flattening_tile_entity_data_1_13(
 	if let Some(stored) = stored {
 		if let Some(new) = replacement(stored.original, &tag) {
 			stored.replaced = Some(new);
-			out.push(Client13::block_change(
-				b::play_toClient_packet_block_change::Ty {
+			out.push(Client13::BlockChange(
+				b::play_to_client_packet_block_change::Ty {
 					location: p.location.clone(),
 					r#type: new as i32,
 				},
@@ -1148,11 +1163,11 @@ pub fn flattening_tile_entity_data_1_13(
 		return Ok(out);
 	}
 	fix_te(&mut tag);
-	out.push(Client13::tile_entity_data(
-		b::play_toClient_packet_tile_entity_data::Ty {
+	out.push(Client13::TileEntityData(
+		b::play_to_client_packet_tile_entity_data::Ty {
 			location: p.location,
 			action: p.action,
-			nbtData: root(tag),
+			nbt_data: root(tag),
 		},
 	));
 	Ok(out)

@@ -23,13 +23,13 @@ use crate::status::{self, Upstream};
 use crate::{at, join_upstream, next, relay, Config, Conn, Proxy};
 
 macro_rules! lengths {
-	($($v:literal => $c:ident, $s:ident;)*) => {
+	($($v:literal => $ns:ident;)*) => {
 		pub fn packet_len(root: Root, version: usize, data: &[u8]) -> std::result::Result<Option<usize>, String> {
 			let mut input = Input::new(data);
 			let read = pds::stack::budget(STACK_BUDGET, || match (VERSIONS[version], root) {
 				$(
-					($v, Root::PlayToClient) => Ok(gen::$c::deserialize(&mut input).map(drop)),
-					($v, Root::PlayToServer) => Ok(gen::$s::deserialize(&mut input).map(drop)),
+					($v, Root::PlayToClient) => Ok(gen::$ns::play::to_client::packet::deserialize(&mut input).map(drop)),
+					($v, Root::PlayToServer) => Ok(gen::$ns::play::to_server::packet::deserialize(&mut input).map(drop)),
 				)*
 				(v, r) => Err(format!("{v} has no pre-netty {r:?} packets")),
 			})?;
@@ -43,19 +43,19 @@ macro_rules! lengths {
 }
 
 lengths! {
-	"1.0.1" => pds_v1_0_1_play_toClient_packet, pds_v1_0_1_play_toServer_packet;
-	"1.1" => pds_v1_1_play_toClient_packet, pds_v1_1_play_toServer_packet;
-	"1.2.3" => pds_v1_2_3_play_toClient_packet, pds_v1_2_3_play_toServer_packet;
-	"1.2.5" => pds_v1_2_5_play_toClient_packet, pds_v1_2_5_play_toServer_packet;
-	"1.3.2" => pds_v1_3_2_play_toClient_packet, pds_v1_3_2_play_toServer_packet;
-	"1.4.2" => pds_v1_4_2_play_toClient_packet, pds_v1_4_2_play_toServer_packet;
-	"1.4.5" => pds_v1_4_5_play_toClient_packet, pds_v1_4_5_play_toServer_packet;
-	"1.4.7" => pds_v1_4_7_play_toClient_packet, pds_v1_4_7_play_toServer_packet;
-	"1.5.1" => pds_v1_5_1_play_toClient_packet, pds_v1_5_1_play_toServer_packet;
-	"1.5.2" => pds_v1_5_2_play_toClient_packet, pds_v1_5_2_play_toServer_packet;
-	"1.6.1" => pds_v1_6_1_play_toClient_packet, pds_v1_6_1_play_toServer_packet;
-	"1.6.2" => pds_v1_6_2_play_toClient_packet, pds_v1_6_2_play_toServer_packet;
-	"1.6.4" => pds_v1_6_4_play_toClient_packet, pds_v1_6_4_play_toServer_packet;
+	"1.0.1" => v1_0_1;
+	"1.1" => v1_1;
+	"1.2.3" => v1_2_3;
+	"1.2.5" => v1_2_5;
+	"1.3.2" => v1_3_2;
+	"1.4.2" => v1_4_2;
+	"1.4.5" => v1_4_5;
+	"1.4.7" => v1_4_7;
+	"1.5.1" => v1_5_1;
+	"1.5.2" => v1_5_2;
+	"1.6.1" => v1_6_1;
+	"1.6.2" => v1_6_2;
+	"1.6.4" => v1_6_4;
 }
 
 pub fn is_legacy(version: usize) -> bool {

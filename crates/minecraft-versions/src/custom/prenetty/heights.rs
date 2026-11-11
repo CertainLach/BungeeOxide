@@ -9,10 +9,10 @@ use crate::pds::convert::{Error, Result};
 use crate::pds::Output;
 use crate::session::Session;
 
-type Client11 = v1_1::play_toClient_packet::Ty;
-type Server12 = v1_2_3::play_toServer_packet::Ty;
-type Painting = v1_1::play_toClient_packet_spawn_entity_painting::Ty;
-type Sign = v1_1::play_toClient_packet_update_sign::Ty;
+type Client11 = v1_1::play_to_client_packet::Ty;
+type Server12 = v1_2_3::play_to_server_packet::Ty;
+type Painting = v1_1::play_to_client_packet_spawn_entity_painting::Ty;
+type Sign = v1_1::play_to_client_packet_update_sign::Ty;
 
 const WINDOW: i32 = 128;
 const HEIGHT: i32 = 256;
@@ -74,7 +74,7 @@ fn reset(cx: &mut Session) {
 }
 
 pub fn prenetty_login_dimension_1_1(
-	p: &v1_2_3::play_toClient_packet_login::Ty,
+	p: &v1_2_3::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<i8> {
 	reset(cx);
@@ -82,7 +82,7 @@ pub fn prenetty_login_dimension_1_1(
 }
 
 pub fn prenetty_respawn_dimension_1_1(
-	p: &v1_2_3::play_toClient_packet_respawn::Ty,
+	p: &v1_2_3::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<i8> {
 	reset(cx);
@@ -109,14 +109,14 @@ fn column_packets(col: &Column) -> Result<Vec<Client11>> {
 	Ok(olds
 		.into_iter()
 		.map(|o| {
-			Client11::map_chunk(v1_1::play_toClient_packet_map_chunk::Ty {
+			Client11::MapChunk(v1_1::play_to_client_packet_map_chunk::Ty {
 				x: o.x,
 				y: o.y,
 				z: o.z,
-				sizeX: o.size_x,
-				sizeY: o.size_y,
-				sizeZ: o.size_z,
-				compressedChunkData: o.data,
+				size_x: o.size_x,
+				size_y: o.size_y,
+				size_z: o.size_z,
+				compressed_chunk_data: o.data,
 			})
 		})
 		.collect())
@@ -136,7 +136,7 @@ fn signs_in(st: &Heights, x: i32, z: i32) -> Vec<Client11> {
 		.map(|s| {
 			let mut s = s.clone();
 			s.location.y = (s.location.y as i32 - view) as i16;
-			Client11::update_sign(s)
+			Client11::UpdateSign(s)
 		})
 		.collect()
 }
@@ -170,22 +170,22 @@ fn client_packets(
 					st.sent.pop_front();
 				}
 				st.client = (x, y, z);
-				out.push(Client11::position(
-					v1_1::play_toClient_packet_position::Ty {
+				out.push(Client11::Position(
+					v1_1::play_to_client_packet_position::Ty {
 						x,
 						y: y + eyes,
 						stance: y,
 						z,
 						yaw,
 						pitch,
-						onGround: false,
+						on_ground: false,
 					},
 				));
 			}
 			Emit::Vehicle { .. } => {}
-			Emit::Entity(m) => out.push(Client11::entity_teleport(
-				v1_1::play_toClient_packet_entity_teleport::Ty {
-					entityId: m.id,
+			Emit::Entity(m) => out.push(Client11::EntityTeleport(
+				v1_1::play_to_client_packet_entity_teleport::Ty {
+					entity_id: m.id,
 					x: fixed(m.x),
 					y: fixed(m.y),
 					z: fixed(m.z),
@@ -195,11 +195,11 @@ fn client_packets(
 			)),
 			Emit::Painting(id, mut p) => {
 				p.location.y -= view;
-				out.push(Client11::entity_destroy(id));
-				out.push(Client11::spawn_entity_painting(p));
+				out.push(Client11::EntityDestroy(id));
+				out.push(Client11::SpawnEntityPainting(p));
 			}
 			Emit::Spawn(x, y, z) => {
-				out.push(Client11::spawn_position(v1_1::position_iii::Ty { x, y, z }))
+				out.push(Client11::SpawnPosition(v1_1::position_iii::Ty { x, y, z }))
 			}
 		}
 	}
@@ -209,7 +209,7 @@ fn client_packets(
 fn send(cx: &mut Session, packets: Vec<Client11>) -> Result<()> {
 	for p in packets {
 		let mut o = Output::new();
-		v1_1::play_toClient_packet::serialize(&p, &mut o)
+		v1_1::play_to_client_packet::serialize(&p, &mut o)
 			.map_err(|e| Error::Encoding(format!("{e:?}")))?;
 		cx.send(Root::PlayToClient, Version::V1_1 as usize, o.into_inner());
 	}
@@ -222,22 +222,22 @@ fn backlog(st: &mut Heights) -> Result<Vec<Client11>> {
 }
 
 pub(super) fn map_chunk(
-	p: &v1_2_3::play_toClient_packet_map_chunk::Ty,
+	p: &v1_2_3::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Option<Vec<Client11>>> {
 	let st = heights(cx);
-	if p.groundUp && p.bitMap == 0 {
+	if p.ground_up && p.bit_map == 0 {
 		st.w.unload(p.x, p.z);
 		st.signs
 			.retain(|(x, _, z), _| (x >> 4, z >> 4) != (p.x, p.z));
 		return Ok(None);
 	}
-	let raw = chunk::inflate(&p.compressedChunkData)?;
+	let raw = chunk::inflate(&p.compressed_chunk_data)?;
 	let mut shape = Shape {
-		bitmap: p.bitMap,
-		add: p.addBitMap,
+		bitmap: p.bit_map,
+		add: p.add_bit_map,
 		sky: true,
-		full: p.groundUp,
+		full: p.ground_up,
 	};
 	if raw.len() < shape.len() {
 		shape.sky = false;
@@ -245,11 +245,11 @@ pub(super) fn map_chunk(
 	let col = legacy_column(
 		p.x,
 		p.z,
-		p.groundUp,
+		p.ground_up,
 		Old::AT,
 		&raw,
-		p.bitMap as u32,
-		p.addBitMap as u32,
+		p.bit_map as u32,
+		p.add_bit_map as u32,
 		shape.sky,
 	)?;
 	let Some(out) = st.w.column(col) else {
@@ -264,7 +264,7 @@ fn block(state: u32) -> (u8, u8) {
 }
 
 pub(super) fn multi_block_change(
-	p: v1_2_3::play_toClient_packet_multi_block_change::Ty,
+	p: v1_2_3::play_to_client_packet_multi_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let changes: Vec<(i32, i32, i32, u32)> = p
@@ -272,10 +272,10 @@ pub(super) fn multi_block_change(
 		.iter()
 		.map(|r| {
 			(
-				p.chunkX * 16 + (r.horizontalPos >> 4) as i32,
+				p.chunk_x * 16 + (r.horizontal_pos >> 4) as i32,
 				r.y as i32,
-				p.chunkZ * 16 + (r.horizontalPos & 15) as i32,
-				r.blockId as u32,
+				p.chunk_z * 16 + (r.horizontal_pos & 15) as i32,
+				r.block_id as u32,
 			)
 		})
 		.collect();
@@ -291,7 +291,7 @@ pub(super) fn multi_block_change(
 	for (x, y, z, state) in shown {
 		let (id, meta) = block(state);
 		coordinates.push(
-			v1_1::play_toClient_packet_multi_block_change__coordinates__items::Ty {
+			v1_1::play_to_client_packet_multi_block_change_coordinates_items::Ty {
 				x: (x & 15) as u8,
 				z: (z & 15) as u8,
 				y: y as u8,
@@ -300,19 +300,19 @@ pub(super) fn multi_block_change(
 		ids.push(id);
 		metadata.push(meta);
 	}
-	Ok(vec![Client11::multi_block_change(
-		v1_1::play_toClient_packet_multi_block_change::Ty {
-			chunkX: p.chunkX,
-			chunkZ: p.chunkZ,
+	Ok(vec![Client11::MultiBlockChange(
+		v1_1::play_to_client_packet_multi_block_change::Ty {
+			chunk_x: p.chunk_x,
+			chunk_z: p.chunk_z,
 			coordinates,
-			blockIds: ids,
+			block_ids: ids,
 			metadata,
 		},
 	)])
 }
 
 pub(super) fn block_change(
-	mut p: v1_2_3::play_toClient_packet_block_change::Ty,
+	mut p: v1_2_3::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let state = (p.r#type as u32) << 4 | (p.metadata & 15) as u32;
@@ -325,7 +325,7 @@ pub(super) fn block_change(
 	};
 	p.location.y = y as u8;
 	(p.r#type, p.metadata) = block(state);
-	Ok(vec![Client11::block_change(p)])
+	Ok(vec![Client11::BlockChange(p)])
 }
 
 pub(super) fn spawned(
@@ -349,12 +349,12 @@ pub(super) fn spawned(
 }
 
 pub fn prenetty_position_1_1(
-	p: v1_2_3::play_toClient_packet_position::Ty,
+	p: v1_2_3::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if !st.active {
-		return Ok(vec![Client11::position(p)]);
+		return Ok(vec![Client11::Position(p)]);
 	}
 	st.ids = (st.ids + 1) & 0x00ff_ffff;
 	let emits = st.w.server_teleport(Teleport {
@@ -371,7 +371,7 @@ pub fn prenetty_position_1_1(
 }
 
 pub fn prenetty_position_only_1_1(
-	mut p: v1_2_3::play_toClient_packet_position_only::Ty,
+	mut p: v1_2_3::play_to_client_packet_position_only::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
@@ -379,7 +379,7 @@ pub fn prenetty_position_only_1_1(
 		let view = st.w.view() as f64;
 		(p.y, p.stance) = (p.y - view, p.stance - view);
 	}
-	Ok(vec![Client11::position_only(p)])
+	Ok(vec![Client11::PositionOnly(p)])
 }
 
 pub fn prenetty_spawn_position_1_1(
@@ -390,7 +390,7 @@ pub fn prenetty_spawn_position_1_1(
 	if st.active {
 		p.y = st.w.spawn(p.x, p.y, p.z);
 	}
-	Ok(vec![Client11::spawn_position(p)])
+	Ok(vec![Client11::SpawnPosition(p)])
 }
 
 fn inside(cx: &mut Session, y: i32) -> Option<i32> {
@@ -402,45 +402,45 @@ fn inside(cx: &mut Session, y: i32) -> Option<i32> {
 }
 
 pub fn prenetty_bed_1_1(
-	mut p: v1_2_3::play_toClient_packet_bed::Ty,
+	mut p: v1_2_3::play_to_client_packet_bed::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let Some(y) = inside(cx, p.location.y as i32) else {
 		return Ok(vec![]);
 	};
 	p.location.y = y as u8;
-	Ok(vec![Client11::bed(p)])
+	Ok(vec![Client11::Bed(p)])
 }
 
 pub fn prenetty_world_event_1_1(
-	mut p: v1_2_3::play_toClient_packet_world_event::Ty,
+	mut p: v1_2_3::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let Some(y) = inside(cx, p.location.y as i32) else {
 		return Ok(vec![]);
 	};
 	p.location.y = y as u8;
-	Ok(vec![Client11::world_event(p)])
+	Ok(vec![Client11::WorldEvent(p)])
 }
 
 pub fn prenetty_block_action_1_1(
-	mut p: v1_2_3::play_toClient_packet_block_action::Ty,
+	mut p: v1_2_3::play_to_client_packet_block_action::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let Some(y) = inside(cx, p.location.y as i32) else {
 		return Ok(vec![]);
 	};
 	p.location.y = y as i16;
-	Ok(vec![Client11::block_action(p)])
+	Ok(vec![Client11::BlockAction(p)])
 }
 
 pub fn prenetty_update_sign_1_1(
-	mut p: v1_2_3::play_toClient_packet_update_sign::Ty,
+	mut p: v1_2_3::play_to_client_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if !st.active {
-		return Ok(vec![Client11::update_sign(p)]);
+		return Ok(vec![Client11::UpdateSign(p)]);
 	}
 	let (x, y, z) = (p.location.x, p.location.y as i32, p.location.z);
 	st.signs.insert((x, y, z), p.clone());
@@ -448,63 +448,63 @@ pub fn prenetty_update_sign_1_1(
 		return Ok(vec![]);
 	}
 	p.location.y = (y - st.w.view()) as i16;
-	Ok(vec![Client11::update_sign(p)])
+	Ok(vec![Client11::UpdateSign(p)])
 }
 
 pub fn prenetty_explosion_1_1(
-	mut p: v1_2_3::play_toClient_packet_explosion::Ty,
+	mut p: v1_2_3::play_to_client_packet_explosion::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if st.active {
 		p.y -= st.w.view() as f64;
 	}
-	Ok(vec![Client11::explosion(p)])
+	Ok(vec![Client11::Explosion(p)])
 }
 
 pub fn prenetty_spawn_entity_painting_1_1(
-	p: v1_2_3::play_toClient_packet_spawn_entity_painting::Ty,
+	p: v1_2_3::play_to_client_packet_spawn_entity_painting::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if !st.active {
-		return Ok(vec![Client11::spawn_entity_painting(p)]);
+		return Ok(vec![Client11::SpawnEntityPainting(p)]);
 	}
-	st.w.painting(p.entityId, p.clone());
+	st.w.painting(p.entity_id, p.clone());
 	let mut p = p;
 	p.location.y -= st.w.view();
-	Ok(vec![Client11::spawn_entity_painting(p)])
+	Ok(vec![Client11::SpawnEntityPainting(p)])
 }
 
 pub fn prenetty_spawn_entity_experience_orb_1_1(
-	mut p: v1_2_3::play_toClient_packet_spawn_entity_experience_orb::Ty,
+	mut p: v1_2_3::play_to_client_packet_spawn_entity_experience_orb::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	spawned(cx, p.entityId, (p.x, &mut p.y, p.z), None);
-	Ok(vec![Client11::spawn_entity_experience_orb(p)])
+	spawned(cx, p.entity_id, (p.x, &mut p.y, p.z), None);
+	Ok(vec![Client11::SpawnEntityExperienceOrb(p)])
 }
 
 pub fn prenetty_spawn_entity_weather_1_1(
-	mut p: v1_2_3::play_toClient_packet_spawn_entity_weather::Ty,
+	mut p: v1_2_3::play_to_client_packet_spawn_entity_weather::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if st.active {
 		p.y -= st.w.view() * 32;
 	}
-	Ok(vec![Client11::spawn_entity_weather(p)])
+	Ok(vec![Client11::SpawnEntityWeather(p)])
 }
 
 pub fn prenetty_entity_teleport_1_1(
-	mut p: v1_2_3::play_toClient_packet_entity_teleport::Ty,
+	mut p: v1_2_3::play_to_client_packet_entity_teleport::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	if !st.active {
-		return Ok(vec![Client11::entity_teleport(p)]);
+		return Ok(vec![Client11::EntityTeleport(p)]);
 	}
 	st.w.moved(
-		p.entityId,
+		p.entity_id,
 		p.x as f64 / 32.0,
 		p.y as f64 / 32.0,
 		p.z as f64 / 32.0,
@@ -512,7 +512,7 @@ pub fn prenetty_entity_teleport_1_1(
 		None,
 	);
 	p.y -= st.w.view() * 32;
-	let mut out = vec![Client11::entity_teleport(p)];
+	let mut out = vec![Client11::EntityTeleport(p)];
 	out.extend(backlog(st)?);
 	Ok(out)
 }
@@ -537,44 +537,49 @@ fn moved_by(
 }
 
 pub fn prenetty_rel_entity_move_1_1(
-	p: v1_2_3::play_toClient_packet_rel_entity_move::Ty,
+	p: v1_2_3::play_to_client_packet_rel_entity_move::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	let mut out = moved_by(cx, p.entityId, (p.dX, p.dY, p.dZ), None)?;
-	out.insert(0, Client11::rel_entity_move(p));
+	let mut out = moved_by(cx, p.entity_id, (p.d_x, p.d_y, p.d_z), None)?;
+	out.insert(0, Client11::RelEntityMove(p));
 	Ok(out)
 }
 
 pub fn prenetty_entity_move_look_1_1(
-	p: v1_2_3::play_toClient_packet_entity_move_look::Ty,
+	p: v1_2_3::play_to_client_packet_entity_move_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	let mut out = moved_by(cx, p.entityId, (p.dX, p.dY, p.dZ), Some((p.yaw, p.pitch)))?;
-	out.insert(0, Client11::entity_move_look(p));
+	let mut out = moved_by(
+		cx,
+		p.entity_id,
+		(p.d_x, p.d_y, p.d_z),
+		Some((p.yaw, p.pitch)),
+	)?;
+	out.insert(0, Client11::EntityMoveLook(p));
 	Ok(out)
 }
 
 pub fn prenetty_entity_look_1_1(
-	p: v1_2_3::play_toClient_packet_entity_look::Ty,
+	p: v1_2_3::play_to_client_packet_entity_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
 	let mut out = vec![];
 	if st.active {
-		st.w.looked(p.entityId, (p.yaw, p.pitch), false);
+		st.w.looked(p.entity_id, (p.yaw, p.pitch), false);
 		out = backlog(st)?;
 	}
-	out.insert(0, Client11::entity_look(p));
+	out.insert(0, Client11::EntityLook(p));
 	Ok(out)
 }
 
 pub fn prenetty_entity_destroy_1_1(id: i32, cx: &mut Session) -> Result<Vec<Client11>> {
 	heights(cx).w.forget(id);
-	Ok(vec![Client11::entity_destroy(id)])
+	Ok(vec![Client11::EntityDestroy(id)])
 }
 
 pub fn prenetty_pre_chunk_1_1(
-	p: v1_2_3::play_toClient_packet_pre_chunk::Ty,
+	p: v1_2_3::play_to_client_packet_pre_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
 	let st = heights(cx);
@@ -583,7 +588,7 @@ pub fn prenetty_pre_chunk_1_1(
 		st.signs
 			.retain(|(x, _, z), _| (x >> 4, z >> 4) != (p.x, p.z));
 	}
-	Ok(vec![Client11::pre_chunk(p)])
+	Ok(vec![Client11::PreChunk(p)])
 }
 
 fn echoed(st: &mut Heights, x: f64, y: f64, z: f64) {
@@ -625,36 +630,36 @@ fn idle(cx: &mut Session) -> Result<()> {
 }
 
 pub fn prenetty_position_1_2_3(
-	mut p: v1_1::play_toServer_packet_position::Ty,
+	mut p: v1_1::play_to_server_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let y = moved(cx, p.x, p.y, p.z)?;
 	(p.stance, p.y) = (p.stance + y - p.y, y);
-	Ok(vec![Server12::position(p)])
+	Ok(vec![Server12::Position(p)])
 }
 
 pub fn prenetty_position_look_1_2_3(
-	mut p: v1_1::play_toServer_packet_position_look::Ty,
+	mut p: v1_1::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	heights(cx).look = (p.yaw, p.pitch);
 	let y = moved(cx, p.x, p.y, p.z)?;
 	(p.stance, p.y) = (p.stance + y - p.y, y);
-	Ok(vec![Server12::position_look(p)])
+	Ok(vec![Server12::PositionLook(p)])
 }
 
 pub fn prenetty_look_1_2_3(
-	p: v1_1::play_toServer_packet_look::Ty,
+	p: v1_1::play_to_server_packet_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	heights(cx).look = (p.yaw, p.pitch);
 	idle(cx)?;
-	Ok(vec![Server12::look(p)])
+	Ok(vec![Server12::Look(p)])
 }
 
 pub fn prenetty_flying_1_2_3(on_ground: bool, cx: &mut Session) -> Result<Vec<Server12>> {
 	idle(cx)?;
-	Ok(vec![Server12::flying(on_ground)])
+	Ok(vec![Server12::Flying(on_ground)])
 }
 
 fn input(cx: &mut Session, y: i32) -> i32 {
@@ -666,29 +671,29 @@ fn input(cx: &mut Session, y: i32) -> i32 {
 }
 
 pub fn prenetty_block_dig_1_2_3(
-	mut p: v1_1::play_toServer_packet_block_dig::Ty,
+	mut p: v1_1::play_to_server_packet_block_dig::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	if (0..4).contains(&p.status) {
 		p.location.y = input(cx, p.location.y as i32).clamp(0, 255) as u8;
 	}
-	Ok(vec![Server12::block_dig(p)])
+	Ok(vec![Server12::BlockDig(p)])
 }
 
 pub fn prenetty_place_1_2_3(
-	mut p: v1_1::play_toServer_packet_block_place::Ty,
+	mut p: v1_1::play_to_server_packet_block_place::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	if p.direction != -1 {
 		p.location.y = input(cx, p.location.y as i32).clamp(0, 255) as u8;
 	}
-	Ok(vec![Server12::block_place(p)])
+	Ok(vec![Server12::BlockPlace(p)])
 }
 
 pub fn prenetty_update_sign_server_1_2_3(
-	mut p: v1_1::play_toServer_packet_update_sign::Ty,
+	mut p: v1_1::play_to_server_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	p.location.y = input(cx, p.location.y as i32) as i16;
-	Ok(vec![Server12::update_sign(p)])
+	Ok(vec![Server12::UpdateSign(p)])
 }

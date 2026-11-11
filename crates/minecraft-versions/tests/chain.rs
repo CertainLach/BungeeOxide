@@ -2,10 +2,10 @@ use minecraft_versions::gen::convert::{convert, index_of, Root};
 use minecraft_versions::gen::convert::{v1_12_2, v1_8};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
-use v1_12_2::{play_toClient_packet as newest, play_toServer_packet as newest_server};
+use v1_12_2::{play_to_client_packet as newest, play_to_server_packet as newest_server};
 use v1_8::{
-	play_toClient_packet as oldest, play_toClient_packet_map_chunk as chunk_1_8,
-	play_toServer_packet as oldest_server,
+	play_to_client_packet as oldest, play_to_client_packet_map_chunk as chunk_1_8,
+	play_to_server_packet as oldest_server,
 };
 
 fn at(version: &str) -> usize {
@@ -68,23 +68,23 @@ fn chunk_sections_keep_block_states() {
 		data.extend(std::iter::repeat(0xf0 | s as u8).take(2048));
 	}
 	data.extend((0..256).map(|b| b as u8));
-	let packet = oldest::Ty::map_chunk(chunk_1_8::Ty {
+	let packet = oldest::Ty::MapChunk(chunk_1_8::Ty {
 		x: 3,
 		z: -7,
-		groundUp: true,
-		bitMap: bitmap,
-		chunkData: data,
+		ground_up: true,
+		bit_map: bitmap,
+		chunk_data: data,
 	});
 	let out = up(&packet, &mut Session::new());
-	let [newest::Ty::map_chunk(c)] = out.as_slice() else {
+	let [newest::Ty::MapChunk(c)] = out.as_slice() else {
 		panic!("expected one chunk, got {out:?}");
 	};
 	assert_eq!(
-		(c.x, c.z, c.groundUp, c.bitMap),
+		(c.x, c.z, c.ground_up, c.bit_map),
 		(3, -7, true, bitmap as i32)
 	);
-	assert!(c.blockEntities.is_empty());
-	let d = &c.chunkData;
+	assert!(c.block_entities.is_empty());
+	let d = &c.chunk_data;
 	let mut at = 0;
 	for &s in &sections {
 		assert_eq!(d[at], 13);
@@ -117,25 +117,25 @@ fn chunk_sections_keep_block_states() {
 
 #[test]
 fn empty_full_chunk_unloads() {
-	let packet = oldest::Ty::map_chunk(chunk_1_8::Ty {
+	let packet = oldest::Ty::MapChunk(chunk_1_8::Ty {
 		x: 1,
 		z: 2,
-		groundUp: true,
-		bitMap: 0,
-		chunkData: vec![0; 256],
+		ground_up: true,
+		bit_map: 0,
+		chunk_data: vec![0; 256],
 	});
 	let out = up(&packet, &mut Session::new());
 	assert!(
-		matches!(out.as_slice(), [newest::Ty::unload_chunk(u)] if (u.chunkX, u.chunkZ) == (1, 2))
+		matches!(out.as_slice(), [newest::Ty::UnloadChunk(u)] if (u.chunk_x, u.chunk_z) == (1, 2))
 	);
 }
 
 #[test]
 fn positions_and_teleports() {
-	use v1_8::play_toClient_packet_position as pos;
-	use v1_8::play_toClient_packet_rel_entity_move as rel;
+	use v1_8::play_to_client_packet_position as pos;
+	use v1_8::play_to_client_packet_rel_entity_move as rel;
 	let mut cx = Session::new();
-	let p = oldest::Ty::position(pos::Ty {
+	let p = oldest::Ty::Position(pos::Ty {
 		x: 1.5,
 		y: 64.0,
 		z: -2.25,
@@ -146,22 +146,22 @@ fn positions_and_teleports() {
 	let first = up(&p, &mut cx);
 	let second = up(&p, &mut cx);
 	let id = |o: &[newest::Ty]| match o {
-		[newest::Ty::position(p)] => p.teleportId,
+		[newest::Ty::Position(p)] => p.teleport_id,
 		o => panic!("{o:?}"),
 	};
 	assert_ne!(id(&first), id(&second));
 	let moved = up(
-		&oldest::Ty::rel_entity_move(rel::Ty {
-			entityId: 5,
-			dX: 32,
-			dY: -4,
-			dZ: 0,
-			onGround: true,
+		&oldest::Ty::RelEntityMove(rel::Ty {
+			entity_id: 5,
+			d_x: 32,
+			d_y: -4,
+			d_z: 0,
+			on_ground: true,
 		}),
 		&mut cx,
 	);
 	assert!(
-		matches!(moved.as_slice(), [newest::Ty::rel_entity_move(m)] if (m.dX, m.dY, m.dZ) == (4096, -512, 0))
+		matches!(moved.as_slice(), [newest::Ty::RelEntityMove(m)] if (m.d_x, m.d_y, m.d_z) == (4096, -512, 0))
 	);
 }
 
@@ -169,7 +169,7 @@ fn positions_and_teleports() {
 fn keep_alive_round_trips_through_every_step() {
 	let mut cx = Session::new();
 	let mut o = Output::new();
-	newest_server::serialize(&newest_server::Ty::keep_alive(1234), &mut o).unwrap();
+	newest_server::serialize(&newest_server::Ty::KeepAlive(1234), &mut o).unwrap();
 	let down = convert(
 		Root::PlayToServer,
 		at("1.12.2"),
@@ -183,6 +183,6 @@ fn keep_alive_round_trips_through_every_step() {
 	};
 	assert_eq!(
 		oldest_server::deserialize(&mut Input::new(bytes)).unwrap(),
-		oldest_server::Ty::keep_alive(1234)
+		oldest_server::Ty::KeepAlive(1234)
 	);
 }

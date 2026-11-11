@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 
-use ::nbt::gen::pds_Entry::Ty as Entry;
-use ::nbt::gen::pds_Payload::Ty as P;
+use ::nbt::Entry;
+use ::nbt::Payload as P;
 
 use crate::gen::convert::Version;
 use crate::pds::convert::{unconvertible, Result};
@@ -325,16 +325,16 @@ pub(super) fn heightmaps(
 	shift: i32,
 	max: i32,
 ) {
-	let P::compound(maps) = &mut nbt.value else {
+	let P::Compound(maps) = &mut nbt.value else {
 		return;
 	};
 	for e in maps.iter_mut() {
-		if let P::longArray(longs) = &e.value {
+		if let P::LongArray(longs) = &e.value {
 			let values: Vec<u32> = unpack(longs, from.0, 256, from.1)
 				.into_iter()
 				.map(|v| (v as i32 - shift).clamp(0, max) as u32)
 				.collect();
-			e.value = P::longArray(pack(&values, to.0, to.1));
+			e.value = P::LongArray(pack(&values, to.0, to.1));
 		}
 	}
 }

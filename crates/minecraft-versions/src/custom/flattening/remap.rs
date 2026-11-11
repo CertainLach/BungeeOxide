@@ -18,67 +18,67 @@ fn state(s: i32, f: fn(u32) -> u32) -> i32 {
 }
 
 pub fn flattening_block_change_state_1_13_1(
-	src: &b::play_toClient_packet_block_change::Ty,
+	src: &b::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(src.r#type, state_later))
 }
 
 pub fn flattening_block_change_state_1_13(
-	src: &c::play_toClient_packet_block_change::Ty,
+	src: &c::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(src.r#type, state_earlier))
 }
 
 pub fn flattening_record_state_1_13_1(
-	src: &b::play_toClient_packet_multi_block_change__records__items::Ty,
+	src: &b::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(src.blockId, state_later))
+	Ok(state(src.block_id, state_later))
 }
 
 pub fn flattening_record_state_1_13(
-	src: &c::play_toClient_packet_multi_block_change__records__items::Ty,
+	src: &c::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(src.blockId, state_earlier))
+	Ok(state(src.block_id, state_earlier))
 }
 
 pub fn flattening_block_action_id_1_13_1(
-	src: &b::play_toClient_packet_block_action::Ty,
+	src: &b::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(block_later(src.blockId))
+	Ok(block_later(src.block_id))
 }
 
 pub fn flattening_block_action_id_1_13(
-	src: &c::play_toClient_packet_block_action::Ty,
+	src: &c::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(block_earlier(src.blockId))
+	Ok(block_earlier(src.block_id))
 }
 
 pub fn flattening_cooldown_item_1_13_1(
-	src: &b::play_toClient_packet_set_cooldown::Ty,
+	src: &b::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item_later(src.itemID).unwrap_or(0))
+	Ok(item_later(src.item_id).unwrap_or(0))
 }
 
 pub fn flattening_cooldown_item_1_13(
-	src: &c::play_toClient_packet_set_cooldown::Ty,
+	src: &c::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item_earlier(src.itemID).unwrap_or(0))
+	Ok(item_earlier(src.item_id).unwrap_or(0))
 }
 
 fn retag(
-	p: b::play_toClient_packet_tags::Ty,
+	p: b::play_to_client_packet_tags::Ty,
 	block: fn(i32) -> i32,
 	item: fn(i32) -> Option<i32>,
-) -> b::play_toClient_packet_tags::Ty {
-	let blocks = |tags: Vec<b::play_toClient_packet_tags__blockTags__items::Ty>| {
+) -> b::play_to_client_packet_tags::Ty {
+	let blocks = |tags: Vec<b::play_to_client_packet_tags_block_tags_items::Ty>| {
 		tags.into_iter()
 			.map(|mut t| {
 				t.entries = t.entries.into_iter().map(block).collect();
@@ -86,7 +86,7 @@ fn retag(
 			})
 			.collect()
 	};
-	let items = |tags: Vec<b::play_toClient_packet_tags__blockTags__items::Ty>| {
+	let items = |tags: Vec<b::play_to_client_packet_tags_block_tags_items::Ty>| {
 		tags.into_iter()
 			.map(|mut t| {
 				t.entries = t.entries.into_iter().filter_map(item).collect();
@@ -94,24 +94,24 @@ fn retag(
 			})
 			.collect()
 	};
-	b::play_toClient_packet_tags::Ty {
-		blockTags: blocks(p.blockTags),
-		itemTags: items(p.itemTags),
-		fluidTags: p.fluidTags,
+	b::play_to_client_packet_tags::Ty {
+		block_tags: blocks(p.block_tags),
+		item_tags: items(p.item_tags),
+		fluid_tags: p.fluid_tags,
 	}
 }
 
 pub fn flattening_tag_ids_1_13_1(
-	p: b::play_toClient_packet_tags::Ty,
+	p: b::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<c::play_toClient_packet_tags::Ty> {
+) -> Result<c::play_to_client_packet_tags::Ty> {
 	Ok(retag(p, block_later, item_later))
 }
 
 pub fn flattening_tag_ids_1_13(
-	p: c::play_toClient_packet_tags::Ty,
+	p: c::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_tags::Ty> {
+) -> Result<b::play_to_client_packet_tags::Ty> {
 	Ok(retag(p, block_earlier, item_earlier))
 }
 
@@ -124,7 +124,7 @@ fn fog(flags: u8) -> u8 {
 }
 
 pub fn flattening_boss_bar_flags_1_13_1(
-	src: &b::play_toClient_packet_boss_bar__action__v0::Ty,
+	src: &b::play_to_client_packet_boss_bar_action_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
 	Ok(fog(src.flags))
@@ -139,7 +139,7 @@ fn dragon(flags: u8) -> u8 {
 }
 
 pub fn flattening_boss_bar_flags_1_13(
-	src: &c::play_toClient_packet_boss_bar__action__v0::Ty,
+	src: &c::play_to_client_packet_boss_bar_action_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
 	Ok(dragon(src.flags))
@@ -148,42 +148,42 @@ pub fn flattening_boss_bar_flags_1_13(
 pub fn flattening_boss_bar_update_1_13_1(
 	flags: u8,
 	_cx: &mut Session,
-) -> Result<c::play_toClient_packet_boss_bar__action::Ty> {
-	Ok(c::play_toClient_packet_boss_bar__action::Ty::v5(fog(flags)))
+) -> Result<c::play_to_client_packet_boss_bar_action::Ty> {
+	Ok(c::play_to_client_packet_boss_bar_action::Ty::V5(fog(flags)))
 }
 
 pub fn flattening_boss_bar_update_1_13(
 	flags: u8,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_boss_bar__action::Ty> {
-	Ok(b::play_toClient_packet_boss_bar__action::Ty::v5(dragon(
+) -> Result<b::play_to_client_packet_boss_bar_action::Ty> {
+	Ok(b::play_to_client_packet_boss_bar_action::Ty::V5(dragon(
 		flags,
 	)))
 }
 
 pub fn flattening_window_title_1_13(
-	src: &c::play_toClient_packet_open_window::Ty,
+	src: &c::play_to_client_packet_open_window::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(legacy_title(&src.windowTitle))
+	Ok(legacy_title(&src.window_title))
 }
 
-type Properties = b::command_node__extraNodeData__v2__properties::Ty;
+type Properties = b::command_node_extra_node_data_v2_properties::Ty;
 
 pub fn flattening_declare_commands_1_13(
-	p: c::play_toClient_packet_declare_commands::Ty,
+	p: c::play_to_client_packet_declare_commands::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_declare_commands::Ty> {
+) -> Result<b::play_to_client_packet_declare_commands::Ty> {
 	let nodes = p
 		.nodes
 		.into_iter()
 		.map(|mut n| {
-			if let b::command_node__extraNodeData::Ty::v2(arg) = &mut n.extraNodeData {
+			if let b::command_node_extra_node_data::Ty::V2(arg) = &mut n.extra_node_data {
 				let (parser, properties) = match arg.parser.as_str() {
-					"minecraft:column_pos" => ("minecraft:vec2", Properties::minecraft_vec2),
+					"minecraft:column_pos" => ("minecraft:vec2", Properties::MinecraftVec2),
 					"minecraft:dimension" => (
 						"brigadier:string",
-						Properties::brigadier_string(b::command_node__extraNodeData__v2__properties__brigadier_string::Ty::SINGLE_WORD),
+						Properties::BrigadierString(b::command_node_extra_node_data_v2_properties_brigadier_string::Ty::SingleWord),
 					),
 					_ => return n,
 				};
@@ -193,9 +193,9 @@ pub fn flattening_declare_commands_1_13(
 			n
 		})
 		.collect();
-	Ok(b::play_toClient_packet_declare_commands::Ty {
+	Ok(b::play_to_client_packet_declare_commands::Ty {
 		nodes,
-		rootIndex: p.rootIndex,
+		root_index: p.root_index,
 	})
 }
 
@@ -213,20 +213,20 @@ fn custom_stat_earlier(id: i32) -> Option<i32> {
 	(0..=51).find(|old| custom_stat_later(*old) == Some(id))
 }
 
-type Stat = b::play_toClient_packet__statistics__items::Ty;
+type Stat = b::play_to_client_packet_statistics_items::Ty;
 
 fn restat(stats: Vec<Stat>, up: bool) -> Vec<Stat> {
 	stats
 		.into_iter()
 		.filter_map(|mut s| {
-			s.statisticId = match (s.categoryId, up) {
-				(0, true) => block_later(s.statisticId),
-				(0, false) => block_earlier(s.statisticId),
-				(1..=5, true) => item_later(s.statisticId)?,
-				(1..=5, false) => item_earlier(s.statisticId)?,
-				(8, true) => custom_stat_later(s.statisticId)?,
-				(8, false) => custom_stat_earlier(s.statisticId)?,
-				_ => s.statisticId,
+			s.statistic_id = match (s.category_id, up) {
+				(0, true) => block_later(s.statistic_id),
+				(0, false) => block_earlier(s.statistic_id),
+				(1..=5, true) => item_later(s.statistic_id)?,
+				(1..=5, false) => item_earlier(s.statistic_id)?,
+				(8, true) => custom_stat_later(s.statistic_id)?,
+				(8, false) => custom_stat_earlier(s.statistic_id)?,
+				_ => s.statistic_id,
 			};
 			Some(s)
 		})
@@ -236,8 +236,8 @@ fn restat(stats: Vec<Stat>, up: bool) -> Vec<Stat> {
 pub fn flattening_statistic_ids_1_13_1(
 	stats: Vec<Stat>,
 	_cx: &mut Session,
-) -> Result<Vec<c::play_toClient_packet::Ty>> {
-	Ok(vec![c::play_toClient_packet::Ty::statistics(restat(
+) -> Result<Vec<c::play_to_client_packet::Ty>> {
+	Ok(vec![c::play_to_client_packet::Ty::Statistics(restat(
 		stats, true,
 	))])
 }
@@ -245,8 +245,8 @@ pub fn flattening_statistic_ids_1_13_1(
 pub fn flattening_statistic_ids_1_13(
 	stats: Vec<Stat>,
 	_cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
-	Ok(vec![b::play_toClient_packet::Ty::statistics(restat(
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
+	Ok(vec![b::play_to_client_packet::Ty::Statistics(restat(
 		stats, false,
 	))])
 }
@@ -260,30 +260,30 @@ fn dimension_change(cx: &mut Session, dimension: i32) {
 }
 
 pub fn flattening_dimension_change_1_13_1(
-	p: b::play_toClient_packet_respawn::Ty,
+	p: b::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
-) -> Result<Vec<c::play_toClient_packet::Ty>> {
+) -> Result<Vec<c::play_to_client_packet::Ty>> {
 	dimension_change(cx, p.dimension);
-	Ok(vec![c::play_toClient_packet::Ty::respawn(p)])
+	Ok(vec![c::play_to_client_packet::Ty::Respawn(p)])
 }
 
 pub fn flattening_dimension_change_1_13(
-	p: c::play_toClient_packet_respawn::Ty,
+	p: c::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	dimension_change(cx, p.dimension);
-	Ok(vec![b::play_toClient_packet::Ty::respawn(p)])
+	Ok(vec![b::play_to_client_packet::Ty::Respawn(p)])
 }
 
 pub fn flattening_edit_book_hand_1_13(
-	p: c::play_toServer_packet_edit_book::Ty,
+	p: c::play_to_server_packet_edit_book::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<b::play_toServer_packet::Ty>> {
+) -> Result<Vec<b::play_to_server_packet::Ty>> {
 	if p.hand == 1 {
 		return Ok(vec![]);
 	}
-	Ok(vec![b::play_toServer_packet::Ty::edit_book(
-		b::play_toServer_packet_edit_book::Ty {
+	Ok(vec![b::play_to_server_packet::Ty::EditBook(
+		b::play_to_server_packet_edit_book::Ty {
 			new_book: slot_earlier(p.new_book),
 			signing: p.signing,
 		},
@@ -291,7 +291,7 @@ pub fn flattening_edit_book_hand_1_13(
 }
 
 pub fn flattening_command_slash_1_13_1(
-	src: &b::play_toServer_packet_tab_complete::Ty,
+	src: &b::play_to_server_packet_tab_complete::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(if src.text.starts_with('/') {
@@ -302,7 +302,7 @@ pub fn flattening_command_slash_1_13_1(
 }
 
 pub fn flattening_command_slash_1_13(
-	src: &c::play_toServer_packet_tab_complete::Ty,
+	src: &c::play_to_server_packet_tab_complete::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(src.text.strip_prefix('/').unwrap_or(&src.text).to_owned())

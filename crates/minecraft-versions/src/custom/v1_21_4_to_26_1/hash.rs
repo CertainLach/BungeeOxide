@@ -326,29 +326,29 @@ fn non_empty<T>(v: &[T], f: impl Fn(&T) -> Option<H>) -> Option<Option<H>> {
 
 pub fn nbt(p: &Payload) -> H {
 	match p {
-		Payload::end => H::Empty,
-		Payload::byte(v) => H::Byte(*v),
-		Payload::short(v) => H::Short(*v),
-		Payload::int(v) => H::Int(*v),
-		Payload::long(v) => H::Long(*v),
-		Payload::float(v) => H::Float(*v),
-		Payload::double(v) => H::Double(*v),
-		Payload::byteArray(v) => H::Bytes(v.clone()),
-		Payload::string(s) => H::Str(s.clone()),
-		Payload::list(l) => H::List(l.values().iter().map(nbt).collect()),
-		Payload::compound(entries) => H::Map(
+		Payload::End => H::Empty,
+		Payload::Byte(v) => H::Byte(*v),
+		Payload::Short(v) => H::Short(*v),
+		Payload::Int(v) => H::Int(*v),
+		Payload::Long(v) => H::Long(*v),
+		Payload::Float(v) => H::Float(*v),
+		Payload::Double(v) => H::Double(*v),
+		Payload::ByteArray(v) => H::Bytes(v.clone()),
+		Payload::String(s) => H::Str(s.clone()),
+		Payload::List(l) => H::List(l.values().iter().map(nbt).collect()),
+		Payload::Compound(entries) => H::Map(
 			entries
 				.iter()
 				.map(|e| (e.name.clone(), nbt(&e.value)))
 				.collect(),
 		),
-		Payload::intArray(v) => H::Ints(v.clone()),
-		Payload::longArray(v) => H::Longs(v.clone()),
+		Payload::IntArray(v) => H::Ints(v.clone()),
+		Payload::LongArray(v) => H::Longs(v.clone()),
 	}
 }
 
 fn hover(p: &Payload) -> H {
-	let Payload::compound(entries) = p else {
+	let Payload::Compound(entries) = p else {
 		return nbt(p);
 	};
 	H::Map(
@@ -367,9 +367,9 @@ fn hover(p: &Payload) -> H {
 
 pub fn text(p: &Payload) -> H {
 	match p {
-		Payload::compound(entries) => {
+		Payload::Compound(entries) => {
 			if let [e] = entries.as_slice() {
-				if let ("text", Payload::string(s)) = (e.name.as_str(), &e.value) {
+				if let ("text", Payload::String(s)) = (e.name.as_str(), &e.value) {
 					return H::Str(s.clone());
 				}
 			}
@@ -378,8 +378,8 @@ pub fn text(p: &Payload) -> H {
 					.iter()
 					.map(|e| {
 						let v = match (e.name.as_str(), &e.value) {
-							(k, Payload::byte(b)) if BOOLS.contains(&k) => H::Bool(*b != 0),
-							("extra" | "with", Payload::list(l)) => {
+							(k, Payload::Byte(b)) if BOOLS.contains(&k) => H::Bool(*b != 0),
+							("extra" | "with", Payload::List(l)) => {
 								H::List(l.values().iter().map(text).collect())
 							}
 							("separator", v) => text(v),
@@ -391,7 +391,7 @@ pub fn text(p: &Payload) -> H {
 					.collect(),
 			)
 		}
-		Payload::list(l) => H::List(l.values().iter().map(text).collect()),
+		Payload::List(l) => H::List(l.values().iter().map(text).collect()),
 		other => nbt(other),
 	}
 }
@@ -402,41 +402,43 @@ fn name(kind: &str, id: i32) -> Option<H> {
 		.map(key)
 }
 
-fn sound(s: &b::ItemSoundHolder::Ty) -> Option<H> {
+fn sound(s: &b::item_sound_holder::Ty) -> Option<H> {
 	Some(match s {
-		b::ItemSoundHolder::Ty::Id(id) => key(remap::sound_name(V, *id)?),
-		b::ItemSoundHolder::Ty::Inline(e) => map(vec![
-			("sound_id", Some(key(&e.soundName))),
-			("range", e.fixedRange.map(H::Float)),
+		b::item_sound_holder::Ty::Id(id) => key(remap::sound_name(V, *id)?),
+		b::item_sound_holder::Ty::Inline(e) => map(vec![
+			("sound_id", Some(key(&e.sound_name))),
+			("range", e.fixed_range.map(H::Float)),
 		]),
 	})
 }
 
-fn sound_or(s: &b::ItemSoundHolder::Ty, default: &str) -> Option<Option<H>> {
+fn sound_or(s: &b::item_sound_holder::Ty, default: &str) -> Option<Option<H>> {
 	match s {
-		b::ItemSoundHolder::Ty::Id(id) if remap::sound_name(V, *id) == Some(default) => Some(None),
+		b::item_sound_holder::Ty::Id(id) if remap::sound_name(V, *id) == Some(default) => {
+			Some(None)
+		}
 		s => sound(s).map(Some),
 	}
 }
 
-fn set(s: &b::IDSet::Ty, kind: &str) -> Option<H> {
+fn set(s: &b::id_set::Ty, kind: &str) -> Option<H> {
 	match s {
-		b::IDSet::Ty::Named(tag) => Some(H::Str(format!("#{}", key_str(tag)))),
-		b::IDSet::Ty::Ids(ids) if ids.len() == 1 => name(kind, ids[0]),
-		b::IDSet::Ty::Ids(ids) => list(ids, |i| name(kind, *i)),
+		b::id_set::Ty::Named(tag) => Some(H::Str(format!("#{}", key_str(tag)))),
+		b::id_set::Ty::Ids(ids) if ids.len() == 1 => name(kind, ids[0]),
+		b::id_set::Ty::Ids(ids) => list(ids, |i| name(kind, *i)),
 	}
 }
 
-fn effect_detail(d: &b::ItemEffectDetail::Ty) -> Option<H> {
+fn effect_detail(d: &b::item_effect_detail::Ty) -> Option<H> {
 	Some(map(vec![
 		("amplifier", unless(d.amplifier, 0, |v| H::Byte(v as i8))),
 		("duration", unless(d.duration, 0, H::Int)),
 		("ambient", unless(d.ambient, false, H::Bool)),
-		("show_particles", unless(d.showParticles, true, H::Bool)),
-		("show_icon", Some(H::Bool(d.showIcon))),
+		("show_particles", unless(d.show_particles, true, H::Bool)),
+		("show_icon", Some(H::Bool(d.show_icon))),
 		(
 			"hidden_effect",
-			match &d.hiddenEffect {
+			match &d.hidden_effect {
 				Some(h) => Some(effect_detail(h)?),
 				None => None,
 			},
@@ -444,7 +446,7 @@ fn effect_detail(d: &b::ItemEffectDetail::Ty) -> Option<H> {
 	]))
 }
 
-fn effect(e: &b::ItemPotionEffect::Ty) -> Option<H> {
+fn effect(e: &b::item_potion_effect::Ty) -> Option<H> {
 	let H::Map(mut entries) = effect_detail(&e.details)? else {
 		return None;
 	};
@@ -452,50 +454,50 @@ fn effect(e: &b::ItemPotionEffect::Ty) -> Option<H> {
 	Some(H::Map(entries))
 }
 
-fn consume_effect(e: &b::ItemConsumeEffect::Ty) -> Option<H> {
-	use b::ItemConsumeEffect::Ty as E;
+fn consume_effect(e: &b::item_consume_effect::Ty) -> Option<H> {
+	use b::item_consume_effect::Ty as E;
 	Some(match e {
-		E::apply_effects(a) => map(vec![
+		E::ApplyEffects(a) => map(vec![
 			("type", Some(str("minecraft:apply_effects"))),
 			("effects", Some(list(&a.effects, effect)?)),
 			("probability", unless(a.probability, 1.0, H::Float)),
 		]),
-		E::remove_effects(s) => map(vec![
+		E::RemoveEffects(s) => map(vec![
 			("type", Some(str("minecraft:remove_effects"))),
 			("effects", Some(set(s, "effects")?)),
 		]),
-		E::clear_all_effects => map(vec![("type", Some(str("minecraft:clear_all_effects")))]),
-		E::teleport_randomly(d) => map(vec![
+		E::ClearAllEffects => map(vec![("type", Some(str("minecraft:clear_all_effects")))]),
+		E::TeleportRandomly(d) => map(vec![
 			("type", Some(str("minecraft:teleport_randomly"))),
 			("diameter", unless(*d, 16.0, H::Float)),
 		]),
-		E::play_sound(s) => map(vec![
+		E::PlaySound(s) => map(vec![
 			("type", Some(str("minecraft:play_sound"))),
 			("sound", Some(sound(s)?)),
 		]),
-		E::default(_) => return None,
+		E::Default(_) => return None,
 	})
 }
 
-fn explosion(e: &b::ItemFireworkExplosion::Ty) -> Option<H> {
-	use b::ItemFireworkExplosion__shape::Ty as S;
+fn explosion(e: &b::item_firework_explosion::Ty) -> Option<H> {
+	use b::item_firework_explosion_shape::Ty as S;
 	let shape = match e.shape {
-		S::small_ball => "small_ball",
-		S::large_ball => "large_ball",
-		S::star => "star",
-		S::creeper => "creeper",
-		S::burst => "burst",
-		S::default(_) => return None,
+		S::SmallBall => "small_ball",
+		S::LargeBall => "large_ball",
+		S::Star => "star",
+		S::Creeper => "creeper",
+		S::Burst => "burst",
+		S::Default(_) => return None,
 	};
 	Some(map(vec![
 		("shape", Some(str(shape))),
 		("colors", non_empty(&e.colors, |c| Some(H::Int(*c)))?),
 		(
 			"fade_colors",
-			non_empty(&e.fadeColors, |c| Some(H::Int(*c)))?,
+			non_empty(&e.fade_colors, |c| Some(H::Int(*c)))?,
 		),
-		("has_trail", unless(e.hasTrail, false, H::Bool)),
-		("has_twinkle", unless(e.hasTwinkle, false, H::Bool)),
+		("has_trail", unless(e.has_trail, false, H::Bool)),
+		("has_twinkle", unless(e.has_twinkle, false, H::Bool)),
 	]))
 }
 
@@ -503,33 +505,33 @@ fn filterable(raw: H, filtered: Option<H>) -> H {
 	map(vec![("raw", Some(raw)), ("filtered", filtered)])
 }
 
-fn stack(s: &b::Slot::Ty, keys: &Keys) -> Option<Option<H>> {
-	let b::Slot::Ty::default(count, d) = s else {
+fn stack(s: &b::slot::Ty, keys: &Keys) -> Option<Option<H>> {
+	let b::slot::Ty::Default(count, d) = s else {
 		return Some(None);
 	};
 	let mut patch = Vec::new();
 	for c in &d.components {
-		let tag = b::SlotComponent::virtual_tag(c);
+		let tag = b::slot_component::virtual_tag(c);
 		patch.push((
 			format!("minecraft:{}", components::name(V, tag)?),
 			component(c, keys)?,
 		));
 	}
-	for r in &d.removeComponents {
-		let tag = b::SlotComponentType::virtual_tag(r);
+	for r in &d.remove_components {
+		let tag = b::slot_component_type::virtual_tag(r);
 		patch.push((
 			format!("!minecraft:{}", components::name(V, tag)?),
 			H::Map(Vec::new()),
 		));
 	}
 	Some(Some(map(vec![
-		("id", Some(name("items", d.itemId)?)),
+		("id", Some(name("items", d.item_id)?)),
 		("count", Some(H::Int(*count))),
 		("components", (!patch.is_empty()).then_some(H::Map(patch))),
 	])))
 }
 
-fn stacks(v: &[b::Slot::Ty], keys: &Keys) -> Option<H> {
+fn stacks(v: &[b::slot::Ty], keys: &Keys) -> Option<H> {
 	let mut out = Vec::new();
 	for s in v {
 		out.extend(stack(s, keys)?);
@@ -537,80 +539,80 @@ fn stacks(v: &[b::Slot::Ty], keys: &Keys) -> Option<H> {
 	Some(H::List(out))
 }
 
-pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
-	use b::SlotComponent::Ty as C;
+pub fn component(c: &b::slot_component::Ty, keys: &Keys) -> Option<H> {
+	use b::slot_component::Ty as C;
 	let unit = || H::Map(Vec::new());
 	Some(match c {
-		C::custom_data(t)
-		| C::debug_stick_state(t)
-		| C::entity_data(t)
-		| C::bucket_entity_data(t)
-		| C::block_entity_data(t)
-		| C::recipes(t)
-		| C::lock(t)
-		| C::container_loot(t)
-		| C::map_decorations(t)
-		| C::intangible_projectile(t) => nbt(&t.value),
-		C::max_stack_size(v)
-		| C::max_damage(v)
-		| C::damage(v)
-		| C::repair_cost(v)
-		| C::map_id(v)
-		| C::ominous_bottle_amplifier(v) => H::Int(*v),
-		C::dyed_color(v) | C::map_color(v) => H::Int(*v),
-		C::enchantable(v) => map(vec![("value", Some(H::Int(*v)))]),
-		C::unbreakable | C::glider => unit(),
-		C::enchantment_glint_override(v) => H::Bool(*v),
-		C::potion_duration_scale(v) => H::Float(*v),
-		C::custom_name(t) | C::item_name(t) => text(&t.value),
-		C::lore(lines) => H::List(lines.iter().map(|l| text(&l.value)).collect()),
-		C::item_model(s) | C::tooltip_style(s) | C::note_block_sound(s) => key(s),
-		C::damage_resistant(s) => map(vec![("types", Some(H::Str(format!("#{}", key_str(s)))))]),
-		C::provides_banner_patterns(s) => H::Str(format!("#{}", key_str(s))),
-		C::rarity(r) => str(match r {
-			b::SlotComponent__rarity::Ty::common => "common",
-			b::SlotComponent__rarity::Ty::uncommon => "uncommon",
-			b::SlotComponent__rarity::Ty::rare => "rare",
-			b::SlotComponent__rarity::Ty::epic => "epic",
-			b::SlotComponent__rarity::Ty::default(_) => return None,
+		C::CustomData(t)
+		| C::DebugStickState(t)
+		| C::EntityData(t)
+		| C::BucketEntityData(t)
+		| C::BlockEntityData(t)
+		| C::Recipes(t)
+		| C::Lock(t)
+		| C::ContainerLoot(t)
+		| C::MapDecorations(t)
+		| C::IntangibleProjectile(t) => nbt(&t.value),
+		C::MaxStackSize(v)
+		| C::MaxDamage(v)
+		| C::Damage(v)
+		| C::RepairCost(v)
+		| C::MapId(v)
+		| C::OminousBottleAmplifier(v) => H::Int(*v),
+		C::DyedColor(v) | C::MapColor(v) => H::Int(*v),
+		C::Enchantable(v) => map(vec![("value", Some(H::Int(*v)))]),
+		C::Unbreakable | C::Glider => unit(),
+		C::EnchantmentGlintOverride(v) => H::Bool(*v),
+		C::PotionDurationScale(v) => H::Float(*v),
+		C::CustomName(t) | C::ItemName(t) => text(&t.value),
+		C::Lore(lines) => H::List(lines.iter().map(|l| text(&l.value)).collect()),
+		C::ItemModel(s) | C::TooltipStyle(s) | C::NoteBlockSound(s) => key(s),
+		C::DamageResistant(s) => map(vec![("types", Some(H::Str(format!("#{}", key_str(s)))))]),
+		C::ProvidesBannerPatterns(s) => H::Str(format!("#{}", key_str(s))),
+		C::Rarity(r) => str(match r {
+			b::slot_component_rarity::Ty::Common => "common",
+			b::slot_component_rarity::Ty::Uncommon => "uncommon",
+			b::slot_component_rarity::Ty::Rare => "rare",
+			b::slot_component_rarity::Ty::Epic => "epic",
+			b::slot_component_rarity::Ty::Default(_) => return None,
 		}),
-		C::enchantments(e) => H::Map(
+		C::Enchantments(e) => H::Map(
 			e.iter()
 				.map(|x| Some((keys.get("enchantment", x.id)?, H::Int(x.level))))
 				.collect::<Option<_>>()?,
 		),
-		C::stored_enchantments(e) => H::Map(
+		C::StoredEnchantments(e) => H::Map(
 			e.iter()
 				.map(|x| Some((keys.get("enchantment", x.id)?, H::Int(x.level))))
 				.collect::<Option<_>>()?,
 		),
-		C::attribute_modifiers(m) => list(m, |x| {
-			use b::SlotComponent__attribute_modifiers__items__operation::Ty as O;
-			use b::SlotComponent__attribute_modifiers__items__slot::Ty as S;
+		C::AttributeModifiers(m) => list(m, |x| {
+			use b::slot_component_attribute_modifiers_items_operation::Ty as O;
+			use b::slot_component_attribute_modifiers_items_slot::Ty as S;
 			let operation = match x.operation {
-				O::add => "add_value",
-				O::multiply_base => "add_multiplied_base",
-				O::multiply_total => "add_multiplied_total",
-				O::default(_) => return None,
+				O::Add => "add_value",
+				O::MultiplyBase => "add_multiplied_base",
+				O::MultiplyTotal => "add_multiplied_total",
+				O::Default(_) => return None,
 			};
 			let slot = match x.slot {
-				S::any => "any",
-				S::main_hand => "mainhand",
-				S::off_hand => "offhand",
-				S::hand => "hand",
-				S::feet => "feet",
-				S::legs => "legs",
-				S::chest => "chest",
-				S::head => "head",
-				S::armor => "armor",
-				S::body => "body",
-				S::saddle => "saddle",
-				S::default(_) => return None,
+				S::Any => "any",
+				S::MainHand => "mainhand",
+				S::OffHand => "offhand",
+				S::Hand => "hand",
+				S::Feet => "feet",
+				S::Legs => "legs",
+				S::Chest => "chest",
+				S::Head => "head",
+				S::Armor => "armor",
+				S::Body => "body",
+				S::Saddle => "saddle",
+				S::Default(_) => return None,
 			};
 			Some(map(vec![
 				(
 					"type",
-					Some(key(ATTRIBUTES.get(usize::try_from(x.typeId).ok()?)?)),
+					Some(key(ATTRIBUTES.get(usize::try_from(x.type_id).ok()?)?)),
 				),
 				("id", Some(key(&x.name))),
 				("amount", Some(H::Double(x.value))),
@@ -618,41 +620,41 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 				("slot", (slot != "any").then(|| str(slot))),
 			]))
 		})?,
-		C::custom_model_data(d) => map(vec![
+		C::CustomModelData(d) => map(vec![
 			("floats", non_empty(&d.floats, |v| Some(H::Float(*v)))?),
 			("flags", non_empty(&d.flags, |v| Some(H::Bool(*v)))?),
 			("strings", non_empty(&d.strings, |v| Some(str(v)))?),
 			("colors", non_empty(&d.colors, |v| Some(H::Int(*v)))?),
 		]),
-		C::tooltip_display(t) => map(vec![
-			("hide_tooltip", unless(t.hideTooltip, false, H::Bool)),
+		C::TooltipDisplay(t) => map(vec![
+			("hide_tooltip", unless(t.hide_tooltip, false, H::Bool)),
 			(
 				"hidden_components",
-				non_empty(&t.hiddenComponents, |id| {
+				non_empty(&t.hidden_components, |id| {
 					Some(key(components::name(V, *id)?))
 				})?,
 			),
 		]),
-		C::food(f) => map(vec![
+		C::Food(f) => map(vec![
 			("nutrition", Some(H::Int(f.nutrition))),
-			("saturation", Some(H::Float(f.saturationModifier))),
-			("can_always_eat", unless(f.canAlwaysEat, false, H::Bool)),
+			("saturation", Some(H::Float(f.saturation_modifier))),
+			("can_always_eat", unless(f.can_always_eat, false, H::Bool)),
 		]),
-		C::consumable(c) => {
-			use b::SlotComponent__consumable__animation::Ty as A;
+		C::Consumable(c) => {
+			use b::slot_component_consumable_animation::Ty as A;
 			let animation = match c.animation {
-				A::none => "none",
-				A::eat => "eat",
-				A::bundle => "bundle",
-				A::drink => "drink",
-				A::block => "block",
-				A::bow => "bow",
-				A::spear => "spear",
-				A::crossbow => "crossbow",
-				A::spyglass => "spyglass",
-				A::toot_horn => "toot_horn",
-				A::brush => "brush",
-				A::default(_) => return None,
+				A::None => "none",
+				A::Eat => "eat",
+				A::Bundle => "bundle",
+				A::Drink => "drink",
+				A::Block => "block",
+				A::Bow => "bow",
+				A::Spear => "spear",
+				A::Crossbow => "crossbow",
+				A::Spyglass => "spyglass",
+				A::TootHorn => "toot_horn",
+				A::Brush => "brush",
+				A::Default(_) => return None,
 			};
 			map(vec![
 				("consume_seconds", unless(c.consume_seconds, 1.6, H::Float)),
@@ -665,55 +667,55 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 				("on_consume_effects", non_empty(&c.effects, consume_effect)?),
 			])
 		}
-		C::death_protection(e) => map(vec![("death_effects", non_empty(e, consume_effect)?)]),
-		C::use_remainder(s) => stack(s, keys)??,
-		C::use_cooldown(u) => map(vec![
+		C::DeathProtection(e) => map(vec![("death_effects", non_empty(e, consume_effect)?)]),
+		C::UseRemainder(s) => stack(s, keys)??,
+		C::UseCooldown(u) => map(vec![
 			("seconds", Some(H::Float(u.seconds))),
-			("cooldown_group", u.cooldownGroup.as_deref().map(key)),
+			("cooldown_group", u.cooldown_group.as_deref().map(key)),
 		]),
-		C::tool(t) => map(vec![
+		C::Tool(t) => map(vec![
 			(
 				"rules",
 				Some(list(&t.rules, |r| {
 					Some(map(vec![
 						("blocks", Some(set(&r.blocks, "blocks")?)),
 						("speed", r.speed.map(H::Float)),
-						("correct_for_drops", r.correctDropForBlocks.map(H::Bool)),
+						("correct_for_drops", r.correct_drop_for_blocks.map(H::Bool)),
 					]))
 				})?),
 			),
 			(
 				"default_mining_speed",
-				unless(t.defaultMiningSpeed, 1.0, H::Float),
+				unless(t.default_mining_speed, 1.0, H::Float),
 			),
-			("damage_per_block", unless(t.damagePerBlock, 1, H::Int)),
+			("damage_per_block", unless(t.damage_per_block, 1, H::Int)),
 			(
 				"can_destroy_blocks_in_creative",
-				unless(t.canDestroyBlocksInCreative, true, H::Bool),
+				unless(t.can_destroy_blocks_in_creative, true, H::Bool),
 			),
 		]),
-		C::weapon(w) => map(vec![
+		C::Weapon(w) => map(vec![
 			(
 				"item_damage_per_attack",
-				unless(w.itemDamagePerAttack, 1, H::Int),
+				unless(w.item_damage_per_attack, 1, H::Int),
 			),
 			(
 				"disable_blocking_for_seconds",
-				unless(w.disableBlockingForSeconds, 0.0, H::Float),
+				unless(w.disable_blocking_for_seconds, 0.0, H::Float),
 			),
 		]),
-		C::equippable(e) => {
-			use b::SlotComponent__equippable__slot::Ty as S;
+		C::Equippable(e) => {
+			use b::slot_component_equippable_slot::Ty as S;
 			let slot = match e.slot {
-				S::main_hand => "mainhand",
-				S::off_hand => "offhand",
-				S::feet => "feet",
-				S::legs => "legs",
-				S::chest => "chest",
-				S::head => "head",
-				S::body => "body",
-				S::saddle => "saddle",
-				S::default(_) => return None,
+				S::MainHand => "mainhand",
+				S::OffHand => "offhand",
+				S::Feet => "feet",
+				S::Legs => "legs",
+				S::Chest => "chest",
+				S::Head => "head",
+				S::Body => "body",
+				S::Saddle => "saddle",
+				S::Default(_) => return None,
 			};
 			map(vec![
 				("slot", Some(str(slot))),
@@ -722,10 +724,10 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 					sound_or(&e.sound, "item.armor.equip_generic")?,
 				),
 				("asset_id", e.model.as_deref().map(key)),
-				("camera_overlay", e.cameraOverlay.as_deref().map(key)),
+				("camera_overlay", e.camera_overlay.as_deref().map(key)),
 				(
 					"allowed_entities",
-					match &e.allowedEntities {
+					match &e.allowed_entities {
 						Some(s) => Some(set(s, "entities")?),
 						None => None,
 					},
@@ -735,13 +737,13 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 				("damage_on_hurt", unless(e.damageable, true, H::Bool)),
 				(
 					"equip_on_interact",
-					unless(e.equipOnInteract, false, H::Bool),
+					unless(e.equip_on_interact, false, H::Bool),
 				),
 			])
 		}
-		C::repairable(s) => map(vec![("items", Some(set(s, "items")?))]),
-		C::charged_projectiles(v) | C::bundle_contents(v) => stacks(v, keys)?,
-		C::container(v) => {
+		C::Repairable(s) => map(vec![("items", Some(set(s, "items")?))]),
+		C::ChargedProjectiles(v) | C::BundleContents(v) => stacks(v, keys)?,
+		C::Container(v) => {
 			let mut out = Vec::new();
 			for (i, s) in v.iter().enumerate() {
 				if let Some(item) = stack(s, keys)? {
@@ -753,39 +755,39 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 			}
 			H::List(out)
 		}
-		C::potion_contents(p) => map(vec![
+		C::PotionContents(p) => map(vec![
 			(
 				"potion",
-				match p.potionId {
+				match p.potion_id {
 					Some(id) => Some(key(POTIONS.get(usize::try_from(id).ok()?)?)),
 					None => None,
 				},
 			),
-			("custom_color", p.customColor.map(H::Int)),
-			("custom_effects", non_empty(&p.customEffects, effect)?),
-			("custom_name", p.customName.as_deref().map(str)),
+			("custom_color", p.custom_color.map(H::Int)),
+			("custom_effects", non_empty(&p.custom_effects, effect)?),
+			("custom_name", p.custom_name.as_deref().map(str)),
 		]),
-		C::suspicious_stew_effects(v) => list(v, |e| {
+		C::SuspiciousStewEffects(v) => list(v, |e| {
 			Some(map(vec![
 				("id", Some(name("effects", e.effect)?)),
 				("duration", unless(e.duration, 160, H::Int)),
 			]))
 		})?,
-		C::writable_book_content(pages) => map(vec![(
+		C::WritableBookContent(pages) => map(vec![(
 			"pages",
 			non_empty(pages, |p| {
 				Some(filterable(
 					str(&p.content),
-					p.filteredContent.as_deref().map(str),
+					p.filtered_content.as_deref().map(str),
 				))
 			})?,
 		)]),
-		C::written_book_content(w) => map(vec![
+		C::WrittenBookContent(w) => map(vec![
 			(
 				"title",
 				Some(filterable(
-					str(&w.rawTitle),
-					w.filteredTitle.as_deref().map(str),
+					str(&w.raw_title),
+					w.filtered_title.as_deref().map(str),
 				)),
 			),
 			("author", Some(str(&w.author))),
@@ -795,57 +797,57 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 				non_empty(&w.pages, |p| {
 					Some(filterable(
 						text(&p.content.value),
-						p.filteredContent.as_ref().map(|t| text(&t.value)),
+						p.filtered_content.as_ref().map(|t| text(&t.value)),
 					))
 				})?,
 			),
 			("resolved", unless(w.resolved, false, H::Bool)),
 		]),
-		C::trim(t) => {
+		C::Trim(t) => {
 			let material = match &t.material {
-				b::SlotComponent__trim__material::Ty::Id(id) => keys.get("trim_material", *id)?,
-				b::SlotComponent__trim__material::Ty::Inline(_) => return None,
+				b::slot_component_trim_material::Ty::Id(id) => keys.get("trim_material", *id)?,
+				b::slot_component_trim_material::Ty::Inline(_) => return None,
 			};
 			let pattern = match &t.pattern {
-				b::SlotComponent__trim__pattern::Ty::Id(id) => keys.get("trim_pattern", *id)?,
-				b::SlotComponent__trim__pattern::Ty::Inline(_) => return None,
+				b::slot_component_trim_pattern::Ty::Id(id) => keys.get("trim_pattern", *id)?,
+				b::slot_component_trim_pattern::Ty::Inline(_) => return None,
 			};
 			map(vec![
 				("material", Some(key(&material))),
 				("pattern", Some(key(&pattern))),
 			])
 		}
-		C::instrument(i) => match i {
-			b::SlotComponent__instrument::Ty::r#false(k) => key(k),
-			b::SlotComponent__instrument::Ty::r#true(
-				b::SlotComponent__instrument__true::Ty::Id(id),
-			) => key(&keys.get("instrument", *id)?),
-			b::SlotComponent__instrument::Ty::r#true(_) => return None,
+		C::Instrument(i) => match i {
+			b::slot_component_instrument::Ty::False(k) => key(k),
+			b::slot_component_instrument::Ty::True(b::slot_component_instrument_true::Ty::Id(
+				id,
+			)) => key(&keys.get("instrument", *id)?),
+			b::slot_component_instrument::Ty::True(_) => return None,
 		},
-		C::provides_trim_material(i) => match i {
-			b::SlotComponent__provides_trim_material::Ty::r#false(k) => key(k),
-			b::SlotComponent__provides_trim_material::Ty::r#true(
-				b::SlotComponent__provides_trim_material__true::Ty::Id(id),
+		C::ProvidesTrimMaterial(i) => match i {
+			b::slot_component_provides_trim_material::Ty::False(k) => key(k),
+			b::slot_component_provides_trim_material::Ty::True(
+				b::slot_component_provides_trim_material_true::Ty::Id(id),
 			) => key(&keys.get("trim_material", *id)?),
-			b::SlotComponent__provides_trim_material::Ty::r#true(_) => return None,
+			b::slot_component_provides_trim_material::Ty::True(_) => return None,
 		},
-		C::jukebox_playable(j) => match j {
-			b::SlotComponent__jukebox_playable::Ty::r#false(k) => key(k),
-			b::SlotComponent__jukebox_playable::Ty::r#true(
-				b::SlotComponent__jukebox_playable__true::Ty::Id(id),
+		C::JukeboxPlayable(j) => match j {
+			b::slot_component_jukebox_playable::Ty::False(k) => key(k),
+			b::slot_component_jukebox_playable::Ty::True(
+				b::slot_component_jukebox_playable_true::Ty::Id(id),
 			) => key(&keys.get("jukebox_song", *id)?),
-			b::SlotComponent__jukebox_playable::Ty::r#true(_) => return None,
+			b::slot_component_jukebox_playable::Ty::True(_) => return None,
 		},
-		C::chicken_variant(v) => match v {
-			b::SlotComponent__chicken_variant::Ty::r#false(k) => key(k),
-			b::SlotComponent__chicken_variant::Ty::r#true(id) => {
+		C::ChickenVariant(v) => match v {
+			b::slot_component_chicken_variant::Ty::False(k) => key(k),
+			b::slot_component_chicken_variant::Ty::True(id) => {
 				key(&keys.get("chicken_variant", *id)?)
 			}
 		},
-		C::lodestone_tracker(l) => map(vec![
+		C::LodestoneTracker(l) => map(vec![
 			(
 				"target",
-				match &l.globalPosition {
+				match &l.global_position {
 					Some(g) => Some(map(vec![
 						("dimension", Some(key(&g.dimension))),
 						(
@@ -862,15 +864,15 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 			),
 			("tracked", unless(l.tracked, true, H::Bool)),
 		]),
-		C::firework_explosion(e) => explosion(e)?,
-		C::fireworks(f) => map(vec![
+		C::FireworkExplosion(e) => explosion(e)?,
+		C::Fireworks(f) => map(vec![
 			(
 				"flight_duration",
-				unless(f.flightDuration, 0, |v| H::Byte(v as i8)),
+				unless(f.flight_duration, 0, |v| H::Byte(v as i8)),
 			),
 			("explosions", non_empty(&f.explosions, explosion)?),
 		]),
-		C::profile(p) => map(vec![
+		C::Profile(p) => map(vec![
 			("name", p.name.as_deref().map(str)),
 			(
 				"id",
@@ -894,95 +896,95 @@ pub fn component(c: &b::SlotComponent::Ty, keys: &Keys) -> Option<H> {
 				})?,
 			),
 		]),
-		C::banner_patterns(layers) => list(layers, |l| {
+		C::BannerPatterns(layers) => list(layers, |l| {
 			let pattern = match &l.pattern {
-				b::BannerPatternLayer__pattern::Ty::Id(id) => {
+				b::banner_pattern_layer_pattern::Ty::Id(id) => {
 					key(&keys.get("banner_pattern", *id)?)
 				}
-				b::BannerPatternLayer__pattern::Ty::Inline(p) => map(vec![
-					("asset_id", Some(key(&p.assetId))),
-					("translation_key", Some(str(&p.translationKey))),
+				b::banner_pattern_layer_pattern::Ty::Inline(p) => map(vec![
+					("asset_id", Some(key(&p.asset_id))),
+					("translation_key", Some(str(&p.translation_key))),
 				]),
 			};
 			Some(map(vec![
 				("pattern", Some(pattern)),
-				("color", Some(pick(DYES, l.colorId)?)),
+				("color", Some(pick(DYES, l.color_id)?)),
 			]))
 		})?,
-		C::base_color(v)
-		| C::wolf_collar(v)
-		| C::cat_collar(v)
-		| C::sheep_color(v)
-		| C::shulker_color(v)
-		| C::tropical_fish_base_color(v)
-		| C::tropical_fish_pattern_color(v) => pick(DYES, *v)?,
-		C::pot_decorations(v) => list(v, |i| name("items", *i))?,
-		C::block_state(v) => H::Map(v.iter().map(|p| (p.name.clone(), str(&p.value))).collect()),
-		C::bees(v) => list(v, |bee| {
-			let empty = matches!(&bee.nbtData.value, Payload::compound(e) if e.is_empty());
+		C::BaseColor(v)
+		| C::WolfCollar(v)
+		| C::CatCollar(v)
+		| C::SheepColor(v)
+		| C::ShulkerColor(v)
+		| C::TropicalFishBaseColor(v)
+		| C::TropicalFishPatternColor(v) => pick(DYES, *v)?,
+		C::PotDecorations(v) => list(v, |i| name("items", *i))?,
+		C::BlockState(v) => H::Map(v.iter().map(|p| (p.name.clone(), str(&p.value))).collect()),
+		C::Bees(v) => list(v, |bee| {
+			let empty = matches!(&bee.nbt_data.value, Payload::Compound(e) if e.is_empty());
 			Some(map(vec![
-				("entity_data", (!empty).then(|| nbt(&bee.nbtData.value))),
-				("ticks_in_hive", Some(H::Int(bee.ticksInHive))),
-				("min_ticks_in_hive", Some(H::Int(bee.minTicksInHive))),
+				("entity_data", (!empty).then(|| nbt(&bee.nbt_data.value))),
+				("ticks_in_hive", Some(H::Int(bee.ticks_in_hive))),
+				("min_ticks_in_hive", Some(H::Int(bee.min_ticks_in_hive))),
 			]))
 		})?,
-		C::break_sound(s) => sound(s)?,
-		C::villager_variant(v) => key(VILLAGER_TYPES.get(usize::try_from(*v).ok()?)?),
-		C::wolf_variant(v) => key(&keys.get("wolf_variant", *v)?),
-		C::wolf_sound_variant(v) => key(&keys.get("wolf_sound_variant", *v)?),
-		C::pig_variant(v) => key(&keys.get("pig_variant", *v)?),
-		C::cow_variant(v) => key(&keys.get("cow_variant", *v)?),
-		C::frog_variant(v) => key(&keys.get("frog_variant", *v)?),
-		C::cat_variant(v) => key(&keys.get("cat_variant", *v)?),
-		C::painting_variant(b::SlotComponent__painting_variant::Ty::Id(id)) => {
+		C::BreakSound(s) => sound(s)?,
+		C::VillagerVariant(v) => key(VILLAGER_TYPES.get(usize::try_from(*v).ok()?)?),
+		C::WolfVariant(v) => key(&keys.get("wolf_variant", *v)?),
+		C::WolfSoundVariant(v) => key(&keys.get("wolf_sound_variant", *v)?),
+		C::PigVariant(v) => key(&keys.get("pig_variant", *v)?),
+		C::CowVariant(v) => key(&keys.get("cow_variant", *v)?),
+		C::FrogVariant(v) => key(&keys.get("frog_variant", *v)?),
+		C::CatVariant(v) => key(&keys.get("cat_variant", *v)?),
+		C::PaintingVariant(b::slot_component_painting_variant::Ty::Id(id)) => {
 			key(&keys.get("painting_variant", *id)?)
 		}
-		C::painting_variant(_) => return None,
-		C::fox_variant(v) => pick(FOXES, *v)?,
-		C::salmon_size(v) => pick(SALMON, *v)?,
-		C::parrot_variant(v) => pick(PARROTS, *v)?,
-		C::mooshroom_variant(v) => pick(MOOSHROOMS, *v)?,
-		C::horse_variant(v) => pick(HORSES, *v)?,
-		C::llama_variant(v) => pick(LLAMAS, *v)?,
-		C::axolotl_variant(v) => pick(AXOLOTLS, *v)?,
-		C::rabbit_variant(99) => str("evil"),
-		C::rabbit_variant(v) => pick(RABBITS, *v)?,
-		C::tropical_fish_pattern(v) => str(FISH.iter().find(|(id, _)| id == v)?.1),
-		C::can_place_on(_)
-		| C::can_break(_)
-		| C::blocks_attacks(_)
-		| C::creative_slot_lock
-		| C::map_post_processing(_)
-		| C::default(_) => {
+		C::PaintingVariant(_) => return None,
+		C::FoxVariant(v) => pick(FOXES, *v)?,
+		C::SalmonSize(v) => pick(SALMON, *v)?,
+		C::ParrotVariant(v) => pick(PARROTS, *v)?,
+		C::MooshroomVariant(v) => pick(MOOSHROOMS, *v)?,
+		C::HorseVariant(v) => pick(HORSES, *v)?,
+		C::LlamaVariant(v) => pick(LLAMAS, *v)?,
+		C::AxolotlVariant(v) => pick(AXOLOTLS, *v)?,
+		C::RabbitVariant(99) => str("evil"),
+		C::RabbitVariant(v) => pick(RABBITS, *v)?,
+		C::TropicalFishPattern(v) => str(FISH.iter().find(|(id, _)| id == v)?.1),
+		C::CanPlaceOn(_)
+		| C::CanBreak(_)
+		| C::BlocksAttacks(_)
+		| C::CreativeSlotLock
+		| C::MapPostProcessing(_)
+		| C::Default(_) => {
 			return None;
 		}
 	})
 }
 
-fn component_type(id: i32) -> Option<b::SlotComponentType::Ty> {
+fn component_type(id: i32) -> Option<b::slot_component_type::Ty> {
 	let mut bytes = Vec::new();
 	write_varint(&mut bytes, id);
-	decode(&bytes, b::SlotComponentType::deserialize).ok()
+	decode(&bytes, b::slot_component_type::deserialize).ok()
 }
 
-pub fn slot(s: &b::Slot::Ty, keys: &Keys) -> Option<b::HashedSlot::Ty> {
-	let b::Slot::Ty::default(count, d) = s else {
+pub fn slot(s: &b::slot::Ty, keys: &Keys) -> Option<b::hashed_slot::Ty> {
+	let b::slot::Ty::Default(count, d) = s else {
 		return None;
 	};
-	Some(b::HashedSlot::Ty {
-		itemId: d.itemId,
-		itemCount: *count,
+	Some(b::hashed_slot::Ty {
+		item_id: d.item_id,
+		item_count: *count,
 		components: d
 			.components
 			.iter()
 			.filter_map(|c| {
-				Some(b::HashedSlot__components__items::Ty {
-					r#type: component_type(b::SlotComponent::virtual_tag(c))?,
+				Some(b::hashed_slot_components_items::Ty {
+					r#type: component_type(b::slot_component::virtual_tag(c))?,
 					hash: component(c, keys).map_or(UNKNOWN, |h| hash(&h)),
 				})
 			})
 			.collect(),
-		removeComponents: d.removeComponents.clone(),
+		remove_components: d.remove_components.clone(),
 	})
 }
 

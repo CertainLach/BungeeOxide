@@ -11,8 +11,8 @@ use nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload, Tag};
 const OLD: Version = Version::V1_20;
 const NEW: Version = Version::V1_20_2;
 
-type Client = new::play_toClient_packet::Ty;
-type ClientOld = old::play_toClient_packet::Ty;
+type Client = new::play_to_client_packet::Ty;
+type ClientOld = old::play_to_client_packet::Ty;
 
 const META_RENAMES: &[(&str, &str)] = &[
 	(
@@ -63,14 +63,14 @@ fn effects(c: &mut Vec<Entry>, up: bool) {
 	} else {
 		("custom_potion_effects", "CustomPotionEffects")
 	};
-	let Some(Payload::list(l)) = c.take(from) else {
+	let Some(Payload::List(l)) = c.take(from) else {
 		return;
 	};
 	let converted = l
 		.values()
 		.into_iter()
 		.map(|e| {
-			let Payload::compound(mut e) = e else {
+			let Payload::Compound(mut e) = e else {
 				return e;
 			};
 			if up {
@@ -80,7 +80,7 @@ fn effects(c: &mut Vec<Entry>, up: bool) {
 					.and_then(Payload::to_i32)
 					.and_then(|id| common::effect_name(OLD, id))
 				{
-					e.push(Entry::new("id", Payload::string(name)));
+					e.push(Entry::new("id", Payload::String(name)));
 				}
 			} else if let Some(id) = e
 				.take("id")
@@ -88,7 +88,7 @@ fn effects(c: &mut Vec<Entry>, up: bool) {
 				.and_then(Payload::as_str)
 				.and_then(|k| common::effect_by_key(OLD, k))
 			{
-				e.push(Entry::new("Id", Payload::int(id)));
+				e.push(Entry::new("Id", Payload::Int(id)));
 			}
 			for (a, b) in EFFECT_RENAMES {
 				if up {
@@ -97,25 +97,25 @@ fn effects(c: &mut Vec<Entry>, up: bool) {
 					e.rename(b, a)
 				}
 			}
-			Payload::compound(e)
+			Payload::Compound(e)
 		})
 		.collect();
 	c.push(Entry::new(to, List::of(converted)));
 }
 
 fn item_nbt(t: &mut Tag, up: bool) {
-	if let Payload::compound(c) = &mut t.value {
+	if let Payload::Compound(c) = &mut t.value {
 		effects(c, up);
 	}
 }
 
 pub fn trails_slot_1_20_to_1_20_2(v: old::slot::Ty, _cx: &mut Session) -> Result<new::slot::Ty> {
 	Ok(match v {
-		old::slot::Ty::r#false => new::slot::Ty::r#false,
-		old::slot::Ty::r#true(s) => new::slot::Ty::r#true(new::slot__true::Ty {
-			itemId: s.itemId,
-			itemCount: s.itemCount,
-			nbtData: s.nbtData.map(|e| {
+		old::slot::Ty::False => new::slot::Ty::False,
+		old::slot::Ty::True(s) => new::slot::Ty::True(new::slot_true::Ty {
+			item_id: s.item_id,
+			item_count: s.item_count,
+			nbt_data: s.nbt_data.map(|e| {
 				let mut t = Tag::from(e);
 				item_nbt(&mut t, true);
 				t
@@ -126,11 +126,11 @@ pub fn trails_slot_1_20_to_1_20_2(v: old::slot::Ty, _cx: &mut Session) -> Result
 
 pub fn trails_slot_1_20_2_to_1_20(v: new::slot::Ty, _cx: &mut Session) -> Result<old::slot::Ty> {
 	Ok(match v {
-		new::slot::Ty::r#false => old::slot::Ty::r#false,
-		new::slot::Ty::r#true(s) => old::slot::Ty::r#true(old::slot__true::Ty {
-			itemId: s.itemId,
-			itemCount: s.itemCount,
-			nbtData: s.nbtData.map(|mut t| {
+		new::slot::Ty::False => old::slot::Ty::False,
+		new::slot::Ty::True(s) => old::slot::Ty::True(old::slot_true::Ty {
+			item_id: s.item_id,
+			item_count: s.item_count,
+			nbt_data: s.nbt_data.map(|mut t| {
 				item_nbt(&mut t, false);
 				t.named("")
 			}),
@@ -183,40 +183,40 @@ macro_rules! metadata {
 	($name:ident, $src:ident, $dst:ident, $from:expr, $to:expr, $particle:ident, $slot:ident, $nbt:expr) => {
 		fn $name(
 			entity: i32,
-			v: $src::entityMetadata::Ty,
+			v: $src::entity_metadata::Ty,
 			cx: &mut Session,
-		) -> Result<$dst::entityMetadata::Ty> {
-			use $dst::entityMetadataItem::Ty as N;
-			use $src::entityMetadataItem::Ty as V;
+		) -> Result<$dst::entity_metadata::Ty> {
+			use $dst::entity_metadata_item::Ty as N;
+			use $src::entity_metadata_item::Ty as V;
 			let mut out = Vec::with_capacity(v.len());
 			for e in v {
 				let Some(key) = meta_key(cx, $from, $to, entity, e.key, META_RENAMES) else {
 					continue;
 				};
 				let ty = decode(
-					&encode(&e.r#type, $src::entityMetadata__items__type::serialize)?,
-					|i| $dst::entityMetadata__items__type::deserialize(i),
+					&encode(&e.r#type, $src::entity_metadata_items_type::serialize)?,
+					|i| $dst::entity_metadata_items_type::deserialize(i),
 				)?;
 				let value = match e.value {
-					V::particle(p) => match $particle(p) {
-						Ok(p) => N::particle(p),
+					V::Particle(p) => match $particle(p) {
+						Ok(p) => N::Particle(p),
 						Err(Error::Dropped) => continue,
 						Err(e) => return Err(e),
 					},
-					V::block_state(s) => N::block_state(block_state($from, $to, s)),
-					V::optional_block_state(s) => {
-						N::optional_block_state(optional_state($from, $to, s))
+					V::BlockState(s) => N::BlockState(block_state($from, $to, s)),
+					V::OptionalBlockState(s) => {
+						N::OptionalBlockState(optional_state($from, $to, s))
 					}
-					V::item_stack(s) => N::item_stack($slot(s, cx)?),
-					V::compound_tag(t) => N::compound_tag($nbt(t)),
-					v => decode(&encode(&v, $src::entityMetadataItem::serialize)?, |i| {
-						$dst::entityMetadataItem::deserialize(
+					V::ItemStack(s) => N::ItemStack($slot(s, cx)?),
+					V::CompoundTag(t) => N::CompoundTag($nbt(t)),
+					v => decode(&encode(&v, $src::entity_metadata_item::serialize)?, |i| {
+						$dst::entity_metadata_item::deserialize(
 							i,
-							$dst::entityMetadataItem::Args { compareTo: &ty },
+							$dst::entity_metadata_item::Args { compare_to: &ty },
 						)
 					})?,
 				};
-				out.push($dst::entityMetadata__items::Ty {
+				out.push($dst::entity_metadata_items::Ty {
 					key,
 					r#type: ty,
 					value,
@@ -251,12 +251,12 @@ metadata!(
 arm!(
 	trails_entity_metadata_1_20_to_1_20_2,
 	Client,
-	entity_metadata,
-	old::play_toClient_packet_entity_metadata::Ty,
+	EntityMetadata,
+	old::play_to_client_packet_entity_metadata::Ty,
 	|p, cx| {
-		new::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
-			metadata: metadata_up(p.entityId, p.metadata, cx)?,
+		new::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
+			metadata: metadata_up(p.entity_id, p.metadata, cx)?,
 		}
 	}
 );
@@ -264,12 +264,12 @@ arm!(
 arm!(
 	trails_entity_metadata_1_20_2_to_1_20,
 	ClientOld,
-	entity_metadata,
-	new::play_toClient_packet_entity_metadata::Ty,
+	EntityMetadata,
+	new::play_to_client_packet_entity_metadata::Ty,
 	|p, cx| {
-		old::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
-			metadata: metadata_down(p.entityId, p.metadata, cx)?,
+		old::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
+			metadata: metadata_down(p.entity_id, p.metadata, cx)?,
 		}
 	}
 );
@@ -277,46 +277,46 @@ arm!(
 arm!(
 	trails_login_1_20_to_1_20_2,
 	Client,
-	login,
-	old::play_toClient_packet_login::Ty,
+	Login,
+	old::play_to_client_packet_login::Ty,
 	|p, cx| {
 		let s = common::state(cx);
-		s.player = Some(p.entityId);
-		s.codec = Some(Tag::from(p.dimensionCodec));
-		new::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			isHardcore: p.isHardcore,
-			worldNames: p.worldNames,
-			maxPlayers: p.maxPlayers,
-			viewDistance: p.viewDistance,
-			simulationDistance: p.simulationDistance,
-			reducedDebugInfo: p.reducedDebugInfo,
-			enableRespawnScreen: p.enableRespawnScreen,
-			doLimitedCrafting: false,
-			worldType: p.worldType,
-			worldName: p.worldName,
-			hashedSeed: p.hashedSeed,
-			gameMode: p.gameMode,
-			previousGameMode: p.previousGameMode,
-			isDebug: p.isDebug,
-			isFlat: p.isFlat,
+		s.player = Some(p.entity_id);
+		s.codec = Some(Tag::from(p.dimension_codec));
+		new::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			is_hardcore: p.is_hardcore,
+			world_names: p.world_names,
+			max_players: p.max_players,
+			view_distance: p.view_distance,
+			simulation_distance: p.simulation_distance,
+			reduced_debug_info: p.reduced_debug_info,
+			enable_respawn_screen: p.enable_respawn_screen,
+			do_limited_crafting: false,
+			world_type: p.world_type,
+			world_name: p.world_name,
+			hashed_seed: p.hashed_seed,
+			game_mode: p.game_mode,
+			previous_game_mode: p.previous_game_mode,
+			is_debug: p.is_debug,
+			is_flat: p.is_flat,
 			death: p
 				.death
-				.map(|d| new::play_toClient_packet_login__death__items::Ty {
-					dimensionName: d.dimensionName,
+				.map(|d| new::play_to_client_packet_login_death_items::Ty {
+					dimension_name: d.dimension_name,
 					location: d.location,
 				}),
-			portalCooldown: p.portalCooldown,
+			portal_cooldown: p.portal_cooldown,
 		}
 	}
 );
 
 pub fn trails_login_1_20_2_to_1_20(
-	p: new::play_toClient_packet_login::Ty,
+	p: new::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
 	let s = common::state(cx);
-	s.player = Some(p.entityId);
+	s.player = Some(p.entity_id);
 	let codec = s.codec.clone();
 	let features = s.features.clone();
 	let tags = s.tags.clone();
@@ -326,58 +326,58 @@ pub fn trails_login_1_20_2_to_1_20(
 		Some(c) => c,
 		None => super::codec::vanilla(OLD)?,
 	};
-	let mut out = vec![ClientOld::login(old::play_toClient_packet_login::Ty {
-		entityId: p.entityId,
-		isHardcore: p.isHardcore,
-		gameMode: p.gameMode,
-		previousGameMode: p.previousGameMode,
-		worldNames: p.worldNames,
-		dimensionCodec: codec.named(""),
-		worldType: p.worldType,
-		worldName: p.worldName,
-		hashedSeed: p.hashedSeed,
-		maxPlayers: p.maxPlayers,
-		viewDistance: p.viewDistance,
-		simulationDistance: p.simulationDistance,
-		reducedDebugInfo: p.reducedDebugInfo,
-		enableRespawnScreen: p.enableRespawnScreen,
-		isDebug: p.isDebug,
-		isFlat: p.isFlat,
+	let mut out = vec![ClientOld::Login(old::play_to_client_packet_login::Ty {
+		entity_id: p.entity_id,
+		is_hardcore: p.is_hardcore,
+		game_mode: p.game_mode,
+		previous_game_mode: p.previous_game_mode,
+		world_names: p.world_names,
+		dimension_codec: codec.named(""),
+		world_type: p.world_type,
+		world_name: p.world_name,
+		hashed_seed: p.hashed_seed,
+		max_players: p.max_players,
+		view_distance: p.view_distance,
+		simulation_distance: p.simulation_distance,
+		reduced_debug_info: p.reduced_debug_info,
+		enable_respawn_screen: p.enable_respawn_screen,
+		is_debug: p.is_debug,
+		is_flat: p.is_flat,
 		death: p
 			.death
-			.map(|d| old::play_toClient_packet_login__death__items::Ty {
-				dimensionName: d.dimensionName,
+			.map(|d| old::play_to_client_packet_login_death_items::Ty {
+				dimension_name: d.dimension_name,
 				location: d.location,
 			}),
-		portalCooldown: p.portalCooldown,
+		portal_cooldown: p.portal_cooldown,
 	})];
-	out.push(ClientOld::feature_flags(
+	out.push(ClientOld::FeatureFlags(
 		features.unwrap_or_else(|| vec!["minecraft:vanilla".to_owned()]),
 	));
 	if let Some(tags) = tags {
 		let tags = tags
 			.into_iter()
-			.map(|t| old::play_toClient_packet__tags__items::Ty {
-				tagType: t.tagType,
+			.map(|t| old::play_to_client_packet_tags_items::Ty {
+				tag_type: t.tag_type,
 				tags: t.tags,
 			})
 			.collect();
-		out.push(ClientOld::tags(super::step_1_20::remap_tags(
+		out.push(ClientOld::Tags(super::step_1_20::remap_tags(
 			NEW, OLD, tags,
 		)));
 	}
 	for (channel, data) in payloads {
-		out.push(ClientOld::custom_payload(
-			old::play_toClient_packet_custom_payload::Ty { channel, data },
+		out.push(ClientOld::CustomPayload(
+			old::play_to_client_packet_custom_payload::Ty { channel, data },
 		));
 	}
-	if let Some((url, hash, forced, promptMessage)) = pack {
-		out.push(ClientOld::resource_pack_send(
-			old::play_toClient_packet_resource_pack_send::Ty {
+	if let Some((url, hash, forced, prompt_message)) = pack {
+		out.push(ClientOld::ResourcePackSend(
+			old::play_to_client_packet_resource_pack_send::Ty {
 				url,
 				hash,
 				forced,
-				promptMessage,
+				prompt_message,
 			},
 		));
 	}
@@ -392,25 +392,25 @@ pub fn trails_chunk_batch_finished_1_20_2_to_1_20(
 		cx,
 		Root::PlayToServer,
 		NEW,
-		&new::play_toServer_packet::Ty::chunk_batch_received(64.0),
-		new::play_toServer_packet::serialize,
+		&new::play_to_server_packet::Ty::ChunkBatchReceived(64.0),
+		new::play_to_server_packet::serialize,
 	)?;
 	Ok(vec![])
 }
 
 pub fn trails_start_configuration_1_20_2_to_1_20(
-	_p: new::play_toClient_packet_start_configuration::Ty,
+	_p: new::play_to_client_packet_start_configuration::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	let ack = new::play_toServer_packet::Ty::configuration_acknowledged(
-		new::play_toServer_packet_configuration_acknowledged::Ty {},
+	let ack = new::play_to_server_packet::Ty::ConfigurationAcknowledged(
+		new::play_to_server_packet_configuration_acknowledged::Ty {},
 	);
 	common::reply(
 		cx,
 		Root::PlayToServer,
 		NEW,
 		&ack,
-		new::play_toServer_packet::serialize,
+		new::play_to_server_packet::serialize,
 	)?;
 	Ok(vec![])
 }
@@ -423,51 +423,51 @@ fn player_id(version: Version) -> Result<i32> {
 }
 
 pub fn trails_named_entity_spawn_1_20_to_1_20_2(
-	p: old::play_toClient_packet_named_entity_spawn::Ty,
+	p: old::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client>> {
 	common::state(cx)
 		.entities
-		.insert(p.entityId, "player".to_owned());
-	Ok(vec![Client::spawn_entity(
-		new::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.playerUUID,
+		.insert(p.entity_id, "player".to_owned());
+	Ok(vec![Client::SpawnEntity(
+		new::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.player_uuid,
 			r#type: player_id(NEW)?,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			headPitch: p.yaw,
-			objectData: 0,
+			head_pitch: p.yaw,
+			object_data: 0,
 			velocity: new::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		},
 	)])
 }
 
 pub fn trails_spawn_entity_1_20_to_1_20_2(
-	mut p: old::play_toClient_packet_spawn_entity::Ty,
+	mut p: old::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	common::spawned(cx, OLD, p.entityId, p.r#type);
+	common::spawned(cx, OLD, p.entity_id, p.r#type);
 	let kind = crate::registry::names(OLD, "entities")
 		.and_then(|n| n.name(p.r#type as u32))
 		.unwrap_or_default();
-	p.objectData = spawn_object_data(OLD, NEW, kind, p.objectData);
-	Ok(vec![Client::spawn_entity(p)])
+	p.object_data = spawn_object_data(OLD, NEW, kind, p.object_data);
+	Ok(vec![Client::SpawnEntity(p)])
 }
 
 pub fn trails_spawn_entity_1_20_2_to_1_20(
-	mut p: new::play_toClient_packet_spawn_entity::Ty,
+	mut p: new::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	common::spawned(cx, NEW, p.entityId, p.r#type);
+	common::spawned(cx, NEW, p.entity_id, p.r#type);
 	if p.r#type == player_id(NEW)? {
-		return Ok(vec![ClientOld::named_entity_spawn(
-			old::play_toClient_packet_named_entity_spawn::Ty {
-				entityId: p.entityId,
-				playerUUID: p.objectUUID,
+		return Ok(vec![ClientOld::NamedEntitySpawn(
+			old::play_to_client_packet_named_entity_spawn::Ty {
+				entity_id: p.entity_id,
+				player_uuid: p.object_uuid,
 				x: p.x,
 				y: p.y,
 				z: p.z,
@@ -479,8 +479,8 @@ pub fn trails_spawn_entity_1_20_2_to_1_20(
 	let kind = crate::registry::names(NEW, "entities")
 		.and_then(|n| n.name(p.r#type as u32))
 		.unwrap_or_default();
-	p.objectData = spawn_object_data(NEW, OLD, kind, p.objectData);
-	Ok(vec![ClientOld::spawn_entity(p)])
+	p.object_data = spawn_object_data(NEW, OLD, kind, p.object_data);
+	Ok(vec![ClientOld::SpawnEntity(p)])
 }
 
 fn chunk_data(from: Version, to: Version, data: &[u8]) -> Result<Vec<u8>> {
@@ -502,33 +502,33 @@ fn chunk_data(from: Version, to: Version, data: &[u8]) -> Result<Vec<u8>> {
 arm!(
 	trails_map_chunk_1_20_to_1_20_2,
 	Client,
-	map_chunk,
-	old::play_toClient_packet_map_chunk::Ty,
+	MapChunk,
+	old::play_to_client_packet_map_chunk::Ty,
 	|p, _cx| {
-		new::play_toClient_packet_map_chunk::Ty {
+		new::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
 			heightmaps: Tag::from(p.heightmaps),
-			chunkData: chunk_data(OLD, NEW, &p.chunkData)?,
-			blockEntities: p
-				.blockEntities
+			chunk_data: chunk_data(OLD, NEW, &p.chunk_data)?,
+			block_entities: p
+				.block_entities
 				.into_iter()
-				.map(|b| new::chunkBlockEntity::Ty {
-					ANON: new::chunkBlockEntity__ANON::Ty {
-						x: b.ANON.x,
-						z: b.ANON.z,
+				.map(|b| new::chunk_block_entity::Ty {
+					anon: new::chunk_block_entity_anon::Ty {
+						x: b.anon.x,
+						z: b.anon.z,
 					},
 					y: b.y,
 					r#type: b.r#type,
-					nbtData: b.nbtData.map(Tag::from),
+					nbt_data: b.nbt_data.map(Tag::from),
 				})
 				.collect(),
-			skyLightMask: p.skyLightMask,
-			blockLightMask: p.blockLightMask,
-			emptySkyLightMask: p.emptySkyLightMask,
-			emptyBlockLightMask: p.emptyBlockLightMask,
-			skyLight: p.skyLight,
-			blockLight: p.blockLight,
+			sky_light_mask: p.sky_light_mask,
+			block_light_mask: p.block_light_mask,
+			empty_sky_light_mask: p.empty_sky_light_mask,
+			empty_block_light_mask: p.empty_block_light_mask,
+			sky_light: p.sky_light,
+			block_light: p.block_light,
 		}
 	}
 );
@@ -536,33 +536,33 @@ arm!(
 arm!(
 	trails_map_chunk_1_20_2_to_1_20,
 	ClientOld,
-	map_chunk,
-	new::play_toClient_packet_map_chunk::Ty,
+	MapChunk,
+	new::play_to_client_packet_map_chunk::Ty,
 	|p, _cx| {
-		old::play_toClient_packet_map_chunk::Ty {
+		old::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
 			heightmaps: p.heightmaps.named(""),
-			chunkData: chunk_data(NEW, OLD, &p.chunkData)?,
-			blockEntities: p
-				.blockEntities
+			chunk_data: chunk_data(NEW, OLD, &p.chunk_data)?,
+			block_entities: p
+				.block_entities
 				.into_iter()
-				.map(|b| old::chunkBlockEntity::Ty {
-					ANON: old::chunkBlockEntity__ANON::Ty {
-						x: b.ANON.x,
-						z: b.ANON.z,
+				.map(|b| old::chunk_block_entity::Ty {
+					anon: old::chunk_block_entity_anon::Ty {
+						x: b.anon.x,
+						z: b.anon.z,
 					},
 					y: b.y,
 					r#type: b.r#type,
-					nbtData: b.nbtData.map(Entry::from),
+					nbt_data: b.nbt_data.map(Entry::from),
 				})
 				.collect(),
-			skyLightMask: p.skyLightMask,
-			blockLightMask: p.blockLightMask,
-			emptySkyLightMask: p.emptySkyLightMask,
-			emptyBlockLightMask: p.emptyBlockLightMask,
-			skyLight: p.skyLight,
-			blockLight: p.blockLight,
+			sky_light_mask: p.sky_light_mask,
+			block_light_mask: p.block_light_mask,
+			empty_sky_light_mask: p.empty_sky_light_mask,
+			empty_block_light_mask: p.empty_block_light_mask,
+			sky_light: p.sky_light,
+			block_light: p.block_light,
 		}
 	}
 );
@@ -570,8 +570,8 @@ arm!(
 arm!(
 	trails_multi_block_change_1_20_to_1_20_2,
 	Client,
-	multi_block_change,
-	old::play_toClient_packet_multi_block_change::Ty,
+	MultiBlockChange,
+	old::play_to_client_packet_multi_block_change::Ty,
 	|mut p, _cx| {
 		p.records = p
 			.records
@@ -585,8 +585,8 @@ arm!(
 arm!(
 	trails_multi_block_change_1_20_2_to_1_20,
 	ClientOld,
-	multi_block_change,
-	new::play_toClient_packet_multi_block_change::Ty,
+	MultiBlockChange,
+	new::play_to_client_packet_multi_block_change::Ty,
 	|mut p, _cx| {
 		p.records = p
 			.records
@@ -600,8 +600,8 @@ arm!(
 arm!(
 	trails_block_change_1_20_to_1_20_2,
 	Client,
-	block_change,
-	old::play_toClient_packet_block_change::Ty,
+	BlockChange,
+	old::play_to_client_packet_block_change::Ty,
 	|mut p, _cx| {
 		p.r#type = block_state(OLD, NEW, p.r#type);
 		p
@@ -611,8 +611,8 @@ arm!(
 arm!(
 	trails_block_change_1_20_2_to_1_20,
 	ClientOld,
-	block_change,
-	new::play_toClient_packet_block_change::Ty,
+	BlockChange,
+	new::play_to_client_packet_block_change::Ty,
 	|mut p, _cx| {
 		p.r#type = block_state(NEW, OLD, p.r#type);
 		p
@@ -622,10 +622,10 @@ arm!(
 arm!(
 	trails_world_event_1_20_to_1_20_2,
 	Client,
-	world_event,
-	old::play_toClient_packet_world_event::Ty,
+	WorldEvent,
+	old::play_to_client_packet_world_event::Ty,
 	|mut p, _cx| {
-		p.data = world_event_data(OLD, NEW, p.effectId, p.data);
+		p.data = world_event_data(OLD, NEW, p.effect_id, p.data);
 		p
 	}
 );
@@ -633,10 +633,10 @@ arm!(
 arm!(
 	trails_world_event_1_20_2_to_1_20,
 	ClientOld,
-	world_event,
-	new::play_toClient_packet_world_event::Ty,
+	WorldEvent,
+	new::play_to_client_packet_world_event::Ty,
 	|mut p, _cx| {
-		p.data = world_event_data(NEW, OLD, p.effectId, p.data);
+		p.data = world_event_data(NEW, OLD, p.effect_id, p.data);
 		p
 	}
 );
@@ -646,34 +646,34 @@ macro_rules! world_particles {
 		arm!(
 			$name,
 			$root,
-			world_particles,
-			$src::play_toClient_packet_world_particles::Ty,
+			WorldParticles,
+			$src::play_to_client_packet_world_particles::Ty,
 			|p, _cx| {
-				let payload = encode(&p.data, $src::particleData::serialize)?;
+				let payload = encode(&p.data, $src::particle_data::serialize)?;
 				let (id, payload) = common::particle(
 					&ParticleMap {
 						from: $from,
 						to: $to,
 						item: &$item,
 					},
-					p.particleId,
+					p.particle_id,
 					&payload,
 				)?;
-				$dst::play_toClient_packet_world_particles::Ty {
-					particleId: id,
-					longDistance: p.longDistance,
+				$dst::play_to_client_packet_world_particles::Ty {
+					particle_id: id,
+					long_distance: p.long_distance,
 					x: p.x,
 					y: p.y,
 					z: p.z,
-					offsetX: p.offsetX,
-					offsetY: p.offsetY,
-					offsetZ: p.offsetZ,
-					particleData: p.particleData,
+					offset_x: p.offset_x,
+					offset_y: p.offset_y,
+					offset_z: p.offset_z,
+					particle_data: p.particle_data,
 					particles: p.particles,
 					data: decode(&payload, |i| {
-						$dst::particleData::deserialize(
+						$dst::particle_data::deserialize(
 							i,
-							$dst::particleData::Args { compareTo: &id },
+							$dst::particle_data::Args { compare_to: &id },
 						)
 					})?,
 				}
@@ -704,8 +704,8 @@ world_particles!(
 arm!(
 	trails_sound_effect_1_20_to_1_20_2,
 	Client,
-	sound_effect,
-	old::play_toClient_packet_sound_effect::Ty,
+	SoundEffect,
+	old::play_to_client_packet_sound_effect::Ty,
 	|mut p, _cx| {
 		p.sound = sound_holder(OLD, NEW, p.sound)?;
 		p
@@ -715,8 +715,8 @@ arm!(
 arm!(
 	trails_sound_effect_1_20_2_to_1_20,
 	ClientOld,
-	sound_effect,
-	new::play_toClient_packet_sound_effect::Ty,
+	SoundEffect,
+	new::play_to_client_packet_sound_effect::Ty,
 	|mut p, _cx| {
 		p.sound = sound_holder(NEW, OLD, p.sound)?;
 		p
@@ -726,10 +726,10 @@ arm!(
 arm!(
 	trails_entity_sound_effect_1_20_to_1_20_2,
 	Client,
-	entity_sound_effect,
-	old::play_toClient_packet_entity_sound_effect::Ty,
+	EntitySoundEffect,
+	old::play_to_client_packet_entity_sound_effect::Ty,
 	|mut p, _cx| {
-		p.soundEvent = entity_sound(OLD, NEW, p.soundEvent)?;
+		p.sound_event = entity_sound(OLD, NEW, p.sound_event)?;
 		p
 	}
 );
@@ -737,10 +737,10 @@ arm!(
 arm!(
 	trails_entity_sound_effect_1_20_2_to_1_20,
 	ClientOld,
-	entity_sound_effect,
-	new::play_toClient_packet_entity_sound_effect::Ty,
+	EntitySoundEffect,
+	new::play_to_client_packet_entity_sound_effect::Ty,
 	|mut p, _cx| {
-		p.soundEvent = entity_sound(NEW, OLD, p.soundEvent)?;
+		p.sound_event = entity_sound(NEW, OLD, p.sound_event)?;
 		p
 	}
 );
@@ -754,88 +754,90 @@ pub(super) fn effect_1_20_2_to_1_20(id: i32) -> Result<i32> {
 }
 
 pub fn trails_entity_effect_id_1_20_to_1_20_2(
-	src: &old::play_toClient_packet_entity_effect::Ty,
+	src: &old::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	effect_1_20_to_1_20_2(src.effectId)
+	effect_1_20_to_1_20_2(src.effect_id)
 }
 
 pub fn trails_entity_effect_id_1_20_2_to_1_20(
-	src: &new::play_toClient_packet_entity_effect::Ty,
+	src: &new::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	effect_1_20_2_to_1_20(src.effectId)
+	effect_1_20_2_to_1_20(src.effect_id)
 }
 
 pub fn trails_remove_effect_id_1_20_to_1_20_2(
-	src: &old::play_toClient_packet_remove_entity_effect::Ty,
+	src: &old::play_to_client_packet_remove_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	effect_1_20_to_1_20_2(src.effectId)
+	effect_1_20_to_1_20_2(src.effect_id)
 }
 
 pub fn trails_remove_effect_id_1_20_2_to_1_20(
-	src: &new::play_toClient_packet_remove_entity_effect::Ty,
+	src: &new::play_to_client_packet_remove_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	effect_1_20_2_to_1_20(src.effectId)
+	effect_1_20_2_to_1_20(src.effect_id)
 }
 
 pub fn trails_beacon_primary_1_20_to_1_20_2(
-	src: &old::play_toServer_packet_set_beacon_effect::Ty,
+	src: &old::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<i32>> {
 	src.primary_effect.map(effect_1_20_to_1_20_2).transpose()
 }
 
 pub fn trails_beacon_primary_1_20_2_to_1_20(
-	src: &new::play_toServer_packet_set_beacon_effect::Ty,
+	src: &new::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<i32>> {
 	src.primary_effect.map(effect_1_20_2_to_1_20).transpose()
 }
 
 pub fn trails_beacon_secondary_1_20_to_1_20_2(
-	src: &old::play_toServer_packet_set_beacon_effect::Ty,
+	src: &old::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<i32>> {
 	src.secondary_effect.map(effect_1_20_to_1_20_2).transpose()
 }
 
 pub fn trails_beacon_secondary_1_20_2_to_1_20(
-	src: &new::play_toServer_packet_set_beacon_effect::Ty,
+	src: &new::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<i32>> {
 	src.secondary_effect.map(effect_1_20_2_to_1_20).transpose()
 }
 
 pub fn trails_criteria_1_20_2_to_1_20(
-	src: &new::play_toClient_packet_advancements__advancementMapping__items__value::Ty,
+	src: &new::play_to_client_packet_advancements_advancement_mapping_items_value::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toClient_packet_advancements__advancementMapping__items__value__criteria__items::Ty>>{
+) -> Result<
+	Vec<old::play_to_client_packet_advancements_advancement_mapping_items_value_criteria_items::Ty>,
+> {
 	let mut keys: Vec<String> = src.requirements.iter().flatten().cloned().collect();
 	keys.sort();
 	keys.dedup();
 	Ok(keys
 		.into_iter()
-		.map(|key| old::play_toClient_packet_advancements__advancementMapping__items__value__criteria__items::Ty { key, value: () })
+		.map(|key| old::play_to_client_packet_advancements_advancement_mapping_items_value_criteria_items::Ty { key, value: () })
 		.collect())
 }
 
 pub fn trails_login_uuid_1_20_to_1_20_2(
-	src: &old::login_toServer_packet_login_start::Ty,
+	src: &old::login_to_server_packet_login_start::Ty,
 	_cx: &mut Session,
 ) -> Result<u128> {
 	Ok(src
-		.playerUUID
+		.player_uuid
 		.unwrap_or_else(|| common::offline_uuid(&src.username)))
 }
 
 pub fn trails_login_uuid_1_20_2_to_1_20(
-	src: &new::login_toServer_packet_login_start::Ty,
+	src: &new::login_to_server_packet_login_start::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<u128>> {
-	Ok(Some(src.playerUUID))
+	Ok(Some(src.player_uuid))
 }
 
 const CLIMBABLE: &[&str] = &[
@@ -853,7 +855,7 @@ const CLIMBABLE: &[&str] = &[
 fn block_tag(
 	name: &str,
 	pick: impl Fn(&str) -> bool,
-) -> new::configuration_toClient_packet__tags__items__tags__items::Ty {
+) -> new::configuration_to_client_packet_tags_items_tags_items::Ty {
 	let blocks = crate::registry::blocks(NEW);
 	let entries = blocks
 		.map(|b| {
@@ -864,8 +866,8 @@ fn block_tag(
 				.collect()
 		})
 		.unwrap_or_default();
-	new::configuration_toClient_packet__tags__items__tags__items::Ty {
-		tagName: format!("minecraft:{name}"),
+	new::configuration_to_client_packet_tags_items_tags_items::Ty {
+		tag_name: format!("minecraft:{name}"),
 		entries,
 	}
 }
@@ -901,9 +903,9 @@ fn data_tags(registry: &str) -> Vec<(String, Vec<String>)> {
 		.collect()
 }
 
-fn physics_tags() -> Vec<new::configuration_toClient_packet__tags__items::Ty> {
-	use new::configuration_toClient_packet__tags__items::Ty as Registry;
-	use new::configuration_toClient_packet__tags__items__tags__items::Ty as T;
+fn physics_tags() -> Vec<new::configuration_to_client_packet_tags_items::Ty> {
+	use new::configuration_to_client_packet_tags_items::Ty as Registry;
+	use new::configuration_to_client_packet_tags_items_tags_items::Ty as T;
 	let mut blocks = vec![
 		block_tag("climbable", |n| CLIMBABLE.contains(&n)),
 		block_tag("trapdoors", |n| n.ends_with("_trapdoor")),
@@ -925,28 +927,28 @@ fn physics_tags() -> Vec<new::configuration_toClient_packet__tags__items::Ty> {
 	}
 	vec![
 		Registry {
-			tagType: "minecraft:fluid".to_owned(),
+			tag_type: "minecraft:fluid".to_owned(),
 			tags: vec![
 				T {
-					tagName: "minecraft:water".to_owned(),
+					tag_name: "minecraft:water".to_owned(),
 					entries: vec![2, 1],
 				},
 				T {
-					tagName: "minecraft:lava".to_owned(),
+					tag_name: "minecraft:lava".to_owned(),
 					entries: vec![4, 3],
 				},
 			],
 		},
 		Registry {
-			tagType: "minecraft:block".to_owned(),
+			tag_type: "minecraft:block".to_owned(),
 			tags: blocks,
 		},
 		Registry {
-			tagType: "minecraft:worldgen/biome".to_owned(),
+			tag_type: "minecraft:worldgen/biome".to_owned(),
 			tags: ["is_badlands", "is_jungle", "is_savanna"]
 				.iter()
 				.map(|n| T {
-					tagName: format!("minecraft:{n}"),
+					tag_name: format!("minecraft:{n}"),
 					entries: vec![],
 				})
 				.collect(),
@@ -955,58 +957,58 @@ fn physics_tags() -> Vec<new::configuration_toClient_packet__tags__items::Ty> {
 }
 
 pub fn configuration_capture_1_20_2(cx: &mut Session, packet: &[u8]) -> Result<Vec<Vec<u8>>> {
-	use new::configuration_toClient_packet::Ty as P;
-	use new::configuration_toServer_packet::Ty as R;
+	use new::configuration_to_client_packet::Ty as P;
+	use new::configuration_to_server_packet::Ty as R;
 	let s = common::state(cx);
 	let replies = match decode(packet, |i| {
-		new::configuration_toClient_packet::deserialize(i)
+		new::configuration_to_client_packet::deserialize(i)
 	})? {
-		P::registry_data(codec) => {
+		P::RegistryData(codec) => {
 			s.codec = Some(codec);
 			vec![]
 		}
-		P::feature_flags(f) => {
+		P::FeatureFlags(f) => {
 			s.features = Some(f);
 			vec![]
 		}
-		P::tags(t) => {
+		P::Tags(t) => {
 			s.tags = Some(t);
 			vec![]
 		}
-		P::custom_payload(p) => {
+		P::CustomPayload(p) => {
 			s.payloads.push((p.channel, p.data));
 			vec![]
 		}
-		P::resource_pack_send(p) => {
-			s.resource_pack = Some((p.url, p.hash, p.forced, p.promptMessage));
-			vec![R::resource_pack_receive(3), R::resource_pack_receive(0)]
+		P::ResourcePackSend(p) => {
+			s.resource_pack = Some((p.url, p.hash, p.forced, p.prompt_message));
+			vec![R::ResourcePackReceive(3), R::ResourcePackReceive(0)]
 		}
-		P::keep_alive(id) => vec![R::keep_alive(id)],
-		P::ping(id) => vec![R::pong(id)],
-		P::finish_configuration(_) => vec![R::finish_configuration(
-			new::configuration_toServer_packet_finish_configuration::Ty {},
+		P::KeepAlive(id) => vec![R::KeepAlive(id)],
+		P::Ping(id) => vec![R::Pong(id)],
+		P::FinishConfiguration(_) => vec![R::FinishConfiguration(
+			new::configuration_to_server_packet_finish_configuration::Ty {},
 		)],
-		P::disconnect(_) | P::default(_) => vec![],
+		P::Disconnect(_) | P::Default(_) => vec![],
 	};
 	replies
 		.iter()
-		.map(|r| encode(r, new::configuration_toServer_packet::serialize))
+		.map(|r| encode(r, new::configuration_to_server_packet::serialize))
 		.collect()
 }
 
 pub fn configuration_1_20_2(cx: &mut Session) -> Result<Vec<Vec<u8>>> {
-	use new::configuration_toClient_packet::Ty as P;
+	use new::configuration_to_client_packet::Ty as P;
 	let codec = match common::state(cx).codec.clone() {
 		Some(c) => c,
 		None => super::codec::vanilla(NEW)?,
 	};
 	[
-		P::registry_data(codec),
-		P::feature_flags(vec!["minecraft:vanilla".to_owned()]),
-		P::tags(physics_tags()),
-		P::finish_configuration(new::configuration_toClient_packet_finish_configuration::Ty {}),
+		P::RegistryData(codec),
+		P::FeatureFlags(vec!["minecraft:vanilla".to_owned()]),
+		P::Tags(physics_tags()),
+		P::FinishConfiguration(new::configuration_to_client_packet_finish_configuration::Ty {}),
 	]
 	.iter()
-	.map(|p| encode(p, new::configuration_toClient_packet::serialize))
+	.map(|p| encode(p, new::configuration_to_client_packet::serialize))
 	.collect()
 }

@@ -9,15 +9,15 @@ const OLD: Version = Version::V1_19_4;
 const NEW: Version = Version::V1_20;
 
 type Slot = old::slot::Ty;
-type Client = new::play_toClient_packet::Ty;
-type ClientOld = old::play_toClient_packet::Ty;
+type Client = new::play_to_client_packet::Ty;
+type ClientOld = old::play_to_client_packet::Ty;
 
 const NEW_TRIM_PATTERNS: &[&str] = &["host", "raiser", "silence", "shaper", "wayfinder"];
 const STASHED_TRIM: &str = "pds2:Trim";
 
 fn stash_trim(nbt: &mut Option<Entry>, down: bool) {
 	let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = nbt
 	else {
@@ -40,13 +40,13 @@ fn stash_trim(nbt: &mut Option<Entry>, down: bool) {
 
 pub(super) fn remap_slot(v: Slot, from: Version, to: Version) -> Slot {
 	match v {
-		Slot::r#true(mut s) => match item(from, to, s.itemId) {
+		Slot::True(mut s) => match item(from, to, s.item_id) {
 			Some(id) => {
-				s.itemId = id;
-				stash_trim(&mut s.nbtData, !common::later(from, to));
-				Slot::r#true(s)
+				s.item_id = id;
+				stash_trim(&mut s.nbt_data, !common::later(from, to));
+				Slot::True(s)
 			}
-			None => Slot::r#false,
+			None => Slot::False,
 		},
 		v => v,
 	}
@@ -149,55 +149,55 @@ macro_rules! metadata {
 		arm!(
 			$name,
 			$root,
-			entity_metadata,
-			$src::play_toClient_packet_entity_metadata::Ty,
+			EntityMetadata,
+			$src::play_to_client_packet_entity_metadata::Ty,
 			|p, cx| {
-				use $dst::entityMetadataItem::Ty as N;
-				use $src::entityMetadataItem::Ty as V;
-				let rotation = display_rotation(cx, $from, p.entityId);
+				use $dst::entity_metadata_item::Ty as N;
+				use $src::entity_metadata_item::Ty as V;
+				let rotation = display_rotation(cx, $from, p.entity_id);
 				let mut rotated = false;
 				let mut out = Vec::with_capacity(p.metadata.len() + 1);
 				for e in p.metadata {
 					let ty = common::decode(
-						&encode(&e.r#type, $src::entityMetadata__items__type::serialize)?,
-						|i| $dst::entityMetadata__items__type::deserialize(i),
+						&encode(&e.r#type, $src::entity_metadata_items_type::serialize)?,
+						|i| $dst::entity_metadata_items_type::deserialize(i),
 					)?;
 					let value = match e.value {
-						V::particle(p) => match $particle(p, cx) {
-							Ok(p) => N::particle(p),
+						V::Particle(p) => match $particle(p, cx) {
+							Ok(p) => N::Particle(p),
 							Err(Error::Dropped) => continue,
 							Err(e) => return Err(e),
 						},
-						V::quaternion(q) if rotation.is_some_and(|(key, _)| key == e.key) => {
+						V::Quaternion(q) if rotation.is_some_and(|(key, _)| key == e.key) => {
 							rotated = true;
-							N::quaternion(rotate_y180(q))
+							N::Quaternion(rotate_y180(q))
 						}
-						V::block_state(s) => N::block_state(block_state($from, $to, s)),
-						V::optional_block_state(s) => {
-							N::optional_block_state(optional_state($from, $to, s))
+						V::BlockState(s) => N::BlockState(block_state($from, $to, s)),
+						V::OptionalBlockState(s) => {
+							N::OptionalBlockState(optional_state($from, $to, s))
 						}
-						V::item_stack(s) => N::item_stack(remap_slot(s, $from, $to)),
+						V::ItemStack(s) => N::ItemStack(remap_slot(s, $from, $to)),
 						v => common::decode(
-							&encode(&v, $src::entityMetadataItem::serialize)?,
+							&encode(&v, $src::entity_metadata_item::serialize)?,
 							|i| {
-								$dst::entityMetadataItem::deserialize(
+								$dst::entity_metadata_item::deserialize(
 									i,
-									$dst::entityMetadataItem::Args { compareTo: &ty },
+									$dst::entity_metadata_item::Args { compare_to: &ty },
 								)
 							},
 						)?,
 					};
-					out.push($dst::entityMetadata__items::Ty {
+					out.push($dst::entity_metadata_items::Ty {
 						key: e.key,
 						r#type: ty,
 						value,
 					});
 				}
 				if let Some((key, true)) = rotation.filter(|_| !rotated) {
-					out.push($dst::entityMetadata__items::Ty {
+					out.push($dst::entity_metadata_items::Ty {
 						key,
-						r#type: $dst::entityMetadata__items__type::Ty::quaternion,
-						value: N::quaternion(old::vec4f::Ty {
+						r#type: $dst::entity_metadata_items_type::Ty::Quaternion,
+						value: N::Quaternion(old::vec4f::Ty {
 							x: 0.0,
 							y: 1.0,
 							z: 0.0,
@@ -205,8 +205,8 @@ macro_rules! metadata {
 						}),
 					});
 				}
-				$dst::play_toClient_packet_entity_metadata::Ty {
-					entityId: p.entityId,
+				$dst::play_to_client_packet_entity_metadata::Ty {
+					entity_id: p.entity_id,
 					metadata: out,
 				}
 			}
@@ -234,15 +234,15 @@ metadata!(
 );
 
 fn damage_type(name: &str, id: i32) -> Payload {
-	Payload::compound(vec![
-		Entry::new("name", Payload::string(name.to_owned())),
-		Entry::new("id", Payload::int(id)),
+	Payload::Compound(vec![
+		Entry::new("name", Payload::String(name.to_owned())),
+		Entry::new("id", Payload::Int(id)),
 		Entry::new(
 			"element",
-			Payload::compound(vec![
-				Entry::new("scaling", Payload::string("always".to_owned())),
-				Entry::new("exhaustion", Payload::float(0.0)),
-				Entry::new("message_id", Payload::string("badRespawnPoint".to_owned())),
+			Payload::Compound(vec![
+				Entry::new("scaling", Payload::String("always".to_owned())),
+				Entry::new("exhaustion", Payload::Float(0.0)),
+				Entry::new("message_id", Payload::String("badRespawnPoint".to_owned())),
 			]),
 		),
 	])
@@ -256,7 +256,7 @@ pub(super) fn registry_entries<'a>(
 		.as_compound_mut()?
 		.compound_mut(&format!("minecraft:{registry}"))?;
 	reg.field_mut("value")
-		.filter(|v| matches!(**v, Payload::list(_)))
+		.filter(|v| matches!(**v, Payload::List(_)))
 }
 
 pub fn trails_codec_1_19_4_to_1_20(mut v: Entry, _cx: &mut Session) -> Result<Entry> {
@@ -294,10 +294,10 @@ pub fn trails_codec_1_19_4_to_1_20(mut v: Entry, _cx: &mut Session) -> Result<En
 }
 
 pub fn trails_codec_1_20_to_1_19_4(mut v: Entry, _cx: &mut Session) -> Result<Entry> {
-	if let Payload::compound(root) = &mut v.value {
+	if let Payload::Compound(root) = &mut v.value {
 		if root.field("minecraft:trim_pattern").is_none() {
 			if let Ok(nbt::Tag {
-				value: Payload::compound(vanilla),
+				value: Payload::Compound(vanilla),
 				..
 			}) = super::codec::vanilla(NEW)
 			{
@@ -312,7 +312,7 @@ pub fn trails_codec_1_20_to_1_19_4(mut v: Entry, _cx: &mut Session) -> Result<En
 			.values()
 			.into_iter()
 			.map(|mut e| {
-				if let Payload::compound(c) = &mut e {
+				if let Payload::Compound(c) = &mut e {
 					if let Some(element) = c.compound_mut("element") {
 						let template = element
 							.field("template_item")
@@ -326,7 +326,7 @@ pub fn trails_codec_1_20_to_1_19_4(mut v: Entry, _cx: &mut Session) -> Result<En
 						if NEW_TRIM_PATTERNS.contains(&name) {
 							element.put(
 								"template_item",
-								Payload::string(
+								Payload::String(
 									"minecraft:spire_armor_trim_smithing_template".to_owned(),
 								),
 							);
@@ -348,7 +348,7 @@ pub fn trails_feature_flags_1_19_4_to_1_20(
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
 	p.retain(|f| f != UPDATE_1_20);
-	Ok(vec![Client::feature_flags(p)])
+	Ok(vec![Client::FeatureFlags(p)])
 }
 
 pub fn trails_feature_flags_1_20_to_1_19_4(
@@ -358,7 +358,7 @@ pub fn trails_feature_flags_1_20_to_1_19_4(
 	if !p.iter().any(|f| f == UPDATE_1_20) {
 		p.push(UPDATE_1_20.to_owned());
 	}
-	Ok(vec![ClientOld::feature_flags(p)])
+	Ok(vec![ClientOld::FeatureFlags(p)])
 }
 
 pub(super) fn block_entity_type(from: Version, to: Version, t: i32) -> Option<i32> {
@@ -374,19 +374,19 @@ pub(super) fn block_entity_type(from: Version, to: Version, t: i32) -> Option<i3
 }
 
 fn empty_line() -> Payload {
-	Payload::string(r#"{"text":""}"#.to_owned())
+	Payload::String(r#"{"text":""}"#.to_owned())
 }
 
 pub(super) fn sign_1_19_4_to_1_20(c: &mut Vec<Entry>) {
 	let messages: Vec<Payload> = (1..=4)
 		.map(|i| match c.take(&format!("Text{i}")) {
-			Some(p @ Payload::string(_)) => p,
+			Some(p @ Payload::String(_)) => p,
 			_ => empty_line(),
 		})
 		.collect();
 	let filtered: Vec<Payload> = (1..=4)
 		.map(|i| match c.take(&format!("FilteredText{i}")) {
-			Some(p @ Payload::string(_)) => p,
+			Some(p @ Payload::String(_)) => p,
 			_ => messages[i - 1].clone(),
 		})
 		.collect();
@@ -400,11 +400,11 @@ pub(super) fn sign_1_19_4_to_1_20(c: &mut Vec<Entry>) {
 	if let Some(glowing) = c.take("GlowingText") {
 		front.push(Entry::new("has_glowing_text", glowing));
 	}
-	c.put("front_text", Payload::compound(front));
+	c.put("front_text", Payload::Compound(front));
 }
 
 pub(super) fn sign_1_20_to_1_19_4(c: &mut Vec<Entry>) {
-	let Some(Payload::compound(front)) = c.take("front_text") else {
+	let Some(Payload::Compound(front)) = c.take("front_text") else {
 		return;
 	};
 	c.take("back_text");
@@ -434,7 +434,7 @@ pub(super) fn sign_1_20_to_1_19_4(c: &mut Vec<Entry>) {
 
 fn block_entity_nbt(from: Version, to: Version, kind: i32, nbt: &mut Option<Entry>) {
 	if let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = nbt
 	{
@@ -447,9 +447,9 @@ fn block_entity_nbt(from: Version, to: Version, kind: i32, nbt: &mut Option<Entr
 }
 
 pub fn trails_chunk_entities_1_20(
-	list: Vec<new::chunkBlockEntity::Ty>,
+	list: Vec<new::chunk_block_entity::Ty>,
 	up: bool,
-) -> Vec<new::chunkBlockEntity::Ty> {
+) -> Vec<new::chunk_block_entity::Ty> {
 	let (from, to) = if up { (OLD, NEW) } else { (NEW, OLD) };
 	list.into_iter()
 		.filter_map(|mut b| {
@@ -458,7 +458,7 @@ pub fn trails_chunk_entities_1_20(
 				from,
 				to,
 				if up { b.r#type.min(kind) } else { b.r#type },
-				&mut b.nbtData,
+				&mut b.nbt_data,
 			);
 			b.r#type = kind;
 			Some(b)
@@ -469,9 +469,9 @@ pub fn trails_chunk_entities_1_20(
 fn map_chunk(
 	from: Version,
 	to: Version,
-	p: old::play_toClient_packet_map_chunk::Ty,
+	p: old::play_to_client_packet_map_chunk::Ty,
 	known: Option<usize>,
-) -> Result<new::play_toClient_packet_map_chunk::Ty> {
+) -> Result<new::play_to_client_packet_map_chunk::Ty> {
 	let state = |s: u32| block_state(from, to, s as i32) as u32;
 	let biome = |b: u32| b;
 	let remap = super::chunk::Remap {
@@ -480,28 +480,28 @@ fn map_chunk(
 		biome: &biome,
 		biomes: None,
 	};
-	let chunkData = super::chunk::sections(&p.chunkData, &remap, from.index(), known)?;
-	let blockEntities = trails_chunk_entities_1_20(p.blockEntities, (from, to) == (OLD, NEW));
-	Ok(new::play_toClient_packet_map_chunk::Ty {
+	let chunk_data = super::chunk::sections(&p.chunk_data, &remap, from.index(), known)?;
+	let block_entities = trails_chunk_entities_1_20(p.block_entities, (from, to) == (OLD, NEW));
+	Ok(new::play_to_client_packet_map_chunk::Ty {
 		x: p.x,
 		z: p.z,
 		heightmaps: p.heightmaps,
-		chunkData,
-		blockEntities,
-		skyLightMask: p.skyLightMask,
-		blockLightMask: p.blockLightMask,
-		emptySkyLightMask: p.emptySkyLightMask,
-		emptyBlockLightMask: p.emptyBlockLightMask,
-		skyLight: p.skyLight,
-		blockLight: p.blockLight,
+		chunk_data,
+		block_entities,
+		sky_light_mask: p.sky_light_mask,
+		block_light_mask: p.block_light_mask,
+		empty_sky_light_mask: p.empty_sky_light_mask,
+		empty_block_light_mask: p.empty_block_light_mask,
+		sky_light: p.sky_light,
+		block_light: p.block_light,
 	})
 }
 
 pub fn trails_map_chunk_1_19_4_to_1_20(
-	p: old::play_toClient_packet_map_chunk::Ty,
+	p: old::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	Ok(vec![Client::map_chunk(map_chunk(
+	Ok(vec![Client::MapChunk(map_chunk(
 		OLD,
 		NEW,
 		p,
@@ -510,7 +510,7 @@ pub fn trails_map_chunk_1_19_4_to_1_20(
 }
 
 pub fn trails_map_chunk_1_20_to_1_19_4(
-	p: new::play_toClient_packet_map_chunk::Ty,
+	p: new::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
 	let state = |s: u32| block_state(NEW, OLD, s as i32) as u32;
@@ -521,27 +521,27 @@ pub fn trails_map_chunk_1_20_to_1_19_4(
 		biome: &biome,
 		biomes: None,
 	};
-	let chunkData = super::chunk::sections(
-		&p.chunkData,
+	let chunk_data = super::chunk::sections(
+		&p.chunk_data,
 		&remap,
 		NEW.index(),
 		crate::custom::caves_known_sections(cx),
 	)?;
-	let blockEntities = trails_chunk_entities_1_20(p.blockEntities, false);
-	Ok(vec![ClientOld::map_chunk(
-		old::play_toClient_packet_map_chunk::Ty {
+	let block_entities = trails_chunk_entities_1_20(p.block_entities, false);
+	Ok(vec![ClientOld::MapChunk(
+		old::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
 			heightmaps: p.heightmaps,
-			chunkData,
-			blockEntities,
-			trustEdges: true,
-			skyLightMask: p.skyLightMask,
-			blockLightMask: p.blockLightMask,
-			emptySkyLightMask: p.emptySkyLightMask,
-			emptyBlockLightMask: p.emptyBlockLightMask,
-			skyLight: p.skyLight,
-			blockLight: p.blockLight,
+			chunk_data,
+			block_entities,
+			trust_edges: true,
+			sky_light_mask: p.sky_light_mask,
+			block_light_mask: p.block_light_mask,
+			empty_sky_light_mask: p.empty_sky_light_mask,
+			empty_block_light_mask: p.empty_block_light_mask,
+			sky_light: p.sky_light,
+			block_light: p.block_light,
 		},
 	)])
 }
@@ -552,17 +552,18 @@ pub(super) fn record(from: Version, to: Version, r: i64) -> i64 {
 }
 
 pub fn trails_multi_block_change_1_19_4_to_1_20(
-	p: old::play_toClient_packet_multi_block_change::Ty,
+	p: old::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	let c = p.chunkCoordinates;
-	Ok(vec![Client::multi_block_change(
-		new::play_toClient_packet_multi_block_change::Ty {
-			chunkCoordinates: new::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
-				x: c.x,
-				z: c.z,
-				y: c.y,
-			},
+	let c = p.chunk_coordinates;
+	Ok(vec![Client::MultiBlockChange(
+		new::play_to_client_packet_multi_block_change::Ty {
+			chunk_coordinates:
+				new::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
+					x: c.x,
+					z: c.z,
+					y: c.y,
+				},
 			records: p
 				.records
 				.into_iter()
@@ -573,18 +574,19 @@ pub fn trails_multi_block_change_1_19_4_to_1_20(
 }
 
 pub fn trails_multi_block_change_1_20_to_1_19_4(
-	p: new::play_toClient_packet_multi_block_change::Ty,
+	p: new::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	let c = p.chunkCoordinates;
-	Ok(vec![ClientOld::multi_block_change(
-		old::play_toClient_packet_multi_block_change::Ty {
-			chunkCoordinates: old::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
-				x: c.x,
-				z: c.z,
-				y: c.y,
-			},
-			suppressLightUpdates: false,
+	let c = p.chunk_coordinates;
+	Ok(vec![ClientOld::MultiBlockChange(
+		old::play_to_client_packet_multi_block_change::Ty {
+			chunk_coordinates:
+				old::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
+					x: c.x,
+					z: c.z,
+					y: c.y,
+				},
+			suppress_light_updates: false,
 			records: p
 				.records
 				.into_iter()
@@ -595,53 +597,53 @@ pub fn trails_multi_block_change_1_20_to_1_19_4(
 }
 
 pub fn trails_block_change_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_block_change::Ty,
+	mut p: old::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
 	p.r#type = block_state(OLD, NEW, p.r#type);
-	Ok(vec![Client::block_change(p)])
+	Ok(vec![Client::BlockChange(p)])
 }
 
 pub fn trails_block_change_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_block_change::Ty,
+	mut p: new::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
 	p.r#type = block_state(NEW, OLD, p.r#type);
-	Ok(vec![ClientOld::block_change(p)])
+	Ok(vec![ClientOld::BlockChange(p)])
 }
 
 pub fn trails_block_action_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_block_action::Ty,
+	mut p: old::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	p.blockId = block(OLD, NEW, p.blockId).ok_or(Error::Dropped)?;
-	Ok(vec![Client::block_action(p)])
+	p.block_id = block(OLD, NEW, p.block_id).ok_or(Error::Dropped)?;
+	Ok(vec![Client::BlockAction(p)])
 }
 
 pub fn trails_block_action_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_block_action::Ty,
+	mut p: new::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	p.blockId = block(NEW, OLD, p.blockId).ok_or(Error::Dropped)?;
-	Ok(vec![ClientOld::block_action(p)])
+	p.block_id = block(NEW, OLD, p.block_id).ok_or(Error::Dropped)?;
+	Ok(vec![ClientOld::BlockAction(p)])
 }
 
 pub fn trails_tile_entity_data_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_tile_entity_data::Ty,
+	mut p: old::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	block_entity_nbt(OLD, NEW, p.action, &mut p.nbtData);
+	block_entity_nbt(OLD, NEW, p.action, &mut p.nbt_data);
 	p.action = block_entity_type(OLD, NEW, p.action).ok_or(Error::Dropped)?;
-	Ok(vec![Client::tile_entity_data(p)])
+	Ok(vec![Client::TileEntityData(p)])
 }
 
 pub fn trails_tile_entity_data_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_tile_entity_data::Ty,
+	mut p: new::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	block_entity_nbt(NEW, OLD, p.action, &mut p.nbtData);
+	block_entity_nbt(NEW, OLD, p.action, &mut p.nbt_data);
 	p.action = block_entity_type(NEW, OLD, p.action).ok_or(Error::Dropped)?;
-	Ok(vec![ClientOld::tile_entity_data(p)])
+	Ok(vec![ClientOld::TileEntityData(p)])
 }
 
 pub(super) fn world_event_data(from: Version, to: Version, effect: i32, data: i32) -> i32 {
@@ -652,26 +654,26 @@ pub(super) fn world_event_data(from: Version, to: Version, effect: i32, data: i3
 }
 
 pub fn trails_world_event_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_world_event::Ty,
+	mut p: old::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	p.data = world_event_data(OLD, NEW, p.effectId, p.data);
-	Ok(vec![Client::world_event(p)])
+	p.data = world_event_data(OLD, NEW, p.effect_id, p.data);
+	Ok(vec![Client::WorldEvent(p)])
 }
 
 pub fn trails_world_event_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_world_event::Ty,
+	mut p: new::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	p.data = world_event_data(NEW, OLD, p.effectId, p.data);
-	Ok(vec![ClientOld::world_event(p)])
+	p.data = world_event_data(NEW, OLD, p.effect_id, p.data);
+	Ok(vec![ClientOld::WorldEvent(p)])
 }
 
 pub fn trails_world_particles_1_19_4_to_1_20(
-	p: old::play_toClient_packet_world_particles::Ty,
+	p: old::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	let payload = encode(&p.data, old::particleData::serialize)?;
+	let payload = encode(&p.data, old::particle_data::serialize)?;
 	let item = slot_bytes(OLD, NEW);
 	let (id, payload) = common::particle(
 		&ParticleMap {
@@ -679,23 +681,23 @@ pub fn trails_world_particles_1_19_4_to_1_20(
 			to: NEW,
 			item: &item,
 		},
-		p.particleId,
+		p.particle_id,
 		&payload,
 	)?;
 	let data = common::decode(&payload, |i| {
-		new::particleData::deserialize(i, new::particleData::Args { compareTo: &id })
+		new::particle_data::deserialize(i, new::particle_data::Args { compare_to: &id })
 	})?;
-	Ok(vec![Client::world_particles(
-		new::play_toClient_packet_world_particles::Ty {
-			particleId: id,
-			longDistance: p.longDistance,
+	Ok(vec![Client::WorldParticles(
+		new::play_to_client_packet_world_particles::Ty {
+			particle_id: id,
+			long_distance: p.long_distance,
 			x: p.x,
 			y: p.y,
 			z: p.z,
-			offsetX: p.offsetX,
-			offsetY: p.offsetY,
-			offsetZ: p.offsetZ,
-			particleData: p.particleData,
+			offset_x: p.offset_x,
+			offset_y: p.offset_y,
+			offset_z: p.offset_z,
+			particle_data: p.particle_data,
 			particles: p.particles,
 			data,
 		},
@@ -703,10 +705,10 @@ pub fn trails_world_particles_1_19_4_to_1_20(
 }
 
 pub fn trails_world_particles_1_20_to_1_19_4(
-	p: new::play_toClient_packet_world_particles::Ty,
+	p: new::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	let payload = encode(&p.data, new::particleData::serialize)?;
+	let payload = encode(&p.data, new::particle_data::serialize)?;
 	let item = slot_bytes(NEW, OLD);
 	let (id, payload) = common::particle(
 		&ParticleMap {
@@ -714,23 +716,23 @@ pub fn trails_world_particles_1_20_to_1_19_4(
 			to: OLD,
 			item: &item,
 		},
-		p.particleId,
+		p.particle_id,
 		&payload,
 	)?;
 	let data = common::decode(&payload, |i| {
-		old::particleData::deserialize(i, old::particleData::Args { compareTo: &id })
+		old::particle_data::deserialize(i, old::particle_data::Args { compare_to: &id })
 	})?;
-	Ok(vec![ClientOld::world_particles(
-		old::play_toClient_packet_world_particles::Ty {
-			particleId: id,
-			longDistance: p.longDistance,
+	Ok(vec![ClientOld::WorldParticles(
+		old::play_to_client_packet_world_particles::Ty {
+			particle_id: id,
+			long_distance: p.long_distance,
 			x: p.x,
 			y: p.y,
 			z: p.z,
-			offsetX: p.offsetX,
-			offsetY: p.offsetY,
-			offsetZ: p.offsetZ,
-			particleData: p.particleData,
+			offset_x: p.offset_x,
+			offset_y: p.offset_y,
+			offset_z: p.offset_z,
+			particle_data: p.particle_data,
 			particles: p.particles,
 			data,
 		},
@@ -747,62 +749,60 @@ pub(super) fn spawn_object_data(from: Version, to: Version, kind: &str, data: i3
 fn spawn_entity(
 	from: Version,
 	to: Version,
-	mut p: old::play_toClient_packet_spawn_entity::Ty,
+	mut p: old::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<old::play_toClient_packet_spawn_entity::Ty> {
-	common::spawned(cx, from, p.entityId, p.r#type);
+) -> Result<old::play_to_client_packet_spawn_entity::Ty> {
+	common::spawned(cx, from, p.entity_id, p.r#type);
 	let kind = crate::registry::names(from, "entities")
 		.and_then(|n| n.name(p.r#type as u32))
 		.unwrap_or_default();
-	p.objectData = spawn_object_data(from, to, kind, p.objectData);
+	p.object_data = spawn_object_data(from, to, kind, p.object_data);
 	p.r#type = name_id("entities", from, to, p.r#type).ok_or(Error::Dropped)?;
 	Ok(p)
 }
 
 pub fn trails_spawn_entity_1_19_4_to_1_20(
-	p: old::play_toClient_packet_spawn_entity::Ty,
+	p: old::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	Ok(vec![Client::spawn_entity(spawn_entity(OLD, NEW, p, cx)?)])
+	Ok(vec![Client::SpawnEntity(spawn_entity(OLD, NEW, p, cx)?)])
 }
 
 pub fn trails_spawn_entity_1_20_to_1_19_4(
-	p: new::play_toClient_packet_spawn_entity::Ty,
+	p: new::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	Ok(vec![ClientOld::spawn_entity(spawn_entity(
-		NEW, OLD, p, cx,
-	)?)])
+	Ok(vec![ClientOld::SpawnEntity(spawn_entity(NEW, OLD, p, cx)?)])
 }
 
 pub fn trails_set_cooldown_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_set_cooldown::Ty,
+	mut p: old::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	p.itemID = item(OLD, NEW, p.itemID).ok_or(Error::Dropped)?;
-	Ok(vec![Client::set_cooldown(p)])
+	p.item_id = item(OLD, NEW, p.item_id).ok_or(Error::Dropped)?;
+	Ok(vec![Client::SetCooldown(p)])
 }
 
 pub fn trails_set_cooldown_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_set_cooldown::Ty,
+	mut p: new::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	p.itemID = item(NEW, OLD, p.itemID).ok_or(Error::Dropped)?;
-	Ok(vec![ClientOld::set_cooldown(p)])
+	p.item_id = item(NEW, OLD, p.item_id).ok_or(Error::Dropped)?;
+	Ok(vec![ClientOld::SetCooldown(p)])
 }
 
 pub(super) fn sound_holder(
 	from: Version,
 	to: Version,
-	s: old::ItemSoundHolder::Ty,
-) -> Result<old::ItemSoundHolder::Ty> {
-	use old::ItemSoundHolder::Ty as H;
+	s: old::item_sound_holder::Ty,
+) -> Result<old::item_sound_holder::Ty> {
+	use old::item_sound_holder::Ty as H;
 	Ok(match s {
 		H::Id(id) => match sound(from, to, id)? {
 			Sound::Id(id) => H::Id(id),
-			Sound::Named(soundName) => H::Inline(old::ItemSoundEvent::Ty {
-				soundName,
-				fixedRange: None,
+			Sound::Named(sound_name) => H::Inline(old::item_sound_event::Ty {
+				sound_name,
+				fixed_range: None,
 			}),
 		},
 		inline => inline,
@@ -810,32 +810,32 @@ pub(super) fn sound_holder(
 }
 
 pub fn trails_sound_effect_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_sound_effect::Ty,
+	mut p: old::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
 	p.sound = sound_holder(OLD, NEW, p.sound)?;
-	Ok(vec![Client::sound_effect(p)])
+	Ok(vec![Client::SoundEffect(p)])
 }
 
 pub fn trails_sound_effect_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_sound_effect::Ty,
+	mut p: new::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
 	p.sound = sound_holder(NEW, OLD, p.sound)?;
-	Ok(vec![ClientOld::sound_effect(p)])
+	Ok(vec![ClientOld::SoundEffect(p)])
 }
 
 pub(super) fn entity_sound(
 	from: Version,
 	to: Version,
-	s: old::play_toClient_packet_entity_sound_effect__soundEvent::Ty,
-) -> Result<old::play_toClient_packet_entity_sound_effect__soundEvent::Ty> {
-	use old::play_toClient_packet_entity_sound_effect__soundEvent::Ty as E;
+	s: old::play_to_client_packet_entity_sound_effect_sound_event::Ty,
+) -> Result<old::play_to_client_packet_entity_sound_effect_sound_event::Ty> {
+	use old::play_to_client_packet_entity_sound_effect_sound_event::Ty as E;
 	Ok(match s {
-		E::default(tag) => match sound(from, to, tag - 1)? {
-			Sound::Id(id) => E::default(id + 1),
-			Sound::Named(resource) => E::v0(
-				old::play_toClient_packet_entity_sound_effect__soundEvent__v0::Ty {
+		E::Default(tag) => match sound(from, to, tag - 1)? {
+			Sound::Id(id) => E::Default(id + 1),
+			Sound::Named(resource) => E::V0(
+				old::play_to_client_packet_entity_sound_effect_sound_event_v0::Ty {
 					resource,
 					range: None,
 				},
@@ -846,19 +846,19 @@ pub(super) fn entity_sound(
 }
 
 pub fn trails_entity_sound_effect_1_19_4_to_1_20(
-	mut p: old::play_toClient_packet_entity_sound_effect::Ty,
+	mut p: old::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	p.soundEvent = entity_sound(OLD, NEW, p.soundEvent)?;
-	Ok(vec![Client::entity_sound_effect(p)])
+	p.sound_event = entity_sound(OLD, NEW, p.sound_event)?;
+	Ok(vec![Client::EntitySoundEffect(p)])
 }
 
 pub fn trails_entity_sound_effect_1_20_to_1_19_4(
-	mut p: new::play_toClient_packet_entity_sound_effect::Ty,
+	mut p: new::play_to_client_packet_entity_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	p.soundEvent = entity_sound(NEW, OLD, p.soundEvent)?;
-	Ok(vec![ClientOld::entity_sound_effect(p)])
+	p.sound_event = entity_sound(NEW, OLD, p.sound_event)?;
+	Ok(vec![ClientOld::EntitySoundEffect(p)])
 }
 
 pub(super) fn tag_entries(
@@ -880,66 +880,66 @@ pub(super) fn tag_entries(
 pub(super) fn remap_tags(
 	from: Version,
 	to: Version,
-	mut tags: Vec<old::play_toClient_packet__tags__items::Ty>,
-) -> Vec<old::play_toClient_packet__tags__items::Ty> {
+	mut tags: Vec<old::play_to_client_packet_tags_items::Ty>,
+) -> Vec<old::play_to_client_packet_tags_items::Ty> {
 	for registry in &mut tags {
 		for t in &mut registry.tags {
-			t.entries = tag_entries(&registry.tagType, from, to, std::mem::take(&mut t.entries));
+			t.entries = tag_entries(&registry.tag_type, from, to, std::mem::take(&mut t.entries));
 		}
 	}
 	tags
 }
 
 pub fn trails_tags_1_19_4_to_1_20(
-	p: Vec<old::play_toClient_packet__tags__items::Ty>,
+	p: Vec<old::play_to_client_packet_tags_items::Ty>,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	Ok(vec![Client::tags(remap_tags(OLD, NEW, p))])
+	Ok(vec![Client::Tags(remap_tags(OLD, NEW, p))])
 }
 
 pub fn trails_tags_1_20_to_1_19_4(
-	p: Vec<new::play_toClient_packet__tags__items::Ty>,
+	p: Vec<new::play_to_client_packet_tags_items::Ty>,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
 	let mut tags = remap_tags(NEW, OLD, p);
-	for registry in tags.iter_mut().filter(|r| r.tagType == "minecraft:block") {
+	for registry in tags.iter_mut().filter(|r| r.tag_type == "minecraft:block") {
 		if !registry
 			.tags
 			.iter()
-			.any(|t| t.tagName == "minecraft:replaceable_plants")
+			.any(|t| t.tag_name == "minecraft:replaceable_plants")
 		{
 			let entries = registry
 				.tags
 				.iter()
-				.find(|t| t.tagName == "minecraft:replaceable_by_trees")
+				.find(|t| t.tag_name == "minecraft:replaceable_by_trees")
 				.map(|t| t.entries.clone())
 				.unwrap_or_default();
 			registry
 				.tags
-				.push(old::play_toClient_packet__tags__items__tags__items::Ty {
-					tagName: "minecraft:replaceable_plants".to_owned(),
+				.push(old::play_to_client_packet_tags_items_tags_items::Ty {
+					tag_name: "minecraft:replaceable_plants".to_owned(),
 					entries,
 				});
 		}
 	}
-	Ok(vec![ClientOld::tags(tags)])
+	Ok(vec![ClientOld::Tags(tags)])
 }
 
 pub fn trails_end_combat_event_1_19_4_to_1_20(
-	p: old::play_toClient_packet_end_combat_event::Ty,
+	p: old::play_to_client_packet_end_combat_event::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	Ok(vec![Client::end_combat_event(p.duration)])
+	Ok(vec![Client::EndCombatEvent(p.duration)])
 }
 
 pub fn trails_end_combat_event_1_20_to_1_19_4(
 	duration: i32,
 	_cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	Ok(vec![ClientOld::end_combat_event(
-		old::play_toClient_packet_end_combat_event::Ty {
+	Ok(vec![ClientOld::EndCombatEvent(
+		old::play_to_client_packet_end_combat_event::Ty {
 			duration,
-			entityId: -1,
+			entity_id: -1,
 		},
 	)])
 }
@@ -948,27 +948,27 @@ pub fn trails_open_sign_entity_1_19_4_to_1_20(
 	location: old::position::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client>> {
-	Ok(vec![Client::open_sign_entity(
-		new::play_toClient_packet_open_sign_entity::Ty {
+	Ok(vec![Client::OpenSignEntity(
+		new::play_to_client_packet_open_sign_entity::Ty {
 			location,
-			isFrontText: true,
+			is_front_text: true,
 		},
 	)])
 }
 
 pub fn trails_open_sign_entity_1_20_to_1_19_4(
-	p: new::play_toClient_packet_open_sign_entity::Ty,
+	p: new::play_to_client_packet_open_sign_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientOld>> {
-	common::state(cx).back_sign = match p.isFrontText {
+	common::state(cx).back_sign = match p.is_front_text {
 		true => None,
 		false => Some(encode(&p.location, new::position::serialize)?),
 	};
-	Ok(vec![ClientOld::open_sign_entity(p.location)])
+	Ok(vec![ClientOld::OpenSignEntity(p.location)])
 }
 
 pub fn trails_sign_front_1_19_4_to_1_20(
-	src: &old::play_toServer_packet_update_sign::Ty,
+	src: &old::play_to_server_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<bool> {
 	let at = encode(&src.location, old::position::serialize)?;
@@ -976,12 +976,12 @@ pub fn trails_sign_front_1_19_4_to_1_20(
 }
 
 pub fn trails_update_sign_1_20_to_1_19_4(
-	p: new::play_toServer_packet_update_sign::Ty,
+	p: new::play_to_server_packet_update_sign::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toServer_packet::Ty>> {
-	Ok(match p.isFrontText {
-		true => vec![old::play_toServer_packet::Ty::update_sign(
-			old::play_toServer_packet_update_sign::Ty {
+) -> Result<Vec<old::play_to_server_packet::Ty>> {
+	Ok(match p.is_front_text {
+		true => vec![old::play_to_server_packet::Ty::UpdateSign(
+			old::play_to_server_packet_update_sign::Ty {
 				location: p.location,
 				text1: p.text1,
 				text2: p.text2,

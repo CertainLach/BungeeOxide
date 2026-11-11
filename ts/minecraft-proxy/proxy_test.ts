@@ -67,7 +67,7 @@ async function fakeServer(listener: Deno.Listener): Promise<void> {
 	const r = new Frames(s);
 	await r.skip();
 	await r.skip();
-	const login = gen.pds_login_toClient_packet;
+	const login = gen.login.toClient.packet;
 	await s.write(frame(ser({ kind: "compress", value: THRESHOLD }, login), false));
 	await s.write(
 		frame(
@@ -76,7 +76,7 @@ async function fakeServer(listener: Deno.Listener): Promise<void> {
 		),
 	);
 	await r.skip();
-	const config = gen.pds_configuration_toClient_packet;
+	const config = gen.configuration.toClient.packet;
 	const brand = {
 		kind: "custom_payload" as const,
 		value: { channel: "minecraft:brand", data: new Uint8Array(300).fill(7) },
@@ -84,7 +84,7 @@ async function fakeServer(listener: Deno.Listener): Promise<void> {
 	await s.write(frame(ser(brand, config), true));
 	await s.write(frame(ser({ kind: "finish_configuration", value: {} }, config), true));
 	await r.skip();
-	await s.write(frame(ser({ kind: "keep_alive", value: 42n }, gen.pds_play_toClient_packet), true));
+	await s.write(frame(ser({ kind: "keep_alive", value: 42n }, gen.play.toClient.packet), true));
 	const rest = new Uint8Array(16);
 	while (await s.read(rest) !== null);
 	s.close();
@@ -97,8 +97,8 @@ async function fakeClient(port: number): Promise<void> {
 		kind: "set_protocol" as const,
 		value: { protocolVersion: 774, serverHost: "localhost", serverPort: 25565, nextState: 2 },
 	};
-	await c.write(frame(ser(handshake, gen.pds_handshaking_toServer_packet), false));
-	const login = gen.pds_login_toServer_packet;
+	await c.write(frame(ser(handshake, gen.handshaking.toServer.packet), false));
+	const login = gen.login.toServer.packet;
 	await c.write(
 		frame(
 			ser({ kind: "login_start", value: { username: "pds", playerUUID: 0x1234n } }, login),
@@ -112,7 +112,7 @@ async function fakeClient(port: number): Promise<void> {
 	await r.skip();
 	await c.write(
 		frame(
-			ser({ kind: "finish_configuration", value: {} }, gen.pds_configuration_toServer_packet),
+			ser({ kind: "finish_configuration", value: {} }, gen.configuration.toServer.packet),
 			true,
 		),
 	);

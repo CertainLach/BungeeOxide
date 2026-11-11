@@ -6,12 +6,13 @@ use bungeeoxide::codec::Codec;
 use bungeeoxide::{decode, encode, next};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v1_12_2::{
-	play_toClient_packet as play_c, play_toServer_packet as play_s,
-	play_toServer_packet_position_look as position_look, play_toServer_packet_settings as settings,
+	play_to_client_packet as play_c, play_to_server_packet as play_s,
+	play_to_server_packet_position_look as position_look,
+	play_to_server_packet_settings as settings,
 };
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toServer_packet as login_s,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_server_packet as login_s,
 };
 use minecraft_versions::pds::Input;
 use tokio::net::TcpStream;
@@ -31,35 +32,35 @@ async fn main() -> Result<()> {
 	let seconds: u64 = args.next().map_or(Ok(10), |s| s.parse())?;
 	let (host, port) = addr.rsplit_once(':').expect("host:port");
 	let mut conn = Framed::new(TcpStream::connect(&addr).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: PROTOCOL,
-		serverHost: host.to_owned(),
-		serverPort: port.parse()?,
-		nextState: 2,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: PROTOCOL,
+		server_host: host.to_owned(),
+		server_port: port.parse()?,
+		next_state: 2,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start("probe12".to_owned()),
+		&login_s::Ty::LoginStart("probe12".to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
 	loop {
 		match decode(&next(&mut conn).await?, login_c::deserialize)? {
-			login_c::Ty::compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
-			login_c::Ty::success(s) => {
+			login_c::Ty::Compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
+			login_c::Ty::Success(s) => {
 				println!("logged in as {} {}", s.username, s.uuid);
 				break;
 			}
 			other => bail!("login failed: {other:?}"),
 		}
 	}
-	let client_settings = play_s::Ty::settings(settings::Ty {
+	let client_settings = play_s::Ty::Settings(settings::Ty {
 		locale: "en_US".to_owned(),
-		viewDistance: 4,
-		chatFlags: 0,
-		chatColors: true,
-		skinParts: 0x7f,
-		mainHand: 1,
+		view_distance: 4,
+		chat_flags: 0,
+		chat_colors: true,
+		skin_parts: 0x7f,
+		main_hand: 1,
 	});
 	let mut counts: BTreeMap<String, usize> = BTreeMap::new();
 	let mut failed: BTreeMap<String, String> = BTreeMap::new();
@@ -81,39 +82,39 @@ async fn main() -> Result<()> {
 			}
 		};
 		match &packet {
-			play_c::Ty::login(_) => {
+			play_c::Ty::Login(_) => {
 				conn.send(encode(&client_settings, play_s::serialize)?)
 					.await?
 			}
-			play_c::Ty::keep_alive(id) => {
-				conn.send(encode(&play_s::Ty::keep_alive(*id), play_s::serialize)?)
+			play_c::Ty::KeepAlive(id) => {
+				conn.send(encode(&play_s::Ty::KeepAlive(*id), play_s::serialize)?)
 					.await?
 			}
-			play_c::Ty::chat(c) => println!("chat: {}", c.message),
-			play_c::Ty::position(p) => {
+			play_c::Ty::Chat(c) => println!("chat: {}", c.message),
+			play_c::Ty::Position(p) => {
 				println!(
 					"teleported to {:.2} {:.2} {:.2} (id {})",
-					p.x, p.y, p.z, p.teleportId
+					p.x, p.y, p.z, p.teleport_id
 				);
 				conn.send(encode(
-					&play_s::Ty::teleport_confirm(p.teleportId),
+					&play_s::Ty::TeleportConfirm(p.teleport_id),
 					play_s::serialize,
 				)?)
 				.await?;
-				let echo = play_s::Ty::position_look(position_look::Ty {
+				let echo = play_s::Ty::PositionLook(position_look::Ty {
 					x: p.x,
 					y: p.y,
 					z: p.z,
 					yaw: p.yaw,
 					pitch: p.pitch,
-					onGround: false,
+					on_ground: false,
 				});
 				conn.send(encode(&echo, play_s::serialize)?).await?;
 				if !greeted {
 					greeted = true;
 					for message in ["/proxy-ping", "hello from 1.12.2"] {
 						conn.send(encode(
-							&play_s::Ty::chat(message.to_owned()),
+							&play_s::Ty::Chat(message.to_owned()),
 							play_s::serialize,
 						)?)
 						.await?;

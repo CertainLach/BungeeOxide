@@ -7,11 +7,12 @@ use bungeeoxide::codec::Codec;
 use bungeeoxide::{decode, encode, next, serve, Config, Conn};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toClient_packet_success,
-	login_toServer_packet as login_s, play_toClient_packet as play_c, play_toClient_packet_chat,
-	play_toClient_packet_login, play_toServer_packet as play_s, status_toClient_packet as status_c,
-	status_toServer_packet as status_s, status_toServer_packet_ping_start,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_client_packet_success,
+	login_to_server_packet as login_s, play_to_client_packet as play_c, play_to_client_packet_chat,
+	play_to_client_packet_login, play_to_server_packet as play_s,
+	status_to_client_packet as status_c, status_to_server_packet as status_s,
+	status_to_server_packet_ping_start,
 };
 use tokio::net::{TcpListener, TcpStream};
 use tokio_util::codec::Framed;
@@ -21,7 +22,7 @@ const PROTOCOL_1_8: i32 = 47;
 async fn answer_status(mut conn: Conn, name: &str) -> Result<()> {
 	loop {
 		match decode(&next(&mut conn).await?, status_s::deserialize)? {
-			status_s::Ty::ping_start(_) => {
+			status_s::Ty::PingStart(_) => {
 				let info = serde_json::json!({
 					"version": { "name": "1.8.8", "protocol": PROTOCOL_1_8 },
 					"players": { "max": 20, "online": 1, "sample": [{ "name": "Alex", "id": "ec561538-f3fd-461d-aff5-086b22154bce" }] },
@@ -29,17 +30,17 @@ async fn answer_status(mut conn: Conn, name: &str) -> Result<()> {
 					"favicon": "data:image/png;base64,AAAA\nBBBB",
 				});
 				conn.send(encode(
-					&status_c::Ty::server_info(info.to_string()),
+					&status_c::Ty::ServerInfo(info.to_string()),
 					status_c::serialize,
 				)?)
 				.await?;
 			}
-			status_s::Ty::ping(time) => {
-				conn.send(encode(&status_c::Ty::ping(time), status_c::serialize)?)
+			status_s::Ty::Ping(time) => {
+				conn.send(encode(&status_c::Ty::Ping(time), status_c::serialize)?)
 					.await?;
 				return Ok(());
 			}
-			status_s::Ty::default(id) => bail!("status packet {id}"),
+			status_s::Ty::Default(id) => bail!("status packet {id}"),
 		}
 	}
 }
@@ -59,40 +60,40 @@ async fn mock_server(name: &'static str, dimension: i8) -> SocketAddr {
 }
 
 async fn backend(mut conn: Conn, name: &str, dimension: i8) -> Result<()> {
-	let handshake::Ty::set_protocol(hs) = decode(&next(&mut conn).await?, handshake::deserialize)?
+	let handshake::Ty::SetProtocol(hs) = decode(&next(&mut conn).await?, handshake::deserialize)?
 	else {
 		bail!("handshake");
 	};
-	if hs.nextState == 1 {
+	if hs.next_state == 1 {
 		return answer_status(conn, name).await;
 	}
-	assert_eq!(hs.protocolVersion, PROTOCOL_1_8);
-	let login_s::Ty::login_start(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
+	assert_eq!(hs.protocol_version, PROTOCOL_1_8);
+	let login_s::Ty::LoginStart(username) = decode(&next(&mut conn).await?, login_s::deserialize)?
 	else {
 		bail!("login start");
 	};
-	conn.send(encode(&login_c::Ty::compress(64), login_c::serialize)?)
+	conn.send(encode(&login_c::Ty::Compress(64), login_c::serialize)?)
 		.await?;
 	conn.codec_mut().threshold = Some(64);
-	let success = login_toClient_packet_success::Ty {
+	let success = login_to_client_packet_success::Ty {
 		uuid: bungeeoxide::offline_uuid(&username),
 		username,
 	};
-	conn.send(encode(&login_c::Ty::success(success), login_c::serialize)?)
+	conn.send(encode(&login_c::Ty::Success(success), login_c::serialize)?)
 		.await?;
-	let join = play_c::Ty::login(play_toClient_packet_login::Ty {
-		entityId: 7,
-		gameMode: 1,
+	let join = play_c::Ty::Login(play_to_client_packet_login::Ty {
+		entity_id: 7,
+		game_mode: 1,
 		dimension,
 		difficulty: 2,
-		maxPlayers: 20,
-		levelType: "flat".to_owned(),
-		reducedDebugInfo: false,
+		max_players: 20,
+		level_type: "flat".to_owned(),
+		reduced_debug_info: false,
 	});
 	conn.send(encode(&join, play_c::serialize)?).await?;
 	loop {
-		if let play_s::Ty::chat(message) = decode(&next(&mut conn).await?, play_s::deserialize)? {
-			let echo = play_c::Ty::chat(play_toClient_packet_chat::Ty {
+		if let play_s::Ty::Chat(message) = decode(&next(&mut conn).await?, play_s::deserialize)? {
+			let echo = play_c::Ty::Chat(play_to_client_packet_chat::Ty {
 				message: serde_json::json!({ "text": format!("{name}: {message}") }).to_string(),
 				position: 0,
 			});
@@ -125,11 +126,11 @@ async fn connect(proxy: SocketAddr, next_state: i32) -> Result<Conn> {
 
 async fn connect_as(proxy: SocketAddr, next_state: i32, protocol: i32) -> Result<Conn> {
 	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: protocol,
-		serverHost: "localhost".to_owned(),
-		serverPort: proxy.port(),
-		nextState: next_state,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: protocol,
+		server_host: "localhost".to_owned(),
+		server_port: proxy.port(),
+		next_state: next_state,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	Ok(conn)
@@ -142,7 +143,7 @@ async fn play(conn: &mut Conn) -> Result<play_c::Ty> {
 
 async fn say(conn: &mut Conn, message: &str) -> Result<()> {
 	conn.send(encode(
-		&play_s::Ty::chat(message.to_owned()),
+		&play_s::Ty::Chat(message.to_owned()),
 		play_s::serialize,
 	)?)
 	.await?;
@@ -151,7 +152,7 @@ async fn say(conn: &mut Conn, message: &str) -> Result<()> {
 
 async fn chat(conn: &mut Conn) -> Result<String> {
 	match play(conn).await? {
-		play_c::Ty::chat(c) => Ok(c.message),
+		play_c::Ty::Chat(c) => Ok(c.message),
 		other => bail!("expected chat, got {other:?}"),
 	}
 }
@@ -159,18 +160,18 @@ async fn chat(conn: &mut Conn) -> Result<String> {
 async fn server_info(proxy: SocketAddr, protocol: i32) -> Result<serde_json::Value> {
 	let mut conn = connect_as(proxy, 1, protocol).await?;
 	conn.send(encode(
-		&status_s::Ty::ping_start(status_toServer_packet_ping_start::Ty {}),
+		&status_s::Ty::PingStart(status_to_server_packet_ping_start::Ty {}),
 		status_s::serialize,
 	)?)
 	.await?;
-	let status_c::Ty::server_info(info) = decode(&next(&mut conn).await?, status_c::deserialize)?
+	let status_c::Ty::ServerInfo(info) = decode(&next(&mut conn).await?, status_c::deserialize)?
 	else {
 		bail!("expected server info");
 	};
-	conn.send(encode(&status_s::Ty::ping(42), status_s::serialize)?)
+	conn.send(encode(&status_s::Ty::Ping(42), status_s::serialize)?)
 		.await?;
 	let pong = decode(&next(&mut conn).await?, status_c::deserialize)?;
-	assert_eq!(pong, status_c::Ty::ping(42));
+	assert_eq!(pong, status_c::Ty::Ping(42));
 	Ok(serde_json::from_str(&info)?)
 }
 
@@ -225,27 +226,27 @@ async fn players_relay_chat_and_move_between_servers() -> Result<()> {
 	let proxy = start_proxy(a).await;
 	let mut conn = connect(proxy, 2).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start("tester".to_owned()),
+		&login_s::Ty::LoginStart("tester".to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
 
-	let login_c::Ty::compress(threshold) = decode(&next(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Compress(threshold) = decode(&next(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected compression");
 	};
 	assert_eq!(threshold, 32);
 	conn.codec_mut().threshold = Some(32);
-	let login_c::Ty::success(success) = decode(&next(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Success(success) = decode(&next(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected login success");
 	};
 	assert_eq!(success.username, "tester");
 	assert_eq!(success.uuid, bungeeoxide::offline_uuid("tester"));
-	let play_c::Ty::login(join) = play(&mut conn).await? else {
+	let play_c::Ty::Login(join) = play(&mut conn).await? else {
 		bail!("expected join game");
 	};
-	assert_eq!((join.entityId, join.dimension), (7, 0));
+	assert_eq!((join.entity_id, join.dimension), (7, 0));
 
 	say(&mut conn, "hello").await?;
 	assert!(chat(&mut conn).await?.contains("a: hello"));
@@ -255,13 +256,13 @@ async fn players_relay_chat_and_move_between_servers() -> Result<()> {
 	assert!(chat(&mut conn).await?.contains("Pong"));
 
 	say(&mut conn, &format!("/proxy-goto {b}")).await?;
-	let play_c::Ty::login(join) = play(&mut conn).await? else {
+	let play_c::Ty::Login(join) = play(&mut conn).await? else {
 		bail!("expected join game from the new server");
 	};
 	assert_eq!(join.dimension, -1);
 	let mut dimensions = Vec::new();
 	for _ in 0..2 {
-		let play_c::Ty::respawn(r) = play(&mut conn).await? else {
+		let play_c::Ty::Respawn(r) = play(&mut conn).await? else {
 			bail!("expected respawn");
 		};
 		dimensions.push(r.dimension);
@@ -281,19 +282,19 @@ async fn players_relay_chat_and_move_between_servers() -> Result<()> {
 async fn other_versions_are_turned_away() -> Result<()> {
 	let proxy = start_proxy(mock_server("a", 0).await).await;
 	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: 3,
-		serverHost: "localhost".to_owned(),
-		serverPort: proxy.port(),
-		nextState: 2,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: 3,
+		server_host: "localhost".to_owned(),
+		server_port: proxy.port(),
+		next_state: 2,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start("old".to_owned()),
+		&login_s::Ty::LoginStart("old".to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
-	let login_c::Ty::disconnect(reason) = decode(&next(&mut conn).await?, login_c::deserialize)?
+	let login_c::Ty::Disconnect(reason) = decode(&next(&mut conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected a disconnect");
 	};

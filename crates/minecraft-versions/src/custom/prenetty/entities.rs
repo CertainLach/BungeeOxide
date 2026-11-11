@@ -35,7 +35,7 @@ const ARTS: [&str; 25] = [
 ];
 
 pub fn prenetty_painting_title_1_3_2(
-	p: &v1_4_2::play_toClient_packet_spawn_entity_painting::Ty,
+	p: &v1_4_2::play_to_client_packet_spawn_entity_painting::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(match p.title.as_str() {
@@ -59,23 +59,23 @@ fn effect_exists(id: i8, to: V) -> bool {
 macro_rules! effects {
 	($to:expr, $m:ident, $effect:ident, $remove:ident) => {
 		pub fn $effect(
-			p: $m::play_toClient_packet_entity_effect::Ty,
+			p: $m::play_to_client_packet_entity_effect::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
-			if !effect_exists(p.effectId, $to) {
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
+			if !effect_exists(p.effect_id, $to) {
 				return Ok(vec![]);
 			}
-			Ok(vec![$m::play_toClient_packet::Ty::entity_effect(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::EntityEffect(p)])
 		}
 
 		pub fn $remove(
-			p: $m::play_toClient_packet_remove_entity_effect::Ty,
+			p: $m::play_to_client_packet_remove_entity_effect::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$m::play_toClient_packet::Ty>> {
-			if !effect_exists(p.effectId, $to) {
+		) -> Result<Vec<$m::play_to_client_packet::Ty>> {
+			if !effect_exists(p.effect_id, $to) {
 				return Ok(vec![]);
 			}
-			Ok(vec![$m::play_toClient_packet::Ty::remove_entity_effect(p)])
+			Ok(vec![$m::play_to_client_packet::Ty::RemoveEntityEffect(p)])
 		}
 	};
 }
@@ -166,16 +166,16 @@ pub(super) fn keeps(cx: &mut Session, id: i32, key: u8, ty: u8, to: V) -> bool {
 }
 
 pub fn prenetty_collect_1_6_4(
-	p: v1_7::play_toClient_packet_collect::Ty,
+	p: v1_7::play_to_client_packet_collect::Ty,
 	cx: &mut Session,
-) -> Result<Vec<v1_6_4::play_toClient_packet::Ty>> {
-	if object(cx, p.collectorEntityId) {
+) -> Result<Vec<v1_6_4::play_to_client_packet::Ty>> {
+	if object(cx, p.collector_entity_id) {
 		return Ok(vec![]);
 	}
-	Ok(vec![v1_6_4::play_toClient_packet::Ty::collect(
-		v1_6_4::play_toClient_packet_collect::Ty {
-			collectedEntityId: p.collectedEntityId,
-			collectorEntityId: p.collectorEntityId,
+	Ok(vec![v1_6_4::play_to_client_packet::Ty::Collect(
+		v1_6_4::play_to_client_packet_collect::Ty {
+			collected_entity_id: p.collected_entity_id,
+			collector_entity_id: p.collector_entity_id,
 		},
 	)])
 }
@@ -192,67 +192,67 @@ pub(super) fn bed_reaches_1_6_4(cx: &mut Session, id: i32) -> bool {
 	player(cx, id)
 }
 
-type Client132 = v1_3_2::play_toClient_packet::Ty;
+type Client132 = v1_3_2::play_to_client_packet::Ty;
 
 pub fn prenetty_animation_1_3_2(
-	p: v1_4_2::play_toClient_packet_animation::Ty,
+	p: v1_4_2::play_to_client_packet_animation::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	if matches!(p.animation, 1 | 3 | 4) && !player(cx, p.entityId) {
+	if matches!(p.animation, 1 | 3 | 4) && !player(cx, p.entity_id) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client132::animation(p)])
+	Ok(vec![Client132::Animation(p)])
 }
 
 pub fn prenetty_bed_1_3_2(
-	p: v1_4_2::play_toClient_packet_bed::Ty,
+	p: v1_4_2::play_to_client_packet_bed::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	if p.action == 0 && !player(cx, p.entityId) {
+	if p.action == 0 && !player(cx, p.entity_id) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client132::bed(p)])
+	Ok(vec![Client132::Bed(p)])
 }
 
 pub fn prenetty_collect_1_3_2(
-	p: v1_4_2::play_toClient_packet_collect::Ty,
+	p: v1_4_2::play_to_client_packet_collect::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
-	if object(cx, p.collectorEntityId) {
+	if object(cx, p.collector_entity_id) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client132::collect(p)])
+	Ok(vec![Client132::Collect(p)])
 }
 
 pub fn prenetty_entity_metadata_1_3_2(
-	p: v1_4_2::play_toClient_packet_entity_metadata::Ty,
+	p: v1_4_2::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client132>> {
 	let metadata: Vec<_> = meta_1_3_2(p.metadata)
 		.into_iter()
-		.filter(|e| keeps(cx, p.entityId, e.ANON.key, e.ANON.r#type, V::R1_3))
+		.filter(|e| keeps(cx, p.entity_id, e.anon.key, e.anon.r#type, V::R1_3))
 		.collect();
 	if metadata.is_empty() {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client132::entity_metadata(
-		v1_3_2::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client132::EntityMetadata(
+		v1_3_2::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)])
 }
 
-type Client11 = v1_1::play_toClient_packet::Ty;
+type Client11 = v1_1::play_to_client_packet::Ty;
 
 pub(super) fn meta_1_1(
 	cx: &mut Session,
 	id: i32,
-	metadata: v1_2_3::entityMetadata::Ty,
-) -> v1_1::entityMetadata::Ty {
+	metadata: v1_2_3::entity_metadata::Ty,
+) -> v1_1::entity_metadata::Ty {
 	metadata
 		.into_iter()
-		.filter(|e| keeps(cx, id, e.ANON.key, e.ANON.r#type, V::R1_1))
+		.filter(|e| keeps(cx, id, e.anon.key, e.anon.r#type, V::R1_1))
 		.map(|mut e| {
 			e.value = old_meta_item(e.value, V::R1_1);
 			e
@@ -261,34 +261,34 @@ pub(super) fn meta_1_1(
 }
 
 pub fn prenetty_entity_metadata_1_1(
-	p: v1_2_3::play_toClient_packet_entity_metadata::Ty,
+	p: v1_2_3::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	let metadata = meta_1_1(cx, p.entityId, p.metadata);
+	let metadata = meta_1_1(cx, p.entity_id, p.metadata);
 	if metadata.is_empty() {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client11::entity_metadata(
-		v1_1::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client11::EntityMetadata(
+		v1_1::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)])
 }
 
 pub fn prenetty_open_window_1_1(
-	mut p: v1_2_3::play_toClient_packet_open_window::Ty,
+	mut p: v1_2_3::play_to_client_packet_open_window::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client11>> {
-	p.windowTitle = text::truncate(&p.windowTitle, 16);
-	Ok(vec![Client11::open_window(p)])
+	p.window_title = text::truncate(&p.window_title, 16);
+	Ok(vec![Client11::OpenWindow(p)])
 }
 
 pub fn prenetty_kick_1_0_1(
 	reason: String,
 	_cx: &mut Session,
-) -> Result<Vec<v1_0_1::play_toClient_packet::Ty>> {
-	Ok(vec![v1_0_1::play_toClient_packet::Ty::kick_disconnect(
+) -> Result<Vec<v1_0_1::play_to_client_packet::Ty>> {
+	Ok(vec![v1_0_1::play_to_client_packet::Ty::KickDisconnect(
 		text::truncate(&reason, 100),
 	)])
 }

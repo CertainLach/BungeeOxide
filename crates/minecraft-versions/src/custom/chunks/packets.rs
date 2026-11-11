@@ -16,30 +16,30 @@ use crate::gen::convert::{
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::pds::{Input, Output};
 
-type C7 = v1_7::play_toClient_packet_map_chunk::Ty;
-type B7 = v1_7::play_toClient_packet_map_chunk_bulk::Ty;
-type C8 = v1_8::play_toClient_packet_map_chunk::Ty;
-type B8 = v1_8::play_toClient_packet_map_chunk_bulk::Ty;
-type C9 = v1_9::play_toClient_packet_map_chunk::Ty;
-type C94 = v1_9_4::play_toClient_packet_map_chunk::Ty;
-type C14 = v1_14::play_toClient_packet_map_chunk::Ty;
-type C15 = v1_15::play_toClient_packet_map_chunk::Ty;
-type C16 = v1_16::play_toClient_packet_map_chunk::Ty;
-type C162 = v1_16_2::play_toClient_packet_map_chunk::Ty;
-type C17 = v1_17::play_toClient_packet_map_chunk::Ty;
-type C18 = v1_18::play_toClient_packet_map_chunk::Ty;
-type C20 = v1_20::play_toClient_packet_map_chunk::Ty;
-type C202 = v1_20_2::play_toClient_packet_map_chunk::Ty;
-type C215 = v1_21_5::play_toClient_packet_map_chunk::Ty;
-type C216 = v1_21_6::play_toClient_packet_map_chunk::Ty;
-type L14 = v1_14::play_toClient_packet_update_light::Ty;
-type L16 = v1_16::play_toClient_packet_update_light::Ty;
-type L17 = v1_17::play_toClient_packet_update_light::Ty;
-type L20 = v1_20::play_toClient_packet_update_light::Ty;
-type U9 = v1_9::play_toClient_packet_unload_chunk::Ty;
-type U202 = v1_20_2::play_toClient_packet_unload_chunk::Ty;
-type E18 = v1_18::chunkBlockEntity::Ty;
-type E202 = v1_20_2::chunkBlockEntity::Ty;
+type C7 = v1_7::play_to_client_packet_map_chunk::Ty;
+type B7 = v1_7::play_to_client_packet_map_chunk_bulk::Ty;
+type C8 = v1_8::play_to_client_packet_map_chunk::Ty;
+type B8 = v1_8::play_to_client_packet_map_chunk_bulk::Ty;
+type C9 = v1_9::play_to_client_packet_map_chunk::Ty;
+type C94 = v1_9_4::play_to_client_packet_map_chunk::Ty;
+type C14 = v1_14::play_to_client_packet_map_chunk::Ty;
+type C15 = v1_15::play_to_client_packet_map_chunk::Ty;
+type C16 = v1_16::play_to_client_packet_map_chunk::Ty;
+type C162 = v1_16_2::play_to_client_packet_map_chunk::Ty;
+type C17 = v1_17::play_to_client_packet_map_chunk::Ty;
+type C18 = v1_18::play_to_client_packet_map_chunk::Ty;
+type C20 = v1_20::play_to_client_packet_map_chunk::Ty;
+type C202 = v1_20_2::play_to_client_packet_map_chunk::Ty;
+type C215 = v1_21_5::play_to_client_packet_map_chunk::Ty;
+type C216 = v1_21_6::play_to_client_packet_map_chunk::Ty;
+type L14 = v1_14::play_to_client_packet_update_light::Ty;
+type L16 = v1_16::play_to_client_packet_update_light::Ty;
+type L17 = v1_17::play_to_client_packet_update_light::Ty;
+type L20 = v1_20::play_to_client_packet_update_light::Ty;
+type U9 = v1_9::play_to_client_packet_unload_chunk::Ty;
+type U202 = v1_20_2::play_to_client_packet_unload_chunk::Ty;
+type E18 = v1_18::chunk_block_entity::Ty;
+type E202 = v1_20_2::chunk_block_entity::Ty;
 
 pub enum Packet {
 	Chunk(Column),
@@ -175,15 +175,15 @@ pub(super) fn named_list(list: &[BlockEntity]) -> Vec<Entry> {
 pub(super) fn entities_18(cx: i32, cz: i32, list: Vec<E18>) -> Vec<BlockEntity> {
 	list.into_iter()
 		.map(|b| BlockEntity {
-			x: cx * 16 + b.ANON.x as i32,
+			x: cx * 16 + b.anon.x as i32,
 			y: b.y as i32,
-			z: cz * 16 + b.ANON.z as i32,
+			z: cz * 16 + b.anon.z as i32,
 			kind: Some(b.r#type),
 			name: b
-				.nbtData
+				.nbt_data
 				.as_ref()
 				.map_or_else(String::new, |e| e.name.clone()),
-			nbt: b.nbtData.map(Tag::from),
+			nbt: b.nbt_data.map(Tag::from),
 		})
 		.collect()
 }
@@ -191,13 +191,13 @@ pub(super) fn entities_18(cx: i32, cz: i32, list: Vec<E18>) -> Vec<BlockEntity> 
 pub(super) fn list_18(list: &[BlockEntity]) -> Vec<E18> {
 	list.iter()
 		.map(|b| E18 {
-			ANON: v1_18::chunkBlockEntity__ANON::Ty {
+			anon: v1_18::chunk_block_entity_anon::Ty {
 				x: (b.x & 15) as u8,
 				z: (b.z & 15) as u8,
 			},
 			y: b.y as i16,
 			r#type: b.kind.unwrap_or(0),
-			nbtData: b.nbt.clone().map(|t| t.named(b.name.clone())),
+			nbt_data: b.nbt.clone().map(|t| t.named(b.name.clone())),
 		})
 		.collect()
 }
@@ -205,12 +205,12 @@ pub(super) fn list_18(list: &[BlockEntity]) -> Vec<E18> {
 pub(super) fn entities_202(cx: i32, cz: i32, list: Vec<E202>) -> Vec<BlockEntity> {
 	list.into_iter()
 		.map(|b| BlockEntity {
-			x: cx * 16 + b.ANON.x as i32,
+			x: cx * 16 + b.anon.x as i32,
 			y: b.y as i32,
-			z: cz * 16 + b.ANON.z as i32,
+			z: cz * 16 + b.anon.z as i32,
 			kind: Some(b.r#type),
 			name: String::new(),
-			nbt: b.nbtData,
+			nbt: b.nbt_data,
 		})
 		.collect()
 }
@@ -218,23 +218,23 @@ pub(super) fn entities_202(cx: i32, cz: i32, list: Vec<E202>) -> Vec<BlockEntity
 pub(super) fn list_202(list: &[BlockEntity]) -> Vec<E202> {
 	list.iter()
 		.map(|b| E202 {
-			ANON: v1_20_2::chunkBlockEntity__ANON::Ty {
+			anon: v1_20_2::chunk_block_entity_anon::Ty {
 				x: (b.x & 15) as u8,
 				z: (b.z & 15) as u8,
 			},
 			y: b.y as i16,
 			r#type: b.kind.unwrap_or(0),
-			nbtData: b.nbt.clone(),
+			nbt_data: b.nbt.clone(),
 		})
 		.collect()
 }
 
 pub(super) fn heightmaps_named(value: Payload) -> Vec<Heightmap> {
 	match value {
-		Payload::compound(c) => c
+		Payload::Compound(c) => c
 			.into_iter()
 			.filter_map(|e| match e.value {
-				Payload::longArray(data) => Some(Heightmap {
+				Payload::LongArray(data) => Some(Heightmap {
 					kind: HeightKind::Named(e.name),
 					data,
 				}),
@@ -260,13 +260,13 @@ pub(super) fn heightmap_id(kind: &HeightKind) -> Option<i32> {
 }
 
 fn compound_of(maps: &Option<Vec<Heightmap>>) -> Payload {
-	Payload::compound(
+	Payload::Compound(
 		maps.iter()
 			.flatten()
 			.filter_map(|h| {
 				Some(Entry::new(
 					heightmap_name(&h.kind)?,
-					Payload::longArray(h.data.clone()),
+					Payload::LongArray(h.data.clone()),
 				))
 			})
 			.collect(),
@@ -281,16 +281,16 @@ fn heightmaps_tag(maps: &Option<Vec<Heightmap>>) -> Tag {
 	Tag::new(compound_of(maps))
 }
 
-fn type_216(id: i32) -> v1_21_6::play_toClient_packet_map_chunk__heightmaps__items__type::Ty {
-	use v1_21_6::play_toClient_packet_map_chunk__heightmaps__items__type::Ty as T;
+fn type_216(id: i32) -> v1_21_6::play_to_client_packet_map_chunk_heightmaps_items_type::Ty {
+	use v1_21_6::play_to_client_packet_map_chunk_heightmaps_items_type::Ty as T;
 	match id {
-		0 => T::world_surface_wg,
-		1 => T::world_surface,
-		2 => T::ocean_floor_wg,
-		3 => T::ocean_floor,
-		4 => T::motion_blocking,
-		5 => T::motion_blocking_no_leaves,
-		n => T::default(n),
+		0 => T::WorldSurfaceWg,
+		1 => T::WorldSurface,
+		2 => T::OceanFloorWg,
+		3 => T::OceanFloor,
+		4 => T::MotionBlocking,
+		5 => T::MotionBlockingNoLeaves,
+		n => T::Default(n),
 	}
 }
 
@@ -381,12 +381,12 @@ fn masks(light: &Light) -> Masks {
 macro_rules! masks_of {
 	($p:ident) => {
 		Masks {
-			sky: $p.skyLightMask,
-			block: $p.blockLightMask,
-			empty_sky: $p.emptySkyLightMask,
-			empty_block: $p.emptyBlockLightMask,
-			sky_data: $p.skyLight,
-			block_data: $p.blockLight,
+			sky: $p.sky_light_mask,
+			block: $p.block_light_mask,
+			empty_sky: $p.empty_sky_light_mask,
+			empty_block: $p.empty_block_light_mask,
+			sky_data: $p.sky_light,
+			block_data: $p.block_light,
 		}
 	};
 }
@@ -495,140 +495,140 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				&C7 {
 					x,
 					z,
-					groundUp: col.full,
-					bitMap: m.mask as u16,
-					addBitMap: m.add as u16,
-					compressedChunkData: deflate(&raw)?,
+					ground_up: col.full,
+					bit_map: m.mask as u16,
+					add_bit_map: m.add as u16,
+					compressed_chunk_data: deflate(&raw)?,
 				},
-				v1_7::play_toClient_packet_map_chunk::serialize,
+				v1_7::play_to_client_packet_map_chunk::serialize,
 			)
 		}
 		v::V1_8 => {
-			let (mask, chunkData) = encode_8(col);
+			let (mask, chunk_data) = encode_8(col);
 			body(
 				&C8 {
 					x,
 					z,
-					groundUp: col.full,
-					bitMap: mask as u16,
-					chunkData,
+					ground_up: col.full,
+					bit_map: mask as u16,
+					chunk_data,
 				},
-				v1_8::play_toClient_packet_map_chunk::serialize,
+				v1_8::play_to_client_packet_map_chunk::serialize,
 			)
 		}
 		v::V1_9..v::V1_9_4 => {
-			let (mask, chunkData) = encode_9(col, version);
+			let (mask, chunk_data) = encode_9(col, version);
 			body(
 				&C9 {
 					x,
 					z,
-					groundUp: col.full,
-					bitMap: mask as i32,
-					chunkData,
+					ground_up: col.full,
+					bit_map: mask as i32,
+					chunk_data,
 				},
-				v1_9::play_toClient_packet_map_chunk::serialize,
+				v1_9::play_to_client_packet_map_chunk::serialize,
 			)
 		}
 		v::V1_9_4..v::V1_14 => {
-			let (mask, chunkData) = encode_9(col, version);
-			let blockEntities = named_list(&col.entities);
+			let (mask, chunk_data) = encode_9(col, version);
+			let block_entities = named_list(&col.entities);
 			body(
 				&C94 {
 					x,
 					z,
-					groundUp: col.full,
-					bitMap: mask as i32,
-					chunkData,
-					blockEntities,
+					ground_up: col.full,
+					bit_map: mask as i32,
+					chunk_data,
+					block_entities,
 				},
-				v1_9_4::play_toClient_packet_map_chunk::serialize,
+				v1_9_4::play_to_client_packet_map_chunk::serialize,
 			)
 		}
 		v::V1_14..v::V1_15 => {
-			let (mask, chunkData) = encode_14(col, version, true);
+			let (mask, chunk_data) = encode_14(col, version, true);
 			let p = C14 {
 				x,
 				z,
-				groundUp: col.full,
-				bitMap: mask as i32,
+				ground_up: col.full,
+				bit_map: mask as i32,
 				heightmaps: heightmaps_entry(&col.heightmaps),
-				chunkData,
-				blockEntities: named_list(&col.entities),
+				chunk_data,
+				block_entities: named_list(&col.entities),
 			};
-			body(&p, v1_14::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_14::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_15..v::V1_16 => {
-			use v1_15::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let (mask, chunkData) = encode_14(col, version, false);
+			use v1_15::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let (mask, chunk_data) = encode_14(col, version, false);
 			let biomes = if col.full {
-				B::r#true(cells_i32(col, 1024))
+				B::True(cells_i32(col, 1024))
 			} else {
-				B::r#false
+				B::False
 			};
 			let p = C15 {
 				x,
 				z,
-				bitMap: mask as i32,
+				bit_map: mask as i32,
 				heightmaps: heightmaps_entry(&col.heightmaps),
 				biomes,
-				chunkData,
-				blockEntities: named_list(&col.entities),
+				chunk_data,
+				block_entities: named_list(&col.entities),
 			};
-			body(&p, v1_15::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_15::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_16..v::V1_16_2 => {
-			use v1_16::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let (present, chunkData) = encode_16(col, version);
+			use v1_16::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let (present, chunk_data) = encode_16(col, version);
 			let mask = present.iter().fold(0i32, |m, s| m | 1 << s);
 			let biomes = if col.full {
-				B::r#true(cells_i32(col, 1024))
+				B::True(cells_i32(col, 1024))
 			} else {
-				B::r#false
+				B::False
 			};
 			let p = C16 {
 				x,
 				z,
-				ignoreOldData: col.full,
-				bitMap: mask,
+				ignore_old_data: col.full,
+				bit_map: mask,
 				heightmaps: heightmaps_entry(&col.heightmaps),
 				biomes,
-				chunkData,
-				blockEntities: named_list(&col.entities),
+				chunk_data,
+				block_entities: named_list(&col.entities),
 			};
-			body(&p, v1_16::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_16::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_16_2 => {
-			use v1_16_2::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let (present, chunkData) = encode_16(col, version);
+			use v1_16_2::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let (present, chunk_data) = encode_16(col, version);
 			let mask = present.iter().fold(0i32, |m, s| m | 1 << s);
 			let biomes = if col.full {
-				B::r#true(cells_i32(col, 1024))
+				B::True(cells_i32(col, 1024))
 			} else {
-				B::r#false
+				B::False
 			};
 			let p = C162 {
 				x,
 				z,
-				bitMap: mask,
+				bit_map: mask,
 				heightmaps: heightmaps_entry(&col.heightmaps),
 				biomes,
-				chunkData,
-				blockEntities: named_list(&col.entities),
+				chunk_data,
+				block_entities: named_list(&col.entities),
 			};
-			body(&p, v1_16_2::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_16_2::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_17..v::V1_18 => {
-			let (_, chunkData) = encode_16(col, version);
+			let (_, chunk_data) = encode_16(col, version);
 			let p = C17 {
 				x,
 				z,
-				bitMap: mask_17(col),
+				bit_map: mask_17(col),
 				heightmaps: heightmaps_entry(&col.heightmaps),
 				biomes: cells_i32(col, cells_len(col)),
-				chunkData,
-				blockEntities: named_list(&col.entities),
+				chunk_data,
+				block_entities: named_list(&col.entities),
 			};
-			body(&p, v1_17::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_17::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_18..v::V1_20 => {
 			let m = masks(&light_or_empty(col));
@@ -636,17 +636,17 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				x,
 				z,
 				heightmaps: heightmaps_entry(&col.heightmaps),
-				chunkData: encode_18(col, version),
-				blockEntities: list_18(&col.entities),
-				trustEdges: col.light.as_ref().is_some_and(|l| l.trust),
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_data: encode_18(col, version),
+				block_entities: list_18(&col.entities),
+				trust_edges: col.light.as_ref().is_some_and(|l| l.trust),
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_18::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_18::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_20 => {
 			let m = masks(&light_or_empty(col));
@@ -654,16 +654,16 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				x,
 				z,
 				heightmaps: heightmaps_entry(&col.heightmaps),
-				chunkData: encode_18(col, version),
-				blockEntities: list_18(&col.entities),
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_data: encode_18(col, version),
+				block_entities: list_18(&col.entities),
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_20::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_20::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_20_2..v::V1_21_5 => {
 			let m = masks(&light_or_empty(col));
@@ -671,16 +671,16 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				x,
 				z,
 				heightmaps: heightmaps_tag(&col.heightmaps),
-				chunkData: encode_18(col, version),
-				blockEntities: list_202(&col.entities),
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_data: encode_18(col, version),
+				block_entities: list_202(&col.entities),
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_20_2::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_20_2::play_to_client_packet_map_chunk::serialize)
 		}
 		v::V1_21_5 => {
 			let m = masks(&light_or_empty(col));
@@ -690,7 +690,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				.flatten()
 				.filter_map(|h| {
 					Some(
-						v1_21_5::play_toClient_packet_map_chunk__heightmaps__items::Ty {
+						v1_21_5::play_to_client_packet_map_chunk_heightmaps_items::Ty {
 							r#type: heightmap_id(&h.kind)?,
 							data: h.data.clone(),
 						},
@@ -701,16 +701,16 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				x,
 				z,
 				heightmaps,
-				chunkData: encode_18(col, version),
-				blockEntities: list_202(&col.entities),
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_data: encode_18(col, version),
+				block_entities: list_202(&col.entities),
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_21_5::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_21_5::play_to_client_packet_map_chunk::serialize)
 		}
 		_ => {
 			let m = masks(&light_or_empty(col));
@@ -720,7 +720,7 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				.flatten()
 				.filter_map(|h| {
 					Some(
-						v1_21_6::play_toClient_packet_map_chunk__heightmaps__items::Ty {
+						v1_21_6::play_to_client_packet_map_chunk_heightmaps_items::Ty {
 							r#type: type_216(heightmap_id(&h.kind)?),
 							data: h.data.clone(),
 						},
@@ -731,16 +731,16 @@ pub fn chunk_body(version: usize, col: &Column) -> Result<Vec<u8>> {
 				x,
 				z,
 				heightmaps,
-				chunkData: encode_18(col, version),
-				blockEntities: list_202(&col.entities),
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_data: encode_18(col, version),
+				block_entities: list_202(&col.entities),
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_21_6::play_toClient_packet_map_chunk::serialize)
+			body(&p, v1_21_6::play_to_client_packet_map_chunk::serialize)
 		}
 	}
 }
@@ -760,20 +760,20 @@ pub fn bulk_body(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8
 			for c in &columns {
 				let (m, data) = encode_7(c);
 				raw.extend(data);
-				meta.push(v1_7::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+				meta.push(v1_7::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 					x: c.x,
 					z: c.z,
-					bitMap: m.mask as u16,
-					addBitMap: m.add as u16,
+					bit_map: m.mask as u16,
+					add_bit_map: m.add as u16,
 				});
 			}
 			body(
 				&B7 {
-					skyLightSent: sky,
-					compressedChunkData: deflate(&raw)?,
+					sky_light_sent: sky,
+					compressed_chunk_data: deflate(&raw)?,
 					meta,
 				},
-				v1_7::play_toClient_packet_map_chunk_bulk::serialize,
+				v1_7::play_to_client_packet_map_chunk_bulk::serialize,
 			)
 		}
 		_ => {
@@ -782,19 +782,19 @@ pub fn bulk_body(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8
 			for c in &columns {
 				let (mask, d) = encode_8(c);
 				data.extend(d);
-				meta.push(v1_8::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+				meta.push(v1_8::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 					x: c.x,
 					z: c.z,
-					bitMap: mask as u16,
+					bit_map: mask as u16,
 				});
 			}
 			body(
 				&B8 {
-					skyLightSent: sky,
+					sky_light_sent: sky,
 					meta,
 					data,
 				},
-				v1_8::play_toClient_packet_map_chunk_bulk::serialize,
+				v1_8::play_to_client_packet_map_chunk_bulk::serialize,
 			)
 		}
 	}
@@ -803,22 +803,22 @@ pub fn bulk_body(version: usize, columns: &[Column], sky: bool) -> Result<Vec<u8
 pub(super) fn light_14(x: i32, z: i32, light: &Light) -> L14 {
 	let (sky, block, empty_sky, empty_block, data) = rest_of(&masks(light));
 	L14 {
-		chunkX: x,
-		chunkZ: z,
-		skyLightMask: sky,
-		blockLightMask: block,
-		emptySkyLightMask: empty_sky,
-		emptyBlockLightMask: empty_block,
+		chunk_x: x,
+		chunk_z: z,
+		sky_light_mask: sky,
+		block_light_mask: block,
+		empty_sky_light_mask: empty_sky,
+		empty_block_light_mask: empty_block,
 		data,
 	}
 }
 
 pub(super) fn from_light_14(p: &L14) -> Result<Light> {
 	light_from_rest(
-		p.skyLightMask,
-		p.blockLightMask,
-		p.emptySkyLightMask,
-		p.emptyBlockLightMask,
+		p.sky_light_mask,
+		p.block_light_mask,
+		p.empty_sky_light_mask,
+		p.empty_block_light_mask,
 		&p.data,
 		false,
 	)
@@ -827,20 +827,20 @@ pub(super) fn from_light_14(p: &L14) -> Result<Light> {
 pub(super) fn light_17(x: i32, z: i32, light: &Light) -> L17 {
 	let m = masks(light);
 	L17 {
-		chunkX: x,
-		chunkZ: z,
-		trustEdges: light.trust,
-		skyLightMask: m.sky,
-		blockLightMask: m.block,
-		emptySkyLightMask: m.empty_sky,
-		emptyBlockLightMask: m.empty_block,
-		skyLight: m.sky_data,
-		blockLight: m.block_data,
+		chunk_x: x,
+		chunk_z: z,
+		trust_edges: light.trust,
+		sky_light_mask: m.sky,
+		block_light_mask: m.block,
+		empty_sky_light_mask: m.empty_sky,
+		empty_block_light_mask: m.empty_block,
+		sky_light: m.sky_data,
+		block_light: m.block_data,
 	}
 }
 
 pub(super) fn from_light_17(sections: usize, p: L17) -> Light {
-	let trust = p.trustEdges;
+	let trust = p.trust_edges;
 	light_from_masks(sections, masks_of!(p), trust)
 }
 
@@ -849,38 +849,38 @@ pub fn light_body(version: usize, x: i32, z: i32, light: &Light) -> Result<Vec<u
 	match version {
 		v::V1_14..v::V1_16 => body(
 			&light_14(x, z, light),
-			v1_14::play_toClient_packet_update_light::serialize,
+			v1_14::play_to_client_packet_update_light::serialize,
 		),
 		v::V1_16..v::V1_17 => {
 			let (sky, block, empty_sky, empty_block, data) = rest_of(&m);
 			let p = L16 {
-				chunkX: x,
-				chunkZ: z,
-				trustEdges: light.trust,
-				skyLightMask: sky,
-				blockLightMask: block,
-				emptySkyLightMask: empty_sky,
-				emptyBlockLightMask: empty_block,
+				chunk_x: x,
+				chunk_z: z,
+				trust_edges: light.trust,
+				sky_light_mask: sky,
+				block_light_mask: block,
+				empty_sky_light_mask: empty_sky,
+				empty_block_light_mask: empty_block,
 				data,
 			};
-			body(&p, v1_16::play_toClient_packet_update_light::serialize)
+			body(&p, v1_16::play_to_client_packet_update_light::serialize)
 		}
 		v::V1_17..v::V1_20 => body(
 			&light_17(x, z, light),
-			v1_17::play_toClient_packet_update_light::serialize,
+			v1_17::play_to_client_packet_update_light::serialize,
 		),
 		_ => {
 			let p = L20 {
-				chunkX: x,
-				chunkZ: z,
-				skyLightMask: m.sky,
-				blockLightMask: m.block,
-				emptySkyLightMask: m.empty_sky,
-				emptyBlockLightMask: m.empty_block,
-				skyLight: m.sky_data,
-				blockLight: m.block_data,
+				chunk_x: x,
+				chunk_z: z,
+				sky_light_mask: m.sky,
+				block_light_mask: m.block,
+				empty_sky_light_mask: m.empty_sky,
+				empty_block_light_mask: m.empty_block,
+				sky_light: m.sky_data,
+				block_light: m.block_data,
 			};
-			body(&p, v1_20::play_toClient_packet_update_light::serialize)
+			body(&p, v1_20::play_to_client_packet_update_light::serialize)
 		}
 	}
 }
@@ -889,17 +889,17 @@ pub fn unload_body(version: usize, x: i32, z: i32) -> Result<Vec<u8>> {
 	match version {
 		..v::V1_20_2 => body(
 			&U9 {
-				chunkX: x,
-				chunkZ: z,
+				chunk_x: x,
+				chunk_z: z,
 			},
-			v1_9::play_toClient_packet_unload_chunk::serialize,
+			v1_9::play_to_client_packet_unload_chunk::serialize,
 		),
 		_ => body(
 			&U202 {
-				chunkZ: z,
-				chunkX: x,
+				chunk_z: z,
+				chunk_x: x,
 			},
-			v1_20_2::play_toClient_packet_unload_chunk::serialize,
+			v1_20_2::play_to_client_packet_unload_chunk::serialize,
 		),
 	}
 }
@@ -950,127 +950,132 @@ pub fn encode_unload(version: usize, x: i32, z: i32) -> Result<Vec<u8>> {
 fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Result<Column> {
 	match version {
 		v::V1_7 => {
-			let p = read(data, v1_7::play_toClient_packet_map_chunk::deserialize)?;
-			let raw = inflate(&p.compressedChunkData)?;
-			let mut col = Column::new(p.x, p.z, p.groundUp, version);
-			let (mask, add) = (p.bitMap as u32, p.addBitMap as u32);
-			let sky = raw.len() == size_7(mask, add, true, p.groundUp);
+			let p = read(data, v1_7::play_to_client_packet_map_chunk::deserialize)?;
+			let raw = inflate(&p.compressed_chunk_data)?;
+			let mut col = Column::new(p.x, p.z, p.ground_up, version);
+			let (mask, add) = (p.bit_map as u32, p.add_bit_map as u32);
+			let sky = raw.len() == size_7(mask, add, true, p.ground_up);
 			decode_7(&mut col, &raw, Bitmask { mask, add }, sky)?;
 			Ok(col)
 		}
 		v::V1_8 => {
-			let p = read(data, v1_8::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, p.groundUp, version);
-			let mask = p.bitMap as u32;
-			let sky = p.chunkData.len() == size_8(mask, true, p.groundUp);
-			decode_8(&mut col, &p.chunkData, mask, sky)?;
+			let p = read(data, v1_8::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, p.ground_up, version);
+			let mask = p.bit_map as u32;
+			let sky = p.chunk_data.len() == size_8(mask, true, p.ground_up);
+			decode_8(&mut col, &p.chunk_data, mask, sky)?;
 			Ok(col)
 		}
 		v::V1_9..v::V1_9_4 => {
-			let p = read(data, v1_9::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, p.groundUp, version);
-			decode_9(&mut col, &p.chunkData, p.bitMap as u32, true)?;
+			let p = read(data, v1_9::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, p.ground_up, version);
+			decode_9(&mut col, &p.chunk_data, p.bit_map as u32, true)?;
 			Ok(col)
 		}
 		v::V1_9_4..v::V1_14 => {
-			let p = read(data, v1_9_4::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, p.groundUp, version);
-			decode_9(&mut col, &p.chunkData, p.bitMap as u32, version < v::V1_13)?;
-			col.entities = named_entities(p.blockEntities);
+			let p = read(data, v1_9_4::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, p.ground_up, version);
+			decode_9(
+				&mut col,
+				&p.chunk_data,
+				p.bit_map as u32,
+				version < v::V1_13,
+			)?;
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_14..v::V1_15 => {
-			let p = read(data, v1_14::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, p.groundUp, version);
-			decode_14(&mut col, &p.chunkData, p.bitMap as u32, true)?;
+			let p = read(data, v1_14::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, p.ground_up, version);
+			decode_14(&mut col, &p.chunk_data, p.bit_map as u32, true)?;
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = named_entities(p.blockEntities);
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_15..v::V1_16 => {
-			use v1_15::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let p = read(data, v1_15::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::r#true(_)), version);
-			decode_14(&mut col, &p.chunkData, p.bitMap as u32, false)?;
-			if let B::r#true(b) = p.biomes {
+			use v1_15::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let p = read(data, v1_15::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
+			decode_14(&mut col, &p.chunk_data, p.bit_map as u32, false)?;
+			if let B::True(b) = p.biomes {
 				col.biomes = Biomes::Cells(b);
 			}
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = named_entities(p.blockEntities);
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_16..v::V1_16_2 => {
-			use v1_16::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let p = read(data, v1_16::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::r#true(_)), version);
-			let present: Vec<usize> = (0..16).filter(|s| p.bitMap & 1 << s != 0).collect();
-			decode_16(&mut col, &p.chunkData, &present, 16)?;
-			if let B::r#true(b) = p.biomes {
+			use v1_16::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let p = read(data, v1_16::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
+			let present: Vec<usize> = (0..16).filter(|s| p.bit_map & 1 << s != 0).collect();
+			decode_16(&mut col, &p.chunk_data, &present, 16)?;
+			if let B::True(b) = p.biomes {
 				col.biomes = Biomes::Cells(b);
 			}
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = named_entities(p.blockEntities);
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_16_2 => {
-			use v1_16_2::play_toClient_packet_map_chunk__biomes::Ty as B;
-			let p = read(data, v1_16_2::play_toClient_packet_map_chunk::deserialize)?;
-			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::r#true(_)), version);
-			let present: Vec<usize> = (0..16).filter(|s| p.bitMap & 1 << s != 0).collect();
-			decode_16(&mut col, &p.chunkData, &present, 16)?;
-			if let B::r#true(b) = p.biomes {
+			use v1_16_2::play_to_client_packet_map_chunk_biomes::Ty as B;
+			let p = read(data, v1_16_2::play_to_client_packet_map_chunk::deserialize)?;
+			let mut col = Column::new(p.x, p.z, matches!(p.biomes, B::True(_)), version);
+			let present: Vec<usize> = (0..16).filter(|s| p.bit_map & 1 << s != 0).collect();
+			decode_16(&mut col, &p.chunk_data, &present, 16)?;
+			if let B::True(b) = p.biomes {
 				col.biomes = Biomes::Cells(b);
 			}
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = named_entities(p.blockEntities);
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_17..v::V1_18 => {
-			let p = read(data, v1_17::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_17::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			let present: Vec<usize> = (0..p.bitMap.len() * 64)
-				.filter(|i| bit(&p.bitMap, *i))
+			let present: Vec<usize> = (0..p.bit_map.len() * 64)
+				.filter(|i| bit(&p.bit_map, *i))
 				.collect();
-			decode_16(&mut col, &p.chunkData, &present, p.biomes.len() / CELLS)?;
+			decode_16(&mut col, &p.chunk_data, &present, p.biomes.len() / CELLS)?;
 			col.biomes = Biomes::Cells(p.biomes);
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = named_entities(p.blockEntities);
+			col.entities = named_entities(p.block_entities);
 			Ok(col)
 		}
 		v::V1_18..v::V1_20 => {
-			let p = read(data, v1_18::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_18::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			decode_18(&mut col, &p.chunkData, version, sections)?;
+			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
-			col.light = Some(light_from_masks(n, masks_of!(p), p.trustEdges));
+			col.light = Some(light_from_masks(n, masks_of!(p), p.trust_edges));
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = entities_18(p.x, p.z, p.blockEntities);
+			col.entities = entities_18(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
 		v::V1_20 => {
-			let p = read(data, v1_20::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_20::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			decode_18(&mut col, &p.chunkData, version, sections)?;
+			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
 			col.light = Some(light_from_masks(n, masks_of!(p), false));
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = entities_18(p.x, p.z, p.blockEntities);
+			col.entities = entities_18(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
 		v::V1_20_2..v::V1_21_5 => {
-			let p = read(data, v1_20_2::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_20_2::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			decode_18(&mut col, &p.chunkData, version, sections)?;
+			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
 			col.light = Some(light_from_masks(n, masks_of!(p), false));
 			col.heightmaps = Some(heightmaps_named(p.heightmaps.value));
-			col.entities = entities_202(p.x, p.z, p.blockEntities);
+			col.entities = entities_202(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
 		v::V1_21_5 => {
-			let p = read(data, v1_21_5::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_21_5::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			decode_18(&mut col, &p.chunkData, version, sections)?;
+			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
 			col.light = Some(light_from_masks(n, masks_of!(p), false));
 			col.heightmaps = Some(
@@ -1082,22 +1087,22 @@ fn decode_chunk_body(version: usize, data: &[u8], sections: Option<usize>) -> Re
 					})
 					.collect(),
 			);
-			col.entities = entities_202(p.x, p.z, p.blockEntities);
+			col.entities = entities_202(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
 		_ => {
-			let p = read(data, v1_21_6::play_toClient_packet_map_chunk::deserialize)?;
+			let p = read(data, v1_21_6::play_to_client_packet_map_chunk::deserialize)?;
 			let mut col = Column::new(p.x, p.z, true, version);
-			decode_18(&mut col, &p.chunkData, version, sections)?;
+			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
 			col.light = Some(light_from_masks(n, masks_of!(p), false));
 			col.heightmaps = Some(
 				p.heightmaps
 					.into_iter()
-					.map(|h| Heightmap { kind: HeightKind::Id(v1_21_6::play_toClient_packet_map_chunk__heightmaps__items__type::virtual_tag(&h.r#type)), data: h.data })
+					.map(|h| Heightmap { kind: HeightKind::Id(v1_21_6::play_to_client_packet_map_chunk_heightmaps_items_type::virtual_tag(&h.r#type)), data: h.data })
 					.collect(),
 			);
-			col.entities = entities_202(p.x, p.z, p.blockEntities);
+			col.entities = entities_202(p.x, p.z, p.block_entities);
 			Ok(col)
 		}
 	}
@@ -1107,37 +1112,43 @@ fn decode_bulk_body(version: usize, data: &[u8]) -> Result<(Vec<Column>, bool)> 
 	let mut out = Vec::new();
 	match version {
 		v::V1_7 => {
-			let p = read(data, v1_7::play_toClient_packet_map_chunk_bulk::deserialize)?;
-			let raw = inflate(&p.compressedChunkData)?;
+			let p = read(
+				data,
+				v1_7::play_to_client_packet_map_chunk_bulk::deserialize,
+			)?;
+			let raw = inflate(&p.compressed_chunk_data)?;
 			let mut at = 0;
 			for m in &p.meta {
-				let (mask, add) = (m.bitMap as u32, m.addBitMap as u32);
-				let size = size_7(mask, add, p.skyLightSent, true);
+				let (mask, add) = (m.bit_map as u32, m.add_bit_map as u32);
+				let size = size_7(mask, add, p.sky_light_sent, true);
 				let Some(chunk) = raw.get(at..at + size) else {
 					return unconvertible("map_chunk_bulk data is shorter than its columns");
 				};
 				let mut col = Column::new(m.x, m.z, true, version);
-				decode_7(&mut col, chunk, Bitmask { mask, add }, p.skyLightSent)?;
+				decode_7(&mut col, chunk, Bitmask { mask, add }, p.sky_light_sent)?;
 				out.push(col);
 				at += size;
 			}
-			Ok((out, p.skyLightSent))
+			Ok((out, p.sky_light_sent))
 		}
 		_ => {
-			let p = read(data, v1_8::play_toClient_packet_map_chunk_bulk::deserialize)?;
+			let p = read(
+				data,
+				v1_8::play_to_client_packet_map_chunk_bulk::deserialize,
+			)?;
 			let mut at = 0;
 			for m in &p.meta {
-				let mask = m.bitMap as u32;
-				let size = size_8(mask, p.skyLightSent, true);
+				let mask = m.bit_map as u32;
+				let size = size_8(mask, p.sky_light_sent, true);
 				let Some(chunk) = p.data.get(at..at + size) else {
 					return unconvertible("map_chunk_bulk data is shorter than its columns");
 				};
 				let mut col = Column::new(m.x, m.z, true, version);
-				decode_8(&mut col, chunk, mask, p.skyLightSent)?;
+				decode_8(&mut col, chunk, mask, p.sky_light_sent)?;
 				out.push(col);
 				at += size;
 			}
-			Ok((out, p.skyLightSent))
+			Ok((out, p.sky_light_sent))
 		}
 	}
 }
@@ -1145,38 +1156,38 @@ fn decode_bulk_body(version: usize, data: &[u8]) -> Result<(Vec<Column>, bool)> 
 fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
 	match version {
 		v::V1_14..v::V1_16 => {
-			let p = read(data, v1_14::play_toClient_packet_update_light::deserialize)?;
+			let p = read(data, v1_14::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_rest(
-				p.skyLightMask,
-				p.blockLightMask,
-				p.emptySkyLightMask,
-				p.emptyBlockLightMask,
+				p.sky_light_mask,
+				p.block_light_mask,
+				p.empty_sky_light_mask,
+				p.empty_block_light_mask,
 				&p.data,
 				false,
 			)?;
-			Ok((p.chunkX, p.chunkZ, l))
+			Ok((p.chunk_x, p.chunk_z, l))
 		}
 		v::V1_16..v::V1_17 => {
-			let p = read(data, v1_16::play_toClient_packet_update_light::deserialize)?;
+			let p = read(data, v1_16::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_rest(
-				p.skyLightMask,
-				p.blockLightMask,
-				p.emptySkyLightMask,
-				p.emptyBlockLightMask,
+				p.sky_light_mask,
+				p.block_light_mask,
+				p.empty_sky_light_mask,
+				p.empty_block_light_mask,
 				&p.data,
-				p.trustEdges,
+				p.trust_edges,
 			)?;
-			Ok((p.chunkX, p.chunkZ, l))
+			Ok((p.chunk_x, p.chunk_z, l))
 		}
 		v::V1_17..v::V1_20 => {
-			let p = read(data, v1_17::play_toClient_packet_update_light::deserialize)?;
-			let l = light_from_masks(0, masks_of!(p), p.trustEdges);
-			Ok((p.chunkX, p.chunkZ, l))
+			let p = read(data, v1_17::play_to_client_packet_update_light::deserialize)?;
+			let l = light_from_masks(0, masks_of!(p), p.trust_edges);
+			Ok((p.chunk_x, p.chunk_z, l))
 		}
 		_ => {
-			let p = read(data, v1_20::play_toClient_packet_update_light::deserialize)?;
+			let p = read(data, v1_20::play_to_client_packet_update_light::deserialize)?;
 			let l = light_from_masks(0, masks_of!(p), false);
-			Ok((p.chunkX, p.chunkZ, l))
+			Ok((p.chunk_x, p.chunk_z, l))
 		}
 	}
 }
@@ -1184,15 +1195,15 @@ fn decode_light_body(version: usize, data: &[u8]) -> Result<(i32, i32, Light)> {
 fn decode_unload_body(version: usize, data: &[u8]) -> Result<(i32, i32)> {
 	match version {
 		..v::V1_20_2 => {
-			let p = read(data, v1_9::play_toClient_packet_unload_chunk::deserialize)?;
-			Ok((p.chunkX, p.chunkZ))
+			let p = read(data, v1_9::play_to_client_packet_unload_chunk::deserialize)?;
+			Ok((p.chunk_x, p.chunk_z))
 		}
 		_ => {
 			let p = read(
 				data,
-				v1_20_2::play_toClient_packet_unload_chunk::deserialize,
+				v1_20_2::play_to_client_packet_unload_chunk::deserialize,
 			)?;
-			Ok((p.chunkX, p.chunkZ))
+			Ok((p.chunk_x, p.chunk_z))
 		}
 	}
 }

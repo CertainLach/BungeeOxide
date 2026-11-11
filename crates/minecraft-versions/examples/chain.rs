@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use minecraft_versions::gen::convert::{convert, index_of, Root};
 use minecraft_versions::gen::convert::{
-	v1_12_2::play_toClient_packet as newest, v1_8::play_toClient_packet as oldest,
+	v1_12_2::play_to_client_packet as newest, v1_8::play_to_client_packet as oldest,
 };
 use minecraft_versions::pds::Input;
 use minecraft_versions::Session;

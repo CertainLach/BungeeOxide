@@ -273,9 +273,8 @@ fn custom_stat(from: Version, to: Version, id: i32) -> Option<i32> {
 	}
 }
 
-fn codec(version: Version) -> Result<::nbt::gen::pds_Entry::Ty> {
-	static CACHE: OnceLock<Mutex<HashMap<Version, Option<::nbt::gen::pds_Entry::Ty>>>> =
-		OnceLock::new();
+fn codec(version: Version) -> Result<::nbt::Entry> {
+	static CACHE: OnceLock<Mutex<HashMap<Version, Option<::nbt::Entry>>>> = OnceLock::new();
 	let mut cache = CACHE
 		.get_or_init(Default::default)
 		.lock()
@@ -291,10 +290,10 @@ fn codec(version: Version) -> Result<::nbt::gen::pds_Entry::Ty> {
 	}
 }
 
-type Tag = crate::gen::convert::v1_16::play_toClient_packet_tags__blockTags__items::Ty;
-type SpawnObject = crate::gen::convert::v1_16::play_toClient_packet_spawn_entity::Ty;
-type SpawnMob = crate::gen::convert::v1_16::play_toClient_packet_spawn_entity_living::Ty;
-type Stat = crate::gen::convert::v1_16::play_toClient_packet__statistics__items::Ty;
+type Tag = crate::gen::convert::v1_16::play_to_client_packet_tags_block_tags_items::Ty;
+type SpawnObject = crate::gen::convert::v1_16::play_to_client_packet_spawn_entity::Ty;
+type SpawnMob = crate::gen::convert::v1_16::play_to_client_packet_spawn_entity_living::Ty;
+type Stat = crate::gen::convert::v1_16::play_to_client_packet_statistics_items::Ty;
 
 fn strip(name: &str) -> &str {
 	name.strip_prefix("minecraft:").unwrap_or(name)
@@ -310,7 +309,7 @@ fn tags(
 ) -> Vec<Tag> {
 	let mut out: Vec<Tag> = list
 		.into_iter()
-		.filter(|t| !removed.contains(&strip(&t.tagName)))
+		.filter(|t| !removed.contains(&strip(&t.tag_name)))
 		.map(|mut t| {
 			if kind != "fluids" {
 				t.entries = t
@@ -323,7 +322,7 @@ fn tags(
 		})
 		.collect();
 	for (_, name, members) in added.iter().filter(|(k, ..)| *k == kind) {
-		if out.iter().any(|t| strip(&t.tagName) == *name) {
+		if out.iter().any(|t| strip(&t.tag_name) == *name) {
 			continue;
 		}
 		let entries = members
@@ -331,7 +330,7 @@ fn tags(
 			.filter_map(|m| registry::names(to, kind)?.id(m).map(|v| v as i32))
 			.collect();
 		out.push(Tag {
-			tagName: format!("minecraft:{name}"),
+			tag_name: format!("minecraft:{name}"),
 			entries,
 		});
 	}
@@ -371,50 +370,50 @@ fn spawn_object(
 ) -> Result<SpawnObject> {
 	let at = from.max(to);
 	let Some((ty, kind)) = spawned(from, to, p.r#type) else {
-		track(cx, at, p.entityId, None);
+		track(cx, at, p.entity_id, None);
 		return dropped();
 	};
 	if kind.name == "falling_block" {
-		p.objectData = state(from, to, p.objectData);
+		p.object_data = state(from, to, p.object_data);
 	}
 	p.r#type = ty;
-	track(cx, at, p.entityId, Some(kind));
+	track(cx, at, p.entity_id, Some(kind));
 	Ok(p)
 }
 
 fn spawn_mob(mut p: SpawnMob, from: Version, to: Version, cx: &mut Session) -> Result<SpawnMob> {
 	let at = from.max(to);
 	let Some((ty, kind)) = spawned(from, to, p.r#type) else {
-		track(cx, at, p.entityId, None);
+		track(cx, at, p.entity_id, None);
 		return dropped();
 	};
 	p.r#type = ty;
-	track(cx, at, p.entityId, Some(kind));
+	track(cx, at, p.entity_id, Some(kind));
 	Ok(p)
 }
 
 fn statistics(list: Vec<Stat>, from: Version, to: Version) -> Vec<Stat> {
 	list.into_iter()
 		.filter_map(|mut s| {
-			s.statisticId = match s.categoryId {
-				0 => remap("blocks", from, to, s.statisticId)?,
-				1..=5 => item(from, to, s.statisticId)?,
-				6 | 7 => remap("entities", from, to, s.statisticId)?,
-				_ => custom_stat(from, to, s.statisticId)?,
+			s.statistic_id = match s.category_id {
+				0 => remap("blocks", from, to, s.statistic_id)?,
+				1..=5 => item(from, to, s.statistic_id)?,
+				6 | 7 => remap("entities", from, to, s.statistic_id)?,
+				_ => custom_stat(from, to, s.statistic_id)?,
 			};
 			Some(s)
 		})
 		.collect()
 }
 
-type BlockChange = crate::gen::convert::v1_16::play_toClient_packet_block_change::Ty;
-type Digging = crate::gen::convert::v1_16::play_toClient_packet_acknowledge_player_digging::Ty;
-type BlockAction = crate::gen::convert::v1_16::play_toClient_packet_block_action::Ty;
-type WorldEvent = crate::gen::convert::v1_16::play_toClient_packet_world_event::Ty;
-type Sound = crate::gen::convert::v1_16::play_toClient_packet_sound_effect::Ty;
-type EntitySound = crate::gen::convert::v1_16::play_toClient_packet_entity_sound_effect::Ty;
-type Cooldown = crate::gen::convert::v1_16::play_toClient_packet_set_cooldown::Ty;
-type Tags = crate::gen::convert::v1_16::play_toClient_packet_tags::Ty;
+type BlockChange = crate::gen::convert::v1_16::play_to_client_packet_block_change::Ty;
+type Digging = crate::gen::convert::v1_16::play_to_client_packet_acknowledge_player_digging::Ty;
+type BlockAction = crate::gen::convert::v1_16::play_to_client_packet_block_action::Ty;
+type WorldEvent = crate::gen::convert::v1_16::play_to_client_packet_world_event::Ty;
+type Sound = crate::gen::convert::v1_16::play_to_client_packet_sound_effect::Ty;
+type EntitySound = crate::gen::convert::v1_16::play_to_client_packet_entity_sound_effect::Ty;
+type Cooldown = crate::gen::convert::v1_16::play_to_client_packet_set_cooldown::Ty;
+type Tags = crate::gen::convert::v1_16::play_to_client_packet_tags::Ty;
 
 fn block_change(mut v: BlockChange, from: Version, to: Version) -> BlockChange {
 	v.r#type = state(from, to, v.r#type);
@@ -427,12 +426,12 @@ fn digging(mut v: Digging, from: Version, to: Version) -> Digging {
 }
 
 fn block_action(mut v: BlockAction, from: Version, to: Version) -> Result<BlockAction> {
-	v.blockId = kept(remap("blocks", from, to, v.blockId))?;
+	v.block_id = kept(remap("blocks", from, to, v.block_id))?;
 	Ok(v)
 }
 
 fn world_event(mut v: WorldEvent, from: Version, to: Version) -> Result<WorldEvent> {
-	match v.effectId {
+	match v.effect_id {
 		2001 => v.data = state(from, to, v.data),
 		1010 if v.data != 0 => v.data = kept(item(from, to, v.data))?,
 		_ => {}
@@ -441,17 +440,17 @@ fn world_event(mut v: WorldEvent, from: Version, to: Version) -> Result<WorldEve
 }
 
 fn sound_effect(mut v: Sound, from: Version, to: Version) -> Result<Sound> {
-	v.soundId = kept(remap("sounds", from, to, v.soundId))?;
+	v.sound_id = kept(remap("sounds", from, to, v.sound_id))?;
 	Ok(v)
 }
 
 fn entity_sound(mut v: EntitySound, from: Version, to: Version) -> Result<EntitySound> {
-	v.soundId = kept(remap("sounds", from, to, v.soundId))?;
+	v.sound_id = kept(remap("sounds", from, to, v.sound_id))?;
 	Ok(v)
 }
 
 fn cooldown(mut v: Cooldown, from: Version, to: Version) -> Result<Cooldown> {
-	v.itemID = kept(item(from, to, v.itemID))?;
+	v.item_id = kept(item(from, to, v.item_id))?;
 	Ok(v)
 }
 
@@ -463,10 +462,10 @@ fn all_tags(
 	removed: &[&str],
 ) -> Tags {
 	Tags {
-		blockTags: tags(v.blockTags, "blocks", from, to, added, &[]),
-		itemTags: tags(v.itemTags, "items", from, to, added, removed),
-		fluidTags: tags(v.fluidTags, "fluids", from, to, added, &[]),
-		entityTags: tags(v.entityTags, "entities", from, to, added, &[]),
+		block_tags: tags(v.block_tags, "blocks", from, to, added, &[]),
+		item_tags: tags(v.item_tags, "items", from, to, added, removed),
+		fluid_tags: tags(v.fluid_tags, "fluids", from, to, added, &[]),
+		entity_tags: tags(v.entity_tags, "entities", from, to, added, &[]),
 	}
 }
 

@@ -85,7 +85,7 @@ impl Decoration {
 			&nbt::json::parse_text(content),
 			&Value::String(String::new()),
 		);
-		let mut out = match nbt::json::text_from_nbt(&Payload::compound(self.style.clone())) {
+		let mut out = match nbt::json::text_from_nbt(&Payload::Compound(self.style.clone())) {
 			Value::Object(style) => style,
 			_ => Map::new(),
 		};
@@ -104,7 +104,7 @@ impl Decoration {
 			.collect();
 		let mut entries = vec![Entry::new("translate", self.key.clone())];
 		if !with.is_empty() {
-			entries.push(Entry::new("with", ListItems::compound(with)));
+			entries.push(Entry::new("with", ListItems::Compound(with)));
 		}
 		entries.extend(
 			self.style

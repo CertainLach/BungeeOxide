@@ -10,8 +10,8 @@ use crate::pds::convert::{Error, Result};
 use crate::Session;
 use nbt::{Entry, Payload, Tag};
 
-remaps!(Version::V1_21_8 => Version::V1_21_9 { late_sound_up_1_21_9: a::ItemSoundHolder::Ty = remap::sound; });
-remaps!(Version::V1_21_9 => Version::V1_21_8 { late_sound_down_1_21_8: a::ItemSoundHolder::Ty = remap::sound; });
+remaps!(Version::V1_21_8 => Version::V1_21_9 { late_sound_up_1_21_9: a::item_sound_holder::Ty = remap::sound; });
+remaps!(Version::V1_21_9 => Version::V1_21_8 { late_sound_down_1_21_8: a::item_sound_holder::Ty = remap::sound; });
 
 items!(a => b, Version::V1_21_8 => Version::V1_21_9 {
 	slot: late_slot_item_up_1_21_9, hashed: late_hashed_item_up_1_21_9, trade1: late_trade1_up_1_21_9, trade2: late_trade2_up_1_21_9,
@@ -50,16 +50,16 @@ untrusted_step!(late_untrusted_up_1_21_9: a => b, Version::V1_21_8 => Version::V
 untrusted_step!(late_untrusted_down_1_21_8: b => a, Version::V1_21_9 => Version::V1_21_8, slots::late_to_slot_1_21_9, slots::late_to_untrusted_1_21_8);
 
 pub fn late_matchers_up_1_21_9(
-	v: &a::ItemBlockPredicate::Ty,
+	v: &a::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<b::DataComponentMatchers::Ty> {
+) -> Result<b::data_component_matchers::Ty> {
 	Ok(v.components.clone())
 }
 
 pub fn late_matchers_down_1_21_8(
-	v: &b::ItemBlockPredicate::Ty,
+	v: &b::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<a::DataComponentMatchers::Ty> {
+) -> Result<a::data_component_matchers::Ty> {
 	Ok(v.components.clone())
 }
 
@@ -132,28 +132,28 @@ fn block_entity_down(v: i32) -> Result<i32> {
 }
 
 pub fn late_chunk_block_entity_up_1_21_9(
-	v: &a::chunkBlockEntity::Ty,
+	v: &a::chunk_block_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(block_entity_up(v.r#type))
 }
 
 pub fn late_chunk_block_entity_down_1_21_8(
-	v: &b::chunkBlockEntity::Ty,
+	v: &b::chunk_block_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	block_entity_down(v.r#type)
 }
 
 pub fn late_tile_entity_up_1_21_9(
-	v: &a::play_toClient_packet_tile_entity_data::Ty,
+	v: &a::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(block_entity_up(v.action))
 }
 
 pub fn late_tile_entity_down_1_21_8(
-	v: &b::play_toClient_packet_tile_entity_data::Ty,
+	v: &b::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	block_entity_down(v.action)
@@ -165,31 +165,31 @@ fn tag_id(tag: &nbt::Tag) -> Option<&str> {
 }
 
 fn with_id(mut tag: nbt::Tag, name: &str) -> nbt::Tag {
-	if !matches!(tag.value, Payload::compound(_)) {
-		tag = Tag::new(Payload::compound(vec![]));
+	if !matches!(tag.value, Payload::Compound(_)) {
+		tag = Tag::new(Payload::Compound(vec![]));
 	}
 	tag.value
-		.put("id", Payload::string(format!("minecraft:{name}")));
+		.put("id", Payload::String(format!("minecraft:{name}")));
 	tag
 }
 
-pub fn late_entity_data_up_1_21_9(v: nbt::Tag, _cx: &mut Session) -> Result<b::SlotComponent::Ty> {
+pub fn late_entity_data_up_1_21_9(v: nbt::Tag, _cx: &mut Session) -> Result<b::slot_component::Ty> {
 	let name = tag_id(&v).unwrap_or("pig");
 	let r#type = crate::registry::names(Version::V1_21_9, "entities")
 		.and_then(|n| n.id(name))
 		.unwrap_or(0) as i32;
-	Ok(b::SlotComponent::Ty::entity_data(
-		b::SlotComponent__entity_data::Ty { r#type, data: v },
+	Ok(b::slot_component::Ty::EntityData(
+		b::slot_component_entity_data::Ty { r#type, data: v },
 	))
 }
 
 pub fn late_entity_data_down_1_21_8(
-	v: b::SlotComponent__entity_data::Ty,
+	v: b::slot_component_entity_data::Ty,
 	_cx: &mut Session,
-) -> Result<a::SlotComponent::Ty> {
+) -> Result<a::slot_component::Ty> {
 	let name = crate::registry::names(Version::V1_21_9, "entities")
 		.and_then(|n| n.name(v.r#type.max(0) as u32));
-	Ok(a::SlotComponent::Ty::entity_data(match name {
+	Ok(a::slot_component::Ty::EntityData(match name {
 		Some(name) => with_id(v.data, name),
 		None => v.data,
 	}))
@@ -198,19 +198,19 @@ pub fn late_entity_data_down_1_21_8(
 pub fn late_block_entity_data_up_1_21_9(
 	v: nbt::Tag,
 	_cx: &mut Session,
-) -> Result<b::SlotComponent::Ty> {
+) -> Result<b::slot_component::Ty> {
 	let name = tag_id(&v).unwrap_or("furnace");
 	let r#type = BLOCK_ENTITIES.iter().position(|n| *n == name).unwrap_or(0) as i32;
-	Ok(b::SlotComponent::Ty::block_entity_data(
-		b::SlotComponent__block_entity_data::Ty { r#type, data: v },
+	Ok(b::slot_component::Ty::BlockEntityData(
+		b::slot_component_block_entity_data::Ty { r#type, data: v },
 	))
 }
 
 pub fn late_block_entity_data_down_1_21_8(
-	v: b::SlotComponent__block_entity_data::Ty,
+	v: b::slot_component_block_entity_data::Ty,
 	_cx: &mut Session,
-) -> Result<a::SlotComponent::Ty> {
-	Ok(a::SlotComponent::Ty::block_entity_data(
+) -> Result<a::slot_component::Ty> {
+	Ok(a::slot_component::Ty::BlockEntityData(
 		match BLOCK_ENTITIES.get(v.r#type.max(0) as usize) {
 			Some(name) => with_id(v.data, name),
 			None => v.data,
@@ -219,25 +219,25 @@ pub fn late_block_entity_data_down_1_21_8(
 }
 
 pub fn late_profile_up_1_21_9(
-	v: a::SlotComponent__profile::Ty,
+	v: a::slot_component_profile::Ty,
 	_cx: &mut Session,
-) -> Result<b::SlotComponent::Ty> {
+) -> Result<b::slot_component::Ty> {
 	let properties = v
 		.properties
 		.into_iter()
-		.map(|p| b::GameProfileProperty::Ty {
+		.map(|p| b::game_profile_property::Ty {
 			name: p.name,
 			value: p.value,
 			signature: p.signature,
 		})
 		.collect();
-	Ok(b::SlotComponent::Ty::profile(b::ResolvableProfile::Ty {
-		ANON: b::ResolvableProfile__ANON::Ty::partial(b::PartialResolvableProfile::Ty {
+	Ok(b::slot_component::Ty::Profile(b::resolvable_profile::Ty {
+		anon: b::resolvable_profile_anon::Ty::Partial(b::partial_resolvable_profile::Ty {
 			name: v.name,
 			uuid: v.uuid,
 			properties,
 		}),
-		skinPatch: b::PlayerSkinPatch::Ty {
+		skin_patch: b::player_skin_patch::Ty {
 			body: None,
 			cape: None,
 			elytra: None,
@@ -247,24 +247,24 @@ pub fn late_profile_up_1_21_9(
 }
 
 pub fn late_profile_down_1_21_8(
-	v: b::ResolvableProfile::Ty,
+	v: b::resolvable_profile::Ty,
 	_cx: &mut Session,
-) -> Result<a::SlotComponent::Ty> {
-	let (name, uuid, properties) = match v.ANON {
-		b::ResolvableProfile__ANON::Ty::partial(p) => (p.name, p.uuid, p.properties),
-		b::ResolvableProfile__ANON::Ty::complete(p) => (Some(p.name), Some(p.uuid), p.properties),
-		b::ResolvableProfile__ANON::Ty::default(_) => (None, None, Vec::new()),
+) -> Result<a::slot_component::Ty> {
+	let (name, uuid, properties) = match v.anon {
+		b::resolvable_profile_anon::Ty::Partial(p) => (p.name, p.uuid, p.properties),
+		b::resolvable_profile_anon::Ty::Complete(p) => (Some(p.name), Some(p.uuid), p.properties),
+		b::resolvable_profile_anon::Ty::Default(_) => (None, None, Vec::new()),
 	};
 	let properties = properties
 		.into_iter()
-		.map(|p| a::SlotComponent__profile__properties__items::Ty {
+		.map(|p| a::slot_component_profile_properties_items::Ty {
 			name: p.name,
 			value: p.value,
 			signature: p.signature,
 		})
 		.collect();
-	Ok(a::SlotComponent::Ty::profile(
-		a::SlotComponent__profile::Ty {
+	Ok(a::slot_component::Ty::Profile(
+		a::slot_component_profile::Ty {
 			name,
 			uuid,
 			properties,
@@ -272,8 +272,8 @@ pub fn late_profile_down_1_21_8(
 	))
 }
 
-pub fn late_particle_effect_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::Particle::Ty> {
-	Ok(b::Particle::Ty::effect(b::Particle__effect::Ty {
+pub fn late_particle_effect_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::particle::Ty> {
+	Ok(b::particle::Ty::Effect(b::particle_effect::Ty {
 		color: -1,
 		power: 1.0,
 	}))
@@ -282,46 +282,46 @@ pub fn late_particle_effect_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::Pa
 pub fn late_particle_instant_effect_up_1_21_9(
 	_v: (),
 	_cx: &mut Session,
-) -> Result<b::Particle::Ty> {
-	Ok(b::Particle::Ty::instant_effect(
-		b::Particle__instant_effect::Ty {
+) -> Result<b::particle::Ty> {
+	Ok(b::particle::Ty::InstantEffect(
+		b::particle_instant_effect::Ty {
 			color: -1,
 			power: 1.0,
 		},
 	))
 }
 
-pub fn late_particle_flash_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::Particle::Ty> {
-	Ok(b::Particle::Ty::flash(-1))
+pub fn late_particle_flash_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::particle::Ty> {
+	Ok(b::particle::Ty::Flash(-1))
 }
 
-pub fn late_particle_dragon_breath_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::Particle::Ty> {
-	Ok(b::Particle::Ty::dragon_breath(1.0))
+pub fn late_particle_dragon_breath_up_1_21_9(_v: (), _cx: &mut Session) -> Result<b::particle::Ty> {
+	Ok(b::particle::Ty::DragonBreath(1.0))
 }
 
 pub fn late_particle_effect_down_1_21_8(
-	_v: b::Particle__effect::Ty,
+	_v: b::particle_effect::Ty,
 	_cx: &mut Session,
-) -> Result<a::Particle::Ty> {
-	Ok(a::Particle::Ty::effect)
+) -> Result<a::particle::Ty> {
+	Ok(a::particle::Ty::Effect)
 }
 
 pub fn late_particle_instant_effect_down_1_21_8(
-	_v: b::Particle__instant_effect::Ty,
+	_v: b::particle_instant_effect::Ty,
 	_cx: &mut Session,
-) -> Result<a::Particle::Ty> {
-	Ok(a::Particle::Ty::instant_effect)
+) -> Result<a::particle::Ty> {
+	Ok(a::particle::Ty::InstantEffect)
 }
 
-pub fn late_particle_flash_down_1_21_8(_v: i32, _cx: &mut Session) -> Result<a::Particle::Ty> {
-	Ok(a::Particle::Ty::flash)
+pub fn late_particle_flash_down_1_21_8(_v: i32, _cx: &mut Session) -> Result<a::particle::Ty> {
+	Ok(a::particle::Ty::Flash)
 }
 
 pub fn late_particle_dragon_breath_down_1_21_8(
 	_v: f32,
 	_cx: &mut Session,
-) -> Result<a::Particle::Ty> {
-	Ok(a::Particle::Ty::dragon_breath)
+) -> Result<a::particle::Ty> {
+	Ok(a::particle::Ty::DragonBreath)
 }
 
 fn velocity_up(v: &a::vec3i16::Ty) -> Vec<u8> {
@@ -343,28 +343,28 @@ fn velocity_down(v: &[u8]) -> Result<a::vec3i16::Ty> {
 }
 
 pub fn late_spawn_velocity_up_1_21_9(
-	v: &a::play_toClient_packet_spawn_entity::Ty,
+	v: &a::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<u8>> {
 	Ok(velocity_up(&v.velocity))
 }
 
 pub fn late_spawn_velocity_down_1_21_8(
-	v: &b::play_toClient_packet_spawn_entity::Ty,
+	v: &b::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<a::vec3i16::Ty> {
 	velocity_down(&v.velocity)
 }
 
 pub fn late_velocity_up_1_21_9(
-	v: &a::play_toClient_packet_entity_velocity::Ty,
+	v: &a::play_to_client_packet_entity_velocity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<u8>> {
 	Ok(velocity_up(&v.velocity))
 }
 
 pub fn late_velocity_down_1_21_8(
-	v: &b::play_toClient_packet_entity_velocity::Ty,
+	v: &b::play_to_client_packet_entity_velocity::Ty,
 	_cx: &mut Session,
 ) -> Result<a::vec3i16::Ty> {
 	velocity_down(&v.velocity)
@@ -377,23 +377,23 @@ struct Dimensions {
 }
 
 pub fn late_registry_data_up_1_21_9(
-	mut p: a::configuration_toClient_packet_registry_data::Ty,
+	mut p: a::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	if p.id.strip_prefix("minecraft:").unwrap_or(&p.id) == "dimension_type" {
 		cx.state::<Dimensions>().scales = scales(&p);
 	}
 	shared::registry_entries(&mut p, "dimension_type", |key, e| {
 		if key.strip_prefix("minecraft:").unwrap_or(key) == "the_end" {
-			e.put("ambient_light", Payload::float(0.25));
+			e.put("ambient_light", Payload::Float(0.25));
 		}
 	});
-	Ok(vec![b::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![b::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
 pub fn late_spawn_info_up_1_21_9(
-	v: &a::play_toClient_SpawnInfo::Ty,
+	v: &a::play_to_client_spawn_info::Ty,
 	cx: &mut Session,
 ) -> Result<String> {
 	world::world(cx).dimension = v.name.clone();
@@ -411,75 +411,75 @@ fn scale(cx: &mut Session) -> f64 {
 }
 
 pub fn late_border_x_up_1_21_9(
-	v: &a::play_toClient_packet_initialize_world_border::Ty,
+	v: &a::play_to_client_packet_initialize_world_border::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.x / scale(cx))
 }
 
 pub fn late_border_z_up_1_21_9(
-	v: &a::play_toClient_packet_initialize_world_border::Ty,
+	v: &a::play_to_client_packet_initialize_world_border::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.z / scale(cx))
 }
 
 pub fn late_border_x_down_1_21_8(
-	v: &b::play_toClient_packet_initialize_world_border::Ty,
+	v: &b::play_to_client_packet_initialize_world_border::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.x * scale(cx))
 }
 
 pub fn late_border_z_down_1_21_8(
-	v: &b::play_toClient_packet_initialize_world_border::Ty,
+	v: &b::play_to_client_packet_initialize_world_border::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.z * scale(cx))
 }
 
 pub fn late_border_center_x_up_1_21_9(
-	v: &a::play_toClient_packet_world_border_center::Ty,
+	v: &a::play_to_client_packet_world_border_center::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.x / scale(cx))
 }
 
 pub fn late_border_center_z_up_1_21_9(
-	v: &a::play_toClient_packet_world_border_center::Ty,
+	v: &a::play_to_client_packet_world_border_center::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.z / scale(cx))
 }
 
 pub fn late_border_center_x_down_1_21_8(
-	v: &b::play_toClient_packet_world_border_center::Ty,
+	v: &b::play_to_client_packet_world_border_center::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.x * scale(cx))
 }
 
 pub fn late_border_center_z_down_1_21_8(
-	v: &b::play_toClient_packet_world_border_center::Ty,
+	v: &b::play_to_client_packet_world_border_center::Ty,
 	cx: &mut Session,
 ) -> Result<f64> {
 	Ok(v.z * scale(cx))
 }
 
 pub fn late_spawn_position_up_1_21_9(
-	p: a::play_toClient_packet_spawn_position::Ty,
+	p: a::play_to_client_packet_spawn_position::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let dimension = world::world(cx).dimension.clone();
-	let dimensionName = if dimension.is_empty() {
+	let dimension_name = if dimension.is_empty() {
 		"minecraft:overworld".to_owned()
 	} else {
 		dimension
 	};
-	Ok(vec![b::play_toClient_packet::Ty::spawn_position(
-		b::RespawnData::Ty {
-			globalPos: b::GlobalPos::Ty {
-				dimensionName,
+	Ok(vec![b::play_to_client_packet::Ty::SpawnPosition(
+		b::respawn_data::Ty {
+			global_pos: b::global_pos::Ty {
+				dimension_name,
 				location: p.location,
 			},
 			yaw: p.angle,
@@ -489,34 +489,34 @@ pub fn late_spawn_position_up_1_21_9(
 }
 
 pub fn late_spawn_position_down_1_21_8(
-	p: b::RespawnData::Ty,
+	p: b::respawn_data::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
-	Ok(vec![a::play_toClient_packet::Ty::spawn_position(
-		a::play_toClient_packet_spawn_position::Ty {
-			location: p.globalPos.location,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	Ok(vec![a::play_to_client_packet::Ty::SpawnPosition(
+		a::play_to_client_packet_spawn_position::Ty {
+			location: p.global_pos.location,
 			angle: p.yaw,
 		},
 	)])
 }
 
 pub fn late_meta_entity_up_1_21_9(
-	p: &a::play_toClient_packet_entity_metadata::Ty,
+	p: &a::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	shared::meta_entity(cx, Version::V1_21_8, p.entityId);
-	Ok(p.entityId)
+	shared::meta_entity(cx, Version::V1_21_8, p.entity_id);
+	Ok(p.entity_id)
 }
 
 pub fn late_meta_entity_down_1_21_8(
-	p: &b::play_toClient_packet_entity_metadata::Ty,
+	p: &b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	shared::meta_entity(cx, Version::V1_21_9, p.entityId);
-	Ok(p.entityId)
+	shared::meta_entity(cx, Version::V1_21_9, p.entity_id);
+	Ok(p.entity_id)
 }
 
-pub fn late_meta_key_up_1_21_9(e: &a::entityMetadataEntry::Ty, cx: &mut Session) -> Result<u8> {
+pub fn late_meta_key_up_1_21_9(e: &a::entity_metadata_entry::Ty, cx: &mut Session) -> Result<u8> {
 	meta(cx).key = e.key;
 	Ok(match (shared::is(cx, &["player"]), e.key) {
 		(true, 15) => 17,
@@ -527,7 +527,7 @@ pub fn late_meta_key_up_1_21_9(e: &a::entityMetadataEntry::Ty, cx: &mut Session)
 	})
 }
 
-pub fn late_meta_key_down_1_21_8(e: &b::entityMetadataEntry::Ty, cx: &mut Session) -> Result<u8> {
+pub fn late_meta_key_down_1_21_8(e: &b::entity_metadata_entry::Ty, cx: &mut Session) -> Result<u8> {
 	if let Some(key) = shared::fallback_key(cx, Version::V1_21_9, Version::V1_21_8, e.key) {
 		return key;
 	}
@@ -548,7 +548,7 @@ fn is_shoulder(cx: &mut Session) -> bool {
 pub fn late_meta_compound_up_1_21_9(
 	v: nbt::Tag,
 	cx: &mut Session,
-) -> Result<b::entityMetadataEntry__value::Ty> {
+) -> Result<b::entity_metadata_entry_value::Ty> {
 	if !is_shoulder(cx) {
 		return Err(Error::Dropped);
 	}
@@ -557,7 +557,7 @@ pub fn late_meta_compound_up_1_21_9(
 		.field("Variant")
 		.and_then(Payload::as_i64)
 		.filter(|_| v.value.field("id").and_then(Payload::as_str).is_some());
-	Ok(b::entityMetadataEntry__value::Ty::optional_unsigned_int(
+	Ok(b::entity_metadata_entry_value::Ty::OptionalUnsignedInt(
 		variant.map_or(0, |v| v as i32 + 1),
 	))
 }
@@ -565,24 +565,24 @@ pub fn late_meta_compound_up_1_21_9(
 pub fn late_meta_unsigned_down_1_21_8(
 	v: i32,
 	cx: &mut Session,
-) -> Result<a::entityMetadataEntry__value::Ty> {
+) -> Result<a::entity_metadata_entry_value::Ty> {
 	if !is_shoulder(cx) {
-		return Ok(a::entityMetadataEntry__value::Ty::optional_unsigned_int(v));
+		return Ok(a::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v));
 	}
 	let tag = match v {
-		0 => Payload::compound(vec![]),
-		v => Payload::compound(vec![
+		0 => Payload::Compound(vec![]),
+		v => Payload::Compound(vec![
 			Entry::new("id", Payload::from("minecraft:parrot")),
-			Entry::new("Variant", Payload::int(v - 1)),
+			Entry::new("Variant", Payload::Int(v - 1)),
 		]),
 	};
-	Ok(a::entityMetadataEntry__value::Ty::compound_tag(Tag::new(
+	Ok(a::entity_metadata_entry_value::Ty::CompoundTag(Tag::new(
 		tag,
 	)))
 }
 
 pub fn late_bee_type_up_1_21_9(
-	_v: &a::SlotComponent__bees__items::Ty,
+	_v: &a::slot_component_bees_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(crate::registry::names(Version::V1_21_9, "entities")
@@ -590,7 +590,7 @@ pub fn late_bee_type_up_1_21_9(
 		.unwrap_or(0) as i32)
 }
 
-fn scales(p: &a::configuration_toClient_packet_registry_data::Ty) -> Vec<f64> {
+fn scales(p: &a::configuration_to_client_packet_registry_data::Ty) -> Vec<f64> {
 	p.entries
 		.iter()
 		.map(|e| {
@@ -599,8 +599,8 @@ fn scales(p: &a::configuration_toClient_packet_registry_data::Ty) -> Vec<f64> {
 				.as_ref()
 				.and_then(|t| t.value.field("coordinate_scale"))
 			{
-				Some(Payload::double(d)) => *d,
-				Some(Payload::float(f)) => *f as f64,
+				Some(Payload::Double(d)) => *d,
+				Some(Payload::Float(f)) => *f as f64,
 				_ if e.key.strip_prefix("minecraft:").unwrap_or(&e.key) == "the_nether" => 8.0,
 				_ => 1.0,
 			}
@@ -609,18 +609,18 @@ fn scales(p: &a::configuration_toClient_packet_registry_data::Ty) -> Vec<f64> {
 }
 
 pub fn late_registry_data_down_1_21_8(
-	p: b::configuration_toClient_packet_registry_data::Ty,
+	p: b::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	if p.id.strip_prefix("minecraft:").unwrap_or(&p.id) == "dimension_type" {
 		cx.state::<Dimensions>().scales = scales(&p);
 	}
-	Ok(vec![a::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![a::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
 pub fn late_spawn_info_down_1_21_8(
-	v: &b::play_toClient_SpawnInfo::Ty,
+	v: &b::play_to_client_spawn_info::Ty,
 	cx: &mut Session,
 ) -> Result<String> {
 	world::world(cx).dimension = v.name.clone();
@@ -631,11 +631,11 @@ pub fn late_spawn_info_down_1_21_8(
 pub fn late_code_of_conduct_down_1_21_8(
 	_v: String,
 	cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
-	let accept = b::configuration_toServer_packet::Ty::accept_code_of_conduct(
-		b::configuration_toServer_packet_accept_code_of_conduct::Ty {},
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
+	let accept = b::configuration_to_server_packet::Ty::AcceptCodeOfConduct(
+		b::configuration_to_server_packet_accept_code_of_conduct::Ty {},
 	);
-	let data = super::util::encode(&accept, b::configuration_toServer_packet::serialize)?;
+	let data = super::util::encode(&accept, b::configuration_to_server_packet::serialize)?;
 	cx.send(
 		crate::gen::convert::Root::ConfigurationToServer,
 		Version::V1_21_9.index(),
@@ -651,7 +651,7 @@ struct Rotation {
 }
 
 pub fn late_look_yaw_up_1_21_9(
-	v: &a::play_toServer_packet_look::Ty,
+	v: &a::play_to_server_packet_look::Ty,
 	cx: &mut Session,
 ) -> Result<f32> {
 	*cx.state::<Rotation>() = Rotation {
@@ -662,7 +662,7 @@ pub fn late_look_yaw_up_1_21_9(
 }
 
 pub fn late_position_look_yaw_up_1_21_9(
-	v: &a::play_toServer_packet_position_look::Ty,
+	v: &a::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
 ) -> Result<f32> {
 	*cx.state::<Rotation>() = Rotation {
@@ -673,14 +673,14 @@ pub fn late_position_look_yaw_up_1_21_9(
 }
 
 pub fn late_rotation_up_1_21_9(
-	p: a::play_toClient_packet_player_rotation::Ty,
+	p: a::play_to_client_packet_player_rotation::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_player_rotation::Ty> {
-	Ok(b::play_toClient_packet_player_rotation::Ty {
+) -> Result<b::play_to_client_packet_player_rotation::Ty> {
+	Ok(b::play_to_client_packet_player_rotation::Ty {
 		yaw: p.yaw,
-		relativeYaw: false,
+		relative_yaw: false,
 		pitch: p.pitch,
-		relativePitch: false,
+		relative_pitch: false,
 	})
 }
 
@@ -689,18 +689,18 @@ pub fn late_text_keep_up_1_21_9(v: nbt::Tag, _cx: &mut Session) -> Result<nbt::T
 }
 
 pub fn late_rotation_down_1_21_8(
-	p: b::play_toClient_packet_player_rotation::Ty,
+	p: b::play_to_client_packet_player_rotation::Ty,
 	cx: &mut Session,
-) -> Result<a::play_toClient_packet_player_rotation::Ty> {
+) -> Result<a::play_to_client_packet_player_rotation::Ty> {
 	let r = cx.state::<Rotation>();
-	let yaw = if p.relativeYaw { r.yaw + p.yaw } else { p.yaw };
-	let pitch = if p.relativePitch {
+	let yaw = if p.relative_yaw { r.yaw + p.yaw } else { p.yaw };
+	let pitch = if p.relative_pitch {
 		r.pitch + p.pitch
 	} else {
 		p.pitch
 	};
 	*r = Rotation { yaw, pitch };
-	Ok(a::play_toClient_packet_player_rotation::Ty { yaw, pitch })
+	Ok(a::play_to_client_packet_player_rotation::Ty { yaw, pitch })
 }
 
 text_down!(b => a, text::unobject, {
@@ -709,23 +709,23 @@ text_down!(b => a, text::unobject, {
 	window: late_open_window_down_1_21_8,
 	chat: late_player_chat_down_1_21_8,
 	packets: [
-		play_toClient_packet_system_chat: system_chat => late_system_chat_down_1_21_8,
-		play_toClient_packet_playerlist_header: header => late_header_down_1_21_8,
-		play_toClient_packet_death_combat_event: death => late_death_down_1_21_8,
-		play_toClient_packet_profileless_chat: profileless => late_profileless_down_1_21_8,
-		play_toClient_packet_scoreboard_objective: objective => late_objective_down_1_21_8,
-		play_toClient_packet_scoreboard_score: score => late_score_down_1_21_8,
-		play_toClient_packet_boss_bar: boss_bar => late_boss_bar_down_1_21_8,
-		play_toClient_packet_map: map => late_map_down_1_21_8,
-		play_toClient_packet_tab_complete: tab_complete => late_tab_complete_down_1_21_8,
-		play_toClient_packet_server_data: server_data => late_server_data_down_1_21_8,
+		play_to_client_packet_system_chat: system_chat => late_system_chat_down_1_21_8,
+		play_to_client_packet_playerlist_header: header => late_header_down_1_21_8,
+		play_to_client_packet_death_combat_event: death => late_death_down_1_21_8,
+		play_to_client_packet_profileless_chat: profileless => late_profileless_down_1_21_8,
+		play_to_client_packet_scoreboard_objective: objective => late_objective_down_1_21_8,
+		play_to_client_packet_scoreboard_score: score => late_score_down_1_21_8,
+		play_to_client_packet_boss_bar: boss_bar => late_boss_bar_down_1_21_8,
+		play_to_client_packet_map: map => late_map_down_1_21_8,
+		play_to_client_packet_tab_complete: tab_complete => late_tab_complete_down_1_21_8,
+		play_to_client_packet_server_data: server_data => late_server_data_down_1_21_8,
 		packet_common_add_resource_pack: resource_pack => late_resource_pack_down_1_21_8,
 	],
 	arms: [
-		play_toClient_packet: action_bar => late_action_bar_down_1_21_8,
-		play_toClient_packet: set_title_text => late_title_down_1_21_8,
-		play_toClient_packet: set_title_subtitle => late_subtitle_down_1_21_8,
-		play_toClient_packet: kick_disconnect => late_kick_down_1_21_8,
-		configuration_toClient_packet: disconnect => late_config_disconnect_down_1_21_8,
+		play_to_client_packet: ActionBar => late_action_bar_down_1_21_8,
+		play_to_client_packet: SetTitleText => late_title_down_1_21_8,
+		play_to_client_packet: SetTitleSubtitle => late_subtitle_down_1_21_8,
+		play_to_client_packet: KickDisconnect => late_kick_down_1_21_8,
+		configuration_to_client_packet: Disconnect => late_config_disconnect_down_1_21_8,
 	],
 });

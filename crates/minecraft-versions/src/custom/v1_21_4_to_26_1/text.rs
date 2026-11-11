@@ -3,10 +3,10 @@ use serde_json::Value;
 
 fn map_list(items: ListItems, f: fn(Payload) -> Payload) -> ListItems {
 	match items {
-		ListItems::compound(list) => ListItems::compound(
+		ListItems::Compound(list) => ListItems::Compound(
 			list.into_iter()
-				.map(|c| match f(Payload::compound(c)) {
-					Payload::compound(c) => c,
+				.map(|c| match f(Payload::Compound(c)) {
+					Payload::Compound(c) => c,
 					_ => Vec::new(),
 				})
 				.collect(),
@@ -36,21 +36,21 @@ fn click(mut event: Payload) -> Option<Payload> {
 		_ => "value",
 	};
 	match (key, value) {
-		("page", Some(Payload::string(s))) => event.put(
+		("page", Some(Payload::String(s))) => event.put(
 			"page",
-			Payload::int(s.trim().parse().ok().filter(|p| *p >= 1)?),
+			Payload::Int(s.trim().parse().ok().filter(|p| *p >= 1)?),
 		),
-		("url", Some(Payload::string(s)))
+		("url", Some(Payload::String(s)))
 			if !(s.starts_with("http://") || s.starts_with("https://")) =>
 		{
 			return None
 		}
-		("command", Some(Payload::string(s))) => {
+		("command", Some(Payload::String(s))) => {
 			let clean: String = s
 				.chars()
 				.filter(|c| *c != '\u{a7}' && (*c >= ' ' || *c == '\n') && *c != '\u{7f}')
 				.collect();
-			event.put("command", Payload::string(clean));
+			event.put("command", Payload::String(clean));
 		}
 		(key, Some(v)) => event.put(key, v),
 		(_, None) => {}
@@ -60,7 +60,7 @@ fn click(mut event: Payload) -> Option<Payload> {
 
 fn legacy_snbt(value: &Payload) -> Option<Payload> {
 	let text = match value {
-		Payload::string(s) => s.as_str(),
+		Payload::String(s) => s.as_str(),
 		p => p.field("text").and_then(Payload::as_str)?,
 	};
 	snbt::parse(text)
@@ -98,7 +98,7 @@ fn legacy_hover(mut event: Payload, action: &str, value: Payload) -> Option<Payl
 				.and_then(Payload::as_i64)
 				.or_else(|| tag.field("count").and_then(Payload::as_i64))
 				.unwrap_or(1);
-			event.put("count", Payload::int(count.clamp(1, 99) as i32));
+			event.put("count", Payload::Int(count.clamp(1, 99) as i32));
 		}
 		_ => event.put("value", payload(value)),
 	}
@@ -131,12 +131,12 @@ fn hover(mut event: Payload) -> Option<Payload> {
 			}
 		}
 		"show_item" => match contents {
-			Payload::compound(entries) => {
+			Payload::Compound(entries) => {
 				for e in entries {
 					event.put(&e.name, e.value);
 				}
 			}
-			Payload::string(id) => event.put("id", Payload::string(id)),
+			Payload::String(id) => event.put("id", Payload::String(id)),
 			_ => {}
 		},
 		_ => event.put("contents", contents),
@@ -146,10 +146,10 @@ fn hover(mut event: Payload) -> Option<Payload> {
 
 pub fn payload(p: Payload) -> Payload {
 	match p {
-		Payload::compound(mut entries) => {
+		Payload::Compound(mut entries) => {
 			rename(&mut entries, "clickEvent", "click_event");
 			rename(&mut entries, "hoverEvent", "hover_event");
-			Payload::compound(
+			Payload::Compound(
 				entries
 					.into_iter()
 					.filter_map(|e| {
@@ -157,7 +157,7 @@ pub fn payload(p: Payload) -> Payload {
 							"click_event" => click(e.value)?,
 							"hover_event" => hover(e.value)?,
 							"extra" | "with" => match e.value {
-								Payload::list(l) => Payload::list(List::new(text_list(l.items))),
+								Payload::List(l) => Payload::List(List::new(text_list(l.items))),
 								v => v,
 							},
 							"separator" => payload(e.value),
@@ -168,7 +168,7 @@ pub fn payload(p: Payload) -> Payload {
 					.collect(),
 			)
 		}
-		Payload::list(l) => Payload::list(List::new(text_list(l.items))),
+		Payload::List(l) => Payload::List(List::new(text_list(l.items))),
 		other => other,
 	}
 }
@@ -190,7 +190,7 @@ fn click_down(mut event: Payload) -> Payload {
 		_ => return event,
 	};
 	match event.take(key) {
-		Some(Payload::int(page)) => event.put("value", Payload::string(page.to_string())),
+		Some(Payload::Int(page)) => event.put("value", Payload::String(page.to_string())),
 		Some(v) => event.put("value", v),
 		None => {}
 	}
@@ -203,7 +203,7 @@ fn hover_down(mut event: Payload) -> Payload {
 		.and_then(Payload::as_str)
 		.unwrap_or_default()
 		.to_owned();
-	let mut contents = Payload::compound(vec![]);
+	let mut contents = Payload::Compound(vec![]);
 	let fields: &[(&str, &str)] = match action.as_str() {
 		"show_text" => {
 			if let Some(value) = event.take("value") {
@@ -230,10 +230,10 @@ fn hover_down(mut event: Payload) -> Payload {
 
 pub fn payload_down(p: Payload) -> Payload {
 	match p {
-		Payload::compound(mut entries) => {
+		Payload::Compound(mut entries) => {
 			rename(&mut entries, "click_event", "clickEvent");
 			rename(&mut entries, "hover_event", "hoverEvent");
-			Payload::compound(
+			Payload::Compound(
 				entries
 					.into_iter()
 					.map(|e| {
@@ -241,8 +241,8 @@ pub fn payload_down(p: Payload) -> Payload {
 							"clickEvent" => click_down(e.value),
 							"hoverEvent" => hover_down(e.value),
 							"extra" | "with" => match e.value {
-								Payload::list(l) => {
-									Payload::list(List::new(map_list(l.items, payload_down)))
+								Payload::List(l) => {
+									Payload::List(List::new(map_list(l.items, payload_down)))
 								}
 								v => v,
 							},
@@ -254,7 +254,7 @@ pub fn payload_down(p: Payload) -> Payload {
 					.collect(),
 			)
 		}
-		Payload::list(l) => Payload::list(List::new(map_list(l.items, payload_down))),
+		Payload::List(l) => Payload::List(List::new(map_list(l.items, payload_down))),
 		other => other,
 	}
 }
@@ -265,7 +265,7 @@ pub fn down(tag: Tag) -> Tag {
 
 fn undialog_payload(p: Payload) -> Payload {
 	match p {
-		Payload::compound(entries) => Payload::compound(
+		Payload::Compound(entries) => Payload::Compound(
 			entries
 				.into_iter()
 				.filter(|e| {
@@ -278,8 +278,8 @@ fn undialog_payload(p: Payload) -> Payload {
 				.map(|e| {
 					let value = match e.name.as_str() {
 						"extra" | "with" => match e.value {
-							Payload::list(l) => {
-								Payload::list(List::new(map_list(l.items, undialog_payload)))
+							Payload::List(l) => {
+								Payload::List(List::new(map_list(l.items, undialog_payload)))
 							}
 							v => v,
 						},
@@ -290,7 +290,7 @@ fn undialog_payload(p: Payload) -> Payload {
 				})
 				.collect(),
 		),
-		Payload::list(l) => Payload::list(List::new(map_list(l.items, undialog_payload))),
+		Payload::List(l) => Payload::List(List::new(map_list(l.items, undialog_payload))),
 		other => other,
 	}
 }
@@ -301,9 +301,9 @@ pub fn undialog(tag: Tag) -> Tag {
 
 fn unobject_payload(p: Payload) -> Payload {
 	match p {
-		Payload::compound(mut entries) => {
+		Payload::Compound(mut entries) => {
 			let object = entries.iter().any(|e| match (e.name.as_str(), &e.value) {
-				("type", Payload::string(t)) => t == "object",
+				("type", Payload::String(t)) => t == "object",
 				(name, _) => matches!(name, "sprite" | "player"),
 			});
 			if object {
@@ -319,14 +319,14 @@ fn unobject_payload(p: Payload) -> Payload {
 				});
 				entries.push(Entry::new("text", fallback));
 			}
-			Payload::compound(
+			Payload::Compound(
 				entries
 					.into_iter()
 					.map(|e| {
 						let value = match e.name.as_str() {
 							"extra" | "with" => match e.value {
-								Payload::list(l) => {
-									Payload::list(List::new(map_list(l.items, unobject_payload)))
+								Payload::List(l) => {
+									Payload::List(List::new(map_list(l.items, unobject_payload)))
 								}
 								v => v,
 							},
@@ -340,7 +340,7 @@ fn unobject_payload(p: Payload) -> Payload {
 					.collect(),
 			)
 		}
-		Payload::list(l) => Payload::list(List::new(map_list(l.items, unobject_payload))),
+		Payload::List(l) => Payload::List(List::new(map_list(l.items, unobject_payload))),
 		other => other,
 	}
 }
@@ -363,31 +363,31 @@ pub fn to_json(p: Payload) -> String {
 }
 
 pub fn json_lines(p: &Payload) -> Option<Vec<String>> {
-	let Payload::list(l) = p else { return None };
+	let Payload::List(l) = p else { return None };
 	Some(l.values().into_iter().map(to_json).collect())
 }
 
 fn json_value(v: &Value) -> Payload {
 	match v {
-		Value::Array(items) => Payload::list(List::new(ListItems::compound(
+		Value::Array(items) => Payload::List(List::new(ListItems::Compound(
 			items
 				.iter()
 				.map(|i| match json_component(i) {
-					Payload::compound(c) => c,
+					Payload::Compound(c) => c,
 					other => vec![Entry::new("text", other)],
 				})
 				.collect(),
 		))),
-		Value::Object(map) => Payload::compound(
+		Value::Object(map) => Payload::Compound(
 			map.iter()
 				.map(|(k, v)| {
 					let value = match k.as_str() {
 						"extra" | "with" => match v {
-							Value::Array(items) => Payload::list(List::new(ListItems::compound(
+							Value::Array(items) => Payload::List(List::new(ListItems::Compound(
 								items
 									.iter()
 									.map(|i| match json_component(i) {
-										Payload::compound(c) => c,
+										Payload::Compound(c) => c,
 										other => vec![Entry::new("text", other)],
 									})
 									.collect(),
@@ -411,21 +411,21 @@ fn json_value(v: &Value) -> Payload {
 
 fn json_component(v: &Value) -> Payload {
 	match v {
-		Value::String(s) => Payload::compound(vec![Entry::new("text", s.as_str())]),
+		Value::String(s) => Payload::Compound(vec![Entry::new("text", s.as_str())]),
 		Value::Array(items) if !items.is_empty() => {
 			let mut first = match json_component(&items[0]) {
-				Payload::compound(c) => c,
+				Payload::Compound(c) => c,
 				_ => Vec::new(),
 			};
 			let extra: Vec<Vec<Entry>> = items[1..]
 				.iter()
 				.map(|i| match json_component(i) {
-					Payload::compound(c) => c,
+					Payload::Compound(c) => c,
 					_ => Vec::new(),
 				})
 				.collect();
-			first.push(Entry::new("extra", ListItems::compound(extra)));
-			Payload::compound(first)
+			first.push(Entry::new("extra", ListItems::Compound(extra)));
+			Payload::Compound(first)
 		}
 		v => json_value(v),
 	}
@@ -434,12 +434,12 @@ fn json_component(v: &Value) -> Payload {
 pub fn from_json(text: &str) -> Payload {
 	let parsed = match serde_json::from_str::<Value>(text) {
 		Ok(v) => json_component(&v),
-		Err(_) => Payload::compound(vec![Entry::new("text", text)]),
+		Err(_) => Payload::Compound(vec![Entry::new("text", text)]),
 	};
 	match payload(parsed) {
-		Payload::compound(c) => Payload::compound(vec![
+		Payload::Compound(c) => Payload::Compound(vec![
 			Entry::new("text", ""),
-			Entry::new("extra", ListItems::compound(vec![c])),
+			Entry::new("extra", ListItems::Compound(vec![c])),
 		]),
 		other => other,
 	}

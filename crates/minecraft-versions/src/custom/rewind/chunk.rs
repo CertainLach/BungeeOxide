@@ -3,7 +3,7 @@ use crate::gen::convert::{v1_8, v1_9, Version};
 use crate::pds::convert::{unconvertible, Result};
 use crate::session::Session;
 
-type C8 = v1_8::play_toClient_packet::Ty;
+type C8 = v1_8::play_to_client_packet::Ty;
 
 const SECTION_BLOCKS: usize = 4096;
 const SECTION_LIGHT: usize = 2048;
@@ -114,36 +114,36 @@ fn column_1_8(
 	if let Some(biomes) = biomes {
 		data.extend_from_slice(biomes);
 	}
-	C8::map_chunk(v1_8::play_toClient_packet_map_chunk::Ty {
+	C8::MapChunk(v1_8::play_to_client_packet_map_chunk::Ty {
 		x,
 		z,
-		groundUp: full,
-		bitMap: bitmap,
-		chunkData: data,
+		ground_up: full,
+		bit_map: bitmap,
+		chunk_data: data,
 	})
 }
 
 pub fn legacy_down_map_chunk_1_8(
-	p: v1_9::play_toClient_packet_map_chunk::Ty,
+	p: v1_9::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<C8>> {
-	let bitmap = (p.bitMap & 0xffff) as u16;
+	let bitmap = (p.bit_map & 0xffff) as u16;
 	let count = bitmap.count_ones() as usize;
-	let biomes_len = if p.groundUp { BIOMES } else { 0 };
+	let biomes_len = if p.ground_up { BIOMES } else { 0 };
 	let parsed = [true, false].into_iter().find_map(|sky| {
-		let (sections, used) = sections_1_9(&p.chunkData, count, sky)?;
-		(used + biomes_len == p.chunkData.len()).then_some((sections, used, sky))
+		let (sections, used) = sections_1_9(&p.chunk_data, count, sky)?;
+		(used + biomes_len == p.chunk_data.len()).then_some((sections, used, sky))
 	});
 	let Some((mut sections, used, sky)) = parsed else {
 		return unconvertible(format!(
 			"1.9 chunk {} {} with bitmap {bitmap:#x} has {} bytes that match no section layout",
 			p.x,
 			p.z,
-			p.chunkData.len()
+			p.chunk_data.len()
 		));
 	};
-	let biomes = p.groundUp.then(|| &p.chunkData[used..]);
-	if p.groundUp && bitmap == 0 {
+	let biomes = p.ground_up.then(|| &p.chunk_data[used..]);
+	if p.ground_up && bitmap == 0 {
 		sections.push(Section8 {
 			states: vec![0; SECTION_BLOCKS],
 			block_light: vec![0; SECTION_LIGHT],
@@ -152,17 +152,22 @@ pub fn legacy_down_map_chunk_1_8(
 		return Ok(vec![column_1_8(p.x, p.z, true, 1, &sections, biomes)]);
 	}
 	Ok(vec![column_1_8(
-		p.x, p.z, p.groundUp, bitmap, &sections, biomes,
+		p.x,
+		p.z,
+		p.ground_up,
+		bitmap,
+		&sections,
+		biomes,
 	)])
 }
 
 pub fn legacy_down_unload_chunk_1_8(
-	p: v1_9::play_toClient_packet_unload_chunk::Ty,
+	p: v1_9::play_to_client_packet_unload_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<C8>> {
 	Ok(vec![column_1_8(
-		p.chunkX,
-		p.chunkZ,
+		p.chunk_x,
+		p.chunk_z,
 		true,
 		0,
 		&[],

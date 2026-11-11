@@ -13,7 +13,7 @@ pub(super) enum PData {
 	Transition([f32; 7]),
 	State(i32),
 	Item(Slot),
-	Vibration(v1_17::particleData__v37::Ty),
+	Vibration(v1_17::particle_data_v37::Ty),
 }
 
 pub(super) struct Particle {
@@ -86,20 +86,20 @@ fn restored(tag: &mut Vec<Entry>, to: Version) -> Option<String> {
 	Some(original)
 }
 
-fn tagged(s: &mut v1_16::slot__true::Ty, from: Version, original: &str) {
+fn tagged(s: &mut v1_16::slot_true::Ty, from: Version, original: &str) {
 	let tag = s
-		.nbtData
-		.get_or_insert_with(|| Entry::new("", P::compound(vec![])));
+		.nbt_data
+		.get_or_insert_with(|| Entry::new("", P::Compound(vec![])));
 	let Some(c) = tag.value.as_compound_mut() else {
 		return;
 	};
 	let key = format!("nether:{}", from.name());
-	c.put(&key, P::string(original.to_owned()));
+	c.put(&key, P::String(original.to_owned()));
 	let display = c.compound_or_insert("display");
 	if display.field("Name").is_none() {
 		let name = serde_json::json!({"text": title(original), "italic": false}).to_string();
-		display.put("Name", P::string(name));
-		c.put(&format!("{key}:named"), P::byte(1));
+		display.put("Name", P::String(name));
+		c.put(&format!("{key}:named"), P::Byte(1));
 	}
 }
 
@@ -109,49 +109,49 @@ pub(super) fn slot(
 	to: Version,
 	fix: impl FnOnce(&str, &mut Vec<Entry>),
 ) -> Slot {
-	let Slot::r#true(mut s) = v else { return v };
-	let original = match &mut s.nbtData {
+	let Slot::True(mut s) = v else { return v };
+	let original = match &mut s.nbt_data {
 		Some(Entry {
-			value: P::compound(c),
+			value: P::Compound(c),
 			..
 		}) if from < to => restored(c, to),
 		_ => None,
 	};
-	if s.nbtData
+	if s.nbt_data
 		.as_ref()
 		.is_some_and(|e| e.value.as_compound().is_some_and(Vec::is_empty))
 		&& original.is_some()
 	{
-		s.nbtData = None;
+		s.nbt_data = None;
 	}
 	let id = match original.as_deref().and_then(|name| item_id(to, name)) {
 		Some(id) => id,
-		None => match item(from, to, s.itemId)
-			.filter(|_| s.itemId == 0 || super::direct("items", from, to, s.itemId).is_some())
+		None => match item(from, to, s.item_id)
+			.filter(|_| s.item_id == 0 || super::direct("items", from, to, s.item_id).is_some())
 		{
 			Some(id) => id,
 			None => {
-				let name = item_name(from, s.itemId);
+				let name = item_name(from, s.item_id);
 				let Some(id) = substitute("items", to, name)
 					.filter(|_| from > to)
 					.and_then(|sub| item_id(to, sub))
 				else {
-					return Slot::r#false;
+					return Slot::False;
 				};
 				tagged(&mut s, from, name);
 				id
 			}
 		},
 	};
-	s.itemId = id;
+	s.item_id = id;
 	if let Some(Entry {
-		value: P::compound(c),
+		value: P::Compound(c),
 		..
-	}) = &mut s.nbtData
+	}) = &mut s.nbt_data
 	{
 		fix(item_name(to, id), c);
 	}
-	Slot::r#true(s)
+	Slot::True(s)
 }
 
 fn adapt(name: &str, data: PData) -> Option<PData> {
@@ -187,193 +187,196 @@ pub(super) fn particle(
 	})
 }
 
-pub(super) fn particle_15(id: i32, d: v1_15_2::particleData::Ty) -> Particle {
-	use v1_15_2::particleData::Ty as D;
+pub(super) fn particle_15(id: i32, d: v1_15_2::particle_data::Ty) -> Particle {
+	use v1_15_2::particle_data::Ty as D;
 	let data = match d {
-		D::v14(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
-		D::v3(s) | D::v23(s) => PData::State(s),
-		D::v32(i) => PData::Item(i),
-		D::default(_) => PData::None,
+		D::V14(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
+		D::V3(s) | D::V23(s) => PData::State(s),
+		D::V32(i) => PData::Item(i),
+		D::Default(_) => PData::None,
 	};
 	Particle { id, data }
 }
 
-pub(super) fn data_15(p: Particle) -> Option<v1_15_2::particleData::Ty> {
-	use v1_15_2::particleData::Ty as D;
+pub(super) fn data_15(p: Particle) -> Option<v1_15_2::particle_data::Ty> {
+	use v1_15_2::particle_data::Ty as D;
 	Some(match (p.id, p.data) {
-		(14, PData::Dust([red, green, blue, scale])) => D::v14(v1_15_2::particleData__v14::Ty {
+		(14, PData::Dust([red, green, blue, scale])) => D::V14(v1_15_2::particle_data_v14::Ty {
 			red,
 			green,
 			blue,
 			scale,
 		}),
-		(3, PData::State(s)) => D::v3(s),
-		(23, PData::State(s)) => D::v23(s),
-		(32, PData::Item(i)) => D::v32(i),
-		(id, PData::None) => D::default(id),
+		(3, PData::State(s)) => D::V3(s),
+		(23, PData::State(s)) => D::V23(s),
+		(32, PData::Item(i)) => D::V32(i),
+		(id, PData::None) => D::Default(id),
 		_ => return None,
 	})
 }
 
-pub(super) fn particle_16(id: i32, d: v1_16::particleData::Ty) -> Particle {
-	use v1_16::particleData::Ty as D;
+pub(super) fn particle_16(id: i32, d: v1_16::particle_data::Ty) -> Particle {
+	use v1_16::particle_data::Ty as D;
 	let data = match d {
-		D::v14(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
-		D::v3(s) | D::v23(s) => PData::State(s),
-		D::v34(i) => PData::Item(i),
-		D::default(_) => PData::None,
+		D::V14(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
+		D::V3(s) | D::V23(s) => PData::State(s),
+		D::V34(i) => PData::Item(i),
+		D::Default(_) => PData::None,
 	};
 	Particle { id, data }
 }
 
-pub(super) fn data_16(p: Particle) -> Option<v1_16::particleData::Ty> {
-	use v1_16::particleData::Ty as D;
+pub(super) fn data_16(p: Particle) -> Option<v1_16::particle_data::Ty> {
+	use v1_16::particle_data::Ty as D;
 	Some(match (p.id, p.data) {
-		(14, PData::Dust([red, green, blue, scale])) => D::v14(v1_16::particleData__v14::Ty {
+		(14, PData::Dust([red, green, blue, scale])) => D::V14(v1_16::particle_data_v14::Ty {
 			red,
 			green,
 			blue,
 			scale,
 		}),
-		(3, PData::State(s)) => D::v3(s),
-		(23, PData::State(s)) => D::v23(s),
-		(34, PData::Item(i)) => D::v34(i),
-		(id, PData::None) => D::default(id),
+		(3, PData::State(s)) => D::V3(s),
+		(23, PData::State(s)) => D::V23(s),
+		(34, PData::Item(i)) => D::V34(i),
+		(id, PData::None) => D::Default(id),
 		_ => return None,
 	})
 }
 
-pub(super) fn particle_17(id: i32, d: v1_17::particleData::Ty) -> Particle {
-	use v1_17::particleData::Ty as D;
+pub(super) fn particle_17(id: i32, d: v1_17::particle_data::Ty) -> Particle {
+	use v1_17::particle_data::Ty as D;
 	let data = match d {
-		D::v15(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
-		D::v16(c) => PData::Transition([
-			c.fromRed,
-			c.fromGreen,
-			c.fromBlue,
+		D::V15(c) => PData::Dust([c.red, c.green, c.blue, c.scale]),
+		D::V16(c) => PData::Transition([
+			c.from_red,
+			c.from_green,
+			c.from_blue,
 			c.scale,
-			c.toRed,
-			c.toGreen,
-			c.toBlue,
+			c.to_red,
+			c.to_green,
+			c.to_blue,
 		]),
-		D::v4(s) | D::v25(s) => PData::State(s),
-		D::v36(i) => PData::Item(i),
-		D::v37(v) => PData::Vibration(v),
-		D::default(_) => PData::None,
+		D::V4(s) | D::V25(s) => PData::State(s),
+		D::V36(i) => PData::Item(i),
+		D::V37(v) => PData::Vibration(v),
+		D::Default(_) => PData::None,
 	};
 	Particle { id, data }
 }
 
-pub(super) fn data_17(p: Particle) -> Option<v1_17::particleData::Ty> {
-	use v1_17::particleData::Ty as D;
+pub(super) fn data_17(p: Particle) -> Option<v1_17::particle_data::Ty> {
+	use v1_17::particle_data::Ty as D;
 	Some(match (p.id, p.data) {
-		(15, PData::Dust([red, green, blue, scale])) => D::v15(v1_17::particleData__v15::Ty {
+		(15, PData::Dust([red, green, blue, scale])) => D::V15(v1_17::particle_data_v15::Ty {
 			red,
 			green,
 			blue,
 			scale,
 		}),
-		(16, PData::Transition([fromRed, fromGreen, fromBlue, scale, toRed, toGreen, toBlue])) => {
-			D::v16(v1_17::particleData__v16::Ty {
-				fromRed,
-				fromGreen,
-				fromBlue,
-				scale,
-				toRed,
-				toGreen,
-				toBlue,
-			})
-		}
-		(4, PData::State(s)) => D::v4(s),
-		(25, PData::State(s)) => D::v25(s),
-		(36, PData::Item(i)) => D::v36(i),
-		(37, PData::Vibration(v)) => D::v37(v),
-		(id, PData::None) => D::default(id),
+		(
+			16,
+			PData::Transition([from_red, from_green, from_blue, scale, to_red, to_green, to_blue]),
+		) => D::V16(v1_17::particle_data_v16::Ty {
+			from_red,
+			from_green,
+			from_blue,
+			scale,
+			to_red,
+			to_green,
+			to_blue,
+		}),
+		(4, PData::State(s)) => D::V4(s),
+		(25, PData::State(s)) => D::V25(s),
+		(36, PData::Item(i)) => D::V36(i),
+		(37, PData::Vibration(v)) => D::V37(v),
+		(id, PData::None) => D::Default(id),
 		_ => return None,
 	})
 }
 
 macro_rules! meta_codec {
 	($m:ident, $decode:ident, $encode:ident, $pfrom:ident, $pto:ident) => {
-		pub(super) fn $decode(items: $m::entityMetadata::Ty) -> Vec<(u8, Meta)> {
-			use $m::entityMetadataItem::Ty as M;
+		pub(super) fn $decode(items: $m::entity_metadata::Ty) -> Vec<(u8, Meta)> {
+			use $m::entity_metadata_item::Ty as M;
 			items
 				.into_iter()
 				.map(|e| {
 					let value = match e.value {
-						M::v0(x) => Meta::Byte(x),
-						M::v1(x) => Meta::VarInt(x),
-						M::v2(x) => Meta::Float(x),
-						M::v3(x) => Meta::Str(x),
-						M::v4(x) => Meta::Chat(x),
-						M::v5(x) => Meta::OptChat(x),
-						M::v6(x) => Meta::Slot(x),
-						M::v7(x) => Meta::Bool(x),
-						M::v8(r) => Meta::Rotation(r.pitch, r.yaw, r.roll),
-						M::v9(x) => Meta::Pos(x),
-						M::v10(x) => Meta::OptPos(x),
-						M::v11(x) => Meta::Direction(x),
-						M::v12(x) => Meta::OptUuid(x),
-						M::v13(x) => Meta::OptState(x),
-						M::v14(x) => Meta::Nbt(x),
-						M::v15(p) => Meta::Particle($pfrom(p.particleId, p.data)),
-						M::v16(v) => Meta::Villager(v.villagerType, v.villagerProfession, v.level),
-						M::v17(x) => Meta::OptVarInt(x),
-						M::v18(x) => Meta::Pose(x),
-						M::default(t) => Meta::Other(t),
+						M::V0(x) => Meta::Byte(x),
+						M::V1(x) => Meta::VarInt(x),
+						M::V2(x) => Meta::Float(x),
+						M::V3(x) => Meta::Str(x),
+						M::V4(x) => Meta::Chat(x),
+						M::V5(x) => Meta::OptChat(x),
+						M::V6(x) => Meta::Slot(x),
+						M::V7(x) => Meta::Bool(x),
+						M::V8(r) => Meta::Rotation(r.pitch, r.yaw, r.roll),
+						M::V9(x) => Meta::Pos(x),
+						M::V10(x) => Meta::OptPos(x),
+						M::V11(x) => Meta::Direction(x),
+						M::V12(x) => Meta::OptUuid(x),
+						M::V13(x) => Meta::OptState(x),
+						M::V14(x) => Meta::Nbt(x),
+						M::V15(p) => Meta::Particle($pfrom(p.particle_id, p.data)),
+						M::V16(v) => {
+							Meta::Villager(v.villager_type, v.villager_profession, v.level)
+						}
+						M::V17(x) => Meta::OptVarInt(x),
+						M::V18(x) => Meta::Pose(x),
+						M::Default(t) => Meta::Other(t),
 					};
 					(e.key, value)
 				})
 				.collect()
 		}
 
-		pub(super) fn $encode(items: Vec<(u8, Meta)>) -> $m::entityMetadata::Ty {
-			use $m::entityMetadataItem::Ty as M;
+		pub(super) fn $encode(items: Vec<(u8, Meta)>) -> $m::entity_metadata::Ty {
+			use $m::entity_metadata_item::Ty as M;
 			items
 				.into_iter()
 				.filter_map(|(key, value)| {
 					let (ty, value) = match value {
-						Meta::Byte(x) => (0, M::v0(x)),
-						Meta::VarInt(x) => (1, M::v1(x)),
-						Meta::Float(x) => (2, M::v2(x)),
-						Meta::Str(x) => (3, M::v3(x)),
-						Meta::Chat(x) => (4, M::v4(x)),
-						Meta::OptChat(x) => (5, M::v5(x)),
-						Meta::Slot(x) => (6, M::v6(x)),
-						Meta::Bool(x) => (7, M::v7(x)),
+						Meta::Byte(x) => (0, M::V0(x)),
+						Meta::VarInt(x) => (1, M::V1(x)),
+						Meta::Float(x) => (2, M::V2(x)),
+						Meta::Str(x) => (3, M::V3(x)),
+						Meta::Chat(x) => (4, M::V4(x)),
+						Meta::OptChat(x) => (5, M::V5(x)),
+						Meta::Slot(x) => (6, M::V6(x)),
+						Meta::Bool(x) => (7, M::V7(x)),
 						Meta::Rotation(pitch, yaw, roll) => (
 							8,
-							M::v8($m::entityMetadataItem__v8::Ty { pitch, yaw, roll }),
+							M::V8($m::entity_metadata_item_v8::Ty { pitch, yaw, roll }),
 						),
-						Meta::Pos(x) => (9, M::v9(x)),
-						Meta::OptPos(x) => (10, M::v10(x)),
-						Meta::Direction(x) => (11, M::v11(x)),
-						Meta::OptUuid(x) => (12, M::v12(x)),
-						Meta::OptState(x) => (13, M::v13(x)),
-						Meta::Nbt(x) => (14, M::v14(x)),
+						Meta::Pos(x) => (9, M::V9(x)),
+						Meta::OptPos(x) => (10, M::V10(x)),
+						Meta::Direction(x) => (11, M::V11(x)),
+						Meta::OptUuid(x) => (12, M::V12(x)),
+						Meta::OptState(x) => (13, M::V13(x)),
+						Meta::Nbt(x) => (14, M::V14(x)),
 						Meta::Particle(p) => {
-							let particleId = p.id;
+							let particle_id = p.id;
 							(
 								15,
-								M::v15($m::particle::Ty {
-									particleId,
+								M::V15($m::particle::Ty {
+									particle_id,
 									data: $pto(p)?,
 								}),
 							)
 						}
-						Meta::Villager(villagerType, villagerProfession, level) => (
+						Meta::Villager(villager_type, villager_profession, level) => (
 							16,
-							M::v16($m::entityMetadataItem__v16::Ty {
-								villagerType,
-								villagerProfession,
+							M::V16($m::entity_metadata_item_v16::Ty {
+								villager_type,
+								villager_profession,
 								level,
 							}),
 						),
-						Meta::OptVarInt(x) => (17, M::v17(x)),
-						Meta::Pose(x) => (18, M::v18(x)),
-						Meta::Other(t) => (t, M::default(t)),
+						Meta::OptVarInt(x) => (17, M::V17(x)),
+						Meta::Pose(x) => (18, M::V18(x)),
+						Meta::Other(t) => (t, M::Default(t)),
 					};
-					Some($m::entityMetadata__items::Ty {
+					Some($m::entity_metadata_items::Ty {
 						key,
 						r#type: ty,
 						value,

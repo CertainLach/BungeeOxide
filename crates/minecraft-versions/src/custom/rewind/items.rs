@@ -299,17 +299,17 @@ fn compound(tag: &mut Option<Entry>) -> Option<&mut Vec<Entry>> {
 
 fn entity_tag_id(tag: &Option<Entry>) -> Option<String> {
 	let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = tag.as_ref()
 	else {
 		return None;
 	};
-	let Some(Payload::compound(e)) = c.field("EntityTag") else {
+	let Some(Payload::Compound(e)) = c.field("EntityTag") else {
 		return None;
 	};
 	match e.field("id") {
-		Some(Payload::string(s)) => Some(s.clone()),
+		Some(Payload::String(s)) => Some(s.clone()),
 		_ => None,
 	}
 }
@@ -317,18 +317,18 @@ fn entity_tag_id(tag: &Option<Entry>) -> Option<String> {
 fn set_entity_tag_id(tag: &mut Option<Entry>, id: String) {
 	let c = Entry::root(tag);
 	let mut e = match c.take("EntityTag") {
-		Some(Payload::compound(e)) => e,
+		Some(Payload::Compound(e)) => e,
 		_ => Vec::new(),
 	};
-	e.put_last("id", Payload::string(id));
-	c.push(Entry::new("EntityTag", Payload::compound(e)));
+	e.put_last("id", Payload::String(id));
+	c.push(Entry::new("EntityTag", Payload::Compound(e)));
 }
 
 pub(super) fn down(target: Version, newer: Version, slot: Slot, mob: impl Fn(u32) -> u32) -> Slot {
-	let Slot::default(id, mut s) = slot else {
+	let Slot::Default(id, mut s) = slot else {
 		return slot;
 	};
-	let (original, damage) = (id, s.itemDamage);
+	let (original, damage) = (id, s.item_damage);
 	let mut new = (id, damage);
 	let mut named = None;
 	if let Some(mapped) = item_back(target, id, damage) {
@@ -341,69 +341,69 @@ pub(super) fn down(target: Version, newer: Version, slot: Slot, mob: impl Fn(u32
 	}
 	if target == Version::V1_8 {
 		if matches!(id, 373 | 438 | 441) {
-			let potion = match compound(&mut s.nbtData).and_then(|c| c.field("Potion").cloned()) {
-				Some(Payload::string(n)) => potion_damage(&n),
+			let potion = match compound(&mut s.nbt_data).and_then(|c| c.field("Potion").cloned()) {
+				Some(Payload::String(n)) => potion_damage(&n),
 				_ => 0,
 			};
 			new = (373, if id == 373 { potion } else { potion + 8192 });
 		}
 		if id == 383 && damage == 0 {
-			let egg = entity_tag_id(&s.nbtData).and_then(|n| {
+			let egg = entity_tag_id(&s.nbt_data).and_then(|n| {
 				mob_id(Version::V1_8, &n).or_else(|| mob_id(Version::V1_9, &n).map(&mob))
 			});
 			new = (383, egg.unwrap_or(0) as i16);
 		}
 	}
 	if target == Version::V1_10 && id == 383 {
-		if let Some(name) = entity_tag_id(&s.nbtData) {
+		if let Some(name) = entity_tag_id(&s.nbt_data) {
 			let old = mob_id(Version::V1_11, &name)
 				.map(&mob)
 				.and_then(|m| mob_name(Version::V1_10, m));
 			if let Some(old) = old {
-				set_entity_tag_id(&mut s.nbtData, old.to_owned());
+				set_entity_tag_id(&mut s.nbt_data, old.to_owned());
 			}
 		}
 	}
 	if new == (original, damage) && named.is_none() {
-		return Slot::default(id, s);
+		return Slot::Default(id, s);
 	}
-	let c = Entry::root(&mut s.nbtData);
+	let c = Entry::root(&mut s.nbt_data);
 	let mut mark = vec![
-		Entry::new("id", Payload::short(original)),
-		Entry::new("Damage", Payload::short(damage)),
+		Entry::new("id", Payload::Short(original)),
+		Entry::new("Damage", Payload::Short(damage)),
 	];
 	if let Some(name) = named {
 		if !c
 			.iter()
-			.any(|e| e.name == "display" && matches!(e.value, Payload::compound(_)))
+			.any(|e| e.name == "display" && matches!(e.value, Payload::Compound(_)))
 		{
-			c.put_last("display", Payload::compound(Vec::new()));
+			c.put_last("display", Payload::Compound(Vec::new()));
 		}
 		if let Some(display) = c.compound_mut("display") {
 			if display.field("Name").is_none() {
-				display.push(Entry::new("Name", Payload::string(name)));
-				mark.push(Entry::new("Named", Payload::byte(1)));
+				display.push(Entry::new("Name", Payload::String(name)));
+				mark.push(Entry::new("Named", Payload::Byte(1)));
 			}
 		}
 	}
-	c.put_last(&mark_key(newer), Payload::compound(mark));
-	s.itemDamage = new.1;
-	Slot::default(new.0, s)
+	c.put_last(&mark_key(newer), Payload::Compound(mark));
+	s.item_damage = new.1;
+	Slot::Default(new.0, s)
 }
 
 pub(super) fn up(target: Version, older: Version, slot: Slot) -> Slot {
-	let Slot::default(mut id, mut s) = slot else {
+	let Slot::Default(mut id, mut s) = slot else {
 		return slot;
 	};
 	let mut restored = false;
-	if let Some(c) = compound(&mut s.nbtData) {
-		if let Some(Payload::compound(mark)) = c.take(&mark_key(target)) {
+	if let Some(c) = compound(&mut s.nbt_data) {
+		if let Some(Payload::Compound(mark)) = c.take(&mark_key(target)) {
 			restored = true;
-			if let Some(Payload::short(i)) = mark.field("id") {
+			if let Some(Payload::Short(i)) = mark.field("id") {
 				id = *i;
 			}
-			if let Some(Payload::short(d)) = mark.field("Damage") {
-				s.itemDamage = *d;
+			if let Some(Payload::Short(d)) = mark.field("Damage") {
+				s.item_damage = *d;
 			}
 			if mark.field("Named").is_some() {
 				if let Some(display) = c.compound_mut("display") {
@@ -411,49 +411,49 @@ pub(super) fn up(target: Version, older: Version, slot: Slot) -> Slot {
 				}
 				c.retain(|e| {
 					!(e.name == "display"
-						&& matches!(&e.value, Payload::compound(d) if d.is_empty()))
+						&& matches!(&e.value, Payload::Compound(d) if d.is_empty()))
 				});
 			}
 		}
 		if c.is_empty() {
-			s.nbtData = None;
+			s.nbt_data = None;
 		}
 	}
 	if restored {
-		return Slot::default(id, s);
+		return Slot::Default(id, s);
 	}
 	if older == Version::V1_8 {
 		if id == 373 {
-			let splash = s.itemDamage >= 16384;
+			let splash = s.item_damage >= 16384;
 			let name = potion_name(if splash {
-				s.itemDamage - 8192
+				s.item_damage - 8192
 			} else {
-				s.itemDamage
+				s.item_damage
 			});
-			Entry::root(&mut s.nbtData)
-				.put_last("Potion", Payload::string(format!("minecraft:{name}")));
+			Entry::root(&mut s.nbt_data)
+				.put_last("Potion", Payload::String(format!("minecraft:{name}")));
 			id = if splash { 438 } else { 373 };
-			s.itemDamage = 0;
+			s.item_damage = 0;
 		}
-		if id == 383 && s.itemDamage != 0 {
-			if entity_tag_id(&s.nbtData).is_none() {
-				if let Some(name) = mob_name(Version::V1_8, s.itemDamage as u32) {
-					set_entity_tag_id(&mut s.nbtData, name.to_owned());
+		if id == 383 && s.item_damage != 0 {
+			if entity_tag_id(&s.nbt_data).is_none() {
+				if let Some(name) = mob_name(Version::V1_8, s.item_damage as u32) {
+					set_entity_tag_id(&mut s.nbt_data, name.to_owned());
 				}
 			}
-			s.itemDamage = 0;
+			s.item_damage = 0;
 		}
 	}
 	if older == Version::V1_10 && id == 383 {
-		if let Some(name) = entity_tag_id(&s.nbtData) {
+		if let Some(name) = entity_tag_id(&s.nbt_data) {
 			if let Some(new) =
 				mob_id(Version::V1_10, &name).and_then(|m| mob_name(Version::V1_11, m))
 			{
-				set_entity_tag_id(&mut s.nbtData, format!("minecraft:{new}"));
+				set_entity_tag_id(&mut s.nbt_data, format!("minecraft:{new}"));
 			}
 		}
 	}
-	Slot::default(id, s)
+	Slot::Default(id, s)
 }
 
 #[cfg(test)]
@@ -461,12 +461,12 @@ mod tests {
 	use super::*;
 
 	fn item(id: i16, damage: i16, tag: Option<Entry>) -> Slot {
-		Slot::default(
+		Slot::Default(
 			id,
-			v1_8::slot__default::Ty {
-				itemCount: 1,
-				itemDamage: damage,
-				nbtData: tag,
+			v1_8::slot_default::Ty {
+				item_count: 1,
+				item_damage: damage,
+				nbt_data: tag,
 			},
 		)
 	}
@@ -475,9 +475,9 @@ mod tests {
 	fn new_items_round_trip_through_every_step() {
 		let original = item(450, 0, None);
 		let at11 = down(Version::V1_10, Version::V1_11, original.clone(), |m| m);
-		assert!(matches!(&at11, Slot::default(433, _)));
+		assert!(matches!(&at11, Slot::Default(433, _)));
 		let at8 = down(Version::V1_8, Version::V1_9, at11.clone(), |m| m);
-		assert!(matches!(&at8, Slot::default(393, _)));
+		assert!(matches!(&at8, Slot::Default(393, _)));
 		assert_eq!(up(Version::V1_9, Version::V1_8, at8), at11);
 		assert_eq!(up(Version::V1_11, Version::V1_10, at11), original);
 	}
@@ -490,52 +490,52 @@ mod tests {
 				0,
 				Some(Entry::new(
 					"",
-					Payload::compound(vec![Entry::new(
+					Payload::Compound(vec![Entry::new(
 						"Potion",
-						Payload::string("minecraft:strong_healing".into()),
+						Payload::String("minecraft:strong_healing".into()),
 					)]),
 				)),
 			)
 		};
 		assert!(
-			matches!(down(Version::V1_8, Version::V1_9, potion(373), |m| m), Slot::default(373, s) if s.itemDamage == 8229)
+			matches!(down(Version::V1_8, Version::V1_9, potion(373), |m| m), Slot::Default(373, s) if s.item_damage == 8229)
 		);
 		assert!(
-			matches!(down(Version::V1_8, Version::V1_9, potion(438), |m| m), Slot::default(373, s) if s.itemDamage == 16421)
+			matches!(down(Version::V1_8, Version::V1_9, potion(438), |m| m), Slot::Default(373, s) if s.item_damage == 16421)
 		);
 		let created = up(Version::V1_9, Version::V1_8, item(373, 16421, None));
-		let Slot::default(438, s) = &created else {
+		let Slot::Default(438, s) = &created else {
 			panic!("{created:?}")
 		};
 		let Some(Entry {
-			value: Payload::compound(c),
+			value: Payload::Compound(c),
 			..
-		}) = &s.nbtData
+		}) = &s.nbt_data
 		else {
 			panic!()
 		};
 		assert_eq!(
 			c.field("Potion"),
-			Some(&Payload::string("minecraft:strong_healing".into()))
+			Some(&Payload::String("minecraft:strong_healing".into()))
 		);
 		let egg = item(
 			383,
 			0,
 			Some(Entry::new(
 				"",
-				Payload::compound(vec![Entry::new(
+				Payload::Compound(vec![Entry::new(
 					"EntityTag",
-					Payload::compound(vec![Entry::new("id", Payload::string("Creeper".into()))]),
+					Payload::Compound(vec![Entry::new("id", Payload::String("Creeper".into()))]),
 				)]),
 			)),
 		);
 		assert!(
-			matches!(down(Version::V1_8, Version::V1_9, egg, |m| m), Slot::default(383, s) if s.itemDamage == 50)
+			matches!(down(Version::V1_8, Version::V1_9, egg, |m| m), Slot::Default(383, s) if s.item_damage == 50)
 		);
 		let back = up(Version::V1_9, Version::V1_8, item(383, 54, None));
 		assert_eq!(
 			entity_tag_id(match &back {
-				Slot::default(_, s) => &s.nbtData,
+				Slot::Default(_, s) => &s.nbt_data,
 				_ => panic!(),
 			})
 			.as_deref(),

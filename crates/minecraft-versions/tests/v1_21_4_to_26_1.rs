@@ -40,32 +40,32 @@ fn run<A, B>(
 		.collect()
 }
 
-fn up(p: &a::play_toClient_packet::Ty, cx: &mut Session) -> Vec<z::play_toClient_packet::Ty> {
+fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<z::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
 		"1.21.4",
 		"26.1",
 		p,
-		a::play_toClient_packet::serialize,
-		z::play_toClient_packet::deserialize,
+		a::play_to_client_packet::serialize,
+		z::play_to_client_packet::deserialize,
 		cx,
 	)
 }
 
-fn down(p: &z::play_toServer_packet::Ty, cx: &mut Session) -> Vec<a::play_toServer_packet::Ty> {
+fn down(p: &z::play_to_server_packet::Ty, cx: &mut Session) -> Vec<a::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
 		"26.1",
 		"1.21.4",
 		p,
-		z::play_toServer_packet::serialize,
-		a::play_toServer_packet::deserialize,
+		z::play_to_server_packet::serialize,
+		a::play_to_server_packet::deserialize,
 		cx,
 	)
 }
 
 fn compound(entries: Vec<(&str, Payload)>) -> Payload {
-	Payload::compound(entries.into_iter().map(|(n, v)| Entry::new(n, v)).collect())
+	Payload::Compound(entries.into_iter().map(|(n, v)| Entry::new(n, v)).collect())
 }
 
 fn tag(p: Payload) -> Tag {
@@ -73,7 +73,7 @@ fn tag(p: Payload) -> Tag {
 }
 
 fn s(v: &str) -> Payload {
-	Payload::string(v.into())
+	Payload::String(v.into())
 }
 
 fn get<'a>(p: &'a Payload, path: &[&str]) -> Option<&'a Payload> {
@@ -88,29 +88,29 @@ fn item(
 	version: &str,
 	name: &str,
 	count: i32,
-	components: Vec<a::SlotComponent::Ty>,
-) -> a::Slot::Ty {
-	a::Slot::Ty::default(
+	components: Vec<a::slot_component::Ty>,
+) -> a::slot::Ty {
+	a::slot::Ty::Default(
 		count,
-		a::Slot__default::Ty {
-			itemId: id(version, "items", name),
-			addedComponentCount: components.len() as i32,
-			removedComponentCount: 0,
+		a::slot_default::Ty {
+			item_id: id(version, "items", name),
+			added_component_count: components.len() as i32,
+			removed_component_count: 0,
 			components,
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	)
 }
 
-fn sample_config() -> Vec<a::configuration_toClient_packet::Ty> {
-	use a::configuration_toClient_packet as c4;
+fn sample_config() -> Vec<a::configuration_to_client_packet::Ty> {
+	use a::configuration_to_client_packet as c4;
 	let registry = |id: &str, entries: Vec<(&str, Payload)>| {
-		c4::Ty::registry_data(a::configuration_toClient_packet_registry_data::Ty {
+		c4::Ty::RegistryData(a::configuration_to_client_packet_registry_data::Ty {
 			id: id.into(),
 			entries: entries
 				.into_iter()
 				.map(
-					|(k, v)| a::configuration_toClient_packet_registry_data__entries__items::Ty {
+					|(k, v)| a::configuration_to_client_packet_registry_data_entries_items::Ty {
 						key: k.into(),
 						value: Some(tag(v)),
 					},
@@ -119,19 +119,19 @@ fn sample_config() -> Vec<a::configuration_toClient_packet::Ty> {
 		})
 	};
 	let overworld = compound(vec![
-		("min_y", Payload::int(0)),
-		("height", Payload::int(256)),
+		("min_y", Payload::Int(0)),
+		("height", Payload::Int(256)),
 		("effects", s("minecraft:overworld")),
-		("natural", Payload::byte(1)),
-		("ambient_light", Payload::float(0.0)),
-		("coordinate_scale", Payload::double(1.0)),
+		("natural", Payload::Byte(1)),
+		("ambient_light", Payload::Float(0.0)),
+		("coordinate_scale", Payload::Double(1.0)),
 	]);
 	let plains = compound(vec![(
 		"effects",
 		compound(vec![
-			("sky_color", Payload::int(7907327)),
-			("fog_color", Payload::int(12638463)),
-			("water_color", Payload::int(4159204)),
+			("sky_color", Payload::Int(7907327)),
+			("fog_color", Payload::Int(12638463)),
+			("water_color", Payload::Int(4159204)),
 		]),
 	)]);
 	let wolf = compound(vec![
@@ -150,14 +150,14 @@ fn sample_config() -> Vec<a::configuration_toClient_packet::Ty> {
 			vec![("minecraft:plains", plains)],
 		),
 		registry("minecraft:wolf_variant", vec![("minecraft:pale", wolf)]),
-		c4::Ty::finish_configuration(a::configuration_toClient_packet_finish_configuration::Ty {}),
+		c4::Ty::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 	]
 }
 
 #[test]
 fn configuration_registries_reach_26_1() {
-	use a::configuration_toClient_packet as c4;
-	use z::configuration_toClient_packet as c26;
+	use a::configuration_to_client_packet as c4;
+	use z::configuration_to_client_packet as c26;
 	let mut cx = Session::new();
 	let mut out = Vec::new();
 	for p in &sample_config() {
@@ -171,11 +171,11 @@ fn configuration_registries_reach_26_1() {
 			&mut cx,
 		));
 	}
-	assert!(matches!(out.last(), Some(c26::Ty::finish_configuration(_))));
-	let registries: Vec<&z::configuration_toClient_packet_registry_data::Ty> = out
+	assert!(matches!(out.last(), Some(c26::Ty::FinishConfiguration(_))));
+	let registries: Vec<&z::configuration_to_client_packet_registry_data::Ty> = out
 		.iter()
 		.filter_map(|p| match p {
-			c26::Ty::registry_data(r) => Some(r),
+			c26::Ty::RegistryData(r) => Some(r),
 			_ => None,
 		})
 		.collect();
@@ -195,21 +195,21 @@ fn configuration_registries_reach_26_1() {
 			.unwrap()
 	};
 	let dim = entry("dimension_type", "minecraft:overworld");
-	assert_eq!(get(&dim, &["height"]), Some(&Payload::int(256)));
+	assert_eq!(get(&dim, &["height"]), Some(&Payload::Int(256)));
 	assert_eq!(
 		get(&dim, &["default_clock"]),
 		Some(&s("minecraft:overworld"))
 	);
 	assert_eq!(
 		get(&dim, &["attributes", "visual/cloud_height"]),
-		Some(&Payload::float(192.0))
+		Some(&Payload::Float(192.0))
 	);
 	assert!(get(&dim, &["attributes", "visual/ambient_light_color"]).is_some());
-	assert!(matches!(get(&dim, &["timelines"]), Some(Payload::list(_))));
+	assert!(matches!(get(&dim, &["timelines"]), Some(Payload::List(_))));
 	let biome = entry("worldgen/biome", "minecraft:plains");
 	assert_eq!(
 		get(&biome, &["attributes", "visual/sky_color"]),
-		Some(&Payload::int(7907327))
+		Some(&Payload::Int(7907327))
 	);
 	let wolf = entry("wolf_variant", "minecraft:pale");
 	assert_eq!(
@@ -250,7 +250,7 @@ fn configuration_registries_reach_26_1() {
 	let day = entry("timeline", "minecraft:day");
 	assert_eq!(get(&day, &["clock"]), Some(&s("overworld")));
 	assert!(out.iter().any(
-		|p| matches!(p, c26::Ty::tags(t) if t.iter().any(|r| r.tagType.ends_with("damage_type")))
+		|p| matches!(p, c26::Ty::Tags(t) if t.iter().any(|r| r.tag_type.ends_with("damage_type")))
 	));
 }
 
@@ -310,27 +310,27 @@ fn chunk_sections_reach_26_1() {
 		.collect();
 	let heightmaps = tag(compound(vec![(
 		"MOTION_BLOCKING",
-		Payload::longArray(vec![7; 37]),
+		Payload::LongArray(vec![7; 37]),
 	)]));
-	let packet = a::play_toClient_packet::Ty::map_chunk(a::play_toClient_packet_map_chunk::Ty {
+	let packet = a::play_to_client_packet::Ty::MapChunk(a::play_to_client_packet_map_chunk::Ty {
 		x: 1,
 		z: 2,
 		heightmaps,
-		chunkData: section_1_21_4(&states),
-		blockEntities: vec![],
-		skyLightMask: vec![],
-		blockLightMask: vec![],
-		emptySkyLightMask: vec![],
-		emptyBlockLightMask: vec![],
-		skyLight: vec![],
-		blockLight: vec![],
+		chunk_data: section_1_21_4(&states),
+		block_entities: vec![],
+		sky_light_mask: vec![],
+		block_light_mask: vec![],
+		empty_sky_light_mask: vec![],
+		empty_block_light_mask: vec![],
+		sky_light: vec![],
+		block_light: vec![],
 	});
 	let out = up(&packet, &mut Session::new());
-	let [z::play_toClient_packet::Ty::map_chunk(c)] = out.as_slice() else {
+	let [z::play_to_client_packet::Ty::MapChunk(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(c.heightmaps.len(), 1);
-	let d = &c.chunkData;
+	let d = &c.chunk_data;
 	assert_eq!(i16::from_be_bytes([d[0], d[1]]), 4096);
 	assert_eq!(i16::from_be_bytes([d[2], d[3]]), 2048);
 	assert_eq!(d[4], 4);
@@ -351,15 +351,15 @@ fn chunk_sections_reach_26_1() {
 
 #[test]
 fn hidden_tooltips_become_tooltip_display() {
-	use a::SlotComponent::Ty as C;
-	let enchantments = C::enchantments(a::SlotComponent__enchantments::Ty {
-		enchantments: vec![a::SlotComponent__enchantments__enchantments__items::Ty {
+	use a::slot_component::Ty as C;
+	let enchantments = C::Enchantments(a::slot_component_enchantments::Ty {
+		enchantments: vec![a::slot_component_enchantments_enchantments_items::Ty {
 			id: 9,
 			level: 3,
 		}],
-		showTooltip: false,
+		show_tooltip: false,
 	});
-	let name = C::custom_name(tag(compound(vec![
+	let name = C::CustomName(tag(compound(vec![
 		("text", s("hi")),
 		(
 			"clickEvent",
@@ -370,11 +370,11 @@ fn hidden_tooltips_become_tooltip_display() {
 		"1.21.4",
 		"diamond_sword",
 		1,
-		vec![enchantments, C::hide_additional_tooltip, name],
+		vec![enchantments, C::HideAdditionalTooltip, name],
 	);
-	let packet = a::play_toClient_packet::Ty::set_slot(a::play_toClient_packet_set_slot::Ty {
-		windowId: 0,
-		stateId: 1,
+	let packet = a::play_to_client_packet::Ty::SetSlot(a::play_to_client_packet_set_slot::Ty {
+		window_id: 0,
+		state_id: 1,
 		slot: 36,
 		item: sword,
 	});
@@ -383,34 +383,34 @@ fn hidden_tooltips_become_tooltip_display() {
 		"1.21.4",
 		"1.21.5",
 		&packet,
-		a::play_toClient_packet::serialize,
-		v1_21_5::play_toClient_packet::deserialize,
+		a::play_to_client_packet::serialize,
+		v1_21_5::play_to_client_packet::deserialize,
 		&mut Session::new(),
 	);
-	let [v1_21_5::play_toClient_packet::Ty::set_slot(s5)] = out.as_slice() else {
+	let [v1_21_5::play_to_client_packet::Ty::SetSlot(s5)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let v1_21_5::Slot::Ty::default(1, d) = &s5.item else {
+	let v1_21_5::slot::Ty::Default(1, d) = &s5.item else {
 		panic!()
 	};
-	assert_eq!(d.itemId, id("1.21.5", "items", "diamond_sword"));
-	assert_eq!(d.addedComponentCount as usize, d.components.len());
+	assert_eq!(d.item_id, id("1.21.5", "items", "diamond_sword"));
+	assert_eq!(d.added_component_count as usize, d.components.len());
 	let display = d
 		.components
 		.iter()
 		.find_map(|c| match c {
-			v1_21_5::SlotComponent::Ty::tooltip_display(t) => Some(t),
+			v1_21_5::slot_component::Ty::TooltipDisplay(t) => Some(t),
 			_ => None,
 		})
 		.unwrap();
-	assert!(!display.hideTooltip);
-	assert!(display.hiddenComponents.contains(&10));
-	assert!(display.hiddenComponents.contains(&66));
+	assert!(!display.hide_tooltip);
+	assert!(display.hidden_components.contains(&10));
+	assert!(display.hidden_components.contains(&66));
 	let name = d
 		.components
 		.iter()
 		.find_map(|c| match c {
-			v1_21_5::SlotComponent::Ty::custom_name(t) => Some(t),
+			v1_21_5::slot_component::Ty::CustomName(t) => Some(t),
 			_ => None,
 		})
 		.unwrap();
@@ -422,118 +422,118 @@ fn hidden_tooltips_become_tooltip_display() {
 
 #[test]
 fn containers_become_templates_and_clicks_recover_items() {
-	use a::SlotComponent::Ty as C;
+	use a::slot_component::Ty as C;
 	let mut cx = Session::new();
-	let stones = C::container(vec![item("1.21.4", "stone", 3, vec![]), a::Slot::Ty::v0]);
+	let stones = C::Container(vec![item("1.21.4", "stone", 3, vec![]), a::slot::Ty::V0]);
 	let shulker = item("1.21.4", "shulker_box", 1, vec![stones]);
 	let packet =
-		a::play_toClient_packet::Ty::window_items(a::play_toClient_packet_window_items::Ty {
-			windowId: 1,
-			stateId: 5,
-			items: vec![shulker.clone(), a::Slot::Ty::v0],
-			carriedItem: a::Slot::Ty::v0,
+		a::play_to_client_packet::Ty::WindowItems(a::play_to_client_packet_window_items::Ty {
+			window_id: 1,
+			state_id: 5,
+			items: vec![shulker.clone(), a::slot::Ty::V0],
+			carried_item: a::slot::Ty::V0,
 		});
 	let out = up(&packet, &mut cx);
-	let [z::play_toClient_packet::Ty::window_items(w)] = out.as_slice() else {
+	let [z::play_to_client_packet::Ty::WindowItems(w)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let z::Slot::Ty::default(1, d) = &w.items[0] else {
+	let z::slot::Ty::Default(1, d) = &w.items[0] else {
 		panic!()
 	};
 	let container = d
 		.components
 		.iter()
 		.find_map(|c| match c {
-			z::SlotComponent::Ty::container(v) => Some(v),
+			z::slot_component::Ty::Container(v) => Some(v),
 			_ => None,
 		})
 		.unwrap();
 	assert_eq!(container.len(), 2);
 	let first = container[0].as_ref().unwrap();
 	assert_eq!(
-		(first.itemId, first.itemCount),
+		(first.item_id, first.item_count),
 		(id("26.1", "items", "stone"), 3)
 	);
 	assert!(container[1].is_none());
-	let hashed = |v: &z::Slot::Ty| match v {
-		z::Slot::Ty::default(count, d) => z::HashedSlot::Ty {
-			itemId: d.itemId,
-			itemCount: *count,
+	let hashed = |v: &z::slot::Ty| match v {
+		z::slot::Ty::Default(count, d) => z::hashed_slot::Ty {
+			item_id: d.item_id,
+			item_count: *count,
 			components: d
 				.components
 				.iter()
 				.map(|c| {
-					let bytes = encode(c, z::SlotComponent::serialize);
-					z::HashedSlot__components__items::Ty {
-						r#type: decode(&bytes[..1], z::SlotComponentType::deserialize),
+					let bytes = encode(c, z::slot_component::serialize);
+					z::hashed_slot_components_items::Ty {
+						r#type: decode(&bytes[..1], z::slot_component_type::deserialize),
 						hash: 0,
 					}
 				})
 				.collect(),
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
-		z::Slot::Ty::v0 => unreachable!(),
+		z::slot::Ty::V0 => unreachable!(),
 	};
 	let click =
-		z::play_toServer_packet::Ty::window_click(z::play_toServer_packet_window_click::Ty {
-			windowId: 1,
-			stateId: 5,
+		z::play_to_server_packet::Ty::WindowClick(z::play_to_server_packet_window_click::Ty {
+			window_id: 1,
+			state_id: 5,
 			slot: 0,
-			mouseButton: 0,
+			mouse_button: 0,
 			mode: 0,
-			changedSlots: vec![
-				z::play_toServer_packet_window_click__changedSlots__items::Ty {
+			changed_slots: vec![
+				z::play_to_server_packet_window_click_changed_slots_items::Ty {
 					location: 0,
 					item: None,
 				},
 			],
-			cursorItem: Some(hashed(&w.items[0])),
+			cursor_item: Some(hashed(&w.items[0])),
 		});
 	let out = down(&click, &mut cx);
-	let [a::play_toServer_packet::Ty::window_click(c)] = out.as_slice() else {
+	let [a::play_to_server_packet::Ty::WindowClick(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(c.cursorItem, shulker);
-	assert_eq!(c.changedSlots[0].item, a::Slot::Ty::v0);
+	assert_eq!(c.cursor_item, shulker);
+	assert_eq!(c.changed_slots[0].item, a::slot::Ty::V0);
 }
 
 #[test]
 fn creative_items_are_decoded_down() {
 	let name = tag(compound(vec![("text", s("named"))]));
 	let mut data = Output::new();
-	nbt::gen::pds_Tag::serialize(&name, &mut data).unwrap();
-	let ty = decode(&[6], z::SlotComponentType::deserialize);
-	let slot = z::UntrustedSlot::Ty {
-		itemCount: 2,
-		ANON: z::UntrustedSlot__ANON::Ty::default(
+	nbt::gen::tag::serialize(&name, &mut data).unwrap();
+	let ty = decode(&[6], z::slot_component_type::deserialize);
+	let slot = z::untrusted_slot::Ty {
+		item_count: 2,
+		anon: z::untrusted_slot_anon::Ty::Default(
 			2,
-			z::UntrustedSlot__ANON__default::Ty {
-				itemId: id("26.1", "items", "golden_dandelion"),
-				addedComponentCount: 1,
-				removedComponentCount: 0,
-				components: vec![z::UntrustedSlotComponent::Ty {
+			z::untrusted_slot_anon_default::Ty {
+				item_id: id("26.1", "items", "golden_dandelion"),
+				added_component_count: 1,
+				removed_component_count: 0,
+				components: vec![z::untrusted_slot_component::Ty {
 					r#type: ty,
 					data: data.into_inner(),
 				}],
-				removeComponents: vec![],
+				remove_components: vec![],
 			},
 		),
 	};
-	let p = z::play_toServer_packet::Ty::set_creative_slot(
-		z::play_toServer_packet_set_creative_slot::Ty {
+	let p = z::play_to_server_packet::Ty::SetCreativeSlot(
+		z::play_to_server_packet_set_creative_slot::Ty {
 			slot: 36,
 			item: slot,
 		},
 	);
 	let out = down(&p, &mut Session::new());
-	let [a::play_toServer_packet::Ty::set_creative_slot(c)] = out.as_slice() else {
+	let [a::play_to_server_packet::Ty::SetCreativeSlot(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let a::Slot::Ty::default(2, d) = &c.item else {
+	let a::slot::Ty::Default(2, d) = &c.item else {
 		panic!("{:?}", c.item)
 	};
 	assert!(
-		matches!(d.components.as_slice(), [a::SlotComponent::Ty::custom_name(t)] if get(&t.value, &["text"]) == Some(&s("named")))
+		matches!(d.components.as_slice(), [a::slot_component::Ty::CustomName(t)] if get(&t.value, &["text"]) == Some(&s("named")))
 	);
 }
 
@@ -560,18 +560,18 @@ fn lp(bytes: &[u8]) -> (f64, f64, f64) {
 #[test]
 fn spawn_velocity_uses_lp_vec3() {
 	let mut cx = Session::new();
-	let packet = v1_21_8::play_toClient_packet::Ty::spawn_entity(
-		v1_21_8::play_toClient_packet_spawn_entity::Ty {
-			entityId: 7,
-			objectUUID: 1,
+	let packet = v1_21_8::play_to_client_packet::Ty::SpawnEntity(
+		v1_21_8::play_to_client_packet_spawn_entity::Ty {
+			entity_id: 7,
+			object_uuid: 1,
 			r#type: id("1.21.8", "entities", "arrow"),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: 0,
+			head_pitch: 0,
+			object_data: 0,
 			velocity: v1_21_8::vec3i16::Ty {
 				x: 8000,
 				y: -4000,
@@ -584,11 +584,11 @@ fn spawn_velocity_uses_lp_vec3() {
 		"1.21.8",
 		"1.21.9",
 		&packet,
-		v1_21_8::play_toClient_packet::serialize,
-		v1_21_9::play_toClient_packet::deserialize,
+		v1_21_8::play_to_client_packet::serialize,
+		v1_21_9::play_to_client_packet::deserialize,
 		&mut cx,
 	);
-	let [v1_21_9::play_toClient_packet::Ty::spawn_entity(s)] = out.as_slice() else {
+	let [v1_21_9::play_to_client_packet::Ty::SpawnEntity(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let (x, y, z) = lp(&s.velocity);
@@ -601,11 +601,11 @@ fn spawn_velocity_uses_lp_vec3() {
 		"1.21.9",
 		"1.21.8",
 		&out[0],
-		v1_21_9::play_toClient_packet::serialize,
-		v1_21_8::play_toClient_packet::deserialize,
+		v1_21_9::play_to_client_packet::serialize,
+		v1_21_8::play_to_client_packet::deserialize,
 		&mut cx,
 	);
-	let [v1_21_8::play_toClient_packet::Ty::spawn_entity(b)] = back.as_slice() else {
+	let [v1_21_8::play_to_client_packet::Ty::SpawnEntity(b)] = back.as_slice() else {
 		panic!("{back:?}")
 	};
 	assert!(
@@ -616,9 +616,9 @@ fn spawn_velocity_uses_lp_vec3() {
 		b.velocity
 	);
 	assert_eq!(s.r#type, id("1.21.9", "entities", "arrow"));
-	let still = v1_21_8::play_toClient_packet::Ty::entity_velocity(
-		v1_21_8::play_toClient_packet_entity_velocity::Ty {
-			entityId: 7,
+	let still = v1_21_8::play_to_client_packet::Ty::EntityVelocity(
+		v1_21_8::play_to_client_packet_entity_velocity::Ty {
+			entity_id: 7,
 			velocity: v1_21_8::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		},
 	);
@@ -627,27 +627,27 @@ fn spawn_velocity_uses_lp_vec3() {
 		"1.21.8",
 		"1.21.9",
 		&still,
-		v1_21_8::play_toClient_packet::serialize,
-		v1_21_9::play_toClient_packet::deserialize,
+		v1_21_8::play_to_client_packet::serialize,
+		v1_21_9::play_to_client_packet::deserialize,
 		&mut cx,
 	);
 	assert!(
-		matches!(out.as_slice(), [v1_21_9::play_toClient_packet::Ty::entity_velocity(v)] if v.velocity == vec![0])
+		matches!(out.as_slice(), [v1_21_9::play_to_client_packet::Ty::EntityVelocity(v)] if v.velocity == vec![0])
 	);
 }
 
-fn spawn(entity: i32, kind: &str) -> a::play_toClient_packet::Ty {
-	a::play_toClient_packet::Ty::spawn_entity(a::play_toClient_packet_spawn_entity::Ty {
-		entityId: entity,
-		objectUUID: entity as u128,
+fn spawn(entity: i32, kind: &str) -> a::play_to_client_packet::Ty {
+	a::play_to_client_packet::Ty::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
+		entity_id: entity,
+		object_uuid: entity as u128,
 		r#type: id("1.21.4", "entities", kind),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
 		pitch: 0,
 		yaw: 0,
-		headPitch: 0,
-		objectData: 0,
+		head_pitch: 0,
+		object_data: 0,
 		velocity: a::vec3i16::Ty { x: 0, y: 0, z: 0 },
 	})
 }
@@ -657,29 +657,30 @@ fn pig_metadata_moves_saddle_and_age_index() {
 	let mut cx = Session::new();
 	let out = up(&spawn(3, "pig"), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [z::play_toClient_packet::Ty::spawn_entity(s)] if s.r#type == id("26.1", "entities", "pig"))
+		matches!(out.as_slice(), [z::play_to_client_packet::Ty::SpawnEntity(s)] if s.r#type == id("26.1", "entities", "pig"))
 	);
-	use a::entityMetadataEntry__value::Ty as V;
-	let meta =
-		a::play_toClient_packet::Ty::entity_metadata(a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 3,
+	use a::entity_metadata_entry_value::Ty as V;
+	let meta = a::play_to_client_packet::Ty::EntityMetadata(
+		a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 3,
 			metadata: vec![
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 0,
-					value: V::byte(0),
+					value: V::Byte(0),
 				},
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 17,
-					value: V::boolean(true),
+					value: V::Boolean(true),
 				},
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 18,
-					value: V::int(40),
+					value: V::Int(40),
 				},
 			],
-		});
+		},
+	);
 	let out = up(&meta, &mut cx);
-	let [z::play_toClient_packet::Ty::entity_metadata(m), z::play_toClient_packet::Ty::entity_equipment(e)] =
+	let [z::play_to_client_packet::Ty::EntityMetadata(m), z::play_to_client_packet::Ty::EntityEquipment(e)] =
 		out.as_slice()
 	else {
 		panic!("{out:?}")
@@ -688,34 +689,34 @@ fn pig_metadata_moves_saddle_and_age_index() {
 	assert_eq!(keys, vec![0, 18]);
 	assert_eq!(e.equipments[0].slot, 7);
 	assert!(
-		matches!(&e.equipments[0].item, z::Slot::Ty::default(1, d) if d.itemId == id("26.1", "items", "saddle"))
+		matches!(&e.equipments[0].item, z::slot::Ty::Default(1, d) if d.item_id == id("26.1", "items", "saddle"))
 	);
 }
 
-fn login(entity: i32) -> a::play_toClient_packet::Ty {
-	a::play_toClient_packet::Ty::login(a::play_toClient_packet_login::Ty {
-		entityId: entity,
-		isHardcore: false,
-		worldNames: vec!["minecraft:overworld".into()],
-		maxPlayers: 20,
-		viewDistance: 8,
-		simulationDistance: 8,
-		reducedDebugInfo: false,
-		enableRespawnScreen: true,
-		doLimitedCrafting: false,
-		worldState: a::play_toClient_SpawnInfo::Ty {
+fn login(entity: i32) -> a::play_to_client_packet::Ty {
+	a::play_to_client_packet::Ty::Login(a::play_to_client_packet_login::Ty {
+		entity_id: entity,
+		is_hardcore: false,
+		world_names: vec!["minecraft:overworld".into()],
+		max_players: 20,
+		view_distance: 8,
+		simulation_distance: 8,
+		reduced_debug_info: false,
+		enable_respawn_screen: true,
+		do_limited_crafting: false,
+		world_state: a::play_to_client_spawn_info::Ty {
 			dimension: 0,
 			name: "minecraft:overworld".into(),
-			hashedSeed: 0,
-			gamemode: a::play_toClient_SpawnInfo__gamemode::Ty::survival,
-			previousGamemode: 255,
-			isDebug: false,
-			isFlat: false,
+			hashed_seed: 0,
+			gamemode: a::play_to_client_spawn_info_gamemode::Ty::Survival,
+			previous_gamemode: 255,
+			is_debug: false,
+			is_flat: false,
 			death: None,
-			portalCooldown: 0,
-			seaLevel: 63,
+			portal_cooldown: 0,
+			sea_level: 63,
 		},
-		enforcesSecureChat: false,
+		enforces_secure_chat: false,
 	})
 }
 
@@ -724,7 +725,7 @@ fn sneaking_input_becomes_entity_action() {
 	let mut cx = Session::new();
 	up(&login(42), &mut cx);
 	let input = |shift| {
-		z::play_toServer_packet::Ty::player_input(z::play_toServer_packet_player_input::Ty {
+		z::play_to_server_packet::Ty::PlayerInput(z::play_to_server_packet_player_input::Ty {
 			forward: false,
 			backward: false,
 			left: false,
@@ -735,45 +736,45 @@ fn sneaking_input_becomes_entity_action() {
 		})
 	};
 	let out = down(&input(true), &mut cx);
-	let [a::play_toServer_packet::Ty::entity_action(e), a::play_toServer_packet::Ty::player_input(_)] =
+	let [a::play_to_server_packet::Ty::EntityAction(e), a::play_to_server_packet::Ty::PlayerInput(_)] =
 		out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
-	assert_eq!(e.entityId, 42);
+	assert_eq!(e.entity_id, 42);
 	assert!(matches!(
-		e.actionId,
-		a::play_toServer_packet_entity_action__actionId::Ty::start_sneaking
+		e.action_id,
+		a::play_to_server_packet_entity_action_action_id::Ty::StartSneaking
 	));
 	assert_eq!(down(&input(true), &mut cx).len(), 1);
 	let out = down(&input(false), &mut cx);
 	assert!(
-		matches!(&out[0], a::play_toServer_packet::Ty::entity_action(e) if matches!(e.actionId, a::play_toServer_packet_entity_action__actionId::Ty::stop_sneaking))
+		matches!(&out[0], a::play_to_server_packet::Ty::EntityAction(e) if matches!(e.action_id, a::play_to_server_packet_entity_action_action_id::Ty::StopSneaking))
 	);
 }
 
 #[test]
 fn time_becomes_clock_updates() {
-	let p = a::play_toClient_packet::Ty::update_time(a::play_toClient_packet_update_time::Ty {
+	let p = a::play_to_client_packet::Ty::UpdateTime(a::play_to_client_packet_update_time::Ty {
 		age: 100,
 		time: 6000,
-		tickDayTime: true,
+		tick_day_time: true,
 	});
 	let out = up(&p, &mut Session::new());
-	let [z::play_toClient_packet::Ty::update_time(t)] = out.as_slice() else {
+	let [z::play_to_client_packet::Ty::UpdateTime(t)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(t.age, 100);
-	assert_eq!(t.clockUpdates.len(), 2);
+	assert_eq!(t.clock_updates.len(), 2);
 	assert_eq!(
-		(t.clockUpdates[0].totalTicks, t.clockUpdates[0].rate),
+		(t.clock_updates[0].total_ticks, t.clock_updates[0].rate),
 		(6000, 1.0)
 	);
 }
 
-fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
-	use a::play_toClient_packet::Ty as P;
-	use a::SlotComponent::Ty as C;
+fn sample_play() -> Vec<a::play_to_client_packet::Ty> {
+	use a::play_to_client_packet::Ty as P;
+	use a::slot_component::Ty as C;
 	let blocks = registry::blocks("1.21.4").unwrap();
 	let state = |n: &str| blocks.parse_state(n).unwrap() as i32;
 	let pos = a::position::Ty { x: 1, z: 2, y: 64 };
@@ -782,24 +783,24 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 		"diamond_sword",
 		1,
 		vec![
-			C::enchantments(a::SlotComponent__enchantments::Ty {
-				enchantments: vec![a::SlotComponent__enchantments__enchantments__items::Ty {
+			C::Enchantments(a::slot_component_enchantments::Ty {
+				enchantments: vec![a::slot_component_enchantments_enchantments_items::Ty {
 					id: 1,
 					level: 2,
 				}],
-				showTooltip: true,
+				show_tooltip: true,
 			}),
-			C::custom_name(tag(compound(vec![("text", s("Blade"))]))),
-			C::lore(vec![Some(tag(compound(vec![("text", s("line"))]))), None]),
-			C::unbreakable(false),
-			C::hide_tooltip,
+			C::CustomName(tag(compound(vec![("text", s("Blade"))]))),
+			C::Lore(vec![Some(tag(compound(vec![("text", s("line"))]))), None]),
+			C::Unbreakable(false),
+			C::HideTooltip,
 		],
 	);
 	let sign = compound(vec![(
 		"front_text",
 		compound(vec![(
 			"messages",
-			Payload::list(List::new(ListItems::string(vec![
+			Payload::List(List::new(ListItems::String(vec![
 				"{\"text\":\"a\"}".into(),
 				"\"b\"".into(),
 				"\"\"".into(),
@@ -811,79 +812,79 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 		login(1),
 		spawn(5, "pig"),
 		spawn(6, "falling_block"),
-		P::map_chunk(a::play_toClient_packet_map_chunk::Ty {
+		P::MapChunk(a::play_to_client_packet_map_chunk::Ty {
 			x: 0,
 			z: 0,
 			heightmaps: tag(compound(vec![
-				("MOTION_BLOCKING", Payload::longArray(vec![1; 37])),
-				("WORLD_SURFACE", Payload::longArray(vec![2; 37])),
+				("MOTION_BLOCKING", Payload::LongArray(vec![1; 37])),
+				("WORLD_SURFACE", Payload::LongArray(vec![2; 37])),
 			])),
-			chunkData: [section_1_21_4(&[1, 9, 2000]), section_1_21_4(&[1])].concat(),
-			blockEntities: vec![a::chunkBlockEntity::Ty {
-				ANON: a::chunkBlockEntity__ANON::Ty { x: 1, z: 2 },
+			chunk_data: [section_1_21_4(&[1, 9, 2000]), section_1_21_4(&[1])].concat(),
+			block_entities: vec![a::chunk_block_entity::Ty {
+				anon: a::chunk_block_entity_anon::Ty { x: 1, z: 2 },
 				y: 64,
 				r#type: 7,
-				nbtData: Some(tag(sign)),
+				nbt_data: Some(tag(sign)),
 			}],
-			skyLightMask: vec![],
-			blockLightMask: vec![],
-			emptySkyLightMask: vec![],
-			emptyBlockLightMask: vec![],
-			skyLight: vec![],
-			blockLight: vec![],
+			sky_light_mask: vec![],
+			block_light_mask: vec![],
+			empty_sky_light_mask: vec![],
+			empty_block_light_mask: vec![],
+			sky_light: vec![],
+			block_light: vec![],
 		}),
-		P::set_slot(a::play_toClient_packet_set_slot::Ty {
-			windowId: 0,
-			stateId: 1,
+		P::SetSlot(a::play_to_client_packet_set_slot::Ty {
+			window_id: 0,
+			state_id: 1,
 			slot: 36,
 			item: sword.clone(),
 		}),
-		P::window_items(a::play_toClient_packet_window_items::Ty {
-			windowId: 0,
-			stateId: 2,
-			items: vec![a::Slot::Ty::v0, sword],
-			carriedItem: a::Slot::Ty::v0,
+		P::WindowItems(a::play_to_client_packet_window_items::Ty {
+			window_id: 0,
+			state_id: 2,
+			items: vec![a::slot::Ty::V0, sword],
+			carried_item: a::slot::Ty::V0,
 		}),
-		P::block_change(a::play_toClient_packet_block_change::Ty {
+		P::BlockChange(a::play_to_client_packet_block_change::Ty {
 			location: pos.clone(),
 			r#type: state("minecraft:oak_log[axis=x]"),
 		}),
-		P::multi_block_change(a::play_toClient_packet_multi_block_change::Ty {
-			chunkCoordinates: a::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
+		P::MultiBlockChange(a::play_to_client_packet_multi_block_change::Ty {
+			chunk_coordinates: a::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
 				x: 0,
 				z: 0,
 				y: 4,
 			},
 			records: vec![state("minecraft:glass") << 12 | 0x123],
 		}),
-		P::world_event(a::play_toClient_packet_world_event::Ty {
-			effectId: 2001,
+		P::WorldEvent(a::play_to_client_packet_world_event::Ty {
+			effect_id: 2001,
 			location: pos.clone(),
 			data: state("minecraft:stone"),
 			global: false,
 		}),
-		P::world_particles(a::play_toClient_packet_world_particles::Ty {
-			longDistance: false,
-			alwaysShow: false,
+		P::WorldParticles(a::play_to_client_packet_world_particles::Ty {
+			long_distance: false,
+			always_show: false,
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
-			offsetX: 0.0,
-			offsetY: 0.0,
-			offsetZ: 0.0,
-			velocityOffset: 0.0,
+			offset_x: 0.0,
+			offset_y: 0.0,
+			offset_z: 0.0,
+			velocity_offset: 0.0,
 			amount: 3,
-			particle: a::Particle::Ty::block(state("minecraft:dirt")),
+			particle: a::particle::Ty::Block(state("minecraft:dirt")),
 		}),
-		P::sound_effect(a::play_toClient_packet_sound_effect::Ty {
-			sound: a::ItemSoundHolder::Ty::Id(
+		P::SoundEffect(a::play_to_client_packet_sound_effect::Ty {
+			sound: a::item_sound_holder::Ty::Id(
 				registry::names("1.21.4", "sounds")
 					.unwrap()
 					.id("entity.pig.ambient")
 					.unwrap() as i32
 					- 1,
 			),
-			soundCategory: a::soundSource::Ty::neutral,
+			sound_category: a::sound_source::Ty::Neutral,
 			x: 0,
 			y: 512,
 			z: 0,
@@ -891,17 +892,17 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 			pitch: 1.0,
 			seed: 1,
 		}),
-		P::spawn_position(a::play_toClient_packet_spawn_position::Ty {
+		P::SpawnPosition(a::play_to_client_packet_spawn_position::Ty {
 			location: pos.clone(),
 			angle: 90.0,
 		}),
-		P::explosion(a::play_toClient_packet_explosion::Ty {
+		P::Explosion(a::play_to_client_packet_explosion::Ty {
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
-			playerKnockback: None,
-			explosionParticle: a::Particle::Ty::explosion,
-			sound: a::ItemSoundHolder::Ty::Id(
+			player_knockback: None,
+			explosion_particle: a::particle::Ty::Explosion,
+			sound: a::item_sound_holder::Ty::Id(
 				registry::names("1.21.4", "sounds")
 					.unwrap()
 					.id("entity.generic.explode")
@@ -909,31 +910,31 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 					- 1,
 			),
 		}),
-		P::update_time(a::play_toClient_packet_update_time::Ty {
+		P::UpdateTime(a::play_to_client_packet_update_time::Ty {
 			age: 10,
 			time: 1000,
-			tickDayTime: true,
+			tick_day_time: true,
 		}),
-		P::entity_velocity(a::play_toClient_packet_entity_velocity::Ty {
-			entityId: 5,
+		P::EntityVelocity(a::play_to_client_packet_entity_velocity::Ty {
+			entity_id: 5,
 			velocity: a::vec3i16::Ty {
 				x: 100,
 				y: 2000,
 				z: -300,
 			},
 		}),
-		P::entity_status(a::play_toClient_packet_entity_status::Ty {
-			entityId: 1,
-			entityStatus: 29,
+		P::EntityStatus(a::play_to_client_packet_entity_status::Ty {
+			entity_id: 1,
+			entity_status: 29,
 		}),
-		P::spawn_entity_experience_orb(a::play_toClient_packet_spawn_entity_experience_orb::Ty {
-			entityId: 9,
+		P::SpawnEntityExperienceOrb(a::play_to_client_packet_spawn_entity_experience_orb::Ty {
+			entity_id: 9,
 			x: 1.0,
 			y: 64.0,
 			z: 1.0,
 			count: 7,
 		}),
-		P::system_chat(a::play_toClient_packet_system_chat::Ty {
+		P::SystemChat(a::play_to_client_packet_system_chat::Ty {
 			content: tag(compound(vec![
 				("text", s("hi")),
 				(
@@ -941,16 +942,16 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 					compound(vec![("action", s("show_text")), ("contents", s("x"))]),
 				),
 			])),
-			isActionBar: false,
+			is_action_bar: false,
 		}),
-		P::teams(a::play_toClient_packet_teams::Ty {
+		P::Teams(a::play_to_client_packet_teams::Ty {
 			team: "t".into(),
-			mode: a::play_toClient_packet_teams__mode::Ty::v0(
-				a::play_toClient_packet_teams__mode__v0::Ty {
+			mode: a::play_to_client_packet_teams_mode::Ty::V0(
+				a::play_to_client_packet_teams_mode_v0::Ty {
 					name: tag(s("team")),
-					friendlyFire: 1,
-					nameTagVisibility: "hideForOtherTeams".into(),
-					collisionRule: "never".into(),
+					friendly_fire: 1,
+					name_tag_visibility: "hideForOtherTeams".into(),
+					collision_rule: "never".into(),
 					formatting: 0,
 					prefix: tag(s("[p] ")),
 					suffix: tag(s("")),
@@ -959,22 +960,22 @@ fn sample_play() -> Vec<a::play_toClient_packet::Ty> {
 			),
 		}),
 	];
-	use a::entityMetadataEntry__value::Ty as V;
-	out.push(P::entity_metadata(
-		a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 5,
+	use a::entity_metadata_entry_value::Ty as V;
+	out.push(P::EntityMetadata(
+		a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 5,
 			metadata: vec![
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 2,
-					value: V::optional_component(Some(tag(s("Pig")))),
+					value: V::OptionalComponent(Some(tag(s("Pig")))),
 				},
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 17,
-					value: V::boolean(true),
+					value: V::Boolean(true),
 				},
-				a::entityMetadataEntry::Ty {
+				a::entity_metadata_entry::Ty {
 					key: 18,
-					value: V::int(3),
+					value: V::Int(3),
 				},
 			],
 		},
@@ -1004,7 +1005,7 @@ fn write_dumps() {
 					Root::PlayToClient,
 					at("1.21.4"),
 					at(version),
-					&encode(&p, a::play_toClient_packet::serialize),
+					&encode(&p, a::play_to_client_packet::serialize),
 					&mut cx,
 				)
 				.unwrap(),
@@ -1013,7 +1014,7 @@ fn write_dumps() {
 		std::fs::write(dir.join(format!("{version}.bin")), frame(&play)).unwrap();
 		let mut config = Vec::new();
 		for p in sample_config() {
-			let data = encode(&p, a::configuration_toClient_packet::serialize);
+			let data = encode(&p, a::configuration_to_client_packet::serialize);
 			config.extend(
 				convert(
 					Root::ConfigurationToClient,
@@ -1068,7 +1069,7 @@ fn sample_packets_convert_to_every_version() {
 				Root::PlayToClient,
 				at("1.21.4"),
 				at(version),
-				&encode(&p, a::play_toClient_packet::serialize),
+				&encode(&p, a::play_to_client_packet::serialize),
 				&mut cx,
 			)
 			.unwrap_or_else(|e| panic!("{version}: {e} for {p:?}"));
@@ -1100,18 +1101,18 @@ fn chat_click_events_are_renamed() {
 		),
 		(
 			"extra",
-			Payload::list(List::new(ListItems::compound(vec![vec![Entry::new(
+			Payload::List(List::new(ListItems::Compound(vec![vec![Entry::new(
 				"clickEvent",
 				compound(vec![("action", s("change_page")), ("value", s("2"))]),
 			)]]))),
 		),
 	]));
-	let p = a::play_toClient_packet::Ty::system_chat(a::play_toClient_packet_system_chat::Ty {
+	let p = a::play_to_client_packet::Ty::SystemChat(a::play_to_client_packet_system_chat::Ty {
 		content,
-		isActionBar: false,
+		is_action_bar: false,
 	});
 	let out = up(&p, &mut Session::new());
-	let [z::play_toClient_packet::Ty::system_chat(c)] = out.as_slice() else {
+	let [z::play_to_client_packet::Ty::SystemChat(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
@@ -1122,8 +1123,8 @@ fn chat_click_events_are_renamed() {
 		get(&c.content.value, &["hover_event", "value", "text"]),
 		Some(&s("tip"))
 	);
-	let Some(Payload::list(List {
-		items: ListItems::compound(extra),
+	let Some(Payload::List(List {
+		items: ListItems::Compound(extra),
 		..
 	})) = get(&c.content.value, &["extra"])
 	else {
@@ -1131,10 +1132,10 @@ fn chat_click_events_are_renamed() {
 	};
 	assert_eq!(
 		get(
-			&Payload::compound(extra[0].clone()),
+			&Payload::Compound(extra[0].clone()),
 			&["click_event", "page"]
 		),
-		Some(&Payload::int(2))
+		Some(&Payload::Int(2))
 	);
 }
 
@@ -1183,13 +1184,13 @@ fn hash_map(entries: &[(i32, i32)]) -> i32 {
 }
 
 fn enchantment_registry(cx: &mut Session) {
-	let p = v1_21_5::configuration_toClient_packet::Ty::registry_data(
-		v1_21_5::configuration_toClient_packet_registry_data::Ty {
+	let p = v1_21_5::configuration_to_client_packet::Ty::RegistryData(
+		v1_21_5::configuration_to_client_packet_registry_data::Ty {
 			id: "minecraft:enchantment".into(),
 			entries: ["minecraft:protection", "minecraft:sharpness"]
 				.into_iter()
 				.map(
-					|k| v1_21_5::configuration_toClient_packet_registry_data__entries__items::Ty {
+					|k| v1_21_5::configuration_to_client_packet_registry_data_entries_items::Ty {
 						key: k.into(),
 						value: None,
 					},
@@ -1202,44 +1203,44 @@ fn enchantment_registry(cx: &mut Session) {
 		"1.21.5",
 		"1.21.4",
 		&p,
-		v1_21_5::configuration_toClient_packet::serialize,
-		a::configuration_toClient_packet::deserialize,
+		v1_21_5::configuration_to_client_packet::serialize,
+		a::configuration_to_client_packet::deserialize,
 		cx,
 	);
 }
 
-fn click(item: a::Slot::Ty, cx: &mut Session) -> v1_21_5::play_toServer_packet_window_click::Ty {
-	let p = a::play_toServer_packet::Ty::window_click(a::play_toServer_packet_window_click::Ty {
-		windowId: 0,
-		stateId: 1,
+fn click(item: a::slot::Ty, cx: &mut Session) -> v1_21_5::play_to_server_packet_window_click::Ty {
+	let p = a::play_to_server_packet::Ty::WindowClick(a::play_to_server_packet_window_click::Ty {
+		window_id: 0,
+		state_id: 1,
 		slot: 36,
-		mouseButton: 0,
+		mouse_button: 0,
 		mode: 0,
-		changedSlots: vec![
-			a::play_toServer_packet_window_click__changedSlots__items::Ty {
+		changed_slots: vec![
+			a::play_to_server_packet_window_click_changed_slots_items::Ty {
 				location: 36,
-				item: a::Slot::Ty::v0,
+				item: a::slot::Ty::V0,
 			},
 		],
-		cursorItem: item,
+		cursor_item: item,
 	});
 	let out = run(
 		Root::PlayToServer,
 		"1.21.4",
 		"1.21.5",
 		&p,
-		a::play_toServer_packet::serialize,
-		v1_21_5::play_toServer_packet::deserialize,
+		a::play_to_server_packet::serialize,
+		v1_21_5::play_to_server_packet::deserialize,
 		cx,
 	);
-	let [v1_21_5::play_toServer_packet::Ty::window_click(c)] = out.as_slice() else {
+	let [v1_21_5::play_to_server_packet::Ty::WindowClick(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	c.clone()
 }
 
-fn hashes(c: &v1_21_5::play_toServer_packet_window_click::Ty) -> Vec<(String, i32)> {
-	let slot = c.cursorItem.as_ref().expect("cursor item");
+fn hashes(c: &v1_21_5::play_to_server_packet_window_click::Ty) -> Vec<(String, i32)> {
+	let slot = c.cursor_item.as_ref().expect("cursor item");
 	let mut out: Vec<(String, i32)> = slot
 		.components
 		.iter()
@@ -1258,29 +1259,29 @@ fn old_client_clicks_send_vanilla_hashes() {
 		"diamond_sword",
 		1,
 		vec![
-			a::SlotComponent::Ty::damage(5),
-			a::SlotComponent::Ty::enchantments(a::SlotComponent__enchantments::Ty {
-				enchantments: vec![a::SlotComponent__enchantments__enchantments__items::Ty {
+			a::slot_component::Ty::Damage(5),
+			a::slot_component::Ty::Enchantments(a::slot_component_enchantments::Ty {
+				enchantments: vec![a::slot_component_enchantments_enchantments_items::Ty {
 					id: 1,
 					level: 3,
 				}],
-				showTooltip: true,
+				show_tooltip: true,
 			}),
 		],
 	);
 	let c = click(sword, &mut cx);
-	assert!(c.changedSlots[0].item.is_none());
+	assert!(c.changed_slots[0].item.is_none());
 	let enchantments = hash_map(&[(hash_str("minecraft:sharpness"), hash_int(3))]);
 	assert_eq!(
 		hashes(&c),
 		vec![
-			("damage".to_owned(), hash_int(5)),
-			("enchantments".to_owned(), enchantments)
+			("Damage".to_owned(), hash_int(5)),
+			("Enchantments".to_owned(), enchantments)
 		]
 	);
-	let slot = c.cursorItem.as_ref().unwrap();
+	let slot = c.cursor_item.as_ref().unwrap();
 	assert_eq!(
-		(slot.itemId, slot.itemCount),
+		(slot.item_id, slot.item_count),
 		(id("1.21.5", "items", "diamond_sword"), 1)
 	);
 }
@@ -1289,28 +1290,28 @@ fn old_client_clicks_send_vanilla_hashes() {
 fn clicks_reuse_components_the_server_sent() {
 	let mut cx = Session::new();
 	enchantment_registry(&mut cx);
-	let enchantments = v1_21_5::SlotComponent::Ty::enchantments(vec![
-		v1_21_5::SlotComponent__enchantments__items::Ty { id: 1, level: 2 },
+	let enchantments = v1_21_5::slot_component::Ty::Enchantments(vec![
+		v1_21_5::slot_component_enchantments_items::Ty { id: 1, level: 2 },
 	]);
 	let hidden =
-		v1_21_5::SlotComponent::Ty::tooltip_display(v1_21_5::SlotComponent__tooltip_display::Ty {
-			hideTooltip: false,
-			hiddenComponents: vec![10, 3],
+		v1_21_5::slot_component::Ty::TooltipDisplay(v1_21_5::slot_component_tooltip_display::Ty {
+			hide_tooltip: false,
+			hidden_components: vec![10, 3],
 		});
-	let sent = v1_21_5::Slot::Ty::default(
+	let sent = v1_21_5::slot::Ty::Default(
 		1,
-		v1_21_5::Slot__default::Ty {
-			itemId: id("1.21.5", "items", "diamond_sword"),
-			addedComponentCount: 2,
-			removedComponentCount: 0,
+		v1_21_5::slot_default::Ty {
+			item_id: id("1.21.5", "items", "diamond_sword"),
+			added_component_count: 2,
+			removed_component_count: 0,
 			components: vec![enchantments, hidden],
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	);
 	let p =
-		v1_21_5::play_toClient_packet::Ty::set_slot(v1_21_5::play_toClient_packet_set_slot::Ty {
-			windowId: 0,
-			stateId: 1,
+		v1_21_5::play_to_client_packet::Ty::SetSlot(v1_21_5::play_to_client_packet_set_slot::Ty {
+			window_id: 0,
+			state_id: 1,
 			slot: 36,
 			item: sent,
 		});
@@ -1319,11 +1320,11 @@ fn clicks_reuse_components_the_server_sent() {
 		"1.21.5",
 		"1.21.4",
 		&p,
-		v1_21_5::play_toClient_packet::serialize,
-		a::play_toClient_packet::deserialize,
+		v1_21_5::play_to_client_packet::serialize,
+		a::play_to_client_packet::deserialize,
 		&mut cx,
 	);
-	let [a::play_toClient_packet::Ty::set_slot(s)] = out.as_slice() else {
+	let [a::play_to_client_packet::Ty::SetSlot(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let c = click(s.item.clone(), &mut cx);
@@ -1338,15 +1339,15 @@ fn clicks_reuse_components_the_server_sent() {
 	assert_eq!(
 		hashes(&c),
 		vec![
-			("enchantments".to_owned(), enchantments),
-			("tooltip_display".to_owned(), hidden)
+			("Enchantments".to_owned(), enchantments),
+			("TooltipDisplay".to_owned(), hidden)
 		]
 	);
 }
 
 #[test]
 fn new_server_text_reaches_old_client() {
-	let list = |items: Vec<Vec<Entry>>| Payload::list(List::new(ListItems::compound(items)));
+	let list = |items: Vec<Vec<Entry>>| Payload::List(List::new(ListItems::Compound(items)));
 	let entry = |n: &str, v: Payload| Entry::new(n, v);
 	let content = tag(compound(vec![
 		("text", s("a")),
@@ -1378,76 +1379,76 @@ fn new_server_text_reaches_old_client() {
 						"click_event",
 						compound(vec![
 							("action", s("change_page")),
-							("page", Payload::int(3)),
+							("page", Payload::Int(3)),
 						]),
 					),
 				],
 			]),
 		),
 	]));
-	let p = z::play_toClient_packet::Ty::system_chat(z::play_toClient_packet_system_chat::Ty {
+	let p = z::play_to_client_packet::Ty::SystemChat(z::play_to_client_packet_system_chat::Ty {
 		content,
-		isActionBar: false,
+		is_action_bar: false,
 	});
 	let out = run(
 		Root::PlayToClient,
 		"26.1",
 		"1.21.4",
 		&p,
-		z::play_toClient_packet::serialize,
-		a::play_toClient_packet::deserialize,
+		z::play_to_client_packet::serialize,
+		a::play_to_client_packet::deserialize,
 		&mut Session::new(),
 	);
-	let [a::play_toClient_packet::Ty::system_chat(c)] = out.as_slice() else {
+	let [a::play_to_client_packet::Ty::SystemChat(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let v = &c.content.value;
 	assert_eq!(get(v, &["clickEvent"]), None);
 	assert_eq!(get(v, &["click_event"]), None);
 	assert_eq!(get(v, &["hoverEvent", "contents", "text"]), Some(&s("tip")));
-	let Some(Payload::list(List {
-		items: ListItems::compound(extra),
+	let Some(Payload::List(List {
+		items: ListItems::Compound(extra),
 		..
 	})) = get(v, &["extra"])
 	else {
 		panic!("{v:?}")
 	};
-	let first = Payload::compound(extra[0].clone());
+	let first = Payload::Compound(extra[0].clone());
 	assert_eq!(get(&first, &["text"]), Some(&s("apple")));
 	assert_eq!(get(&first, &["sprite"]), None);
-	let second = Payload::compound(extra[1].clone());
+	let second = Payload::Compound(extra[1].clone());
 	assert_eq!(get(&second, &["clickEvent", "value"]), Some(&s("3")));
 }
 
-fn spawn5(entity: i32, kind: &str, data: i32) -> v1_21_5::play_toClient_packet::Ty {
-	v1_21_5::play_toClient_packet::Ty::spawn_entity(
-		v1_21_5::play_toClient_packet_spawn_entity::Ty {
-			entityId: entity,
-			objectUUID: entity as u128,
+fn spawn5(entity: i32, kind: &str, data: i32) -> v1_21_5::play_to_client_packet::Ty {
+	v1_21_5::play_to_client_packet::Ty::SpawnEntity(
+		v1_21_5::play_to_client_packet_spawn_entity::Ty {
+			entity_id: entity,
+			object_uuid: entity as u128,
 			r#type: id("1.21.5", "entities", kind),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: data,
+			head_pitch: 0,
+			object_data: data,
 			velocity: v1_21_5::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		},
 	)
 }
 
 fn down5(
-	p: &v1_21_5::play_toClient_packet::Ty,
+	p: &v1_21_5::play_to_client_packet::Ty,
 	cx: &mut Session,
-) -> Vec<a::play_toClient_packet::Ty> {
+) -> Vec<a::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
 		"1.21.5",
 		"1.21.4",
 		p,
-		v1_21_5::play_toClient_packet::serialize,
-		a::play_toClient_packet::deserialize,
+		v1_21_5::play_to_client_packet::serialize,
+		a::play_to_client_packet::deserialize,
 		cx,
 	)
 }
@@ -1456,21 +1457,21 @@ fn down5(
 fn saddles_and_orbs_reach_old_clients() {
 	let mut cx = Session::new();
 	down5(&spawn5(7, "pig", 0), &mut cx);
-	let saddle = v1_21_5::Slot::Ty::default(
+	let saddle = v1_21_5::slot::Ty::Default(
 		1,
-		v1_21_5::Slot__default::Ty {
-			itemId: id("1.21.5", "items", "saddle"),
-			addedComponentCount: 0,
-			removedComponentCount: 0,
+		v1_21_5::slot_default::Ty {
+			item_id: id("1.21.5", "items", "saddle"),
+			added_component_count: 0,
+			removed_component_count: 0,
 			components: vec![],
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	);
-	let p = v1_21_5::play_toClient_packet::Ty::entity_equipment(
-		v1_21_5::play_toClient_packet_entity_equipment::Ty {
-			entityId: 7,
+	let p = v1_21_5::play_to_client_packet::Ty::EntityEquipment(
+		v1_21_5::play_to_client_packet_entity_equipment::Ty {
+			entity_id: 7,
 			equipments: vec![
-				v1_21_5::play_toClient_packet_entity_equipment__equipments__items::Ty {
+				v1_21_5::play_to_client_packet_entity_equipment_equipments_items::Ty {
 					slot: 7,
 					item: saddle,
 				},
@@ -1478,30 +1479,30 @@ fn saddles_and_orbs_reach_old_clients() {
 		},
 	);
 	let out = down5(&p, &mut cx);
-	let [a::play_toClient_packet::Ty::entity_metadata(m)] = out.as_slice() else {
+	let [a::play_to_client_packet::Ty::EntityMetadata(m)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
 		(m.metadata[0].key, &m.metadata[0].value),
-		(17, &a::entityMetadataEntry__value::Ty::boolean(true))
+		(17, &a::entity_metadata_entry_value::Ty::Boolean(true))
 	);
 	let out = down5(&spawn5(8, "experience_orb", 12), &mut cx);
-	let [a::play_toClient_packet::Ty::spawn_entity_experience_orb(o)] = out.as_slice() else {
+	let [a::play_to_client_packet::Ty::SpawnEntityExperienceOrb(o)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!((o.entityId, o.count), (8, 12));
+	assert_eq!((o.entity_id, o.count), (8, 12));
 }
 
 #[test]
 fn registries_downgrade_for_old_clients() {
-	use v1_21_5::configuration_toClient_packet as c5;
+	use v1_21_5::configuration_to_client_packet as c5;
 	let registry = |id: &str, entries: Vec<(&str, Payload)>| {
-		c5::Ty::registry_data(v1_21_5::configuration_toClient_packet_registry_data::Ty {
+		c5::Ty::RegistryData(v1_21_5::configuration_to_client_packet_registry_data::Ty {
 			id: id.into(),
 			entries: entries
 				.into_iter()
 				.map(|(k, v)| {
-					v1_21_5::configuration_toClient_packet_registry_data__entries__items::Ty {
+					v1_21_5::configuration_to_client_packet_registry_data_entries_items::Ty {
 						key: k.into(),
 						value: Some(tag(v)),
 					}
@@ -1525,7 +1526,7 @@ fn registries_downgrade_for_old_clients() {
 			"1.21.4",
 			p,
 			c5::serialize,
-			a::configuration_toClient_packet::deserialize,
+			a::configuration_to_client_packet::deserialize,
 			cx,
 		)
 	};
@@ -1533,7 +1534,7 @@ fn registries_downgrade_for_old_clients() {
 		&registry("minecraft:wolf_variant", vec![("minecraft:pale", wolf)]),
 		&mut cx,
 	);
-	let [a::configuration_toClient_packet::Ty::registry_data(r)] = out.as_slice() else {
+	let [a::configuration_to_client_packet::Ty::RegistryData(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let v = &r.entries[0].value.as_ref().unwrap().value;
@@ -1554,22 +1555,22 @@ fn registries_downgrade_for_old_clients() {
 
 #[test]
 fn modern_dimension_types_downgrade() {
-	use v1_21_11::configuration_toClient_packet as c11;
+	use v1_21_11::configuration_to_client_packet as c11;
 	let attributes = compound(vec![
-		("minecraft:visual/cloud_height", Payload::float(192.33)),
-		("minecraft:gameplay/piglins_zombify", Payload::byte(1)),
-		("minecraft:gameplay/fast_lava", Payload::byte(0)),
+		("minecraft:visual/cloud_height", Payload::Float(192.33)),
+		("minecraft:gameplay/piglins_zombify", Payload::Byte(1)),
+		("minecraft:gameplay/fast_lava", Payload::Byte(0)),
 	]);
 	let overworld = compound(vec![
-		("min_y", Payload::int(-64)),
-		("height", Payload::int(384)),
-		("has_fixed_time", Payload::byte(0)),
+		("min_y", Payload::Int(-64)),
+		("height", Payload::Int(384)),
+		("has_fixed_time", Payload::Byte(0)),
 		("attributes", attributes),
 	]);
-	let p = c11::Ty::registry_data(v1_21_11::configuration_toClient_packet_registry_data::Ty {
+	let p = c11::Ty::RegistryData(v1_21_11::configuration_to_client_packet_registry_data::Ty {
 		id: "minecraft:dimension_type".into(),
 		entries: vec![
-			v1_21_11::configuration_toClient_packet_registry_data__entries__items::Ty {
+			v1_21_11::configuration_to_client_packet_registry_data_entries_items::Ty {
 				key: "minecraft:overworld".into(),
 				value: Some(tag(overworld)),
 			},
@@ -1581,19 +1582,19 @@ fn modern_dimension_types_downgrade() {
 		"1.21.9",
 		&p,
 		c11::serialize,
-		v1_21_9::configuration_toClient_packet::deserialize,
+		v1_21_9::configuration_to_client_packet::deserialize,
 		&mut Session::new(),
 	);
-	let [v1_21_9::configuration_toClient_packet::Ty::registry_data(r)] = out.as_slice() else {
+	let [v1_21_9::configuration_to_client_packet::Ty::RegistryData(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let v = &r.entries[0].value.as_ref().unwrap().value;
-	assert_eq!(get(v, &["cloud_height"]), Some(&Payload::int(192)));
-	assert_eq!(get(v, &["piglin_safe"]), Some(&Payload::byte(0)));
+	assert_eq!(get(v, &["cloud_height"]), Some(&Payload::Int(192)));
+	assert_eq!(get(v, &["piglin_safe"]), Some(&Payload::Byte(0)));
 	assert_eq!(get(v, &["effects"]), Some(&s("minecraft:overworld")));
 	assert_eq!(get(v, &["attributes"]), None);
 	let timeline =
-		c11::Ty::registry_data(v1_21_11::configuration_toClient_packet_registry_data::Ty {
+		c11::Ty::RegistryData(v1_21_11::configuration_to_client_packet_registry_data::Ty {
 			id: "minecraft:timeline".into(),
 			entries: vec![],
 		});
@@ -1603,7 +1604,7 @@ fn modern_dimension_types_downgrade() {
 		"1.21.9",
 		&timeline,
 		c11::serialize,
-		v1_21_9::configuration_toClient_packet::deserialize,
+		v1_21_9::configuration_to_client_packet::deserialize,
 		&mut Session::new(),
 	);
 	assert!(out.is_empty());
@@ -1612,53 +1613,53 @@ fn modern_dimension_types_downgrade() {
 #[test]
 fn code_of_conduct_is_accepted_for_old_clients() {
 	let mut cx = Session::new();
-	let p = v1_21_9::configuration_toClient_packet::Ty::code_of_conduct("be nice".into());
+	let p = v1_21_9::configuration_to_client_packet::Ty::CodeOfConduct("be nice".into());
 	let out = run(
 		Root::ConfigurationToClient,
 		"1.21.9",
 		"1.21.8",
 		&p,
-		v1_21_9::configuration_toClient_packet::serialize,
-		v1_21_8::configuration_toClient_packet::deserialize,
+		v1_21_9::configuration_to_client_packet::serialize,
+		v1_21_8::configuration_to_client_packet::deserialize,
 		&mut cx,
 	);
 	assert!(out.is_empty());
 	let sent = cx.take_outgoing();
 	assert_eq!(sent.len(), 1);
 	assert_eq!(sent[0].version, at("1.21.9"));
-	let accept: v1_21_9::configuration_toServer_packet::Ty = decode(
+	let accept: v1_21_9::configuration_to_server_packet::Ty = decode(
 		&sent[0].data,
-		v1_21_9::configuration_toServer_packet::deserialize,
+		v1_21_9::configuration_to_server_packet::deserialize,
 	);
 	assert!(matches!(
 		accept,
-		v1_21_9::configuration_toServer_packet::Ty::accept_code_of_conduct(_)
+		v1_21_9::configuration_to_server_packet::Ty::AcceptCodeOfConduct(_)
 	));
 }
 
 #[test]
 fn relative_rotation_uses_last_look() {
 	let mut cx = Session::new();
-	let look = v1_21_8::play_toServer_packet::Ty::look(v1_21_8::play_toServer_packet_look::Ty {
+	let look = v1_21_8::play_to_server_packet::Ty::Look(v1_21_8::play_to_server_packet_look::Ty {
 		yaw: 90.0,
 		pitch: 10.0,
-		flags: decode(&[0], v1_21_8::play_toServer_MovementFlags::deserialize),
+		flags: decode(&[0], v1_21_8::play_to_server_movement_flags::deserialize),
 	});
 	run(
 		Root::PlayToServer,
 		"1.21.8",
 		"1.21.9",
 		&look,
-		v1_21_8::play_toServer_packet::serialize,
-		v1_21_9::play_toServer_packet::deserialize,
+		v1_21_8::play_to_server_packet::serialize,
+		v1_21_9::play_to_server_packet::deserialize,
 		&mut cx,
 	);
-	let rotate = v1_21_9::play_toClient_packet::Ty::player_rotation(
-		v1_21_9::play_toClient_packet_player_rotation::Ty {
+	let rotate = v1_21_9::play_to_client_packet::Ty::PlayerRotation(
+		v1_21_9::play_to_client_packet_player_rotation::Ty {
 			yaw: 10.0,
-			relativeYaw: true,
+			relative_yaw: true,
 			pitch: 5.0,
-			relativePitch: false,
+			relative_pitch: false,
 		},
 	);
 	let out = run(
@@ -1666,11 +1667,11 @@ fn relative_rotation_uses_last_look() {
 		"1.21.9",
 		"1.21.8",
 		&rotate,
-		v1_21_9::play_toClient_packet::serialize,
-		v1_21_8::play_toClient_packet::deserialize,
+		v1_21_9::play_to_client_packet::serialize,
+		v1_21_8::play_to_client_packet::deserialize,
 		&mut cx,
 	);
-	let [v1_21_8::play_toClient_packet::Ty::player_rotation(r)] = out.as_slice() else {
+	let [v1_21_8::play_to_client_packet::Ty::PlayerRotation(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!((r.yaw, r.pitch), (100.0, 5.0));
@@ -1678,10 +1679,10 @@ fn relative_rotation_uses_last_look() {
 
 #[test]
 fn old_client_interactions_reach_26_1() {
-	use v1_21_11::play_toServer_packet_use_entity__mouse::Ty as Mouse;
+	use v1_21_11::play_to_server_packet_use_entity_mouse::Ty as Mouse;
 	let send = |mouse: Mouse| {
-		let p = v1_21_11::play_toServer_packet::Ty::use_entity(
-			v1_21_11::play_toServer_packet_use_entity::Ty {
+		let p = v1_21_11::play_to_server_packet::Ty::UseEntity(
+			v1_21_11::play_to_server_packet_use_entity::Ty {
 				target: 5,
 				mouse,
 				sneaking: false,
@@ -1692,79 +1693,79 @@ fn old_client_interactions_reach_26_1() {
 			"1.21.11",
 			"26.1",
 			&p,
-			v1_21_11::play_toServer_packet::serialize,
-			z::play_toServer_packet::deserialize,
+			v1_21_11::play_to_server_packet::serialize,
+			z::play_to_server_packet::deserialize,
 			&mut Session::new(),
 		)
 	};
 	assert!(matches!(
-		send(Mouse::default(1)).as_slice(),
-		[z::play_toServer_packet::Ty::attack(5)]
+		send(Mouse::Default(1)).as_slice(),
+		[z::play_to_server_packet::Ty::Attack(5)]
 	));
-	assert!(send(Mouse::v0(0)).is_empty());
-	let out = send(Mouse::v2(
-		v1_21_11::play_toServer_packet_use_entity__mouse__v2::Ty {
+	assert!(send(Mouse::V0(0)).is_empty());
+	let out = send(Mouse::V2(
+		v1_21_11::play_to_server_packet_use_entity_mouse_v2::Ty {
 			x: 0.5,
 			y: 1.0,
 			z: 0.0,
 			hand: 1,
 		},
 	));
-	let [z::play_toServer_packet::Ty::use_entity(u)] = out.as_slice() else {
+	let [z::play_to_server_packet::Ty::UseEntity(u)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
 		(u.target, &u.hand),
-		(5, &z::play_toServer_packet_use_entity__hand::Ty::off_hand)
+		(5, &z::play_to_server_packet_use_entity_hand::Ty::OffHand)
 	);
 }
 
-fn joined(entity: i32) -> z::play_toClient_packet::Ty {
+fn joined(entity: i32) -> z::play_to_client_packet::Ty {
 	let out = up(&login(entity), &mut Session::new());
 	out.into_iter()
-		.find(|p| matches!(p, z::play_toClient_packet::Ty::login(_)))
+		.find(|p| matches!(p, z::play_to_client_packet::Ty::Login(_)))
 		.unwrap()
 }
 
 fn data(
 	entity: i32,
-	metadata: Vec<(u8, z::entityMetadataEntry__value::Ty)>,
-) -> z::play_toClient_packet::Ty {
-	z::play_toClient_packet::Ty::entity_metadata(z::play_toClient_packet_entity_metadata::Ty {
-		entityId: entity,
+	metadata: Vec<(u8, z::entity_metadata_entry_value::Ty)>,
+) -> z::play_to_client_packet::Ty {
+	z::play_to_client_packet::Ty::EntityMetadata(z::play_to_client_packet_entity_metadata::Ty {
+		entity_id: entity,
 		metadata: metadata
 			.into_iter()
-			.map(|(key, value)| z::entityMetadataEntry::Ty { key, value })
+			.map(|(key, value)| z::entity_metadata_entry::Ty { key, value })
 			.collect(),
 	})
 }
 
-fn rotation(pitch: f32) -> z::entityMetadataEntry__value::Ty {
-	z::entityMetadataEntry__value::Ty::rotations(z::entityMetadataEntry__value__rotations::Ty {
+fn rotation(pitch: f32) -> z::entity_metadata_entry_value::Ty {
+	z::entity_metadata_entry_value::Ty::Rotations(z::entity_metadata_entry_value_rotations::Ty {
 		pitch,
 		yaw: 0.0,
 		roll: 0.0,
 	})
 }
 
-fn layout_1_8(packets: &[v1_8::play_toClient_packet::Ty]) -> Vec<(u8, u8)> {
+fn layout_1_8(packets: &[v1_8::play_to_client_packet::Ty]) -> Vec<(u8, u8)> {
 	packets
 		.iter()
 		.flat_map(|p| match p {
-			v1_8::play_toClient_packet::Ty::entity_metadata(m) => m.metadata.clone(),
-			v1_8::play_toClient_packet::Ty::spawn_entity_living(s) => s.metadata.clone(),
+			v1_8::play_to_client_packet::Ty::EntityMetadata(m) => m.metadata.clone(),
+			v1_8::play_to_client_packet::Ty::SpawnEntityLiving(s) => s.metadata.clone(),
 			_ => vec![],
 		})
-		.map(|e| (e.ANON.key, e.ANON.r#type))
+		.map(|e| (e.anon.key, e.anon.r#type))
 		.collect()
 }
 
-fn layout_1_12(packets: &[v1_12_2::play_toClient_packet::Ty]) -> Vec<(u8, i8)> {
+fn layout_1_12(packets: &[v1_12_2::play_to_client_packet::Ty]) -> Vec<(u8, i8)> {
 	packets
 		.iter()
 		.flat_map(|p| match p {
-			v1_12_2::play_toClient_packet::Ty::entity_metadata(m) => m.metadata.clone(),
-			v1_12_2::play_toClient_packet::Ty::spawn_entity_living(s) => s.metadata.clone(),
+			v1_12_2::play_to_client_packet::Ty::EntityMetadata(m) => m.metadata.clone(),
+			v1_12_2::play_to_client_packet::Ty::SpawnEntityLiving(s) => s.metadata.clone(),
 			_ => vec![],
 		})
 		.map(|e| (e.key, e.r#type))
@@ -1773,11 +1774,11 @@ fn layout_1_12(packets: &[v1_12_2::play_toClient_packet::Ty]) -> Vec<(u8, i8)> {
 
 #[test]
 fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
-	use z::entityMetadataEntry__value::Ty as V;
+	use z::entity_metadata_entry_value::Ty as V;
 	let stand =
-		z::play_toClient_packet::Ty::spawn_entity(z::play_toClient_packet_spawn_entity::Ty {
-			entityId: 11,
-			objectUUID: 11,
+		z::play_to_client_packet::Ty::SpawnEntity(z::play_to_client_packet_spawn_entity::Ty {
+			entity_id: 11,
+			object_uuid: 11,
 			r#type: id("26.1", "entities", "armor_stand"),
 			x: 0.5,
 			y: 64.0,
@@ -1785,15 +1786,15 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 			velocity: vec![0],
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: 0,
+			head_pitch: 0,
+			object_data: 0,
 		});
 	let hologram = data(
 		11,
 		vec![
-			(0, V::byte(0x20)),
-			(3, V::boolean(true)),
-			(15, V::byte(0x19)),
+			(0, V::Byte(0x20)),
+			(3, V::Boolean(true)),
+			(15, V::Byte(0x19)),
 			(16, rotation(10.0)),
 			(20, rotation(20.0)),
 		],
@@ -1804,8 +1805,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 		"26.1",
 		"1.8",
 		&joined(3),
-		z::play_toClient_packet::serialize,
-		v1_8::play_toClient_packet::deserialize,
+		z::play_to_client_packet::serialize,
+		v1_8::play_to_client_packet::deserialize,
 		&mut cx,
 	);
 	let mut old = Vec::new();
@@ -1815,13 +1816,13 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 			"26.1",
 			"1.8",
 			p,
-			z::play_toClient_packet::serialize,
-			v1_8::play_toClient_packet::deserialize,
+			z::play_to_client_packet::serialize,
+			v1_8::play_to_client_packet::deserialize,
 			&mut cx,
 		));
 	}
 	assert!(
-		matches!(old.first(), Some(v1_8::play_toClient_packet::Ty::spawn_entity_living(s)) if s.r#type == 30),
+		matches!(old.first(), Some(v1_8::play_to_client_packet::Ty::SpawnEntityLiving(s)) if s.r#type == 30),
 		"{old:?}"
 	);
 	assert_eq!(
@@ -1834,8 +1835,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 		"26.1",
 		"1.12.2",
 		&joined(3),
-		z::play_toClient_packet::serialize,
-		v1_12_2::play_toClient_packet::deserialize,
+		z::play_to_client_packet::serialize,
+		v1_12_2::play_to_client_packet::deserialize,
 		&mut cx,
 	);
 	let mut old = Vec::new();
@@ -1845,8 +1846,8 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 			"26.1",
 			"1.12.2",
 			p,
-			z::play_toClient_packet::serialize,
-			v1_12_2::play_toClient_packet::deserialize,
+			z::play_to_client_packet::serialize,
+			v1_12_2::play_to_client_packet::deserialize,
 			&mut cx,
 		));
 	}
@@ -1858,17 +1859,17 @@ fn armor_stands_reach_1_8_and_1_12_2_with_their_layout() {
 
 #[test]
 fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
-	use z::entityMetadataEntry__value::Ty as V;
+	use z::entity_metadata_entry_value::Ty as V;
 	let me = data(
 		3,
 		vec![
 			(
 				15,
-				V::humanoid_arm(z::entityMetadataEntry__value__humanoid_arm::Ty::right),
+				V::HumanoidArm(z::entity_metadata_entry_value_humanoid_arm::Ty::Right),
 			),
-			(16, V::byte(0x7f)),
-			(17, V::float(4.0)),
-			(18, V::int(7)),
+			(16, V::Byte(0x7f)),
+			(17, V::Float(4.0)),
+			(18, V::Int(7)),
 		],
 	);
 	let mut cx = Session::new();
@@ -1877,8 +1878,8 @@ fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
 		"26.1",
 		"1.12.2",
 		&joined(3),
-		z::play_toClient_packet::serialize,
-		v1_12_2::play_toClient_packet::deserialize,
+		z::play_to_client_packet::serialize,
+		v1_12_2::play_to_client_packet::deserialize,
 		&mut cx,
 	);
 	let old = run(
@@ -1886,8 +1887,8 @@ fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
 		"26.1",
 		"1.12.2",
 		&me,
-		z::play_toClient_packet::serialize,
-		v1_12_2::play_toClient_packet::deserialize,
+		z::play_to_client_packet::serialize,
+		v1_12_2::play_to_client_packet::deserialize,
 		&mut cx,
 	);
 	let mut keys = layout_1_12(&old);

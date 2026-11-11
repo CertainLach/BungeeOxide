@@ -161,7 +161,7 @@ export function inspect(dir: Dir, state: State, data: Uint8Array, full: boolean)
 	const fx: Effect = {};
 	switch (`${dir} ${state}`) {
 		case "c2s Handshaking": {
-			const [v, r] = check(data, gen.pds_handshaking_toServer_packet, full);
+			const [v, r] = check(data, gen.handshaking.toServer.packet, full);
 			if (v?.kind === "set_protocol") {
 				const next: State = v.value.nextState === 1 ? "Status" : "Login";
 				fx.c2s = next;
@@ -170,20 +170,20 @@ export function inspect(dir: Dir, state: State, data: Uint8Array, full: boolean)
 			return [r, fx];
 		}
 		case "s2c Handshaking":
-			return [check(data, gen.pds_handshaking_toClient_packet, full)[1], fx];
+			return [check(data, gen.handshaking.toClient.packet, full)[1], fx];
 		case "c2s Status":
-			return [check(data, gen.pds_status_toServer_packet, full)[1], fx];
+			return [check(data, gen.status.toServer.packet, full)[1], fx];
 		case "s2c Status":
-			return [check(data, gen.pds_status_toClient_packet, full)[1], fx];
+			return [check(data, gen.status.toClient.packet, full)[1], fx];
 		case "c2s Login": {
-			const [v, r] = check(data, gen.pds_login_toServer_packet, full);
+			const [v, r] = check(data, gen.login.toServer.packet, full);
 			if (v?.kind === "login_acknowledged") {
 				fx.c2s = "Configuration";
 			}
 			return [r, fx];
 		}
 		case "s2c Login": {
-			const [v, r] = check(data, gen.pds_login_toClient_packet, full);
+			const [v, r] = check(data, gen.login.toClient.packet, full);
 			if (v?.kind === "success") {
 				fx.s2c = "Configuration";
 			} else if (v?.kind === "compress") {
@@ -194,28 +194,28 @@ export function inspect(dir: Dir, state: State, data: Uint8Array, full: boolean)
 			return [r, fx];
 		}
 		case "c2s Configuration": {
-			const [v, r] = check(data, gen.pds_configuration_toServer_packet, full);
+			const [v, r] = check(data, gen.configuration.toServer.packet, full);
 			if (v?.kind === "finish_configuration") {
 				fx.c2s = "Play";
 			}
 			return [r, fx];
 		}
 		case "s2c Configuration": {
-			const [v, r] = check(data, gen.pds_configuration_toClient_packet, full);
+			const [v, r] = check(data, gen.configuration.toClient.packet, full);
 			if (v?.kind === "finish_configuration") {
 				fx.s2c = "Play";
 			}
 			return [r, fx];
 		}
 		case "c2s Play": {
-			const [v, r] = check(data, gen.pds_play_toServer_packet, full);
+			const [v, r] = check(data, gen.play.toServer.packet, full);
 			if (v?.kind === "configuration_acknowledged") {
 				fx.c2s = "Configuration";
 			}
 			return [r, fx];
 		}
 		case "s2c Play": {
-			const [v, r] = check(data, gen.pds_play_toClient_packet, full);
+			const [v, r] = check(data, gen.play.toClient.packet, full);
 			if (v?.kind === "start_configuration") {
 				fx.s2c = "Configuration";
 			}

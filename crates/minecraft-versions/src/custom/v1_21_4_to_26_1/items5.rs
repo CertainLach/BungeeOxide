@@ -43,22 +43,22 @@ fn hide(hidden: &mut Vec<i32>, name: &str) {
 	}
 }
 
-fn sound_up(v: b::ItemSoundHolder::Ty) -> Result<b::ItemSoundHolder::Ty> {
+fn sound_up(v: b::item_sound_holder::Ty) -> Result<b::item_sound_holder::Ty> {
 	remap::sound(OLD, NEW, v)
 }
 
-fn sound_down(v: b::ItemSoundHolder::Ty) -> Result<b::ItemSoundHolder::Ty> {
+fn sound_down(v: b::item_sound_holder::Ty) -> Result<b::item_sound_holder::Ty> {
 	remap::sound(NEW, OLD, v)
 }
 
 fn effects(
-	v: Vec<b::ItemConsumeEffect::Ty>,
-	sound: impl Fn(b::ItemSoundHolder::Ty) -> Result<b::ItemSoundHolder::Ty>,
-) -> Result<Vec<b::ItemConsumeEffect::Ty>> {
+	v: Vec<b::item_consume_effect::Ty>,
+	sound: impl Fn(b::item_sound_holder::Ty) -> Result<b::item_sound_holder::Ty>,
+) -> Result<Vec<b::item_consume_effect::Ty>> {
 	v.into_iter()
 		.map(|e| match e {
-			b::ItemConsumeEffect::Ty::play_sound(s) => {
-				Ok(b::ItemConsumeEffect::Ty::play_sound(sound(s)?))
+			b::item_consume_effect::Ty::PlaySound(s) => {
+				Ok(b::item_consume_effect::Ty::PlaySound(sound(s)?))
 			}
 			e => Ok(e),
 		})
@@ -69,16 +69,16 @@ fn text_up(t: nbt::Tag) -> nbt::Tag {
 	text::up(t)
 }
 
-fn predicates_up(v: Vec<a::ItemBlockPredicate::Ty>) -> Result<Vec<b::ItemBlockPredicate::Ty>> {
+fn predicates_up(v: Vec<a::item_block_predicate::Ty>) -> Result<Vec<b::item_block_predicate::Ty>> {
 	v.into_iter()
 		.map(|p| {
-			Ok(b::ItemBlockPredicate::Ty {
-				blockSet: p.blockSet.map(|s| match s {
-					a::ItemBlockPredicate__blockSet__items::Ty::Named(n) => {
-						b::ItemBlockPredicate__blockSet__items::Ty::Named(n)
+			Ok(b::item_block_predicate::Ty {
+				block_set: p.block_set.map(|s| match s {
+					a::item_block_predicate_block_set_items::Ty::Named(n) => {
+						b::item_block_predicate_block_set_items::Ty::Named(n)
 					}
-					a::ItemBlockPredicate__blockSet__items::Ty::Ids(ids) => {
-						b::ItemBlockPredicate__blockSet__items::Ty::Ids(
+					a::item_block_predicate_block_set_items::Ty::Ids(ids) => {
+						b::item_block_predicate_block_set_items::Ty::Ids(
 							ids.into_iter()
 								.filter_map(|i| super::util::remap("blocks", OLD, NEW, i))
 								.collect(),
@@ -87,9 +87,9 @@ fn predicates_up(v: Vec<a::ItemBlockPredicate::Ty>) -> Result<Vec<b::ItemBlockPr
 				}),
 				properties: p.properties,
 				nbt: p.nbt,
-				components: b::DataComponentMatchers::Ty {
-					exactMatchers: Vec::new(),
-					partialMatchers: Vec::new(),
+				components: b::data_component_matchers::Ty {
+					exact_matchers: Vec::new(),
+					partial_matchers: Vec::new(),
 				},
 			})
 		})
@@ -97,19 +97,19 @@ fn predicates_up(v: Vec<a::ItemBlockPredicate::Ty>) -> Result<Vec<b::ItemBlockPr
 }
 
 fn predicates_down(
-	v: Vec<b::ItemBlockPredicate::Ty>,
+	v: Vec<b::item_block_predicate::Ty>,
 	show: bool,
-) -> a::SlotComponent__can_place_on::Ty {
-	a::SlotComponent__can_place_on::Ty {
+) -> a::slot_component_can_place_on::Ty {
+	a::slot_component_can_place_on::Ty {
 		predicates: v
 			.into_iter()
-			.map(|p| a::ItemBlockPredicate::Ty {
-				blockSet: p.blockSet.map(|s| match s {
-					b::ItemBlockPredicate__blockSet__items::Ty::Named(n) => {
-						a::ItemBlockPredicate__blockSet__items::Ty::Named(n)
+			.map(|p| a::item_block_predicate::Ty {
+				block_set: p.block_set.map(|s| match s {
+					b::item_block_predicate_block_set_items::Ty::Named(n) => {
+						a::item_block_predicate_block_set_items::Ty::Named(n)
 					}
-					b::ItemBlockPredicate__blockSet__items::Ty::Ids(ids) => {
-						a::ItemBlockPredicate__blockSet__items::Ty::Ids(
+					b::item_block_predicate_block_set_items::Ty::Ids(ids) => {
+						a::item_block_predicate_block_set_items::Ty::Ids(
 							ids.into_iter()
 								.filter_map(|i| super::util::remap("blocks", NEW, OLD, i))
 								.collect(),
@@ -120,20 +120,20 @@ fn predicates_down(
 				nbt: p.nbt,
 			})
 			.collect(),
-		showTooltip: show,
+		show_tooltip: show,
 	}
 }
 
-fn material_up(m: a::SlotComponent__trim__material::Ty) -> b::SlotComponent__trim__material::Ty {
+fn material_up(m: a::slot_component_trim_material::Ty) -> b::slot_component_trim_material::Ty {
 	match m {
-		a::SlotComponent__trim__material::Ty::Id(i) => b::SlotComponent__trim__material::Ty::Id(i),
-		a::SlotComponent__trim__material::Ty::Inline(m) => {
-			b::SlotComponent__trim__material::Ty::Inline(b::ArmorTrimMaterial::Ty {
-				assetBase: m.assetName,
-				overrideArmorAssets: m
-					.overrideArmorAssets
+		a::slot_component_trim_material::Ty::Id(i) => b::slot_component_trim_material::Ty::Id(i),
+		a::slot_component_trim_material::Ty::Inline(m) => {
+			b::slot_component_trim_material::Ty::Inline(b::armor_trim_material::Ty {
+				asset_base: m.asset_name,
+				override_armor_assets: m
+					.override_armor_assets
 					.into_iter()
-					.map(|o| b::ArmorTrimMaterial__overrideArmorAssets__items::Ty {
+					.map(|o| b::armor_trim_material_override_armor_assets_items::Ty {
 						key: o.key,
 						value: o.value,
 					})
@@ -144,12 +144,12 @@ fn material_up(m: a::SlotComponent__trim__material::Ty) -> b::SlotComponent__tri
 	}
 }
 
-fn pattern_up(p: a::SlotComponent__trim__pattern::Ty) -> b::SlotComponent__trim__pattern::Ty {
+fn pattern_up(p: a::slot_component_trim_pattern::Ty) -> b::slot_component_trim_pattern::Ty {
 	match p {
-		a::SlotComponent__trim__pattern::Ty::Id(i) => b::SlotComponent__trim__pattern::Ty::Id(i),
-		a::SlotComponent__trim__pattern::Ty::Inline(p) => {
-			b::SlotComponent__trim__pattern::Ty::Inline(b::ArmorTrimPattern::Ty {
-				assetId: p.assetId,
+		a::slot_component_trim_pattern::Ty::Id(i) => b::slot_component_trim_pattern::Ty::Id(i),
+		a::slot_component_trim_pattern::Ty::Inline(p) => {
+			b::slot_component_trim_pattern::Ty::Inline(b::armor_trim_pattern::Ty {
+				asset_id: p.asset_id,
 				description: text_up(p.description),
 				decal: p.decal,
 			})
@@ -157,17 +157,17 @@ fn pattern_up(p: a::SlotComponent__trim__pattern::Ty) -> b::SlotComponent__trim_
 	}
 }
 
-fn material_down(m: b::SlotComponent__trim__material::Ty) -> a::SlotComponent__trim__material::Ty {
+fn material_down(m: b::slot_component_trim_material::Ty) -> a::slot_component_trim_material::Ty {
 	match m {
-		b::SlotComponent__trim__material::Ty::Id(i) => a::SlotComponent__trim__material::Ty::Id(i),
-		b::SlotComponent__trim__material::Ty::Inline(m) => {
-			a::SlotComponent__trim__material::Ty::Inline(a::ArmorTrimMaterial::Ty {
-				assetName: m.assetBase,
-				ingredientId: 0,
-				overrideArmorAssets: m
-					.overrideArmorAssets
+		b::slot_component_trim_material::Ty::Id(i) => a::slot_component_trim_material::Ty::Id(i),
+		b::slot_component_trim_material::Ty::Inline(m) => {
+			a::slot_component_trim_material::Ty::Inline(a::armor_trim_material::Ty {
+				asset_name: m.asset_base,
+				ingredient_id: 0,
+				override_armor_assets: m
+					.override_armor_assets
 					.into_iter()
-					.map(|o| a::ArmorTrimMaterial__overrideArmorAssets__items::Ty {
+					.map(|o| a::armor_trim_material_override_armor_assets_items::Ty {
 						key: o.key,
 						value: o.value,
 					})
@@ -178,13 +178,13 @@ fn material_down(m: b::SlotComponent__trim__material::Ty) -> a::SlotComponent__t
 	}
 }
 
-fn pattern_down(p: b::SlotComponent__trim__pattern::Ty) -> a::SlotComponent__trim__pattern::Ty {
+fn pattern_down(p: b::slot_component_trim_pattern::Ty) -> a::slot_component_trim_pattern::Ty {
 	match p {
-		b::SlotComponent__trim__pattern::Ty::Id(i) => a::SlotComponent__trim__pattern::Ty::Id(i),
-		b::SlotComponent__trim__pattern::Ty::Inline(p) => {
-			a::SlotComponent__trim__pattern::Ty::Inline(a::ArmorTrimPattern::Ty {
-				assetId: p.assetId,
-				templateItemId: 0,
+		b::slot_component_trim_pattern::Ty::Id(i) => a::slot_component_trim_pattern::Ty::Id(i),
+		b::slot_component_trim_pattern::Ty::Inline(p) => {
+			a::slot_component_trim_pattern::Ty::Inline(a::armor_trim_pattern::Ty {
+				asset_id: p.asset_id,
+				template_item_id: 0,
 				description: p.description,
 				decal: p.decal,
 			})
@@ -192,7 +192,7 @@ fn pattern_down(p: b::SlotComponent__trim__pattern::Ty) -> a::SlotComponent__tri
 	}
 }
 
-fn bucket_up(mut tag: nbt::Tag, out: &mut Vec<b::SlotComponent::Ty>) -> nbt::Tag {
+fn bucket_up(mut tag: nbt::Tag, out: &mut Vec<b::slot_component::Ty>) -> nbt::Tag {
 	if let Some(v) = tag
 		.value
 		.field("BucketVariantTag")
@@ -200,291 +200,291 @@ fn bucket_up(mut tag: nbt::Tag, out: &mut Vec<b::SlotComponent::Ty>) -> nbt::Tag
 	{
 		tag.value.take("BucketVariantTag");
 		let v = v as i32;
-		out.push(b::SlotComponent::Ty::tropical_fish_pattern(v & 0xffff));
-		out.push(b::SlotComponent::Ty::tropical_fish_base_color(
+		out.push(b::slot_component::Ty::TropicalFishPattern(v & 0xffff));
+		out.push(b::slot_component::Ty::TropicalFishBaseColor(
 			(v >> 16) & 0xff,
 		));
-		out.push(b::SlotComponent::Ty::tropical_fish_pattern_color(
+		out.push(b::slot_component::Ty::TropicalFishPatternColor(
 			(v >> 24) & 0xff,
 		));
 	}
 	tag
 }
 
-fn blocks_attacks() -> b::SlotComponent::Ty {
-	b::SlotComponent::Ty::blocks_attacks(b::SlotComponent__blocks_attacks::Ty {
-		blockDelaySeconds: 0.0,
-		disableCooldownScale: 0.0,
-		damageReductions: vec![
-			b::SlotComponent__blocks_attacks__damageReductions__items::Ty {
-				horizontalBlockingAngle: 90.0,
+fn blocks_attacks() -> b::slot_component::Ty {
+	b::slot_component::Ty::BlocksAttacks(b::slot_component_blocks_attacks::Ty {
+		block_delay_seconds: 0.0,
+		disable_cooldown_scale: 0.0,
+		damage_reductions: vec![
+			b::slot_component_blocks_attacks_damage_reductions_items::Ty {
+				horizontal_blocking_angle: 90.0,
 				r#type: None,
 				base: -0.5,
 				factor: 0.5,
 			},
 		],
-		itemDamage: b::SlotComponent__blocks_attacks__itemDamage::Ty {
+		item_damage: b::slot_component_blocks_attacks_item_damage::Ty {
 			threshold: 0.0,
 			base: 0.0,
 			factor: 0.0,
 		},
-		bypassedBy: None,
-		blockSound: None,
-		disableSound: None,
+		bypassed_by: None,
+		block_sound: None,
+		disable_sound: None,
 	})
 }
 
-fn retag_up(c: &a::SlotComponent::Ty) -> Result<Option<b::SlotComponent::Ty>> {
+fn retag_up(c: &a::slot_component::Ty) -> Result<Option<b::slot_component::Ty>> {
 	components::retag(
 		|t| components::remap(OLD, NEW, t),
 		c,
-		a::SlotComponent::serialize,
-		b::SlotComponent::deserialize,
+		a::slot_component::serialize,
+		b::slot_component::deserialize,
 	)
 }
 
-fn retag_down(c: &b::SlotComponent::Ty) -> Result<Option<a::SlotComponent::Ty>> {
+fn retag_down(c: &b::slot_component::Ty) -> Result<Option<a::slot_component::Ty>> {
 	components::retag(
 		|t| components::remap(NEW, OLD, t),
 		c,
-		b::SlotComponent::serialize,
-		a::SlotComponent::deserialize,
+		b::slot_component::serialize,
+		a::slot_component::deserialize,
 	)
 }
 
-fn type_up(t: &a::SlotComponentType::Ty) -> Result<Option<b::SlotComponentType::Ty>> {
+fn type_up(t: &a::slot_component_type::Ty) -> Result<Option<b::slot_component_type::Ty>> {
 	components::retag(
 		|t| components::remap(OLD, NEW, t),
 		t,
-		a::SlotComponentType::serialize,
-		b::SlotComponentType::deserialize,
+		a::slot_component_type::serialize,
+		b::slot_component_type::deserialize,
 	)
 }
 
-fn type_down(t: &b::SlotComponentType::Ty) -> Result<Option<a::SlotComponentType::Ty>> {
+fn type_down(t: &b::slot_component_type::Ty) -> Result<Option<a::slot_component_type::Ty>> {
 	components::retag(
 		|t| components::remap(NEW, OLD, t),
 		t,
-		b::SlotComponentType::serialize,
-		a::SlotComponentType::deserialize,
+		b::slot_component_type::serialize,
+		a::slot_component_type::deserialize,
 	)
 }
 
-pub fn slots_up(v: Vec<a::Slot::Ty>) -> Result<Vec<b::Slot::Ty>> {
+pub fn slots_up(v: Vec<a::slot::Ty>) -> Result<Vec<b::slot::Ty>> {
 	v.into_iter().map(slot_up).collect()
 }
 
-pub fn slot_up(s: a::Slot::Ty) -> Result<b::Slot::Ty> {
+pub fn slot_up(s: a::slot::Ty) -> Result<b::slot::Ty> {
 	let (count, d) = match s {
-		a::Slot::Ty::v0 => return Ok(b::Slot::Ty::v0),
-		a::Slot::Ty::default(count, d) => (count, d),
+		a::slot::Ty::V0 => return Ok(b::slot::Ty::V0),
+		a::slot::Ty::Default(count, d) => (count, d),
 	};
-	let itemId = remap::item(OLD, NEW, d.itemId)?;
-	let item = item_name(NEW, itemId);
+	let item_id = remap::item(OLD, NEW, d.item_id)?;
+	let item = item_name(NEW, item_id);
 	let sword = item.ends_with("_sword");
 	let mut out = Vec::with_capacity(d.components.len());
 	let mut hidden = Vec::new();
 	let mut hide_tooltip = false;
 	for c in d.components {
-		use a::SlotComponent::Ty as A;
-		use b::SlotComponent::Ty as B;
+		use a::slot_component::Ty as A;
+		use b::slot_component::Ty as B;
 		let converted = match c {
-			A::hide_tooltip => {
+			A::HideTooltip => {
 				hide_tooltip = true;
 				continue;
 			}
-			A::hide_additional_tooltip => {
+			A::HideAdditionalTooltip => {
 				for name in HIDE_ADDITIONAL {
 					hide(&mut hidden, name);
 				}
 				continue;
 			}
-			A::custom_name(t) => B::custom_name(text_up(t)),
-			A::item_name(t) => B::item_name(text_up(t)),
-			A::lore(lines) => B::lore(
+			A::CustomName(t) => B::CustomName(text_up(t)),
+			A::ItemName(t) => B::ItemName(text_up(t)),
+			A::Lore(lines) => B::Lore(
 				lines
 					.into_iter()
 					.map(|l| text_up(l.unwrap_or_else(|| Tag::new(Payload::from("")))))
 					.collect(),
 			),
-			A::unbreakable(show) => {
+			A::Unbreakable(show) => {
 				if !show {
 					hide(&mut hidden, "unbreakable");
 				}
-				B::unbreakable
+				B::Unbreakable
 			}
-			A::enchantments(e) => {
-				if !e.showTooltip {
+			A::Enchantments(e) => {
+				if !e.show_tooltip {
 					hide(&mut hidden, "enchantments");
 				}
-				B::enchantments(
+				B::Enchantments(
 					e.enchantments
 						.into_iter()
-						.map(|x| b::SlotComponent__enchantments__items::Ty {
+						.map(|x| b::slot_component_enchantments_items::Ty {
 							id: x.id,
 							level: x.level,
 						})
 						.collect(),
 				)
 			}
-			A::stored_enchantments(e) => {
-				if !e.showInTooltip {
+			A::StoredEnchantments(e) => {
+				if !e.show_in_tooltip {
 					hide(&mut hidden, "stored_enchantments");
 				}
-				B::stored_enchantments(
+				B::StoredEnchantments(
 					e.enchantments
 						.into_iter()
-						.map(|x| b::SlotComponent__stored_enchantments__items::Ty {
+						.map(|x| b::slot_component_stored_enchantments_items::Ty {
 							id: x.id,
 							level: x.level,
 						})
 						.collect(),
 				)
 			}
-			A::can_place_on(p) => {
-				if !p.showTooltip {
+			A::CanPlaceOn(p) => {
+				if !p.show_tooltip {
 					hide(&mut hidden, "can_place_on");
 				}
-				B::can_place_on(predicates_up(p.predicates)?)
+				B::CanPlaceOn(predicates_up(p.predicates)?)
 			}
-			A::can_break(p) => {
-				if !p.showTooltip {
+			A::CanBreak(p) => {
+				if !p.show_tooltip {
 					hide(&mut hidden, "can_break");
 				}
-				B::can_break(predicates_up(p.predicates)?)
+				B::CanBreak(predicates_up(p.predicates)?)
 			}
-			A::attribute_modifiers(m) => {
-				if !m.showTooltip {
+			A::AttributeModifiers(m) => {
+				if !m.show_tooltip {
 					hide(&mut hidden, "attribute_modifiers");
 				}
-				B::attribute_modifiers(recode(
+				B::AttributeModifiers(recode(
 					&m.attributes,
-					a::SlotComponent__attribute_modifiers__attributes::serialize,
-					b::SlotComponent__attribute_modifiers::deserialize,
+					a::slot_component_attribute_modifiers_attributes::serialize,
+					b::slot_component_attribute_modifiers::deserialize,
 				)?)
 			}
-			A::dyed_color(c) => {
-				if !c.showTooltip {
+			A::DyedColor(c) => {
+				if !c.show_tooltip {
 					hide(&mut hidden, "dyed_color");
 				}
-				B::dyed_color(c.color)
+				B::DyedColor(c.color)
 			}
-			A::trim(t) => {
-				if !t.showInTooltip {
+			A::Trim(t) => {
+				if !t.show_in_tooltip {
 					hide(&mut hidden, "trim");
 				}
-				B::trim(b::SlotComponent__trim::Ty {
+				B::Trim(b::slot_component_trim::Ty {
 					material: material_up(t.material),
 					pattern: pattern_up(t.pattern),
 				})
 			}
-			A::jukebox_playable(j) => {
-				if !j.showInTooltip {
+			A::JukeboxPlayable(j) => {
+				if !j.show_in_tooltip {
 					hide(&mut hidden, "jukebox_playable");
 				}
-				let song: b::SlotComponent__jukebox_playable::Ty = recode(
+				let song: b::slot_component_jukebox_playable::Ty = recode(
 					&j.song,
-					a::SlotComponent__jukebox_playable__song::serialize,
-					b::SlotComponent__jukebox_playable::deserialize,
+					a::slot_component_jukebox_playable_song::serialize,
+					b::slot_component_jukebox_playable::deserialize,
 				)?;
-				B::jukebox_playable(match song {
-					b::SlotComponent__jukebox_playable::Ty::r#true(
-						b::SlotComponent__jukebox_playable__true::Ty::Inline(mut s),
+				B::JukeboxPlayable(match song {
+					b::slot_component_jukebox_playable::Ty::True(
+						b::slot_component_jukebox_playable_true::Ty::Inline(mut s),
 					) => {
-						s.soundEvent = sound_up(s.soundEvent)?;
+						s.sound_event = sound_up(s.sound_event)?;
 						s.description = text_up(s.description);
-						b::SlotComponent__jukebox_playable::Ty::r#true(
-							b::SlotComponent__jukebox_playable__true::Ty::Inline(s),
+						b::slot_component_jukebox_playable::Ty::True(
+							b::slot_component_jukebox_playable_true::Ty::Inline(s),
 						)
 					}
 					other => other,
 				})
 			}
-			A::instrument(i) => B::instrument(b::SlotComponent__instrument::Ty::r#true(match i {
-				a::SlotComponent__instrument::Ty::Id(id) => {
-					b::SlotComponent__instrument__true::Ty::Id(id)
+			A::Instrument(i) => B::Instrument(b::slot_component_instrument::Ty::True(match i {
+				a::slot_component_instrument::Ty::Id(id) => {
+					b::slot_component_instrument_true::Ty::Id(id)
 				}
-				a::SlotComponent__instrument::Ty::Inline(mut d) => {
-					d.soundEvent = sound_up(d.soundEvent)?;
+				a::slot_component_instrument::Ty::Inline(mut d) => {
+					d.sound_event = sound_up(d.sound_event)?;
 					d.description = text_up(d.description);
-					b::SlotComponent__instrument__true::Ty::Inline(d)
+					b::slot_component_instrument_true::Ty::Inline(d)
 				}
 			})),
-			A::consumable(c)
+			A::Consumable(c)
 				if sword
 					&& matches!(
 						c.animation,
-						a::SlotComponent__consumable__animation::Ty::block
+						a::slot_component_consumable_animation::Ty::Block
 					) =>
 			{
 				blocks_attacks()
 			}
-			A::consumable(c) => {
-				let mut c: b::SlotComponent__consumable::Ty = recode(
+			A::Consumable(c) => {
+				let mut c: b::slot_component_consumable::Ty = recode(
 					&c,
-					a::SlotComponent__consumable::serialize,
-					b::SlotComponent__consumable::deserialize,
+					a::slot_component_consumable::serialize,
+					b::slot_component_consumable::deserialize,
 				)?;
 				c.sound = sound_up(c.sound)?;
 				c.effects = effects(c.effects, sound_up)?;
-				B::consumable(c)
+				B::Consumable(c)
 			}
-			A::death_protection(e) => B::death_protection(effects(e, sound_up)?),
-			A::tool(t) => {
+			A::DeathProtection(e) => B::DeathProtection(effects(e, sound_up)?),
+			A::Tool(t) => {
 				let creative = !(sword || matches!(item, "trident" | "mace" | "debug_stick"));
-				B::tool(b::SlotComponent__tool::Ty {
+				B::Tool(b::slot_component_tool::Ty {
 					rules: t
 						.rules
 						.into_iter()
 						.map(|r| {
-							Ok(b::SlotComponent__tool__rules__items::Ty {
+							Ok(b::slot_component_tool_rules_items::Ty {
 								blocks: remap::block_set(OLD, NEW, r.blocks)?,
 								speed: r.speed,
-								correctDropForBlocks: r.correctDropForBlocks,
+								correct_drop_for_blocks: r.correct_drop_for_blocks,
 							})
 						})
 						.collect::<Result<_>>()?,
-					defaultMiningSpeed: t.defaultMiningSpeed,
-					damagePerBlock: t.damagePerBlock,
-					canDestroyBlocksInCreative: creative,
+					default_mining_speed: t.default_mining_speed,
+					damage_per_block: t.damage_per_block,
+					can_destroy_blocks_in_creative: creative,
 				})
 			}
-			A::equippable(e) => B::equippable(b::SlotComponent__equippable::Ty {
+			A::Equippable(e) => B::Equippable(b::slot_component_equippable::Ty {
 				slot: recode(
 					&e.slot,
-					a::SlotComponent__equippable__slot::serialize,
-					b::SlotComponent__equippable__slot::deserialize,
+					a::slot_component_equippable_slot::serialize,
+					b::slot_component_equippable_slot::deserialize,
 				)?,
 				sound: sound_up(e.sound)?,
 				model: e.model,
-				cameraOverlay: e.cameraOverlay,
-				allowedEntities: e
-					.allowedEntities
+				camera_overlay: e.camera_overlay,
+				allowed_entities: e
+					.allowed_entities
 					.map(|s| remap::entity_set(OLD, NEW, s))
 					.transpose()?,
 				dispensable: e.dispensable,
 				swappable: e.swappable,
 				damageable: e.damageable,
-				equipOnInteract: false,
+				equip_on_interact: false,
 			}),
-			A::repairable(s) => B::repairable(remap::item_set(OLD, NEW, s)?),
-			A::pot_decorations(v) => B::pot_decorations(remap::items(OLD, NEW, v)?),
-			A::use_remainder(s) => B::use_remainder(slot_up(s)?),
-			A::charged_projectiles(v) => B::charged_projectiles(slots_up(v)?),
-			A::bundle_contents(v) => B::bundle_contents(slots_up(v)?),
-			A::container(v) => B::container(slots_up(v)?),
-			A::bucket_entity_data(t) => B::bucket_entity_data(bucket_up(t, &mut out)),
-			A::written_book_content(w) => {
-				let mut w: b::SlotComponent__written_book_content::Ty = recode(
+			A::Repairable(s) => B::Repairable(remap::item_set(OLD, NEW, s)?),
+			A::PotDecorations(v) => B::PotDecorations(remap::items(OLD, NEW, v)?),
+			A::UseRemainder(s) => B::UseRemainder(slot_up(s)?),
+			A::ChargedProjectiles(v) => B::ChargedProjectiles(slots_up(v)?),
+			A::BundleContents(v) => B::BundleContents(slots_up(v)?),
+			A::Container(v) => B::Container(slots_up(v)?),
+			A::BucketEntityData(t) => B::BucketEntityData(bucket_up(t, &mut out)),
+			A::WrittenBookContent(w) => {
+				let mut w: b::slot_component_written_book_content::Ty = recode(
 					&w,
-					a::SlotComponent__written_book_content::serialize,
-					b::SlotComponent__written_book_content::deserialize,
+					a::slot_component_written_book_content::serialize,
+					b::slot_component_written_book_content::deserialize,
 				)?;
 				for page in &mut w.pages {
 					page.content = text_up(page.content.clone());
-					page.filteredContent = page.filteredContent.take().map(text_up);
+					page.filtered_content = page.filtered_content.take().map(text_up);
 				}
-				B::written_book_content(w)
+				B::WrittenBookContent(w)
 			}
 			other => match retag_up(&other)? {
 				Some(c) => c,
@@ -494,242 +494,240 @@ pub fn slot_up(s: a::Slot::Ty) -> Result<b::Slot::Ty> {
 		out.push(converted);
 	}
 	if hide_tooltip || !hidden.is_empty() {
-		out.push(b::SlotComponent::Ty::tooltip_display(
-			b::SlotComponent__tooltip_display::Ty {
-				hideTooltip: hide_tooltip,
-				hiddenComponents: hidden,
+		out.push(b::slot_component::Ty::TooltipDisplay(
+			b::slot_component_tooltip_display::Ty {
+				hide_tooltip: hide_tooltip,
+				hidden_components: hidden,
 			},
 		));
 	}
 	let mut removes = Vec::new();
-	for r in &d.removeComponents {
+	for r in &d.remove_components {
 		removes.extend(type_up(r)?);
 	}
-	Ok(b::Slot::Ty::default(
+	Ok(b::slot::Ty::Default(
 		count,
-		b::Slot__default::Ty {
-			itemId,
-			addedComponentCount: out.len() as i32,
-			removedComponentCount: removes.len() as i32,
+		b::slot_default::Ty {
+			item_id,
+			added_component_count: out.len() as i32,
+			removed_component_count: removes.len() as i32,
 			components: out,
-			removeComponents: removes,
+			remove_components: removes,
 		},
 	))
 }
 
-pub fn slots_down(v: Vec<b::Slot::Ty>) -> Result<Vec<a::Slot::Ty>> {
+pub fn slots_down(v: Vec<b::slot::Ty>) -> Result<Vec<a::slot::Ty>> {
 	v.into_iter().map(slot_down).collect()
 }
 
-pub fn slot_down(s: b::Slot::Ty) -> Result<a::Slot::Ty> {
+pub fn slot_down(s: b::slot::Ty) -> Result<a::slot::Ty> {
 	let (count, d) = match s {
-		b::Slot::Ty::v0 => return Ok(a::Slot::Ty::v0),
-		b::Slot::Ty::default(count, d) => (count, d),
+		b::slot::Ty::V0 => return Ok(a::slot::Ty::V0),
+		b::slot::Ty::Default(count, d) => (count, d),
 	};
-	let itemId = remap::item(NEW, OLD, d.itemId)?;
+	let item_id = remap::item(NEW, OLD, d.item_id)?;
 	let display = d.components.iter().find_map(|c| match c {
-		b::SlotComponent::Ty::tooltip_display(t) => Some(t.clone()),
+		b::slot_component::Ty::TooltipDisplay(t) => Some(t.clone()),
 		_ => None,
 	});
 	let shown = |name: &str| {
 		display.as_ref().is_none_or(|t| {
-			components::id(NEW, name).is_none_or(|id| !t.hiddenComponents.contains(&id))
+			components::id(NEW, name).is_none_or(|id| !t.hidden_components.contains(&id))
 		})
 	};
 	let mut out = Vec::with_capacity(d.components.len());
 	let mut bucket: Option<(i32, i32, i32)> = None;
 	for c in d.components {
-		use a::SlotComponent::Ty as A;
-		use b::SlotComponent::Ty as B;
+		use a::slot_component::Ty as A;
+		use b::slot_component::Ty as B;
 		let converted = match c {
-			B::tooltip_display(t) => {
-				if t.hideTooltip {
-					out.push(A::hide_tooltip);
+			B::TooltipDisplay(t) => {
+				if t.hide_tooltip {
+					out.push(A::HideTooltip);
 				}
 				let all = HIDE_ADDITIONAL
 					.iter()
 					.filter(|n| components::id(OLD, n).is_some())
 					.all(|n| {
-						components::id(NEW, n).is_some_and(|id| t.hiddenComponents.contains(&id))
+						components::id(NEW, n).is_some_and(|id| t.hidden_components.contains(&id))
 					});
 				if all {
-					out.push(A::hide_additional_tooltip);
+					out.push(A::HideAdditionalTooltip);
 				}
 				continue;
 			}
-			B::unbreakable => A::unbreakable(shown("unbreakable")),
-			B::custom_name(t) => A::custom_name(text::down(t)),
-			B::item_name(t) => A::item_name(text::down(t)),
-			B::lore(lines) => A::lore(lines.into_iter().map(|l| Some(text::down(l))).collect()),
-			B::written_book_content(w) => {
-				let mut w: a::SlotComponent__written_book_content::Ty = recode(
+			B::Unbreakable => A::Unbreakable(shown("unbreakable")),
+			B::CustomName(t) => A::CustomName(text::down(t)),
+			B::ItemName(t) => A::ItemName(text::down(t)),
+			B::Lore(lines) => A::Lore(lines.into_iter().map(|l| Some(text::down(l))).collect()),
+			B::WrittenBookContent(w) => {
+				let mut w: a::slot_component_written_book_content::Ty = recode(
 					&w,
-					b::SlotComponent__written_book_content::serialize,
-					a::SlotComponent__written_book_content::deserialize,
+					b::slot_component_written_book_content::serialize,
+					a::slot_component_written_book_content::deserialize,
 				)?;
 				for page in &mut w.pages {
 					page.content = text::down(page.content.clone());
-					page.filteredContent = page.filteredContent.take().map(text::down);
+					page.filtered_content = page.filtered_content.take().map(text::down);
 				}
-				A::written_book_content(w)
+				A::WrittenBookContent(w)
 			}
-			B::enchantments(e) => A::enchantments(a::SlotComponent__enchantments::Ty {
+			B::Enchantments(e) => A::Enchantments(a::slot_component_enchantments::Ty {
 				enchantments: e
 					.into_iter()
-					.map(
-						|x| a::SlotComponent__enchantments__enchantments__items::Ty {
-							id: x.id,
-							level: x.level,
-						},
-					)
+					.map(|x| a::slot_component_enchantments_enchantments_items::Ty {
+						id: x.id,
+						level: x.level,
+					})
 					.collect(),
-				showTooltip: shown("enchantments"),
+				show_tooltip: shown("enchantments"),
 			}),
-			B::stored_enchantments(e) => {
-				A::stored_enchantments(a::SlotComponent__stored_enchantments::Ty {
+			B::StoredEnchantments(e) => {
+				A::StoredEnchantments(a::slot_component_stored_enchantments::Ty {
 					enchantments: e
 						.into_iter()
 						.map(
-							|x| a::SlotComponent__stored_enchantments__enchantments__items::Ty {
+							|x| a::slot_component_stored_enchantments_enchantments_items::Ty {
 								id: x.id,
 								level: x.level,
 							},
 						)
 						.collect(),
-					showInTooltip: shown("stored_enchantments"),
+					show_in_tooltip: shown("stored_enchantments"),
 				})
 			}
-			B::can_place_on(p) => A::can_place_on(predicates_down(p, shown("can_place_on"))),
-			B::can_break(p) => {
+			B::CanPlaceOn(p) => A::CanPlaceOn(predicates_down(p, shown("can_place_on"))),
+			B::CanBreak(p) => {
 				let p = predicates_down(p, shown("can_break"));
-				A::can_break(a::SlotComponent__can_break::Ty {
+				A::CanBreak(a::slot_component_can_break::Ty {
 					predicates: p.predicates,
-					showTooltip: p.showTooltip,
+					show_tooltip: p.show_tooltip,
 				})
 			}
-			B::attribute_modifiers(m) => {
+			B::AttributeModifiers(m) => {
 				let attributes = m
 					.into_iter()
 					.filter_map(|x| {
 						recode(
 							&x,
-							b::SlotComponent__attribute_modifiers__items::serialize,
-							a::SlotComponent__attribute_modifiers__attributes__items::deserialize,
+							b::slot_component_attribute_modifiers_items::serialize,
+							a::slot_component_attribute_modifiers_attributes_items::deserialize,
 						)
 						.ok()
 					})
 					.collect();
-				A::attribute_modifiers(a::SlotComponent__attribute_modifiers::Ty {
+				A::AttributeModifiers(a::slot_component_attribute_modifiers::Ty {
 					attributes,
-					showTooltip: shown("attribute_modifiers"),
+					show_tooltip: shown("attribute_modifiers"),
 				})
 			}
-			B::dyed_color(color) => A::dyed_color(a::SlotComponent__dyed_color::Ty {
+			B::DyedColor(color) => A::DyedColor(a::slot_component_dyed_color::Ty {
 				color,
-				showTooltip: shown("dyed_color"),
+				show_tooltip: shown("dyed_color"),
 			}),
-			B::trim(t) => A::trim(a::SlotComponent__trim::Ty {
+			B::Trim(t) => A::Trim(a::slot_component_trim::Ty {
 				material: material_down(t.material),
 				pattern: pattern_down(t.pattern),
-				showInTooltip: shown("trim"),
+				show_in_tooltip: shown("trim"),
 			}),
-			B::jukebox_playable(j) => {
+			B::JukeboxPlayable(j) => {
 				let j = match j {
-					b::SlotComponent__jukebox_playable::Ty::r#true(
-						b::SlotComponent__jukebox_playable__true::Ty::Inline(mut s),
+					b::slot_component_jukebox_playable::Ty::True(
+						b::slot_component_jukebox_playable_true::Ty::Inline(mut s),
 					) => {
-						s.soundEvent = sound_down(s.soundEvent)?;
+						s.sound_event = sound_down(s.sound_event)?;
 						s.description = text::down(s.description);
-						b::SlotComponent__jukebox_playable::Ty::r#true(
-							b::SlotComponent__jukebox_playable__true::Ty::Inline(s),
+						b::slot_component_jukebox_playable::Ty::True(
+							b::slot_component_jukebox_playable_true::Ty::Inline(s),
 						)
 					}
 					other => other,
 				};
-				A::jukebox_playable(a::SlotComponent__jukebox_playable::Ty {
+				A::JukeboxPlayable(a::slot_component_jukebox_playable::Ty {
 					song: recode(
 						&j,
-						b::SlotComponent__jukebox_playable::serialize,
-						a::SlotComponent__jukebox_playable__song::deserialize,
+						b::slot_component_jukebox_playable::serialize,
+						a::slot_component_jukebox_playable_song::deserialize,
 					)?,
-					showInTooltip: shown("jukebox_playable"),
+					show_in_tooltip: shown("jukebox_playable"),
 				})
 			}
-			B::instrument(b::SlotComponent__instrument::Ty::r#true(i)) => A::instrument(match i {
-				b::SlotComponent__instrument__true::Ty::Id(id) => {
-					a::SlotComponent__instrument::Ty::Id(id)
+			B::Instrument(b::slot_component_instrument::Ty::True(i)) => A::Instrument(match i {
+				b::slot_component_instrument_true::Ty::Id(id) => {
+					a::slot_component_instrument::Ty::Id(id)
 				}
-				b::SlotComponent__instrument__true::Ty::Inline(mut d) => {
-					d.soundEvent = sound_down(d.soundEvent)?;
+				b::slot_component_instrument_true::Ty::Inline(mut d) => {
+					d.sound_event = sound_down(d.sound_event)?;
 					d.description = text::down(d.description);
-					a::SlotComponent__instrument::Ty::Inline(d)
+					a::slot_component_instrument::Ty::Inline(d)
 				}
 			}),
-			B::instrument(_) => continue,
-			B::consumable(mut c) => {
+			B::Instrument(_) => continue,
+			B::Consumable(mut c) => {
 				c.sound = sound_down(c.sound)?;
 				c.effects = effects(c.effects, sound_down)?;
 				match recode(
 					&c,
-					b::SlotComponent__consumable::serialize,
-					a::SlotComponent__consumable::deserialize,
+					b::slot_component_consumable::serialize,
+					a::slot_component_consumable::deserialize,
 				) {
-					Ok(c) => A::consumable(c),
+					Ok(c) => A::Consumable(c),
 					Err(_) => continue,
 				}
 			}
-			B::death_protection(e) => A::death_protection(effects(e, sound_down)?),
-			B::tool(t) => A::tool(a::SlotComponent__tool::Ty {
+			B::DeathProtection(e) => A::DeathProtection(effects(e, sound_down)?),
+			B::Tool(t) => A::Tool(a::slot_component_tool::Ty {
 				rules: t
 					.rules
 					.into_iter()
 					.map(|r| {
-						Ok(a::SlotComponent__tool__rules__items::Ty {
+						Ok(a::slot_component_tool_rules_items::Ty {
 							blocks: remap::block_set(NEW, OLD, r.blocks)?,
 							speed: r.speed,
-							correctDropForBlocks: r.correctDropForBlocks,
+							correct_drop_for_blocks: r.correct_drop_for_blocks,
 						})
 					})
 					.collect::<Result<_>>()?,
-				defaultMiningSpeed: t.defaultMiningSpeed,
-				damagePerBlock: t.damagePerBlock,
+				default_mining_speed: t.default_mining_speed,
+				damage_per_block: t.damage_per_block,
 			}),
-			B::equippable(e) => A::equippable(a::SlotComponent__equippable::Ty {
+			B::Equippable(e) => A::Equippable(a::slot_component_equippable::Ty {
 				slot: match recode(
 					&e.slot,
-					b::SlotComponent__equippable__slot::serialize,
-					a::SlotComponent__equippable__slot::deserialize,
+					b::slot_component_equippable_slot::serialize,
+					a::slot_component_equippable_slot::deserialize,
 				) {
 					Ok(s) => s,
 					Err(_) => continue,
 				},
 				sound: sound_down(e.sound)?,
 				model: e.model,
-				cameraOverlay: e.cameraOverlay,
-				allowedEntities: e
-					.allowedEntities
+				camera_overlay: e.camera_overlay,
+				allowed_entities: e
+					.allowed_entities
 					.map(|s| remap::entity_set(NEW, OLD, s))
 					.transpose()?,
 				dispensable: e.dispensable,
 				swappable: e.swappable,
 				damageable: e.damageable,
 			}),
-			B::repairable(s) => A::repairable(remap::item_set(NEW, OLD, s)?),
-			B::pot_decorations(v) => A::pot_decorations(remap::items(NEW, OLD, v)?),
-			B::use_remainder(s) => A::use_remainder(slot_down(s)?),
-			B::charged_projectiles(v) => A::charged_projectiles(slots_down(v)?),
-			B::bundle_contents(v) => A::bundle_contents(slots_down(v)?),
-			B::container(v) => A::container(slots_down(v)?),
-			B::tropical_fish_pattern(p) => {
+			B::Repairable(s) => A::Repairable(remap::item_set(NEW, OLD, s)?),
+			B::PotDecorations(v) => A::PotDecorations(remap::items(NEW, OLD, v)?),
+			B::UseRemainder(s) => A::UseRemainder(slot_down(s)?),
+			B::ChargedProjectiles(v) => A::ChargedProjectiles(slots_down(v)?),
+			B::BundleContents(v) => A::BundleContents(slots_down(v)?),
+			B::Container(v) => A::Container(slots_down(v)?),
+			B::TropicalFishPattern(p) => {
 				let entry = bucket.get_or_insert((0, 0, 0));
 				entry.0 = p;
 				continue;
 			}
-			B::tropical_fish_base_color(c) => {
+			B::TropicalFishBaseColor(c) => {
 				bucket.get_or_insert((0, 0, 0)).1 = c;
 				continue;
 			}
-			B::tropical_fish_pattern_color(c) => {
+			B::TropicalFishPatternColor(c) => {
 				bucket.get_or_insert((0, 0, 0)).2 = c;
 				continue;
 			}
@@ -744,61 +742,61 @@ pub fn slot_down(s: b::Slot::Ty) -> Result<a::Slot::Ty> {
 		let packed = (color & 0xff) << 24 | (base & 0xff) << 16 | (pattern & 0xffff);
 		let at = out
 			.iter()
-			.position(|c| matches!(c, a::SlotComponent::Ty::bucket_entity_data(_)));
+			.position(|c| matches!(c, a::slot_component::Ty::BucketEntityData(_)));
 		let mut tag = match at {
 			Some(at) => match out.remove(at) {
-				a::SlotComponent::Ty::bucket_entity_data(t) => t,
+				a::slot_component::Ty::BucketEntityData(t) => t,
 				_ => unreachable!("matched above"),
 			},
-			None => Tag::new(Payload::compound(vec![])),
+			None => Tag::new(Payload::Compound(vec![])),
 		};
-		tag.value.put("BucketVariantTag", Payload::int(packed));
-		out.push(a::SlotComponent::Ty::bucket_entity_data(tag));
+		tag.value.put("BucketVariantTag", Payload::Int(packed));
+		out.push(a::slot_component::Ty::BucketEntityData(tag));
 	}
 	let mut removes = Vec::new();
-	for r in &d.removeComponents {
+	for r in &d.remove_components {
 		removes.extend(type_down(r)?);
 	}
-	Ok(a::Slot::Ty::default(
+	Ok(a::slot::Ty::Default(
 		count,
-		a::Slot__default::Ty {
-			itemId,
-			addedComponentCount: out.len() as i32,
-			removedComponentCount: removes.len() as i32,
+		a::slot_default::Ty {
+			item_id,
+			added_component_count: out.len() as i32,
+			removed_component_count: removes.len() as i32,
 			components: out,
-			removeComponents: removes,
+			remove_components: removes,
 		},
 	))
 }
 
-pub fn components_up(v: Vec<a::SlotComponent::Ty>) -> Result<Vec<b::SlotComponent::Ty>> {
-	match slot_up(a::Slot::Ty::default(
+pub fn components_up(v: Vec<a::slot_component::Ty>) -> Result<Vec<b::slot_component::Ty>> {
+	match slot_up(a::slot::Ty::Default(
 		1,
-		a::Slot__default::Ty {
-			itemId: 0,
-			addedComponentCount: v.len() as i32,
-			removedComponentCount: 0,
+		a::slot_default::Ty {
+			item_id: 0,
+			added_component_count: v.len() as i32,
+			removed_component_count: 0,
 			components: v,
-			removeComponents: Vec::new(),
+			remove_components: Vec::new(),
 		},
 	))? {
-		b::Slot::Ty::default(_, d) => Ok(d.components),
-		b::Slot::Ty::v0 => Err(Error::Dropped),
+		b::slot::Ty::Default(_, d) => Ok(d.components),
+		b::slot::Ty::V0 => Err(Error::Dropped),
 	}
 }
 
-pub fn components_down(v: Vec<b::SlotComponent::Ty>) -> Result<Vec<a::SlotComponent::Ty>> {
-	match slot_down(b::Slot::Ty::default(
+pub fn components_down(v: Vec<b::slot_component::Ty>) -> Result<Vec<a::slot_component::Ty>> {
+	match slot_down(b::slot::Ty::Default(
 		1,
-		b::Slot__default::Ty {
-			itemId: 0,
-			addedComponentCount: v.len() as i32,
-			removedComponentCount: 0,
+		b::slot_default::Ty {
+			item_id: 0,
+			added_component_count: v.len() as i32,
+			removed_component_count: 0,
 			components: v,
-			removeComponents: Vec::new(),
+			remove_components: Vec::new(),
 		},
 	))? {
-		a::Slot::Ty::default(_, d) => Ok(d.components),
-		a::Slot::Ty::v0 => Err(Error::Dropped),
+		a::slot::Ty::Default(_, d) => Ok(d.components),
+		a::slot::Ty::V0 => Err(Error::Dropped),
 	}
 }

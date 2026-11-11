@@ -893,9 +893,9 @@ fn synthetic(id: i32) -> bool {
 
 fn shifted(mut e: BlockEntity, view: i32) -> BlockEntity {
 	e.y -= view;
-	if let Some(Payload::compound(c)) = e.nbt.as_mut().map(|t| &mut t.value) {
+	if let Some(Payload::Compound(c)) = e.nbt.as_mut().map(|t| &mut t.value) {
 		for entry in c.iter_mut().filter(|entry| entry.name == "y") {
-			if let Payload::int(y) = &mut entry.value {
+			if let Payload::Int(y) = &mut entry.value {
 				*y -= view;
 			}
 		}

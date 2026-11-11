@@ -22,28 +22,23 @@ pub mod pds {
 
 pub use value::{CompoundExt, CompoundVecExt, PayloadMut};
 
-pub use gen::pds_Compound::Ty as Compound;
-pub use gen::pds_Entry::Ty as Entry;
-pub use gen::pds_List::Ty as List;
-pub use gen::pds_List_0::Ty as ListItems;
-pub use gen::pds_Payload::Ty as Payload;
-pub use gen::pds_Tag::Ty as Tag;
+pub use gen::{Compound, Entry, List, List0 as ListItems, Payload, Tag};
 
 #[cfg(test)]
 mod tests {
-	use crate::gen::pds_Tag;
+	use crate::gen::tag;
 	use crate::pds::{Input, Output};
 	use crate::pds_native::pds_string;
 	use crate::{Entry, ListItems, Payload, Tag};
 
 	fn roundtrip(bytes: &[u8]) -> Tag {
 		let mut input = Input::new(bytes);
-		let tag = pds_Tag::deserialize(&mut input).unwrap();
+		let tag = tag::deserialize(&mut input).unwrap();
 		assert_eq!(input.offset(), bytes.len());
 		let mut out = Output::new();
-		pds_Tag::serialize(&tag, &mut out).unwrap();
+		tag::serialize(&tag, &mut out).unwrap();
 		assert_eq!(out.into_inner(), bytes);
-		assert_eq!(pds_Tag::size_of(&tag), bytes.len());
+		assert_eq!(tag::size_of(&tag), bytes.len());
 		tag
 	}
 
@@ -54,19 +49,19 @@ mod tests {
 			b'a', 10, 0, 0, 0, 1, 0, 11, 0, 1, b'n', 0, 0, 0, 2, 0, 0, 0, 1, 0xff, 0xff, 0xff,
 			0xff, 0,
 		]);
-		let Payload::compound(entries) = &tag.value else {
+		let Payload::Compound(entries) = &tag.value else {
 			panic!("{tag:?}")
 		};
 		let [Entry {
 			name: text,
-			value: Payload::string(hi),
+			value: Payload::String(hi),
 			..
 		}, Entry {
 			name: extra,
-			value: Payload::list(list),
+			value: Payload::List(list),
 			..
 		}, Entry {
-			value: Payload::intArray(ints),
+			value: Payload::IntArray(ints),
 			..
 		}] = entries.as_slice()
 		else {
@@ -76,13 +71,13 @@ mod tests {
 			(text.as_str(), hi.as_str(), extra.as_str()),
 			("text", "hi", "extra")
 		);
-		assert!(matches!(&list.items, ListItems::compound(c) if c.len() == 1 && c[0].is_empty()));
+		assert!(matches!(&list.items, ListItems::Compound(c) if c.len() == 1 && c[0].is_empty()));
 		assert_eq!(ints, &vec![1, -1]);
 	}
 
 	#[test]
 	fn empty_root_is_end() {
-		assert!(matches!(roundtrip(&[0]).value, Payload::end));
+		assert!(matches!(roundtrip(&[0]).value, Payload::End));
 	}
 
 	#[test]
@@ -96,9 +91,8 @@ mod tests {
 			bytes.extend([0, 0, 0, 0, 0]);
 			bytes
 		};
-		let decode = |bytes: &[u8]| {
-			stack::budget(256 << 10, || pds_Tag::deserialize(&mut Input::new(bytes)))
-		};
+		let decode =
+			|bytes: &[u8]| stack::budget(256 << 10, || tag::deserialize(&mut Input::new(bytes)));
 		assert!(decode(&nested(8)).is_ok());
 		assert!(matches!(decode(&nested(1 << 20)), Err(Error::TooDeep)));
 		let snbt = "[".repeat(1 << 20);
@@ -118,7 +112,7 @@ mod tests {
 
 	#[test]
 	fn views_borrow_strings_and_byte_arrays() {
-		use crate::gen::view::{pds_Payload as payload, pds_Tag as tag};
+		use crate::gen::view::{payload, tag};
 		use std::borrow::Cow;
 		let bytes = [
 			10, 8, 0, 4, b't', b'e', b'x', b't', 0, 2, b'h', b'i', 7, 0, 1, b'b', 0, 0, 0, 2, 5,
@@ -126,24 +120,25 @@ mod tests {
 		];
 		let range = bytes.as_ptr_range();
 		let parsed = tag::deserialize(&mut Input::new(&bytes)).unwrap();
-		let payload::Ty::compound(entries) = &parsed.value else {
+		let payload::Ty::Compound(entries) = &parsed.value else {
 			panic!("{parsed:?}")
 		};
 		let [text, blob, nul] = entries.as_slice() else {
 			panic!("{entries:?}")
 		};
-		let (Cow::Borrowed(name), payload::Ty::string(Cow::Borrowed(hi))) = (&text.name, &text.value)
+		let (Cow::Borrowed(name), payload::Ty::String(Cow::Borrowed(hi))) =
+			(&text.name, &text.value)
 		else {
 			panic!("{text:?}")
 		};
 		assert_eq!((*name, *hi), ("text", "hi"));
 		assert!(range.contains(&hi.as_ptr()));
-		let payload::Ty::byteArray(b) = &blob.value else {
+		let payload::Ty::ByteArray(b) = &blob.value else {
 			panic!("{blob:?}")
 		};
 		assert_eq!(*b, &[5, -5]);
 		assert!(range.contains(&b.as_ptr().cast()));
-		assert!(matches!(&nul.value, payload::Ty::string(Cow::Owned(s)) if s == "\0"));
+		assert!(matches!(&nul.value, payload::Ty::String(Cow::Owned(s)) if s == "\0"));
 
 		let owned = roundtrip(&bytes);
 		assert_eq!(tag::view(&owned), parsed);
@@ -155,44 +150,46 @@ mod tests {
 
 	#[test]
 	fn into_view_takes_arrays_and_borrows_strings() {
-		use crate::gen::view::{pds_Payload as payload, pds_Tag as tag};
+		use crate::gen::view::{payload, tag};
 		use std::borrow::Cow;
 		let bytes = [
-			10, 12, 0, 1, b'l', 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 8, 0, 1,
-			b's', 0, 2, b'h', b'i', 0,
+			10, 12, 0, 1, b'l', 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 8, 0,
+			1, b's', 0, 2, b'h', b'i', 0,
 		];
 		let mut owned = roundtrip(&bytes);
 		let expected = tag::deserialize(&mut Input::new(&bytes)).unwrap();
-		let Payload::compound(entries) = &owned.value else {
+		let Payload::Compound(entries) = &owned.value else {
 			panic!("{owned:?}")
 		};
-		let Payload::longArray(longs) = &entries[0].value else {
+		let Payload::LongArray(longs) = &entries[0].value else {
 			panic!("{entries:?}")
 		};
 		let (longs, text) = (longs.as_ptr(), entries[1].name.as_ptr());
 		let moved = tag::into_view(&mut owned);
 		assert_eq!(moved, expected);
-		let payload::Ty::compound(entries) = &moved.value else {
+		let payload::Ty::Compound(entries) = &moved.value else {
 			panic!("{moved:?}")
 		};
-		assert!(matches!(&entries[0].value, payload::Ty::longArray(v) if v.as_ptr() == longs));
+		assert!(matches!(&entries[0].value, payload::Ty::LongArray(v) if v.as_ptr() == longs));
 		assert!(matches!(&entries[1].name, Cow::Borrowed(s) if s.as_ptr() == text));
-		let Payload::compound(left) = &owned.value else {
+		let Payload::Compound(left) = &owned.value else {
 			unreachable!()
 		};
-		assert!(matches!(&left[0].value, Payload::longArray(v) if v.is_empty()));
+		assert!(matches!(&left[0].value, Payload::LongArray(v) if v.is_empty()));
 	}
 
 	#[test]
 	fn views_keep_the_stack_guard() {
-		use crate::gen::view::pds_Tag as tag;
+		use crate::gen::view::tag;
 		use crate::pds::{stack, Error};
 		let mut bytes = vec![9];
 		for _ in 0..1 << 20 {
 			bytes.extend([9, 0, 0, 0, 1]);
 		}
 		bytes.extend([0, 0, 0, 0, 0]);
-		let r = stack::budget(256 << 10, || tag::deserialize(&mut Input::new(&bytes)).map(drop));
+		let r = stack::budget(256 << 10, || {
+			tag::deserialize(&mut Input::new(&bytes)).map(drop)
+		});
 		assert!(matches!(r, Err(Error::TooDeep)));
 	}
 }

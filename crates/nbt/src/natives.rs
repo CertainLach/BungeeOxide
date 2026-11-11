@@ -1,16 +1,16 @@
 pub mod pds_nbt {
-	pub use crate::gen::pds_Entry::*;
+	pub use crate::gen::entry::*;
 }
 
 pub mod pds_optionalNbt {
-	use crate::gen::pds_Entry;
+	use crate::gen::entry;
 	use crate::pds::{Input, Output, Result};
 
-	pub type Ty = Option<pds_Entry::Ty>;
+	pub type Ty = Option<entry::Ty>;
 
 	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		match _0 {
-			Some(tag) => pds_Entry::serialize(tag, output),
+			Some(tag) => entry::serialize(tag, output),
 			None => {
 				output.write(&[0]);
 				Ok(())
@@ -23,27 +23,27 @@ pub mod pds_optionalNbt {
 			input.read()?;
 			return Ok(None);
 		}
-		Ok(Some(pds_Entry::deserialize(input)?))
+		Ok(Some(entry::deserialize(input)?))
 	}
 
 	pub fn size_of(_0: &Ty) -> usize {
-		_0.as_ref().map_or(1, pds_Entry::size_of)
+		_0.as_ref().map_or(1, entry::size_of)
 	}
 }
 
 pub mod pds_anonymousNbt {
-	pub use crate::gen::pds_Tag::*;
+	pub use crate::gen::tag::*;
 }
 
 pub mod pds_anonOptionalNbt {
-	use crate::gen::pds_Tag;
+	use crate::gen::tag;
 	use crate::pds::{Input, Output, Result};
 
-	pub type Ty = Option<pds_Tag::Ty>;
+	pub type Ty = Option<tag::Ty>;
 
 	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		match _0 {
-			Some(tag) => pds_Tag::serialize(tag, output),
+			Some(tag) => tag::serialize(tag, output),
 			None => {
 				output.write(&[0]);
 				Ok(())
@@ -56,11 +56,11 @@ pub mod pds_anonOptionalNbt {
 			input.read()?;
 			return Ok(None);
 		}
-		Ok(Some(pds_Tag::deserialize(input)?))
+		Ok(Some(tag::deserialize(input)?))
 	}
 
 	pub fn size_of(_0: &Ty) -> usize {
-		_0.as_ref().map_or(1, pds_Tag::size_of)
+		_0.as_ref().map_or(1, tag::size_of)
 	}
 }
 
@@ -140,15 +140,15 @@ pub mod view {
 	}
 
 	pub mod pds_nbt {
-		pub use crate::gen::view::pds_Entry::*;
+		pub use crate::gen::view::entry::*;
 	}
 
 	pub mod pds_anonymousNbt {
-		pub use crate::gen::view::pds_Tag::*;
+		pub use crate::gen::view::tag::*;
 	}
 
-	optional!(pds_optionalNbt, pds_Entry);
-	optional!(pds_anonOptionalNbt, pds_Tag);
+	optional!(pds_optionalNbt, entry);
+	optional!(pds_anonOptionalNbt, tag);
 }
 
 #[cfg(test)]

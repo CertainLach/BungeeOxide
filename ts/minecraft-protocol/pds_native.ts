@@ -1,5 +1,5 @@
 import { Input, type Native, Output, PdsError } from "./pds.ts";
-import * as pds_Tag from "../nbt/gen/pds_Tag.ts";
+import * as pds_Tag from "../nbt/gen/Tag.ts";
 
 export {
 	pds_bool,

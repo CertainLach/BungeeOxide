@@ -16,10 +16,10 @@ use crate::pds::convert::{Error, Result};
 use crate::pds::Output;
 use crate::session::Session;
 
-type Client12 = a::play_toClient_packet::Ty;
-type Client13 = b::play_toClient_packet::Ty;
-type Server12 = a::play_toServer_packet::Ty;
-type Server13 = b::play_toServer_packet::Ty;
+type Client12 = a::play_to_client_packet::Ty;
+type Client13 = b::play_to_client_packet::Ty;
+type Server12 = a::play_to_server_packet::Ty;
+type Server13 = b::play_to_server_packet::Ty;
 
 #[derive(Default)]
 struct Flat {
@@ -907,20 +907,20 @@ const ITEM_TAGS: &[(&str, &[&str])] = &[
 
 const FLUID_TAGS: &[(&str, &[i32])] = &[("lava", &[3, 4]), ("water", &[1, 2])];
 
-type Tag = b::play_toClient_packet_tags__blockTags__items::Ty;
+type Tag = b::play_to_client_packet_tags_block_tags_items::Ty;
 
 fn tag(name: &str, entries: Vec<i32>) -> Tag {
 	Tag {
-		tagName: format!("minecraft:{name}"),
+		tag_name: format!("minecraft:{name}"),
 		entries,
 	}
 }
 
-fn tags() -> b::play_toClient_packet_tags::Ty {
+fn tags() -> b::play_to_client_packet_tags::Ty {
 	let blocks = new_blocks();
 	let items = new_items();
-	b::play_toClient_packet_tags::Ty {
-		blockTags: BLOCK_TAGS
+	b::play_to_client_packet_tags::Ty {
+		block_tags: BLOCK_TAGS
 			.iter()
 			.map(|(n, names)| {
 				tag(
@@ -933,7 +933,7 @@ fn tags() -> b::play_toClient_packet_tags::Ty {
 				)
 			})
 			.collect(),
-		itemTags: ITEM_TAGS
+		item_tags: ITEM_TAGS
 			.iter()
 			.map(|(n, names)| {
 				tag(
@@ -946,15 +946,15 @@ fn tags() -> b::play_toClient_packet_tags::Ty {
 				)
 			})
 			.collect(),
-		fluidTags: FLUID_TAGS
+		fluid_tags: FLUID_TAGS
 			.iter()
 			.map(|(n, ids)| tag(n, ids.to_vec()))
 			.collect(),
 	}
 }
 
-fn commands() -> b::play_toClient_packet_declare_commands::Ty {
-	let flags = |suggestions: u8, command: u8, kind: u8| b::command_node__flags::Ty {
+fn commands() -> b::play_to_client_packet_declare_commands::Ty {
+	let flags = |suggestions: u8, command: u8, kind: u8| b::command_node_flags::Ty {
 		unused: 0,
 		has_custom_suggestions: suggestions,
 		has_redirect_node: 0,
@@ -964,44 +964,44 @@ fn commands() -> b::play_toClient_packet_declare_commands::Ty {
 	let root = b::command_node::Ty {
 		flags: flags(0, 0, 0),
 		children: vec![1],
-		redirectNode: b::command_node__redirectNode::Ty::default(0),
-		extraNodeData: b::command_node__extraNodeData::Ty::v0,
+		redirect_node: b::command_node_redirect_node::Ty::Default(0),
+		extra_node_data: b::command_node_extra_node_data::Ty::V0,
 	};
 	let args = b::command_node::Ty {
 		flags: flags(1, 1, 2),
 		children: vec![],
-		redirectNode: b::command_node__redirectNode::Ty::default(0),
-		extraNodeData: b::command_node__extraNodeData::Ty::v2(b::command_node__extraNodeData__v2::Ty {
+		redirect_node: b::command_node_redirect_node::Ty::Default(0),
+		extra_node_data: b::command_node_extra_node_data::Ty::V2(b::command_node_extra_node_data_v2::Ty {
 			name: "args".to_owned(),
 			parser: "brigadier:string".to_owned(),
-			properties: b::command_node__extraNodeData__v2__properties::Ty::brigadier_string(
-				b::command_node__extraNodeData__v2__properties__brigadier_string::Ty::GREEDY_PHRASE,
+			properties: b::command_node_extra_node_data_v2_properties::Ty::BrigadierString(
+				b::command_node_extra_node_data_v2_properties_brigadier_string::Ty::GreedyPhrase,
 			),
-			suggestionType: b::command_node__extraNodeData__v2__suggestionType::Ty::v1("minecraft:ask_server".to_owned()),
+			suggestion_type: b::command_node_extra_node_data_v2_suggestion_type::Ty::V1("minecraft:ask_server".to_owned()),
 		}),
 	};
-	b::play_toClient_packet_declare_commands::Ty {
+	b::play_to_client_packet_declare_commands::Ty {
 		nodes: vec![root, args],
-		rootIndex: 0,
+		root_index: 0,
 	}
 }
 
 pub fn flattening_login_1_13(
-	p: a::play_toClient_packet_login::Ty,
+	p: a::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	cx.state::<Flat>().dimension = p.dimension;
 	reset_world(cx, p.dimension);
 	forget_flat(cx);
 	Ok(vec![
-		Client13::login(p),
-		Client13::declare_commands(commands()),
-		Client13::tags(tags()),
+		Client13::Login(p),
+		Client13::DeclareCommands(commands()),
+		Client13::Tags(tags()),
 	])
 }
 
 pub fn flattening_respawn_1_13(
-	p: a::play_toClient_packet_respawn::Ty,
+	p: a::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let flat = cx.state::<Flat>();
@@ -1010,11 +1010,11 @@ pub fn flattening_respawn_1_13(
 		reset_world(cx, p.dimension);
 		forget_flat(cx);
 	}
-	Ok(vec![Client13::respawn(p)])
+	Ok(vec![Client13::Respawn(p)])
 }
 
 pub fn flattening_login_1_12_2(
-	p: b::play_toClient_packet_login::Ty,
+	p: b::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let legacy = cx.state::<Legacy>();
@@ -1022,11 +1022,11 @@ pub fn flattening_login_1_12_2(
 	legacy.commands.clear();
 	reset_world(cx, p.dimension);
 	forget_flat(cx);
-	Ok(vec![Client12::login(p)])
+	Ok(vec![Client12::Login(p)])
 }
 
 pub fn flattening_respawn_1_12_2(
-	p: b::play_toClient_packet_respawn::Ty,
+	p: b::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let legacy = cx.state::<Legacy>();
@@ -1035,16 +1035,16 @@ pub fn flattening_respawn_1_12_2(
 		reset_world(cx, p.dimension);
 		forget_flat(cx);
 	}
-	Ok(vec![Client12::respawn(p)])
+	Ok(vec![Client12::Respawn(p)])
 }
 
 pub fn flattening_login_plugin_request_1_12_2(
-	p: b::login_toClient_packet_login_plugin_request::Ty,
+	p: b::login_to_client_packet_login_plugin_request::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::login_toClient_packet::Ty>> {
-	let answer = b::login_toServer_packet::Ty::login_plugin_response(
-		b::login_toServer_packet_login_plugin_response::Ty {
-			messageId: p.messageId,
+) -> Result<Vec<a::login_to_client_packet::Ty>> {
+	let answer = b::login_to_server_packet::Ty::LoginPluginResponse(
+		b::login_to_server_packet_login_plugin_response::Ty {
+			message_id: p.message_id,
 			data: None,
 		},
 	);
@@ -1053,22 +1053,22 @@ pub fn flattening_login_plugin_request_1_12_2(
 		Root::LoginToServer,
 		FLAT,
 		&answer,
-		b::login_toServer_packet::serialize,
+		b::login_to_server_packet::serialize,
 	);
 	Ok(vec![])
 }
 
 pub fn flattening_declare_commands_1_12_2(
-	p: b::play_toClient_packet_declare_commands::Ty,
+	p: b::play_to_client_packet_declare_commands::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
-	let root = p.nodes.get(p.rootIndex.max(0) as usize);
+	let root = p.nodes.get(p.root_index.max(0) as usize);
 	let commands = root
 		.map(|r| {
 			r.children
 				.iter()
-				.filter_map(|c| match &p.nodes.get(*c as usize)?.extraNodeData {
-					b::command_node__extraNodeData::Ty::v1(name) => Some(format!("/{name}")),
+				.filter_map(|c| match &p.nodes.get(*c as usize)?.extra_node_data {
+					b::command_node_extra_node_data::Ty::V1(name) => Some(format!("/{name}")),
 					_ => None,
 				})
 				.collect()
@@ -1079,16 +1079,16 @@ pub fn flattening_declare_commands_1_12_2(
 }
 
 pub fn flattening_player_uuid_1_12_2(
-	src: &b::play_toClient_packet_player_info__data__items::Ty,
+	src: &b::play_to_client_packet_player_info_data_items::Ty,
 	cx: &mut Session,
 ) -> Result<u128> {
-	use b::play_toClient_packet_player_info__data__items__ANON::Ty as Entry;
+	use b::play_to_client_packet_player_info_data_items_anon::Ty as Entry;
 	let names = &mut cx.state::<Legacy>().usernames;
-	match &src.ANON {
-		Entry::add_player(add) => {
+	match &src.anon {
+		Entry::AddPlayer(add) => {
 			names.insert(src.uuid, add.name.clone());
 		}
-		Entry::remove_player => {
+		Entry::RemovePlayer => {
 			names.remove(&src.uuid);
 		}
 		_ => {}
@@ -1099,8 +1099,8 @@ pub fn flattening_player_uuid_1_12_2(
 pub fn flattening_server_info_1_13(
 	p: String,
 	_cx: &mut Session,
-) -> Result<Vec<b::status_toClient_packet::Ty>> {
-	Ok(vec![b::status_toClient_packet::Ty::server_info(
+) -> Result<Vec<b::status_to_client_packet::Ty>> {
+	Ok(vec![b::status_to_client_packet::Ty::ServerInfo(
 		favicon_without_newlines(&p),
 	)])
 }
@@ -1134,28 +1134,28 @@ const SOURCES: [&str; 10] = [
 	"voice",
 ];
 
-fn stop_sound_up(data: &[u8]) -> Result<b::play_toClient_packet_stop_sound::Ty> {
-	use b::play_toClient_packet_stop_sound::Ty as Stop;
+fn stop_sound_up(data: &[u8]) -> Result<b::play_to_client_packet_stop_sound::Ty> {
+	use b::play_to_client_packet_stop_sound::Ty as Stop;
 	let mut r = Reader::new(data);
 	let source = r.string()?;
 	let sound = r.string()?;
 	let source =
 		(!source.is_empty()).then(|| SOURCES.iter().position(|s| *s == source).unwrap_or(0) as i32);
 	Ok(match (source, sound.is_empty()) {
-		(None, true) => Stop::default(0),
-		(Some(s), true) => Stop::v1(s),
-		(None, false) => Stop::v2(sound),
+		(None, true) => Stop::Default(0),
+		(Some(s), true) => Stop::V1(s),
+		(None, false) => Stop::V2(sound),
 		(Some(source), false) => {
-			Stop::v3(b::play_toClient_packet_stop_sound__v3::Ty { source, sound })
+			Stop::V3(b::play_to_client_packet_stop_sound_v3::Ty { source, sound })
 		}
 	})
 }
 
 pub fn flattening_stop_sound_1_12_2(
-	p: b::play_toClient_packet_stop_sound::Ty,
+	p: b::play_to_client_packet_stop_sound::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
-	use b::play_toClient_packet_stop_sound::Ty as Stop;
+	use b::play_to_client_packet_stop_sound::Ty as Stop;
 	let source = |s: i32| {
 		SOURCES
 			.get(s.max(0) as usize)
@@ -1164,16 +1164,16 @@ pub fn flattening_stop_sound_1_12_2(
 			.to_owned()
 	};
 	let (source, sound) = match p {
-		Stop::v1(s) => (source(s), String::new()),
-		Stop::v2(sound) => (String::new(), sound_name_down(&sound)),
-		Stop::v3(v) => (source(v.source), sound_name_down(&v.sound)),
-		Stop::default(_) => (String::new(), String::new()),
+		Stop::V1(s) => (source(s), String::new()),
+		Stop::V2(sound) => (String::new(), sound_name_down(&sound)),
+		Stop::V3(v) => (source(v.source), sound_name_down(&v.sound)),
+		Stop::Default(_) => (String::new(), String::new()),
 	};
 	let mut data = Vec::new();
 	put_string(&mut data, &source);
 	put_string(&mut data, &sound);
-	Ok(vec![Client12::custom_payload(
-		a::play_toClient_packet_custom_payload::Ty {
+	Ok(vec![Client12::CustomPayload(
+		a::play_to_client_packet_custom_payload::Ty {
 			channel: "MC|StopSound".to_owned(),
 			data,
 		},
@@ -1269,14 +1269,14 @@ fn payload_down(channel: &str, data: Vec<u8>) -> Result<Option<(String, Vec<u8>)
 }
 
 pub fn flattening_custom_payload_1_13(
-	p: a::play_toClient_packet_custom_payload::Ty,
+	p: a::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	match p.channel.as_str() {
-		"MC|StopSound" => return Ok(vec![Client13::stop_sound(stop_sound_up(&p.data)?)]),
+		"MC|StopSound" => return Ok(vec![Client13::StopSound(stop_sound_up(&p.data)?)]),
 		"MC|TrList" => {
-			return Ok(vec![Client13::custom_payload(
-				b::play_toClient_packet_custom_payload::Ty {
+			return Ok(vec![Client13::CustomPayload(
+				b::play_to_client_packet_custom_payload::Ty {
 					channel: "minecraft:trader_list".to_owned(),
 					data: trader_up(&p.data)?,
 				},
@@ -1286,14 +1286,14 @@ pub fn flattening_custom_payload_1_13(
 	}
 	Ok(payload_up(&p.channel, p.data)?
 		.map(|(channel, data)| {
-			Client13::custom_payload(b::play_toClient_packet_custom_payload::Ty { channel, data })
+			Client13::CustomPayload(b::play_to_client_packet_custom_payload::Ty { channel, data })
 		})
 		.into_iter()
 		.collect())
 }
 
 pub fn flattening_custom_payload_1_12_2(
-	p: b::play_toClient_packet_custom_payload::Ty,
+	p: b::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let data = match p.channel.as_str() {
@@ -1302,7 +1302,7 @@ pub fn flattening_custom_payload_1_12_2(
 	};
 	Ok(payload_down(&p.channel, data)?
 		.map(|(channel, data)| {
-			Client12::custom_payload(a::play_toClient_packet_custom_payload::Ty { channel, data })
+			Client12::CustomPayload(a::play_to_client_packet_custom_payload::Ty { channel, data })
 		})
 		.into_iter()
 		.collect())
@@ -1330,18 +1330,18 @@ fn bit(r: &mut Reader, value: u8) -> Result<u8> {
 fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 	let mut r = Reader::new(data);
 	Ok(Some(match channel {
-		"MC|BSign" | "MC|BEdit" => Server13::edit_book(b::play_toServer_packet_edit_book::Ty {
+		"MC|BSign" | "MC|BEdit" => Server13::EditBook(b::play_to_server_packet_edit_book::Ty {
 			new_book: slot_up(r.with(a::slot::deserialize)?),
 			signing: channel == "MC|BSign",
 		}),
-		"MC|ItemName" => Server13::name_item(if r.remaining() > 0 {
+		"MC|ItemName" => Server13::NameItem(if r.remaining() > 0 {
 			r.string()?
 		} else {
 			String::new()
 		}),
-		"MC|PickItem" => Server13::pick_item(r.varint()?),
-		"MC|TrSel" => Server13::select_trade(r.i32()?),
-		"MC|Beacon" => Server13::set_beacon_effect(b::play_toServer_packet_set_beacon_effect::Ty {
+		"MC|PickItem" => Server13::PickItem(r.varint()?),
+		"MC|TrSel" => Server13::SelectTrade(r.i32()?),
+		"MC|Beacon" => Server13::SetBeaconEffect(b::play_to_server_packet_set_beacon_effect::Ty {
 			primary_effect: r.i32()?,
 			secondary_effect: r.i32()?,
 		}),
@@ -1349,9 +1349,9 @@ fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 			if r.u8()? != 1 {
 				return Ok(None);
 			}
-			Server13::update_command_block_minecart(
-				b::play_toServer_packet_update_command_block_minecart::Ty {
-					entityId: r.i32()?,
+			Server13::UpdateCommandBlockMinecart(
+				b::play_to_server_packet_update_command_block_minecart::Ty {
+					entity_id: r.i32()?,
 					command: r.string()?,
 					track_output: r.u8()? != 0,
 				},
@@ -1363,7 +1363,7 @@ fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 			let track = bit(&mut r, 1)?;
 			let mode = index_of(&["SEQUENCE", "AUTO", "REDSTONE"], &r.string()?);
 			let flags = track | bit(&mut r, 2)? | bit(&mut r, 4)?;
-			Server13::update_command_block(b::play_toServer_packet_update_command_block::Ty {
+			Server13::UpdateCommandBlock(b::play_to_server_packet_update_command_block::Ty {
 				location,
 				command,
 				mode,
@@ -1393,7 +1393,7 @@ fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 			let flags = bit(&mut r, 1)? | bit(&mut r, 2)? | bit(&mut r, 4)?;
 			let integrity = f32::from_bits(r.i32()? as u32);
 			let seed = r.with(crate::pds_native::pds_varlong::deserialize)?;
-			Server13::update_structure_block(b::play_toServer_packet_update_structure_block::Ty {
+			Server13::UpdateStructureBlock(b::play_to_server_packet_update_structure_block::Ty {
 				location,
 				action,
 				mode,
@@ -1414,7 +1414,7 @@ fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 		}
 		_ => match payload_up(channel, data.to_vec())? {
 			Some((channel, data)) => {
-				Server13::custom_payload(b::play_toServer_packet_custom_payload::Ty {
+				Server13::CustomPayload(b::play_to_server_packet_custom_payload::Ty {
 					channel,
 					data,
 				})
@@ -1425,7 +1425,7 @@ fn server_payload_up(channel: &str, data: &[u8]) -> Result<Option<Server13>> {
 }
 
 pub fn flattening_server_custom_payload_1_13(
-	p: a::play_toServer_packet_custom_payload::Ty,
+	p: a::play_to_server_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server13>> {
 	Ok(server_payload_up(&p.channel, &p.data)?
@@ -1434,20 +1434,20 @@ pub fn flattening_server_custom_payload_1_13(
 }
 
 pub fn flattening_server_custom_payload_1_12_2(
-	p: b::play_toServer_packet_custom_payload::Ty,
+	p: b::play_to_server_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	Ok(payload_down(&p.channel, p.data)?
 		.map(|(channel, data)| {
-			Server12::custom_payload(a::play_toServer_packet_custom_payload::Ty { channel, data })
+			Server12::CustomPayload(a::play_to_server_packet_custom_payload::Ty { channel, data })
 		})
 		.into_iter()
 		.collect())
 }
 
 fn server_payload(channel: &str, data: Vec<u8>) -> Result<Vec<Server12>> {
-	Ok(vec![Server12::custom_payload(
-		a::play_toServer_packet_custom_payload::Ty {
+	Ok(vec![Server12::CustomPayload(
+		a::play_to_server_packet_custom_payload::Ty {
 			channel: channel.to_owned(),
 			data,
 		},
@@ -1455,7 +1455,7 @@ fn server_payload(channel: &str, data: Vec<u8>) -> Result<Vec<Server12>> {
 }
 
 pub fn flattening_edit_book_1_12_2(
-	p: b::play_toServer_packet_edit_book::Ty,
+	p: b::play_to_server_packet_edit_book::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let mut data = Vec::new();
@@ -1480,7 +1480,7 @@ pub fn flattening_select_trade_1_12_2(slot: i32, _cx: &mut Session) -> Result<Ve
 }
 
 pub fn flattening_set_beacon_effect_1_12_2(
-	p: b::play_toServer_packet_set_beacon_effect::Ty,
+	p: b::play_to_server_packet_set_beacon_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let mut data = p.primary_effect.to_be_bytes().to_vec();
@@ -1495,7 +1495,7 @@ fn position_ints(data: &mut Vec<u8>, p: &b::position::Ty) {
 }
 
 pub fn flattening_update_command_block_1_12_2(
-	p: b::play_toServer_packet_update_command_block::Ty,
+	p: b::play_to_server_packet_update_command_block::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let mut data = Vec::new();
@@ -1512,18 +1512,18 @@ pub fn flattening_update_command_block_1_12_2(
 }
 
 pub fn flattening_update_command_block_minecart_1_12_2(
-	p: b::play_toServer_packet_update_command_block_minecart::Ty,
+	p: b::play_to_server_packet_update_command_block_minecart::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let mut data = vec![1];
-	data.extend(p.entityId.to_be_bytes());
+	data.extend(p.entity_id.to_be_bytes());
 	put_string(&mut data, &p.command);
 	data.push(p.track_output as u8);
 	server_payload("MC|AdvCmd", data)
 }
 
 pub fn flattening_update_structure_block_1_12_2(
-	p: b::play_toServer_packet_update_structure_block::Ty,
+	p: b::play_to_server_packet_update_structure_block::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let mut data = Vec::new();
@@ -1570,31 +1570,31 @@ pub fn flattening_update_structure_block_1_12_2(
 }
 
 pub fn flattening_set_cooldown_1_13(
-	p: a::play_toClient_packet_set_cooldown::Ty,
+	p: a::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	Ok(item_of_legacy(p.itemID)
+	Ok(item_of_legacy(p.item_id)
 		.into_iter()
-		.map(|itemID| {
-			Client13::set_cooldown(b::play_toClient_packet_set_cooldown::Ty {
-				itemID,
-				cooldownTicks: p.cooldownTicks,
+		.map(|item_id| {
+			Client13::SetCooldown(b::play_to_client_packet_set_cooldown::Ty {
+				item_id,
+				cooldown_ticks: p.cooldown_ticks,
 			})
 		})
 		.collect())
 }
 
 pub fn flattening_set_cooldown_1_12_2(
-	p: b::play_toClient_packet_set_cooldown::Ty,
+	p: b::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
-	let Some((id, _)) = legacy_of_item(p.itemID.max(0) as u32) else {
+	let Some((id, _)) = legacy_of_item(p.item_id.max(0) as u32) else {
 		return Ok(vec![]);
 	};
-	Ok(vec![Client12::set_cooldown(
-		a::play_toClient_packet_set_cooldown::Ty {
-			itemID: id as i32,
-			cooldownTicks: p.cooldownTicks,
+	Ok(vec![Client12::SetCooldown(
+		a::play_to_client_packet_set_cooldown::Ty {
+			item_id: id as i32,
+			cooldown_ticks: p.cooldown_ticks,
 		},
 	)])
 }
@@ -1715,16 +1715,16 @@ fn statistic_down(category: i32, id: i32) -> Option<String> {
 }
 
 pub fn flattening_statistics_1_13(
-	p: Vec<a::play_toClient_packet__statistics__items::Ty>,
+	p: Vec<a::play_to_client_packet_statistics_items::Ty>,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	Ok(vec![Client13::statistics(
+	Ok(vec![Client13::Statistics(
 		p.into_iter()
 			.filter_map(|s| {
-				let (categoryId, statisticId) = statistic_up(&s.name)?;
-				Some(b::play_toClient_packet__statistics__items::Ty {
-					categoryId,
-					statisticId,
+				let (category_id, statistic_id) = statistic_up(&s.name)?;
+				Some(b::play_to_client_packet_statistics_items::Ty {
+					category_id,
+					statistic_id,
 					value: s.value,
 				})
 			})
@@ -1733,14 +1733,14 @@ pub fn flattening_statistics_1_13(
 }
 
 pub fn flattening_statistics_1_12_2(
-	p: Vec<b::play_toClient_packet__statistics__items::Ty>,
+	p: Vec<b::play_to_client_packet_statistics_items::Ty>,
 	_cx: &mut Session,
 ) -> Result<Vec<Client12>> {
-	Ok(vec![Client12::statistics(
+	Ok(vec![Client12::Statistics(
 		p.into_iter()
 			.filter_map(|s| {
-				Some(a::play_toClient_packet__statistics__items::Ty {
-					name: statistic_down(s.categoryId, s.statisticId)?,
+				Some(a::play_to_client_packet_statistics_items::Ty {
+					name: statistic_down(s.category_id, s.statistic_id)?,
 					value: s.value,
 				})
 			})
@@ -1769,7 +1769,7 @@ pub fn flattening_tab_complete_1_13(
 	let matches = matches
 		.into_iter()
 		.map(
-			|m| b::play_toClient_packet_tab_complete__matches__items::Ty {
+			|m| b::play_to_client_packet_tab_complete_matches_items::Ty {
 				r#match: match m.strip_prefix('/') {
 					Some(rest) if start == 0 => rest.to_owned(),
 					_ => m,
@@ -1778,9 +1778,9 @@ pub fn flattening_tab_complete_1_13(
 			},
 		)
 		.collect();
-	Ok(vec![Client13::tab_complete(
-		b::play_toClient_packet_tab_complete::Ty {
-			transactionId: flat.tab_transaction,
+	Ok(vec![Client13::TabComplete(
+		b::play_to_client_packet_tab_complete::Ty {
+			transaction_id: flat.tab_transaction,
 			start,
 			length,
 			matches,
@@ -1789,21 +1789,21 @@ pub fn flattening_tab_complete_1_13(
 }
 
 pub fn flattening_tab_complete_1_12_2(
-	p: b::play_toClient_packet_tab_complete::Ty,
+	p: b::play_to_client_packet_tab_complete::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client12>> {
 	let Some((id, request, assume)) = cx.state::<Legacy>().request.clone() else {
 		return Ok(vec![]);
 	};
 	let last = request.rfind(' ').map_or(0, |i| i + 1);
-	let accepted = id == p.transactionId
+	let accepted = id == p.transaction_id
 		&& utf16_len(&request[..last]) == p.start
 		&& p.length == utf16_len(&request[last..]);
 	if !accepted {
 		return Ok(vec![]);
 	}
 	let slash = if p.start == 0 && !assume { "/" } else { "" };
-	Ok(vec![Client12::tab_complete(
+	Ok(vec![Client12::TabComplete(
 		p.matches
 			.into_iter()
 			.map(|m| format!("{slash}{}", m.r#match))
@@ -1822,28 +1822,28 @@ fn starts_with_ignore_case(value: &str, prefix: &str) -> bool {
 }
 
 pub fn flattening_server_tab_complete_1_12_2(
-	p: b::play_toServer_packet_tab_complete::Ty,
+	p: b::play_to_server_packet_tab_complete::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server12>> {
 	let flat = cx.state::<Flat>();
-	flat.tab_transaction = p.transactionId;
+	flat.tab_transaction = p.transaction_id;
 	flat.tab_input = p.text.clone();
-	Ok(vec![Server12::tab_complete(
-		a::play_toServer_packet_tab_complete::Ty {
+	Ok(vec![Server12::TabComplete(
+		a::play_to_server_packet_tab_complete::Ty {
 			text: format!("/{}", p.text),
-			assumeCommand: false,
-			lookedAtBlock: None,
+			assume_command: false,
+			looked_at_block: None,
 		},
 	)])
 }
 
 pub fn flattening_server_tab_complete_1_13(
-	p: a::play_toServer_packet_tab_complete::Ty,
+	p: a::play_to_server_packet_tab_complete::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server13>> {
 	let legacy = cx.state::<Legacy>();
 	let command = p.text;
-	let assume = p.assumeCommand;
+	let assume = p.assume_command;
 	let mut suggestions: Vec<String> = if !assume && !command.starts_with('/') {
 		let buffer = &command[command.rfind(' ').map_or(0, |i| i + 1)..];
 		legacy
@@ -1865,13 +1865,13 @@ pub fn flattening_server_tab_complete_1_13(
 	if !suggestions.is_empty() {
 		suggestions.sort();
 		legacy.request = None;
-		let answer = Client12::tab_complete(suggestions);
+		let answer = Client12::TabComplete(suggestions);
 		send(
 			cx,
 			Root::PlayToClient,
 			OLD,
 			&answer,
-			a::play_toClient_packet::serialize,
+			a::play_to_client_packet::serialize,
 		);
 		return Ok(vec![]);
 	}
@@ -1880,11 +1880,11 @@ pub fn flattening_server_tab_complete_1_13(
 		_ => command,
 	};
 	legacy.counter = legacy.counter.wrapping_add(1);
-	let transactionId = legacy.counter;
-	legacy.request = Some((transactionId, text.clone(), assume));
-	Ok(vec![Server13::tab_complete(
-		b::play_toServer_packet_tab_complete::Ty {
-			transactionId,
+	let transaction_id = legacy.counter;
+	legacy.request = Some((transaction_id, text.clone(), assume));
+	Ok(vec![Server13::TabComplete(
+		b::play_to_server_packet_tab_complete::Ty {
+			transaction_id,
 			text,
 		},
 	)])
@@ -1933,21 +1933,21 @@ fn member_name(name: String) -> String {
 }
 
 pub fn flattening_score_name_1_13(
-	src: &a::play_toClient_packet_scoreboard_score::Ty,
+	src: &a::play_to_client_packet_scoreboard_score::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(member_name(src.itemName.clone()))
+	Ok(member_name(src.item_name.clone()))
 }
 
 pub fn flattening_player_name_1_13(
-	src: &a::play_toClient_packet_player_info__data__items__ANON__add_player::Ty,
+	src: &a::play_to_client_packet_player_info_data_items_anon_add_player::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(member_name(src.name.clone()))
 }
 
-type Mode13 = b::play_toClient_packet_teams__mode::Ty;
-type Mode12 = a::play_toClient_packet_teams__mode::Ty;
+type Mode13 = b::play_to_client_packet_teams_mode::Ty;
+type Mode12 = a::play_to_client_packet_teams_mode::Ty;
 
 struct Team13 {
 	name: String,
@@ -1998,15 +1998,15 @@ fn team_down(name: &str, prefix: &str, suffix: &str, formatting: i32) -> Team12 
 }
 
 pub fn flattening_team_create_1_13(
-	p: a::play_toClient_packet_teams__mode__v0::Ty,
+	p: a::play_to_client_packet_teams_mode_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<Mode13> {
 	let t = team_up(&p.name, &p.prefix, &p.suffix);
-	Ok(Mode13::v0(b::play_toClient_packet_teams__mode__v0::Ty {
+	Ok(Mode13::V0(b::play_to_client_packet_teams_mode_v0::Ty {
 		name: t.name,
-		friendlyFire: p.friendlyFire,
-		nameTagVisibility: p.nameTagVisibility,
-		collisionRule: p.collisionRule,
+		friendly_fire: p.friendly_fire,
+		name_tag_visibility: p.name_tag_visibility,
+		collision_rule: p.collision_rule,
 		formatting: t.formatting,
 		prefix: t.prefix,
 		suffix: t.suffix,
@@ -2015,15 +2015,15 @@ pub fn flattening_team_create_1_13(
 }
 
 pub fn flattening_team_update_1_13(
-	p: a::play_toClient_packet_teams__mode__v2::Ty,
+	p: a::play_to_client_packet_teams_mode_v2::Ty,
 	_cx: &mut Session,
 ) -> Result<Mode13> {
 	let t = team_up(&p.name, &p.prefix, &p.suffix);
-	Ok(Mode13::v2(b::play_toClient_packet_teams__mode__v2::Ty {
+	Ok(Mode13::V2(b::play_to_client_packet_teams_mode_v2::Ty {
 		name: t.name,
-		friendlyFire: p.friendlyFire,
-		nameTagVisibility: p.nameTagVisibility,
-		collisionRule: p.collisionRule,
+		friendly_fire: p.friendly_fire,
+		name_tag_visibility: p.name_tag_visibility,
+		collision_rule: p.collision_rule,
 		formatting: t.formatting,
 		prefix: t.prefix,
 		suffix: t.suffix,
@@ -2031,48 +2031,48 @@ pub fn flattening_team_update_1_13(
 }
 
 pub fn flattening_team_join_1_13(players: Vec<String>, _cx: &mut Session) -> Result<Mode13> {
-	Ok(Mode13::v3(players.into_iter().map(member_name).collect()))
+	Ok(Mode13::V3(players.into_iter().map(member_name).collect()))
 }
 
 pub fn flattening_team_leave_1_13(players: Vec<String>, _cx: &mut Session) -> Result<Mode13> {
-	Ok(Mode13::v4(players.into_iter().map(member_name).collect()))
+	Ok(Mode13::V4(players.into_iter().map(member_name).collect()))
 }
 
 pub fn flattening_team_create_1_12_2(
-	p: b::play_toClient_packet_teams__mode__v0::Ty,
+	p: b::play_to_client_packet_teams_mode_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<Mode12> {
 	let t = team_down(&p.name, &p.prefix, &p.suffix, p.formatting);
-	Ok(Mode12::v0(a::play_toClient_packet_teams__mode__v0::Ty {
+	Ok(Mode12::V0(a::play_to_client_packet_teams_mode_v0::Ty {
 		name: t.name,
 		prefix: t.prefix,
 		suffix: t.suffix,
-		friendlyFire: p.friendlyFire,
-		nameTagVisibility: p.nameTagVisibility,
-		collisionRule: p.collisionRule,
+		friendly_fire: p.friendly_fire,
+		name_tag_visibility: p.name_tag_visibility,
+		collision_rule: p.collision_rule,
 		color: t.color,
 		players: p.players,
 	}))
 }
 
 pub fn flattening_team_update_1_12_2(
-	p: b::play_toClient_packet_teams__mode__v2::Ty,
+	p: b::play_to_client_packet_teams_mode_v2::Ty,
 	_cx: &mut Session,
 ) -> Result<Mode12> {
 	let t = team_down(&p.name, &p.prefix, &p.suffix, p.formatting);
-	Ok(Mode12::v2(a::play_toClient_packet_teams__mode__v2::Ty {
+	Ok(Mode12::V2(a::play_to_client_packet_teams_mode_v2::Ty {
 		name: t.name,
 		prefix: t.prefix,
 		suffix: t.suffix,
-		friendlyFire: p.friendlyFire,
-		nameTagVisibility: p.nameTagVisibility,
-		collisionRule: p.collisionRule,
+		friendly_fire: p.friendly_fire,
+		name_tag_visibility: p.name_tag_visibility,
+		collision_rule: p.collision_rule,
 		color: t.color,
 	}))
 }
 
-type Objective13 = b::play_toClient_packet_scoreboard_objective__action::Ty;
-type Objective12 = a::play_toClient_packet_scoreboard_objective__action::Ty;
+type Objective13 = b::play_to_client_packet_scoreboard_objective_action::Ty;
+type Objective12 = a::play_to_client_packet_scoreboard_objective_action::Ty;
 
 fn objective_type(t: &str) -> i32 {
 	(t == "hearts") as i32
@@ -2083,48 +2083,48 @@ fn objective_type_down(t: i32) -> String {
 }
 
 pub fn flattening_objective_create_1_13(
-	p: a::play_toClient_packet_scoreboard_objective__action__v0::Ty,
+	p: a::play_to_client_packet_scoreboard_objective_action_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<Objective13> {
-	Ok(Objective13::v0(
-		b::play_toClient_packet_scoreboard_objective__action__v0::Ty {
-			displayText: legacy_to_json(&p.displayText, false),
+	Ok(Objective13::V0(
+		b::play_to_client_packet_scoreboard_objective_action_v0::Ty {
+			display_text: legacy_to_json(&p.display_text, false),
 			r#type: objective_type(&p.r#type),
 		},
 	))
 }
 
 pub fn flattening_objective_update_1_13(
-	p: a::play_toClient_packet_scoreboard_objective__action__v2::Ty,
+	p: a::play_to_client_packet_scoreboard_objective_action_v2::Ty,
 	_cx: &mut Session,
 ) -> Result<Objective13> {
-	Ok(Objective13::v2(
-		b::play_toClient_packet_scoreboard_objective__action__v2::Ty {
-			displayText: legacy_to_json(&p.displayText, false),
+	Ok(Objective13::V2(
+		b::play_to_client_packet_scoreboard_objective_action_v2::Ty {
+			display_text: legacy_to_json(&p.display_text, false),
 			r#type: objective_type(&p.r#type),
 		},
 	))
 }
 
 pub fn flattening_objective_create_1_12_2(
-	p: b::play_toClient_packet_scoreboard_objective__action__v0::Ty,
+	p: b::play_to_client_packet_scoreboard_objective_action_v0::Ty,
 	_cx: &mut Session,
 ) -> Result<Objective12> {
-	Ok(Objective12::v0(
-		a::play_toClient_packet_scoreboard_objective__action__v0::Ty {
-			displayText: truncate_legacy(&json_to_legacy(&p.displayText), 'f', 32, false),
+	Ok(Objective12::V0(
+		a::play_to_client_packet_scoreboard_objective_action_v0::Ty {
+			display_text: truncate_legacy(&json_to_legacy(&p.display_text), 'f', 32, false),
 			r#type: objective_type_down(p.r#type),
 		},
 	))
 }
 
 pub fn flattening_objective_update_1_12_2(
-	p: b::play_toClient_packet_scoreboard_objective__action__v2::Ty,
+	p: b::play_to_client_packet_scoreboard_objective_action_v2::Ty,
 	_cx: &mut Session,
 ) -> Result<Objective12> {
-	Ok(Objective12::v2(
-		a::play_toClient_packet_scoreboard_objective__action__v2::Ty {
-			displayText: truncate_legacy(&json_to_legacy(&p.displayText), 'f', 32, false),
+	Ok(Objective12::V2(
+		a::play_to_client_packet_scoreboard_objective_action_v2::Ty {
+			display_text: truncate_legacy(&json_to_legacy(&p.display_text), 'f', 32, false),
 			r#type: objective_type_down(p.r#type),
 		},
 	))
@@ -2141,7 +2141,7 @@ fn recipe_down(id: &str) -> Option<i32> {
 }
 
 pub fn flattening_recipe_list_1_13(
-	src: &a::play_toClient_packet_unlock_recipes::Ty,
+	src: &a::play_to_client_packet_unlock_recipes::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<String>> {
 	Ok(src.recipes1.iter().copied().map(recipe_up).collect())
@@ -2154,7 +2154,7 @@ fn recipes_down(ids: &[String]) -> Result<Vec<i32>> {
 }
 
 pub fn flattening_recipe_list_1_12_2(
-	src: &b::play_toClient_packet_unlock_recipes::Ty,
+	src: &b::play_to_client_packet_unlock_recipes::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<i32>> {
 	recipes_down(&src.recipes1)
@@ -2163,8 +2163,8 @@ pub fn flattening_recipe_list_1_12_2(
 pub fn flattening_recipe_init_1_13(
 	ids: Vec<i32>,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_unlock_recipes__recipes2::Ty> {
-	Ok(b::play_toClient_packet_unlock_recipes__recipes2::Ty::v0(
+) -> Result<b::play_to_client_packet_unlock_recipes_recipes2::Ty> {
+	Ok(b::play_to_client_packet_unlock_recipes_recipes2::Ty::V0(
 		ids.into_iter().map(recipe_up).collect(),
 	))
 }
@@ -2172,35 +2172,35 @@ pub fn flattening_recipe_init_1_13(
 pub fn flattening_recipe_init_1_12_2(
 	ids: Vec<String>,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_unlock_recipes__recipes2::Ty> {
-	Ok(a::play_toClient_packet_unlock_recipes__recipes2::Ty::v0(
+) -> Result<a::play_to_client_packet_unlock_recipes_recipes2::Ty> {
+	Ok(a::play_to_client_packet_unlock_recipes_recipes2::Ty::V0(
 		recipes_down(&ids)?,
 	))
 }
 
 pub fn flattening_ghost_recipe_1_13(
-	src: &a::play_toClient_packet_craft_recipe_response::Ty,
+	src: &a::play_to_client_packet_craft_recipe_response::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(recipe_up(src.recipe))
 }
 
 pub fn flattening_ghost_recipe_1_12_2(
-	src: &b::play_toClient_packet_craft_recipe_response::Ty,
+	src: &b::play_to_client_packet_craft_recipe_response::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	recipe_down(&src.recipe).ok_or(Error::Dropped)
 }
 
 pub fn flattening_recipe_request_1_13(
-	_src: &a::play_toServer_packet_craft_recipe_request::Ty,
+	_src: &a::play_to_server_packet_craft_recipe_request::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Err(Error::Dropped)
 }
 
 pub fn flattening_recipe_request_1_12_2(
-	src: &b::play_toServer_packet_craft_recipe_request::Ty,
+	src: &b::play_to_server_packet_craft_recipe_request::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	recipe_down(&src.recipe).ok_or(Error::Dropped)
@@ -2209,25 +2209,25 @@ pub fn flattening_recipe_request_1_12_2(
 pub fn flattening_recipe_seen_1_13(
 	_id: i32,
 	_cx: &mut Session,
-) -> Result<b::play_toServer_packet_crafting_book_data::Ty> {
+) -> Result<b::play_to_server_packet_crafting_book_data::Ty> {
 	Err(Error::Dropped)
 }
 
 pub fn flattening_book_settings_1_13(
-	_v: a::play_toServer_packet_crafting_book_data__v1::Ty,
+	_v: a::play_to_server_packet_crafting_book_data_v1::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toServer_packet_crafting_book_data::Ty> {
+) -> Result<b::play_to_server_packet_crafting_book_data::Ty> {
 	Err(Error::Dropped)
 }
 
 pub fn flattening_book_settings_1_12_2(
-	v: b::play_toServer_packet_crafting_book_data__v1::Ty,
+	v: b::play_to_server_packet_crafting_book_data_v1::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toServer_packet_crafting_book_data::Ty> {
-	Ok(a::play_toServer_packet_crafting_book_data::Ty::v1(
-		a::play_toServer_packet_crafting_book_data__v1::Ty {
-			craftingBookOpen: v.craftingBookOpen,
-			craftingFilter: v.craftingFilter,
+) -> Result<a::play_to_server_packet_crafting_book_data::Ty> {
+	Ok(a::play_to_server_packet_crafting_book_data::Ty::V1(
+		a::play_to_server_packet_crafting_book_data_v1::Ty {
+			crafting_book_open: v.crafting_book_open,
+			crafting_filter: v.crafting_filter,
 		},
 	))
 }
@@ -2235,8 +2235,8 @@ pub fn flattening_book_settings_1_12_2(
 pub fn flattening_recipe_seen_1_12_2(
 	id: String,
 	_cx: &mut Session,
-) -> Result<a::play_toServer_packet_crafting_book_data::Ty> {
+) -> Result<a::play_to_server_packet_crafting_book_data::Ty> {
 	recipe_down(&id)
-		.map(a::play_toServer_packet_crafting_book_data::Ty::v0)
+		.map(a::play_to_server_packet_crafting_book_data::Ty::V0)
 		.ok_or(Error::Dropped)
 }

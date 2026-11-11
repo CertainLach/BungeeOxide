@@ -115,11 +115,11 @@ pub mod pds_UUID {
 }
 
 pub mod pds_anonymousNbt {
-	pub use nbt::gen::pds_Tag::*;
+	pub use nbt::gen::tag::*;
 }
 
 pub mod pds_anonOptionalNbt {
-	pub use nbt::gen::pds_Tag::*;
+	pub use nbt::gen::tag::*;
 }
 
 pub mod pds_lpVec3 {

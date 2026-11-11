@@ -4,9 +4,9 @@ use std::time::{Duration, Instant};
 use anyhow::{anyhow, bail, Context as _, Result};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v26_1::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	status_toClient_packet as status_c, status_toServer_packet as status_s,
-	status_toServer_packet_ping_start,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	status_to_client_packet as status_c, status_to_server_packet as status_s,
+	status_to_server_packet_ping_start,
 };
 use minecraft_versions::{legacy_version_of, version_of, Session, VERSIONS};
 use serde_json::{json, Map, Value};
@@ -103,17 +103,17 @@ async fn connect(target: &str) -> Result<TcpStream> {
 async fn netty_ping(target: &str, protocol: i32) -> Result<Upstream> {
 	let (host, port) = split_target(target)?;
 	let mut conn = Framed::new(connect(target).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: protocol,
-		serverHost: host,
-		serverPort: port,
-		nextState: 1,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: protocol,
+		server_host: host,
+		server_port: port,
+		next_state: 1,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
-	let request = status_s::Ty::ping_start(status_toServer_packet_ping_start::Ty {});
+	let request = status_s::Ty::PingStart(status_to_server_packet_ping_start::Ty {});
 	conn.send(encode(&request, status_s::serialize)?).await?;
 	match decode(&next(&mut conn).await?, status_c::deserialize)? {
-		status_c::Ty::server_info(info) => parse(&info),
+		status_c::Ty::ServerInfo(info) => parse(&info),
 		_ => bail!("expected the server info"),
 	}
 }

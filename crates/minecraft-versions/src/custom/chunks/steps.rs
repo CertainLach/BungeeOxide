@@ -16,7 +16,7 @@ use crate::gen::convert::{
 use crate::pds::convert::{Error, Result};
 use crate::Session;
 
-type Modern = v1_20_2::chunkBlockEntity::Ty;
+type Modern = v1_20_2::chunk_block_entity::Ty;
 
 fn wire(bytes: Vec<u8>) -> Carrier {
 	Carrier::Wire(bytes)
@@ -60,7 +60,7 @@ fn flattening(a: usize, b: usize, mut col: Column, cx: &mut Session) -> Result<V
 	col.at = b;
 	let mut out = vec![chunk(col)];
 	for p in flat.neighbors {
-		out.push(wire(body(&p, v1_13::play_toClient_packet::serialize)?));
+		out.push(wire(body(&p, v1_13::play_to_client_packet::serialize)?));
 	}
 	Ok(out)
 }
@@ -89,7 +89,7 @@ fn village_up(a: usize, b: usize, mut col: Column, cx: &mut Session) -> Result<V
 	col.at = b;
 	let mut out = Vec::with_capacity(village.before.len() + 1);
 	for p in village.before {
-		out.push(wire(body(&p, v1_14::play_toClient_packet::serialize)?));
+		out.push(wire(body(&p, v1_14::play_to_client_packet::serialize)?));
 	}
 	out.push(chunk(col));
 	Ok(out)
@@ -136,7 +136,7 @@ fn nether_partial(a: usize, b: usize, mut col: Column) -> Result<Vec<Carrier>> {
 			.collect();
 		out.push(wire(body(
 			&m::nether_section_change_1_17(col.x, col.z, y as u32, &states),
-			v1_17::play_toClient_packet::serialize,
+			v1_17::play_to_client_packet::serialize,
 		)?));
 	}
 	Ok(out)
@@ -147,7 +147,7 @@ fn caves_up(col: &mut Column, cx: &mut Session) -> Result<Vec<Carrier>> {
 	let mut before = Vec::new();
 	if let Some(light) = col.light.take() {
 		for p in m::caves_update_light_1_18(light_17(x, z, &light), cx)? {
-			before.push(wire(body(&p, v1_18::play_toClient_packet::serialize)?));
+			before.push(wire(body(&p, v1_18::play_to_client_packet::serialize)?));
 		}
 	}
 	let caves = m::caves_column_1_18(cx, x, z);
@@ -183,8 +183,8 @@ fn bundle_1_21_3() -> Result<Vec<u8>> {
 		return Ok(b.clone());
 	}
 	let bytes = body(
-		&v1_21_3::play_toClient_packet::Ty::bundle_delimiter,
-		v1_21_3::play_toClient_packet::serialize,
+		&v1_21_3::play_to_client_packet::Ty::BundleDelimiter,
+		v1_21_3::play_to_client_packet::serialize,
 	)?;
 	Ok(BUNDLE.get_or_init(|| bytes).clone())
 }

@@ -8,8 +8,8 @@ use bungeeoxide::legacy::{string16, Cfb8, Legacy};
 use bungeeoxide::{decode, encode, next, Conn};
 use futures::SinkExt;
 use minecraft_versions::gen::convert::v1_8::{
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toServer_packet as login_s,
+	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
+	login_to_client_packet as login_c, login_to_server_packet as login_s,
 };
 use minecraft_versions::gen::convert::{
 	v1_0_1, v1_12_2, v1_2_5, v1_3_2, v1_4_7, v1_5_2, v1_6_4, v1_8,
@@ -1176,78 +1176,78 @@ fn old_equipment(w: &mut World, slot: i16, item: i16) {
 macro_rules! old_client {
 	($handle:ident, $walk:ident, $m:ident, $w:ident, $meta:ident, $strings:ident, { $($arms:tt)* }) => {
 		fn $handle($w: &mut World, data: &[u8]) -> Result<Step> {
-			use $m::play_toClient_packet::Ty as P;
-			let p = de(data, $m::play_toClient_packet::deserialize)?;
+			use $m::play_to_client_packet::Ty as P;
+			let p = de(data, $m::play_to_client_packet::deserialize)?;
 			let r = rules($w);
 			let mut step = Step::default();
-			let $meta = |m: &$m::entityMetadata::Ty| m.iter().map(|e| (e.ANON.key, e.ANON.r#type as u8)).collect::<Vec<_>>();
-			let $strings = |m: &$m::entityMetadata::Ty| {
+			let $meta = |m: &$m::entity_metadata::Ty| m.iter().map(|e| (e.anon.key, e.anon.r#type as u8)).collect::<Vec<_>>();
+			let $strings = |m: &$m::entity_metadata::Ty| {
 				m.iter()
 					.filter_map(|e| match &e.value {
-						$m::entityMetadataItem::Ty::v4(s) => Some(s.clone()),
+						$m::entity_metadata_item::Ty::V4(s) => Some(s.clone()),
 						_ => None,
 					})
 					.collect::<Vec<_>>()
 			};
 			match &p {
-				P::keep_alive(id) => step.reply.push(ser(&$m::play_toServer_packet::Ty::keep_alive(*id), $m::play_toServer_packet::serialize)?),
-				P::position(q) => {
+				P::KeepAlive(id) => step.reply.push(ser(&$m::play_to_server_packet::Ty::KeepAlive(*id), $m::play_to_server_packet::serialize)?),
+				P::Position(q) => {
 					step.pos = Some((q.x, q.stance, q.z));
-					let echo = $m::play_toServer_packet::Ty::position_look($m::play_toServer_packet_position_look::Ty {
+					let echo = $m::play_to_server_packet::Ty::PositionLook($m::play_to_server_packet_position_look::Ty {
 						x: q.x,
 						y: q.stance,
 						stance: q.y,
 						z: q.z,
 						yaw: q.yaw,
 						pitch: q.pitch,
-						onGround: true,
+						on_ground: true,
 					});
-					step.reply.push(ser(&echo, $m::play_toServer_packet::serialize)?);
+					step.reply.push(ser(&echo, $m::play_to_server_packet::serialize)?);
 				}
-				P::kick_disconnect(s) => {
+				P::KickDisconnect(s) => {
 					string_limit($w, "kick", s, r.kick);
 					step.kicked = Some(s.clone());
 				}
-				P::login(l) => {
-					$w.me = l.entityId;
+				P::Login(l) => {
+					$w.me = l.entity_id;
 					$w.reset();
 				}
-				P::respawn(_) => $w.reset(),
-				P::chat(s) => string_limit($w, "chat", s, r.chat),
-				P::player_info(s) => string_limit($w, "player info name", &s.playerName, 16),
-				P::update_sign(s) => {
+				P::Respawn(_) => $w.reset(),
+				P::Chat(s) => string_limit($w, "chat", s, r.chat),
+				P::PlayerInfo(s) => string_limit($w, "player info name", &s.player_name, 16),
+				P::UpdateSign(s) => {
 					for t in [&s.text1, &s.text2, &s.text3, &s.text4] {
 						string_limit($w, "sign line", t, 15);
 					}
 				}
-				P::spawn_entity_painting(s) => old_painting($w, s.entityId, &s.title, s.direction),
-				P::spawn_entity_living(s) => {
-					old_mob($w, s.entityId, s.r#type as i32, &$meta(&s.metadata));
+				P::SpawnEntityPainting(s) => old_painting($w, s.entity_id, &s.title, s.direction),
+				P::SpawnEntityLiving(s) => {
+					old_mob($w, s.entity_id, s.r#type as i32, &$meta(&s.metadata));
 					old_metadata_strings($w, &$strings(&s.metadata).iter().map(String::as_str).collect::<Vec<_>>());
 				}
-				P::spawn_entity(s) => old_object($w, s.entityId, s.r#type),
-				P::spawn_entity_experience_orb(s) => $w.spawn(s.entityId, "XPOrb"),
-				P::spawn_entity_weather(s) => $w.spawn(s.entityId, "Lightning"),
-				P::entity_metadata(s) => {
-					let class = $w.class(s.entityId);
-					$w.metadata("entity_metadata", s.entityId, class, &$meta(&s.metadata));
+				P::SpawnEntity(s) => old_object($w, s.entity_id, s.r#type),
+				P::SpawnEntityExperienceOrb(s) => $w.spawn(s.entity_id, "XPOrb"),
+				P::SpawnEntityWeather(s) => $w.spawn(s.entity_id, "Lightning"),
+				P::EntityMetadata(s) => {
+					let class = $w.class(s.entity_id);
+					$w.metadata("entity_metadata", s.entity_id, class, &$meta(&s.metadata));
 					old_metadata_strings($w, &$strings(&s.metadata).iter().map(String::as_str).collect::<Vec<_>>());
 				}
-				P::animation(a) => old_animation($w, a.entityId, a.animation as u8),
-				P::bed(b) => {
+				P::Animation(a) => old_animation($w, a.entity_id, a.animation as u8),
+				P::Bed(b) => {
 					if b.action == 0 {
-						$w.living_target("bed", b.entityId, true);
+						$w.living_target("bed", b.entity_id, true);
 					}
 				}
-				P::collect(c) => {
-					if $w.class(c.collectorEntityId).is_some() {
-						$w.living_target("collect", c.collectorEntityId, false);
+				P::Collect(c) => {
+					if $w.class(c.collector_entity_id).is_some() {
+						$w.living_target("collect", c.collector_entity_id, false);
 					}
 				}
-				P::entity_effect(e) => old_effect($w, e.effectId),
-				P::block_change(b) => old_block($w, "block_change", b.r#type as u16),
-				P::world_event(e) => {
-					if e.effectId == 2001 {
+				P::EntityEffect(e) => old_effect($w, e.effect_id),
+				P::BlockChange(b) => old_block($w, "block_change", b.r#type as u16),
+				P::WorldEvent(e) => {
+					if e.effect_id == 2001 {
 						old_block($w, "world_event 2001", (e.data & 0xfff) as u16);
 					}
 				}
@@ -1258,8 +1258,8 @@ macro_rules! old_client {
 		}
 
 		fn $walk(x: f64, y: f64, z: f64) -> Result<Vec<u8>> {
-			let walk = $m::play_toServer_packet::Ty::position($m::play_toServer_packet_position::Ty { x, y, stance: y + 1.62, z, onGround: true });
-			ser(&walk, $m::play_toServer_packet::serialize)
+			let walk = $m::play_to_server_packet::Ty::Position($m::play_to_server_packet_position::Ty { x, y, stance: y + 1.62, z, on_ground: true });
+			ser(&walk, $m::play_to_server_packet::serialize)
 		}
 	};
 }
@@ -1269,35 +1269,35 @@ fn legacy_item(item: &Option<minecraft_versions::pds_native::pds_legacySlot::Ite
 }
 
 old_client!(handle_1_0_1, walk_1_0_1, v1_0_1, w, meta, strings, {
-	P::entity_destroy(id) => {
+	P::EntityDestroy(id) => {
 		w.entities.remove(id);
 	}
-	P::named_entity_spawn(s) => {
-		string_limit(w, "player name", &s.playerName, 16);
-		old_item(w, "held", s.currentItem);
-		w.spawn(s.entityId, "Player");
+	P::NamedEntitySpawn(s) => {
+		string_limit(w, "player name", &s.player_name, 16);
+		old_item(w, "held", s.current_item);
+		w.spawn(s.entity_id, "Player");
 	}
-	P::open_window(s) => old_window(w, s.inventoryType, &s.windowTitle),
-	P::set_slot(s) => old_item(w, "slot", legacy_item(&s.item)),
-	P::set_creative_slot(s) => old_item(w, "creative slot", legacy_item(&s.item)),
-	P::window_items(s) => {
+	P::OpenWindow(s) => old_window(w, s.inventory_type, &s.window_title),
+	P::SetSlot(s) => old_item(w, "slot", legacy_item(&s.item)),
+	P::SetCreativeSlot(s) => old_item(w, "creative slot", legacy_item(&s.item)),
+	P::WindowItems(s) => {
 		for i in &s.items {
 			old_item(w, "window", legacy_item(i));
 		}
 	}
-	P::entity_equipment(e) => old_equipment(w, e.slot, e.itemId),
-	P::spawn_entity_item(s) => {
+	P::EntityEquipment(e) => old_equipment(w, e.slot, e.item_id),
+	P::SpawnEntityItem(s) => {
 		old_item(w, "dropped", s.item.id);
-		w.spawn(s.entityId, "Item");
+		w.spawn(s.entity_id, "Item");
 	}
-	P::multi_block_change(b) => {
-		for id in &b.blockIds {
+	P::MultiBlockChange(b) => {
+		for id in &b.block_ids {
 			old_block(w, "multi_block_change", *id as u16);
 		}
 	}
-	P::map_chunk(c) => {
-		let size = (c.sizeX as usize + 1) * (c.sizeY as usize + 1) * (c.sizeZ as usize + 1);
-		if let Some(raw) = inflate(w, "map_chunk", &c.compressedChunkData) {
+	P::MapChunk(c) => {
+		let size = (c.size_x as usize + 1) * (c.size_y as usize + 1) * (c.size_z as usize + 1);
+		if let Some(raw) = inflate(w, "map_chunk", &c.compressed_chunk_data) {
 			match raw.get(..size) {
 				Some(ids) => {
 					if let Some(bad) = ids.iter().find(|b| **b != 0 && !(rules(w).blocks)(**b as u16)) {
@@ -1311,36 +1311,36 @@ old_client!(handle_1_0_1, walk_1_0_1, v1_0_1, w, meta, strings, {
 });
 
 old_client!(handle_1_2_5, walk_1_2_5, v1_2_5, w, meta, strings, {
-	P::entity_destroy(id) => {
+	P::EntityDestroy(id) => {
 		w.entities.remove(id);
 	}
-	P::named_entity_spawn(s) => {
-		string_limit(w, "player name", &s.playerName, 16);
-		old_item(w, "held", s.currentItem);
-		w.spawn(s.entityId, "Player");
+	P::NamedEntitySpawn(s) => {
+		string_limit(w, "player name", &s.player_name, 16);
+		old_item(w, "held", s.current_item);
+		w.spawn(s.entity_id, "Player");
 	}
-	P::open_window(s) => old_window(w, s.inventoryType, &s.windowTitle),
-	P::set_slot(s) => old_item(w, "slot", legacy_item(&s.item)),
-	P::set_creative_slot(s) => old_item(w, "creative slot", legacy_item(&s.item)),
-	P::window_items(s) => {
+	P::OpenWindow(s) => old_window(w, s.inventory_type, &s.window_title),
+	P::SetSlot(s) => old_item(w, "slot", legacy_item(&s.item)),
+	P::SetCreativeSlot(s) => old_item(w, "creative slot", legacy_item(&s.item)),
+	P::WindowItems(s) => {
 		for i in &s.items {
 			old_item(w, "window", legacy_item(i));
 		}
 	}
-	P::entity_equipment(e) => old_equipment(w, e.slot, e.itemId),
-	P::spawn_entity_item(s) => {
+	P::EntityEquipment(e) => old_equipment(w, e.slot, e.item_id),
+	P::SpawnEntityItem(s) => {
 		old_item(w, "dropped", s.item.id);
-		w.spawn(s.entityId, "Item");
+		w.spawn(s.entity_id, "Item");
 	}
-	P::custom_payload(c) => string_limit(w, "channel", &c.channel, rules(w).channel),
-	P::multi_block_change(b) => {
+	P::CustomPayload(c) => string_limit(w, "channel", &c.channel, rules(w).channel),
+	P::MultiBlockChange(b) => {
 		for r in &b.records {
-			old_block(w, "multi_block_change", r.blockId >> 4);
+			old_block(w, "multi_block_change", r.block_id >> 4);
 		}
 	}
-	P::map_chunk(c) => {
-		if let Some(raw) = inflate(w, "map_chunk", &c.compressedChunkData) {
-			old_sections(w, "map_chunk", &raw, c.bitMap, c.addBitMap);
+	P::MapChunk(c) => {
+		if let Some(raw) = inflate(w, "map_chunk", &c.compressed_chunk_data) {
+			old_sections(w, "map_chunk", &raw, c.bit_map, c.add_bit_map);
 		}
 	}
 });
@@ -1349,7 +1349,7 @@ macro_rules! slots_1_3 {
 	($m:ident, $item:ident) => {
 		fn $item(s: &$m::slot::Ty) -> i16 {
 			match s {
-				$m::slot::Ty::default(id, _) => *id,
+				$m::slot::Ty::Default(id, _) => *id,
 				_ => -1,
 			}
 		}
@@ -1364,35 +1364,35 @@ slots_1_3!(v1_6_4, item_1_6_4);
 macro_rules! after_1_3 {
 	($handle:ident, $walk:ident, $m:ident, $item:ident, $w:ident, $meta:ident, $strings:ident, { $($arms:tt)* }) => {
 		old_client!($handle, $walk, $m, $w, $meta, $strings, {
-			P::entity_destroy(ids) => {
+			P::EntityDestroy(ids) => {
 				for id in ids {
 					$w.entities.remove(id);
 				}
 			}
-			P::named_entity_spawn(s) => {
-				string_limit($w, "player name", &s.playerName, 16);
-				old_item($w, "held", s.currentItem);
-				$w.spawn(s.entityId, "Player");
-				$w.metadata("named_entity_spawn", s.entityId, Some("Player"), &$meta(&s.metadata));
+			P::NamedEntitySpawn(s) => {
+				string_limit($w, "player name", &s.player_name, 16);
+				old_item($w, "held", s.current_item);
+				$w.spawn(s.entity_id, "Player");
+				$w.metadata("named_entity_spawn", s.entity_id, Some("Player"), &$meta(&s.metadata));
 			}
-			P::set_slot(s) => old_item($w, "slot", $item(&s.item)),
-			P::set_creative_slot(s) => old_item($w, "creative slot", $item(&s.item)),
-			P::window_items(s) => {
+			P::SetSlot(s) => old_item($w, "slot", $item(&s.item)),
+			P::SetCreativeSlot(s) => old_item($w, "creative slot", $item(&s.item)),
+			P::WindowItems(s) => {
 				for i in &s.items {
 					old_item($w, "window", $item(i));
 				}
 			}
-			P::entity_equipment(e) => old_equipment($w, e.slot, $item(&e.item)),
-			P::custom_payload(c) => string_limit($w, "channel", &c.channel, rules($w).channel),
-			P::named_sound_effect(s) => string_limit($w, "sound", &s.soundName, rules($w).sound),
-			P::multi_block_change(b) => {
+			P::EntityEquipment(e) => old_equipment($w, e.slot, $item(&e.item)),
+			P::CustomPayload(c) => string_limit($w, "channel", &c.channel, rules($w).channel),
+			P::NamedSoundEffect(s) => string_limit($w, "sound", &s.sound_name, rules($w).sound),
+			P::MultiBlockChange(b) => {
 				for r in &b.records {
-					old_block($w, "multi_block_change", r.blockId >> 4);
+					old_block($w, "multi_block_change", r.block_id >> 4);
 				}
 			}
-			P::map_chunk(c) => {
-				if let Some(raw) = inflate($w, "map_chunk", &c.compressedChunkData) {
-					old_sections($w, "map_chunk", &raw, c.bitMap, c.addBitMap);
+			P::MapChunk(c) => {
+				if let Some(raw) = inflate($w, "map_chunk", &c.compressed_chunk_data) {
+					old_sections($w, "map_chunk", &raw, c.bit_map, c.add_bit_map);
 				}
 			}
 			$($arms)*
@@ -1401,88 +1401,88 @@ macro_rules! after_1_3 {
 }
 
 after_1_3!(handle_1_3_2, walk_1_3_2, v1_3_2, item_1_3_2, w, meta, strings, {
-	P::open_window(s) => old_window(w, s.inventoryType, &s.windowTitle),
-	P::spawn_entity_item(s) => {
+	P::OpenWindow(s) => old_window(w, s.inventory_type, &s.window_title),
+	P::SpawnEntityItem(s) => {
 		old_item(w, "dropped", s.item.id);
-		w.spawn(s.entityId, "Item");
+		w.spawn(s.entity_id, "Item");
 	}
-	P::map_chunk_bulk(b) => {
-		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressedChunkData) {
-			let columns: Vec<_> = b.meta.iter().map(|m| (m.bitMap, m.addBitMap)).collect();
+	P::MapChunkBulk(b) => {
+		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressed_chunk_data) {
+			let columns: Vec<_> = b.meta.iter().map(|m| (m.bit_map, m.add_bit_map)).collect();
 			old_bulk(w, &raw, &columns, true);
 		}
 	}
 });
 
 after_1_3!(handle_1_4_7, walk_1_4_7, v1_4_7, item_1_4_7, w, meta, strings, {
-	P::open_window(s) => old_window(w, s.inventoryType, &s.windowTitle),
-	P::map_chunk_bulk(b) => {
-		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressedChunkData) {
-			let columns: Vec<_> = b.meta.iter().map(|m| (m.bitMap, m.addBitMap)).collect();
-			old_bulk(w, &raw, &columns, b.skyLightSent);
+	P::OpenWindow(s) => old_window(w, s.inventory_type, &s.window_title),
+	P::MapChunkBulk(b) => {
+		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressed_chunk_data) {
+			let columns: Vec<_> = b.meta.iter().map(|m| (m.bit_map, m.add_bit_map)).collect();
+			old_bulk(w, &raw, &columns, b.sky_light_sent);
 		}
 	}
 });
 
 after_1_3!(handle_1_5_2, walk_1_5_2, v1_5_2, item_1_5_2, w, meta, strings, {
-	P::open_window(s) => old_window(w, s.inventoryType, &s.windowTitle),
-	P::map_chunk_bulk(b) => {
-		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressedChunkData) {
-			let columns: Vec<_> = b.meta.iter().map(|m| (m.bitMap, m.addBitMap)).collect();
-			old_bulk(w, &raw, &columns, b.skyLightSent);
+	P::OpenWindow(s) => old_window(w, s.inventory_type, &s.window_title),
+	P::MapChunkBulk(b) => {
+		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressed_chunk_data) {
+			let columns: Vec<_> = b.meta.iter().map(|m| (m.bit_map, m.add_bit_map)).collect();
+			old_bulk(w, &raw, &columns, b.sky_light_sent);
 		}
 	}
-	P::world_particles(s) => string_limit(w, "particle", &s.particleName, 64),
-	P::scoreboard_objective(s) => {
+	P::WorldParticles(s) => string_limit(w, "particle", &s.particle_name, 64),
+	P::ScoreboardObjective(s) => {
 		string_limit(w, "objective name", &s.name, 16);
-		string_limit(w, "objective text", &s.displayText, 32);
+		string_limit(w, "objective text", &s.display_text, 32);
 	}
-	P::scoreboard_display_objective(s) => string_limit(w, "display objective", &s.name, 16),
-	P::scoreboard_score(s) => string_limit(w, "score item", &s.itemName, 16),
-	P::scoreboard_team(s) => string_limit(w, "team name", &s.team, 16),
+	P::ScoreboardDisplayObjective(s) => string_limit(w, "display objective", &s.name, 16),
+	P::ScoreboardScore(s) => string_limit(w, "score item", &s.item_name, 16),
+	P::ScoreboardTeam(s) => string_limit(w, "team name", &s.team, 16),
 });
 
 after_1_3!(handle_1_6_4, walk_1_6_4, v1_6_4, item_1_6_4, w, meta, strings, {
-	P::open_window(s) => string_limit(w, "window title", &s.windowTitle, 32),
-	P::map_chunk_bulk(b) => {
-		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressedChunkData) {
-			let columns: Vec<_> = b.meta.iter().map(|m| (m.bitMap, m.addBitMap)).collect();
-			old_bulk(w, &raw, &columns, b.skyLightSent);
+	P::OpenWindow(s) => string_limit(w, "window title", &s.window_title, 32),
+	P::MapChunkBulk(b) => {
+		if let Some(raw) = inflate(w, "map_chunk_bulk", &b.compressed_chunk_data) {
+			let columns: Vec<_> = b.meta.iter().map(|m| (m.bit_map, m.add_bit_map)).collect();
+			old_bulk(w, &raw, &columns, b.sky_light_sent);
 		}
 	}
-	P::world_particles(s) => string_limit(w, "particle", &s.particleName, 64),
-	P::scoreboard_objective(s) => {
+	P::WorldParticles(s) => string_limit(w, "particle", &s.particle_name, 64),
+	P::ScoreboardObjective(s) => {
 		string_limit(w, "objective name", &s.name, 16);
-		string_limit(w, "objective text", &s.displayText, 32);
+		string_limit(w, "objective text", &s.display_text, 32);
 	}
-	P::scoreboard_display_objective(s) => string_limit(w, "display objective", &s.name, 16),
-	P::scoreboard_score(s) => string_limit(w, "score item", &s.itemName, 16),
-	P::scoreboard_team(s) => string_limit(w, "team name", &s.team, 16),
+	P::ScoreboardDisplayObjective(s) => string_limit(w, "display objective", &s.name, 16),
+	P::ScoreboardScore(s) => string_limit(w, "score item", &s.item_name, 16),
+	P::ScoreboardTeam(s) => string_limit(w, "team name", &s.team, 16),
 });
 
-fn check_1_8(w: &mut World, p: &v1_8::play_toClient_packet::Ty) {
-	use v1_8::play_toClient_packet::Ty as P;
-	let meta = |m: &v1_8::entityMetadata::Ty| {
+fn check_1_8(w: &mut World, p: &v1_8::play_to_client_packet::Ty) {
+	use v1_8::play_to_client_packet::Ty as P;
+	let meta = |m: &v1_8::entity_metadata::Ty| {
 		m.iter()
-			.map(|e| (e.ANON.key, e.ANON.r#type))
+			.map(|e| (e.anon.key, e.anon.r#type))
 			.collect::<Vec<_>>()
 	};
 	match p {
-		P::login(l) => {
-			w.me = l.entityId;
+		P::Login(l) => {
+			w.me = l.entity_id;
 			w.reset();
 		}
-		P::respawn(_) => w.reset(),
-		P::named_entity_spawn(s) => {
-			w.spawn(s.entityId, "Player");
+		P::Respawn(_) => w.reset(),
+		P::NamedEntitySpawn(s) => {
+			w.spawn(s.entity_id, "Player");
 			w.metadata(
 				"named_entity_spawn",
-				s.entityId,
+				s.entity_id,
 				Some("Player"),
 				&meta(&s.metadata),
 			);
 		}
-		P::spawn_entity_painting(s) => {
+		P::SpawnEntityPainting(s) => {
 			if std::env::var_os("CHECK_VERBOSE").is_some() {
 				eprintln!("painting {s:?}");
 			}
@@ -1492,14 +1492,14 @@ fn check_1_8(w: &mut World, p: &v1_8::play_toClient_packet::Ty) {
 					format!("{s:?}"),
 				);
 			}
-			w.spawn(s.entityId, "Painting");
+			w.spawn(s.entity_id, "Painting");
 		}
-		P::spawn_entity_living(s) => match w.era.mob(s.r#type as i32) {
+		P::SpawnEntityLiving(s) => match w.era.mob(s.r#type as i32) {
 			Some(class) => {
-				w.spawn(s.entityId, class);
+				w.spawn(s.entity_id, class);
 				w.metadata(
 					"spawn_entity_living",
-					s.entityId,
+					s.entity_id,
 					Some(class),
 					&meta(&s.metadata),
 				);
@@ -1509,62 +1509,62 @@ fn check_1_8(w: &mut World, p: &v1_8::play_toClient_packet::Ty) {
 					"mob spawn with type {} that 1.8 can't cast to EntityLivingBase",
 					s.r#type
 				),
-				format!("entity {}", s.entityId),
+				format!("entity {}", s.entity_id),
 			),
 		},
-		P::spawn_entity(s) => {
+		P::SpawnEntity(s) => {
 			let data = match &s.velocity {
-				v1_8::play_toClient_packet_spawn_entity__velocity::Ty::default(d, _) => *d,
+				v1_8::play_to_client_packet_spawn_entity_velocity::Ty::Default(d, _) => *d,
 				_ => 0,
 			};
 			match w.era.object(s.r#type, data) {
-				Some(class) => w.spawn(s.entityId, class),
+				Some(class) => w.spawn(s.entity_id, class),
 				None => w
 					.report
 					.note(format!("object type {} ignored by 1.8", s.r#type)),
 			}
 		}
-		P::spawn_entity_experience_orb(s) => w.spawn(s.entityId, "XPOrb"),
-		P::spawn_entity_weather(s) => w.spawn(s.entityId, "Lightning"),
-		P::entity_destroy(ids) => {
+		P::SpawnEntityExperienceOrb(s) => w.spawn(s.entity_id, "XPOrb"),
+		P::SpawnEntityWeather(s) => w.spawn(s.entity_id, "Lightning"),
+		P::EntityDestroy(ids) => {
 			for id in ids {
 				w.entities.remove(id);
 			}
 		}
-		P::entity_metadata(m) => {
-			let class = w.class(m.entityId);
-			w.metadata("entity_metadata", m.entityId, class, &meta(&m.metadata));
+		P::EntityMetadata(m) => {
+			let class = w.class(m.entity_id);
+			w.metadata("entity_metadata", m.entity_id, class, &meta(&m.metadata));
 		}
-		P::animation(a) => match (
+		P::Animation(a) => match (
 			w.report.note(format!(
 				"animation {} on {}",
 				a.animation,
-				w.class(a.entityId).unwrap_or("unknown")
+				w.class(a.entity_id).unwrap_or("unknown")
 			)),
 			a.animation,
 		)
 			.1
 		{
-			0 => w.living_target("animation 0", a.entityId, false),
-			2 => w.living_target("animation 2", a.entityId, true),
+			0 => w.living_target("animation 0", a.entity_id, false),
+			2 => w.living_target("animation 2", a.entity_id, true),
 			_ => {}
 		},
-		P::bed(b) => w.living_target("bed", b.entityId, true),
-		P::collect(c) => {
-			if w.class(c.collectorEntityId).is_some() {
-				w.living_target("collect", c.collectorEntityId, false);
+		P::Bed(b) => w.living_target("bed", b.entity_id, true),
+		P::Collect(c) => {
+			if w.class(c.collector_entity_id).is_some() {
+				w.living_target("collect", c.collector_entity_id, false);
 			}
 		}
-		P::entity_equipment(e) => {
+		P::EntityEquipment(e) => {
 			if !(0..=4).contains(&e.slot) {
 				w.report
 					.fail("equipment slot outside 0..=4", format!("{e:?}"));
 			}
 		}
-		P::entity_effect(e) => {
-			if !(1..=23).contains(&e.effectId) {
+		P::EntityEffect(e) => {
+			if !(1..=23).contains(&e.effect_id) {
 				w.report.fail(
-					format!("effect {} unknown to 1.8", e.effectId),
+					format!("effect {} unknown to 1.8", e.effect_id),
 					format!("{e:?}"),
 				);
 			}
@@ -1573,29 +1573,29 @@ fn check_1_8(w: &mut World, p: &v1_8::play_toClient_packet::Ty) {
 	}
 }
 
-fn check_1_12(w: &mut World, p: &v1_12_2::play_toClient_packet::Ty) {
-	use v1_12_2::play_toClient_packet::Ty as P;
-	let meta = |m: &v1_12_2::entityMetadata::Ty| {
+fn check_1_12(w: &mut World, p: &v1_12_2::play_to_client_packet::Ty) {
+	use v1_12_2::play_to_client_packet::Ty as P;
+	let meta = |m: &v1_12_2::entity_metadata::Ty| {
 		m.iter()
 			.map(|e| (e.key, e.r#type as u8))
 			.collect::<Vec<_>>()
 	};
 	match p {
-		P::login(l) => {
-			w.me = l.entityId;
+		P::Login(l) => {
+			w.me = l.entity_id;
 			w.reset();
 		}
-		P::respawn(_) => w.reset(),
-		P::named_entity_spawn(s) => {
-			w.spawn(s.entityId, "player");
+		P::Respawn(_) => w.reset(),
+		P::NamedEntitySpawn(s) => {
+			w.spawn(s.entity_id, "player");
 			w.metadata(
 				"named_entity_spawn",
-				s.entityId,
+				s.entity_id,
 				Some("player"),
 				&meta(&s.metadata),
 			);
 		}
-		P::spawn_entity_painting(s) => {
+		P::SpawnEntityPainting(s) => {
 			if std::env::var_os("CHECK_VERBOSE").is_some() {
 				eprintln!("painting {s:?}");
 			}
@@ -1605,14 +1605,14 @@ fn check_1_12(w: &mut World, p: &v1_12_2::play_toClient_packet::Ty) {
 					format!("{s:?}"),
 				);
 			}
-			w.spawn(s.entityId, "painting");
+			w.spawn(s.entity_id, "painting");
 		}
-		P::spawn_entity_living(s) => match w.era.mob(s.r#type) {
+		P::SpawnEntityLiving(s) => match w.era.mob(s.r#type) {
 			Some(class) => {
-				w.spawn(s.entityId, class);
+				w.spawn(s.entity_id, class);
 				w.metadata(
 					"spawn_entity_living",
-					s.entityId,
+					s.entity_id,
 					Some(class),
 					&meta(&s.metadata),
 				);
@@ -1622,56 +1622,56 @@ fn check_1_12(w: &mut World, p: &v1_12_2::play_toClient_packet::Ty) {
 					"mob spawn with type {} that 1.12.2 can't cast to EntityLivingBase",
 					s.r#type
 				),
-				format!("entity {}", s.entityId),
+				format!("entity {}", s.entity_id),
 			),
 		},
-		P::spawn_entity(s) => match w.era.object(s.r#type, s.objectData) {
-			Some(class) => w.spawn(s.entityId, class),
+		P::SpawnEntity(s) => match w.era.object(s.r#type, s.object_data) {
+			Some(class) => w.spawn(s.entity_id, class),
 			None => w
 				.report
 				.note(format!("object type {} ignored by 1.12.2", s.r#type)),
 		},
-		P::spawn_entity_experience_orb(s) => w.spawn(s.entityId, "xp_orb"),
-		P::spawn_entity_weather(s) => w.spawn(s.entityId, "lightning_bolt"),
-		P::entity_destroy(ids) => {
+		P::SpawnEntityExperienceOrb(s) => w.spawn(s.entity_id, "xp_orb"),
+		P::SpawnEntityWeather(s) => w.spawn(s.entity_id, "lightning_bolt"),
+		P::EntityDestroy(ids) => {
 			for id in ids {
 				w.entities.remove(id);
 			}
 		}
-		P::entity_metadata(m) => {
-			let class = w.class(m.entityId);
-			w.metadata("entity_metadata", m.entityId, class, &meta(&m.metadata));
+		P::EntityMetadata(m) => {
+			let class = w.class(m.entity_id);
+			w.metadata("entity_metadata", m.entity_id, class, &meta(&m.metadata));
 		}
-		P::animation(a) => match (
+		P::Animation(a) => match (
 			w.report.note(format!(
 				"animation {} on {}",
 				a.animation,
-				w.class(a.entityId).unwrap_or("unknown")
+				w.class(a.entity_id).unwrap_or("unknown")
 			)),
 			a.animation,
 		)
 			.1
 		{
-			0 | 3 => w.living_target(&format!("animation {}", a.animation), a.entityId, false),
-			2 => w.living_target("animation 2", a.entityId, true),
+			0 | 3 => w.living_target(&format!("animation {}", a.animation), a.entity_id, false),
+			2 => w.living_target("animation 2", a.entity_id, true),
 			_ => {}
 		},
-		P::bed(b) => w.living_target("bed", b.entityId, true),
-		P::collect(c) => {
-			if w.class(c.collectorEntityId).is_some() {
-				w.living_target("collect", c.collectorEntityId, false);
+		P::Bed(b) => w.living_target("bed", b.entity_id, true),
+		P::Collect(c) => {
+			if w.class(c.collector_entity_id).is_some() {
+				w.living_target("collect", c.collector_entity_id, false);
 			}
 		}
-		P::entity_equipment(e) => {
+		P::EntityEquipment(e) => {
 			if !(0..=5).contains(&e.slot) {
 				w.report
 					.fail("equipment slot outside 0..=5", format!("{e:?}"));
 			}
 		}
-		P::entity_effect(e) => {
-			if !(1..=27).contains(&e.effectId) {
+		P::EntityEffect(e) => {
+			if !(1..=27).contains(&e.effect_id) {
 				w.report.fail(
-					format!("effect {} unknown to 1.12.2", e.effectId),
+					format!("effect {} unknown to 1.12.2", e.effect_id),
 					format!("{e:?}"),
 				);
 			}
@@ -1817,22 +1817,22 @@ async fn join_old(addr: &str, name: &str, version: &str) -> Result<Conn> {
 async fn join_modern(addr: &str, name: &str, protocol: i32) -> Result<Conn> {
 	let (host, port) = addr.rsplit_once(':').ok_or_else(|| anyhow!("host:port"))?;
 	let mut conn = Framed::new(TcpStream::connect(addr).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: protocol,
-		serverHost: host.to_owned(),
-		serverPort: port.parse()?,
-		nextState: 2,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: protocol,
+		server_host: host.to_owned(),
+		server_port: port.parse()?,
+		next_state: 2,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&login_s::Ty::login_start(name.to_owned()),
+		&login_s::Ty::LoginStart(name.to_owned()),
 		login_s::serialize,
 	)?)
 	.await?;
 	loop {
 		match decode(&next(&mut conn).await?, login_c::deserialize)? {
-			login_c::Ty::compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
-			login_c::Ty::success(_) => return Ok(conn),
+			login_c::Ty::Compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
+			login_c::Ty::Success(_) => return Ok(conn),
 			other => bail!("login failed: {other:?}"),
 		}
 	}
@@ -1871,27 +1871,27 @@ async fn main() -> Result<()> {
 	let mut settings = match era {
 		Era::Old(_) => None,
 		Era::Bountiful => Some(ser(
-			&v1_8::play_toServer_packet::Ty::settings(v1_8::play_toServer_packet_settings::Ty {
+			&v1_8::play_to_server_packet::Ty::Settings(v1_8::play_to_server_packet_settings::Ty {
 				locale: "en_US".to_owned(),
-				viewDistance: 8,
-				chatFlags: 0,
-				chatColors: true,
-				skinParts: 127,
+				view_distance: 8,
+				chat_flags: 0,
+				chat_colors: true,
+				skin_parts: 127,
 			}),
-			v1_8::play_toServer_packet::serialize,
+			v1_8::play_to_server_packet::serialize,
 		)?),
 		Era::Color => Some(ser(
-			&v1_12_2::play_toServer_packet::Ty::settings(
-				v1_12_2::play_toServer_packet_settings::Ty {
+			&v1_12_2::play_to_server_packet::Ty::Settings(
+				v1_12_2::play_to_server_packet_settings::Ty {
 					locale: "en_us".to_owned(),
-					viewDistance: 8,
-					chatFlags: 0,
-					chatColors: true,
-					skinParts: 127,
-					mainHand: 1,
+					view_distance: 8,
+					chat_flags: 0,
+					chat_colors: true,
+					skin_parts: 127,
+					main_hand: 1,
 				},
 			),
-			v1_12_2::play_toServer_packet::serialize,
+			v1_12_2::play_to_server_packet::serialize,
 		)?),
 	};
 	let mut world = World::new(era);
@@ -1937,34 +1937,34 @@ async fn main() -> Result<()> {
 						format!("{e:#}"),
 					),
 				},
-				Era::Bountiful => match de(&data, v1_8::play_toClient_packet::deserialize) {
+				Era::Bountiful => match de(&data, v1_8::play_to_client_packet::deserialize) {
 					Ok(p) => {
 						check_1_8(&mut world, &p);
-						use v1_8::play_toClient_packet::Ty as P;
+						use v1_8::play_to_client_packet::Ty as P;
 						match p {
-							P::keep_alive(id) => {
+							P::KeepAlive(id) => {
 								conn.send(ser(
-									&v1_8::play_toServer_packet::Ty::keep_alive(id),
-									v1_8::play_toServer_packet::serialize,
+									&v1_8::play_to_server_packet::Ty::KeepAlive(id),
+									v1_8::play_to_server_packet::serialize,
 								)?)
 								.await?
 							}
-							P::position(p) => {
+							P::Position(p) => {
 								last_pos = Some((p.x, p.y, p.z));
-								let echo = v1_8::play_toServer_packet::Ty::position_look(
-									v1_8::play_toServer_packet_position_look::Ty {
+								let echo = v1_8::play_to_server_packet::Ty::PositionLook(
+									v1_8::play_to_server_packet_position_look::Ty {
 										x: p.x,
 										y: p.y,
 										z: p.z,
 										yaw: p.yaw,
 										pitch: p.pitch,
-										onGround: true,
+										on_ground: true,
 									},
 								);
-								conn.send(ser(&echo, v1_8::play_toServer_packet::serialize)?)
+								conn.send(ser(&echo, v1_8::play_to_server_packet::serialize)?)
 									.await?;
 							}
-							P::kick_disconnect(reason) => {
+							P::KickDisconnect(reason) => {
 								ended = Some(format!("kicked: {reason}"));
 								break;
 							}
@@ -1973,39 +1973,42 @@ async fn main() -> Result<()> {
 					}
 					Err(e) => world.report.fail("undecodable packet", format!("{e:#}")),
 				},
-				Era::Color => match de(&data, v1_12_2::play_toClient_packet::deserialize) {
+				Era::Color => match de(&data, v1_12_2::play_to_client_packet::deserialize) {
 					Ok(p) => {
 						check_1_12(&mut world, &p);
-						use v1_12_2::play_toClient_packet::Ty as P;
+						use v1_12_2::play_to_client_packet::Ty as P;
 						match p {
-							P::keep_alive(id) => {
+							P::KeepAlive(id) => {
 								conn.send(ser(
-									&v1_12_2::play_toServer_packet::Ty::keep_alive(id),
-									v1_12_2::play_toServer_packet::serialize,
+									&v1_12_2::play_to_server_packet::Ty::KeepAlive(id),
+									v1_12_2::play_to_server_packet::serialize,
 								)?)
 								.await?
 							}
-							P::position(p) => {
+							P::Position(p) => {
 								last_pos = Some((p.x, p.y, p.z));
-								let confirm = v1_12_2::play_toServer_packet::Ty::teleport_confirm(
-									p.teleportId,
+								let confirm = v1_12_2::play_to_server_packet::Ty::TeleportConfirm(
+									p.teleport_id,
 								);
-								conn.send(ser(&confirm, v1_12_2::play_toServer_packet::serialize)?)
-									.await?;
-								let echo = v1_12_2::play_toServer_packet::Ty::position_look(
-									v1_12_2::play_toServer_packet_position_look::Ty {
+								conn.send(ser(
+									&confirm,
+									v1_12_2::play_to_server_packet::serialize,
+								)?)
+								.await?;
+								let echo = v1_12_2::play_to_server_packet::Ty::PositionLook(
+									v1_12_2::play_to_server_packet_position_look::Ty {
 										x: p.x,
 										y: p.y,
 										z: p.z,
 										yaw: p.yaw,
 										pitch: p.pitch,
-										onGround: true,
+										on_ground: true,
 									},
 								);
-								conn.send(ser(&echo, v1_12_2::play_toServer_packet::serialize)?)
+								conn.send(ser(&echo, v1_12_2::play_to_server_packet::serialize)?)
 									.await?;
 							}
-							P::kick_disconnect(reason) => {
+							P::KickDisconnect(reason) => {
 								ended = Some(format!("kicked: {reason}"));
 								break;
 							}
@@ -2030,26 +2033,26 @@ async fn main() -> Result<()> {
 				let packet = match era {
 					Era::Old(r) => (r.walk)(x, y, z)?,
 					Era::Bountiful => ser(
-						&v1_8::play_toServer_packet::Ty::position(
-							v1_8::play_toServer_packet_position::Ty {
+						&v1_8::play_to_server_packet::Ty::Position(
+							v1_8::play_to_server_packet_position::Ty {
 								x,
 								y,
 								z,
-								onGround: true,
+								on_ground: true,
 							},
 						),
-						v1_8::play_toServer_packet::serialize,
+						v1_8::play_to_server_packet::serialize,
 					)?,
 					Era::Color => ser(
-						&v1_12_2::play_toServer_packet::Ty::position(
-							v1_12_2::play_toServer_packet_position::Ty {
+						&v1_12_2::play_to_server_packet::Ty::Position(
+							v1_12_2::play_to_server_packet_position::Ty {
 								x,
 								y,
 								z,
-								onGround: true,
+								on_ground: true,
 							},
 						),
-						v1_12_2::play_toServer_packet::serialize,
+						v1_12_2::play_to_server_packet::serialize,
 					)?,
 				};
 				conn.send(packet).await?;

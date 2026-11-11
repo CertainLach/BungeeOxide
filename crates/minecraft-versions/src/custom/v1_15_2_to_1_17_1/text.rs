@@ -60,7 +60,7 @@ fn snbt_entity(contents: &Value) -> String {
 				.filter_map(Value::as_i64)
 				.map(|v| v as i32)
 				.collect();
-			::nbt::Payload::intArray(ints)
+			::nbt::Payload::IntArray(ints)
 				.as_uuid()
 				.map(::nbt::json::format_uuid)
 				.unwrap_or_default()

@@ -10,7 +10,7 @@ use crate::pds::convert::{Error, Result};
 use crate::registry::{self, renames};
 use crate::session::Session;
 
-type Data13 = b::particleData::Ty;
+type Data13 = b::particle_data::Ty;
 
 #[derive(Clone, Copy, PartialEq)]
 enum Arg {
@@ -79,7 +79,7 @@ const LEGACY_PARTICLES: [i32; 50] = [
 ];
 
 fn dust(red: f32, green: f32, blue: f32) -> Data13 {
-	Data13::v11(b::particleData__v11::Ty {
+	Data13::V11(b::particle_data_v11::Ty {
 		red,
 		green,
 		blue,
@@ -94,27 +94,27 @@ pub(super) fn particle_up(id: i32, args: &[i32]) -> Option<(i32, Data13)> {
 	}
 	let first = args.first().copied().unwrap_or(0);
 	let data = match arg {
-		Arg::None => Data13::default(new),
+		Arg::None => Data13::Default(new),
 		Arg::Dust => dust(1.0, 0.0, 0.0),
 		Arg::Item => {
-			let (item, nbtData) =
+			let (item, nbt_data) =
 				item_up(first as i16, args.get(1).copied().unwrap_or(0) as i16, None);
-			Data13::v27(b::slot::Ty::default(
+			Data13::V27(b::slot::Ty::Default(
 				item,
-				b::slot__default::Ty {
-					itemCount: 1,
-					nbtData,
+				b::slot_default::Ty {
+					item_count: 1,
+					nbt_data,
 				},
 			))
 		}
-		Arg::Block => Data13::v3(state_of_packed(first) as i32),
+		Arg::Block => Data13::V3(state_of_packed(first) as i32),
 		Arg::Falling => {
 			let first = if first & 4095 == 160 {
 				first & !4095 | 95
 			} else {
 				first
 			};
-			Data13::v20(state_of_packed(first) as i32)
+			Data13::V20(state_of_packed(first) as i32)
 		}
 	};
 	Some((new, data))
@@ -123,13 +123,13 @@ pub(super) fn particle_up(id: i32, args: &[i32]) -> Option<(i32, Data13)> {
 pub(super) fn particle_data_down(data: Data13, id: i32) -> Option<(i32, Vec<i32>)> {
 	let old = *LEGACY_PARTICLES.get(usize::try_from(id).ok()?)?;
 	Some(match data {
-		Data13::v3(state) | Data13::v20(state) => (old, vec![packed_of_state(state.max(0) as u32)]),
-		Data13::v27(b::slot::Ty::default(item, s)) => {
-			let (item, damage, _) = item_down(item, s.nbtData);
+		Data13::V3(state) | Data13::V20(state) => (old, vec![packed_of_state(state.max(0) as u32)]),
+		Data13::V27(b::slot::Ty::Default(item, s)) => {
+			let (item, damage, _) = item_down(item, s.nbt_data);
 			(old, vec![item as i32, damage as i32])
 		}
-		Data13::v27(b::slot::Ty::_1) => (old, vec![0, 0]),
-		Data13::v11(_) | Data13::default(_) => (old, vec![]),
+		Data13::V27(b::slot::Ty::_1) => (old, vec![0, 0]),
+		Data13::V11(_) | Data13::Default(_) => (old, vec![]),
 	})
 }
 
@@ -142,86 +142,86 @@ fn dust_color(speed: f32, offset: f32, red: bool) -> f32 {
 }
 
 pub fn flattening_world_particles_1_13(
-	p: a::play_toClient_packet_world_particles::Ty,
+	p: a::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_world_particles::Ty> {
-	use a::play_toClient_packet_world_particles__data::Ty as Old;
+) -> Result<b::play_to_client_packet_world_particles::Ty> {
+	use a::play_to_client_packet_world_particles_data::Ty as Old;
 	let (id, args) = match &p.data {
-		Old::v36(v) => (36, v.clone()),
-		Old::v37(v) => (37, v.clone()),
-		Old::v38(v) => (38, v.clone()),
-		Old::v46(v) => (46, v.clone()),
-		Old::default(t) => (*t, vec![]),
+		Old::V36(v) => (36, v.clone()),
+		Old::V37(v) => (37, v.clone()),
+		Old::V38(v) => (38, v.clone()),
+		Old::V46(v) => (46, v.clone()),
+		Old::Default(t) => (*t, vec![]),
 	};
-	let (particleId, mut data) = particle_up(id, &args).ok_or(Error::Dropped)?;
-	let mut out = b::play_toClient_packet_world_particles::Ty {
-		particleId,
-		longDistance: p.longDistance,
+	let (particle_id, mut data) = particle_up(id, &args).ok_or(Error::Dropped)?;
+	let mut out = b::play_to_client_packet_world_particles::Ty {
+		particle_id,
+		long_distance: p.long_distance,
 		x: p.x,
 		y: p.y,
 		z: p.z,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
-		data: Data13::default(particleId),
+		data: Data13::Default(particle_id),
 	};
-	if matches!(data, Data13::v11(_)) && p.particles == 0 {
+	if matches!(data, Data13::V11(_)) && p.particles == 0 {
 		data = dust(
-			dust_color(p.particleData, p.offsetX, true),
-			dust_color(p.particleData, p.offsetY, false),
-			dust_color(p.particleData, p.offsetZ, false),
+			dust_color(p.particle_data, p.offset_x, true),
+			dust_color(p.particle_data, p.offset_y, false),
+			dust_color(p.particle_data, p.offset_z, false),
 		);
 		out.particles = 1;
-		out.particleData = 0.0;
-		out.offsetX = 0.0;
-		out.offsetY = 0.0;
-		out.offsetZ = 0.0;
+		out.particle_data = 0.0;
+		out.offset_x = 0.0;
+		out.offset_y = 0.0;
+		out.offset_z = 0.0;
 	}
 	out.data = data;
 	Ok(out)
 }
 
 pub fn flattening_world_particles_1_12_2(
-	p: b::play_toClient_packet_world_particles::Ty,
+	p: b::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_world_particles::Ty> {
-	use a::play_toClient_packet_world_particles__data::Ty as Old;
-	let mut out = a::play_toClient_packet_world_particles::Ty {
-		longDistance: p.longDistance,
+) -> Result<a::play_to_client_packet_world_particles::Ty> {
+	use a::play_to_client_packet_world_particles_data::Ty as Old;
+	let mut out = a::play_to_client_packet_world_particles::Ty {
+		long_distance: p.long_distance,
 		x: p.x,
 		y: p.y,
 		z: p.z,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
-		data: Old::default(0),
+		data: Old::Default(0),
 	};
-	if let Data13::v11(color) = &p.data {
-		out.offsetX = if color.red == 0.0 {
+	if let Data13::V11(color) = &p.data {
+		out.offset_x = if color.red == 0.0 {
 			f32::MIN_POSITIVE
 		} else {
 			color.red
 		};
-		out.offsetY = color.green;
-		out.offsetZ = color.blue;
-		out.particleData = color.scale;
+		out.offset_y = color.green;
+		out.offset_z = color.blue;
+		out.particle_data = color.scale;
 		out.particles = 0;
 	}
-	let block = matches!(p.data, Data13::v3(_) | Data13::v20(_));
-	let (id, args) = particle_data_down(p.data, p.particleId).ok_or(Error::Dropped)?;
+	let block = matches!(p.data, Data13::V3(_) | Data13::V20(_));
+	let (id, args) = particle_data_down(p.data, p.particle_id).ok_or(Error::Dropped)?;
 	if block && args.first() == Some(&0) {
 		return Err(Error::Dropped);
 	}
 	out.data = match id {
-		36 => Old::v36(args),
-		37 => Old::v37(args),
-		38 => Old::v38(args),
-		46 => Old::v46(args),
-		_ => Old::default(id),
+		36 => Old::V36(args),
+		37 => Old::V37(args),
+		38 => Old::V38(args),
+		46 => Old::V46(args),
+		_ => Old::Default(id),
 	};
 	Ok(out)
 }
@@ -232,9 +232,9 @@ fn particle_data(
 	slot: fn(b::slot::Ty) -> b::slot::Ty,
 ) -> Data13 {
 	match data {
-		Data13::v3(s) => Data13::v3(state(s.max(0) as u32) as i32),
-		Data13::v20(s) => Data13::v20(state(s.max(0) as u32) as i32),
-		Data13::v27(item) => Data13::v27(slot(item)),
+		Data13::V3(s) => Data13::V3(state(s.max(0) as u32) as i32),
+		Data13::V20(s) => Data13::V20(state(s.max(0) as u32) as i32),
+		Data13::V27(item) => Data13::V27(slot(item)),
 		d => d,
 	}
 }
@@ -255,13 +255,13 @@ pub fn flattening_particle_data_1_13(data: Data13, _cx: &mut Session) -> Result<
 	Ok(particle_data_earlier(data))
 }
 
-type Event = b::play_toClient_packet_world_event::Ty;
+type Event = b::play_to_client_packet_world_event::Ty;
 
 pub fn flattening_world_event_data_1_13(
-	src: &a::play_toClient_packet_world_event::Ty,
+	src: &a::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(match src.effectId {
+	Ok(match src.effect_id {
 		1010 => item_of_legacy(src.data).first().copied().unwrap_or(0),
 		2001 => state_of_packed(src.data) as i32,
 		_ => src.data,
@@ -269,7 +269,7 @@ pub fn flattening_world_event_data_1_13(
 }
 
 pub fn flattening_world_event_data_1_12_2(src: &Event, _cx: &mut Session) -> Result<i32> {
-	Ok(match src.effectId {
+	Ok(match src.effect_id {
 		1010 => legacy_of_item(src.data.max(0) as u32).map_or(0, |(id, _)| id as i32),
 		2001 => packed_of_state(src.data.max(0) as u32),
 		_ => src.data,
@@ -279,7 +279,7 @@ pub fn flattening_world_event_data_1_12_2(src: &Event, _cx: &mut Session) -> Res
 const SMOKE_UP: [i32; 9] = [4, 2, 5, 4, 0, 5, 4, 3, 5];
 
 pub fn flattening_event_data_1_13_1(src: &Event, _cx: &mut Session) -> Result<i32> {
-	Ok(match src.effectId {
+	Ok(match src.effect_id {
 		1010 => item_later(src.data).unwrap_or(0),
 		2000 => SMOKE_UP.get(src.data.max(0) as usize).copied().unwrap_or(0),
 		2001 => state_later(src.data.max(0) as u32) as i32,
@@ -288,7 +288,7 @@ pub fn flattening_event_data_1_13_1(src: &Event, _cx: &mut Session) -> Result<i3
 }
 
 pub fn flattening_event_data_1_13(src: &Event, _cx: &mut Session) -> Result<i32> {
-	Ok(match src.effectId {
+	Ok(match src.effect_id {
 		1010 => item_earlier(src.data).unwrap_or(0),
 		2000 => match src.data {
 			2 => 1,
@@ -304,7 +304,7 @@ pub fn flattening_event_data_1_13(src: &Event, _cx: &mut Session) -> Result<i32>
 
 pub fn flattening_event_location_1_13(src: &Event, _cx: &mut Session) -> Result<b::position::Ty> {
 	let mut at = src.location.clone();
-	if src.effectId == 2000 {
+	if src.effect_id == 2000 {
 		match src.data {
 			0 => at.y -= 1,
 			1 => at.y += 1,
@@ -349,17 +349,17 @@ pub(super) fn sound_name_down(name: &str) -> String {
 }
 
 pub fn flattening_sound_name_1_13(
-	src: &a::play_toClient_packet_named_sound_effect::Ty,
+	src: &a::play_to_client_packet_named_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(sound_up(&src.soundName))
+	Ok(sound_up(&src.sound_name))
 }
 
 pub fn flattening_sound_name_1_12_2(
-	src: &b::play_toClient_packet_named_sound_effect::Ty,
+	src: &b::play_to_client_packet_named_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(sound_down(&src.soundName))
+	Ok(sound_down(&src.sound_name))
 }
 
 fn sound_id(
@@ -376,31 +376,31 @@ fn sound_id(
 }
 
 pub fn flattening_sound_id_1_13(
-	src: &a::play_toClient_packet_sound_effect::Ty,
+	src: &a::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound_id(src.soundId, OLD, FLAT, sound_up)
+	sound_id(src.sound_id, OLD, FLAT, sound_up)
 }
 
 pub fn flattening_sound_id_1_12_2(
-	src: &b::play_toClient_packet_sound_effect::Ty,
+	src: &b::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	sound_id(src.soundId, FLAT, OLD, sound_down)
+	sound_id(src.sound_id, FLAT, OLD, sound_down)
 }
 
 pub fn flattening_effect_flags_1_13(
-	src: &a::play_toClient_packet_entity_effect::Ty,
+	src: &a::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i8> {
-	Ok(src.hideParticles | 4)
+	Ok(src.hide_particles | 4)
 }
 
 pub fn flattening_effect_flags_1_12_2(
-	src: &b::play_toClient_packet_entity_effect::Ty,
+	src: &b::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i8> {
-	Ok(src.hideParticles & 3)
+	Ok(src.hide_particles & 3)
 }
 
 fn enchantment(
@@ -415,7 +415,7 @@ fn enchantment(
 }
 
 pub fn flattening_window_property_1_13(
-	src: &a::play_toClient_packet_craft_progress_bar::Ty,
+	src: &a::play_to_client_packet_craft_progress_bar::Ty,
 	_cx: &mut Session,
 ) -> Result<i16> {
 	Ok(match src.property {
@@ -425,7 +425,7 @@ pub fn flattening_window_property_1_13(
 }
 
 pub fn flattening_window_property_1_12_2(
-	src: &b::play_toClient_packet_craft_progress_bar::Ty,
+	src: &b::play_to_client_packet_craft_progress_bar::Ty,
 	_cx: &mut Session,
 ) -> Result<i16> {
 	Ok(match src.property {
@@ -464,7 +464,7 @@ const PAINTINGS: [&str; 26] = [
 ];
 
 pub fn flattening_painting_1_13(
-	src: &a::play_toClient_packet_spawn_entity_painting::Ty,
+	src: &a::play_to_client_packet_spawn_entity_painting::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	let title = src
@@ -479,7 +479,7 @@ pub fn flattening_painting_1_13(
 }
 
 pub fn flattening_painting_1_12_2(
-	src: &b::play_toClient_packet_spawn_entity_painting::Ty,
+	src: &b::play_to_client_packet_spawn_entity_painting::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(PAINTINGS
@@ -490,27 +490,27 @@ pub fn flattening_painting_1_12_2(
 }
 
 pub fn flattening_map_icon_1_13(
-	v: a::play_toClient_packet_map__icons__items::Ty,
+	v: a::play_to_client_packet_map_icons_items::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_map__icons__items::Ty> {
-	Ok(b::play_toClient_packet_map__icons__items::Ty {
-		r#type: (v.directionAndType as u8 >> 4) as i32,
+) -> Result<b::play_to_client_packet_map_icons_items::Ty> {
+	Ok(b::play_to_client_packet_map_icons_items::Ty {
+		r#type: (v.direction_and_type as u8 >> 4) as i32,
 		x: v.x,
 		z: v.z,
-		direction: v.directionAndType as u8 & 15,
-		displayName: None,
+		direction: v.direction_and_type as u8 & 15,
+		display_name: None,
 	})
 }
 
 pub fn flattening_map_icon_1_12_2(
-	v: b::play_toClient_packet_map__icons__items::Ty,
+	v: b::play_to_client_packet_map_icons_items::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_map__icons__items::Ty> {
+) -> Result<a::play_to_client_packet_map_icons_items::Ty> {
 	if !(0..=9).contains(&v.r#type) {
 		return Err(Error::Dropped);
 	}
-	Ok(a::play_toClient_packet_map__icons__items::Ty {
-		directionAndType: ((v.r#type as u8) << 4 | (v.direction & 15)) as i8,
+	Ok(a::play_to_client_packet_map_icons_items::Ty {
+		direction_and_type: ((v.r#type as u8) << 4 | (v.direction & 15)) as i8,
 		x: v.x,
 		z: v.z,
 	})

@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use minecraft_versions::gen::pds_v1_8_play_toClient_packet as packet;
+use minecraft_versions::gen::v1_8::play::to_client::packet;
 use minecraft_versions::pds::{Input, Output};
 
 fn main() -> anyhow::Result<()> {

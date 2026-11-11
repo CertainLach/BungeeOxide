@@ -15,7 +15,7 @@ pub struct State {
 	pub secure_chat: Option<bool>,
 	pub pending: Vec<nbt::Entry>,
 	pub tags:
-		Option<Vec<crate::gen::convert::v1_20_2::configuration_toClient_packet__tags__items::Ty>>,
+		Option<Vec<crate::gen::convert::v1_20_2::configuration_to_client_packet_tags_items::Ty>>,
 	pub features: Option<Vec<String>>,
 	pub payloads: Vec<(String, Vec<u8>)>,
 	pub resource_pack: Option<(String, String, bool, Option<String>)>,

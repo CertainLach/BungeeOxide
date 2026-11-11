@@ -10,17 +10,19 @@ use futures::SinkExt;
 use minecraft_versions::gen::convert::packet_name;
 use minecraft_versions::gen::convert::v1_8;
 use minecraft_versions::gen::convert::v26_1::{
-	configuration_toClient_packet as config_c, configuration_toClient_packet_finish_configuration,
-	configuration_toServer_packet as config_s, configuration_toServer_packet_finish_configuration,
-	handshaking_toServer_packet as handshake, handshaking_toServer_packet_set_protocol,
-	login_toClient_packet as login_c, login_toClient_packet_success,
-	login_toServer_packet as login_s, login_toServer_packet_login_acknowledged,
-	login_toServer_packet_login_start, packet_common_store_cookie, packet_common_transfer,
-	play_toClient_SpawnInfo, play_toClient_SpawnInfo__gamemode, play_toClient_packet as play_c,
-	play_toClient_packet_login, play_toClient_packet_system_chat, play_toServer_packet as play_s,
-	play_toServer_packet_chat_message, play_toServer_packet_configuration_acknowledged,
-	status_toClient_packet as status_c, status_toServer_packet as status_s,
-	status_toServer_packet_ping_start,
+	configuration_to_client_packet as config_c,
+	configuration_to_client_packet_finish_configuration,
+	configuration_to_server_packet as config_s,
+	configuration_to_server_packet_finish_configuration, handshaking_to_server_packet as handshake,
+	handshaking_to_server_packet_set_protocol, login_to_client_packet as login_c,
+	login_to_client_packet_success, login_to_server_packet as login_s,
+	login_to_server_packet_login_acknowledged, login_to_server_packet_login_start,
+	packet_common_store_cookie, packet_common_transfer, play_to_client_packet as play_c,
+	play_to_client_packet_login, play_to_client_packet_system_chat, play_to_client_spawn_info,
+	play_to_client_spawn_info_gamemode, play_to_server_packet as play_s,
+	play_to_server_packet_chat_message, play_to_server_packet_configuration_acknowledged,
+	status_to_client_packet as status_c, status_to_server_packet as status_s,
+	status_to_server_packet_ping_start,
 };
 use minecraft_versions::{index_of, Root};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -94,9 +96,9 @@ async fn start(
 
 fn sys(text: &str) -> Result<Vec<u8>> {
 	encode(
-		&play_c::Ty::system_chat(play_toClient_packet_system_chat::Ty {
+		&play_c::Ty::SystemChat(play_to_client_packet_system_chat::Ty {
 			content: text_tag(text),
-			isActionBar: false,
+			is_action_bar: false,
 		}),
 		play_c::serialize,
 	)
@@ -123,37 +125,36 @@ impl Mock {
 	}
 
 	async fn serve(&self, mut conn: Conn) -> Result<()> {
-		let handshake::Ty::set_protocol(hs) =
+		let handshake::Ty::SetProtocol(hs) =
 			decode(&next(&mut conn).await?, handshake::deserialize)?
 		else {
 			bail!("handshake");
 		};
-		if hs.nextState == 1 {
+		if hs.next_state == 1 {
 			return self.status(conn).await;
 		}
-		self.event(format!("intent {}", hs.nextState));
-		let login_s::Ty::login_start(start) =
-			decode(&next(&mut conn).await?, login_s::deserialize)?
+		self.event(format!("intent {}", hs.next_state));
+		let login_s::Ty::LoginStart(start) = decode(&next(&mut conn).await?, login_s::deserialize)?
 		else {
 			bail!("login start");
 		};
-		if hs.nextState == 3 && !self.transfers {
+		if hs.next_state == 3 && !self.transfers {
 			let refusal =
 				serde_json::json!({ "translate": "multiplayer.disconnect.transfers_disabled" })
 					.to_string();
 			conn.send(encode(
-				&login_c::Ty::disconnect(refusal),
+				&login_c::Ty::Disconnect(refusal),
 				login_c::serialize,
 			)?)
 			.await?;
 			return Ok(());
 		}
 		conn.send(encode(
-			&login_c::Ty::cookie_request("test:k".to_owned()),
+			&login_c::Ty::CookieRequest("test:k".to_owned()),
 			login_c::serialize,
 		)?)
 		.await?;
-		let login_s::Ty::cookie_response(r) = decode(
+		let login_s::Ty::CookieResponse(r) = decode(
 			&until(&mut conn, Root::LoginToServer, "cookie_response").await?,
 			login_s::deserialize,
 		)?
@@ -165,25 +166,25 @@ impl Mock {
 			r.key,
 			cookie_text(&r.value)
 		));
-		let success = login_toClient_packet_success::Ty {
-			uuid: start.playerUUID,
+		let success = login_to_client_packet_success::Ty {
+			uuid: start.player_uuid,
 			username: start.username,
 			properties: Vec::new(),
 		};
-		conn.send(encode(&login_c::Ty::success(success), login_c::serialize)?)
+		conn.send(encode(&login_c::Ty::Success(success), login_c::serialize)?)
 			.await?;
 		until(&mut conn, Root::LoginToServer, "login_acknowledged").await?;
-		let store = config_c::Ty::store_cookie(packet_common_store_cookie::Ty {
+		let store = config_c::Ty::StoreCookie(packet_common_store_cookie::Ty {
 			key: "test:config".to_owned(),
 			value: self.name.as_bytes().to_vec(),
 		});
 		conn.send(encode(&store, config_c::serialize)?).await?;
 		conn.send(encode(
-			&config_c::Ty::cookie_request("test:config".to_owned()),
+			&config_c::Ty::CookieRequest("test:config".to_owned()),
 			config_c::serialize,
 		)?)
 		.await?;
-		let config_s::Ty::cookie_response(r) = decode(
+		let config_s::Ty::CookieResponse(r) = decode(
 			&until(&mut conn, Root::ConfigurationToServer, "cookie_response").await?,
 			config_s::deserialize,
 		)?
@@ -196,7 +197,7 @@ impl Mock {
 			cookie_text(&r.value)
 		));
 		if let Some(port) = self.forward {
-			let transfer = config_c::Ty::transfer(packet_common_transfer::Ty {
+			let transfer = config_c::Ty::Transfer(packet_common_transfer::Ty {
 				host: "127.0.0.1".to_owned(),
 				port: i32::from(port),
 			});
@@ -205,8 +206,8 @@ impl Mock {
 				next(&mut conn).await?;
 			}
 		}
-		let finish = config_c::Ty::finish_configuration(
-			configuration_toClient_packet_finish_configuration::Ty {},
+		let finish = config_c::Ty::FinishConfiguration(
+			configuration_to_client_packet_finish_configuration::Ty {},
 		);
 		conn.send(encode(&finish, config_c::serialize)?).await?;
 		until(
@@ -215,43 +216,43 @@ impl Mock {
 			"finish_configuration",
 		)
 		.await?;
-		let join = play_c::Ty::login(play_toClient_packet_login::Ty {
-			entityId: 7,
-			isHardcore: false,
-			worldNames: [
+		let join = play_c::Ty::Login(play_to_client_packet_login::Ty {
+			entity_id: 7,
+			is_hardcore: false,
+			world_names: [
 				"minecraft:overworld",
 				"minecraft:the_nether",
 				"minecraft:the_end",
 			]
 			.map(str::to_owned)
 			.to_vec(),
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			doLimitedCrafting: false,
-			worldState: play_toClient_SpawnInfo::Ty {
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			do_limited_crafting: false,
+			world_state: play_to_client_spawn_info::Ty {
 				dimension: self.dimension,
 				name: self.world.to_owned(),
-				hashedSeed: 1,
-				gamemode: play_toClient_SpawnInfo__gamemode::Ty::creative,
-				previousGamemode: 255,
-				isDebug: false,
-				isFlat: true,
+				hashed_seed: 1,
+				gamemode: play_to_client_spawn_info_gamemode::Ty::Creative,
+				previous_gamemode: 255,
+				is_debug: false,
+				is_flat: true,
 				death: None,
-				portalCooldown: 0,
-				seaLevel: 63,
+				portal_cooldown: 0,
+				sea_level: 63,
 			},
-			enforcesSecureChat: false,
+			enforces_secure_chat: false,
 		});
 		conn.send(encode(&join, play_c::serialize)?).await?;
 		self.event("joined".to_owned());
 		loop {
 			let text = match decode(&next(&mut conn).await?, play_s::deserialize)? {
-				play_s::Ty::chat_message(m) => m.message,
-				play_s::Ty::chat_command(c) => format!("/{c}"),
-				play_s::Ty::cookie_response(r) => {
+				play_s::Ty::ChatMessage(m) => m.message,
+				play_s::Ty::ChatCommand(c) => format!("/{c}"),
+				play_s::Ty::CookieResponse(r) => {
 					let text = format!("play cookie {} = {}", r.key, cookie_text(&r.value));
 					self.event(text.clone());
 					conn.send(sys(&format!("{}: {text}", self.name))?).await?;
@@ -261,12 +262,12 @@ impl Mock {
 			};
 			let words: Vec<&str> = text.split_whitespace().collect();
 			let reply = match words.as_slice() {
-				["store", key, value] => play_c::Ty::store_cookie(packet_common_store_cookie::Ty {
+				["store", key, value] => play_c::Ty::StoreCookie(packet_common_store_cookie::Ty {
 					key: (*key).to_owned(),
 					value: value.as_bytes().to_vec(),
 				}),
-				["ask", key] => play_c::Ty::cookie_request((*key).to_owned()),
-				["transfer", host, port] => play_c::Ty::transfer(packet_common_transfer::Ty {
+				["ask", key] => play_c::Ty::CookieRequest((*key).to_owned()),
+				["transfer", host, port] => play_c::Ty::Transfer(packet_common_transfer::Ty {
 					host: (*host).to_owned(),
 					port: port.parse()?,
 				}),
@@ -280,7 +281,7 @@ impl Mock {
 	}
 
 	async fn status(&self, mut conn: Conn) -> Result<()> {
-		let status_s::Ty::ping_start(_) = decode(&next(&mut conn).await?, status_s::deserialize)?
+		let status_s::Ty::PingStart(_) = decode(&next(&mut conn).await?, status_s::deserialize)?
 		else {
 			bail!("status request");
 		};
@@ -294,7 +295,7 @@ impl Mock {
 			"favicon": "data:image/png;base64,iVBORw0KGgo=",
 		});
 		conn.send(encode(
-			&status_c::Ty::server_info(info.to_string()),
+			&status_c::Ty::ServerInfo(info.to_string()),
 			status_c::serialize,
 		)?)
 		.await?;
@@ -336,16 +337,16 @@ struct Client {
 impl Client {
 	async fn join(proxy: SocketAddr) -> Result<Client> {
 		let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-		let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-			protocolVersion: protocol("26.1"),
-			serverHost: "localhost".to_owned(),
-			serverPort: proxy.port(),
-			nextState: 2,
+		let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+			protocol_version: protocol("26.1"),
+			server_host: "localhost".to_owned(),
+			server_port: proxy.port(),
+			next_state: 2,
 		});
 		conn.send(encode(&hs, handshake::serialize)?).await?;
-		let start = login_s::Ty::login_start(login_toServer_packet_login_start::Ty {
+		let start = login_s::Ty::LoginStart(login_to_server_packet_login_start::Ty {
 			username: "modern".to_owned(),
-			playerUUID: 5,
+			player_uuid: 5,
 		});
 		conn.send(encode(&start, login_s::serialize)?).await?;
 		loop {
@@ -353,15 +354,15 @@ impl Client {
 				&tokio::time::timeout(WAIT, next(&mut conn)).await??,
 				login_c::deserialize,
 			)? {
-				login_c::Ty::compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
-				login_c::Ty::success(s) => {
+				login_c::Ty::Compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
+				login_c::Ty::Success(s) => {
 					assert_eq!(s.username, "modern");
 					break;
 				}
 				other => bail!("login: {other:?}"),
 			}
 		}
-		let ack = login_s::Ty::login_acknowledged(login_toServer_packet_login_acknowledged::Ty {});
+		let ack = login_s::Ty::LoginAcknowledged(login_to_server_packet_login_acknowledged::Ty {});
 		conn.send(encode(&ack, login_s::serialize)?).await?;
 		let mut client = Client {
 			conn,
@@ -382,8 +383,8 @@ impl Client {
 				break;
 			}
 		}
-		let finish = config_s::Ty::finish_configuration(
-			configuration_toServer_packet_finish_configuration::Ty {},
+		let finish = config_s::Ty::FinishConfiguration(
+			configuration_to_server_packet_finish_configuration::Ty {},
 		);
 		self.conn
 			.send(encode(&finish, config_s::serialize)?)
@@ -397,9 +398,9 @@ impl Client {
 			self.seen
 				.push(packet_name(Root::PlayToClient, modern(), &data).unwrap_or("?"));
 			let packet = decode(&data, play_c::deserialize)?;
-			if let play_c::Ty::start_configuration(_) = packet {
-				let ack = play_s::Ty::configuration_acknowledged(
-					play_toServer_packet_configuration_acknowledged::Ty {},
+			if let play_c::Ty::StartConfiguration(_) = packet {
+				let ack = play_s::Ty::ConfigurationAcknowledged(
+					play_to_server_packet_configuration_acknowledged::Ty {},
 				);
 				self.conn.send(encode(&ack, play_s::serialize)?).await?;
 				self.configure().await?;
@@ -412,8 +413,8 @@ impl Client {
 	async fn world(&mut self) -> Result<(i32, String)> {
 		loop {
 			match self.packet().await? {
-				play_c::Ty::login(l) => return Ok((l.worldState.dimension, l.worldState.name)),
-				play_c::Ty::respawn(r) => return Ok((r.worldState.dimension, r.worldState.name)),
+				play_c::Ty::Login(l) => return Ok((l.world_state.dimension, l.world_state.name)),
+				play_c::Ty::Respawn(r) => return Ok((r.world_state.dimension, r.world_state.name)),
 				_ => {}
 			}
 		}
@@ -421,7 +422,7 @@ impl Client {
 
 	async fn chat(&mut self) -> Result<String> {
 		loop {
-			if let play_c::Ty::system_chat(c) = self.packet().await? {
+			if let play_c::Ty::SystemChat(c) = self.packet().await? {
 				return Ok(nbt::json::text_from_nbt(&c.content.value).to_string());
 			}
 		}
@@ -429,8 +430,8 @@ impl Client {
 
 	async fn say(&mut self, text: &str) -> Result<()> {
 		let packet = match text.strip_prefix('/') {
-			Some(command) => play_s::Ty::chat_command(command.to_owned()),
-			None => play_s::Ty::chat_message(play_toServer_packet_chat_message::Ty {
+			Some(command) => play_s::Ty::ChatCommand(command.to_owned()),
+			None => play_s::Ty::ChatMessage(play_to_server_packet_chat_message::Ty {
 				message: text.to_owned(),
 				timestamp: 0,
 				salt: 0,
@@ -535,19 +536,19 @@ async fn modern_clients_transfer_and_keep_their_cookies() -> Result<()> {
 
 async fn join_1_8(proxy: SocketAddr) -> Result<Conn> {
 	use v1_8::{
-		handshaking_toServer_packet as hs8, login_toClient_packet as lc8,
-		login_toServer_packet as ls8,
+		handshaking_to_server_packet as hs8, login_to_client_packet as lc8,
+		login_to_server_packet as ls8,
 	};
 	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-	let hs = hs8::Ty::set_protocol(v1_8::handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: 47,
-		serverHost: "localhost".to_owned(),
-		serverPort: proxy.port(),
-		nextState: 2,
+	let hs = hs8::Ty::SetProtocol(v1_8::handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: 47,
+		server_host: "localhost".to_owned(),
+		server_port: proxy.port(),
+		next_state: 2,
 	});
 	conn.send(encode(&hs, hs8::serialize)?).await?;
 	conn.send(encode(
-		&ls8::Ty::login_start("old".to_owned()),
+		&ls8::Ty::LoginStart("old".to_owned()),
 		ls8::serialize,
 	)?)
 	.await?;
@@ -556,23 +557,23 @@ async fn join_1_8(proxy: SocketAddr) -> Result<Conn> {
 			&tokio::time::timeout(WAIT, next(&mut conn)).await??,
 			lc8::deserialize,
 		)? {
-			lc8::Ty::compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
-			lc8::Ty::success(_) => return Ok(conn),
+			lc8::Ty::Compress(t) => conn.codec_mut().threshold = usize::try_from(t).ok(),
+			lc8::Ty::Success(_) => return Ok(conn),
 			other => bail!("login: {other:?}"),
 		}
 	}
 }
 
-async fn play_1_8(conn: &mut Conn) -> Result<v1_8::play_toClient_packet::Ty> {
+async fn play_1_8(conn: &mut Conn) -> Result<v1_8::play_to_client_packet::Ty> {
 	decode(
 		&tokio::time::timeout(WAIT, next(conn)).await??,
-		v1_8::play_toClient_packet::deserialize,
+		v1_8::play_to_client_packet::deserialize,
 	)
 }
 
 async fn chat_1_8(conn: &mut Conn) -> Result<String> {
 	loop {
-		if let v1_8::play_toClient_packet::Ty::chat(c) = play_1_8(conn).await? {
+		if let v1_8::play_to_client_packet::Ty::Chat(c) = play_1_8(conn).await? {
 			return Ok(c.message);
 		}
 	}
@@ -582,8 +583,8 @@ async fn dimensions_1_8(conn: &mut Conn, n: usize) -> Result<Vec<String>> {
 	let mut out = Vec::new();
 	while out.len() < n {
 		match play_1_8(conn).await? {
-			v1_8::play_toClient_packet::Ty::login(l) => out.push(format!("login {}", l.dimension)),
-			v1_8::play_toClient_packet::Ty::respawn(r) => {
+			v1_8::play_to_client_packet::Ty::Login(l) => out.push(format!("login {}", l.dimension)),
+			v1_8::play_to_client_packet::Ty::Respawn(r) => {
 				out.push(format!("respawn {}", r.dimension))
 			}
 			_ => {}
@@ -594,8 +595,8 @@ async fn dimensions_1_8(conn: &mut Conn, n: usize) -> Result<Vec<String>> {
 
 async fn say_1_8(conn: &mut Conn, text: &str) -> Result<()> {
 	conn.send(encode(
-		&v1_8::play_toServer_packet::Ty::chat(text.to_owned()),
-		v1_8::play_toServer_packet::serialize,
+		&v1_8::play_to_server_packet::Ty::Chat(text.to_owned()),
+		v1_8::play_to_server_packet::serialize,
 	)?)
 	.await?;
 	Ok(())
@@ -712,19 +713,19 @@ async fn transfers_during_configuration_are_followed() -> Result<()> {
 
 async fn server_info(proxy: SocketAddr, protocol: i32) -> Result<serde_json::Value> {
 	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
-	let hs = handshake::Ty::set_protocol(handshaking_toServer_packet_set_protocol::Ty {
-		protocolVersion: protocol,
-		serverHost: "localhost".to_owned(),
-		serverPort: proxy.port(),
-		nextState: 1,
+	let hs = handshake::Ty::SetProtocol(handshaking_to_server_packet_set_protocol::Ty {
+		protocol_version: protocol,
+		server_host: "localhost".to_owned(),
+		server_port: proxy.port(),
+		next_state: 1,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	conn.send(encode(
-		&status_s::Ty::ping_start(status_toServer_packet_ping_start::Ty {}),
+		&status_s::Ty::PingStart(status_to_server_packet_ping_start::Ty {}),
 		status_s::serialize,
 	)?)
 	.await?;
-	let status_c::Ty::server_info(info) = decode(
+	let status_c::Ty::ServerInfo(info) = decode(
 		&tokio::time::timeout(WAIT, next(&mut conn)).await??,
 		status_c::deserialize,
 	)?

@@ -124,100 +124,100 @@ fn column_1_8(
 }
 
 pub(super) fn single_1_7(
-	p: v1_8::play_toClient_packet_map_chunk::Ty,
-) -> Result<v1_7::play_toClient_packet_map_chunk::Ty> {
-	let sky = p.chunkData.len() == size_1_8(p.bitMap, true, p.groundUp);
-	let mut raw = Vec::with_capacity(p.chunkData.len());
-	column_1_7(p.bitMap, sky, p.groundUp, &p.chunkData, &mut raw)?;
-	Ok(v1_7::play_toClient_packet_map_chunk::Ty {
+	p: v1_8::play_to_client_packet_map_chunk::Ty,
+) -> Result<v1_7::play_to_client_packet_map_chunk::Ty> {
+	let sky = p.chunk_data.len() == size_1_8(p.bit_map, true, p.ground_up);
+	let mut raw = Vec::with_capacity(p.chunk_data.len());
+	column_1_7(p.bit_map, sky, p.ground_up, &p.chunk_data, &mut raw)?;
+	Ok(v1_7::play_to_client_packet_map_chunk::Ty {
 		x: p.x,
 		z: p.z,
-		groundUp: p.groundUp,
-		bitMap: p.bitMap,
-		addBitMap: 0,
-		compressedChunkData: deflate(&raw)?,
+		ground_up: p.ground_up,
+		bit_map: p.bit_map,
+		add_bit_map: 0,
+		compressed_chunk_data: deflate(&raw)?,
 	})
 }
 
 pub(super) fn bulk_1_7(
-	p: v1_8::play_toClient_packet_map_chunk_bulk::Ty,
-) -> Result<v1_7::play_toClient_packet_map_chunk_bulk::Ty> {
+	p: v1_8::play_to_client_packet_map_chunk_bulk::Ty,
+) -> Result<v1_7::play_to_client_packet_map_chunk_bulk::Ty> {
 	let mut raw = Vec::with_capacity(p.data.len());
 	let mut at = 0;
 	let mut meta = Vec::with_capacity(p.meta.len());
 	for m in &p.meta {
-		let size = size_1_8(m.bitMap, p.skyLightSent, true);
+		let size = size_1_8(m.bit_map, p.sky_light_sent, true);
 		let Some(data) = p.data.get(at..at + size) else {
 			return unconvertible("map_chunk_bulk data is shorter than its columns");
 		};
-		column_1_7(m.bitMap, p.skyLightSent, true, data, &mut raw)?;
+		column_1_7(m.bit_map, p.sky_light_sent, true, data, &mut raw)?;
 		at += size;
-		meta.push(v1_7::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+		meta.push(v1_7::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 			x: m.x,
 			z: m.z,
-			bitMap: m.bitMap,
-			addBitMap: 0,
+			bit_map: m.bit_map,
+			add_bit_map: 0,
 		});
 	}
-	Ok(v1_7::play_toClient_packet_map_chunk_bulk::Ty {
-		skyLightSent: p.skyLightSent,
-		compressedChunkData: deflate(&raw)?,
+	Ok(v1_7::play_to_client_packet_map_chunk_bulk::Ty {
+		sky_light_sent: p.sky_light_sent,
+		compressed_chunk_data: deflate(&raw)?,
 		meta,
 	})
 }
 
 pub(super) fn single_1_8(
-	p: v1_7::play_toClient_packet_map_chunk::Ty,
-) -> Result<v1_8::play_toClient_packet_map_chunk::Ty> {
-	let data = inflate(&p.compressedChunkData)?;
-	let sky = data.len() == size_1_7(p.bitMap, p.addBitMap, true, p.groundUp);
-	let mut chunkData = Vec::new();
+	p: v1_7::play_to_client_packet_map_chunk::Ty,
+) -> Result<v1_8::play_to_client_packet_map_chunk::Ty> {
+	let data = inflate(&p.compressed_chunk_data)?;
+	let sky = data.len() == size_1_7(p.bit_map, p.add_bit_map, true, p.ground_up);
+	let mut chunk_data = Vec::new();
 	column_1_8(
-		p.bitMap,
-		p.addBitMap,
+		p.bit_map,
+		p.add_bit_map,
 		sky,
-		p.groundUp,
+		p.ground_up,
 		&data,
-		&mut chunkData,
+		&mut chunk_data,
 	)?;
-	Ok(v1_8::play_toClient_packet_map_chunk::Ty {
+	Ok(v1_8::play_to_client_packet_map_chunk::Ty {
 		x: p.x,
 		z: p.z,
-		groundUp: p.groundUp,
-		bitMap: p.bitMap,
-		chunkData,
+		ground_up: p.ground_up,
+		bit_map: p.bit_map,
+		chunk_data,
 	})
 }
 
 pub(super) fn bulk_1_8(
-	p: v1_7::play_toClient_packet_map_chunk_bulk::Ty,
-) -> Result<v1_8::play_toClient_packet_map_chunk_bulk::Ty> {
-	let raw = inflate(&p.compressedChunkData)?;
+	p: v1_7::play_to_client_packet_map_chunk_bulk::Ty,
+) -> Result<v1_8::play_to_client_packet_map_chunk_bulk::Ty> {
+	let raw = inflate(&p.compressed_chunk_data)?;
 	let mut data = Vec::new();
 	let mut at = 0;
 	let mut meta = Vec::with_capacity(p.meta.len());
 	for m in &p.meta {
-		let size = size_1_7(m.bitMap, m.addBitMap, p.skyLightSent, true);
+		let size = size_1_7(m.bit_map, m.add_bit_map, p.sky_light_sent, true);
 		let Some(column) = raw.get(at..at + size) else {
 			return unconvertible("map_chunk_bulk data is shorter than its columns");
 		};
 		column_1_8(
-			m.bitMap,
-			m.addBitMap,
-			p.skyLightSent,
+			m.bit_map,
+			m.add_bit_map,
+			p.sky_light_sent,
 			true,
 			column,
 			&mut data,
 		)?;
 		at += size;
-		meta.push(v1_8::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+		meta.push(v1_8::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 			x: m.x,
 			z: m.z,
-			bitMap: m.bitMap,
+			bit_map: m.bit_map,
 		});
 	}
-	Ok(v1_8::play_toClient_packet_map_chunk_bulk::Ty {
-		skyLightSent: p.skyLightSent,
+	Ok(v1_8::play_to_client_packet_map_chunk_bulk::Ty {
+		sky_light_sent: p.sky_light_sent,
 		meta,
 		data,
 	})
@@ -251,19 +251,19 @@ mod tests {
 		let state =
 			|s: usize, i: usize| (((s * 7 + i * 13) % 60) as u16 + 2) << 4 | (i % 16) as u16;
 		let data = column(bitmap, state);
-		let p = v1_8::play_toClient_packet_map_chunk::Ty {
+		let p = v1_8::play_to_client_packet_map_chunk::Ty {
 			x: 3,
 			z: -7,
-			groundUp: true,
-			bitMap: bitmap,
-			chunkData: data.clone(),
+			ground_up: true,
+			bit_map: bitmap,
+			chunk_data: data.clone(),
 		};
 		let old = single_1_7(p.clone()).unwrap();
 		assert_eq!(
-			(old.x, old.z, old.groundUp, old.bitMap, old.addBitMap),
+			(old.x, old.z, old.ground_up, old.bit_map, old.add_bit_map),
 			(3, -7, true, bitmap, 0)
 		);
-		let raw = inflate(&old.compressedChunkData).unwrap();
+		let raw = inflate(&old.compressed_chunk_data).unwrap();
 		assert_eq!(raw.len(), size_1_7(bitmap, 0, true, true));
 		assert_eq!(raw[BLOCKS + 5], (state(1, 5) >> 4) as u8);
 		assert_eq!(raw[3 * BLOCKS + 2] & 15, (state(0, 4) & 15) as u8);
@@ -274,24 +274,24 @@ mod tests {
 	#[test]
 	fn new_blocks_become_1_7_blocks() {
 		let data = column(1, |_, i| if i == 0 { 169 << 4 } else { 1 << 4 | 2 });
-		let bulk = v1_8::play_toClient_packet_map_chunk_bulk::Ty {
-			skyLightSent: true,
+		let bulk = v1_8::play_to_client_packet_map_chunk_bulk::Ty {
+			sky_light_sent: true,
 			meta: vec![
-				v1_8::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+				v1_8::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 					x: 0,
 					z: 1,
-					bitMap: 1,
+					bit_map: 1,
 				},
-				v1_8::play_toClient_packet_map_chunk_bulk__meta__items::Ty {
+				v1_8::play_to_client_packet_map_chunk_bulk_meta_items::Ty {
 					x: 0,
 					z: 2,
-					bitMap: 1,
+					bit_map: 1,
 				},
 			],
 			data: [data.clone(), data].concat(),
 		};
 		let old = bulk_1_7(bulk).unwrap();
-		let raw = inflate(&old.compressedChunkData).unwrap();
+		let raw = inflate(&old.compressed_chunk_data).unwrap();
 		let size = size_1_7(1, 0, true, true);
 		assert_eq!(raw.len(), 2 * size);
 		assert_eq!((raw[0], raw[1], raw[size + 1]), (89, 1, 1));
@@ -304,16 +304,19 @@ mod tests {
 
 	#[test]
 	fn unloads_tolerate_missing_biomes() {
-		let p = v1_8::play_toClient_packet_map_chunk::Ty {
+		let p = v1_8::play_to_client_packet_map_chunk::Ty {
 			x: 1,
 			z: 2,
-			groundUp: true,
-			bitMap: 0,
-			chunkData: vec![],
+			ground_up: true,
+			bit_map: 0,
+			chunk_data: vec![],
 		};
 		let old = single_1_7(p).unwrap();
-		assert_eq!(inflate(&old.compressedChunkData).unwrap(), vec![0; BIOMES]);
-		assert_eq!(single_1_8(old).unwrap().chunkData, vec![0; BIOMES]);
+		assert_eq!(
+			inflate(&old.compressed_chunk_data).unwrap(),
+			vec![0; BIOMES]
+		);
+		assert_eq!(single_1_8(old).unwrap().chunk_data, vec![0; BIOMES]);
 	}
 
 	#[test]

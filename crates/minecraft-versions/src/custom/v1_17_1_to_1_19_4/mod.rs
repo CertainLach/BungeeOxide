@@ -23,9 +23,9 @@ pub use s1_19_3::*;
 pub use s1_19_4::*;
 
 type Slot = v1_13_2::slot::Ty;
-type Light = v1_17_1::play_toClient_packet_update_light::Ty;
-type Tags = Vec<v1_17_1::play_toClient_packet__tags__items::Ty>;
-type Stats = Vec<v1_17_1::play_toClient_packet__statistics__items::Ty>;
+type Light = v1_17_1::play_to_client_packet_update_light::Ty;
+type Tags = Vec<v1_17_1::play_to_client_packet_tags_items::Ty>;
+type Stats = Vec<v1_17_1::play_to_client_packet_statistics_items::Ty>;
 
 struct Painting {
 	uuid: u128,
@@ -72,7 +72,7 @@ impl World {
 
 	fn dimension(&self, key: &str) -> Option<Entry> {
 		let (_, e) = self.dimensions.iter().find(|(n, _)| n == key)?;
-		Some(Entry::new("", Payload::compound(e.clone())))
+		Some(Entry::new("", Payload::Compound(e.clone())))
 	}
 
 	fn sections(&self) -> usize {
@@ -105,9 +105,9 @@ impl World {
 			return;
 		};
 		let list = |name: &str| match root.field(name) {
-			Some(Payload::compound(reg)) => match reg.field("value") {
-				Some(Payload::list(List {
-					items: ListItems::compound(list),
+			Some(Payload::Compound(reg)) => match reg.field("value") {
+				Some(Payload::List(List {
+					items: ListItems::Compound(list),
 					..
 				})) => Some(list),
 				_ => None,
@@ -122,7 +122,7 @@ impl World {
 				.iter()
 				.filter_map(|d| {
 					let name = d.field("name").and_then(Payload::as_str)?.to_owned();
-					let Some(Payload::compound(element)) = d.field("element") else {
+					let Some(Payload::Compound(element)) = d.field("element") else {
 						return None;
 					};
 					Some((name, element.clone()))
@@ -272,12 +272,12 @@ fn item(from: V, to: V, id: i32) -> Option<i32> {
 
 fn slot(from: V, to: V, v: Slot) -> Slot {
 	match v {
-		Slot::r#true(mut s) => match item(from, to, s.itemId) {
+		Slot::True(mut s) => match item(from, to, s.item_id) {
 			Some(id) => {
-				s.itemId = id;
-				Slot::r#true(s)
+				s.item_id = id;
+				Slot::True(s)
 			}
-			None => Slot::r#false,
+			None => Slot::False,
 		},
 		empty => empty,
 	}
@@ -512,12 +512,12 @@ fn tags(
 	renamed: &[(&str, &str)],
 	added: &[(&str, &str, &[&str])],
 ) -> Tags {
-	use v1_17_1::play_toClient_packet__tags__items__tags__items::Ty as Tag;
+	use v1_17_1::play_to_client_packet_tags_items_tags_items::Ty as Tag;
 	let mut list: Tags = list
 		.into_iter()
 		.map(|mut kind| {
 			let map = |id: i32| -> Option<i32> {
-				match kind.tagType.trim_start_matches("minecraft:") {
+				match kind.tag_type.trim_start_matches("minecraft:") {
 					"item" => item(from, to, id),
 					"block" => block(from, to, id),
 					"entity_type" => entity_type(from, to, id),
@@ -530,8 +530,8 @@ fn tags(
 					let mut entries: Vec<i32> = t.entries.iter().filter_map(|e| map(*e)).collect();
 					entries.dedup();
 					t.entries = entries;
-					if let Some((_, new)) = renamed.iter().find(|(old, _)| *old == t.tagName) {
-						t.tagName = (*new).to_owned();
+					if let Some((_, new)) = renamed.iter().find(|(old, _)| *old == t.tag_name) {
+						t.tag_name = (*new).to_owned();
 					}
 					t
 				})
@@ -540,10 +540,10 @@ fn tags(
 		})
 		.collect();
 	for (kind, name, values) in added {
-		if let Some(k) = list.iter_mut().find(|k| k.tagType == *kind) {
-			if !k.tags.iter().any(|t| t.tagName == *name) {
+		if let Some(k) = list.iter_mut().find(|k| k.tag_type == *kind) {
+			if !k.tags.iter().any(|t| t.tag_name == *name) {
 				k.tags.push(Tag {
-					tagName: (*name).to_owned(),
+					tag_name: (*name).to_owned(),
 					entries: tag_entries(to, kind, values),
 				});
 			}
@@ -555,11 +555,11 @@ fn tags(
 fn statistics(from: V, to: V, list: Stats) -> Stats {
 	list.into_iter()
 		.filter_map(|mut s| {
-			s.statisticId = match s.categoryId {
-				0 => block(from, to, s.statisticId)?,
-				1..=5 => item(from, to, s.statisticId)?,
-				6 | 7 => entity_type(from, to, s.statisticId)?,
-				_ => s.statisticId,
+			s.statistic_id = match s.category_id {
+				0 => block(from, to, s.statistic_id)?,
+				1..=5 => item(from, to, s.statistic_id)?,
+				6 | 7 => entity_type(from, to, s.statistic_id)?,
+				_ => s.statistic_id,
 			};
 			Some(s)
 		})
@@ -583,7 +583,7 @@ fn put_registry(codec: &mut Entry, version: V, name: &str) -> Result<()> {
 	let Some(reg) = vanilla_registry(version, name) else {
 		return unconvertible(format!("no vanilla {name} registry for {}", version.name()));
 	};
-	let Payload::compound(root) = &mut codec.value else {
+	let Payload::Compound(root) = &mut codec.value else {
 		return unconvertible("the registry codec is not a compound");
 	};
 	root.put(name, reg);

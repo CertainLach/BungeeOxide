@@ -23,10 +23,10 @@ fn numeric_sounds_reach_1_8_by_name() {
 		.unwrap()
 		.id("entity.zombie.ambient")
 		.unwrap();
-	let p = v1_12_2::play_toClient_packet::Ty::sound_effect(
-		v1_12_2::play_toClient_packet_sound_effect::Ty {
-			soundId: id as i32,
-			soundCategory: 5,
+	let p = v1_12_2::play_to_client_packet::Ty::SoundEffect(
+		v1_12_2::play_to_client_packet_sound_effect::Ty {
+			sound_id: id as i32,
+			sound_category: 5,
 			x: 80,
 			y: 512,
 			z: -40,
@@ -34,7 +34,7 @@ fn numeric_sounds_reach_1_8_by_name() {
 			pitch: 1.0,
 		},
 	);
-	let data = encode(&p, v1_12_2::play_toClient_packet::serialize);
+	let data = encode(&p, v1_12_2::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
 		index_of("1.12.2").unwrap(),
@@ -44,12 +44,12 @@ fn numeric_sounds_reach_1_8_by_name() {
 	)
 	.unwrap();
 	assert_eq!(out.len(), 1);
-	let v1_8::play_toClient_packet::Ty::named_sound_effect(s) =
-		v1_8::play_toClient_packet::deserialize(&mut Input::new(&out[0])).unwrap()
+	let v1_8::play_to_client_packet::Ty::NamedSoundEffect(s) =
+		v1_8::play_to_client_packet::deserialize(&mut Input::new(&out[0])).unwrap()
 	else {
 		panic!("expected a named sound");
 	};
-	assert_eq!(s.soundName, "mob.zombie.say");
+	assert_eq!(s.sound_name, "mob.zombie.say");
 	assert_eq!((s.x, s.y, s.z, s.pitch), (80, 512, -40, 63));
 }
 
@@ -59,10 +59,10 @@ fn sounds_without_a_1_8_equivalent_are_dropped() {
 		.unwrap()
 		.id("item.elytra.flying")
 		.unwrap();
-	let p = v1_12_2::play_toClient_packet::Ty::sound_effect(
-		v1_12_2::play_toClient_packet_sound_effect::Ty {
-			soundId: id as i32,
-			soundCategory: 7,
+	let p = v1_12_2::play_to_client_packet::Ty::SoundEffect(
+		v1_12_2::play_to_client_packet_sound_effect::Ty {
+			sound_id: id as i32,
+			sound_category: 7,
 			x: 0,
 			y: 0,
 			z: 0,
@@ -70,7 +70,7 @@ fn sounds_without_a_1_8_equivalent_are_dropped() {
 			pitch: 1.0,
 		},
 	);
-	let data = encode(&p, v1_12_2::play_toClient_packet::serialize);
+	let data = encode(&p, v1_12_2::play_to_client_packet::serialize);
 	let out = convert(
 		Root::PlayToClient,
 		index_of("1.12.2").unwrap(),
@@ -84,9 +84,9 @@ fn sounds_without_a_1_8_equivalent_are_dropped() {
 
 #[test]
 fn legacy_sound_names_reach_26_1() {
-	let p = v1_8::play_toClient_packet::Ty::named_sound_effect(
-		v1_8::play_toClient_packet_named_sound_effect::Ty {
-			soundName: "mob.zombie.say".to_owned(),
+	let p = v1_8::play_to_client_packet::Ty::NamedSoundEffect(
+		v1_8::play_to_client_packet_named_sound_effect::Ty {
+			sound_name: "mob.zombie.say".to_owned(),
 			x: 80,
 			y: 512,
 			z: -40,
@@ -94,7 +94,7 @@ fn legacy_sound_names_reach_26_1() {
 			pitch: 63,
 		},
 	);
-	let data = encode(&p, v1_8::play_toClient_packet::serialize);
+	let data = encode(&p, v1_8::play_to_client_packet::serialize);
 	let to = index_of("26.1").unwrap();
 	let out = convert(
 		Root::PlayToClient,

@@ -32,38 +32,38 @@ fn run<A, B>(
 		.collect()
 }
 
-fn up(p: &a::play_toClient_packet::Ty, cx: &mut Session) -> Vec<d::play_toClient_packet::Ty> {
+fn up(p: &a::play_to_client_packet::Ty, cx: &mut Session) -> Vec<d::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
 		("1.20.5", "1.21.4"),
 		p,
-		a::play_toClient_packet::serialize,
-		d::play_toClient_packet::deserialize,
+		a::play_to_client_packet::serialize,
+		d::play_to_client_packet::deserialize,
 		cx,
 	)
 }
 
-fn down(p: &d::play_toServer_packet::Ty, cx: &mut Session) -> Vec<a::play_toServer_packet::Ty> {
+fn down(p: &d::play_to_server_packet::Ty, cx: &mut Session) -> Vec<a::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
 		("1.21.4", "1.20.5"),
 		p,
-		d::play_toServer_packet::serialize,
-		a::play_toServer_packet::deserialize,
+		d::play_to_server_packet::serialize,
+		a::play_to_server_packet::deserialize,
 		cx,
 	)
 }
 
 fn config(
-	p: &a::configuration_toClient_packet::Ty,
+	p: &a::configuration_to_client_packet::Ty,
 	cx: &mut Session,
-) -> Vec<d::configuration_toClient_packet::Ty> {
+) -> Vec<d::configuration_to_client_packet::Ty> {
 	run(
 		Root::ConfigurationToClient,
 		("1.20.5", "1.21.4"),
 		p,
-		a::configuration_toClient_packet::serialize,
-		d::configuration_toClient_packet::deserialize,
+		a::configuration_to_client_packet::serialize,
+		d::configuration_to_client_packet::deserialize,
 		cx,
 	)
 }
@@ -82,54 +82,54 @@ fn describe(version: &str, state: i32) -> String {
 	blocks(version).unwrap().describe(state as u32).unwrap()
 }
 
-fn item_a(name: &str, components: Vec<a::SlotComponent::Ty>) -> a::Slot::Ty {
-	a::Slot::Ty::default(
+fn item_a(name: &str, components: Vec<a::slot_component::Ty>) -> a::slot::Ty {
+	a::slot::Ty::Default(
 		1,
-		a::Slot__default::Ty {
-			itemId: id("1.20.5", "items", name),
-			addedComponentCount: components.len() as i32,
-			removedComponentCount: 0,
+		a::slot_default::Ty {
+			item_id: id("1.20.5", "items", name),
+			added_component_count: components.len() as i32,
+			removed_component_count: 0,
 			components,
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	)
 }
 
-fn tag(entries: Vec<nbt::gen::pds_Entry::Ty>) -> nbt::gen::pds_Tag::Ty {
+fn tag(entries: Vec<nbt::Entry>) -> nbt::gen::tag::Ty {
 	nbt::Tag::new(entries)
 }
 
 #[test]
 fn configuration_adds_required_registries() {
-	use a::configuration_toClient_packet::Ty as P;
+	use a::configuration_to_client_packet::Ty as P;
 	let mut cx = Session::new();
-	let damage = a::configuration_toClient_packet_registry_data::Ty {
+	let damage = a::configuration_to_client_packet_registry_data::Ty {
 		id: "minecraft:damage_type".to_owned(),
 		entries: vec![
-			a::configuration_toClient_packet_registry_data__entries__items::Ty {
+			a::configuration_to_client_packet_registry_data_entries_items::Ty {
 				key: "minecraft:arrow".to_owned(),
-				value: Some(tag(vec![nbt::gen::pds_Entry::Ty::new(
+				value: Some(tag(vec![nbt::Entry::new(
 					"message_id",
-					nbt::gen::pds_Payload::Ty::string("arrow".to_owned()),
+					nbt::gen::payload::Ty::String("arrow".to_owned()),
 				)])),
 			},
 		],
 	};
-	let mut out = config(&P::registry_data(damage), &mut cx);
+	let mut out = config(&P::RegistryData(damage), &mut cx);
 	out.extend(config(
-		&P::feature_flags(vec!["minecraft:vanilla".to_owned()]),
+		&P::FeatureFlags(vec!["minecraft:vanilla".to_owned()]),
 		&mut cx,
 	));
 	out.extend(config(
-		&P::finish_configuration(a::configuration_toClient_packet_finish_configuration::Ty {}),
+		&P::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 		&mut cx,
 	));
-	use d::configuration_toClient_packet::Ty as Q;
-	assert!(matches!(out.last(), Some(Q::finish_configuration(_))));
-	let registries: Vec<&d::configuration_toClient_packet_registry_data::Ty> = out
+	use d::configuration_to_client_packet::Ty as Q;
+	assert!(matches!(out.last(), Some(Q::FinishConfiguration(_))));
+	let registries: Vec<&d::configuration_to_client_packet_registry_data::Ty> = out
 		.iter()
 		.filter_map(|p| match p {
-			Q::registry_data(r) => Some(r),
+			Q::RegistryData(r) => Some(r),
 			_ => None,
 		})
 		.collect();
@@ -153,7 +153,7 @@ fn configuration_adds_required_registries() {
 	let damage = find("minecraft:damage_type");
 	assert_eq!(damage.entries[0].key, "minecraft:arrow");
 	assert!(
-		matches!(&damage.entries[0].value, Some(t) if matches!(&t.value, nbt::gen::pds_Payload::Ty::compound(e) if e.len() == 1))
+		matches!(&damage.entries[0].value, Some(t) if matches!(&t.value, nbt::gen::payload::Ty::Compound(e) if e.len() == 1))
 	);
 	for key in [
 		"minecraft:campfire",
@@ -173,23 +173,23 @@ fn configuration_adds_required_registries() {
 		.iter()
 		.find(|e| e.key == "minecraft:badlands")
 		.unwrap();
-	let nbt::gen::pds_Payload::Ty::compound(biome) = &badlands.value.as_ref().unwrap().value else {
+	let nbt::gen::payload::Ty::Compound(biome) = &badlands.value.as_ref().unwrap().value else {
 		panic!()
 	};
 	let effects = biome.iter().find(|e| e.name == "effects").unwrap();
-	let nbt::gen::pds_Payload::Ty::compound(effects) = &effects.value else {
+	let nbt::gen::payload::Ty::Compound(effects) = &effects.value else {
 		panic!()
 	};
 	let music = effects.iter().find(|e| e.name == "music").unwrap();
 	assert_eq!(music.r#type, 9, "1.21.4 music is a weighted list");
 	let again = config(
-		&P::finish_configuration(a::configuration_toClient_packet_finish_configuration::Ty {}),
+		&P::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 		&mut cx,
 	);
 	assert_eq!(
 		again
 			.iter()
-			.filter(|p| matches!(p, Q::registry_data(_)))
+			.filter(|p| matches!(p, Q::RegistryData(_)))
 			.count(),
 		registries.len(),
 		"reconfiguration resends them"
@@ -198,14 +198,14 @@ fn configuration_adds_required_registries() {
 
 #[test]
 fn tags_get_remapped_and_completed() {
-	use a::configuration_toClient_packet::Ty as P;
-	use d::configuration_toClient_packet::Ty as Q;
+	use a::configuration_to_client_packet::Ty as P;
+	use d::configuration_to_client_packet::Ty as Q;
 	let out = config(
-		&P::tags(vec![a::configuration_toClient_packet__tags__items::Ty {
-			tagType: "minecraft:block".to_owned(),
+		&P::Tags(vec![a::configuration_to_client_packet_tags_items::Ty {
+			tag_type: "minecraft:block".to_owned(),
 			tags: vec![
-				a::configuration_toClient_packet__tags__items__tags__items::Ty {
-					tagName: "minecraft:logs".to_owned(),
+				a::configuration_to_client_packet_tags_items_tags_items::Ty {
+					tag_name: "minecraft:logs".to_owned(),
 					entries: vec![
 						id("1.20.5", "blocks", "oak_log"),
 						id("1.20.5", "blocks", "cherry_log"),
@@ -215,12 +215,12 @@ fn tags_get_remapped_and_completed() {
 		}]),
 		&mut Session::new(),
 	);
-	let [Q::tags(groups)] = out.as_slice() else {
+	let [Q::Tags(groups)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let blocks = groups
 		.iter()
-		.find(|g| g.tagType == "minecraft:block")
+		.find(|g| g.tag_type == "minecraft:block")
 		.unwrap();
 	assert_eq!(
 		blocks.tags[0].entries,
@@ -231,12 +231,12 @@ fn tags_get_remapped_and_completed() {
 	);
 	let enchantments = groups
 		.iter()
-		.find(|g| g.tagType == "minecraft:enchantment")
+		.find(|g| g.tag_type == "minecraft:enchantment")
 		.unwrap();
 	let curse = enchantments
 		.tags
 		.iter()
-		.find(|t| t.tagName == "minecraft:curse")
+		.find(|t| t.tag_name == "minecraft:curse")
 		.unwrap();
 	assert_eq!(
 		curse.entries,
@@ -248,116 +248,115 @@ fn tags_get_remapped_and_completed() {
 	assert!(enchantments
 		.tags
 		.iter()
-		.any(|t| t.tagName == "minecraft:exclusive_set/armor"));
+		.any(|t| t.tag_name == "minecraft:exclusive_set/armor"));
 }
 
 #[test]
 fn positions_and_teleports() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
 	let out = up(
-		&P::position(a::play_toClient_packet_position::Ty {
+		&P::Position(a::play_to_client_packet_position::Ty {
 			x: 1.5,
 			y: 64.0,
 			z: -3.0,
 			yaw: 90.0,
 			pitch: 10.0,
-			flags: a::play_toClient_PositionUpdateRelatives::Ty {
+			flags: a::play_to_client_position_update_relatives::Ty {
 				x: false,
 				y: true,
 				z: false,
 				yaw: true,
 				pitch: true,
 			},
-			teleportId: 7,
+			teleport_id: 7,
 		}),
 		&mut cx,
 	);
-	let [Q::position(p)] = out.as_slice() else {
+	let [Q::Position(p)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
-		(p.teleportId, p.x, p.y, p.z, p.yaw, p.pitch),
+		(p.teleport_id, p.x, p.y, p.z, p.yaw, p.pitch),
 		(7, 1.5, 64.0, -3.0, 90.0, 10.0)
 	);
 	assert_eq!((p.dx, p.dy, p.dz), (0.0, 0.0, 0.0));
 	let f = &p.flags;
 	assert_eq!(
-		(f.x, f.y, f.z, f.yaw, f.pitch, f.dx, f.dy, f.dz, f.yawDelta),
+		(f.x, f.y, f.z, f.yaw, f.pitch, f.dx, f.dy, f.dz, f.yaw_delta),
 		(false, true, false, true, true, false, true, false, false)
 	);
 	let out = up(
-		&P::entity_teleport(a::play_toClient_packet_entity_teleport::Ty {
-			entityId: 5,
+		&P::EntityTeleport(a::play_to_client_packet_entity_teleport::Ty {
+			entity_id: 5,
 			x: 1.0,
 			y: 2.0,
 			z: 3.0,
 			yaw: 64,
 			pitch: -32,
-			onGround: true,
+			on_ground: true,
 		}),
 		&mut cx,
 	);
-	let [Q::sync_entity_position(t)] = out.as_slice() else {
+	let [Q::SyncEntityPosition(t)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
-		(t.entityId, t.x, t.y, t.z, t.yaw, t.pitch, t.onGround),
+		(t.entity_id, t.x, t.y, t.z, t.yaw, t.pitch, t.on_ground),
 		(5, 1.0, 2.0, 3.0, 90.0, -45.0, true)
 	);
 }
 
 #[test]
 fn items_and_components() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
-	let enchant =
-		|name: &str, level: i32| a::SlotComponent__enchantments__enchantments__items::Ty {
-			id: id("1.20.5", "enchantments", name),
-			level,
-		};
+	let enchant = |name: &str, level: i32| a::slot_component_enchantments_enchantments_items::Ty {
+		id: id("1.20.5", "enchantments", name),
+		level,
+	};
 	let sword = item_a(
 		"diamond_sword",
-		vec![a::SlotComponent::Ty::enchantments(
-			a::SlotComponent__enchantments::Ty {
+		vec![a::slot_component::Ty::Enchantments(
+			a::slot_component_enchantments::Ty {
 				enchantments: vec![enchant("sharpness", 5), enchant("unbreaking", 3)],
-				showTooltip: true,
+				show_tooltip: true,
 			},
 		)],
 	);
 	let glowing = item_a(
 		"stone",
-		vec![a::SlotComponent::Ty::enchantments(
-			a::SlotComponent__enchantments::Ty {
+		vec![a::slot_component::Ty::Enchantments(
+			a::slot_component_enchantments::Ty {
 				enchantments: vec![enchant("protection", 0)],
-				showTooltip: false,
+				show_tooltip: false,
 			},
 		)],
 	);
 	let fire = item_a(
 		"netherite_ingot",
-		vec![a::SlotComponent::Ty::fire_resistant],
+		vec![a::slot_component::Ty::FireResistant],
 	);
 	let out = up(
-		&P::window_items(a::play_toClient_packet_window_items::Ty {
-			windowId: 0,
-			stateId: 1,
-			items: vec![sword, a::Slot::Ty::v0, glowing, fire],
-			carriedItem: a::Slot::Ty::v0,
+		&P::WindowItems(a::play_to_client_packet_window_items::Ty {
+			window_id: 0,
+			state_id: 1,
+			items: vec![sword, a::slot::Ty::V0, glowing, fire],
+			carried_item: a::slot::Ty::V0,
 		}),
 		&mut cx,
 	);
-	let [Q::window_items(w)] = out.as_slice() else {
+	let [Q::WindowItems(w)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(w.items.len(), 4);
-	let d::Slot::Ty::default(1, s) = &w.items[0] else {
+	let d::slot::Ty::Default(1, s) = &w.items[0] else {
 		panic!("{:?}", w.items[0])
 	};
-	assert_eq!(s.itemId, id("1.21.4", "items", "diamond_sword"));
-	let [d::SlotComponent::Ty::enchantments(e)] = s.components.as_slice() else {
+	assert_eq!(s.item_id, id("1.21.4", "items", "diamond_sword"));
+	let [d::slot_component::Ty::Enchantments(e)] = s.components.as_slice() else {
 		panic!("{s:?}")
 	};
 	let ids: Vec<(i32, i32)> = e.enchantments.iter().map(|e| (e.id, e.level)).collect();
@@ -368,58 +367,58 @@ fn items_and_components() {
 			(id("1.21.4", "enchantments", "unbreaking"), 3)
 		]
 	);
-	assert!(matches!(&w.items[1], d::Slot::Ty::v0));
-	let d::Slot::Ty::default(_, s) = &w.items[2] else {
+	assert!(matches!(&w.items[1], d::slot::Ty::V0));
+	let d::slot::Ty::Default(_, s) = &w.items[2] else {
 		panic!()
 	};
 	assert!(
 		matches!(
 			s.components.as_slice(),
-			[d::SlotComponent::Ty::enchantment_glint_override(true)]
+			[d::slot_component::Ty::EnchantmentGlintOverride(true)]
 		),
 		"{s:?}"
 	);
-	let d::Slot::Ty::default(_, s) = &w.items[3] else {
+	let d::slot::Ty::Default(_, s) = &w.items[3] else {
 		panic!()
 	};
 	assert!(
-		matches!(s.components.as_slice(), [d::SlotComponent::Ty::damage_resistant(t)] if t == "minecraft:is_fire"),
+		matches!(s.components.as_slice(), [d::slot_component::Ty::DamageResistant(t)] if t == "minecraft:is_fire"),
 		"{s:?}"
 	);
-	assert_eq!(s.addedComponentCount, 1);
+	assert_eq!(s.added_component_count, 1);
 
 	let out = up(
-		&P::set_slot(a::play_toClient_packet_set_slot::Ty {
-			windowId: 255,
-			stateId: 0,
+		&P::SetSlot(a::play_to_client_packet_set_slot::Ty {
+			window_id: 255,
+			state_id: 0,
 			slot: -1,
 			item: item_a("apple", vec![]),
 		}),
 		&mut cx,
 	);
-	let [Q::set_cursor_item(d::Slot::Ty::default(1, s))] = out.as_slice() else {
+	let [Q::SetCursorItem(d::slot::Ty::Default(1, s))] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(s.itemId, id("1.21.4", "items", "apple"));
+	assert_eq!(s.item_id, id("1.21.4", "items", "apple"));
 }
 
 #[test]
 fn creative_items_go_down() {
-	use a::play_toServer_packet::Ty as P;
-	use d::play_toServer_packet::Ty as Q;
+	use a::play_to_server_packet::Ty as P;
+	use d::play_to_server_packet::Ty as Q;
 	let mut cx = Session::new();
 	let slot = |name: &str| {
-		d::Slot::Ty::default(
+		d::slot::Ty::Default(
 			3,
-			d::Slot__default::Ty {
-				itemId: id("1.21.4", "items", name),
-				addedComponentCount: 2,
-				removedComponentCount: 0,
+			d::slot_default::Ty {
+				item_id: id("1.21.4", "items", name),
+				added_component_count: 2,
+				removed_component_count: 0,
 				components: vec![
-					d::SlotComponent::Ty::max_stack_size(16),
-					d::SlotComponent::Ty::glider,
+					d::slot_component::Ty::MaxStackSize(16),
+					d::slot_component::Ty::Glider,
 				],
-				removeComponents: vec![],
+				remove_components: vec![],
 			},
 		)
 	};
@@ -430,38 +429,38 @@ fn creative_items_go_down() {
 		("music_disc_creator", "music_disc_far"),
 	] {
 		let out = down(
-			&Q::set_creative_slot(d::play_toServer_packet_set_creative_slot::Ty {
+			&Q::SetCreativeSlot(d::play_to_server_packet_set_creative_slot::Ty {
 				slot: 36,
 				item: slot(new),
 			}),
 			&mut cx,
 		);
-		let [P::set_creative_slot(p)] = out.as_slice() else {
+		let [P::SetCreativeSlot(p)] = out.as_slice() else {
 			panic!("{out:?}")
 		};
-		let a::Slot::Ty::default(3, s) = &p.item else {
+		let a::slot::Ty::Default(3, s) = &p.item else {
 			panic!("{p:?}")
 		};
-		assert_eq!(s.itemId, id("1.20.5", "items", old), "{new}");
-		assert_eq!(s.addedComponentCount, 1);
+		assert_eq!(s.item_id, id("1.20.5", "items", old), "{new}");
+		assert_eq!(s.added_component_count, 1);
 		assert!(matches!(
 			s.components.as_slice(),
-			[a::SlotComponent::Ty::max_stack_size(16)]
+			[a::slot_component::Ty::MaxStackSize(16)]
 		));
 	}
 }
 
 #[test]
 fn update_attributes_get_modifier_ids() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let out = up(
-		&P::entity_update_attributes(a::play_toClient_packet_entity_update_attributes::Ty {
-			entityId: 1,
-			properties: vec![a::play_toClient_packet_entity_update_attributes__properties__items::Ty {
-				key: a::play_toClient_packet_entity_update_attributes__properties__items__key::Ty::generic_movement_speed,
+		&P::EntityUpdateAttributes(a::play_to_client_packet_entity_update_attributes::Ty {
+			entity_id: 1,
+			properties: vec![a::play_to_client_packet_entity_update_attributes_properties_items::Ty {
+				key: a::play_to_client_packet_entity_update_attributes_properties_items_key::Ty::GenericMovementSpeed,
 				value: 0.1,
-				modifiers: vec![a::play_toClient_packet_entity_update_attributes__properties__items__modifiers__items::Ty {
+				modifiers: vec![a::play_to_client_packet_entity_update_attributes_properties_items_modifiers_items::Ty {
 					uuid: 0x662a6b8dda3e4c1c_881396ea6097278d,
 					amount: 0.3,
 					operation: 2,
@@ -470,7 +469,7 @@ fn update_attributes_get_modifier_ids() {
 		}),
 		&mut Session::new(),
 	);
-	let [Q::entity_update_attributes(p)] = out.as_slice() else {
+	let [Q::EntityUpdateAttributes(p)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(p.properties[0].modifiers[0].uuid, "minecraft:sprinting");
@@ -506,8 +505,8 @@ fn section(states: &[i32]) -> Vec<u8> {
 
 #[test]
 fn chunks_keep_block_states() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let names = [
 		"minecraft:stone",
 		"minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=true]",
@@ -518,31 +517,31 @@ fn chunks_keep_block_states() {
 	let mut data = section(&old);
 	data.extend(section(&old[..2]));
 	let out = up(
-		&P::map_chunk(a::play_toClient_packet_map_chunk::Ty {
+		&P::MapChunk(a::play_to_client_packet_map_chunk::Ty {
 			x: 1,
 			z: 2,
 			heightmaps: tag(vec![]),
-			chunkData: data,
-			blockEntities: vec![a::chunkBlockEntity::Ty {
-				ANON: a::chunkBlockEntity__ANON::Ty { x: 1, z: 2 },
+			chunk_data: data,
+			block_entities: vec![a::chunk_block_entity::Ty {
+				anon: a::chunk_block_entity_anon::Ty { x: 1, z: 2 },
 				y: 64,
 				r#type: 1,
-				nbtData: None,
+				nbt_data: None,
 			}],
-			skyLightMask: vec![],
-			blockLightMask: vec![],
-			emptySkyLightMask: vec![],
-			emptyBlockLightMask: vec![],
-			skyLight: vec![],
-			blockLight: vec![],
+			sky_light_mask: vec![],
+			block_light_mask: vec![],
+			empty_sky_light_mask: vec![],
+			empty_block_light_mask: vec![],
+			sky_light: vec![],
+			block_light: vec![],
 		}),
 		&mut Session::new(),
 	);
-	let [Q::map_chunk(c)] = out.as_slice() else {
+	let [Q::MapChunk(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(c.blockEntities[0].r#type, 1);
-	let d = &c.chunkData;
+	assert_eq!(c.block_entities[0].r#type, 1);
+	let d = &c.chunk_data;
 	let mut at = 3;
 	let n = d[at] as usize;
 	at += 1;
@@ -565,91 +564,91 @@ fn chunks_keep_block_states() {
 
 #[test]
 fn spawns_and_metadata() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
 	let spawn = |entity: i32, ty: &str, data: i32| {
-		P::spawn_entity(a::play_toClient_packet_spawn_entity::Ty {
-			entityId: entity,
-			objectUUID: entity as u128,
+		P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
+			entity_id: entity,
+			object_uuid: entity as u128,
 			r#type: id("1.20.5", "entities", ty),
 			x: 0.0,
 			y: 70.0,
 			z: 0.0,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: data,
+			head_pitch: 0,
+			object_data: data,
 			velocity: a::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		})
 	};
 	let out = up(&spawn(10, "boat", 0), &mut cx);
-	let [Q::spawn_entity(s)] = out.as_slice() else {
+	let [Q::SpawnEntity(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(s.r#type, id("1.21.4", "entities", "oak_boat"));
 	let sand = state("1.20.5", "minecraft:sand");
 	let out = up(&spawn(11, "falling_block", sand), &mut cx);
-	let [Q::spawn_entity(s)] = out.as_slice() else {
+	let [Q::SpawnEntity(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(describe("1.21.4", s.objectData), "minecraft:sand");
-	let entry = |key: u8, value: a::entityMetadataEntry__value::Ty| a::entityMetadataEntry::Ty {
+	assert_eq!(describe("1.21.4", s.object_data), "minecraft:sand");
+	let entry = |key: u8, value: a::entity_metadata_entry_value::Ty| a::entity_metadata_entry::Ty {
 		key,
 		value,
 	};
 	let out = up(
-		&P::entity_metadata(a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 10,
+		&P::EntityMetadata(a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 10,
 			metadata: vec![
-				entry(0, a::entityMetadataEntry__value::Ty::byte(0)),
-				entry(11, a::entityMetadataEntry__value::Ty::int(0)),
-				entry(12, a::entityMetadataEntry__value::Ty::boolean(true)),
+				entry(0, a::entity_metadata_entry_value::Ty::Byte(0)),
+				entry(11, a::entity_metadata_entry_value::Ty::Int(0)),
+				entry(12, a::entity_metadata_entry_value::Ty::Boolean(true)),
 			],
 		}),
 		&mut cx,
 	);
-	let [Q::entity_metadata(m)] = out.as_slice() else {
+	let [Q::EntityMetadata(m)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let keys: Vec<u8> = m.metadata.iter().map(|e| e.key).collect();
 	assert_eq!(keys, vec![0, 11]);
 	assert!(matches!(
 		m.metadata[1].value,
-		d::entityMetadataEntry__value::Ty::boolean(true)
+		d::entity_metadata_entry_value::Ty::Boolean(true)
 	));
 	let out = up(
-		&P::spawn_entity(a::play_toClient_packet_spawn_entity::Ty {
-			entityId: 12,
-			objectUUID: 12,
+		&P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
+			entity_id: 12,
+			object_uuid: 12,
 			r#type: id("1.20.5", "entities", "painting"),
 			x: 0.0,
 			y: 0.0,
 			z: 0.0,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: 2,
+			head_pitch: 0,
+			object_data: 2,
 			velocity: a::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		}),
 		&mut cx,
 	);
 	assert_eq!(out.len(), 1);
 	let out = up(
-		&P::entity_metadata(a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 12,
+		&P::EntityMetadata(a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 12,
 			metadata: vec![entry(
 				8,
-				a::entityMetadataEntry__value::Ty::painting_variant(0),
+				a::entity_metadata_entry_value::Ty::PaintingVariant(0),
 			)],
 		}),
 		&mut cx,
 	);
-	let [Q::entity_metadata(m)] = out.as_slice() else {
+	let [Q::EntityMetadata(m)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let d::entityMetadataEntry__value::Ty::painting_variant(
-		d::entityMetadataEntry__value__painting_variant::Ty::Id(kebab),
+	let d::entity_metadata_entry_value::Ty::PaintingVariant(
+		d::entity_metadata_entry_value_painting_variant::Ty::Id(kebab),
 	) = &m.metadata[0].value
 	else {
 		panic!("{m:?}")
@@ -662,25 +661,25 @@ fn spawns_and_metadata() {
 
 #[test]
 fn particles_and_sounds() {
-	use a::play_toClient_packet::Ty as P;
-	use d::play_toClient_packet::Ty as Q;
+	use a::play_to_client_packet::Ty as P;
+	use d::play_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
 	let particle = |particle| {
-		P::world_particles(a::play_toClient_packet_world_particles::Ty {
-			longDistance: false,
+		P::WorldParticles(a::play_to_client_packet_world_particles::Ty {
+			long_distance: false,
 			x: 0.0,
 			y: 0.0,
 			z: 0.0,
-			offsetX: 0.0,
-			offsetY: 0.0,
-			offsetZ: 0.0,
-			velocityOffset: 0.0,
+			offset_x: 0.0,
+			offset_y: 0.0,
+			offset_z: 0.0,
+			velocity_offset: 0.0,
 			amount: 1,
 			particle,
 		})
 	};
 	let out = up(
-		&particle(a::Particle::Ty::dust(a::Particle__dust::Ty {
+		&particle(a::particle::Ty::Dust(a::particle_dust::Ty {
 			red: 1.0,
 			green: 0.5,
 			blue: 0.0,
@@ -688,32 +687,32 @@ fn particles_and_sounds() {
 		})),
 		&mut cx,
 	);
-	let [Q::world_particles(p)] = out.as_slice() else {
+	let [Q::WorldParticles(p)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert!(
-		matches!(&p.particle, d::Particle::Ty::dust(d) if d.color == (0xffu32 << 24 | 0xff << 16 | 127 << 8) as i32),
+		matches!(&p.particle, d::particle::Ty::Dust(d) if d.color == (0xffu32 << 24 | 0xff << 16 | 127 << 8) as i32),
 		"{p:?}"
 	);
 	let out = up(
-		&particle(a::Particle::Ty::block(state(
+		&particle(a::particle::Ty::Block(state(
 			"1.20.5",
 			"minecraft:oak_log[axis=x]",
 		))),
 		&mut cx,
 	);
-	let [Q::world_particles(p)] = out.as_slice() else {
+	let [Q::WorldParticles(p)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let d::Particle::Ty::block(s) = p.particle else {
+	let d::particle::Ty::Block(s) = p.particle else {
 		panic!()
 	};
 	assert_eq!(describe("1.21.4", s), "minecraft:oak_log[axis=x]");
 	let sound = "entity.player.levelup";
 	let out = up(
-		&P::sound_effect(a::play_toClient_packet_sound_effect::Ty {
-			sound: a::ItemSoundHolder::Ty::Id(id("1.20.5", "sounds", sound)),
-			soundCategory: a::soundSource::Ty::master,
+		&P::SoundEffect(a::play_to_client_packet_sound_effect::Ty {
+			sound: a::item_sound_holder::Ty::Id(id("1.20.5", "sounds", sound)),
+			sound_category: a::sound_source::Ty::Master,
 			x: 0,
 			y: 0,
 			z: 0,
@@ -723,42 +722,42 @@ fn particles_and_sounds() {
 		}),
 		&mut cx,
 	);
-	let [Q::sound_effect(s)] = out.as_slice() else {
+	let [Q::SoundEffect(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
 		s.sound,
-		d::ItemSoundHolder::Ty::Id(id("1.21.4", "sounds", sound))
+		d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", sound))
 	);
 }
 
-fn sample_packets() -> Vec<a::play_toClient_packet::Ty> {
-	use a::play_toClient_packet::Ty as P;
-	let enchant =
-		|name: &str, level: i32| a::SlotComponent__enchantments__enchantments__items::Ty {
-			id: id("1.20.5", "enchantments", name),
-			level,
-		};
+fn sample_packets() -> Vec<a::play_to_client_packet::Ty> {
+	use a::play_to_client_packet::Ty as P;
+	let enchant = |name: &str, level: i32| a::slot_component_enchantments_enchantments_items::Ty {
+		id: id("1.20.5", "enchantments", name),
+		level,
+	};
 	let sword = item_a(
 		"diamond_sword",
 		vec![
-			a::SlotComponent::Ty::enchantments(a::SlotComponent__enchantments::Ty {
+			a::slot_component::Ty::Enchantments(a::slot_component_enchantments::Ty {
 				enchantments: vec![enchant("sharpness", 2)],
-				showTooltip: true,
+				show_tooltip: true,
 			}),
-			a::SlotComponent::Ty::attribute_modifiers(a::SlotComponent__attribute_modifiers::Ty {
-				attributes: vec![a::SlotComponent__attribute_modifiers__attributes__items::Ty {
-					typeId: 2,
+			a::slot_component::Ty::AttributeModifiers(a::slot_component_attribute_modifiers::Ty {
+				attributes: vec![a::slot_component_attribute_modifiers_attributes_items::Ty {
+					type_id: 2,
 					uuid: 0xcb3f55d3645c4f38_a4979c13a33db5cf,
 					name: "Weapon modifier".to_owned(),
 					value: 7.0,
-					operation: a::SlotComponent__attribute_modifiers__attributes__items__operation::Ty::add,
-					slot: a::SlotComponent__attribute_modifiers__attributes__items__slot::Ty::main_hand,
+					operation:
+						a::slot_component_attribute_modifiers_attributes_items_operation::Ty::Add,
+					slot: a::slot_component_attribute_modifiers_attributes_items_slot::Ty::MainHand,
 				}],
-				showTooltip: true,
+				show_tooltip: true,
 			}),
-			a::SlotComponent::Ty::custom_model_data(3),
-			a::SlotComponent::Ty::fire_resistant,
+			a::slot_component::Ty::CustomModelData(3),
+			a::slot_component::Ty::FireResistant,
 		],
 	);
 	let pos = |x, y, z| a::position::Ty { x, y, z };
@@ -781,124 +780,124 @@ fn sample_packets() -> Vec<a::play_toClient_packet::Ty> {
 		}
 	}
 	let spawn = |entity: i32, ty: &str, data: i32| {
-		P::spawn_entity(a::play_toClient_packet_spawn_entity::Ty {
-			entityId: entity,
-			objectUUID: entity as u128,
+		P::SpawnEntity(a::play_to_client_packet_spawn_entity::Ty {
+			entity_id: entity,
+			object_uuid: entity as u128,
 			r#type: id("1.20.5", "entities", ty),
 			x: 0.5,
 			y: 70.0,
 			z: 0.5,
 			pitch: 0,
 			yaw: 64,
-			headPitch: 0,
-			objectData: data,
+			head_pitch: 0,
+			object_data: data,
 			velocity: a::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		})
 	};
-	let entry = |key: u8, value: a::entityMetadataEntry__value::Ty| a::entityMetadataEntry::Ty {
+	let entry = |key: u8, value: a::entity_metadata_entry_value::Ty| a::entity_metadata_entry::Ty {
 		key,
 		value,
 	};
 	let particles = |particle| {
-		P::world_particles(a::play_toClient_packet_world_particles::Ty {
-			longDistance: false,
+		P::WorldParticles(a::play_to_client_packet_world_particles::Ty {
+			long_distance: false,
 			x: 0.0,
 			y: 70.0,
 			z: 0.0,
-			offsetX: 0.1,
-			offsetY: 0.1,
-			offsetZ: 0.1,
-			velocityOffset: 0.0,
+			offset_x: 0.1,
+			offset_y: 0.1,
+			offset_z: 0.1,
+			velocity_offset: 0.0,
 			amount: 3,
 			particle,
 		})
 	};
-	let sound = a::ItemSoundHolder::Ty::Id(id("1.20.5", "sounds", "entity.generic.explode"));
-	let small = || a::Particle::Ty::explosion;
+	let sound = a::item_sound_holder::Ty::Id(id("1.20.5", "sounds", "entity.generic.explode"));
+	let small = || a::particle::Ty::Explosion;
 	vec![
-		P::position(a::play_toClient_packet_position::Ty {
+		P::Position(a::play_to_client_packet_position::Ty {
 			x: 0.5,
 			y: 80.0,
 			z: 0.5,
 			yaw: 0.0,
 			pitch: 0.0,
-			flags: a::play_toClient_PositionUpdateRelatives::Ty { x: false, y: false, z: false, yaw: false, pitch: false },
-			teleportId: 1,
+			flags: a::play_to_client_position_update_relatives::Ty { x: false, y: false, z: false, yaw: false, pitch: false },
+			teleport_id: 1,
 		}),
-		P::map_chunk(a::play_toClient_packet_map_chunk::Ty {
+		P::MapChunk(a::play_to_client_packet_map_chunk::Ty {
 			x: 0,
 			z: 0,
 			heightmaps: tag(vec![]),
-			chunkData: chunk,
-			blockEntities: vec![a::chunkBlockEntity::Ty { ANON: a::chunkBlockEntity__ANON::Ty { x: 1, z: 1 }, y: 0, r#type: 7, nbtData: None }],
-			skyLightMask: vec![],
-			blockLightMask: vec![],
-			emptySkyLightMask: vec![],
-			emptyBlockLightMask: vec![],
-			skyLight: vec![],
-			blockLight: vec![],
+			chunk_data: chunk,
+			block_entities: vec![a::chunk_block_entity::Ty { anon: a::chunk_block_entity_anon::Ty { x: 1, z: 1 }, y: 0, r#type: 7, nbt_data: None }],
+			sky_light_mask: vec![],
+			block_light_mask: vec![],
+			empty_sky_light_mask: vec![],
+			empty_block_light_mask: vec![],
+			sky_light: vec![],
+			block_light: vec![],
 		}),
-		P::block_change(a::play_toClient_packet_block_change::Ty { location: pos(1, 70, 1), r#type: state("1.20.5", "minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=true]") }),
-		P::multi_block_change(a::play_toClient_packet_multi_block_change::Ty {
-			chunkCoordinates: a::play_toClient_packet_multi_block_change__chunkCoordinates::Ty { x: 0, z: 0, y: 4 },
+		P::BlockChange(a::play_to_client_packet_block_change::Ty { location: pos(1, 70, 1), r#type: state("1.20.5", "minecraft:oak_stairs[facing=east,half=top,shape=straight,waterlogged=true]") }),
+		P::MultiBlockChange(a::play_to_client_packet_multi_block_change::Ty {
+			chunk_coordinates: a::play_to_client_packet_multi_block_change_chunk_coordinates::Ty { x: 0, z: 0, y: 4 },
 			records: vec![(stone << 12) | 0x123],
 		}),
 		spawn(10, "boat", 0),
 		spawn(11, "falling_block", state("1.20.5", "minecraft:sand")),
 		spawn(12, "zombie", 0),
-		P::entity_metadata(a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 10,
-			metadata: vec![entry(11, a::entityMetadataEntry__value::Ty::int(0)), entry(12, a::entityMetadataEntry__value::Ty::boolean(false))],
+		P::EntityMetadata(a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 10,
+			metadata: vec![entry(11, a::entity_metadata_entry_value::Ty::Int(0)), entry(12, a::entity_metadata_entry_value::Ty::Boolean(false))],
 		}),
-		P::entity_metadata(a::play_toClient_packet_entity_metadata::Ty {
-			entityId: 12,
-			metadata: vec![entry(0, a::entityMetadataEntry__value::Ty::byte(0)), entry(9, a::entityMetadataEntry__value::Ty::float(20.0))],
+		P::EntityMetadata(a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: 12,
+			metadata: vec![entry(0, a::entity_metadata_entry_value::Ty::Byte(0)), entry(9, a::entity_metadata_entry_value::Ty::Float(20.0))],
 		}),
-		P::entity_equipment(a::play_toClient_packet_entity_equipment::Ty {
-			entityId: 12,
-			equipments: vec![a::play_toClient_packet_entity_equipment__equipments__items::Ty { slot: 0, item: sword.clone() }],
+		P::EntityEquipment(a::play_to_client_packet_entity_equipment::Ty {
+			entity_id: 12,
+			equipments: vec![a::play_to_client_packet_entity_equipment_equipments_items::Ty { slot: 0, item: sword.clone() }],
 		}),
-		P::window_items(a::play_toClient_packet_window_items::Ty {
-			windowId: 0,
-			stateId: 1,
-			items: vec![sword.clone(), a::Slot::Ty::v0, item_a("apple", vec![])],
-			carriedItem: a::Slot::Ty::v0,
+		P::WindowItems(a::play_to_client_packet_window_items::Ty {
+			window_id: 0,
+			state_id: 1,
+			items: vec![sword.clone(), a::slot::Ty::V0, item_a("apple", vec![])],
+			carried_item: a::slot::Ty::V0,
 		}),
-		P::set_slot(a::play_toClient_packet_set_slot::Ty { windowId: 255, stateId: 2, slot: -1, item: item_a("stone", vec![]) }),
-		particles(a::Particle::Ty::dust(a::Particle__dust::Ty { red: 1.0, green: 0.0, blue: 0.0, scale: 1.0 })),
-		particles(a::Particle::Ty::block(stone)),
-		particles(a::Particle::Ty::item(sword)),
-		P::sound_effect(a::play_toClient_packet_sound_effect::Ty { sound: sound.clone(), soundCategory: a::soundSource::Ty::block, x: 0, y: 560, z: 0, volume: 1.0, pitch: 1.0, seed: 1 }),
-		P::explosion(a::play_toClient_packet_explosion::Ty {
+		P::SetSlot(a::play_to_client_packet_set_slot::Ty { window_id: 255, state_id: 2, slot: -1, item: item_a("stone", vec![]) }),
+		particles(a::particle::Ty::Dust(a::particle_dust::Ty { red: 1.0, green: 0.0, blue: 0.0, scale: 1.0 })),
+		particles(a::particle::Ty::Block(stone)),
+		particles(a::particle::Ty::Item(sword)),
+		P::SoundEffect(a::play_to_client_packet_sound_effect::Ty { sound: sound.clone(), sound_category: a::sound_source::Ty::Block, x: 0, y: 560, z: 0, volume: 1.0, pitch: 1.0, seed: 1 }),
+		P::Explosion(a::play_to_client_packet_explosion::Ty {
 			x: 0.0,
 			y: 70.0,
 			z: 0.0,
 			radius: 4.0,
-			affectedBlockOffsets: vec![a::play_toClient_packet_explosion__affectedBlockOffsets__items::Ty { x: 1, y: 0, z: -1 }],
-			playerMotionX: 0.1,
-			playerMotionY: 0.2,
-			playerMotionZ: 0.0,
+			affected_block_offsets: vec![a::play_to_client_packet_explosion_affected_block_offsets_items::Ty { x: 1, y: 0, z: -1 }],
+			player_motion_x: 0.1,
+			player_motion_y: 0.2,
+			player_motion_z: 0.0,
 			block_interaction_type: 1,
 			small_explosion_particle: small(),
-			large_explosion_particle: a::Particle::Ty::explosion_emitter,
+			large_explosion_particle: a::particle::Ty::ExplosionEmitter,
 			sound,
 		}),
-		P::update_time(a::play_toClient_packet_update_time::Ty { age: 100, time: -6000 }),
-		P::entity_update_attributes(a::play_toClient_packet_entity_update_attributes::Ty {
-			entityId: 12,
-			properties: vec![a::play_toClient_packet_entity_update_attributes__properties__items::Ty {
-				key: a::play_toClient_packet_entity_update_attributes__properties__items__key::Ty::generic_max_health,
+		P::UpdateTime(a::play_to_client_packet_update_time::Ty { age: 100, time: -6000 }),
+		P::EntityUpdateAttributes(a::play_to_client_packet_entity_update_attributes::Ty {
+			entity_id: 12,
+			properties: vec![a::play_to_client_packet_entity_update_attributes_properties_items::Ty {
+				key: a::play_to_client_packet_entity_update_attributes_properties_items_key::Ty::GenericMaxHealth,
 				value: 20.0,
 				modifiers: vec![],
 			}],
 		}),
-		P::set_cooldown(a::play_toClient_packet_set_cooldown::Ty { itemID: id("1.20.5", "items", "ender_pearl"), cooldownTicks: 20 }),
-		P::entity_teleport(a::play_toClient_packet_entity_teleport::Ty { entityId: 12, x: 1.0, y: 70.0, z: 1.0, yaw: 32, pitch: 0, onGround: true }),
-		P::world_event(a::play_toClient_packet_world_event::Ty { effectId: 2001, location: pos(0, 70, 0), data: stone, global: false }),
-		P::world_event(a::play_toClient_packet_world_event::Ty { effectId: 1010, location: pos(0, 70, 0), data: id("1.20.5", "items", "music_disc_cat"), global: false }),
-		P::tile_entity_data(a::play_toClient_packet_tile_entity_data::Ty { location: pos(1, 0, 1), action: 7, nbtData: Some(tag(vec![])) }),
-		P::set_passengers(a::play_toClient_packet_set_passengers::Ty { entityId: 10, passengers: vec![12] }),
-		P::entity_destroy(vec![10, 11]),
+		P::SetCooldown(a::play_to_client_packet_set_cooldown::Ty { item_id: id("1.20.5", "items", "ender_pearl"), cooldown_ticks: 20 }),
+		P::EntityTeleport(a::play_to_client_packet_entity_teleport::Ty { entity_id: 12, x: 1.0, y: 70.0, z: 1.0, yaw: 32, pitch: 0, on_ground: true }),
+		P::WorldEvent(a::play_to_client_packet_world_event::Ty { effect_id: 2001, location: pos(0, 70, 0), data: stone, global: false }),
+		P::WorldEvent(a::play_to_client_packet_world_event::Ty { effect_id: 1010, location: pos(0, 70, 0), data: id("1.20.5", "items", "music_disc_cat"), global: false }),
+		P::TileEntityData(a::play_to_client_packet_tile_entity_data::Ty { location: pos(1, 0, 1), action: 7, nbt_data: Some(tag(vec![])) }),
+		P::SetPassengers(a::play_to_client_packet_set_passengers::Ty { entity_id: 10, passengers: vec![12] }),
+		P::EntityDestroy(vec![10, 11]),
 	]
 }
 
@@ -912,7 +911,7 @@ fn write_dumps() {
 		let mut out = Vec::new();
 		for p in &packets {
 			let mut o = Output::new();
-			a::play_toClient_packet::serialize(p, &mut o).unwrap();
+			a::play_to_client_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::PlayToClient,
 				at("1.20.5"),
@@ -949,26 +948,26 @@ fn write_dumps() {
 		}
 	}
 	std::fs::write(format!("{dir}/play-down-1.20.5.bin"), out).unwrap();
-	use a::configuration_toClient_packet::Ty as C;
+	use a::configuration_to_client_packet::Ty as C;
 	let configuration = [
-		C::feature_flags(vec!["minecraft:vanilla".to_owned()]),
-		C::tags(vec![a::configuration_toClient_packet__tags__items::Ty {
-			tagType: "minecraft:item".to_owned(),
+		C::FeatureFlags(vec!["minecraft:vanilla".to_owned()]),
+		C::Tags(vec![a::configuration_to_client_packet_tags_items::Ty {
+			tag_type: "minecraft:item".to_owned(),
 			tags: vec![
-				a::configuration_toClient_packet__tags__items__tags__items::Ty {
-					tagName: "minecraft:logs".to_owned(),
+				a::configuration_to_client_packet_tags_items_tags_items::Ty {
+					tag_name: "minecraft:logs".to_owned(),
 					entries: vec![id("1.20.5", "items", "oak_log")],
 				},
 			],
 		}]),
-		C::finish_configuration(a::configuration_toClient_packet_finish_configuration::Ty {}),
+		C::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 	];
 	for to in ["1.21.1", "1.21.3", "1.21.4"] {
 		let mut cx = Session::new();
 		let mut out = Vec::new();
 		for p in &configuration {
 			let mut o = Output::new();
-			a::configuration_toClient_packet::serialize(p, &mut o).unwrap();
+			a::configuration_to_client_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::ConfigurationToClient,
 				at("1.20.5"),
@@ -984,25 +983,25 @@ fn write_dumps() {
 		}
 		std::fs::write(format!("{dir}/configuration-{to}.bin"), out).unwrap();
 	}
-	use d::play_toServer_packet::Ty as S;
-	let flags = |on_ground| d::play_toServer_MovementFlags::Ty {
-		onGround: on_ground,
-		hasHorizontalCollision: false,
+	use d::play_to_server_packet::Ty as S;
+	let flags = |on_ground| d::play_to_server_movement_flags::Ty {
+		on_ground: on_ground,
+		has_horizontal_collision: false,
 	};
-	let slot = d::Slot::Ty::default(
+	let slot = d::slot::Ty::Default(
 		1,
-		d::Slot__default::Ty {
-			itemId: id("1.21.4", "items", "pale_oak_log"),
-			addedComponentCount: 1,
-			removedComponentCount: 0,
-			components: vec![d::SlotComponent::Ty::item_model(
+		d::slot_default::Ty {
+			item_id: id("1.21.4", "items", "pale_oak_log"),
+			added_component_count: 1,
+			removed_component_count: 0,
+			components: vec![d::slot_component::Ty::ItemModel(
 				"minecraft:stone".to_owned(),
 			)],
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	);
 	let server = [
-		S::position_look(d::play_toServer_packet_position_look::Ty {
+		S::PositionLook(d::play_to_server_packet_position_look::Ty {
 			x: 0.5,
 			y: 70.0,
 			z: 0.5,
@@ -1010,15 +1009,15 @@ fn write_dumps() {
 			pitch: 0.0,
 			flags: flags(true),
 		}),
-		S::tick_end(d::play_toServer_packet_tick_end::Ty {}),
-		S::tick_end(d::play_toServer_packet_tick_end::Ty {}),
-		S::look(d::play_toServer_packet_look::Ty {
+		S::TickEnd(d::play_to_server_packet_tick_end::Ty {}),
+		S::TickEnd(d::play_to_server_packet_tick_end::Ty {}),
+		S::Look(d::play_to_server_packet_look::Ty {
 			yaw: 90.0,
 			pitch: 5.0,
 			flags: flags(false),
 		}),
-		S::flying(flags(true)),
-		S::player_input(d::play_toServer_packet_player_input::Ty {
+		S::Flying(flags(true)),
+		S::PlayerInput(d::play_to_server_packet_player_input::Ty {
 			forward: true,
 			backward: false,
 			left: false,
@@ -1027,59 +1026,59 @@ fn write_dumps() {
 			shift: false,
 			sprint: false,
 		}),
-		S::set_creative_slot(d::play_toServer_packet_set_creative_slot::Ty {
+		S::SetCreativeSlot(d::play_to_server_packet_set_creative_slot::Ty {
 			slot: 36,
 			item: slot.clone(),
 		}),
-		S::window_click(d::play_toServer_packet_window_click::Ty {
-			windowId: 0,
-			stateId: 3,
+		S::WindowClick(d::play_to_server_packet_window_click::Ty {
+			window_id: 0,
+			state_id: 3,
 			slot: 36,
-			mouseButton: 0,
+			mouse_button: 0,
 			mode: 0,
-			changedSlots: vec![
-				d::play_toServer_packet_window_click__changedSlots__items::Ty {
+			changed_slots: vec![
+				d::play_to_server_packet_window_click_changed_slots_items::Ty {
 					location: 36,
-					item: d::Slot::Ty::v0,
+					item: d::slot::Ty::V0,
 				},
 			],
-			cursorItem: slot,
+			cursor_item: slot,
 		}),
-		S::block_place(d::play_toServer_packet_block_place::Ty {
+		S::BlockPlace(d::play_to_server_packet_block_place::Ty {
 			hand: 0,
 			location: d::position::Ty { x: 1, y: 64, z: 1 },
 			direction: 1,
-			cursorX: 0.5,
-			cursorY: 1.0,
-			cursorZ: 0.5,
-			insideBlock: false,
-			worldBorderHit: false,
+			cursor_x: 0.5,
+			cursor_y: 1.0,
+			cursor_z: 0.5,
+			inside_block: false,
+			world_border_hit: false,
 			sequence: 4,
 		}),
-		S::use_item(d::play_toServer_packet_use_item::Ty {
+		S::UseItem(d::play_to_server_packet_use_item::Ty {
 			hand: 0,
 			sequence: 5,
 			rotation: d::vec2f::Ty { x: 90.0, y: 5.0 },
 		}),
-		S::settings(d::packet_common_settings::Ty {
+		S::Settings(d::packet_common_settings::Ty {
 			locale: "en_us".to_owned(),
-			viewDistance: 8,
-			chatFlags: 0,
-			chatColors: true,
-			skinParts: 127,
-			mainHand: 1,
-			enableTextFiltering: false,
-			enableServerListing: true,
-			particleStatus: d::packet_common_settings__particleStatus::Ty::all,
+			view_distance: 8,
+			chat_flags: 0,
+			chat_colors: true,
+			skin_parts: 127,
+			main_hand: 1,
+			enable_text_filtering: false,
+			enable_server_listing: true,
+			particle_status: d::packet_common_settings_particle_status::Ty::All,
 		}),
-		S::close_window(0),
+		S::CloseWindow(0),
 	];
 	for to in ["1.21.4", "1.21.3", "1.21.1", "1.20.5"] {
 		let mut cx = Session::new();
 		let mut out = Vec::new();
 		for p in &server {
 			let mut o = Output::new();
-			d::play_toServer_packet::serialize(p, &mut o).unwrap();
+			d::play_to_server_packet::serialize(p, &mut o).unwrap();
 			for bytes in convert(
 				Root::PlayToServer,
 				at("1.21.4"),
@@ -1102,39 +1101,39 @@ fn write_dumps() {
 			Root::PlayToClient,
 			("1.21.4", to),
 			&reverse,
-			d::play_toClient_packet::serialize,
+			d::play_to_client_packet::serialize,
 		);
 	}
-	use a::play_toServer_packet::Ty as O;
+	use a::play_to_server_packet::Ty as O;
 	let old = [
-		O::position(a::play_toServer_packet_position::Ty {
+		O::Position(a::play_to_server_packet_position::Ty {
 			x: 0.5,
 			y: 70.0,
 			z: 0.5,
-			onGround: true,
+			on_ground: true,
 		}),
-		O::look(a::play_toServer_packet_look::Ty {
+		O::Look(a::play_to_server_packet_look::Ty {
 			yaw: 10.0,
 			pitch: 0.0,
-			onGround: true,
+			on_ground: true,
 		}),
-		O::flying(true),
-		O::steer_vehicle(a::play_toServer_packet_steer_vehicle::Ty {
+		O::Flying(true),
+		O::SteerVehicle(a::play_to_server_packet_steer_vehicle::Ty {
 			sideways: 0.98,
 			forward: 0.0,
 			jump: 3,
 		}),
-		O::craft_recipe_request(a::play_toServer_packet_craft_recipe_request::Ty {
-			windowId: 1,
+		O::CraftRecipeRequest(a::play_to_server_packet_craft_recipe_request::Ty {
+			window_id: 1,
 			recipe: "minecraft:7".to_owned(),
-			makeAll: true,
+			make_all: true,
 		}),
-		O::displayed_recipe("minecraft:7".to_owned()),
-		O::use_item(a::play_toServer_packet_use_item::Ty {
+		O::DisplayedRecipe("minecraft:7".to_owned()),
+		O::UseItem(a::play_to_server_packet_use_item::Ty {
 			hand: 0,
 			sequence: 2,
 		}),
-		O::set_creative_slot(a::play_toServer_packet_set_creative_slot::Ty {
+		O::SetCreativeSlot(a::play_to_server_packet_set_creative_slot::Ty {
 			slot: 36,
 			item: item_a("diamond", vec![]),
 		}),
@@ -1145,7 +1144,7 @@ fn write_dumps() {
 			Root::PlayToServer,
 			("1.20.5", to),
 			&old,
-			a::play_toServer_packet::serialize,
+			a::play_to_server_packet::serialize,
 		);
 	}
 }
@@ -1170,10 +1169,10 @@ fn dump<A>(
 	std::fs::write(file, out).unwrap();
 }
 
-fn reverse_samples() -> Vec<d::play_toClient_packet::Ty> {
-	use d::play_toClient_SlotDisplay::Ty as S;
-	use d::play_toClient_packet::Ty as C;
-	let flags = |relative: bool| d::play_toClient_PositionUpdateRelatives::Ty {
+fn reverse_samples() -> Vec<d::play_to_client_packet::Ty> {
+	use d::play_to_client_packet::Ty as C;
+	use d::play_to_client_slot_display::Ty as S;
+	let flags = |relative: bool| d::play_to_client_position_update_relatives::Ty {
 		x: relative,
 		y: relative,
 		z: relative,
@@ -1182,30 +1181,30 @@ fn reverse_samples() -> Vec<d::play_toClient_packet::Ty> {
 		dx: relative,
 		dy: relative,
 		dz: relative,
-		yawDelta: false,
+		yaw_delta: false,
 	};
 	let beef = item_d(
 		"cooked_beef",
 		vec![
-			d::SlotComponent::Ty::food(d::SlotComponent__food::Ty {
+			d::slot_component::Ty::Food(d::slot_component_food::Ty {
 				nutrition: 8,
-				saturationModifier: 12.8,
-				canAlwaysEat: false,
+				saturation_modifier: 12.8,
+				can_always_eat: false,
 			}),
-			d::SlotComponent::Ty::consumable(d::SlotComponent__consumable::Ty {
+			d::slot_component::Ty::Consumable(d::slot_component_consumable::Ty {
 				consume_seconds: 0.8,
-				animation: d::SlotComponent__consumable__animation::Ty::eat,
-				sound: d::ItemSoundHolder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
+				animation: d::slot_component_consumable_animation::Ty::Eat,
+				sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
 				makes_particles: true,
-				effects: vec![d::ItemConsumeEffect::Ty::apply_effects(
-					d::ItemConsumeEffect__apply_effects::Ty {
+				effects: vec![d::item_consume_effect::Ty::ApplyEffects(
+					d::item_consume_effect_apply_effects::Ty {
 						effects: vec![potion("Hunger")],
 						probability: 0.25,
 					},
 				)],
 			}),
-			d::SlotComponent::Ty::use_remainder(item_d("bowl", vec![])),
-			d::SlotComponent::Ty::custom_model_data(d::SlotComponent__custom_model_data::Ty {
+			d::slot_component::Ty::UseRemainder(item_d("bowl", vec![])),
+			d::slot_component::Ty::CustomModelData(d::slot_component_custom_model_data::Ty {
 				floats: vec![3.0],
 				flags: vec![],
 				strings: vec![],
@@ -1213,43 +1212,43 @@ fn reverse_samples() -> Vec<d::play_toClient_packet::Ty> {
 			}),
 		],
 	);
-	let decoration = d::play_toClient_ChatType::Ty {
-		translationKey: "chat.type.text".to_owned(),
+	let decoration = d::play_to_client_chat_type::Ty {
+		translation_key: "chat.type.text".to_owned(),
 		parameters: vec![
-			d::play_toClient_ChatTypeParameterType::Ty::sender,
-			d::play_toClient_ChatTypeParameterType::Ty::content,
+			d::play_to_client_chat_type_parameter_type::Ty::Sender,
+			d::play_to_client_chat_type_parameter_type::Ty::Content,
 		],
 		style: tag(vec![]),
 	};
 	vec![
-		C::login(d::play_toClient_packet_login::Ty {
-			entityId: 42,
-			isHardcore: false,
-			worldNames: vec!["minecraft:overworld".to_owned()],
-			maxPlayers: 20,
-			viewDistance: 8,
-			simulationDistance: 8,
-			reducedDebugInfo: false,
-			enableRespawnScreen: true,
-			doLimitedCrafting: false,
-			worldState: d::play_toClient_SpawnInfo::Ty {
+		C::Login(d::play_to_client_packet_login::Ty {
+			entity_id: 42,
+			is_hardcore: false,
+			world_names: vec!["minecraft:overworld".to_owned()],
+			max_players: 20,
+			view_distance: 8,
+			simulation_distance: 8,
+			reduced_debug_info: false,
+			enable_respawn_screen: true,
+			do_limited_crafting: false,
+			world_state: d::play_to_client_spawn_info::Ty {
 				dimension: 0,
 				name: "minecraft:overworld".to_owned(),
-				hashedSeed: 0,
-				gamemode: d::play_toClient_SpawnInfo__gamemode::Ty::survival,
-				previousGamemode: 255,
-				isDebug: false,
-				isFlat: false,
+				hashed_seed: 0,
+				gamemode: d::play_to_client_spawn_info_gamemode::Ty::Survival,
+				previous_gamemode: 255,
+				is_debug: false,
+				is_flat: false,
 				death: None,
-				portalCooldown: 0,
-				seaLevel: 63,
+				portal_cooldown: 0,
+				sea_level: 63,
 			},
-			enforcesSecureChat: false,
+			enforces_secure_chat: false,
 		}),
-		C::position(d::play_toClient_packet_position::Ty { teleportId: 1, x: 0.5, y: 70.0, z: 0.5, dx: 0.0, dy: 0.0, dz: 0.0, yaw: 0.0, pitch: 0.0, flags: flags(false) }),
-		C::position(d::play_toClient_packet_position::Ty { teleportId: 2, x: 1.0, y: 0.0, z: 0.0, dx: 0.1, dy: 0.2, dz: 0.0, yaw: 0.0, pitch: 0.0, flags: flags(true) }),
-		C::entity_teleport(d::play_toClient_packet_entity_teleport::Ty {
-			entityId: 7,
+		C::Position(d::play_to_client_packet_position::Ty { teleport_id: 1, x: 0.5, y: 70.0, z: 0.5, dx: 0.0, dy: 0.0, dz: 0.0, yaw: 0.0, pitch: 0.0, flags: flags(false) }),
+		C::Position(d::play_to_client_packet_position::Ty { teleport_id: 2, x: 1.0, y: 0.0, z: 0.0, dx: 0.1, dy: 0.2, dz: 0.0, yaw: 0.0, pitch: 0.0, flags: flags(true) }),
+		C::EntityTeleport(d::play_to_client_packet_entity_teleport::Ty {
+			entity_id: 7,
 			x: 5.0,
 			y: 64.0,
 			z: 5.0,
@@ -1259,79 +1258,79 @@ fn reverse_samples() -> Vec<d::play_toClient_packet::Ty> {
 			yaw: 90.0,
 			pitch: 0.0,
 			flags: flags(false),
-			onGround: true,
+			on_ground: true,
 		}),
-		C::sync_entity_position(d::play_toClient_packet_sync_entity_position::Ty { entityId: 7, x: 5.0, y: 64.0, z: 5.0, dx: 0.0, dy: 0.0, dz: 0.0, yaw: 0.0, pitch: 0.0, onGround: true }),
-		C::player_rotation(d::play_toClient_packet_player_rotation::Ty { yaw: 45.0, pitch: 10.0 }),
-		C::explosion(d::play_toClient_packet_explosion::Ty {
+		C::SyncEntityPosition(d::play_to_client_packet_sync_entity_position::Ty { entity_id: 7, x: 5.0, y: 64.0, z: 5.0, dx: 0.0, dy: 0.0, dz: 0.0, yaw: 0.0, pitch: 0.0, on_ground: true }),
+		C::PlayerRotation(d::play_to_client_packet_player_rotation::Ty { yaw: 45.0, pitch: 10.0 }),
+		C::Explosion(d::play_to_client_packet_explosion::Ty {
 			x: 1.0,
 			y: 2.0,
 			z: 3.0,
-			playerKnockback: Some(d::vec3f64::Ty { x: 0.25, y: 0.5, z: 0.0 }),
-			explosionParticle: d::Particle::Ty::explosion,
-			sound: d::ItemSoundHolder::Ty::Id(id("1.21.4", "sounds", "entity.generic.explode")),
+			player_knockback: Some(d::vec3f64::Ty { x: 0.25, y: 0.5, z: 0.0 }),
+			explosion_particle: d::particle::Ty::Explosion,
+			sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.explode")),
 		}),
-		C::spawn_entity(d::play_toClient_packet_spawn_entity::Ty {
-			entityId: 9,
-			objectUUID: 9,
+		C::SpawnEntity(d::play_to_client_packet_spawn_entity::Ty {
+			entity_id: 9,
+			object_uuid: 9,
 			r#type: id("1.21.4", "entities", "spruce_boat"),
 			x: 0.0,
 			y: 64.0,
 			z: 0.0,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: 0,
+			head_pitch: 0,
+			object_data: 0,
 			velocity: d::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		}),
-		C::declare_recipes(d::play_toClient_packet_declare_recipes::Ty {
-			recipes: vec![d::play_toClient_packet_declare_recipes__recipes__items::Ty { name: "minecraft:furnace_input".to_owned(), items: vec![id("1.21.4", "items", "beef")] }],
-			stoneCutterRecipes: vec![d::play_toClient_packet_declare_recipes__stoneCutterRecipes__items::Ty {
-				input: d::IDSet::Ty::Ids(vec![id("1.21.4", "items", "stone")]),
-				slotDisplay: S::item_stack(item_d("stone_slab", vec![])),
+		C::DeclareRecipes(d::play_to_client_packet_declare_recipes::Ty {
+			recipes: vec![d::play_to_client_packet_declare_recipes_recipes_items::Ty { name: "minecraft:furnace_input".to_owned(), items: vec![id("1.21.4", "items", "beef")] }],
+			stone_cutter_recipes: vec![d::play_to_client_packet_declare_recipes_stone_cutter_recipes_items::Ty {
+				input: d::id_set::Ty::Ids(vec![id("1.21.4", "items", "stone")]),
+				slot_display: S::ItemStack(item_d("stone_slab", vec![])),
 			}],
 		}),
-		C::recipe_book_settings(d::play_toClient_packet_recipe_book_settings::Ty {
-			craftingGuiOpen: true,
-			craftingFilteringCraftable: false,
-			smeltingGuiOpen: false,
-			smeltingFilteringCraftable: false,
-			blastGuiOpen: false,
-			blastFilteringCraftable: false,
-			smokerGuiOpen: false,
-			smokerFilteringCraftable: false,
+		C::RecipeBookSettings(d::play_to_client_packet_recipe_book_settings::Ty {
+			crafting_gui_open: true,
+			crafting_filtering_craftable: false,
+			smelting_gui_open: false,
+			smelting_filtering_craftable: false,
+			blast_gui_open: false,
+			blast_filtering_craftable: false,
+			smoker_gui_open: false,
+			smoker_filtering_craftable: false,
 		}),
-		C::recipe_book_add(d::play_toClient_packet_recipe_book_add::Ty {
-			entries: vec![d::play_toClient_packet_recipe_book_add__entries__items::Ty {
-				recipe: d::play_toClient_packet_recipe_book_add__entries__items__recipe::Ty {
-					displayId: 7,
-					display: d::play_toClient_RecipeDisplay::Ty::crafting_shapeless(d::play_toClient_RecipeDisplay__crafting_shapeless::Ty {
-						ingredients: vec![S::item(id("1.21.4", "items", "oak_log"))],
-						result: S::item_stack(item_d("oak_planks", vec![])),
-						craftingStation: S::item(id("1.21.4", "items", "crafting_table")),
+		C::RecipeBookAdd(d::play_to_client_packet_recipe_book_add::Ty {
+			entries: vec![d::play_to_client_packet_recipe_book_add_entries_items::Ty {
+				recipe: d::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty {
+					display_id: 7,
+					display: d::play_to_client_recipe_display::Ty::CraftingShapeless(d::play_to_client_recipe_display_crafting_shapeless::Ty {
+						ingredients: vec![S::Item(id("1.21.4", "items", "oak_log"))],
+						result: S::ItemStack(item_d("oak_planks", vec![])),
+						crafting_station: S::Item(id("1.21.4", "items", "crafting_table")),
 					}),
 					group: 0,
-					category: d::play_toClient_packet_recipe_book_add__entries__items__recipe__category::Ty::crafting_building_blocks,
-					craftingRequirements: None,
+					category: d::play_to_client_packet_recipe_book_add_entries_items_recipe_category::Ty::CraftingBuildingBlocks,
+					crafting_requirements: None,
 				},
-				flags: d::play_toClient_packet_recipe_book_add__entries__items__flags::Ty { notification: true, highlight: false },
+				flags: d::play_to_client_packet_recipe_book_add_entries_items_flags::Ty { notification: true, highlight: false },
 			}],
 			replace: true,
 		}),
-		C::recipe_book_remove(vec![7]),
-		C::set_slot(d::play_toClient_packet_set_slot::Ty { windowId: 0, stateId: 1, slot: 5, item: beef.clone() }),
-		C::set_cursor_item(item_d("pale_oak_log", vec![])),
-		C::set_player_inventory(d::play_toClient_packet_set_player_inventory::Ty { slotId: 3, contents: beef.clone() }),
-		C::window_items(d::play_toClient_packet_window_items::Ty { windowId: 0, stateId: 2, items: vec![beef, d::Slot::Ty::v0], carriedItem: d::Slot::Ty::v0 }),
-		C::profileless_chat(d::play_toClient_packet_profileless_chat::Ty {
+		C::RecipeBookRemove(vec![7]),
+		C::SetSlot(d::play_to_client_packet_set_slot::Ty { window_id: 0, state_id: 1, slot: 5, item: beef.clone() }),
+		C::SetCursorItem(item_d("pale_oak_log", vec![])),
+		C::SetPlayerInventory(d::play_to_client_packet_set_player_inventory::Ty { slot_id: 3, contents: beef.clone() }),
+		C::WindowItems(d::play_to_client_packet_window_items::Ty { window_id: 0, state_id: 2, items: vec![beef, d::slot::Ty::V0], carried_item: d::slot::Ty::V0 }),
+		C::ProfilelessChat(d::play_to_client_packet_profileless_chat::Ty {
 			message: string_tag("hi"),
-			r#type: d::play_toClient_ChatTypesHolder::Ty::Inline(d::play_toClient_ChatTypes::Ty { chat: decoration.clone(), narration: decoration }),
+			r#type: d::play_to_client_chat_types_holder::Ty::Inline(d::play_to_client_chat_types::Ty { chat: decoration.clone(), narration: decoration }),
 			name: string_tag("Bob"),
 			target: None,
 		}),
-		C::profileless_chat(d::play_toClient_packet_profileless_chat::Ty {
+		C::ProfilelessChat(d::play_to_client_packet_profileless_chat::Ty {
 			message: string_tag("hi"),
-			r#type: d::play_toClient_ChatTypesHolder::Ty::Id(0),
+			r#type: d::play_to_client_chat_types_holder::Ty::Id(0),
 			name: string_tag("Bob"),
 			target: None,
 		}),
@@ -1348,12 +1347,12 @@ fn sample_packets_convert_and_reparse() {
 		}
 	}
 	for kind in [
-		"set_cursor_item",
-		"sync_entity_position",
-		"explosion",
-		"block_change",
-		"map_chunk",
-		"world_event",
+		"SetCursorItem",
+		"SyncEntityPosition",
+		"Explosion",
+		"BlockChange",
+		"MapChunk",
+		"WorldEvent",
 	] {
 		assert!(
 			kinds.iter().any(|k| k == kind),
@@ -1364,15 +1363,15 @@ fn sample_packets_convert_and_reparse() {
 
 #[test]
 fn movement_goes_down_with_ticks() {
-	use a::play_toServer_packet::Ty as P;
-	use d::play_toServer_packet::Ty as Q;
+	use a::play_to_server_packet::Ty as P;
+	use d::play_to_server_packet::Ty as Q;
 	let mut cx = Session::new();
-	let flags = |on_ground| d::play_toServer_MovementFlags::Ty {
-		onGround: on_ground,
-		hasHorizontalCollision: false,
+	let flags = |on_ground| d::play_to_server_movement_flags::Ty {
+		on_ground: on_ground,
+		has_horizontal_collision: false,
 	};
 	let out = down(
-		&Q::position_look(d::play_toServer_packet_position_look::Ty {
+		&Q::PositionLook(d::play_to_server_packet_position_look::Ty {
 			x: 1.0,
 			y: 2.0,
 			z: 3.0,
@@ -1382,13 +1381,13 @@ fn movement_goes_down_with_ticks() {
 		}),
 		&mut cx,
 	);
-	assert!(matches!(out.as_slice(), [P::position_look(p)] if p.onGround && p.yaw == 4.0));
-	let tick = Q::tick_end(d::play_toServer_packet_tick_end::Ty {});
+	assert!(matches!(out.as_slice(), [P::PositionLook(p)] if p.on_ground && p.yaw == 4.0));
+	let tick = Q::TickEnd(d::play_to_server_packet_tick_end::Ty {});
 	assert!(down(&tick, &mut cx).is_empty(), "the tick already moved");
-	assert!(matches!(down(&tick, &mut cx).as_slice(), [P::flying(true)]));
-	let out = down(&Q::flying(flags(false)), &mut cx);
-	assert!(matches!(out.as_slice(), [P::flying(false)]));
-	let input = d::play_toServer_packet_player_input::Ty {
+	assert!(matches!(down(&tick, &mut cx).as_slice(), [P::Flying(true)]));
+	let out = down(&Q::Flying(flags(false)), &mut cx);
+	assert!(matches!(out.as_slice(), [P::Flying(false)]));
+	let input = d::play_to_server_packet_player_input::Ty {
 		forward: true,
 		backward: false,
 		left: false,
@@ -1398,119 +1397,119 @@ fn movement_goes_down_with_ticks() {
 		sprint: false,
 	};
 	assert!(
-		down(&Q::player_input(input.clone()), &mut cx).is_empty(),
+		down(&Q::PlayerInput(input.clone()), &mut cx).is_empty(),
 		"not riding"
 	);
 
-	use a::play_toClient_packet::Ty as C;
-	let login = C::login(a::play_toClient_packet_login::Ty {
-		entityId: 42,
-		isHardcore: false,
-		worldNames: vec!["minecraft:overworld".to_owned()],
-		maxPlayers: 20,
-		viewDistance: 8,
-		simulationDistance: 8,
-		reducedDebugInfo: false,
-		enableRespawnScreen: true,
-		doLimitedCrafting: false,
-		worldState: a::play_toClient_SpawnInfo::Ty {
+	use a::play_to_client_packet::Ty as C;
+	let login = C::Login(a::play_to_client_packet_login::Ty {
+		entity_id: 42,
+		is_hardcore: false,
+		world_names: vec!["minecraft:overworld".to_owned()],
+		max_players: 20,
+		view_distance: 8,
+		simulation_distance: 8,
+		reduced_debug_info: false,
+		enable_respawn_screen: true,
+		do_limited_crafting: false,
+		world_state: a::play_to_client_spawn_info::Ty {
 			dimension: 0,
 			name: "minecraft:overworld".to_owned(),
-			hashedSeed: 0,
-			gamemode: a::play_toClient_SpawnInfo__gamemode::Ty::survival,
-			previousGamemode: 255,
-			isDebug: false,
-			isFlat: false,
+			hashed_seed: 0,
+			gamemode: a::play_to_client_spawn_info_gamemode::Ty::Survival,
+			previous_gamemode: 255,
+			is_debug: false,
+			is_flat: false,
 			death: None,
-			portalCooldown: 0,
+			portal_cooldown: 0,
 		},
-		enforcesSecureChat: false,
+		enforces_secure_chat: false,
 	});
 	let out = up(&login, &mut cx);
-	let [d::play_toClient_packet::Ty::login(l)] = out.as_slice() else {
+	let [d::play_to_client_packet::Ty::Login(l)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert_eq!(l.worldState.seaLevel, 63);
+	assert_eq!(l.world_state.sea_level, 63);
 	up(
-		&C::set_passengers(a::play_toClient_packet_set_passengers::Ty {
-			entityId: 7,
+		&C::SetPassengers(a::play_to_client_packet_set_passengers::Ty {
+			entity_id: 7,
 			passengers: vec![42],
 		}),
 		&mut cx,
 	);
-	let out = down(&Q::player_input(input), &mut cx);
+	let out = down(&Q::PlayerInput(input), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [P::steer_vehicle(s)] if s.forward > 0.9 && s.sideways == 0.0 && s.jump == 2),
+		matches!(out.as_slice(), [P::SteerVehicle(s)] if s.forward > 0.9 && s.sideways == 0.0 && s.jump == 2),
 		"{out:?}"
 	);
 	let out = down(&tick, &mut cx);
 	assert!(
-		matches!(out.as_slice(), [P::look(_), P::steer_vehicle(_)]),
+		matches!(out.as_slice(), [P::Look(_), P::SteerVehicle(_)]),
 		"{out:?}"
 	);
 }
 
 fn client_down(
-	p: &d::play_toClient_packet::Ty,
+	p: &d::play_to_client_packet::Ty,
 	cx: &mut Session,
-) -> Vec<a::play_toClient_packet::Ty> {
+) -> Vec<a::play_to_client_packet::Ty> {
 	run(
 		Root::PlayToClient,
 		("1.21.4", "1.20.5"),
 		p,
-		d::play_toClient_packet::serialize,
-		a::play_toClient_packet::deserialize,
+		d::play_to_client_packet::serialize,
+		a::play_to_client_packet::deserialize,
 		cx,
 	)
 }
 
 fn server_up(
-	p: &a::play_toServer_packet::Ty,
+	p: &a::play_to_server_packet::Ty,
 	cx: &mut Session,
-) -> Vec<d::play_toServer_packet::Ty> {
+) -> Vec<d::play_to_server_packet::Ty> {
 	run(
 		Root::PlayToServer,
 		("1.20.5", "1.21.4"),
 		p,
-		a::play_toServer_packet::serialize,
-		d::play_toServer_packet::deserialize,
+		a::play_to_server_packet::serialize,
+		d::play_to_server_packet::deserialize,
 		cx,
 	)
 }
 
 fn config_down(
-	p: &d::configuration_toClient_packet::Ty,
+	p: &d::configuration_to_client_packet::Ty,
 	cx: &mut Session,
-) -> Vec<a::configuration_toClient_packet::Ty> {
+) -> Vec<a::configuration_to_client_packet::Ty> {
 	run(
 		Root::ConfigurationToClient,
 		("1.21.4", "1.20.5"),
 		p,
-		d::configuration_toClient_packet::serialize,
-		a::configuration_toClient_packet::deserialize,
+		d::configuration_to_client_packet::serialize,
+		a::configuration_to_client_packet::deserialize,
 		cx,
 	)
 }
 
-fn text(name: &str, value: &str) -> nbt::gen::pds_Entry::Ty {
-	nbt::gen::pds_Entry::Ty::new(
+fn text(name: &str, value: &str) -> nbt::gen::entry::Ty {
+	nbt::gen::entry::Ty::new(
 		name.to_owned(),
-		nbt::gen::pds_Payload::Ty::string(value.to_owned()),
+		nbt::gen::payload::Ty::String(value.to_owned()),
 	)
 }
 
-fn string_tag(value: &str) -> nbt::gen::pds_Tag::Ty {
-	nbt::gen::pds_Tag::Ty::new(nbt::gen::pds_Payload::Ty::string(value.to_owned()))
+fn string_tag(value: &str) -> nbt::gen::tag::Ty {
+	nbt::gen::tag::Ty::new(nbt::gen::payload::Ty::String(value.to_owned()))
 }
 
-fn compound(tag: &nbt::gen::pds_Tag::Ty) -> &[nbt::gen::pds_Entry::Ty] {
+fn compound(tag: &nbt::Tag) -> &[nbt::Entry] {
 	match &tag.value {
-		nbt::gen::pds_Payload::Ty::compound(e) => e,
+		nbt::gen::payload::Ty::Compound(e) => e,
 		other => panic!("{other:?}"),
 	}
 }
 
-fn field<'a>(entries: &'a [nbt::gen::pds_Entry::Ty], name: &str) -> &'a nbt::gen::pds_Payload::Ty {
+fn field<'a>(entries: &'a [nbt::Entry], name: &str) -> &'a nbt::gen::payload::Ty {
 	&entries
 		.iter()
 		.find(|e| e.name == name)
@@ -1518,45 +1517,45 @@ fn field<'a>(entries: &'a [nbt::gen::pds_Entry::Ty], name: &str) -> &'a nbt::gen
 		.value
 }
 
-fn item_d(name: &str, components: Vec<d::SlotComponent::Ty>) -> d::Slot::Ty {
-	d::Slot::Ty::default(
+fn item_d(name: &str, components: Vec<d::slot_component::Ty>) -> d::slot::Ty {
+	d::slot::Ty::Default(
 		1,
-		d::Slot__default::Ty {
-			itemId: id("1.21.4", "items", name),
-			addedComponentCount: components.len() as i32,
-			removedComponentCount: 0,
+		d::slot_default::Ty {
+			item_id: id("1.21.4", "items", name),
+			added_component_count: components.len() as i32,
+			removed_component_count: 0,
 			components,
-			removeComponents: vec![],
+			remove_components: vec![],
 		},
 	)
 }
 
-fn potion(effect: &str) -> d::ItemPotionEffect::Ty {
-	d::ItemPotionEffect::Ty {
+fn potion(effect: &str) -> d::item_potion_effect::Ty {
+	d::item_potion_effect::Ty {
 		id: id("1.21.4", "effects", effect),
-		details: d::ItemEffectDetail::Ty {
+		details: d::item_effect_detail::Ty {
 			amplifier: 0,
 			duration: 600,
 			ambient: false,
-			showParticles: true,
-			showIcon: true,
-			hiddenEffect: None,
+			show_particles: true,
+			show_icon: true,
+			hidden_effect: None,
 		},
 	}
 }
 
 #[test]
 fn registries_rebuilt_from_server_going_down() {
-	use a::configuration_toClient_packet::Ty as P;
-	use d::configuration_toClient_packet::Ty as Q;
+	use a::configuration_to_client_packet::Ty as P;
+	use d::configuration_to_client_packet::Ty as Q;
 	let mut cx = Session::new();
 	let entry =
-		|key: &str, value| d::configuration_toClient_packet_registry_data__entries__items::Ty {
+		|key: &str, value| d::configuration_to_client_packet_registry_data_entries_items::Ty {
 			key: key.to_owned(),
 			value,
 		};
 	let registry = |id: &str, entries| {
-		Q::registry_data(d::configuration_toClient_packet_registry_data::Ty {
+		Q::RegistryData(d::configuration_to_client_packet_registry_data::Ty {
 			id: id.to_owned(),
 			entries,
 		})
@@ -1595,51 +1594,48 @@ fn registries_rebuilt_from_server_going_down() {
 		),
 		&mut cx,
 	);
-	let [P::registry_data(r)] = out.as_slice() else {
+	let [P::RegistryData(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let fields = compound(r.entries[0].value.as_ref().unwrap());
 	assert_eq!(
 		field(fields, "asset_name"),
-		&nbt::gen::pds_Payload::Ty::string("gold".to_owned())
+		&nbt::Payload::String("gold".to_owned())
 	);
 	assert_eq!(
 		field(fields, "ingredient"),
-		&nbt::gen::pds_Payload::Ty::string("minecraft:copper_ingot".to_owned())
+		&nbt::Payload::String("minecraft:copper_ingot".to_owned())
 	);
 	assert!(matches!(
 		field(fields, "item_model_index"),
-		nbt::gen::pds_Payload::Ty::float(_)
+		nbt::gen::payload::Ty::Float(_)
 	));
-	let music = nbt::gen::pds_Entry::Ty::new(
+	let music = nbt::gen::entry::Ty::new(
 		"music",
-		nbt::gen::pds_Payload::Ty::list(nbt::gen::pds_List::Ty::new(
-			nbt::gen::pds_List_0::Ty::compound(vec![vec![
-				nbt::gen::pds_Entry::Ty::new(
+		nbt::gen::payload::Ty::List(nbt::gen::list::Ty::new(nbt::gen::list_0::Ty::Compound(
+			vec![vec![
+				nbt::gen::entry::Ty::new(
 					"data",
-					nbt::gen::pds_Payload::Ty::compound(vec![text(
-						"sound",
-						"minecraft:music.game",
-					)]),
+					nbt::gen::payload::Ty::Compound(vec![text("sound", "minecraft:music.game")]),
 				),
-				nbt::gen::pds_Entry::Ty::new("weight", nbt::gen::pds_Payload::Ty::int(1)),
-			]]),
-		)),
+				nbt::gen::entry::Ty::new("weight", nbt::gen::payload::Ty::Int(1)),
+			]],
+		))),
 	);
-	let dust = nbt::gen::pds_Entry::Ty::new(
+	let dust = nbt::gen::entry::Ty::new(
 		"particle",
-		nbt::gen::pds_Payload::Ty::compound(vec![nbt::gen::pds_Entry::Ty::new(
+		nbt::gen::payload::Ty::Compound(vec![nbt::Entry::new(
 			"options",
-			nbt::gen::pds_Payload::Ty::compound(vec![
+			nbt::gen::payload::Ty::Compound(vec![
 				text("type", "minecraft:dust"),
-				nbt::gen::pds_Entry::Ty::new("color", nbt::gen::pds_Payload::Ty::int(0xff0000)),
-				nbt::gen::pds_Entry::Ty::new("scale", nbt::gen::pds_Payload::Ty::float(1.0)),
+				nbt::gen::entry::Ty::new("color", nbt::gen::payload::Ty::Int(0xff0000)),
+				nbt::gen::entry::Ty::new("scale", nbt::gen::payload::Ty::Float(1.0)),
 			]),
 		)]),
 	);
-	let effects = nbt::gen::pds_Entry::Ty::new(
+	let effects = nbt::gen::entry::Ty::new(
 		"effects",
-		nbt::gen::pds_Payload::Ty::compound(vec![music, dust]),
+		nbt::gen::payload::Ty::Compound(vec![music, dust]),
 	);
 	let out = config_down(
 		&registry(
@@ -1648,79 +1644,79 @@ fn registries_rebuilt_from_server_going_down() {
 		),
 		&mut cx,
 	);
-	let [P::registry_data(r)] = out.as_slice() else {
+	let [P::RegistryData(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let nbt::gen::pds_Payload::Ty::compound(effects) =
+	let nbt::gen::payload::Ty::Compound(effects) =
 		field(compound(r.entries[0].value.as_ref().unwrap()), "effects")
 	else {
 		panic!()
 	};
 	assert!(
-		matches!(field(effects, "music"), nbt::gen::pds_Payload::Ty::compound(m) if m.len() == 1),
+		matches!(field(effects, "music"), nbt::gen::payload::Ty::Compound(m) if m.len() == 1),
 		"music unwrapped"
 	);
-	let nbt::gen::pds_Payload::Ty::compound(particle) = field(effects, "particle") else {
+	let nbt::gen::payload::Ty::Compound(particle) = field(effects, "particle") else {
 		panic!()
 	};
-	let nbt::gen::pds_Payload::Ty::compound(options) = field(particle, "options") else {
+	let nbt::gen::payload::Ty::Compound(options) = field(particle, "options") else {
 		panic!()
 	};
 	assert!(
-		matches!(field(options, "color"), nbt::gen::pds_Payload::Ty::list(nbt::gen::pds_List::Ty { items: nbt::gen::pds_List_0::Ty::float(c), .. }) if c == &[1.0, 0.0, 0.0]),
+		matches!(field(options, "color"), nbt::gen::payload::Ty::List(nbt::gen::list::Ty { items: nbt::gen::list_0::Ty::Float(c), .. }) if c == &[1.0, 0.0, 0.0]),
 		"dust color is a float list again"
 	);
 
-	use a::play_toClient_packet::Ty as A;
-	use d::play_toClient_packet::Ty as C;
-	let painting = C::entity_metadata(d::play_toClient_packet_entity_metadata::Ty {
-		entityId: 5,
-		metadata: vec![d::entityMetadataEntry::Ty {
+	use a::play_to_client_packet::Ty as A;
+	use d::play_to_client_packet::Ty as C;
+	let painting = C::EntityMetadata(d::play_to_client_packet_entity_metadata::Ty {
+		entity_id: 5,
+		metadata: vec![d::entity_metadata_entry::Ty {
 			key: 8,
-			value: d::entityMetadataEntry__value::Ty::painting_variant(
-				d::entityMetadataEntry__value__painting_variant::Ty::Id(0),
+			value: d::entity_metadata_entry_value::Ty::PaintingVariant(
+				d::entity_metadata_entry_value_painting_variant::Ty::Id(0),
 			),
 		}],
 	});
 	let out = client_down(&painting, &mut cx);
-	let [A::entity_metadata(m)] = out.as_slice() else {
+	let [A::EntityMetadata(m)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert!(
 		matches!(
 			&m.metadata[0].value,
-			a::entityMetadataEntry__value::Ty::painting_variant(21)
+			a::entity_metadata_entry_value::Ty::PaintingVariant(21)
 		),
 		"server painting 0 is pointer: {m:?}"
 	);
 	let sword = item_d(
 		"diamond_sword",
-		vec![d::SlotComponent::Ty::enchantments(
-			d::SlotComponent__enchantments::Ty {
-				enchantments: vec![d::SlotComponent__enchantments__enchantments__items::Ty {
+		vec![d::slot_component::Ty::Enchantments(
+			d::slot_component_enchantments::Ty {
+				enchantments: vec![d::slot_component_enchantments_enchantments_items::Ty {
 					id: 1,
 					level: 5,
 				}],
-				showTooltip: true,
+				show_tooltip: true,
 			},
 		)],
 	);
 	let out = client_down(
-		&C::set_slot(d::play_toClient_packet_set_slot::Ty {
-			windowId: 0,
-			stateId: 1,
+		&C::SetSlot(d::play_to_client_packet_set_slot::Ty {
+			window_id: 0,
+			state_id: 1,
 			slot: 36,
 			item: sword,
 		}),
 		&mut cx,
 	);
-	let [A::set_slot(s)] = out.as_slice() else {
+	let [A::SetSlot(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let a::Slot::Ty::default(_, item) = &s.item else {
+	let a::slot::Ty::Default(_, item) = &s.item else {
 		panic!()
 	};
-	let [a::SlotComponent::Ty::enchantments(e)] = item.components.as_slice() else {
+	let [a::slot_component::Ty::Enchantments(e)] = item.components.as_slice() else {
 		panic!("{item:?}")
 	};
 	assert_eq!(
@@ -1731,9 +1727,9 @@ fn registries_rebuilt_from_server_going_down() {
 
 #[test]
 fn signed_inline_chat_keeps_the_registered_type() {
-	use d::play_toClient_ChatTypeParameterType::Ty as Param;
+	use d::play_to_client_chat_type_parameter_type::Ty as Param;
 	let mut cx = Session::new();
-	let entry = |key: &str| d::configuration_toClient_packet_registry_data__entries__items::Ty {
+	let entry = |key: &str| d::configuration_to_client_packet_registry_data_entries_items::Ty {
 		key: format!("minecraft:{key}"),
 		value: None,
 	};
@@ -1746,35 +1742,37 @@ fn signed_inline_chat_keeps_the_registered_type() {
 		"team_msg_command_incoming",
 		"team_msg_command_outgoing",
 	];
-	let types = d::configuration_toClient_packet::Ty::registry_data(
-		d::configuration_toClient_packet_registry_data::Ty {
+	let types = d::configuration_to_client_packet::Ty::RegistryData(
+		d::configuration_to_client_packet_registry_data::Ty {
 			id: "minecraft:chat_type".to_owned(),
 			entries: keys.iter().map(|k| entry(k)).collect(),
 		},
 	);
 	assert_eq!(config_down(&types, &mut cx).len(), 1);
 	let signed = |key: &str| {
-		let decoration = d::play_toClient_ChatType::Ty {
-			translationKey: key.to_owned(),
-			parameters: vec![Param::sender, Param::content],
+		let decoration = d::play_to_client_chat_type::Ty {
+			translation_key: key.to_owned(),
+			parameters: vec![Param::Sender, Param::Content],
 			style: tag(vec![]),
 		};
-		d::play_toClient_packet::Ty::player_chat(d::play_toClient_packet_player_chat::Ty {
-			senderUuid: 1,
+		d::play_to_client_packet::Ty::PlayerChat(d::play_to_client_packet_player_chat::Ty {
+			sender_uuid: 1,
 			index: 0,
 			signature: Some(vec![7; 256]),
-			plainMessage: "hi".to_owned(),
+			plain_message: "hi".to_owned(),
 			timestamp: 0,
 			salt: 0,
-			previousMessages: vec![],
-			unsignedChatContent: None,
-			filterTypeMask: d::play_toClient_packet_player_chat__filterTypeMask::Ty::default(0),
-			r#type: d::play_toClient_ChatTypesHolder::Ty::Inline(d::play_toClient_ChatTypes::Ty {
-				chat: decoration.clone(),
-				narration: decoration,
-			}),
-			networkName: string_tag("Bob"),
-			networkTargetName: None,
+			previous_messages: vec![],
+			unsigned_chat_content: None,
+			filter_type_mask: d::play_to_client_packet_player_chat_filter_type_mask::Ty::Default(0),
+			r#type: d::play_to_client_chat_types_holder::Ty::Inline(
+				d::play_to_client_chat_types::Ty {
+					chat: decoration.clone(),
+					narration: decoration,
+				},
+			),
+			network_name: string_tag("Bob"),
+			network_target_name: None,
 		})
 	};
 	for (key, id) in [
@@ -1783,7 +1781,7 @@ fn signed_inline_chat_keeps_the_registered_type() {
 		("custom.key", 0),
 	] {
 		let out = client_down(&signed(key), &mut cx);
-		let [a::play_toClient_packet::Ty::player_chat(p)] = out.as_slice() else {
+		let [a::play_to_client_packet::Ty::PlayerChat(p)] = out.as_slice() else {
 			panic!("{out:?}")
 		};
 		assert_eq!(p.r#type, id, "{key}");
@@ -1792,36 +1790,36 @@ fn signed_inline_chat_keeps_the_registered_type() {
 
 #[test]
 fn world_and_recipes_going_down() {
-	use a::play_toClient_packet::Ty as A;
-	use d::play_toClient_packet::Ty as C;
+	use a::play_to_client_packet::Ty as A;
+	use d::play_to_client_packet::Ty as C;
 	let mut cx = Session::new();
-	let login = C::login(d::play_toClient_packet_login::Ty {
-		entityId: 42,
-		isHardcore: false,
-		worldNames: vec!["minecraft:overworld".to_owned()],
-		maxPlayers: 20,
-		viewDistance: 8,
-		simulationDistance: 8,
-		reducedDebugInfo: false,
-		enableRespawnScreen: true,
-		doLimitedCrafting: false,
-		worldState: d::play_toClient_SpawnInfo::Ty {
+	let login = C::Login(d::play_to_client_packet_login::Ty {
+		entity_id: 42,
+		is_hardcore: false,
+		world_names: vec!["minecraft:overworld".to_owned()],
+		max_players: 20,
+		view_distance: 8,
+		simulation_distance: 8,
+		reduced_debug_info: false,
+		enable_respawn_screen: true,
+		do_limited_crafting: false,
+		world_state: d::play_to_client_spawn_info::Ty {
 			dimension: 0,
 			name: "minecraft:overworld".to_owned(),
-			hashedSeed: 0,
-			gamemode: d::play_toClient_SpawnInfo__gamemode::Ty::survival,
-			previousGamemode: 255,
-			isDebug: false,
-			isFlat: false,
+			hashed_seed: 0,
+			gamemode: d::play_to_client_spawn_info_gamemode::Ty::Survival,
+			previous_gamemode: 255,
+			is_debug: false,
+			is_flat: false,
 			death: None,
-			portalCooldown: 0,
-			seaLevel: 63,
+			portal_cooldown: 0,
+			sea_level: 63,
 		},
-		enforcesSecureChat: false,
+		enforces_secure_chat: false,
 	});
 	let out = client_down(&login, &mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::login(l)] if l.entityId == 42),
+		matches!(out.as_slice(), [A::Login(l)] if l.entity_id == 42),
 		"{out:?}"
 	);
 	let queued = cx.take_outgoing();
@@ -1831,11 +1829,11 @@ fn world_and_recipes_going_down() {
 	assert_eq!(loaded.version, at("1.21.4"));
 	let mut input = Input::new(&loaded.data);
 	assert!(matches!(
-		d::play_toServer_packet::deserialize(&mut input).unwrap(),
-		d::play_toServer_packet::Ty::player_loaded(_)
+		d::play_to_server_packet::deserialize(&mut input).unwrap(),
+		d::play_to_server_packet::Ty::PlayerLoaded(_)
 	));
 
-	let flags = |relative: bool, delta: bool| d::play_toClient_PositionUpdateRelatives::Ty {
+	let flags = |relative: bool, delta: bool| d::play_to_client_position_update_relatives::Ty {
 		x: relative,
 		y: relative,
 		z: relative,
@@ -1844,11 +1842,11 @@ fn world_and_recipes_going_down() {
 		dx: delta,
 		dy: delta,
 		dz: delta,
-		yawDelta: false,
+		yaw_delta: false,
 	};
 	let position = |x: f64, relative: bool, delta: (f64, bool)| {
-		C::position(d::play_toClient_packet_position::Ty {
-			teleportId: 1,
+		C::Position(d::play_to_client_packet_position::Ty {
+			teleport_id: 1,
 			x,
 			y: 64.0,
 			z: 0.0,
@@ -1862,17 +1860,17 @@ fn world_and_recipes_going_down() {
 	};
 	let out = client_down(&position(10.0, false, (0.0, false)), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::position(p), A::entity_velocity(_)] if p.x == 10.0),
+		matches!(out.as_slice(), [A::Position(p), A::EntityVelocity(_)] if p.x == 10.0),
 		"{out:?}"
 	);
 	let out = client_down(&position(1.0, true, (0.5, true)), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::position(p), A::explosion(e)] if p.flags.x && e.playerMotionX == 0.5),
+		matches!(out.as_slice(), [A::Position(p), A::Explosion(e)] if p.flags.x && e.player_motion_x == 0.5),
 		"{out:?}"
 	);
 	let teleport = |entity: i32| {
-		C::entity_teleport(d::play_toClient_packet_entity_teleport::Ty {
-			entityId: entity,
+		C::EntityTeleport(d::play_to_client_packet_entity_teleport::Ty {
+			entity_id: entity,
 			x: 2.0,
 			y: 0.0,
 			z: 0.0,
@@ -1882,12 +1880,12 @@ fn world_and_recipes_going_down() {
 			yaw: 0.0,
 			pitch: 0.0,
 			flags: flags(true, true),
-			onGround: true,
+			on_ground: true,
 		})
 	};
 	let out = client_down(&teleport(42), &mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::entity_teleport(t)] if t.x == 13.0 && t.y == 128.0),
+		matches!(out.as_slice(), [A::EntityTeleport(t)] if t.x == 13.0 && t.y == 128.0),
 		"relative to tracked player: {out:?}"
 	);
 	assert!(
@@ -1896,39 +1894,39 @@ fn world_and_recipes_going_down() {
 	);
 
 	let sound = |v: &str| id(v, "sounds", "entity.generic.explode");
-	let explosion = C::explosion(d::play_toClient_packet_explosion::Ty {
+	let explosion = C::Explosion(d::play_to_client_packet_explosion::Ty {
 		x: 1.0,
 		y: 2.0,
 		z: 3.0,
-		playerKnockback: Some(d::vec3f64::Ty {
+		player_knockback: Some(d::vec3f64::Ty {
 			x: 0.25,
 			y: 0.5,
 			z: 0.0,
 		}),
-		explosionParticle: d::Particle::Ty::explosion,
-		sound: d::ItemSoundHolder::Ty::Id(sound("1.21.4")),
+		explosion_particle: d::particle::Ty::Explosion,
+		sound: d::item_sound_holder::Ty::Id(sound("1.21.4")),
 	});
 	let out = client_down(&explosion, &mut cx);
-	let [A::explosion(e)] = out.as_slice() else {
+	let [A::Explosion(e)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
-		(e.playerMotionX, e.playerMotionY, e.radius),
+		(e.player_motion_x, e.player_motion_y, e.radius),
 		(0.25, 0.5, 0.0)
 	);
 	assert!(matches!(
 		e.small_explosion_particle,
-		a::Particle::Ty::explosion
+		a::particle::Ty::Explosion
 	));
-	assert_eq!(e.sound, a::ItemSoundHolder::Ty::Id(sound("1.20.5")));
+	assert_eq!(e.sound, a::item_sound_holder::Ty::Id(sound("1.20.5")));
 
 	let stone = id("1.21.4", "items", "stone");
-	let declare = C::declare_recipes(d::play_toClient_packet_declare_recipes::Ty {
+	let declare = C::DeclareRecipes(d::play_to_client_packet_declare_recipes::Ty {
 		recipes: vec![],
-		stoneCutterRecipes: vec![
-			d::play_toClient_packet_declare_recipes__stoneCutterRecipes__items::Ty {
-				input: d::IDSet::Ty::Ids(vec![stone]),
-				slotDisplay: d::play_toClient_SlotDisplay::Ty::item_stack(item_d(
+		stone_cutter_recipes: vec![
+			d::play_to_client_packet_declare_recipes_stone_cutter_recipes_items::Ty {
+				input: d::id_set::Ty::Ids(vec![stone]),
+				slot_display: d::play_to_client_slot_display::Ty::ItemStack(item_d(
 					"stone_slab",
 					vec![],
 				)),
@@ -1936,64 +1934,64 @@ fn world_and_recipes_going_down() {
 		],
 	});
 	let out = client_down(&declare, &mut cx);
-	let [A::declare_recipes(r)] = out.as_slice() else {
+	let [A::DeclareRecipes(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert!(
-		matches!(&r[0].data, a::play_toClient_packet__declare_recipes__items__data::Ty::minecraft_stonecutting(s) if s.ingredient.len() == 1)
+		matches!(&r[0].data, a::play_to_client_packet_declare_recipes_items_data::Ty::MinecraftStonecutting(s) if s.ingredient.len() == 1)
 	);
-	use d::play_toClient_SlotDisplay::Ty as S;
-	let book = C::recipe_book_add(d::play_toClient_packet_recipe_book_add::Ty {
-		entries: vec![d::play_toClient_packet_recipe_book_add__entries__items::Ty {
-			recipe: d::play_toClient_packet_recipe_book_add__entries__items__recipe::Ty {
-				displayId: 7,
-				display: d::play_toClient_RecipeDisplay::Ty::crafting_shapeless(d::play_toClient_RecipeDisplay__crafting_shapeless::Ty {
-					ingredients: vec![S::item(id("1.21.4", "items", "oak_log"))],
-					result: S::item_stack(item_d("oak_planks", vec![])),
-					craftingStation: S::item(id("1.21.4", "items", "crafting_table")),
+	use d::play_to_client_slot_display::Ty as S;
+	let book = C::RecipeBookAdd(d::play_to_client_packet_recipe_book_add::Ty {
+		entries: vec![d::play_to_client_packet_recipe_book_add_entries_items::Ty {
+			recipe: d::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty {
+				display_id: 7,
+				display: d::play_to_client_recipe_display::Ty::CraftingShapeless(d::play_to_client_recipe_display_crafting_shapeless::Ty {
+					ingredients: vec![S::Item(id("1.21.4", "items", "oak_log"))],
+					result: S::ItemStack(item_d("oak_planks", vec![])),
+					crafting_station: S::Item(id("1.21.4", "items", "crafting_table")),
 				}),
 				group: 0,
-				category: d::play_toClient_packet_recipe_book_add__entries__items__recipe__category::Ty::crafting_building_blocks,
-				craftingRequirements: None,
+				category: d::play_to_client_packet_recipe_book_add_entries_items_recipe_category::Ty::CraftingBuildingBlocks,
+				crafting_requirements: None,
 			},
-			flags: d::play_toClient_packet_recipe_book_add__entries__items__flags::Ty { notification: true, highlight: true },
+			flags: d::play_to_client_packet_recipe_book_add_entries_items_flags::Ty { notification: true, highlight: true },
 		}],
 		replace: true,
 	});
 	let out = client_down(&book, &mut cx);
-	let [A::declare_recipes(r), A::unlock_recipes(u)] = out.as_slice() else {
+	let [A::DeclareRecipes(r), A::UnlockRecipes(u)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	assert_eq!(r.len(), 2, "stonecutter recipe kept alongside the book");
 	assert!(
-		matches!(&r[1].data, a::play_toClient_packet__declare_recipes__items__data::Ty::minecraft_crafting_shapeless(s) if s.ingredients.len() == 1)
+		matches!(&r[1].data, a::play_to_client_packet_declare_recipes_items_data::Ty::MinecraftCraftingShapeless(s) if s.ingredients.len() == 1)
 	);
 	assert_eq!(u.recipes1, vec!["minecraft:7".to_owned()]);
 	assert!(
-		matches!(&u.recipes2, a::play_toClient_packet_unlock_recipes__recipes2::Ty::v0(h) if h == &u.recipes1)
+		matches!(&u.recipes2, a::play_to_client_packet_unlock_recipes_recipes2::Ty::V0(h) if h == &u.recipes1)
 	);
-	let request = a::play_toServer_packet::Ty::craft_recipe_request(
-		a::play_toServer_packet_craft_recipe_request::Ty {
-			windowId: 1,
+	let request = a::play_to_server_packet::Ty::CraftRecipeRequest(
+		a::play_to_server_packet_craft_recipe_request::Ty {
+			window_id: 1,
 			recipe: "minecraft:7".to_owned(),
-			makeAll: false,
+			make_all: false,
 		},
 	);
 	let out = server_up(&request, &mut cx);
 	assert!(
-		matches!(out.as_slice(), [d::play_toServer_packet::Ty::craft_recipe_request(r)] if r.recipeId == 7 && r.windowId == 1),
+		matches!(out.as_slice(), [d::play_to_server_packet::Ty::CraftRecipeRequest(r)] if r.recipe_id == 7 && r.window_id == 1),
 		"{out:?}"
 	);
 
-	use d::play_toClient_ChatTypeParameterType::Ty as Param;
-	let decoration = d::play_toClient_ChatType::Ty {
-		translationKey: "chat.type.text".to_owned(),
-		parameters: vec![Param::sender, Param::content],
+	use d::play_to_client_chat_type_parameter_type::Ty as Param;
+	let decoration = d::play_to_client_chat_type::Ty {
+		translation_key: "chat.type.text".to_owned(),
+		parameters: vec![Param::Sender, Param::Content],
 		style: tag(vec![text("color", "red")]),
 	};
-	let chat = C::profileless_chat(d::play_toClient_packet_profileless_chat::Ty {
+	let chat = C::ProfilelessChat(d::play_to_client_packet_profileless_chat::Ty {
 		message: string_tag("hi"),
-		r#type: d::play_toClient_ChatTypesHolder::Ty::Inline(d::play_toClient_ChatTypes::Ty {
+		r#type: d::play_to_client_chat_types_holder::Ty::Inline(d::play_to_client_chat_types::Ty {
 			chat: decoration.clone(),
 			narration: decoration,
 		}),
@@ -2001,20 +1999,20 @@ fn world_and_recipes_going_down() {
 		target: None,
 	});
 	let out = client_down(&chat, &mut cx);
-	let [A::system_chat(s)] = out.as_slice() else {
+	let [A::SystemChat(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
 	let content = compound(&s.content);
 	assert_eq!(
 		field(content, "translate"),
-		&nbt::gen::pds_Payload::Ty::string("chat.type.text".to_owned())
+		&nbt::Payload::String("chat.type.text".to_owned())
 	);
 	assert_eq!(
 		field(content, "color"),
-		&nbt::gen::pds_Payload::Ty::string("red".to_owned())
+		&nbt::Payload::String("red".to_owned())
 	);
-	let nbt::gen::pds_Payload::Ty::list(nbt::gen::pds_List::Ty {
-		items: nbt::gen::pds_List_0::Ty::compound(with),
+	let nbt::gen::payload::Ty::List(nbt::gen::list::Ty {
+		items: nbt::gen::list_0::Ty::Compound(with),
 		..
 	}) = field(content, "with")
 	else {
@@ -2022,36 +2020,36 @@ fn world_and_recipes_going_down() {
 	};
 	assert_eq!(
 		field(&with[0], "text"),
-		&nbt::gen::pds_Payload::Ty::string("Bob".to_owned())
+		&nbt::Payload::String("Bob".to_owned())
 	);
 	assert_eq!(
 		field(&with[1], "text"),
-		&nbt::gen::pds_Payload::Ty::string("hi".to_owned())
+		&nbt::Payload::String("hi".to_owned())
 	);
 }
 
 #[test]
 fn food_and_sword_blocking() {
-	use a::play_toClient_packet::Ty as A;
-	use d::play_toClient_packet::Ty as C;
+	use a::play_to_client_packet::Ty as A;
+	use d::play_to_client_packet::Ty as C;
 	let mut cx = Session::new();
 	let stew = item_a(
 		"suspicious_stew",
-		vec![a::SlotComponent::Ty::food(a::SlotComponent__food::Ty {
+		vec![a::slot_component::Ty::Food(a::slot_component_food::Ty {
 			nutrition: 6,
-			saturationModifier: 0.6,
-			canAlwaysEat: true,
-			secondsToEat: 1.6,
-			effects: vec![a::SlotComponent__food__effects__items::Ty {
-				effect: a::ItemPotionEffect::Ty {
+			saturation_modifier: 0.6,
+			can_always_eat: true,
+			seconds_to_eat: 1.6,
+			effects: vec![a::slot_component_food_effects_items::Ty {
+				effect: a::item_potion_effect::Ty {
 					id: id("1.20.5", "effects", "Regeneration"),
-					details: a::ItemEffectDetail::Ty {
+					details: a::item_effect_detail::Ty {
 						amplifier: 0,
 						duration: 160,
 						ambient: false,
-						showParticles: true,
-						showIcon: true,
-						hiddenEffect: None,
+						show_particles: true,
+						show_icon: true,
+						hidden_effect: None,
 					},
 				},
 				probability: 0.5,
@@ -2059,23 +2057,23 @@ fn food_and_sword_blocking() {
 		})],
 	);
 	minecraft_versions::custom::tricky_enable_legacy_combat(&mut cx);
-	let window = A::window_items(a::play_toClient_packet_window_items::Ty {
-		windowId: 0,
-		stateId: 1,
+	let window = A::WindowItems(a::play_to_client_packet_window_items::Ty {
+		window_id: 0,
+		state_id: 1,
 		items: vec![
 			stew,
 			item_a("diamond_sword", vec![]),
 			item_a("diamond", vec![]),
 		],
-		carriedItem: a::Slot::Ty::v0,
+		carried_item: a::slot::Ty::V0,
 	});
 	let out = up(&window, &mut cx);
-	let [C::window_items(w)] = out.as_slice() else {
+	let [C::WindowItems(w)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let components = |slot: &d::Slot::Ty| match slot {
-		d::Slot::Ty::default(_, s) => {
-			assert_eq!(s.addedComponentCount as usize, s.components.len());
+	let components = |slot: &d::slot::Ty| match slot {
+		d::slot::Ty::Default(_, s) => {
+			assert_eq!(s.added_component_count as usize, s.components.len());
 			s.components.clone()
 		}
 		_ => vec![],
@@ -2084,16 +2082,16 @@ fn food_and_sword_blocking() {
 	let consumable = food
 		.iter()
 		.find_map(|c| match c {
-			d::SlotComponent::Ty::consumable(c) => Some(c),
+			d::slot_component::Ty::Consumable(c) => Some(c),
 			_ => None,
 		})
 		.expect("food split into consumable");
 	assert_eq!(consumable.consume_seconds, 1.6);
 	assert!(
-		matches!(&consumable.effects[..], [d::ItemConsumeEffect::Ty::apply_effects(e)] if e.probability == 0.5 && e.effects.len() == 1)
+		matches!(&consumable.effects[..], [d::item_consume_effect::Ty::ApplyEffects(e)] if e.probability == 0.5 && e.effects.len() == 1)
 	);
 	assert!(
-		components(&w.items[1]).iter().any(|c| matches!(c, d::SlotComponent::Ty::consumable(c) if matches!(c.animation, d::SlotComponent__consumable__animation::Ty::block))),
+		components(&w.items[1]).iter().any(|c| matches!(c, d::slot_component::Ty::Consumable(c) if matches!(c.animation, d::slot_component_consumable_animation::Ty::Block))),
 		"sword blocks under legacy combat"
 	);
 	assert!(components(&w.items[2]).is_empty());
@@ -2101,46 +2099,46 @@ fn food_and_sword_blocking() {
 	let beef = item_d(
 		"cooked_beef",
 		vec![
-			d::SlotComponent::Ty::food(d::SlotComponent__food::Ty {
+			d::slot_component::Ty::Food(d::slot_component_food::Ty {
 				nutrition: 8,
-				saturationModifier: 12.8,
-				canAlwaysEat: false,
+				saturation_modifier: 12.8,
+				can_always_eat: false,
 			}),
-			d::SlotComponent::Ty::consumable(d::SlotComponent__consumable::Ty {
+			d::slot_component::Ty::Consumable(d::slot_component_consumable::Ty {
 				consume_seconds: 0.8,
-				animation: d::SlotComponent__consumable__animation::Ty::eat,
-				sound: d::ItemSoundHolder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
+				animation: d::slot_component_consumable_animation::Ty::Eat,
+				sound: d::item_sound_holder::Ty::Id(id("1.21.4", "sounds", "entity.generic.eat")),
 				makes_particles: true,
-				effects: vec![d::ItemConsumeEffect::Ty::apply_effects(
-					d::ItemConsumeEffect__apply_effects::Ty {
+				effects: vec![d::item_consume_effect::Ty::ApplyEffects(
+					d::item_consume_effect_apply_effects::Ty {
 						effects: vec![potion("Hunger")],
 						probability: 0.25,
 					},
 				)],
 			}),
-			d::SlotComponent::Ty::use_remainder(item_d("bowl", vec![])),
+			d::slot_component::Ty::UseRemainder(item_d("bowl", vec![])),
 		],
 	);
 	let out = client_down(
-		&C::set_slot(d::play_toClient_packet_set_slot::Ty {
-			windowId: 0,
-			stateId: 2,
+		&C::SetSlot(d::play_to_client_packet_set_slot::Ty {
+			window_id: 0,
+			state_id: 2,
 			slot: 36,
 			item: beef,
 		}),
 		&mut cx,
 	);
-	let [A::set_slot(s)] = out.as_slice() else {
+	let [A::SetSlot(s)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let a::Slot::Ty::default(_, item) = &s.item else {
+	let a::slot::Ty::Default(_, item) = &s.item else {
 		panic!()
 	};
-	assert_eq!(item.addedComponentCount as usize, item.components.len());
-	let [a::SlotComponent::Ty::food(f)] = item.components.as_slice() else {
+	assert_eq!(item.added_component_count as usize, item.components.len());
+	let [a::slot_component::Ty::Food(f)] = item.components.as_slice() else {
 		panic!("{item:?}")
 	};
-	assert_eq!(f.secondsToEat, 0.8);
+	assert_eq!(f.seconds_to_eat, 0.8);
 	assert!(
 		matches!(&f.effects[..], [e] if e.probability == 0.25 && e.effect.id == id("1.20.5", "effects", "Hunger"))
 	);
@@ -2148,40 +2146,40 @@ fn food_and_sword_blocking() {
 
 #[test]
 fn projectile_power_going_down() {
-	use a::play_toClient_packet::Ty as A;
-	use d::play_toClient_packet::Ty as C;
+	use a::play_to_client_packet::Ty as A;
+	use d::play_to_client_packet::Ty as C;
 	let mut cx = Session::new();
-	let spawn = C::spawn_entity(d::play_toClient_packet_spawn_entity::Ty {
-		entityId: 3,
-		objectUUID: 3,
+	let spawn = C::SpawnEntity(d::play_to_client_packet_spawn_entity::Ty {
+		entity_id: 3,
+		object_uuid: 3,
 		r#type: id("1.21.4", "entities", "fireball"),
 		x: 0.0,
 		y: 64.0,
 		z: 0.0,
 		pitch: 0,
 		yaw: 0,
-		headPitch: 0,
-		objectData: 0,
+		head_pitch: 0,
+		object_data: 0,
 		velocity: d::vec3i16::Ty { x: 800, y: 0, z: 0 },
 	});
 	client_down(&spawn, &mut cx);
 	let power = |cx: &mut Session| {
 		client_down(
-			&C::set_projectile_power(d::play_toClient_packet_set_projectile_power::Ty {
+			&C::SetProjectilePower(d::play_to_client_packet_set_projectile_power::Ty {
 				id: 3,
-				accelerationPower: 0.1,
+				acceleration_power: 0.1,
 			}),
 			cx,
 		)
 	};
 	let out = power(&mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::set_projectile_power(p)] if (p.power.x - 0.1).abs() < 1e-9 && p.power.y == 0.0),
+		matches!(out.as_slice(), [A::SetProjectilePower(p)] if (p.power.x - 0.1).abs() < 1e-9 && p.power.y == 0.0),
 		"{out:?}"
 	);
 	client_down(
-		&C::entity_velocity(d::play_toClient_packet_entity_velocity::Ty {
-			entityId: 3,
+		&C::EntityVelocity(d::play_to_client_packet_entity_velocity::Ty {
+			entity_id: 3,
 			velocity: d::vec3i16::Ty {
 				x: 0,
 				y: -400,
@@ -2192,46 +2190,46 @@ fn projectile_power_going_down() {
 	);
 	let out = power(&mut cx);
 	assert!(
-		matches!(out.as_slice(), [A::set_projectile_power(p)] if (p.power.y + 0.1).abs() < 1e-9),
+		matches!(out.as_slice(), [A::SetProjectilePower(p)] if (p.power.y + 0.1).abs() < 1e-9),
 		"{out:?}"
 	);
-	client_down(&C::entity_destroy(vec![3]), &mut cx);
+	client_down(&C::EntityDestroy(vec![3]), &mut cx);
 	assert!(power(&mut cx).is_empty());
 }
 
 #[test]
 fn old_client_movement_going_up() {
-	use a::play_toServer_packet::Ty as P;
-	use d::play_toServer_packet::Ty as Q;
+	use a::play_to_server_packet::Ty as P;
+	use d::play_to_server_packet::Ty as Q;
 	let mut cx = Session::new();
 	let out = server_up(
-		&P::position(a::play_toServer_packet_position::Ty {
+		&P::Position(a::play_to_server_packet_position::Ty {
 			x: 1.0,
 			y: 64.0,
 			z: 2.0,
-			onGround: true,
+			on_ground: true,
 		}),
 		&mut cx,
 	);
 	assert!(
-		matches!(out.as_slice(), [Q::position(p), Q::tick_end(_)] if p.flags.onGround && p.x == 1.0),
+		matches!(out.as_slice(), [Q::Position(p), Q::TickEnd(_)] if p.flags.on_ground && p.x == 1.0),
 		"{out:?}"
 	);
 	let out = server_up(
-		&P::steer_vehicle(a::play_toServer_packet_steer_vehicle::Ty {
+		&P::SteerVehicle(a::play_to_server_packet_steer_vehicle::Ty {
 			sideways: 0.0,
 			forward: 0.98,
 			jump: 2,
 		}),
 		&mut cx,
 	);
-	use d::play_toServer_packet_entity_action__actionId::Ty as Action;
+	use d::play_to_server_packet_entity_action_action_id::Ty as Action;
 	assert!(
-		matches!(out.as_slice(), [Q::player_input(i), Q::entity_action(e)] if i.forward && i.shift && !i.jump && matches!(e.actionId, Action::start_sneaking)),
+		matches!(out.as_slice(), [Q::PlayerInput(i), Q::EntityAction(e)] if i.forward && i.shift && !i.jump && matches!(e.action_id, Action::StartSneaking)),
 		"{out:?}"
 	);
 	let out = server_up(
-		&P::steer_vehicle(a::play_toServer_packet_steer_vehicle::Ty {
+		&P::SteerVehicle(a::play_to_server_packet_steer_vehicle::Ty {
 			sideways: 0.0,
 			forward: 0.0,
 			jump: 0,
@@ -2239,7 +2237,7 @@ fn old_client_movement_going_up() {
 		&mut cx,
 	);
 	assert!(
-		matches!(out.as_slice(), [Q::player_input(_), Q::entity_action(e)] if matches!(e.actionId, Action::stop_sneaking)),
+		matches!(out.as_slice(), [Q::PlayerInput(_), Q::EntityAction(e)] if matches!(e.action_id, Action::StopSneaking)),
 		"{out:?}"
 	);
 }

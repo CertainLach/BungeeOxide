@@ -5,8 +5,8 @@ use crate::gen::convert::{v1_21_6 as a, v1_21_8 as b, Version};
 use crate::pds::convert::Result;
 use crate::Session;
 
-remaps!(Version::V1_21_6 => Version::V1_21_8 { late_sound_up_1_21_8: a::ItemSoundHolder::Ty = remap::sound; });
-remaps!(Version::V1_21_8 => Version::V1_21_6 { late_sound_down_1_21_6: a::ItemSoundHolder::Ty = remap::sound; });
+remaps!(Version::V1_21_6 => Version::V1_21_8 { late_sound_up_1_21_8: a::item_sound_holder::Ty = remap::sound; });
+remaps!(Version::V1_21_8 => Version::V1_21_6 { late_sound_down_1_21_6: a::item_sound_holder::Ty = remap::sound; });
 
 items!(a => b, Version::V1_21_6 => Version::V1_21_8 {
 	slot: late_slot_item_up_1_21_8, hashed: late_hashed_item_up_1_21_8, trade1: late_trade1_up_1_21_8, trade2: late_trade2_up_1_21_8,
@@ -26,16 +26,16 @@ tags!(a => b, Version::V1_21_6 => Version::V1_21_8, &[], { config: late_config_t
 tags!(b => a, Version::V1_21_8 => Version::V1_21_6, &[], { config: late_config_tags_down_1_21_6, play: late_play_tags_down_1_21_6 });
 
 pub fn late_matchers_up_1_21_8(
-	v: &a::ItemBlockPredicate::Ty,
+	v: &a::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<b::DataComponentMatchers::Ty> {
+) -> Result<b::data_component_matchers::Ty> {
 	Ok(v.components.clone())
 }
 
 pub fn late_matchers_down_1_21_6(
-	v: &b::ItemBlockPredicate::Ty,
+	v: &b::item_block_predicate::Ty,
 	_cx: &mut Session,
-) -> Result<a::DataComponentMatchers::Ty> {
+) -> Result<a::data_component_matchers::Ty> {
 	Ok(v.components.clone())
 }
 

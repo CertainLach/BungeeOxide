@@ -141,55 +141,55 @@ fn pretty(id: i16) -> String {
 pub(super) fn down(v: Slot8) -> Result<Slot7> {
 	let (id, s) = match v {
 		Slot8::_1 => return Ok(Slot7::_1),
-		Slot8::default(id, s) => (id, s),
+		Slot8::Default(id, s) => (id, s),
 	};
-	let mut tag = s.nbtData;
+	let mut tag = s.nbt_data;
 	let mut mark = Vec::new();
-	let (mut new_id, mut damage) = (id, s.itemDamage);
-	if let Some((i, d)) = item_1_7(id, s.itemDamage) {
+	let (mut new_id, mut damage) = (id, s.item_damage);
+	if let Some((i, d)) = item_1_7(id, s.item_damage) {
 		(new_id, damage) = (i, d);
-		mark.push(Entry::new("id", Payload::short(id)));
-		mark.push(Entry::new("Damage", Payload::short(s.itemDamage)));
+		mark.push(Entry::new("id", Payload::Short(id)));
+		mark.push(Entry::new("Damage", Payload::Short(s.item_damage)));
 		let c = Entry::root(&mut tag);
 		let mut display = match c.take("display") {
-			Some(Payload::compound(d)) => d,
+			Some(Payload::Compound(d)) => d,
 			_ => Vec::new(),
 		};
 		if display.field("Name").is_none() {
 			display.push(Entry::new(
 				"Name",
-				Payload::string(format!("\u{a7}r1.8 {}", pretty(id))),
+				Payload::String(format!("\u{a7}r1.8 {}", pretty(id))),
 			));
-			mark.push(Entry::new("Named", Payload::byte(1)));
+			mark.push(Entry::new("Named", Payload::Byte(1)));
 		}
-		c.push(Entry::new("display", Payload::compound(display)));
+		c.push(Entry::new("display", Payload::Compound(display)));
 	}
 	if id == 387 {
 		if let Some(Entry {
-			value: Payload::compound(c),
+			value: Payload::Compound(c),
 			..
 		}) = tag.as_mut()
 		{
-			if let Some(Payload::list(pages)) = c.take("pages") {
+			if let Some(Payload::List(pages)) = c.take("pages") {
 				if let Some(old) = pages.strings() {
 					let legacy = old.iter().map(|p| text::to_legacy(p)).collect();
-					c.push(Entry::new("pages", ListItems::string(legacy)));
-					mark.push(Entry::new("pages", Payload::list(pages)));
+					c.push(Entry::new("pages", ListItems::String(legacy)));
+					mark.push(Entry::new("pages", Payload::List(pages)));
 				} else {
-					c.push(Entry::new("pages", Payload::list(pages)));
+					c.push(Entry::new("pages", Payload::List(pages)));
 				}
 			}
 		}
 	}
 	if !mark.is_empty() {
-		Entry::root(&mut tag).push(Entry::new(MARK, Payload::compound(mark)));
+		Entry::root(&mut tag).push(Entry::new(MARK, Payload::Compound(mark)));
 	}
-	Ok(Slot7::default(
+	Ok(Slot7::Default(
 		new_id,
-		v1_7::slot__default::Ty {
-			itemCount: s.itemCount,
-			itemDamage: damage,
-			nbtData: compress(&tag)?,
+		v1_7::slot_default::Ty {
+			item_count: s.item_count,
+			item_damage: damage,
+			nbt_data: compress(&tag)?,
 		},
 	))
 }
@@ -197,27 +197,27 @@ pub(super) fn down(v: Slot8) -> Result<Slot7> {
 pub(super) fn up(v: Slot7) -> Result<Slot8> {
 	let (mut id, s) = match v {
 		Slot7::_1 => return Ok(Slot8::_1),
-		Slot7::default(id, s) => (id, s),
+		Slot7::Default(id, s) => (id, s),
 	};
-	let mut tag = decompress(&s.nbtData)?;
-	let mut damage = s.itemDamage;
+	let mut tag = decompress(&s.nbt_data)?;
+	let mut damage = s.item_damage;
 	if let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = tag.as_mut()
 	{
-		if let Some(Payload::compound(mut mark)) = c.take(MARK) {
-			if let Some(Payload::short(i)) = mark.field("id") {
+		if let Some(Payload::Compound(mut mark)) = c.take(MARK) {
+			if let Some(Payload::Short(i)) = mark.field("id") {
 				id = *i;
 			}
-			if let Some(Payload::short(d)) = mark.field("Damage") {
+			if let Some(Payload::Short(d)) = mark.field("Damage") {
 				damage = *d;
 			}
 			if mark.field("Named").is_some() {
-				if let Some(Payload::compound(mut display)) = c.take("display") {
+				if let Some(Payload::Compound(mut display)) = c.take("display") {
 					display.take("Name");
 					if !display.is_empty() {
-						c.push(Entry::new("display", Payload::compound(display)));
+						c.push(Entry::new("display", Payload::Compound(display)));
 					}
 				}
 			}
@@ -229,35 +229,35 @@ pub(super) fn up(v: Slot7) -> Result<Slot8> {
 			tag = None;
 		}
 	}
-	Ok(Slot8::default(
+	Ok(Slot8::Default(
 		id,
-		v1_8::slot__default::Ty {
-			itemCount: s.itemCount,
-			itemDamage: damage,
-			nbtData: tag,
+		v1_8::slot_default::Ty {
+			item_count: s.item_count,
+			item_damage: damage,
+			nbt_data: tag,
 		},
 	))
 }
 
 pub(super) fn book_pages_1_8(slot: &mut Slot8) {
-	let Slot8::default(_, s) = slot else { return };
+	let Slot8::Default(_, s) = slot else { return };
 	let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
-	}) = s.nbtData.as_mut()
+	}) = s.nbt_data.as_mut()
 	else {
 		return;
 	};
-	let Some(Payload::list(pages)) = c.take("pages") else {
+	let Some(Payload::List(pages)) = c.take("pages") else {
 		return;
 	};
 	let pages = match pages.strings() {
-		Some(p) => List::new(ListItems::string(
+		Some(p) => List::new(ListItems::String(
 			p.iter().map(|p| text::from_legacy(p)).collect(),
 		)),
 		None => pages,
 	};
-	c.push(Entry::new("pages", Payload::list(pages)));
+	c.push(Entry::new("pages", Payload::List(pages)));
 }
 
 pub fn slot_1_7(v: Slot8, _cx: &mut Session) -> Result<Slot7> {
@@ -270,34 +270,34 @@ pub fn legacy_slot_1_8(v: Slot7, _cx: &mut Session) -> Result<Slot8> {
 
 pub(super) fn flower_pot_1_7(tag: &mut Option<Entry>) {
 	let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = tag.as_mut()
 	else {
 		return;
 	};
-	if let Some(Payload::string(name)) = c.field("Item") {
+	if let Some(Payload::String(name)) = c.field("Item") {
 		let id = registry::names(Version::V1_8, "items")
 			.and_then(|n| n.id(name))
 			.unwrap_or(0);
 		let id = item_1_7(id as i16, 0).map_or(id as i32, |(i, _)| i as i32);
-		c.put_last("Item", Payload::int(id));
+		c.put_last("Item", Payload::Int(id));
 	}
 }
 
 pub(super) fn flower_pot_1_8(tag: &mut Option<Entry>) {
 	let Some(Entry {
-		value: Payload::compound(c),
+		value: Payload::Compound(c),
 		..
 	}) = tag.as_mut()
 	else {
 		return;
 	};
-	if let Some(Payload::int(id)) = c.field("Item") {
+	if let Some(Payload::Int(id)) = c.field("Item") {
 		let name = registry::names(Version::V1_8, "items")
 			.and_then(|n| n.name(*id as u32))
 			.unwrap_or("air");
-		c.put_last("Item", Payload::string(format!("minecraft:{name}")));
+		c.put_last("Item", Payload::String(format!("minecraft:{name}")));
 	}
 }
 
@@ -306,12 +306,12 @@ mod tests {
 	use super::*;
 
 	fn item(id: i16, damage: i16, tag: Option<Entry>) -> Slot8 {
-		Slot8::default(
+		Slot8::Default(
 			id,
-			v1_8::slot__default::Ty {
-				itemCount: 3,
-				itemDamage: damage,
-				nbtData: tag,
+			v1_8::slot_default::Ty {
+				item_count: 3,
+				item_damage: damage,
+				nbt_data: tag,
 			},
 		)
 	}
@@ -320,20 +320,20 @@ mod tests {
 	fn new_items_are_replaced_and_restored() {
 		let original = item(409, 0, None);
 		let old = down(original.clone()).unwrap();
-		let Slot7::default(id, s) = &old else {
+		let Slot7::Default(id, s) = &old else {
 			panic!("{old:?}")
 		};
-		assert_eq!((*id, s.itemDamage, s.itemCount), (406, 0, 3));
-		let tag = decompress(&s.nbtData).unwrap().unwrap();
-		let Payload::compound(c) = &tag.value else {
+		assert_eq!((*id, s.item_damage, s.item_count), (406, 0, 3));
+		let tag = decompress(&s.nbt_data).unwrap().unwrap();
+		let Payload::Compound(c) = &tag.value else {
 			panic!("{tag:?}")
 		};
-		let Some(Payload::compound(display)) = c.field("display") else {
+		let Some(Payload::Compound(display)) = c.field("display") else {
 			panic!("{c:?}")
 		};
 		assert_eq!(
 			display.field("Name"),
-			Some(&Payload::string("\u{a7}r1.8 Prismarine Shard".to_owned()))
+			Some(&Payload::String("\u{a7}r1.8 Prismarine Shard".to_owned()))
 		);
 		assert_eq!(up(old).unwrap(), original);
 	}
@@ -344,16 +344,16 @@ mod tests {
 			"",
 			vec![Entry::new(
 				"ench",
-				ListItems::compound(vec![vec![
-					Entry::new("id", Payload::short(16)),
-					Entry::new("lvl", Payload::short(2)),
+				ListItems::Compound(vec![vec![
+					Entry::new("id", Payload::Short(16)),
+					Entry::new("lvl", Payload::Short(2)),
 				]]),
 			)],
 		);
 		let original = item(276, 5, Some(tag));
 		let old = down(original.clone()).unwrap();
 		assert!(
-			matches!(&old, Slot7::default(276, s) if s.itemDamage == 5 && s.nbtData.as_ref().is_some_and(|g| g.starts_with(&[0x1f, 0x8b])))
+			matches!(&old, Slot7::Default(276, s) if s.item_damage == 5 && s.nbt_data.as_ref().is_some_and(|g| g.starts_with(&[0x1f, 0x8b])))
 		);
 		assert_eq!(up(old).unwrap(), original);
 		assert_eq!(down(Slot8::_1).unwrap(), Slot7::_1);

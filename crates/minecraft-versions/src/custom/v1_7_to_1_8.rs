@@ -12,14 +12,14 @@ use crate::session::{Kind, Session};
 
 pub use item::{legacy_slot_1_8, slot_1_7};
 
-type Client7 = v1_7::play_toClient_packet::Ty;
-type Client8 = v1_8::play_toClient_packet::Ty;
-type Server7 = v1_7::play_toServer_packet::Ty;
-type Server8 = v1_8::play_toServer_packet::Ty;
+type Client7 = v1_7::play_to_client_packet::Ty;
+type Client8 = v1_8::play_to_client_packet::Ty;
+type Server7 = v1_7::play_to_server_packet::Ty;
+type Server8 = v1_8::play_to_server_packet::Ty;
 type Pos8 = v1_8::position::Ty;
 type Prop8 =
-	v1_8::play_toClient_packet_player_info__data__items__ANON__add_player__properties__items::Ty;
-type Icon8 = v1_8::play_toClient_packet_map__icons__items::Ty;
+	v1_8::play_to_client_packet_player_info_data_items_anon_add_player_properties_items::Ty;
+type Icon8 = v1_8::play_to_client_packet_map_icons_items::Ty;
 
 const EYES: f64 = 1.6200000047683716;
 
@@ -181,15 +181,18 @@ pub fn position_isi_1_7(v: Pos8, _cx: &mut Session) -> Result<v1_7::position_isi
 	})
 }
 
-pub fn chat_1_7(p: v1_8::play_toClient_packet_chat::Ty, _cx: &mut Session) -> Result<Vec<Client7>> {
+pub fn chat_1_7(
+	p: v1_8::play_to_client_packet_chat::Ty,
+	_cx: &mut Session,
+) -> Result<Vec<Client7>> {
 	if p.position == 2 {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client7::chat(text::chat_1_7(&p.message))])
+	Ok(vec![Client7::Chat(text::chat_1_7(&p.message))])
 }
 
 pub fn legacy_chat_1_8(message: String, _cx: &mut Session) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::chat(v1_8::play_toClient_packet_chat::Ty {
+	Ok(vec![Client8::Chat(v1_8::play_to_client_packet_chat::Ty {
 		message,
 		position: 0,
 	})])
@@ -203,7 +206,7 @@ pub fn entity_destroy_1_7(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client7
 	}
 	Ok(ids
 		.chunks(i8::MAX as usize)
-		.map(|c| Client7::entity_destroy(c.to_vec()))
+		.map(|c| Client7::EntityDestroy(c.to_vec()))
 		.collect())
 }
 
@@ -212,15 +215,15 @@ pub fn legacy_entity_destroy_1_8(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<
 	for id in &ids {
 		st.offsets.remove(id);
 	}
-	Ok(vec![Client8::entity_destroy(ids)])
+	Ok(vec![Client8::EntityDestroy(ids)])
 }
 
 pub fn resource_pack_1_7(
-	p: v1_8::play_toClient_packet_resource_pack_send::Ty,
+	p: v1_8::play_to_client_packet_resource_pack_send::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	Ok(vec![Client7::custom_payload(
-		v1_7::play_toClient_packet_custom_payload::Ty {
+	Ok(vec![Client7::CustomPayload(
+		v1_7::play_to_client_packet_custom_payload::Ty {
 			channel: "MC|RPack".to_owned(),
 			data: p.url.into_bytes(),
 		},
@@ -228,54 +231,54 @@ pub fn resource_pack_1_7(
 }
 
 pub fn map_chunk_1_7(
-	p: v1_8::play_toClient_packet_map_chunk::Ty,
+	p: v1_8::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	Ok(vec![Client7::map_chunk(chunk::single_1_7(p)?)])
+	Ok(vec![Client7::MapChunk(chunk::single_1_7(p)?)])
 }
 
 pub fn legacy_map_chunk_1_8(
-	p: v1_7::play_toClient_packet_map_chunk::Ty,
+	p: v1_7::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::map_chunk(chunk::single_1_8(p)?)])
+	Ok(vec![Client8::MapChunk(chunk::single_1_8(p)?)])
 }
 
 pub fn map_chunk_bulk_1_7(
-	p: v1_8::play_toClient_packet_map_chunk_bulk::Ty,
+	p: v1_8::play_to_client_packet_map_chunk_bulk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	Ok(vec![Client7::map_chunk_bulk(chunk::bulk_1_7(p)?)])
+	Ok(vec![Client7::MapChunkBulk(chunk::bulk_1_7(p)?)])
 }
 
 pub fn legacy_map_chunk_bulk_1_8(
-	p: v1_7::play_toClient_packet_map_chunk_bulk::Ty,
+	p: v1_7::play_to_client_packet_map_chunk_bulk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::map_chunk_bulk(chunk::bulk_1_8(p)?)])
+	Ok(vec![Client8::MapChunkBulk(chunk::bulk_1_8(p)?)])
 }
 
 pub fn record_state_1_7(
-	src: &v1_8::play_toClient_packet_multi_block_change__records__items::Ty,
+	src: &v1_8::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<u16> {
-	Ok(item::state_1_7(src.blockId as u16))
+	Ok(item::state_1_7(src.block_id as u16))
 }
 
 pub fn records_length_1_7(
-	src: &v1_8::play_toClient_packet_multi_block_change::Ty,
+	src: &v1_8::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(src.records.len() as i32 * 4)
 }
 
 pub fn block_change_1_7(
-	p: v1_8::play_toClient_packet_block_change::Ty,
+	p: v1_8::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	let s = item::state_1_7(p.r#type as u16);
-	Ok(vec![Client7::block_change(
-		v1_7::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client7::BlockChange(
+		v1_7::play_to_client_packet_block_change::Ty {
 			location: position_ibi_1_7(p.location, cx)?,
 			r#type: (s >> 4) as i32,
 			metadata: (s & 15) as u8,
@@ -284,11 +287,11 @@ pub fn block_change_1_7(
 }
 
 pub fn legacy_block_change_1_8(
-	p: v1_7::play_toClient_packet_block_change::Ty,
+	p: v1_7::play_to_client_packet_block_change::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::block_change(
-		v1_8::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client8::BlockChange(
+		v1_8::play_to_client_packet_block_change::Ty {
 			location: legacy_position_from_ibi_1_8(p.location, cx)?,
 			r#type: p.r#type << 4 | (p.metadata & 15) as i32,
 		},
@@ -296,19 +299,19 @@ pub fn legacy_block_change_1_8(
 }
 
 pub fn world_event_1_7(
-	p: v1_8::play_toClient_packet_world_event::Ty,
+	p: v1_8::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	let data = match p.effectId {
+	let data = match p.effect_id {
 		2001 => {
 			let s = item::state_1_7(((p.data & 0xfff) << 4 | (p.data >> 12 & 15)) as u16) as i32;
 			s >> 4 | (s & 15) << 12
 		}
 		_ => p.data,
 	};
-	Ok(vec![Client7::world_event(
-		v1_7::play_toClient_packet_world_event::Ty {
-			effectId: p.effectId,
+	Ok(vec![Client7::WorldEvent(
+		v1_7::play_to_client_packet_world_event::Ty {
+			effect_id: p.effect_id,
 			location: position_ibi_1_7(p.location, cx)?,
 			data,
 			global: p.global,
@@ -317,12 +320,12 @@ pub fn world_event_1_7(
 }
 
 pub fn legacy_world_event_1_8(
-	p: v1_7::play_toClient_packet_world_event::Ty,
+	p: v1_7::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::world_event(
-		v1_8::play_toClient_packet_world_event::Ty {
-			effectId: p.effectId,
+	Ok(vec![Client8::WorldEvent(
+		v1_8::play_to_client_packet_world_event::Ty {
+			effect_id: p.effect_id,
 			location: legacy_position_from_ibi_1_8(p.location, cx)?,
 			data: p.data,
 			global: p.global,
@@ -376,17 +379,17 @@ const PARTICLES: [&str; 42] = [
 ];
 
 pub fn world_particles_1_7(
-	p: v1_8::play_toClient_packet_world_particles::Ty,
+	p: v1_8::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_8::play_toClient_packet_world_particles__data::Ty as D;
+	use v1_8::play_to_client_packet_world_particles_data::Ty as D;
 	let block = |kind: &str, d: &[i32]| {
 		let state = d.first().copied().unwrap_or(0);
 		let s = item::state_1_7(((state & 0xfff) << 4 | (state >> 12 & 15)) as u16);
 		format!("{kind}_{}_{}", s >> 4, s & 15)
 	};
-	let particleName = match &p.data {
-		D::v36(d) => {
+	let particle_name = match &p.data {
+		D::V36(d) => {
 			let (id, damage) = (
 				d.first().copied().unwrap_or(1) as i16,
 				d.get(1).copied().unwrap_or(0) as i16,
@@ -394,32 +397,32 @@ pub fn world_particles_1_7(
 			let (id, damage) = item::item_1_7(id, damage).unwrap_or((id, damage));
 			format!("iconcrack_{id}_{damage}")
 		}
-		D::v37(d) => block("blockcrack", d),
-		D::v38(d) => block("blockdust", d),
-		D::default(id @ 0..=34) => PARTICLES[*id as usize].to_owned(),
-		D::default(_) => return Ok(vec![]),
+		D::V37(d) => block("blockcrack", d),
+		D::V38(d) => block("blockdust", d),
+		D::Default(id @ 0..=34) => PARTICLES[*id as usize].to_owned(),
+		D::Default(_) => return Ok(vec![]),
 	};
-	Ok(vec![Client7::world_particles(
-		v1_7::play_toClient_packet_world_particles::Ty {
-			particleName,
+	Ok(vec![Client7::WorldParticles(
+		v1_7::play_to_client_packet_world_particles::Ty {
+			particle_name,
 			x: p.x,
 			y: p.y,
 			z: p.z,
-			offsetX: p.offsetX,
-			offsetY: p.offsetY,
-			offsetZ: p.offsetZ,
-			particleData: p.particleData,
+			offset_x: p.offset_x,
+			offset_y: p.offset_y,
+			offset_z: p.offset_z,
+			particle_data: p.particle_data,
 			particles: p.particles,
 		},
 	)])
 }
 
 pub fn legacy_world_particles_1_8(
-	p: v1_7::play_toClient_packet_world_particles::Ty,
+	p: v1_7::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_8::play_toClient_packet_world_particles__data::Ty as D;
-	let mut parts = p.particleName.splitn(3, '_');
+	use v1_8::play_to_client_packet_world_particles_data::Ty as D;
+	let mut parts = p.particle_name.splitn(3, '_');
 	let base = parts.next().unwrap_or_default();
 	let mut num = || {
 		parts
@@ -428,40 +431,40 @@ pub fn legacy_world_particles_1_8(
 			.unwrap_or(0)
 	};
 	let data = match base {
-		"iconcrack" => D::v36(vec![num(), num()]),
-		"blockcrack" => D::v37(vec![num() | num() << 12]),
-		"blockdust" => D::v38(vec![num() | num() << 12]),
+		"iconcrack" => D::V36(vec![num(), num()]),
+		"blockcrack" => D::V37(vec![num() | num() << 12]),
+		"blockdust" => D::V38(vec![num() | num() << 12]),
 		name => match PARTICLES.iter().position(|n| *n == name) {
-			Some(id) => D::default(id as i32),
+			Some(id) => D::Default(id as i32),
 			None => return Ok(vec![]),
 		},
 	};
-	Ok(vec![Client8::world_particles(
-		v1_8::play_toClient_packet_world_particles::Ty {
-			longDistance: false,
+	Ok(vec![Client8::WorldParticles(
+		v1_8::play_to_client_packet_world_particles::Ty {
+			long_distance: false,
 			x: p.x,
 			y: p.y,
 			z: p.z,
-			offsetX: p.offsetX,
-			offsetY: p.offsetY,
-			offsetZ: p.offsetZ,
-			particleData: p.particleData,
+			offset_x: p.offset_x,
+			offset_y: p.offset_y,
+			offset_z: p.offset_z,
+			particle_data: p.particle_data,
 			particles: p.particles,
 			data,
 		},
 	)])
 }
 
-pub fn map_1_7(p: v1_8::play_toClient_packet_map::Ty, _cx: &mut Session) -> Result<Vec<Client7>> {
-	use v1_8::play_toClient_packet_map__columns::Ty as C;
+pub fn map_1_7(p: v1_8::play_to_client_packet_map::Ty, _cx: &mut Session) -> Result<Vec<Client7>> {
+	use v1_8::play_to_client_packet_map_columns::Ty as C;
 	let packet = |data: Vec<u8>| {
-		Client7::map(v1_7::play_toClient_packet_map::Ty {
-			itemDamage: p.itemDamage,
+		Client7::Map(v1_7::play_to_client_packet_map::Ty {
+			item_damage: p.item_damage,
 			data,
 		})
 	};
 	let mut out = Vec::new();
-	if let C::default(columns, c) = &p.columns {
+	if let C::Default(columns, c) = &p.columns {
 		let (n, rows) = (*columns as u8 as usize, c.rows as u8 as usize);
 		for col in 0..n {
 			let mut data = vec![0, (c.x as u8).wrapping_add(col as u8), c.y as u8];
@@ -471,7 +474,7 @@ pub fn map_1_7(p: v1_8::play_toClient_packet_map::Ty, _cx: &mut Session) -> Resu
 	}
 	let mut icons = vec![1u8];
 	for i in &p.icons {
-		icons.extend([i.directionAndType as u8, i.x as u8, i.z as u8]);
+		icons.extend([i.direction_and_type as u8, i.x as u8, i.z as u8]);
 	}
 	out.push(packet(icons));
 	out.push(packet(vec![2, p.scale as u8]));
@@ -479,18 +482,18 @@ pub fn map_1_7(p: v1_8::play_toClient_packet_map::Ty, _cx: &mut Session) -> Resu
 }
 
 pub fn legacy_map_1_8(
-	p: v1_7::play_toClient_packet_map::Ty,
+	p: v1_7::play_to_client_packet_map::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_8::play_toClient_packet_map__columns::Ty as C;
+	use v1_8::play_to_client_packet_map_columns::Ty as C;
 	let st = state(cx);
-	let (scale, icons) = st.maps.entry(p.itemDamage).or_default();
-	let mut columns = C::v0;
+	let (scale, icons) = st.maps.entry(p.item_damage).or_default();
+	let mut columns = C::V0;
 	match p.data.as_slice() {
 		[0, x, y, rows @ ..] => {
-			columns = C::default(
+			columns = C::Default(
 				1,
-				v1_8::play_toClient_packet_map__columns__default::Ty {
+				v1_8::play_to_client_packet_map_columns_default::Ty {
 					rows: rows.len() as i8,
 					x: *x as i8,
 					y: *y as i8,
@@ -502,7 +505,7 @@ pub fn legacy_map_1_8(
 			*icons = rest
 				.chunks_exact(3)
 				.map(|c| Icon8 {
-					directionAndType: c[0] as i8,
+					direction_and_type: c[0] as i8,
 					x: c[1] as i8,
 					z: c[2] as i8,
 				})
@@ -511,8 +514,8 @@ pub fn legacy_map_1_8(
 		[2, s, ..] => *scale = *s as i8,
 		_ => return Ok(vec![]),
 	}
-	Ok(vec![Client8::map(v1_8::play_toClient_packet_map::Ty {
-		itemDamage: p.itemDamage,
+	Ok(vec![Client8::Map(v1_8::play_to_client_packet_map::Ty {
+		item_damage: p.item_damage,
 		scale: *scale,
 		icons: icons.clone(),
 		columns,
@@ -524,24 +527,24 @@ fn listed(name: &str, display: Option<&str>) -> String {
 }
 
 fn tab_7(name: &str, online: bool, ping: i32) -> Client7 {
-	Client7::player_info(v1_7::play_toClient_packet_player_info::Ty {
-		playerName: name.to_owned(),
+	Client7::PlayerInfo(v1_7::play_to_client_packet_player_info::Ty {
+		player_name: name.to_owned(),
 		online,
 		ping: ping.clamp(0, i16::MAX as i32) as i16,
 	})
 }
 
 pub fn player_info_1_7(
-	p: v1_8::play_toClient_packet_player_info::Ty,
+	p: v1_8::play_to_client_packet_player_info::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_8::play_toClient_packet_player_info__data__items__ANON::Ty as A;
+	use v1_8::play_to_client_packet_player_info_data_items_anon::Ty as A;
 	let st = state(cx);
 	let mut out = Vec::new();
 	for item in p.data {
-		match item.ANON {
-			A::add_player(a) => {
-				let shown = listed(&a.name, a.displayName.as_deref());
+		match item.anon {
+			A::AddPlayer(a) => {
+				let shown = listed(&a.name, a.display_name.as_deref());
 				let old = st.profiles.get(&item.uuid).and_then(|pr| pr.listed.clone());
 				if let Some(old) = old.filter(|o| *o != shown) {
 					out.push(tab_7(&old, false, 0));
@@ -557,7 +560,7 @@ pub fn player_info_1_7(
 					},
 				);
 			}
-			A::update_latency(ping) => {
+			A::UpdateLatency(ping) => {
 				if let Some(pr) = st.profiles.get_mut(&item.uuid) {
 					pr.ping = ping;
 					if let Some(shown) = &pr.listed {
@@ -565,7 +568,7 @@ pub fn player_info_1_7(
 					}
 				}
 			}
-			A::update_display_name(display) => {
+			A::UpdateDisplayName(display) => {
 				if let Some(pr) = st.profiles.get_mut(&item.uuid) {
 					let shown = listed(&pr.name, display.as_deref());
 					if let Some(old) = pr.listed.as_ref().filter(|o| **o != shown) {
@@ -575,7 +578,7 @@ pub fn player_info_1_7(
 					}
 				}
 			}
-			A::remove_player => {
+			A::RemovePlayer => {
 				if let Some(old) = st
 					.profiles
 					.get_mut(&item.uuid)
@@ -584,77 +587,77 @@ pub fn player_info_1_7(
 					out.push(tab_7(&old, false, 0));
 				}
 			}
-			A::update_game_mode(_) | A::default(_) => {}
+			A::UpdateGameMode(_) | A::Default(_) => {}
 		}
 	}
 	Ok(out)
 }
 
 fn tab_8(
-	action: v1_8::play_toClient_packet_player_info__action::Ty,
+	action: v1_8::play_to_client_packet_player_info_action::Ty,
 	uuid: u128,
-	entry: v1_8::play_toClient_packet_player_info__data__items__ANON::Ty,
+	entry: v1_8::play_to_client_packet_player_info_data_items_anon::Ty,
 ) -> Client8 {
-	Client8::player_info(v1_8::play_toClient_packet_player_info::Ty {
+	Client8::PlayerInfo(v1_8::play_to_client_packet_player_info::Ty {
 		action,
-		data: vec![v1_8::play_toClient_packet_player_info__data__items::Ty { uuid, ANON: entry }],
+		data: vec![v1_8::play_to_client_packet_player_info_data_items::Ty { uuid, anon: entry }],
 	})
 }
 
 fn add_8(uuid: u128, name: String, properties: Vec<Prop8>, ping: i32) -> Client8 {
-	use v1_8::play_toClient_packet_player_info__action::Ty as Action;
-	use v1_8::play_toClient_packet_player_info__data__items__ANON::Ty as A;
+	use v1_8::play_to_client_packet_player_info_action::Ty as Action;
+	use v1_8::play_to_client_packet_player_info_data_items_anon::Ty as A;
 	tab_8(
-		Action::add_player,
+		Action::AddPlayer,
 		uuid,
-		A::add_player(
-			v1_8::play_toClient_packet_player_info__data__items__ANON__add_player::Ty {
+		A::AddPlayer(
+			v1_8::play_to_client_packet_player_info_data_items_anon_add_player::Ty {
 				name,
 				properties,
 				gamemode: 0,
 				ping,
-				displayName: None,
+				display_name: None,
 			},
 		),
 	)
 }
 
 pub fn legacy_player_info_1_8(
-	p: v1_7::play_toClient_packet_player_info::Ty,
+	p: v1_7::play_to_client_packet_player_info::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_8::play_toClient_packet_player_info__action::Ty as Action;
-	use v1_8::play_toClient_packet_player_info__data__items__ANON::Ty as A;
+	use v1_8::play_to_client_packet_player_info_action::Ty as Action;
+	use v1_8::play_to_client_packet_player_info_data_items_anon::Ty as A;
 	let st = state(cx);
 	let ping = p.ping as i32;
-	Ok(match (st.tab.get(&p.playerName).copied(), p.online) {
+	Ok(match (st.tab.get(&p.player_name).copied(), p.online) {
 		(None, true) => {
-			let uuid = name_uuid(&p.playerName);
-			st.tab.insert(p.playerName.clone(), uuid);
-			let name = text::truncate(&text::strip(&p.playerName), 16);
+			let uuid = name_uuid(&p.player_name);
+			st.tab.insert(p.player_name.clone(), uuid);
+			let name = text::truncate(&text::strip(&p.player_name), 16);
 			vec![add_8(uuid, name, vec![], ping)]
 		}
-		(Some(uuid), true) => vec![tab_8(Action::update_latency, uuid, A::update_latency(ping))],
+		(Some(uuid), true) => vec![tab_8(Action::UpdateLatency, uuid, A::UpdateLatency(ping))],
 		(Some(uuid), false) => {
-			st.tab.remove(&p.playerName);
-			vec![tab_8(Action::remove_player, uuid, A::remove_player)]
+			st.tab.remove(&p.player_name);
+			vec![tab_8(Action::RemovePlayer, uuid, A::RemovePlayer)]
 		}
 		(None, false) => vec![],
 	})
 }
 
 pub fn named_entity_spawn_1_7(
-	p: v1_8::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_8::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	cx.spawned(p.entityId, Kind::Player);
-	let (playerName, data) = match state(cx).profiles.get(&p.playerUUID) {
+	cx.spawned(p.entity_id, Kind::Player);
+	let (player_name, data) = match state(cx).profiles.get(&p.player_uuid) {
 		Some(pr) => (
 			text::truncate(&pr.name, 16),
 			pr.properties
 				.iter()
 				.map(
-					|q| v1_7::play_toClient_packet_named_entity_spawn__data__items::Ty {
+					|q| v1_7::play_to_client_packet_named_entity_spawn_data_items::Ty {
 						name: q.name.clone(),
 						value: q.value.clone(),
 						signature: q.signature.clone().unwrap_or_default(),
@@ -664,36 +667,36 @@ pub fn named_entity_spawn_1_7(
 		),
 		None => (String::new(), vec![]),
 	};
-	Ok(vec![Client7::named_entity_spawn(
-		v1_7::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: uuid_string(p.playerUUID),
-			playerName,
+	Ok(vec![Client7::NamedEntitySpawn(
+		v1_7::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: uuid_string(p.player_uuid),
+			player_name,
 			data,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			currentItem: item::item_1_7(p.currentItem, 0).map_or(p.currentItem, |(id, _)| id),
+			current_item: item::item_1_7(p.current_item, 0).map_or(p.current_item, |(id, _)| id),
 			metadata: meta::down(Kind::Player, p.metadata)?,
 		},
 	)])
 }
 
 pub fn legacy_named_entity_spawn_1_8(
-	p: v1_7::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_7::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_8::play_toClient_packet_player_info__action::Ty as Action;
-	use v1_8::play_toClient_packet_player_info__data__items__ANON::Ty as A;
-	cx.spawned(p.entityId, Kind::Player);
-	let uuid = parse_uuid(&p.playerUUID).unwrap_or_else(|| name_uuid(&p.playerName));
+	use v1_8::play_to_client_packet_player_info_action::Ty as Action;
+	use v1_8::play_to_client_packet_player_info_data_items_anon::Ty as A;
+	cx.spawned(p.entity_id, Kind::Player);
+	let uuid = parse_uuid(&p.player_uuid).unwrap_or_else(|| name_uuid(&p.player_name));
 	let mut out = Vec::new();
 	let st = state(cx);
-	if let Some(fake) = st.tab.get(&p.playerName).copied().filter(|u| *u != uuid) {
-		out.push(tab_8(Action::remove_player, fake, A::remove_player));
-		st.tab.insert(p.playerName.clone(), uuid);
+	if let Some(fake) = st.tab.get(&p.player_name).copied().filter(|u| *u != uuid) {
+		out.push(tab_8(Action::RemovePlayer, fake, A::RemovePlayer));
+		st.tab.insert(p.player_name.clone(), uuid);
 	}
 	let properties = p
 		.data
@@ -704,17 +707,17 @@ pub fn legacy_named_entity_spawn_1_8(
 			signature: (!q.signature.is_empty()).then_some(q.signature),
 		})
 		.collect();
-	out.push(add_8(uuid, p.playerName, properties, 0));
-	out.push(Client8::named_entity_spawn(
-		v1_8::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: uuid,
+	out.push(add_8(uuid, p.player_name, properties, 0));
+	out.push(Client8::NamedEntitySpawn(
+		v1_8::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: uuid,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			currentItem: p.currentItem,
+			current_item: p.current_item,
 			metadata: meta::up(Kind::Player, p.metadata)?,
 		},
 	));
@@ -743,20 +746,20 @@ fn y_offset(ty: u8) -> i32 {
 }
 
 pub fn spawn_entity_1_7(
-	p: v1_8::play_toClient_packet_spawn_entity::Ty,
+	p: v1_8::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_7::play_toClient_packet_spawn_entity__objectData::Ty as V7;
-	use v1_8::play_toClient_packet_spawn_entity__velocity::Ty as V8;
+	use v1_7::play_to_client_packet_spawn_entity_object_data::Ty as V7;
+	use v1_8::play_to_client_packet_spawn_entity_velocity::Ty as V8;
 	let ty = p.r#type as u8;
 	if ty == 78 {
-		state(cx).hidden.insert(p.entityId);
+		state(cx).hidden.insert(p.entity_id);
 		return Ok(vec![]);
 	}
-	cx.spawned(p.entityId, Kind::Object(ty));
+	cx.spawned(p.entity_id, Kind::Object(ty));
 	let (mut data, velocity) = match p.velocity {
-		V8::v0 => (0, None),
-		V8::default(d, v) => (d, Some(v)),
+		V8::V0 => (0, None),
+		V8::Default(d, v) => (d, Some(v)),
 	};
 	let (mut x, mut y, mut z, mut yaw) = (p.x, p.y, p.z, p.yaw);
 	match ty {
@@ -774,52 +777,52 @@ pub fn spawn_entity_1_7(
 	let offset = y_offset(ty);
 	if offset != 0 {
 		y = y.wrapping_add(offset);
-		state(cx).offsets.insert(p.entityId, offset);
+		state(cx).offsets.insert(p.entity_id, offset);
 	}
-	let objectData = match data {
-		0 => V7::v0,
+	let object_data = match data {
+		0 => V7::V0,
 		d => {
 			let v = velocity.unwrap_or(v1_8::vec3i16::Ty { x: 0, y: 0, z: 0 });
-			V7::default(
+			V7::Default(
 				d,
-				v1_7::play_toClient_packet_spawn_entity__objectData__default::Ty {
-					velocityX: v.x,
-					velocityY: v.y,
-					velocityZ: v.z,
+				v1_7::play_to_client_packet_spawn_entity_object_data_default::Ty {
+					velocity_x: v.x,
+					velocity_y: v.y,
+					velocity_z: v.z,
 				},
 			)
 		}
 	};
-	Ok(vec![Client7::spawn_entity(
-		v1_7::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client7::SpawnEntity(
+		v1_7::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
 			r#type: p.r#type,
 			x,
 			y,
 			z,
 			pitch: p.pitch,
 			yaw,
-			objectData,
+			object_data,
 		},
 	)])
 }
 
 pub fn legacy_spawn_entity_1_8(
-	p: v1_7::play_toClient_packet_spawn_entity::Ty,
+	p: v1_7::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_7::play_toClient_packet_spawn_entity__objectData::Ty as V7;
-	use v1_8::play_toClient_packet_spawn_entity__velocity::Ty as V8;
+	use v1_7::play_to_client_packet_spawn_entity_object_data::Ty as V7;
+	use v1_8::play_to_client_packet_spawn_entity_velocity::Ty as V8;
 	let ty = p.r#type as u8;
-	cx.spawned(p.entityId, Kind::Object(ty));
-	let (mut data, velocity) = match p.objectData {
-		V7::v0 => (0, None),
-		V7::default(d, v) => (
+	cx.spawned(p.entity_id, Kind::Object(ty));
+	let (mut data, velocity) = match p.object_data {
+		V7::V0 => (0, None),
+		V7::Default(d, v) => (
 			d,
 			Some(v1_8::vec3i16::Ty {
-				x: v.velocityX,
-				y: v.velocityY,
-				z: v.velocityZ,
+				x: v.velocity_x,
+				y: v.velocity_y,
+				z: v.velocity_z,
 			}),
 		),
 	};
@@ -836,18 +839,18 @@ pub fn legacy_spawn_entity_1_8(
 	let offset = y_offset(ty);
 	if offset != 0 {
 		y = y.wrapping_sub(offset);
-		state(cx).offsets.insert(p.entityId, offset);
+		state(cx).offsets.insert(p.entity_id, offset);
 	}
 	let velocity = match data {
-		0 => V8::v0,
-		d => V8::default(
+		0 => V8::V0,
+		d => V8::Default(
 			d,
 			velocity.unwrap_or(v1_8::vec3i16::Ty { x: 0, y: 0, z: 0 }),
 		),
 	};
-	Ok(vec![Client8::spawn_entity(
-		v1_8::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client8::SpawnEntity(
+		v1_8::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
 			r#type: p.r#type,
 			x,
 			y,
@@ -860,30 +863,30 @@ pub fn legacy_spawn_entity_1_8(
 }
 
 pub fn spawn_entity_living_1_7(
-	p: v1_8::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_8::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	if p.r#type == 30 {
-		state(cx).hidden.insert(p.entityId);
+		state(cx).hidden.insert(p.entity_id);
 		return Ok(vec![]);
 	}
-	cx.spawned(p.entityId, Kind::Mob(p.r#type));
+	cx.spawned(p.entity_id, Kind::Mob(p.r#type));
 	let r#type = match p.r#type {
 		67 => 60,
 		68 => 94,
 		101 => 93,
 		t => t,
 	};
-	Ok(vec![Client7::spawn_entity_living(
-		v1_7::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client7::SpawnEntityLiving(
+		v1_7::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
 			r#type,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 			metadata: meta::down(Kind::Mob(p.r#type), p.metadata)?,
 		},
@@ -891,20 +894,20 @@ pub fn spawn_entity_living_1_7(
 }
 
 pub fn legacy_spawn_entity_living_1_8(
-	p: v1_7::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_7::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	cx.spawned(p.entityId, Kind::Mob(p.r#type));
-	Ok(vec![Client8::spawn_entity_living(
-		v1_8::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
+	cx.spawned(p.entity_id, Kind::Mob(p.r#type));
+	Ok(vec![Client8::SpawnEntityLiving(
+		v1_8::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
 			r#type: p.r#type,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 			metadata: meta::up(Kind::Mob(p.r#type), p.metadata)?,
 		},
@@ -922,14 +925,14 @@ fn painting_offset(direction: i32) -> (i32, i32) {
 }
 
 pub fn spawn_entity_painting_1_7(
-	p: v1_8::play_toClient_packet_spawn_entity_painting::Ty,
+	p: v1_8::play_to_client_packet_spawn_entity_painting::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	cx.spawned(p.entityId, Kind::Object(83));
+	cx.spawned(p.entity_id, Kind::Object(83));
 	let (dx, dz) = painting_offset(p.direction as i32);
-	Ok(vec![Client7::spawn_entity_painting(
-		v1_7::play_toClient_packet_spawn_entity_painting::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client7::SpawnEntityPainting(
+		v1_7::play_to_client_packet_spawn_entity_painting::Ty {
+			entity_id: p.entity_id,
 			title: p.title,
 			location: v1_7::position_iii::Ty {
 				x: p.location.x + dx,
@@ -942,14 +945,14 @@ pub fn spawn_entity_painting_1_7(
 }
 
 pub fn legacy_spawn_entity_painting_1_8(
-	p: v1_7::play_toClient_packet_spawn_entity_painting::Ty,
+	p: v1_7::play_to_client_packet_spawn_entity_painting::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	cx.spawned(p.entityId, Kind::Object(83));
+	cx.spawned(p.entity_id, Kind::Object(83));
 	let (dx, dz) = painting_offset(p.direction);
-	Ok(vec![Client8::spawn_entity_painting(
-		v1_8::play_toClient_packet_spawn_entity_painting::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client8::SpawnEntityPainting(
+		v1_8::play_to_client_packet_spawn_entity_painting::Ty {
+			entity_id: p.entity_id,
 			title: p.title,
 			location: Pos8 {
 				x: p.location.x - dx,
@@ -962,31 +965,31 @@ pub fn legacy_spawn_entity_painting_1_8(
 }
 
 pub fn spawn_entity_experience_orb_1_7(
-	mut p: v1_8::play_toClient_packet_spawn_entity_experience_orb::Ty,
+	mut p: v1_8::play_to_client_packet_spawn_entity_experience_orb::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	p.y = p.y.wrapping_add(8);
-	state(cx).offsets.insert(p.entityId, 8);
-	Ok(vec![Client7::spawn_entity_experience_orb(p)])
+	state(cx).offsets.insert(p.entity_id, 8);
+	Ok(vec![Client7::SpawnEntityExperienceOrb(p)])
 }
 
 pub fn legacy_spawn_entity_experience_orb_1_8(
-	mut p: v1_7::play_toClient_packet_spawn_entity_experience_orb::Ty,
+	mut p: v1_7::play_to_client_packet_spawn_entity_experience_orb::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
 	p.y = p.y.wrapping_sub(8);
-	state(cx).offsets.insert(p.entityId, 8);
-	Ok(vec![Client8::spawn_entity_experience_orb(p)])
+	state(cx).offsets.insert(p.entity_id, 8);
+	Ok(vec![Client8::SpawnEntityExperienceOrb(p)])
 }
 
 pub fn entity_teleport_1_7(
-	p: v1_8::play_toClient_packet_entity_teleport::Ty,
+	p: v1_8::play_to_client_packet_entity_teleport::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	let offset = state(cx).offsets.get(&p.entityId).copied().unwrap_or(0);
-	Ok(vec![Client7::entity_teleport(
-		v1_7::play_toClient_packet_entity_teleport::Ty {
-			entityId: p.entityId,
+	let offset = state(cx).offsets.get(&p.entity_id).copied().unwrap_or(0);
+	Ok(vec![Client7::EntityTeleport(
+		v1_7::play_to_client_packet_entity_teleport::Ty {
+			entity_id: p.entity_id,
 			x: p.x,
 			y: p.y.wrapping_add(offset),
 			z: p.z,
@@ -997,57 +1000,57 @@ pub fn entity_teleport_1_7(
 }
 
 pub fn legacy_entity_teleport_1_8(
-	p: v1_7::play_toClient_packet_entity_teleport::Ty,
+	p: v1_7::play_to_client_packet_entity_teleport::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	let offset = state(cx).offsets.get(&p.entityId).copied().unwrap_or(0);
-	Ok(vec![Client8::entity_teleport(
-		v1_8::play_toClient_packet_entity_teleport::Ty {
-			entityId: p.entityId,
+	let offset = state(cx).offsets.get(&p.entity_id).copied().unwrap_or(0);
+	Ok(vec![Client8::EntityTeleport(
+		v1_8::play_to_client_packet_entity_teleport::Ty {
+			entity_id: p.entity_id,
 			x: p.x,
 			y: p.y.wrapping_sub(offset),
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			onGround: true,
+			on_ground: true,
 		},
 	)])
 }
 
 pub fn entity_metadata_1_7(
-	p: v1_8::play_toClient_packet_entity_metadata::Ty,
+	p: v1_8::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	if state(cx).hidden.contains(&p.entityId) {
+	if state(cx).hidden.contains(&p.entity_id) {
 		return Ok(vec![]);
 	}
-	let metadata = meta::down(cx.kind(p.entityId), p.metadata)?;
+	let metadata = meta::down(cx.kind(p.entity_id), p.metadata)?;
 	if metadata.is_empty() {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client7::entity_metadata(
-		v1_7::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client7::EntityMetadata(
+		v1_7::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)])
 }
 
 pub fn legacy_entity_metadata_1_8(
-	p: v1_7::play_toClient_packet_entity_metadata::Ty,
+	p: v1_7::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	let metadata = meta::up(cx.kind(p.entityId), p.metadata)?;
-	Ok(vec![Client8::entity_metadata(
-		v1_8::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	let metadata = meta::up(cx.kind(p.entity_id), p.metadata)?;
+	Ok(vec![Client8::EntityMetadata(
+		v1_8::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)])
 }
 
 pub fn position_1_7(
-	p: v1_8::play_toClient_packet_position::Ty,
+	p: v1_8::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	let me = &mut state(cx).player;
@@ -1063,24 +1066,24 @@ pub fn position_1_7(
 	} else {
 		p.pitch
 	};
-	Ok(vec![Client7::position(
-		v1_7::play_toClient_packet_position::Ty {
+	Ok(vec![Client7::Position(
+		v1_7::play_to_client_packet_position::Ty {
 			x: me.x,
 			y: me.y + EYES,
 			z: me.z,
 			yaw: me.yaw,
 			pitch: me.pitch,
-			onGround: me.on_ground,
+			on_ground: me.on_ground,
 		},
 	)])
 }
 
 pub fn legacy_position_1_8(
-	p: v1_7::play_toClient_packet_position::Ty,
+	p: v1_7::play_to_client_packet_position::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::position(
-		v1_8::play_toClient_packet_position::Ty {
+	Ok(vec![Client8::Position(
+		v1_8::play_to_client_packet_position::Ty {
 			x: p.x,
 			y: p.y - EYES,
 			z: p.z,
@@ -1106,47 +1109,47 @@ fn turned(cx: &mut Session, yaw: f32, pitch: f32) {
 
 pub fn legacy_flying_1_8(on_ground: bool, cx: &mut Session) -> Result<Vec<Server8>> {
 	state(cx).player.on_ground = on_ground;
-	Ok(vec![Server8::flying(on_ground)])
+	Ok(vec![Server8::Flying(on_ground)])
 }
 
 pub fn legacy_look_1_8(
-	p: v1_7::play_toServer_packet_look::Ty,
+	p: v1_7::play_to_server_packet_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server8>> {
 	turned(cx, p.yaw, p.pitch);
-	state(cx).player.on_ground = p.onGround;
-	Ok(vec![Server8::look(p)])
+	state(cx).player.on_ground = p.on_ground;
+	Ok(vec![Server8::Look(p)])
 }
 
 pub fn legacy_position_server_1_8(
-	p: v1_7::play_toServer_packet_position::Ty,
+	p: v1_7::play_to_server_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server8>> {
-	moved(cx, p.x, p.y, p.z, p.onGround);
-	Ok(vec![Server8::position(
-		v1_8::play_toServer_packet_position::Ty {
+	moved(cx, p.x, p.y, p.z, p.on_ground);
+	Ok(vec![Server8::Position(
+		v1_8::play_to_server_packet_position::Ty {
 			x: p.x,
 			y: p.y,
 			z: p.z,
-			onGround: p.onGround,
+			on_ground: p.on_ground,
 		},
 	)])
 }
 
 pub fn legacy_position_look_1_8(
-	p: v1_7::play_toServer_packet_position_look::Ty,
+	p: v1_7::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server8>> {
-	moved(cx, p.x, p.y, p.z, p.onGround);
+	moved(cx, p.x, p.y, p.z, p.on_ground);
 	turned(cx, p.yaw, p.pitch);
-	Ok(vec![Server8::position_look(
-		v1_8::play_toServer_packet_position_look::Ty {
+	Ok(vec![Server8::PositionLook(
+		v1_8::play_to_server_packet_position_look::Ty {
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			onGround: p.onGround,
+			on_ground: p.on_ground,
 		},
 	)])
 }
@@ -1169,60 +1172,60 @@ const ENCHANTING: u8 = 4;
 const FURNACE: u8 = 2;
 
 pub fn open_window_1_7(
-	p: v1_8::play_toClient_packet_open_window::Ty,
+	p: v1_8::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_7::play_toClient_packet_open_window__entityId::Ty as E7;
-	use v1_8::play_toClient_packet_open_window__entityId::Ty as E8;
-	let ty = match p.inventoryType.as_str() {
+	use v1_7::play_to_client_packet_open_window_entity_id::Ty as E7;
+	use v1_8::play_to_client_packet_open_window_entity_id::Ty as E8;
+	let ty = match p.inventory_type.as_str() {
 		"EntityHorse" => 11,
 		name => WINDOWS.iter().position(|w| *w == name).unwrap_or(0) as u8,
 	};
-	state(cx).windows.insert(p.windowId, ty);
-	let (windowTitle, useProvidedTitle) = text::title_1_7(&p.windowTitle);
-	let entityId = match p.entityId {
-		E8::EntityHorse(id) => E7::v11(id),
-		E8::default(_) => E7::default(ty),
+	state(cx).windows.insert(p.window_id, ty);
+	let (window_title, use_provided_title) = text::title_1_7(&p.window_title);
+	let entity_id = match p.entity_id {
+		E8::EntityHorse(id) => E7::V11(id),
+		E8::Default(_) => E7::Default(ty),
 	};
-	Ok(vec![Client7::open_window(
-		v1_7::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId,
-			windowTitle,
-			slotCount: p.slotCount,
-			useProvidedTitle,
-			entityId,
+	Ok(vec![Client7::OpenWindow(
+		v1_7::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id,
+			window_title,
+			slot_count: p.slot_count,
+			use_provided_title,
+			entity_id,
 		},
 	)])
 }
 
 pub fn legacy_open_window_1_8(
-	p: v1_7::play_toClient_packet_open_window::Ty,
+	p: v1_7::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_7::play_toClient_packet_open_window__entityId::Ty as E7;
-	use v1_8::play_toClient_packet_open_window__entityId::Ty as E8;
-	let ty = v1_7::play_toClient_packet_open_window__entityId::virtual_tag(&p.entityId);
-	state(cx).windows.insert(p.windowId, ty);
-	let inventoryType = match ty {
+	use v1_7::play_to_client_packet_open_window_entity_id::Ty as E7;
+	use v1_8::play_to_client_packet_open_window_entity_id::Ty as E8;
+	let ty = v1_7::play_to_client_packet_open_window_entity_id::virtual_tag(&p.entity_id);
+	state(cx).windows.insert(p.window_id, ty);
+	let inventory_type = match ty {
 		11 => "EntityHorse".to_owned(),
 		t => WINDOWS.get(t as usize).unwrap_or(&WINDOWS[0]).to_string(),
 	};
-	let windowTitle = if p.useProvidedTitle {
-		text::from_legacy(&p.windowTitle)
+	let window_title = if p.use_provided_title {
+		text::from_legacy(&p.window_title)
 	} else {
-		format!("{{\"translate\":{}}}", text::quote(&p.windowTitle))
+		format!("{{\"translate\":{}}}", text::quote(&p.window_title))
 	};
-	let entityId = match p.entityId {
-		E7::v11(id) => E8::EntityHorse(id),
-		E7::default(_) => E8::default(inventoryType.clone()),
+	let entity_id = match p.entity_id {
+		E7::V11(id) => E8::EntityHorse(id),
+		E7::Default(_) => E8::Default(inventory_type.clone()),
 	};
-	Ok(vec![Client8::open_window(
-		v1_8::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId,
-			inventoryType,
-			windowTitle,
-			slotCount: p.slotCount,
-			entityId,
+	Ok(vec![Client8::OpenWindow(
+		v1_8::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id,
+			inventory_type,
+			window_title,
+			slot_count: p.slot_count,
+			entity_id,
 		},
 	)])
 }
@@ -1235,17 +1238,17 @@ fn closed(cx: &mut Session, window: u8) {
 
 pub fn close_window_1_7(window: u8, cx: &mut Session) -> Result<Vec<Client7>> {
 	closed(cx, window);
-	Ok(vec![Client7::close_window(window)])
+	Ok(vec![Client7::CloseWindow(window)])
 }
 
 pub fn legacy_close_window_1_8(window: u8, cx: &mut Session) -> Result<Vec<Client8>> {
 	closed(cx, window);
-	Ok(vec![Client8::close_window(window)])
+	Ok(vec![Client8::CloseWindow(window)])
 }
 
 pub fn legacy_close_window_server_1_8(window: u8, cx: &mut Session) -> Result<Vec<Server8>> {
 	closed(cx, window);
-	Ok(vec![Server8::close_window(window)])
+	Ok(vec![Server8::CloseWindow(window)])
 }
 
 fn window(cx: &mut Session, id: i8) -> Option<u8> {
@@ -1253,20 +1256,20 @@ fn window(cx: &mut Session, id: i8) -> Option<u8> {
 }
 
 pub fn set_slot_1_7(
-	p: v1_8::play_toClient_packet_set_slot::Ty,
+	p: v1_8::play_to_client_packet_set_slot::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	let mut slot = p.slot;
-	if window(cx, p.windowId) == Some(ENCHANTING) {
+	if window(cx, p.window_id) == Some(ENCHANTING) {
 		match slot {
 			1 => return Ok(vec![]),
 			s if s > 1 => slot -= 1,
 			_ => {}
 		}
 	}
-	Ok(vec![Client7::set_slot(
-		v1_7::play_toClient_packet_set_slot::Ty {
-			windowId: p.windowId,
+	Ok(vec![Client7::SetSlot(
+		v1_7::play_to_client_packet_set_slot::Ty {
+			window_id: p.window_id,
 			slot,
 			item: item::down(p.item)?,
 		},
@@ -1274,16 +1277,16 @@ pub fn set_slot_1_7(
 }
 
 pub fn legacy_set_slot_1_8(
-	p: v1_7::play_toClient_packet_set_slot::Ty,
+	p: v1_7::play_to_client_packet_set_slot::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
 	let mut slot = p.slot;
-	if window(cx, p.windowId) == Some(ENCHANTING) && slot >= 1 {
+	if window(cx, p.window_id) == Some(ENCHANTING) && slot >= 1 {
 		slot = slot.saturating_add(1);
 	}
-	Ok(vec![Client8::set_slot(
-		v1_8::play_toClient_packet_set_slot::Ty {
-			windowId: p.windowId,
+	Ok(vec![Client8::SetSlot(
+		v1_8::play_to_client_packet_set_slot::Ty {
+			window_id: p.window_id,
 			slot,
 			item: item::up(p.item)?,
 		},
@@ -1291,23 +1294,23 @@ pub fn legacy_set_slot_1_8(
 }
 
 pub fn window_items_1_7(
-	p: v1_8::play_toClient_packet_window_items::Ty,
+	p: v1_8::play_to_client_packet_window_items::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	let mut items = p.items;
-	if window(cx, p.windowId as i8) == Some(ENCHANTING) && items.len() > 1 {
+	if window(cx, p.window_id as i8) == Some(ENCHANTING) && items.len() > 1 {
 		items.remove(1);
 	}
-	Ok(vec![Client7::window_items(
-		v1_7::play_toClient_packet_window_items::Ty {
-			windowId: p.windowId,
+	Ok(vec![Client7::WindowItems(
+		v1_7::play_to_client_packet_window_items::Ty {
+			window_id: p.window_id,
 			items: items.into_iter().map(item::down).collect::<Result<_>>()?,
 		},
 	)])
 }
 
 pub fn legacy_window_items_1_8(
-	p: v1_7::play_toClient_packet_window_items::Ty,
+	p: v1_7::play_to_client_packet_window_items::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
 	let mut items = p
@@ -1315,37 +1318,37 @@ pub fn legacy_window_items_1_8(
 		.into_iter()
 		.map(item::up)
 		.collect::<Result<Vec<_>>>()?;
-	if window(cx, p.windowId as i8) == Some(ENCHANTING) && !items.is_empty() {
-		let lapis = v1_8::slot__default::Ty {
-			itemCount: 3,
-			itemDamage: 4,
-			nbtData: None,
+	if window(cx, p.window_id as i8) == Some(ENCHANTING) && !items.is_empty() {
+		let lapis = v1_8::slot_default::Ty {
+			item_count: 3,
+			item_damage: 4,
+			nbt_data: None,
 		};
-		items.insert(1, v1_8::slot::Ty::default(351, lapis));
+		items.insert(1, v1_8::slot::Ty::Default(351, lapis));
 	}
-	Ok(vec![Client8::window_items(
-		v1_8::play_toClient_packet_window_items::Ty {
-			windowId: p.windowId,
+	Ok(vec![Client8::WindowItems(
+		v1_8::play_to_client_packet_window_items::Ty {
+			window_id: p.window_id,
 			items,
 		},
 	)])
 }
 
-type Bar = v1_8::play_toClient_packet_craft_progress_bar::Ty;
+type Bar = v1_8::play_to_client_packet_craft_progress_bar::Ty;
 
 pub fn craft_progress_bar_1_7(mut p: Bar, cx: &mut Session) -> Result<Vec<Client7>> {
 	let st = state(cx);
-	match st.windows.get(&p.windowId).copied() {
+	match st.windows.get(&p.window_id).copied() {
 		Some(FURNACE) => match p.property {
 			0 => p.property = 1,
 			1 => p.property = 2,
 			2 => {
-				let max = st.cook.get(&p.windowId).copied().unwrap_or(200).max(1) as i32;
+				let max = st.cook.get(&p.window_id).copied().unwrap_or(200).max(1) as i32;
 				p.property = 0;
 				p.value = (p.value as i32 * 200 / max) as i16;
 			}
 			3 => {
-				st.cook.insert(p.windowId, p.value);
+				st.cook.insert(p.window_id, p.value);
 				return Ok(vec![]);
 			}
 			_ => return Ok(vec![]),
@@ -1353,16 +1356,16 @@ pub fn craft_progress_bar_1_7(mut p: Bar, cx: &mut Session) -> Result<Vec<Client
 		Some(ENCHANTING) if p.property > 2 => return Ok(vec![]),
 		_ => {}
 	}
-	Ok(vec![Client7::craft_progress_bar(p)])
+	Ok(vec![Client7::CraftProgressBar(p)])
 }
 
 pub fn legacy_craft_progress_bar_1_8(mut p: Bar, cx: &mut Session) -> Result<Vec<Client8>> {
 	let mut out = Vec::new();
-	if window(cx, p.windowId as i8) == Some(FURNACE) {
+	if window(cx, p.window_id as i8) == Some(FURNACE) {
 		p.property = match p.property {
 			0 => {
-				out.push(Client8::craft_progress_bar(Bar {
-					windowId: p.windowId,
+				out.push(Client8::CraftProgressBar(Bar {
+					window_id: p.window_id,
 					property: 3,
 					value: 200,
 				}));
@@ -1373,7 +1376,7 @@ pub fn legacy_craft_progress_bar_1_8(mut p: Bar, cx: &mut Session) -> Result<Vec
 			n => n,
 		};
 	}
-	out.push(Client8::craft_progress_bar(p));
+	out.push(Client8::CraftProgressBar(p));
 	Ok(out)
 }
 
@@ -1382,11 +1385,11 @@ fn sign_line_1_7(json: &str) -> String {
 }
 
 pub fn update_sign_1_7(
-	p: v1_8::play_toClient_packet_update_sign::Ty,
+	p: v1_8::play_to_client_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	Ok(vec![Client7::update_sign(
-		v1_7::play_toClient_packet_update_sign::Ty {
+	Ok(vec![Client7::UpdateSign(
+		v1_7::play_to_client_packet_update_sign::Ty {
 			location: position_isi_1_7(p.location, cx)?,
 			text1: sign_line_1_7(&p.text1),
 			text2: sign_line_1_7(&p.text2),
@@ -1397,11 +1400,11 @@ pub fn update_sign_1_7(
 }
 
 pub fn legacy_update_sign_1_8(
-	p: v1_7::play_toClient_packet_update_sign::Ty,
+	p: v1_7::play_to_client_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	Ok(vec![Client8::update_sign(
-		v1_8::play_toClient_packet_update_sign::Ty {
+	Ok(vec![Client8::UpdateSign(
+		v1_8::play_to_client_packet_update_sign::Ty {
 			location: legacy_position_from_isi_1_8(p.location, cx)?,
 			text1: text::from_legacy(&p.text1),
 			text2: text::from_legacy(&p.text2),
@@ -1412,11 +1415,11 @@ pub fn legacy_update_sign_1_8(
 }
 
 pub fn legacy_update_sign_server_1_8(
-	p: v1_7::play_toServer_packet_update_sign::Ty,
+	p: v1_7::play_to_server_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server8>> {
-	Ok(vec![Server8::update_sign(
-		v1_8::play_toServer_packet_update_sign::Ty {
+	Ok(vec![Server8::UpdateSign(
+		v1_8::play_to_server_packet_update_sign::Ty {
 			location: legacy_position_from_isi_1_8(p.location, cx)?,
 			text1: text::from_legacy(&p.text1),
 			text2: text::from_legacy(&p.text2),
@@ -1427,11 +1430,11 @@ pub fn legacy_update_sign_server_1_8(
 }
 
 pub fn update_sign_server_1_7(
-	p: v1_8::play_toServer_packet_update_sign::Ty,
+	p: v1_8::play_to_server_packet_update_sign::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server7>> {
-	Ok(vec![Server7::update_sign(
-		v1_7::play_toServer_packet_update_sign::Ty {
+	Ok(vec![Server7::UpdateSign(
+		v1_7::play_to_server_packet_update_sign::Ty {
 			location: position_isi_1_7(p.location, cx)?,
 			text1: sign_line_1_7(&p.text1),
 			text2: sign_line_1_7(&p.text2),
@@ -1442,83 +1445,83 @@ pub fn update_sign_server_1_7(
 }
 
 pub fn tile_entity_data_1_7(
-	p: v1_8::play_toClient_packet_tile_entity_data::Ty,
+	p: v1_8::play_to_client_packet_tile_entity_data::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	if p.action == 6 {
 		return Ok(vec![]);
 	}
-	let mut tag = p.nbtData;
+	let mut tag = p.nbt_data;
 	if p.action == 5 {
 		item::flower_pot_1_7(&mut tag);
 	}
-	Ok(vec![Client7::tile_entity_data(
-		v1_7::play_toClient_packet_tile_entity_data::Ty {
+	Ok(vec![Client7::TileEntityData(
+		v1_7::play_to_client_packet_tile_entity_data::Ty {
 			location: position_isi_1_7(p.location, cx)?,
 			action: p.action,
-			nbtData: item::compress(&tag)?,
+			nbt_data: item::compress(&tag)?,
 		},
 	)])
 }
 
 pub fn legacy_tile_entity_data_1_8(
-	p: v1_7::play_toClient_packet_tile_entity_data::Ty,
+	p: v1_7::play_to_client_packet_tile_entity_data::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	let mut tag = item::decompress(&p.nbtData)?;
+	let mut tag = item::decompress(&p.nbt_data)?;
 	if p.action == 5 {
 		item::flower_pot_1_8(&mut tag);
 	}
-	Ok(vec![Client8::tile_entity_data(
-		v1_8::play_toClient_packet_tile_entity_data::Ty {
+	Ok(vec![Client8::TileEntityData(
+		v1_8::play_to_client_packet_tile_entity_data::Ty {
 			location: legacy_position_from_isi_1_8(p.location, cx)?,
 			action: p.action,
-			nbtData: tag,
+			nbt_data: tag,
 		},
 	)])
 }
 
 pub fn scoreboard_objective_1_7(
-	p: v1_8::play_toClient_packet_scoreboard_objective::Ty,
+	p: v1_8::play_to_client_packet_scoreboard_objective::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_8::play_toClient_packet_scoreboard_objective__action::Ty as A;
+	use v1_8::play_to_client_packet_scoreboard_objective_action::Ty as A;
 	let (displayText, action) = match p.action {
-		A::v0(a) => (a.displayText, 0),
-		A::v2(a) => (a.displayText, 2),
-		A::default(t) => (String::new(), t),
+		A::V0(a) => (a.display_text, 0),
+		A::V2(a) => (a.display_text, 2),
+		A::Default(t) => (String::new(), t),
 	};
-	Ok(vec![Client7::scoreboard_objective(
-		v1_7::play_toClient_packet_scoreboard_objective::Ty {
+	Ok(vec![Client7::ScoreboardObjective(
+		v1_7::play_to_client_packet_scoreboard_objective::Ty {
 			name: text::truncate(&p.name, 16),
-			displayText: text::truncate(&displayText, 32),
+			display_text: text::truncate(&displayText, 32),
 			action,
 		},
 	)])
 }
 
 pub fn legacy_scoreboard_objective_1_8(
-	p: v1_7::play_toClient_packet_scoreboard_objective::Ty,
+	p: v1_7::play_to_client_packet_scoreboard_objective::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_8::play_toClient_packet_scoreboard_objective__action::Ty as A;
+	use v1_8::play_to_client_packet_scoreboard_objective_action::Ty as A;
 	let action = match p.action {
-		0 => A::v0(
-			v1_8::play_toClient_packet_scoreboard_objective__action__v0::Ty {
-				displayText: p.displayText,
+		0 => A::V0(
+			v1_8::play_to_client_packet_scoreboard_objective_action_v0::Ty {
+				display_text: p.display_text,
 				r#type: "integer".to_owned(),
 			},
 		),
-		2 => A::v2(
-			v1_8::play_toClient_packet_scoreboard_objective__action__v2::Ty {
-				displayText: p.displayText,
+		2 => A::V2(
+			v1_8::play_to_client_packet_scoreboard_objective_action_v2::Ty {
+				display_text: p.display_text,
 				r#type: "integer".to_owned(),
 			},
 		),
-		t => A::default(t),
+		t => A::Default(t),
 	};
-	Ok(vec![Client8::scoreboard_objective(
-		v1_8::play_toClient_packet_scoreboard_objective::Ty {
+	Ok(vec![Client8::ScoreboardObjective(
+		v1_8::play_to_client_packet_scoreboard_objective::Ty {
 			name: p.name,
 			action,
 		},
@@ -1526,43 +1529,43 @@ pub fn legacy_scoreboard_objective_1_8(
 }
 
 pub fn scoreboard_score_1_7(
-	p: v1_8::play_toClient_packet_scoreboard_score::Ty,
+	p: v1_8::play_to_client_packet_scoreboard_score::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
-	use v1_7::play_toClient_packet_scoreboard_score__action::Ty as A7;
-	use v1_8::play_toClient_packet_scoreboard_score__value::Ty as V8;
+	use v1_7::play_to_client_packet_scoreboard_score_action::Ty as A7;
+	use v1_8::play_to_client_packet_scoreboard_score_value::Ty as V8;
 	let action = match p.value {
-		V8::v1 => A7::v1,
-		V8::default(t, value) => A7::default(
+		V8::V1 => A7::V1,
+		V8::Default(t, value) => A7::Default(
 			t as i8,
-			v1_7::play_toClient_packet_scoreboard_score__action__default::Ty {
-				scoreName: text::truncate(&p.scoreName, 16),
+			v1_7::play_to_client_packet_scoreboard_score_action_default::Ty {
+				score_name: text::truncate(&p.score_name, 16),
 				value,
 			},
 		),
 	};
-	Ok(vec![Client7::scoreboard_score(
-		v1_7::play_toClient_packet_scoreboard_score::Ty {
-			itemName: text::fit(p.itemName, 16),
+	Ok(vec![Client7::ScoreboardScore(
+		v1_7::play_to_client_packet_scoreboard_score::Ty {
+			item_name: text::fit(p.item_name, 16),
 			action,
 		},
 	)])
 }
 
 pub fn legacy_scoreboard_score_1_8(
-	p: v1_7::play_toClient_packet_scoreboard_score::Ty,
+	p: v1_7::play_to_client_packet_scoreboard_score::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
-	use v1_7::play_toClient_packet_scoreboard_score__action::Ty as A7;
-	use v1_8::play_toClient_packet_scoreboard_score__value::Ty as V8;
-	let (scoreName, value) = match p.action {
-		A7::v1 => (String::new(), V8::v1),
-		A7::default(t, d) => (d.scoreName, V8::default(t as i32, d.value)),
+	use v1_7::play_to_client_packet_scoreboard_score_action::Ty as A7;
+	use v1_8::play_to_client_packet_scoreboard_score_value::Ty as V8;
+	let (score_name, value) = match p.action {
+		A7::V1 => (String::new(), V8::V1),
+		A7::Default(t, d) => (d.score_name, V8::Default(t as i32, d.value)),
 	};
-	Ok(vec![Client8::scoreboard_score(
-		v1_8::play_toClient_packet_scoreboard_score::Ty {
-			itemName: p.itemName,
-			scoreName,
+	Ok(vec![Client8::ScoreboardScore(
+		v1_8::play_to_client_packet_scoreboard_score::Ty {
+			item_name: p.item_name,
+			score_name,
 			value,
 		},
 	)])
@@ -1605,7 +1608,7 @@ fn trades(data: &[u8], down: bool) -> Option<Vec<u8>> {
 }
 
 pub fn custom_payload_1_7(
-	p: v1_8::play_toClient_packet_custom_payload::Ty,
+	p: v1_8::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client7>> {
 	let data = match p.channel.as_str() {
@@ -1617,8 +1620,8 @@ pub fn custom_payload_1_7(
 	if data.len() > i16::MAX as usize {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client7::custom_payload(
-		v1_7::play_toClient_packet_custom_payload::Ty {
+	Ok(vec![Client7::CustomPayload(
+		v1_7::play_to_client_packet_custom_payload::Ty {
 			channel: p.channel,
 			data,
 		},
@@ -1626,15 +1629,15 @@ pub fn custom_payload_1_7(
 }
 
 pub fn legacy_custom_payload_1_8(
-	p: v1_7::play_toClient_packet_custom_payload::Ty,
+	p: v1_7::play_to_client_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client8>> {
 	let data = match p.channel.as_str() {
 		"MC|Brand" => Some(string_bytes(&String::from_utf8_lossy(&p.data))),
 		"MC|TrList" => trades(&p.data, false),
 		"MC|RPack" => {
-			return Ok(vec![Client8::resource_pack_send(
-				v1_8::play_toClient_packet_resource_pack_send::Ty {
+			return Ok(vec![Client8::ResourcePackSend(
+				v1_8::play_to_client_packet_resource_pack_send::Ty {
 					url: String::from_utf8_lossy(&p.data).into_owned(),
 					hash: "legacy".to_owned(),
 				},
@@ -1643,8 +1646,8 @@ pub fn legacy_custom_payload_1_8(
 		_ => None,
 	}
 	.unwrap_or(p.data);
-	Ok(vec![Client8::custom_payload(
-		v1_8::play_toClient_packet_custom_payload::Ty {
+	Ok(vec![Client8::CustomPayload(
+		v1_8::play_to_client_packet_custom_payload::Ty {
 			channel: p.channel,
 			data,
 		},
@@ -1679,7 +1682,7 @@ fn command_block_1_8(data: &[u8]) -> Option<Vec<u8>> {
 }
 
 pub fn legacy_custom_payload_server_1_8(
-	p: v1_7::play_toServer_packet_custom_payload::Ty,
+	p: v1_7::play_to_server_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server8>> {
 	let raw = || Some(string_bytes(&String::from_utf8_lossy(&p.data)));
@@ -1693,8 +1696,8 @@ pub fn legacy_custom_payload_server_1_8(
 		_ => None,
 	}
 	.unwrap_or(p.data);
-	Ok(vec![Server8::custom_payload(
-		v1_8::play_toServer_packet_custom_payload::Ty {
+	Ok(vec![Server8::CustomPayload(
+		v1_8::play_to_server_packet_custom_payload::Ty {
 			channel: p.channel,
 			data,
 		},
@@ -1702,7 +1705,7 @@ pub fn legacy_custom_payload_server_1_8(
 }
 
 pub fn custom_payload_server_1_7(
-	p: v1_8::play_toServer_packet_custom_payload::Ty,
+	p: v1_8::play_to_server_packet_custom_payload::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server7>> {
 	let data = match p.channel.as_str() {
@@ -1715,8 +1718,8 @@ pub fn custom_payload_server_1_7(
 	if data.len() > i16::MAX as usize {
 		return Ok(vec![]);
 	}
-	Ok(vec![Server7::custom_payload(
-		v1_7::play_toServer_packet_custom_payload::Ty {
+	Ok(vec![Server7::CustomPayload(
+		v1_7::play_to_server_packet_custom_payload::Ty {
 			channel: p.channel,
 			data,
 		},
@@ -1726,54 +1729,54 @@ pub fn custom_payload_server_1_7(
 pub fn legacy_tab_complete_1_8(
 	text: String,
 	_cx: &mut Session,
-) -> Result<v1_8::play_toServer_packet_tab_complete::Ty> {
-	Ok(v1_8::play_toServer_packet_tab_complete::Ty { text, block: None })
+) -> Result<v1_8::play_to_server_packet_tab_complete::Ty> {
+	Ok(v1_8::play_to_server_packet_tab_complete::Ty { text, block: None })
 }
 
 pub fn tab_complete_1_7(
-	p: v1_8::play_toServer_packet_tab_complete::Ty,
+	p: v1_8::play_to_server_packet_tab_complete::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(p.text)
 }
 
 pub fn legacy_arm_animation_1_8(
-	p: v1_7::play_toServer_packet_arm_animation::Ty,
+	p: v1_7::play_to_server_packet_arm_animation::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server8>> {
 	Ok(match p.animation {
-		1 => vec![Server8::arm_animation(
-			v1_8::play_toServer_packet_arm_animation::Ty {},
+		1 => vec![Server8::ArmAnimation(
+			v1_8::play_to_server_packet_arm_animation::Ty {},
 		)],
 		_ => vec![],
 	})
 }
 
 pub fn arm_animation_1_7(
-	_p: v1_8::play_toServer_packet_arm_animation::Ty,
+	_p: v1_8::play_to_server_packet_arm_animation::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server7>> {
-	Ok(vec![Server7::arm_animation(
-		v1_7::play_toServer_packet_arm_animation::Ty {
-			entityId: 0,
+	Ok(vec![Server7::ArmAnimation(
+		v1_7::play_to_server_packet_arm_animation::Ty {
+			entity_id: 0,
 			animation: 1,
 		},
 	)])
 }
 
 pub fn legacy_window_click_1_8(
-	p: v1_7::play_toServer_packet_window_click::Ty,
+	p: v1_7::play_to_server_packet_window_click::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server8>> {
 	let mut slot = p.slot;
-	if window(cx, p.windowId) == Some(ENCHANTING) && slot > 0 {
+	if window(cx, p.window_id) == Some(ENCHANTING) && slot > 0 {
 		slot = slot.saturating_add(1);
 	}
-	Ok(vec![Server8::window_click(
-		v1_8::play_toServer_packet_window_click::Ty {
-			windowId: p.windowId as u8,
+	Ok(vec![Server8::WindowClick(
+		v1_8::play_to_server_packet_window_click::Ty {
+			window_id: p.window_id as u8,
 			slot,
-			mouseButton: p.mouseButton,
+			mouse_button: p.mouse_button,
 			action: p.action,
 			mode: p.mode,
 			item: item::up(p.item)?,
@@ -1782,22 +1785,22 @@ pub fn legacy_window_click_1_8(
 }
 
 pub fn window_click_1_7(
-	p: v1_8::play_toServer_packet_window_click::Ty,
+	p: v1_8::play_to_server_packet_window_click::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server7>> {
 	let mut slot = p.slot;
-	if window(cx, p.windowId as i8) == Some(ENCHANTING) {
+	if window(cx, p.window_id as i8) == Some(ENCHANTING) {
 		match slot {
 			1 => return Ok(vec![]),
 			s if s > 1 => slot -= 1,
 			_ => {}
 		}
 	}
-	Ok(vec![Server7::window_click(
-		v1_7::play_toServer_packet_window_click::Ty {
-			windowId: p.windowId as i8,
+	Ok(vec![Server7::WindowClick(
+		v1_7::play_to_server_packet_window_click::Ty {
+			window_id: p.window_id as i8,
 			slot,
-			mouseButton: p.mouseButton,
+			mouse_button: p.mouse_button,
 			action: p.action,
 			mode: p.mode,
 			item: item::down(p.item)?,
@@ -1806,7 +1809,7 @@ pub fn window_click_1_7(
 }
 
 pub fn legacy_dig_face_1_8(
-	src: &v1_7::play_toServer_packet_block_dig::Ty,
+	src: &v1_7::play_to_server_packet_block_dig::Ty,
 	_cx: &mut Session,
 ) -> Result<i8> {
 	Ok(if (0..=5).contains(&src.face) {
@@ -1817,57 +1820,57 @@ pub fn legacy_dig_face_1_8(
 }
 
 pub fn legacy_skin_parts_1_8(
-	src: &v1_7::play_toServer_packet_settings::Ty,
+	src: &v1_7::play_to_server_packet_settings::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
-	Ok(if src.showCape { 0x7f } else { 0x7e })
+	Ok(if src.show_cape { 0x7f } else { 0x7e })
 }
 
 pub fn show_cape_1_7(
-	src: &v1_8::play_toServer_packet_settings::Ty,
+	src: &v1_8::play_to_server_packet_settings::Ty,
 	_cx: &mut Session,
 ) -> Result<bool> {
-	Ok(src.skinParts & 1 != 0)
+	Ok(src.skin_parts & 1 != 0)
 }
 
 pub fn legacy_steer_flags_1_8(
-	src: &v1_7::play_toServer_packet_steer_vehicle::Ty,
+	src: &v1_7::play_to_server_packet_steer_vehicle::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
 	Ok(src.jump as u8 | (src.unmount as u8) << 1)
 }
 
 pub fn steer_jump_1_7(
-	src: &v1_8::play_toServer_packet_steer_vehicle::Ty,
+	src: &v1_8::play_to_server_packet_steer_vehicle::Ty,
 	_cx: &mut Session,
 ) -> Result<bool> {
 	Ok(src.jump & 1 != 0)
 }
 
 pub fn steer_unmount_1_7(
-	src: &v1_8::play_toServer_packet_steer_vehicle::Ty,
+	src: &v1_8::play_to_server_packet_steer_vehicle::Ty,
 	_cx: &mut Session,
 ) -> Result<bool> {
 	Ok(src.jump & 2 != 0)
 }
 
 pub fn effect_duration_1_7(
-	src: &v1_8::play_toClient_packet_entity_effect::Ty,
+	src: &v1_8::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i16> {
 	Ok(clamp16(src.duration))
 }
 
 pub fn experience_level_1_7(
-	src: &v1_8::play_toClient_packet_experience::Ty,
+	src: &v1_8::play_to_client_packet_experience::Ty,
 	_cx: &mut Session,
 ) -> Result<i16> {
 	Ok(clamp16(src.level))
 }
 
 pub fn experience_total_1_7(
-	src: &v1_8::play_toClient_packet_experience::Ty,
+	src: &v1_8::play_to_client_packet_experience::Ty,
 	_cx: &mut Session,
 ) -> Result<i16> {
-	Ok(clamp16(src.totalExperience))
+	Ok(clamp16(src.total_experience))
 }

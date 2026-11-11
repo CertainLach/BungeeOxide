@@ -6,11 +6,11 @@ use minecraft_versions::gen::convert::{convert, index_of, v1_0_1, v1_8, Root};
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::Session;
 
-type C8 = v1_8::play_toClient_packet::Ty;
-type S8 = v1_8::play_toServer_packet::Ty;
-type C0 = v1_0_1::play_toClient_packet::Ty;
-type S0 = v1_0_1::play_toServer_packet::Ty;
-type Cuboid = v1_0_1::play_toClient_packet_map_chunk::Ty;
+type C8 = v1_8::play_to_client_packet::Ty;
+type S8 = v1_8::play_to_server_packet::Ty;
+type C0 = v1_0_1::play_to_client_packet::Ty;
+type S0 = v1_0_1::play_to_server_packet::Ty;
+type Cuboid = v1_0_1::play_to_client_packet_map_chunk::Ty;
 
 const IDS: [u32; 16] = [1, 3, 4, 5, 7, 12, 13, 14, 15, 16, 17, 19, 20, 22, 24, 35];
 
@@ -29,7 +29,7 @@ fn session(versions: bool) -> Session {
 fn decoded(packets: Vec<Vec<u8>>) -> Vec<C0> {
 	packets
 		.iter()
-		.map(|p| v1_0_1::play_toClient_packet::deserialize(&mut Input::new(p)).unwrap())
+		.map(|p| v1_0_1::play_to_client_packet::deserialize(&mut Input::new(p)).unwrap())
 		.collect()
 }
 
@@ -39,13 +39,13 @@ fn down_bytes(bytes: &[u8], cx: &mut Session) -> Vec<C0> {
 
 fn down(p: C8, cx: &mut Session) -> Vec<C0> {
 	let mut o = Output::new();
-	v1_8::play_toClient_packet::serialize(&p, &mut o).unwrap();
+	v1_8::play_to_client_packet::serialize(&p, &mut o).unwrap();
 	down_bytes(&o.into_inner(), cx)
 }
 
 fn up(p: S0, cx: &mut Session) -> (Vec<S8>, Vec<C0>) {
 	let mut o = Output::new();
-	v1_0_1::play_toServer_packet::serialize(&p, &mut o).unwrap();
+	v1_0_1::play_to_server_packet::serialize(&p, &mut o).unwrap();
 	let sent = convert(
 		Root::PlayToServer,
 		at("1.0.1"),
@@ -56,7 +56,7 @@ fn up(p: S0, cx: &mut Session) -> (Vec<S8>, Vec<C0>) {
 	.unwrap();
 	let sent = sent
 		.iter()
-		.map(|p| v1_8::play_toServer_packet::deserialize(&mut Input::new(p)).unwrap())
+		.map(|p| v1_8::play_to_server_packet::deserialize(&mut Input::new(p)).unwrap())
 		.collect();
 	let mut back = Vec::new();
 	for o in cx.take_outgoing() {
@@ -85,19 +85,19 @@ fn column(x: i32, z: i32) -> Vec<u8> {
 }
 
 fn login() -> C8 {
-	C8::login(v1_8::play_toClient_packet_login::Ty {
-		entityId: 7,
-		gameMode: 1,
+	C8::Login(v1_8::play_to_client_packet_login::Ty {
+		entity_id: 7,
+		game_mode: 1,
 		dimension: 0,
 		difficulty: 1,
-		maxPlayers: 20,
-		levelType: "default".to_owned(),
-		reducedDebugInfo: false,
+		max_players: 20,
+		level_type: "default".to_owned(),
+		reduced_debug_info: false,
 	})
 }
 
 fn teleport(y: f64) -> C8 {
-	C8::position(v1_8::play_toClient_packet_position::Ty {
+	C8::Position(v1_8::play_to_client_packet_position::Ty {
 		x: 8.5,
 		y,
 		z: 8.5,
@@ -108,30 +108,30 @@ fn teleport(y: f64) -> C8 {
 }
 
 fn block(x: i32, y: i32, z: i32, id: u32) -> C8 {
-	C8::block_change(v1_8::play_toClient_packet_block_change::Ty {
+	C8::BlockChange(v1_8::play_to_client_packet_block_change::Ty {
 		location: v1_8::position::Ty { x, y: y as i16, z },
 		r#type: (id << 4) as i32,
 	})
 }
 
 fn walk(y: f64) -> S0 {
-	S0::position_look(v1_0_1::play_toServer_packet_position_look::Ty {
+	S0::PositionLook(v1_0_1::play_to_server_packet_position_look::Ty {
 		x: 8.5,
 		y,
 		stance: y + 1.62,
 		z: 8.5,
 		yaw: 0.0,
 		pitch: 0.0,
-		onGround: true,
+		on_ground: true,
 	})
 }
 
 fn ids(c: &Cuboid) -> Vec<u8> {
 	let mut raw = Vec::new();
-	ZlibDecoder::new(&c.compressedChunkData[..])
+	ZlibDecoder::new(&c.compressed_chunk_data[..])
 		.read_to_end(&mut raw)
 		.unwrap();
-	(0..=c.sizeY as usize).map(|y| raw[y]).collect()
+	(0..=c.size_y as usize).map(|y| raw[y]).collect()
 }
 
 fn one(v: Vec<C0>) -> C0 {
@@ -141,7 +141,7 @@ fn one(v: Vec<C0>) -> C0 {
 
 fn cuboid(out: &[C0], x: i32) -> Option<&Cuboid> {
 	out.iter().find_map(|p| match p {
-		C0::map_chunk(c) if c.x == x * 16 && c.z == 0 => Some(c),
+		C0::MapChunk(c) if c.x == x * 16 && c.z == 0 => Some(c),
 		_ => None,
 	})
 }
@@ -149,7 +149,7 @@ fn cuboid(out: &[C0], x: i32) -> Option<&Cuboid> {
 fn feet(out: &[C0]) -> f64 {
 	out.iter()
 		.find_map(|p| match p {
-			C0::position(p) => Some(p.stance),
+			C0::Position(p) => Some(p.stance),
 			_ => None,
 		})
 		.expect("a position")
@@ -157,8 +157,8 @@ fn feet(out: &[C0]) -> f64 {
 
 fn server_y(sent: &[S8]) -> f64 {
 	match sent {
-		[S8::position_look(p)] => p.y,
-		[S8::position(p)] => p.y,
+		[S8::PositionLook(p)] => p.y,
+		[S8::Position(p)] => p.y,
 		s => panic!("{s:?}"),
 	}
 }
@@ -176,7 +176,7 @@ fn old_clients_see_128_high_windows_of_256_high_worlds() {
 	down(login(), &mut cx);
 	let out = down_bytes(&column(0, 0), &mut cx);
 	let c = cuboid(&out, 0).unwrap();
-	assert_eq!((c.y, c.sizeY), (0, 127));
+	assert_eq!((c.y, c.size_y), (0, 127));
 	let expected: Vec<u8> = (0..128).map(|y| IDS[y / 16] as u8).collect();
 	assert_eq!(ids(c), expected);
 	down_bytes(&column(1, 0), &mut cx);
@@ -194,24 +194,24 @@ fn old_clients_see_128_high_windows_of_256_high_worlds() {
 	);
 	assert!(cuboid(&out, 1).is_some() && cuboid(&out, 4).is_none());
 	assert!(
-		out.iter().position(|p| matches!(p, C0::map_chunk(_)))
-			< out.iter().position(|p| matches!(p, C0::position(_)))
+		out.iter().position(|p| matches!(p, C0::MapChunk(_)))
+			< out.iter().position(|p| matches!(p, C0::Position(_)))
 	);
 	let (sent, back) = up(walk(72.0), &mut cx);
 	assert_eq!(server_y(&sent), 200.0);
 	assert!(back
 		.iter()
-		.any(|p| matches!(p, C0::map_chunk(c) if c.x == 64)));
+		.any(|p| matches!(p, C0::MapChunk(c) if c.x == 64)));
 
-	let C0::block_change(b) = one(down(block(3, 210, 4, 41), &mut cx)) else {
+	let C0::BlockChange(b) = one(down(block(3, 210, 4, 41), &mut cx)) else {
 		panic!()
 	};
 	assert_eq!((b.location.y, b.r#type), (82, 41));
-	let C0::block_change(b) = one(down(block(3, 100, 4, 0), &mut cx)) else {
+	let C0::BlockChange(b) = one(down(block(3, 100, 4, 0), &mut cx)) else {
 		panic!()
 	};
 	assert_eq!((b.location.y, b.r#type), (0, IDS[8] as u8));
-	let C0::block_change(b) = one(down(block(3, 128, 4, 0), &mut cx)) else {
+	let C0::BlockChange(b) = one(down(block(3, 128, 4, 0), &mut cx)) else {
 		panic!()
 	};
 	assert_eq!((b.location.y, b.r#type), (0, IDS[7] as u8));
@@ -229,13 +229,13 @@ fn old_clients_see_128_high_windows_of_256_high_worlds() {
 	assert_eq!(server_y(&sent), 155.0);
 	let (sent, _) = up(walk(58.0), &mut cx);
 	assert_eq!(server_y(&sent), 154.0);
-	let dig = S0::block_dig(v1_0_1::play_toServer_packet_block_dig::Ty {
+	let dig = S0::BlockDig(v1_0_1::play_to_server_packet_block_dig::Ty {
 		status: 0,
 		location: v1_0_1::position_ibi::Ty { x: 3, y: 57, z: 4 },
 		face: 1,
 	});
 	let (sent, _) = up(dig, &mut cx);
-	let [S8::block_dig(d)] = sent.as_slice() else {
+	let [S8::BlockDig(d)] = sent.as_slice() else {
 		panic!("{sent:?}")
 	};
 	assert_eq!(d.location.y, 153);

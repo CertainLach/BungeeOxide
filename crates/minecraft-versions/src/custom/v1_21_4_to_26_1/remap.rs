@@ -1,5 +1,5 @@
 use super::util::remap;
-use crate::gen::convert::v1_21_5::{IDSet, ItemSoundEvent, ItemSoundHolder};
+use crate::gen::convert::v1_21_5::{id_set, item_sound_event, item_sound_holder};
 use crate::gen::convert::Version;
 use crate::pds::convert::{Error, Result};
 use crate::registry;
@@ -30,17 +30,21 @@ pub fn sound_id(version: Version, name: &str) -> Option<i32> {
 		.map(|v| v as i32 - 1)
 }
 
-pub fn sound(from: Version, to: Version, v: ItemSoundHolder::Ty) -> Result<ItemSoundHolder::Ty> {
-	let ItemSoundHolder::Ty::Id(id) = v else {
+pub fn sound(
+	from: Version,
+	to: Version,
+	v: item_sound_holder::Ty,
+) -> Result<item_sound_holder::Ty> {
+	let item_sound_holder::Ty::Id(id) = v else {
 		return Ok(v);
 	};
 	if let Some(new) = remap("sounds", from, to, id + 1) {
-		return Ok(ItemSoundHolder::Ty::Id(new - 1));
+		return Ok(item_sound_holder::Ty::Id(new - 1));
 	}
 	match sound_name(from, id) {
-		Some(name) => Ok(ItemSoundHolder::Ty::Inline(ItemSoundEvent::Ty {
-			soundName: format!("minecraft:{name}"),
-			fixedRange: None,
+		Some(name) => Ok(item_sound_holder::Ty::Inline(item_sound_event::Ty {
+			sound_name: format!("minecraft:{name}"),
+			fixed_range: None,
 		})),
 		None => Err(Error::Dropped),
 	}
@@ -56,22 +60,22 @@ pub fn items(from: Version, to: Version, v: Vec<i32>) -> Result<Vec<i32>> {
 	Ok(list("items", from, to, v))
 }
 
-fn set(kind: &str, from: Version, to: Version, v: IDSet::Ty) -> Result<IDSet::Ty> {
+fn set(kind: &str, from: Version, to: Version, v: id_set::Ty) -> Result<id_set::Ty> {
 	Ok(match v {
-		IDSet::Ty::Ids(ids) => IDSet::Ty::Ids(list(kind, from, to, ids)),
+		id_set::Ty::Ids(ids) => id_set::Ty::Ids(list(kind, from, to, ids)),
 		named => named,
 	})
 }
 
-pub fn item_set(from: Version, to: Version, v: IDSet::Ty) -> Result<IDSet::Ty> {
+pub fn item_set(from: Version, to: Version, v: id_set::Ty) -> Result<id_set::Ty> {
 	set("items", from, to, v)
 }
 
-pub fn block_set(from: Version, to: Version, v: IDSet::Ty) -> Result<IDSet::Ty> {
+pub fn block_set(from: Version, to: Version, v: id_set::Ty) -> Result<id_set::Ty> {
 	set("blocks", from, to, v)
 }
 
-pub fn entity_set(from: Version, to: Version, v: IDSet::Ty) -> Result<IDSet::Ty> {
+pub fn entity_set(from: Version, to: Version, v: id_set::Ty) -> Result<id_set::Ty> {
 	set("entities", from, to, v)
 }
 

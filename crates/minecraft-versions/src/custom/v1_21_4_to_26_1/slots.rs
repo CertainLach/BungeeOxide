@@ -1,64 +1,64 @@
 macro_rules! untrusted {
 	($v:ident, $to_slot:ident, $from_slot:ident) => {
-		pub fn $to_slot(u: $v::UntrustedSlot::Ty) -> crate::pds::convert::Result<$v::Slot::Ty> {
+		pub fn $to_slot(u: $v::untrusted_slot::Ty) -> crate::pds::convert::Result<$v::slot::Ty> {
 			use super::util::{decode, encode};
-			Ok(match u.ANON {
-				$v::UntrustedSlot__ANON::Ty::v0 => $v::Slot::Ty::v0,
-				$v::UntrustedSlot__ANON::Ty::default(count, d) => {
+			Ok(match u.anon {
+				$v::untrusted_slot_anon::Ty::V0 => $v::slot::Ty::V0,
+				$v::untrusted_slot_anon::Ty::Default(count, d) => {
 					let components = d
 						.components
 						.iter()
 						.map(|c| {
-							let mut bytes = encode(&c.r#type, $v::SlotComponentType::serialize)?;
+							let mut bytes = encode(&c.r#type, $v::slot_component_type::serialize)?;
 							bytes.extend_from_slice(&c.data);
-							decode(&bytes, $v::SlotComponent::deserialize)
+							decode(&bytes, $v::slot_component::deserialize)
 						})
 						.collect::<crate::pds::convert::Result<Vec<_>>>()?;
-					$v::Slot::Ty::default(
+					$v::slot::Ty::Default(
 						count,
-						$v::Slot__default::Ty {
-							itemId: d.itemId,
-							addedComponentCount: components.len() as i32,
-							removedComponentCount: d.removeComponents.len() as i32,
+						$v::slot_default::Ty {
+							item_id: d.item_id,
+							added_component_count: components.len() as i32,
+							removed_component_count: d.remove_components.len() as i32,
 							components,
-							removeComponents: d.removeComponents,
+							remove_components: d.remove_components,
 						},
 					)
 				}
 			})
 		}
 
-		pub fn $from_slot(s: $v::Slot::Ty) -> crate::pds::convert::Result<$v::UntrustedSlot::Ty> {
+		pub fn $from_slot(s: $v::slot::Ty) -> crate::pds::convert::Result<$v::untrusted_slot::Ty> {
 			use super::util::{decode, encode, read_varint};
 			Ok(match s {
-				$v::Slot::Ty::v0 => $v::UntrustedSlot::Ty {
-					itemCount: 0,
-					ANON: $v::UntrustedSlot__ANON::Ty::v0,
+				$v::slot::Ty::V0 => $v::untrusted_slot::Ty {
+					item_count: 0,
+					anon: $v::untrusted_slot_anon::Ty::V0,
 				},
-				$v::Slot::Ty::default(count, d) => {
+				$v::slot::Ty::Default(count, d) => {
 					let components = d
 						.components
 						.iter()
 						.map(|c| {
-							let bytes = encode(c, $v::SlotComponent::serialize)?;
+							let bytes = encode(c, $v::slot_component::serialize)?;
 							let mut at = 0;
 							read_varint(&bytes, &mut at)?;
-							Ok($v::UntrustedSlotComponent::Ty {
-								r#type: decode(&bytes[..at], $v::SlotComponentType::deserialize)?,
+							Ok($v::untrusted_slot_component::Ty {
+								r#type: decode(&bytes[..at], $v::slot_component_type::deserialize)?,
 								data: bytes[at..].to_vec(),
 							})
 						})
 						.collect::<crate::pds::convert::Result<Vec<_>>>()?;
-					$v::UntrustedSlot::Ty {
-						itemCount: count,
-						ANON: $v::UntrustedSlot__ANON::Ty::default(
+					$v::untrusted_slot::Ty {
+						item_count: count,
+						anon: $v::untrusted_slot_anon::Ty::Default(
 							count,
-							$v::UntrustedSlot__ANON__default::Ty {
-								itemId: d.itemId,
-								addedComponentCount: components.len() as i32,
-								removedComponentCount: d.removeComponents.len() as i32,
+							$v::untrusted_slot_anon_default::Ty {
+								item_id: d.item_id,
+								added_component_count: components.len() as i32,
+								removed_component_count: d.remove_components.len() as i32,
 								components,
-								removeComponents: d.removeComponents,
+								remove_components: d.remove_components,
 							},
 						),
 					}
@@ -71,22 +71,22 @@ macro_rules! untrusted {
 macro_rules! untrusted_step {
 	($name:ident: $a:ident => $b:ident, $from:path => $to:path, $to_slot:path, $from_slot:path) => {
 		pub fn $name(
-			v: $a::UntrustedSlot::Ty,
+			v: $a::untrusted_slot::Ty,
 			cx: &mut crate::Session,
-		) -> crate::pds::convert::Result<$b::UntrustedSlot::Ty> {
+		) -> crate::pds::convert::Result<$b::untrusted_slot::Ty> {
 			let slot = $to_slot(v)?;
-			let packet = $a::play_toClient_packet::Ty::set_cursor_item(slot);
+			let packet = $a::play_to_client_packet::Ty::SetCursorItem(slot);
 			let out = super::shared::via_step(
 				$from,
 				$to,
 				crate::gen::convert::Root::PlayToClient,
 				&packet,
-				$a::play_toClient_packet::serialize,
-				$b::play_toClient_packet::deserialize,
+				$a::play_to_client_packet::serialize,
+				$b::play_to_client_packet::deserialize,
 				cx,
 			)?;
 			match out {
-				$b::play_toClient_packet::Ty::set_cursor_item(s) => $from_slot(s),
+				$b::play_to_client_packet::Ty::SetCursorItem(s) => $from_slot(s),
 				_ => {
 					crate::pds::convert::unconvertible("set_cursor_item turned into another packet")
 				}

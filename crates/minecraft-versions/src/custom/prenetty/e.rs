@@ -8,34 +8,34 @@ use crate::pds::convert::Result;
 use crate::pds::Output;
 use crate::session::Session;
 
-type Client164 = v1_6_4::play_toClient_packet::Ty;
-type Client17 = v1_7::play_toClient_packet::Ty;
-type Server164 = v1_6_4::play_toServer_packet::Ty;
-type Server17 = v1_7::play_toServer_packet::Ty;
+type Client164 = v1_6_4::play_to_client_packet::Ty;
+type Client17 = v1_7::play_to_client_packet::Ty;
+type Server164 = v1_6_4::play_to_server_packet::Ty;
+type Server17 = v1_7::play_to_server_packet::Ty;
 
 const TO: V = V::R1_6_4;
 const EYES: f64 = 1.6200000047683716;
 
 pub fn prenetty_map_chunk_1_6_4_down(
-	mut p: v1_7::play_toClient_packet_map_chunk::Ty,
+	mut p: v1_7::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	p.compressedChunkData = remap_single(
-		&p.compressedChunkData,
-		p.bitMap,
-		p.addBitMap,
-		p.groundUp,
+	p.compressed_chunk_data = remap_single(
+		&p.compressed_chunk_data,
+		p.bit_map,
+		p.add_bit_map,
+		p.ground_up,
 		TO,
 	)?;
-	Ok(vec![Client164::map_chunk(p)])
+	Ok(vec![Client164::MapChunk(p)])
 }
 
 pub fn prenetty_world_event_1_6_4_down(
-	mut p: v1_7::play_toClient_packet_world_event::Ty,
+	mut p: v1_7::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	p.data = world_event_data(p.effectId, p.data, TO);
-	Ok(vec![Client164::world_event(p)])
+	p.data = world_event_data(p.effect_id, p.data, TO);
+	Ok(vec![Client164::WorldEvent(p)])
 }
 
 fn sound(table: &[(&str, &str)], name: &str, up: bool) -> Option<String> {
@@ -49,47 +49,47 @@ fn sound(table: &[(&str, &str)], name: &str, up: bool) -> Option<String> {
 }
 
 pub fn prenetty_chat_server_1_7(message: String, _cx: &mut Session) -> Result<Vec<Server17>> {
-	Ok(vec![Server17::chat(message)])
+	Ok(vec![Server17::Chat(message)])
 }
 
 pub fn prenetty_chat_server_1_6_4(message: String, _cx: &mut Session) -> Result<Vec<Server164>> {
-	Ok(vec![Server164::chat(text::truncate(&message, 100))])
+	Ok(vec![Server164::Chat(text::truncate(&message, 100))])
 }
 
 pub fn prenetty_tab_complete_server_1_7(text: String, _cx: &mut Session) -> Result<Vec<Server17>> {
-	Ok(vec![Server17::tab_complete(text)])
+	Ok(vec![Server17::TabComplete(text)])
 }
 
 pub fn prenetty_tab_complete_server_1_6_4(
 	input: String,
 	_cx: &mut Session,
 ) -> Result<Vec<Server164>> {
-	Ok(vec![Server164::tab_complete(text::truncate(&input, 100))])
+	Ok(vec![Server164::TabComplete(text::truncate(&input, 100))])
 }
 
 macro_rules! sounds {
 	($up:ident, $down:ident, $old:ident, $new:ident, $table:expr) => {
 		pub fn $up(
-			mut p: $old::play_toClient_packet_named_sound_effect::Ty,
+			mut p: $old::play_to_client_packet_named_sound_effect::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$new::play_toClient_packet::Ty>> {
-			match sound(&$table, &p.soundName, true) {
+		) -> Result<Vec<$new::play_to_client_packet::Ty>> {
+			match sound(&$table, &p.sound_name, true) {
 				Some(name) if !name.is_empty() => {
-					p.soundName = name;
-					Ok(vec![$new::play_toClient_packet::Ty::named_sound_effect(p)])
+					p.sound_name = name;
+					Ok(vec![$new::play_to_client_packet::Ty::NamedSoundEffect(p)])
 				}
 				_ => Ok(vec![]),
 			}
 		}
 
 		pub fn $down(
-			mut p: $new::play_toClient_packet_named_sound_effect::Ty,
+			mut p: $new::play_to_client_packet_named_sound_effect::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$old::play_toClient_packet::Ty>> {
-			match sound(&$table, &p.soundName, false) {
+		) -> Result<Vec<$old::play_to_client_packet::Ty>> {
+			match sound(&$table, &p.sound_name, false) {
 				Some(name) if !name.is_empty() => {
-					p.soundName = name;
-					Ok(vec![$old::play_toClient_packet::Ty::named_sound_effect(p)])
+					p.sound_name = name;
+					Ok(vec![$old::play_to_client_packet::Ty::NamedSoundEffect(p)])
 				}
 				_ => Ok(vec![]),
 			}
@@ -115,13 +115,13 @@ sounds!(
 );
 
 pub fn prenetty_sound_1_7(
-	p: v1_6_4::play_toClient_packet_named_sound_effect::Ty,
+	p: v1_6_4::play_to_client_packet_named_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	match sound(&SOUNDS_1_7, &p.soundName, true) {
-		Some(name) if !name.is_empty() => Ok(vec![Client17::named_sound_effect(
-			v1_7::play_toClient_packet_named_sound_effect::Ty {
-				soundName: name,
+	match sound(&SOUNDS_1_7, &p.sound_name, true) {
+		Some(name) if !name.is_empty() => Ok(vec![Client17::NamedSoundEffect(
+			v1_7::play_to_client_packet_named_sound_effect::Ty {
+				sound_name: name,
 				x: p.x,
 				y: p.y,
 				z: p.z,
@@ -134,13 +134,13 @@ pub fn prenetty_sound_1_7(
 }
 
 pub fn prenetty_sound_1_6_4(
-	p: v1_7::play_toClient_packet_named_sound_effect::Ty,
+	p: v1_7::play_to_client_packet_named_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	match sound(&SOUNDS_1_7, &p.soundName, false) {
-		Some(name) if !name.is_empty() => Ok(vec![Client164::named_sound_effect(
-			v1_6_4::play_toClient_packet_named_sound_effect::Ty {
-				soundName: name,
+	match sound(&SOUNDS_1_7, &p.sound_name, false) {
+		Some(name) if !name.is_empty() => Ok(vec![Client164::NamedSoundEffect(
+			v1_6_4::play_to_client_packet_named_sound_effect::Ty {
+				sound_name: name,
 				x: p.x,
 				y: p.y,
 				z: p.z,
@@ -153,137 +153,137 @@ pub fn prenetty_sound_1_6_4(
 }
 
 pub fn prenetty_login_1_7(
-	p: v1_6_4::play_toClient_packet_login::Ty,
+	p: v1_6_4::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let st = state(cx);
-	st.player = p.entityId;
+	st.player = p.entity_id;
 	st.stats.clear();
-	Ok(vec![Client17::login(
-		v1_7::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			gameMode: p.gameMode,
+	Ok(vec![Client17::Login(
+		v1_7::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
 			difficulty: p.difficulty,
-			maxPlayers: p.maxPlayers,
-			levelType: p.levelType,
+			max_players: p.max_players,
+			level_type: p.level_type,
 		},
 	)])
 }
 
 pub fn prenetty_login_1_6_4(
-	p: v1_7::play_toClient_packet_login::Ty,
+	p: v1_7::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	super::entities::joined(cx, p.entityId);
+	super::entities::joined(cx, p.entity_id);
 	state(cx).stat_values.clear();
-	Ok(vec![Client164::login(
-		v1_6_4::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			levelType: p.levelType,
-			gameMode: p.gameMode,
+	Ok(vec![Client164::Login(
+		v1_6_4::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			level_type: p.level_type,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
 			difficulty: p.difficulty,
-			worldHeight: 0,
-			maxPlayers: p.maxPlayers,
+			world_height: 0,
+			max_players: p.max_players,
 		},
 	)])
 }
 
 pub fn prenetty_position_1_7(
-	p: v1_6_4::play_toClient_packet_position::Ty,
+	p: v1_6_4::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let st = state(cx);
 	(st.x, st.y, st.z, st.yaw, st.pitch) = (p.x, p.stance, p.z, p.yaw, p.pitch);
-	Ok(vec![Client17::position(
-		v1_7::play_toClient_packet_position::Ty {
+	Ok(vec![Client17::Position(
+		v1_7::play_to_client_packet_position::Ty {
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			onGround: p.onGround,
+			on_ground: p.on_ground,
 		},
 	)])
 }
 
 pub fn prenetty_position_1_6_4(
-	p: v1_7::play_toClient_packet_position::Ty,
+	p: v1_7::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	let st = state(cx);
 	(st.x, st.y, st.z, st.yaw, st.pitch) = (p.x, p.y - EYES, p.z, p.yaw, p.pitch);
-	Ok(vec![Client164::position(
-		v1_6_4::play_toClient_packet_position::Ty {
+	Ok(vec![Client164::Position(
+		v1_6_4::play_to_client_packet_position::Ty {
 			x: p.x,
 			y: p.y,
 			stance: p.y - EYES,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			onGround: p.onGround,
+			on_ground: p.on_ground,
 		},
 	)])
 }
 
 fn position_from_state(cx: &mut Session, on_ground: bool) -> Client17 {
 	let st = state(cx);
-	Client17::position(v1_7::play_toClient_packet_position::Ty {
+	Client17::Position(v1_7::play_to_client_packet_position::Ty {
 		x: st.x,
 		y: st.y + EYES,
 		z: st.z,
 		yaw: st.yaw,
 		pitch: st.pitch,
-		onGround: on_ground,
+		on_ground: on_ground,
 	})
 }
 
 pub fn prenetty_position_only_1_7(
-	p: v1_6_4::play_toClient_packet_position_only::Ty,
+	p: v1_6_4::play_to_client_packet_position_only::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let st = state(cx);
 	(st.x, st.y, st.z) = (p.x, p.stance, p.z);
-	Ok(vec![position_from_state(cx, p.onGround)])
+	Ok(vec![position_from_state(cx, p.on_ground)])
 }
 
 pub fn prenetty_look_1_7(
-	p: v1_6_4::play_toClient_packet_look::Ty,
+	p: v1_6_4::play_to_client_packet_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let st = state(cx);
 	(st.yaw, st.pitch) = (p.yaw, p.pitch);
-	Ok(vec![position_from_state(cx, p.onGround)])
+	Ok(vec![position_from_state(cx, p.on_ground)])
 }
 
 macro_rules! track_moves {
 	($position:ident, $look:ident, $position_look:ident, $from:ident, $to:ident) => {
 		pub fn $position(
-			p: $from::play_toServer_packet_position::Ty,
+			p: $from::play_to_server_packet_position::Ty,
 			cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
 			let st = state(cx);
 			(st.x, st.y, st.z) = (p.x, p.y, p.z);
-			Ok(vec![$to::play_toServer_packet::Ty::position(p)])
+			Ok(vec![$to::play_to_server_packet::Ty::Position(p)])
 		}
 
 		pub fn $look(
-			p: $from::play_toServer_packet_look::Ty,
+			p: $from::play_to_server_packet_look::Ty,
 			cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
 			let st = state(cx);
 			(st.yaw, st.pitch) = (p.yaw, p.pitch);
-			Ok(vec![$to::play_toServer_packet::Ty::look(p)])
+			Ok(vec![$to::play_to_server_packet::Ty::Look(p)])
 		}
 
 		pub fn $position_look(
-			p: $from::play_toServer_packet_position_look::Ty,
+			p: $from::play_to_server_packet_position_look::Ty,
 			cx: &mut Session,
-		) -> Result<Vec<$to::play_toServer_packet::Ty>> {
+		) -> Result<Vec<$to::play_to_server_packet::Ty>> {
 			let st = state(cx);
 			(st.x, st.y, st.z, st.yaw, st.pitch) = (p.x, p.y, p.z, p.yaw, p.pitch);
-			Ok(vec![$to::play_toServer_packet::Ty::position_look(p)])
+			Ok(vec![$to::play_to_server_packet::Ty::PositionLook(p)])
 		}
 	};
 }
@@ -304,26 +304,26 @@ track_moves!(
 );
 
 pub fn prenetty_kick_1_7(reason: String, _cx: &mut Session) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::kick_disconnect(text::legacy_to_json(
+	Ok(vec![Client17::KickDisconnect(text::legacy_to_json(
 		&reason,
 	))])
 }
 
 pub fn prenetty_kick_1_6_4(reason: String, _cx: &mut Session) -> Result<Vec<Client164>> {
-	Ok(vec![Client164::kick_disconnect(text::truncate(
+	Ok(vec![Client164::KickDisconnect(text::truncate(
 		&text::json_to_legacy(&reason),
 		256,
 	))])
 }
 
 pub fn prenetty_chat_1_7(message: String, _cx: &mut Session) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::chat(text::rename_key(
+	Ok(vec![Client17::Chat(text::rename_key(
 		&message, "using", "with",
 	))])
 }
 
 pub fn prenetty_chat_1_6_4(message: String, _cx: &mut Session) -> Result<Vec<Client164>> {
-	Ok(vec![Client164::chat(text::truncate(
+	Ok(vec![Client164::Chat(text::truncate(
 		&text::rename_key(&message, "with", "using"),
 		i16::MAX as usize,
 	))])
@@ -335,14 +335,14 @@ pub fn prenetty_tab_complete_1_7(matches: String, _cx: &mut Session) -> Result<V
 	} else {
 		matches.split('\0').map(str::to_owned).collect()
 	};
-	Ok(vec![Client17::tab_complete(list)])
+	Ok(vec![Client17::TabComplete(list)])
 }
 
 pub fn prenetty_tab_complete_1_6_4(
 	matches: Vec<String>,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	Ok(vec![Client164::tab_complete(matches.join("\0"))])
+	Ok(vec![Client164::TabComplete(matches.join("\0"))])
 }
 
 fn stat_name(id: i32) -> Option<String> {
@@ -375,24 +375,24 @@ fn stat_id(name: &str) -> Option<i32> {
 }
 
 pub fn prenetty_statistics_1_7(
-	p: v1_6_4::play_toClient_packet_statistics::Ty,
+	p: v1_6_4::play_to_client_packet_statistics::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let total = {
-		let v = state(cx).stats.entry(p.statisticId).or_default();
+		let v = state(cx).stats.entry(p.statistic_id).or_default();
 		*v = v.saturating_add(p.amount);
 		*v
 	};
-	let Some(name) = stat_name(p.statisticId) else {
+	let Some(name) = stat_name(p.statistic_id) else {
 		return Ok(vec![]);
 	};
-	Ok(vec![Client17::statistics(vec![
-		v1_7::play_toClient_packet__statistics__items::Ty { name, value: total },
+	Ok(vec![Client17::Statistics(vec![
+		v1_7::play_to_client_packet_statistics_items::Ty { name, value: total },
 	])])
 }
 
 pub fn prenetty_statistics_1_6_4(
-	p: Vec<v1_7::play_toClient_packet__statistics__items::Ty>,
+	p: Vec<v1_7::play_to_client_packet_statistics_items::Ty>,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	let st = state(cx);
@@ -403,9 +403,9 @@ pub fn prenetty_statistics_1_6_4(
 		let mut delta = s.value as i64 - before as i64;
 		while delta > 0 {
 			let amount = delta.min(i32::MAX as i64) as i32;
-			out.push(Client164::statistics(
-				v1_6_4::play_toClient_packet_statistics::Ty {
-					statisticId: id,
+			out.push(Client164::Statistics(
+				v1_6_4::play_to_client_packet_statistics::Ty {
+					statistic_id: id,
 					amount,
 				},
 			));
@@ -431,77 +431,79 @@ fn animation_down(a: u8) -> u8 {
 }
 
 pub fn prenetty_animation_1_7(
-	p: v1_6_4::play_toClient_packet_animation::Ty,
+	p: v1_6_4::play_to_client_packet_animation::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	let Some(animation) = animation_up(p.animation) else {
 		return Ok(vec![]);
 	};
-	Ok(vec![Client17::animation(
-		v1_7::play_toClient_packet_animation::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client17::Animation(
+		v1_7::play_to_client_packet_animation::Ty {
+			entity_id: p.entity_id,
 			animation,
 		},
 	)])
 }
 
 pub fn prenetty_animation_1_6_4(
-	p: v1_7::play_toClient_packet_animation::Ty,
+	p: v1_7::play_to_client_packet_animation::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	let animation = animation_down(p.animation);
-	if !super::entities::animation_reaches_1_6_4(cx, p.entityId, animation) {
+	if !super::entities::animation_reaches_1_6_4(cx, p.entity_id, animation) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client164::animation(
-		v1_6_4::play_toClient_packet_animation::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client164::Animation(
+		v1_6_4::play_to_client_packet_animation::Ty {
+			entity_id: p.entity_id,
 			animation,
 		},
 	)])
 }
 
 pub fn prenetty_bed_1_7(
-	p: v1_6_4::play_toClient_packet_bed::Ty,
+	p: v1_6_4::play_to_client_packet_bed::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
 	if p.action != 0 {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client17::bed(v1_7::play_toClient_packet_bed::Ty {
-		entityId: p.entityId,
+	Ok(vec![Client17::Bed(v1_7::play_to_client_packet_bed::Ty {
+		entity_id: p.entity_id,
 		location: p.location,
 	})])
 }
 
 pub fn prenetty_bed_1_6_4(
-	p: v1_7::play_toClient_packet_bed::Ty,
+	p: v1_7::play_to_client_packet_bed::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	if !super::entities::bed_reaches_1_6_4(cx, p.entityId) {
+	if !super::entities::bed_reaches_1_6_4(cx, p.entity_id) {
 		return Ok(vec![]);
 	}
-	Ok(vec![Client164::bed(v1_6_4::play_toClient_packet_bed::Ty {
-		entityId: p.entityId,
-		action: 0,
-		location: p.location,
-	})])
+	Ok(vec![Client164::Bed(
+		v1_6_4::play_to_client_packet_bed::Ty {
+			entity_id: p.entity_id,
+			action: 0,
+			location: p.location,
+		},
+	)])
 }
 
 pub fn prenetty_open_sign_entity_1_7(
-	p: v1_6_4::play_toClient_packet_open_sign_entity::Ty,
+	p: v1_6_4::play_to_client_packet_open_sign_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::open_sign_entity(p.location)])
+	Ok(vec![Client17::OpenSignEntity(p.location)])
 }
 
 pub fn prenetty_open_sign_entity_1_6_4(
 	p: v1_7::position_iii::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	Ok(vec![Client164::open_sign_entity(
-		v1_6_4::play_toClient_packet_open_sign_entity::Ty {
-			tileEntityId: 0,
+	Ok(vec![Client164::OpenSignEntity(
+		v1_6_4::play_to_client_packet_open_sign_entity::Ty {
+			tile_entity_id: 0,
 			location: p,
 		},
 	)])
@@ -531,71 +533,71 @@ fn offline_uuid(name: &str) -> String {
 }
 
 pub fn prenetty_named_entity_spawn_1_7(
-	p: v1_6_4::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_6_4::play_to_client_packet_named_entity_spawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::named_entity_spawn(
-		v1_7::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: offline_uuid(&p.playerName),
-			playerName: p.playerName,
+	Ok(vec![Client17::NamedEntitySpawn(
+		v1_7::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: offline_uuid(&p.player_name),
+			player_name: p.player_name,
 			data: vec![],
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			currentItem: p.currentItem,
+			current_item: p.current_item,
 			metadata: metadata_up(p.metadata),
 		},
 	)])
 }
 
 pub fn prenetty_named_entity_spawn_1_6_4(
-	p: v1_7::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_7::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	super::entities::track(cx, p.entityId, super::Kind::Player);
-	Ok(vec![Client164::named_entity_spawn(
-		v1_6_4::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerName: text::truncate(&p.playerName, 16),
+	super::entities::track(cx, p.entity_id, super::Kind::Player);
+	Ok(vec![Client164::NamedEntitySpawn(
+		v1_6_4::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_name: text::truncate(&p.player_name, 16),
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			currentItem: item_id(p.currentItem, TO),
+			current_item: item_id(p.current_item, TO),
 			metadata: metadata_down(p.metadata),
 		},
 	)])
 }
 
-type Meta164 = v1_6_4::entityMetadata::Ty;
-type Meta17 = v1_7::entityMetadata::Ty;
-type Item164 = v1_6_4::entityMetadataItem::Ty;
-type Item17 = v1_7::entityMetadataItem::Ty;
+type Meta164 = v1_6_4::entity_metadata::Ty;
+type Meta17 = v1_7::entity_metadata::Ty;
+type Item164 = v1_6_4::entity_metadata_item::Ty;
+type Item17 = v1_7::entity_metadata_item::Ty;
 
 fn metadata_up(m: Meta164) -> Meta17 {
 	m.into_iter()
-		.map(|e| v1_7::entityMetadata__items::Ty {
-			ANON: v1_7::entityMetadata__items__ANON::Ty {
-				r#type: e.ANON.r#type,
-				key: e.ANON.key,
+		.map(|e| v1_7::entity_metadata_items::Ty {
+			anon: v1_7::entity_metadata_items_anon::Ty {
+				r#type: e.anon.r#type,
+				key: e.anon.key,
 			},
 			value: match e.value {
-				Item164::v0(x) => Item17::v0(x),
-				Item164::v1(x) => Item17::v1(x),
-				Item164::v2(x) => Item17::v2(x),
-				Item164::v3(x) => Item17::v3(x),
-				Item164::v4(x) => Item17::v4(x),
-				Item164::v5(x) => Item17::v5(x),
-				Item164::v6(p) => Item17::v6(v1_7::entityMetadataItem__v6::Ty {
+				Item164::V0(x) => Item17::V0(x),
+				Item164::V1(x) => Item17::V1(x),
+				Item164::V2(x) => Item17::V2(x),
+				Item164::V3(x) => Item17::V3(x),
+				Item164::V4(x) => Item17::V4(x),
+				Item164::V5(x) => Item17::V5(x),
+				Item164::V6(p) => Item17::V6(v1_7::entity_metadata_item_v6::Ty {
 					x: p.x,
 					y: p.y,
 					z: p.z,
 				}),
-				Item164::default(t) => Item17::default(t),
+				Item164::Default(t) => Item17::Default(t),
 			},
 		})
 		.collect()
@@ -605,24 +607,24 @@ fn metadata_down(m: Meta17) -> Meta164 {
 	m.into_iter()
 		.filter_map(|e| {
 			let value = match e.value {
-				Item17::v0(x) => Item164::v0(x),
-				Item17::v1(x) => Item164::v1(x),
-				Item17::v2(x) => Item164::v2(x),
-				Item17::v3(x) => Item164::v3(x),
-				Item17::v4(x) => Item164::v4(text::truncate(&x, i16::MAX as usize)),
-				Item17::v5(x) => Item164::v5(super::slot(x, TO)),
-				Item17::v6(p) => Item164::v6(v1_6_4::entityMetadataItem__v6::Ty {
+				Item17::V0(x) => Item164::V0(x),
+				Item17::V1(x) => Item164::V1(x),
+				Item17::V2(x) => Item164::V2(x),
+				Item17::V3(x) => Item164::V3(x),
+				Item17::V4(x) => Item164::V4(text::truncate(&x, i16::MAX as usize)),
+				Item17::V5(x) => Item164::V5(super::slot(x, TO)),
+				Item17::V6(p) => Item164::V6(v1_6_4::entity_metadata_item_v6::Ty {
 					x: p.x,
 					y: p.y,
 					z: p.z,
 				}),
-				Item17::v7(_) => return None,
-				Item17::default(t) => Item164::default(t),
+				Item17::V7(_) => return None,
+				Item17::Default(t) => Item164::Default(t),
 			};
-			Some(v1_6_4::entityMetadata__items::Ty {
-				ANON: v1_6_4::entityMetadata__items__ANON::Ty {
-					r#type: e.ANON.r#type,
-					key: e.ANON.key,
+			Some(v1_6_4::entity_metadata_items::Ty {
+				anon: v1_6_4::entity_metadata_items_anon::Ty {
+					r#type: e.anon.r#type,
+					key: e.anon.key,
 				},
 				value,
 			})
@@ -639,21 +641,21 @@ pub fn prenetty_metadata_1_6_4(m: Meta17, _cx: &mut Session) -> Result<Meta164> 
 }
 
 pub fn prenetty_multi_block_change_1_6_4(
-	mut p: v1_7::play_toClient_packet_multi_block_change::Ty,
+	mut p: v1_7::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	for r in &mut p.records {
-		r.blockId = super::remap_record(r.blockId, TO);
+		r.block_id = super::remap_record(r.block_id, TO);
 	}
-	Ok(vec![Client164::multi_block_change(p)])
+	Ok(vec![Client164::MultiBlockChange(p)])
 }
 
 pub fn prenetty_block_change_1_7(
-	p: v1_6_4::play_toClient_packet_block_change::Ty,
+	p: v1_6_4::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::block_change(
-		v1_7::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client17::BlockChange(
+		v1_7::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: p.r#type as u16 as i32,
 			metadata: p.metadata,
@@ -662,12 +664,12 @@ pub fn prenetty_block_change_1_7(
 }
 
 pub fn prenetty_block_change_1_6_4(
-	p: v1_7::play_toClient_packet_block_change::Ty,
+	p: v1_7::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	let (id, meta) = ids::block(p.r#type as u16, p.metadata, TO);
-	Ok(vec![Client164::block_change(
-		v1_6_4::play_toClient_packet_block_change::Ty {
+	Ok(vec![Client164::BlockChange(
+		v1_6_4::play_to_client_packet_block_change::Ty {
 			location: p.location,
 			r#type: id as i16,
 			metadata: meta,
@@ -676,55 +678,55 @@ pub fn prenetty_block_change_1_6_4(
 }
 
 pub fn prenetty_map_chunk_bulk_1_6_4_down(
-	mut p: v1_7::play_toClient_packet_map_chunk_bulk::Ty,
+	mut p: v1_7::play_to_client_packet_map_chunk_bulk::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
 	let columns: Vec<_> = p
 		.meta
 		.iter()
-		.map(|m| (m.x, m.z, m.bitMap, m.addBitMap))
+		.map(|m| (m.x, m.z, m.bit_map, m.add_bit_map))
 		.collect();
-	p.compressedChunkData = remap_bulk(&p.compressedChunkData, &columns, p.skyLightSent, TO)?;
-	Ok(vec![Client164::map_chunk_bulk(p)])
+	p.compressed_chunk_data = remap_bulk(&p.compressed_chunk_data, &columns, p.sky_light_sent, TO)?;
+	Ok(vec![Client164::MapChunkBulk(p)])
 }
 
 pub fn prenetty_spawn_entity_1_6_4(
-	mut p: v1_7::play_toClient_packet_spawn_entity::Ty,
+	mut p: v1_7::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	type Data = v1_7::play_toClient_packet_spawn_entity__objectData::Ty;
-	type Old = v1_6_4::play_toClient_packet_spawn_entity__objectData::Ty;
-	let data = match &p.objectData {
-		Data::default(d, _) => *d,
-		Data::v0 => 0,
+	type Data = v1_7::play_to_client_packet_spawn_entity_object_data::Ty;
+	type Old = v1_6_4::play_to_client_packet_spawn_entity_object_data::Ty;
+	let data = match &p.object_data {
+		Data::Default(d, _) => *d,
+		Data::V0 => 0,
 	};
-	super::entities::track(cx, p.entityId, super::Kind::Object(p.r#type, data));
+	super::entities::track(cx, p.entity_id, super::Kind::Object(p.r#type, data));
 	if p.r#type == 70 {
-		if let Data::default(data, v) = p.objectData {
-			p.objectData = Data::default(falling_block(data, TO, true), v);
+		if let Data::Default(data, v) = p.object_data {
+			p.object_data = Data::Default(falling_block(data, TO, true), v);
 		}
 	}
-	let object_data = match p.objectData {
-		Data::v0 => Old::v0,
-		Data::default(t, v) => Old::default(
+	let object_data = match p.object_data {
+		Data::V0 => Old::V0,
+		Data::Default(t, v) => Old::Default(
 			t,
-			v1_6_4::play_toClient_packet_spawn_entity__objectData__default::Ty {
-				velocityX: v.velocityX,
-				velocityY: v.velocityY,
-				velocityZ: v.velocityZ,
+			v1_6_4::play_to_client_packet_spawn_entity_object_data_default::Ty {
+				velocity_x: v.velocity_x,
+				velocity_y: v.velocity_y,
+				velocity_z: v.velocity_z,
 			},
 		),
 	};
-	Ok(vec![Client164::spawn_entity(
-		v1_6_4::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client164::SpawnEntity(
+		v1_6_4::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
 			r#type: p.r#type,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			objectData: object_data,
+			object_data: object_data,
 		},
 	)])
 }
@@ -746,55 +748,55 @@ fn particle(name: &str, up: bool) -> String {
 }
 
 pub fn prenetty_particle_1_7(
-	p: &v1_6_4::play_toClient_packet_world_particles::Ty,
+	p: &v1_6_4::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(particle(&p.particleName, true))
+	Ok(particle(&p.particle_name, true))
 }
 
 pub fn prenetty_particle_1_6_4(
-	p: &v1_7::play_toClient_packet_world_particles::Ty,
+	p: &v1_7::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
-	Ok(particle(&p.particleName, false))
+	Ok(particle(&p.particle_name, false))
 }
 
 pub fn prenetty_client_command_1_7(
-	p: v1_6_4::play_toServer_packet_client_command::Ty,
+	p: v1_6_4::play_to_server_packet_client_command::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server17>> {
-	use v1_6_4::play_toServer_packet_client_command::Ty as C;
+	use v1_6_4::play_to_server_packet_client_command::Ty as C;
 	match p {
-		C::perform_respawn => Ok(vec![Server17::client_command(
-			v1_7::play_toServer_packet_client_command::Ty::perform_respawn,
+		C::PerformRespawn => Ok(vec![Server17::ClientCommand(
+			v1_7::play_to_server_packet_client_command::Ty::PerformRespawn,
 		)]),
 		_ => Ok(vec![]),
 	}
 }
 
 pub fn prenetty_client_command_1_6_4(
-	p: v1_7::play_toServer_packet_client_command::Ty,
+	p: v1_7::play_to_server_packet_client_command::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server164>> {
-	use v1_7::play_toServer_packet_client_command::Ty as C;
+	use v1_7::play_to_server_packet_client_command::Ty as C;
 	match p {
-		C::perform_respawn => Ok(vec![Server164::client_command(
-			v1_6_4::play_toServer_packet_client_command::Ty::perform_respawn,
+		C::PerformRespawn => Ok(vec![Server164::ClientCommand(
+			v1_6_4::play_to_server_packet_client_command::Ty::PerformRespawn,
 		)]),
-		C::request_stats => {
+		C::RequestStats => {
 			let stats: Vec<_> = state(cx)
 				.stats
 				.iter()
 				.filter_map(|(id, v)| {
-					stat_name(*id).map(|name| v1_7::play_toClient_packet__statistics__items::Ty {
+					stat_name(*id).map(|name| v1_7::play_to_client_packet_statistics_items::Ty {
 						name,
 						value: *v,
 					})
 				})
 				.collect();
 			let mut out = Output::new();
-			if crate::gen::pds_v1_7_play_toClient_packet::serialize(
-				&Client17::statistics(stats),
+			if crate::gen::v1_7::play::to_client::packet::serialize(
+				&Client17::Statistics(stats),
 				&mut out,
 			)
 			.is_ok()
@@ -810,118 +812,118 @@ pub fn prenetty_client_command_1_6_4(
 }
 
 pub fn prenetty_entity_action_1_7(
-	p: v1_6_4::play_toServer_packet_entity_action::Ty,
+	p: v1_6_4::play_to_server_packet_entity_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server17>> {
-	use v1_7::play_toServer_packet_entity_action__actionId::Ty as A;
-	let action = match p.actionId {
-		1 => A::start_sneaking,
-		2 => A::stop_sneaking,
-		3 => A::stop_sleeping,
-		4 => A::start_sprinting,
-		5 => A::stop_sprinting,
-		6 => A::start_riding_jump,
-		7 => A::open_inventory,
-		n => A::default(n),
+	use v1_7::play_to_server_packet_entity_action_action_id::Ty as A;
+	let action = match p.action_id {
+		1 => A::StartSneaking,
+		2 => A::StopSneaking,
+		3 => A::StopSleeping,
+		4 => A::StartSprinting,
+		5 => A::StopSprinting,
+		6 => A::StartRidingJump,
+		7 => A::OpenInventory,
+		n => A::Default(n),
 	};
-	Ok(vec![Server17::entity_action(
-		v1_7::play_toServer_packet_entity_action::Ty {
-			entityId: p.entityId,
-			actionId: action,
-			jumpBoost: p.jumpBoost,
+	Ok(vec![Server17::EntityAction(
+		v1_7::play_to_server_packet_entity_action::Ty {
+			entity_id: p.entity_id,
+			action_id: action,
+			jump_boost: p.jump_boost,
 		},
 	)])
 }
 
 pub fn prenetty_entity_action_1_6_4(
-	p: v1_7::play_toServer_packet_entity_action::Ty,
+	p: v1_7::play_to_server_packet_entity_action::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server164>> {
-	use v1_7::play_toServer_packet_entity_action__actionId::Ty as A;
-	let action = match p.actionId {
-		A::start_sneaking => 1,
-		A::stop_sneaking => 2,
-		A::stop_sleeping => 3,
-		A::start_sprinting => 4,
-		A::stop_sprinting => 5,
-		A::start_riding_jump => 6,
-		A::open_inventory => 7,
-		A::default(n) => n,
+	use v1_7::play_to_server_packet_entity_action_action_id::Ty as A;
+	let action = match p.action_id {
+		A::StartSneaking => 1,
+		A::StopSneaking => 2,
+		A::StopSleeping => 3,
+		A::StartSprinting => 4,
+		A::StopSprinting => 5,
+		A::StartRidingJump => 6,
+		A::OpenInventory => 7,
+		A::Default(n) => n,
 	};
-	Ok(vec![Server164::entity_action(
-		v1_6_4::play_toServer_packet_entity_action::Ty {
-			entityId: p.entityId,
-			actionId: action,
-			jumpBoost: p.jumpBoost,
+	Ok(vec![Server164::EntityAction(
+		v1_6_4::play_to_server_packet_entity_action::Ty {
+			entity_id: p.entity_id,
+			action_id: action,
+			jump_boost: p.jump_boost,
 		},
 	)])
 }
 
 pub fn prenetty_settings_1_7(
-	p: v1_6_4::play_toServer_packet_settings::Ty,
+	p: v1_6_4::play_to_server_packet_settings::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server17>> {
-	let view = match p.viewDistance {
+	let view = match p.view_distance {
 		0 => 16,
 		1 => 8,
 		2 => 4,
 		_ => 2,
 	};
-	Ok(vec![Server17::settings(
-		v1_7::play_toServer_packet_settings::Ty {
+	Ok(vec![Server17::Settings(
+		v1_7::play_to_server_packet_settings::Ty {
 			locale: p.locale,
-			viewDistance: view,
-			chatFlags: p.chatFlags & 7,
-			chatColors: p.chatFlags & 8 != 0,
+			view_distance: view,
+			chat_flags: p.chat_flags & 7,
+			chat_colors: p.chat_flags & 8 != 0,
 			difficulty: p.difficulty,
-			showCape: p.showCape,
+			show_cape: p.show_cape,
 		},
 	)])
 }
 
 pub fn prenetty_settings_1_6_4(
-	p: v1_7::play_toServer_packet_settings::Ty,
+	p: v1_7::play_to_server_packet_settings::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server164>> {
-	let view = match p.viewDistance {
+	let view = match p.view_distance {
 		..=2 => 3,
 		3..=4 => 2,
 		5..=8 => 1,
 		_ => 0,
 	};
-	Ok(vec![Server164::settings(
-		v1_6_4::play_toServer_packet_settings::Ty {
+	Ok(vec![Server164::Settings(
+		v1_6_4::play_to_server_packet_settings::Ty {
 			locale: text::truncate(&p.locale, 7),
-			viewDistance: view,
-			chatFlags: p.chatFlags & 7 | (p.chatColors as i8) << 3,
+			view_distance: view,
+			chat_flags: p.chat_flags & 7 | (p.chat_colors as i8) << 3,
 			difficulty: p.difficulty,
-			showCape: p.showCape,
+			show_cape: p.show_cape,
 		},
 	)])
 }
 
 pub fn prenetty_use_entity_1_7(
-	p: v1_6_4::play_toServer_packet_use_entity::Ty,
+	p: v1_6_4::play_to_server_packet_use_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Server17>> {
-	Ok(vec![Server17::use_entity(
-		v1_7::play_toServer_packet_use_entity::Ty {
+	Ok(vec![Server17::UseEntity(
+		v1_7::play_to_server_packet_use_entity::Ty {
 			target: p.target,
-			mouse: v1_7::play_toServer_packet_use_entity__mouse::Ty::default(p.mouse),
+			mouse: v1_7::play_to_server_packet_use_entity_mouse::Ty::Default(p.mouse),
 		},
 	)])
 }
 
 pub fn prenetty_use_entity_1_6_4(
-	p: v1_7::play_toServer_packet_use_entity::Ty,
+	p: v1_7::play_to_server_packet_use_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Server164>> {
 	let mouse = match p.mouse {
-		v1_7::play_toServer_packet_use_entity__mouse::Ty::default(m) => m,
+		v1_7::play_to_server_packet_use_entity_mouse::Ty::Default(m) => m,
 		_ => return Ok(vec![]),
 	};
-	Ok(vec![Server164::use_entity(
-		v1_6_4::play_toServer_packet_use_entity::Ty {
+	Ok(vec![Server164::UseEntity(
+		v1_6_4::play_to_server_packet_use_entity::Ty {
 			user: state(cx).player,
 			target: p.target,
 			mouse,
@@ -936,34 +938,34 @@ mod tests {
 	#[test]
 	fn records_drop_blocks_1_6_4_lacks() {
 		let mut cx = Session::new();
-		let p = v1_7::play_toClient_packet_multi_block_change::Ty {
-			chunkX: 0,
-			chunkZ: 0,
-			dataLength: 8,
+		let p = v1_7::play_to_client_packet_multi_block_change::Ty {
+			chunk_x: 0,
+			chunk_z: 0,
+			data_length: 8,
 			records: vec![
-				v1_7::play_toClient_packet_multi_block_change__records__items::Ty {
-					horizontalPos: 0x5a,
+				v1_7::play_to_client_packet_multi_block_change_records_items::Ty {
+					horizontal_pos: 0x5a,
 					y: 70,
-					blockId: 95 << 4 | 3,
+					block_id: 95 << 4 | 3,
 				},
-				v1_7::play_toClient_packet_multi_block_change__records__items::Ty {
-					horizontalPos: 0,
+				v1_7::play_to_client_packet_multi_block_change_records_items::Ty {
+					horizontal_pos: 0,
 					y: 1,
-					blockId: 0x234,
+					block_id: 0x234,
 				},
 			],
 		};
-		let Client164::multi_block_change(old) =
+		let Client164::MultiBlockChange(old) =
 			super::super::one(prenetty_multi_block_change_1_6_4(p, &mut cx).unwrap())
 		else {
 			panic!()
 		};
 		let r = &old.records;
 		assert_eq!(
-			(r[0].horizontalPos, r[0].y, r[0].blockId),
+			(r[0].horizontal_pos, r[0].y, r[0].block_id),
 			(0x5a, 70, 20 << 4)
 		);
-		assert_eq!(r[1].blockId, 0x234);
+		assert_eq!(r[1].block_id, 0x234);
 	}
 
 	#[test]
@@ -971,8 +973,8 @@ mod tests {
 		let mut cx = Session::new();
 		let up = |cx: &mut Session, amount| {
 			prenetty_statistics_1_7(
-				v1_6_4::play_toClient_packet_statistics::Ty {
-					statisticId: 2022,
+				v1_6_4::play_to_client_packet_statistics::Ty {
+					statistic_id: 2022,
 					amount,
 				},
 				cx,
@@ -980,13 +982,13 @@ mod tests {
 			.unwrap()
 		};
 		up(&mut cx, 2);
-		let Client17::statistics(s) = super::super::one(up(&mut cx, 3)) else {
+		let Client17::Statistics(s) = super::super::one(up(&mut cx, 3)) else {
 			panic!()
 		};
 		assert_eq!((s[0].name.as_str(), s[0].value), ("stat.deaths", 5));
 		let down = prenetty_statistics_1_6_4(s, &mut cx).unwrap();
 		assert!(
-			matches!(down.as_slice(), [Client164::statistics(p)] if (p.statisticId, p.amount) == (2022, 5))
+			matches!(down.as_slice(), [Client164::Statistics(p)] if (p.statistic_id, p.amount) == (2022, 5))
 		);
 		assert_eq!(stat_id("stat.mineBlock.1"), Some(16777217));
 	}

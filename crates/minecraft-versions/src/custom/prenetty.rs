@@ -30,8 +30,8 @@ use ids::V;
 
 type LegacySlot = pds_legacySlot::Ty;
 type Slot = v1_6_4::slot::Ty;
-type OldMetaItem = v1_0_1::entityMetadataItem::Ty;
-type MidMetaItem = v1_4_2::entityMetadataItem::Ty;
+type OldMetaItem = v1_0_1::entity_metadata_item::Ty;
+type MidMetaItem = v1_4_2::entity_metadata_item::Ty;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Kind {
@@ -85,10 +85,10 @@ fn legacy_slot(v: LegacySlot, to: V) -> LegacySlot {
 
 fn slot(v: Slot, to: V) -> Slot {
 	match v {
-		Slot::default(id, mut item) => {
-			let (id, damage) = ids::item(id, item.itemDamage, to);
-			item.itemDamage = damage;
-			Slot::default(id, item)
+		Slot::Default(id, mut item) => {
+			let (id, damage) = ids::item(id, item.item_damage, to);
+			item.item_damage = damage;
+			Slot::Default(id, item)
 		}
 		other => other,
 	}
@@ -96,23 +96,23 @@ fn slot(v: Slot, to: V) -> Slot {
 
 fn old_meta_item(v: OldMetaItem, to: V) -> OldMetaItem {
 	match v {
-		OldMetaItem::v5(mut item) => {
+		OldMetaItem::V5(mut item) => {
 			if item.id >= 0 {
-				(item.id, item.itemDamage) = ids::item(item.id, item.itemDamage, to);
+				(item.id, item.item_damage) = ids::item(item.id, item.item_damage, to);
 			}
-			OldMetaItem::v5(item)
+			OldMetaItem::V5(item)
 		}
 		other => other,
 	}
 }
 
 fn mid_meta_item(v: MidMetaItem, to: V) -> MidMetaItem {
-	use crate::gen::convert::v1_4_2::entityMetadataItem__v5 as Item;
+	use crate::gen::convert::v1_4_2::entity_metadata_item_v5 as Item;
 	match v {
-		MidMetaItem::v5(Item::Ty::default(id, mut item)) => {
-			let (id, damage) = ids::item(id, item.itemDamage, to);
-			item.itemDamage = damage;
-			MidMetaItem::v5(Item::Ty::default(id, item))
+		MidMetaItem::V5(Item::Ty::Default(id, mut item)) => {
+			let (id, damage) = ids::item(id, item.item_damage, to);
+			item.item_damage = damage;
+			MidMetaItem::V5(Item::Ty::Default(id, item))
 		}
 		other => other,
 	}

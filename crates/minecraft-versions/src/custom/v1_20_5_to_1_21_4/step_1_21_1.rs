@@ -4,17 +4,17 @@ use crate::gen::convert::{v1_20_5 as a, v1_21_1 as b};
 const FROM: Version = Version::V1_20_5;
 const TO: Version = Version::V1_21_1;
 
-type ConfigA = a::configuration_toClient_packet::Ty;
-type ConfigB = b::configuration_toClient_packet::Ty;
-type ClientA = a::play_toClient_packet::Ty;
-type ClientB = b::play_toClient_packet::Ty;
-type ConfigTag = b::configuration_toClient_packet__tags__items::Ty;
-type PlayTag = b::play_toClient_packet__tags__items::Ty;
+type ConfigA = a::configuration_to_client_packet::Ty;
+type ConfigB = b::configuration_to_client_packet::Ty;
+type ClientA = a::play_to_client_packet::Ty;
+type ClientB = b::play_to_client_packet::Ty;
+type ConfigTag = b::configuration_to_client_packet_tags_items::Ty;
+type PlayTag = b::play_to_client_packet_tags_items::Ty;
 type ConfigTags = Vec<ConfigTag>;
 type PlayTags = Vec<PlayTag>;
-type Painting = b::entityMetadataEntry__value__painting_variant::Ty;
-type Meta = b::entityMetadataEntry__value::Ty;
-type MetaA = a::entityMetadataEntry__value::Ty;
+type Painting = b::entity_metadata_entry_value_painting_variant::Ty;
+type Meta = b::entity_metadata_entry_value::Ty;
+type MetaA = a::entity_metadata_entry_value::Ty;
 
 const ATTRIBUTES_1_20_5: &[&str] = &[
 	"armor",
@@ -276,7 +276,7 @@ fn enchantment_down(cx: &mut Session, id: i32) -> Option<i32> {
 }
 
 pub fn tricky_registry_data_1_21_1(p: RegistryData, cx: &mut Session) -> Result<Vec<ConfigB>> {
-	Ok(vec![ConfigB::registry_data(registry_up(
+	Ok(vec![ConfigB::RegistryData(registry_up(
 		cx,
 		(FROM, TO),
 		p,
@@ -285,7 +285,7 @@ pub fn tricky_registry_data_1_21_1(p: RegistryData, cx: &mut Session) -> Result<
 }
 
 pub fn tricky_registry_data_down_1_20_5(p: RegistryData, cx: &mut Session) -> Result<Vec<ConfigA>> {
-	Ok(vec![ConfigA::registry_data(registry_down(
+	Ok(vec![ConfigA::RegistryData(registry_down(
 		cx,
 		(TO, FROM),
 		p,
@@ -294,19 +294,19 @@ pub fn tricky_registry_data_down_1_20_5(p: RegistryData, cx: &mut Session) -> Re
 }
 
 pub fn tricky_finish_configuration_1_21_1(
-	p: a::configuration_toClient_packet_finish_configuration::Ty,
+	p: a::configuration_to_client_packet_finish_configuration::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ConfigB>> {
 	let mut out: Vec<ConfigB> = missing_registries(cx, TO, no_fix)
 		.into_iter()
-		.map(ConfigB::registry_data)
+		.map(ConfigB::RegistryData)
 		.collect();
-	out.push(ConfigB::finish_configuration(p));
+	out.push(ConfigB::FinishConfiguration(p));
 	Ok(out)
 }
 
 pub fn tricky_feature_flags_1_21_1(p: Vec<String>, _cx: &mut Session) -> Result<Vec<ConfigB>> {
-	Ok(vec![ConfigB::feature_flags(features(
+	Ok(vec![ConfigB::FeatureFlags(features(
 		p,
 		&[],
 		&["update_1_21"],
@@ -314,7 +314,7 @@ pub fn tricky_feature_flags_1_21_1(p: Vec<String>, _cx: &mut Session) -> Result<
 }
 
 pub fn tricky_feature_flags_down_1_20_5(p: Vec<String>, _cx: &mut Session) -> Result<Vec<ConfigA>> {
-	Ok(vec![ConfigA::feature_flags(features(
+	Ok(vec![ConfigA::FeatureFlags(features(
 		p,
 		&["update_1_21"],
 		&[],
@@ -412,14 +412,14 @@ macro_rules! tag_groups {
 	($groups:expr, $ty:ident, $registries:expr) => {{
 		let mut groups = $groups;
 		for g in &mut groups {
-			tags_up(&g.tagType, &mut g.tags);
+			tags_up(&g.tag_type, &mut g.tags);
 		}
 		for registry in $registries {
-			if !groups.iter().any(|g| strip(&g.tagType) == strip(registry)) {
+			if !groups.iter().any(|g| strip(&g.tag_type) == strip(registry)) {
 				let mut tags = vec![];
 				tags_up(registry, &mut tags);
 				groups.push($ty {
-					tagType: registry.to_owned(),
+					tag_type: registry.to_owned(),
 					tags,
 				});
 			}
@@ -429,7 +429,7 @@ macro_rules! tag_groups {
 }
 
 pub fn tricky_config_tags_1_21_1(p: ConfigTags, _cx: &mut Session) -> Result<Vec<ConfigB>> {
-	Ok(vec![ConfigB::tags(tag_groups!(
+	Ok(vec![ConfigB::Tags(tag_groups!(
 		p,
 		ConfigTag,
 		[
@@ -442,7 +442,7 @@ pub fn tricky_config_tags_1_21_1(p: ConfigTags, _cx: &mut Session) -> Result<Vec
 }
 
 pub fn tricky_play_tags_1_21_1(p: PlayTags, _cx: &mut Session) -> Result<Vec<ClientB>> {
-	Ok(vec![ClientB::tags(tag_groups!(
+	Ok(vec![ClientB::Tags(tag_groups!(
 		p,
 		PlayTag,
 		[
@@ -458,116 +458,116 @@ pub fn tricky_config_tags_down_1_20_5(
 	mut p: ConfigTags,
 	_cx: &mut Session,
 ) -> Result<Vec<ConfigA>> {
-	p.retain(|g| strip(&g.tagType) != "enchantment");
+	p.retain(|g| strip(&g.tag_type) != "enchantment");
 	for g in &mut p {
-		remap_tags(TO, FROM, &g.tagType, &mut g.tags);
+		remap_tags(TO, FROM, &g.tag_type, &mut g.tags);
 	}
-	Ok(vec![ConfigA::tags(p)])
+	Ok(vec![ConfigA::Tags(p)])
 }
 
 pub fn tricky_play_tags_down_1_20_5(mut p: PlayTags, _cx: &mut Session) -> Result<Vec<ClientA>> {
-	p.retain(|g| strip(&g.tagType) != "enchantment");
+	p.retain(|g| strip(&g.tag_type) != "enchantment");
 	for g in &mut p {
-		remap_tags(TO, FROM, &g.tagType, &mut g.tags);
+		remap_tags(TO, FROM, &g.tag_type, &mut g.tags);
 	}
-	Ok(vec![ClientA::tags(p)])
+	Ok(vec![ClientA::Tags(p)])
 }
 
-pub fn tricky_item_id_1_21_1(src: &a::Slot__default::Ty, _cx: &mut Session) -> Result<i32> {
-	Ok(item(FROM, TO, src.itemId))
+pub fn tricky_item_id_1_21_1(src: &a::slot_default::Ty, _cx: &mut Session) -> Result<i32> {
+	Ok(item(FROM, TO, src.item_id))
 }
 
-pub fn tricky_item_id_down_1_20_5(src: &b::Slot__default::Ty, _cx: &mut Session) -> Result<i32> {
-	Ok(item(TO, FROM, src.itemId))
+pub fn tricky_item_id_down_1_20_5(src: &b::slot_default::Ty, _cx: &mut Session) -> Result<i32> {
+	Ok(item(TO, FROM, src.item_id))
 }
 
-fn kept(c: &b::SlotComponent::Ty) -> bool {
-	!matches!(c, b::SlotComponent::Ty::jukebox_playable(_))
+fn kept(c: &b::slot_component::Ty) -> bool {
+	!matches!(c, b::slot_component::Ty::JukeboxPlayable(_))
 }
 
 pub fn tricky_added_components_down_1_20_5(
-	src: &b::Slot__default::Ty,
+	src: &b::slot_default::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(src.components.iter().filter(|c| kept(c)).count() as i32)
 }
 
 pub fn tricky_removed_components_down_1_20_5(
-	src: &b::Slot__default::Ty,
+	src: &b::slot_default::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(src
-		.removeComponents
+		.remove_components
 		.iter()
-		.filter(|c| !matches!(c, b::SlotComponentType::Ty::jukebox_playable))
+		.filter(|c| !matches!(c, b::slot_component_type::Ty::JukeboxPlayable))
 		.count() as i32)
 }
 
 pub fn tricky_trade_components_down_1_20_5(
-	src: &b::play_toClient_packet_trade_list__trades__items__inputItem1::Ty,
+	src: &b::play_to_client_packet_trade_list_trades_items_input_item1::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(src.components.iter().filter(|c| kept(c)).count() as i32)
 }
 
 pub fn tricky_trade_components2_down_1_20_5(
-	src: &b::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty,
+	src: &b::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(src.components.iter().filter(|c| kept(c)).count() as i32)
 }
 
 pub fn tricky_trade_item_1_21_1(
-	src: &a::play_toClient_packet_trade_list__trades__items__inputItem1::Ty,
+	src: &a::play_to_client_packet_trade_list_trades_items_input_item1::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(FROM, TO, src.itemId))
+	Ok(item(FROM, TO, src.item_id))
 }
 
 pub fn tricky_trade_item_down_1_20_5(
-	src: &b::play_toClient_packet_trade_list__trades__items__inputItem1::Ty,
+	src: &b::play_to_client_packet_trade_list_trades_items_input_item1::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(TO, FROM, src.itemId))
+	Ok(item(TO, FROM, src.item_id))
 }
 
 pub fn tricky_trade_item2_1_21_1(
-	src: &a::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty,
+	src: &a::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(FROM, TO, src.itemId))
+	Ok(item(FROM, TO, src.item_id))
 }
 
 pub fn tricky_trade_item2_down_1_20_5(
-	src: &b::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty,
+	src: &b::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(TO, FROM, src.itemId))
+	Ok(item(TO, FROM, src.item_id))
 }
 
 pub fn tricky_enchantment_1_21_1(
-	src: &a::SlotComponent__enchantments__enchantments__items::Ty,
+	src: &a::slot_component_enchantments_enchantments_items::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	enchantment_up(cx, src.id).ok_or(Error::Dropped)
 }
 
 pub fn tricky_enchantment_down_1_20_5(
-	src: &b::SlotComponent__enchantments__enchantments__items::Ty,
+	src: &b::slot_component_enchantments_enchantments_items::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	enchantment_down(cx, src.id).ok_or(Error::Dropped)
 }
 
 pub fn tricky_stored_enchantment_1_21_1(
-	src: &a::SlotComponent__stored_enchantments__enchantments__items::Ty,
+	src: &a::slot_component_stored_enchantments_enchantments_items::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	enchantment_up(cx, src.id).ok_or(Error::Dropped)
 }
 
 pub fn tricky_stored_enchantment_down_1_20_5(
-	src: &b::SlotComponent__stored_enchantments__enchantments__items::Ty,
+	src: &b::slot_component_stored_enchantments_enchantments_items::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	enchantment_down(cx, src.id).ok_or(Error::Dropped)
@@ -576,8 +576,8 @@ pub fn tricky_stored_enchantment_down_1_20_5(
 pub fn tricky_pot_decorations_1_21_1(
 	p: Vec<i32>,
 	_cx: &mut Session,
-) -> Result<b::SlotComponent::Ty> {
-	Ok(b::SlotComponent::Ty::pot_decorations(
+) -> Result<b::slot_component::Ty> {
+	Ok(b::slot_component::Ty::PotDecorations(
 		p.into_iter().map(|i| item(FROM, TO, i)).collect(),
 	))
 }
@@ -585,56 +585,56 @@ pub fn tricky_pot_decorations_1_21_1(
 pub fn tricky_pot_decorations_down_1_20_5(
 	p: Vec<i32>,
 	_cx: &mut Session,
-) -> Result<a::SlotComponent::Ty> {
-	Ok(a::SlotComponent::Ty::pot_decorations(
+) -> Result<a::slot_component::Ty> {
+	Ok(a::slot_component::Ty::PotDecorations(
 		p.into_iter().map(|i| item(TO, FROM, i)).collect(),
 	))
 }
 
 pub fn tricky_food_remainder_1_21_1(
-	_src: &a::SlotComponent__food::Ty,
+	_src: &a::slot_component_food::Ty,
 	_cx: &mut Session,
-) -> Result<b::Slot::Ty> {
-	Ok(b::Slot::Ty::v0)
+) -> Result<b::slot::Ty> {
+	Ok(b::slot::Ty::V0)
 }
 
 pub fn tricky_potion_name_down_1_20_5(
-	_src: &b::SlotComponent__potion_contents::Ty,
+	_src: &b::slot_component_potion_contents::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<String>> {
 	Ok(None)
 }
 
 pub fn tricky_attribute_type_1_21_1(
-	src: &a::SlotComponent__attribute_modifiers__attributes__items::Ty,
+	src: &a::slot_component_attribute_modifiers_attributes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	attribute(ATTRIBUTES_1_20_5, ATTRIBUTES_1_21_1, src.typeId)
+	attribute(ATTRIBUTES_1_20_5, ATTRIBUTES_1_21_1, src.type_id)
 }
 
 pub fn tricky_attribute_type_down_1_20_5(
-	src: &b::SlotComponent__attribute_modifiers__attributes__items::Ty,
+	src: &b::slot_component_attribute_modifiers_attributes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	attribute(ATTRIBUTES_1_21_1, ATTRIBUTES_1_20_5, src.typeId)
+	attribute(ATTRIBUTES_1_21_1, ATTRIBUTES_1_20_5, src.type_id)
 }
 
 pub fn tricky_attribute_name_1_21_1(
-	src: &a::SlotComponent__attribute_modifiers__attributes__items::Ty,
+	src: &a::slot_component_attribute_modifiers_attributes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(modifier_id(src.uuid, Some(&src.name)))
 }
 
 pub fn tricky_attribute_name_down_1_20_5(
-	src: &b::SlotComponent__attribute_modifiers__attributes__items::Ty,
+	src: &b::slot_component_attribute_modifiers_attributes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<String> {
 	Ok(modifier_name(&src.name))
 }
 
 pub fn tricky_attribute_uuid_down_1_20_5(
-	src: &b::SlotComponent__attribute_modifiers__attributes__items::Ty,
+	src: &b::slot_component_attribute_modifiers_attributes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<u128> {
 	Ok(modifier_uuid(&src.name))
@@ -652,7 +652,7 @@ fn painting_size(cx: &mut Session, id: i32) -> Option<(i32, i32)> {
 	let tag = registry_entry(cx, TO, "painting_variant", id)?;
 	let fields = tag.value.as_compound()?;
 	let int = |name: &str| match fields.field(name)? {
-		Payload::int(v) => Some(*v),
+		Payload::Int(v) => Some(*v),
 		_ => None,
 	};
 	Some((int("width")?, int("height")?))
@@ -675,7 +675,7 @@ pub fn tricky_painting_1_21_1(id: i32, cx: &mut Session) -> Result<Meta> {
 		.ok()
 		.and_then(|i| PAINTINGS_1_20_5.get(i))
 		.ok_or(Error::Dropped)?;
-	Ok(Meta::painting_variant(Painting::Id(
+	Ok(Meta::PaintingVariant(Painting::Id(
 		registry_index(cx, TO, "painting_variant", name).ok_or(Error::Dropped)?,
 	)))
 }
@@ -684,7 +684,7 @@ pub fn tricky_painting_down_1_20_5(p: Painting, cx: &mut Session) -> Result<Meta
 	let id = match p {
 		Painting::Id(id) => painting_down(cx, id),
 		Painting::Inline(v) => {
-			let asset = v.assetId.strip_prefix("minecraft:").unwrap_or(&v.assetId);
+			let asset = v.asset_id.strip_prefix("minecraft:").unwrap_or(&v.asset_id);
 			PAINTINGS_1_20_5
 				.iter()
 				.position(|(n, _, _)| *n == asset)
@@ -696,26 +696,26 @@ pub fn tricky_painting_down_1_20_5(p: Painting, cx: &mut Session) -> Result<Meta
 				.ok_or(Error::Dropped)? as i32
 		}
 	};
-	Ok(MetaA::painting_variant(id))
+	Ok(MetaA::PaintingVariant(id))
 }
 
 pub fn tricky_chat_type_1_21_1(
 	id: i32,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_ChatTypesHolder::Ty> {
-	Ok(b::play_toClient_ChatTypesHolder::Ty::Id(id))
+) -> Result<b::play_to_client_chat_types_holder::Ty> {
+	Ok(b::play_to_client_chat_types_holder::Ty::Id(id))
 }
 
-fn decoration(chat: b::play_toClient_ChatType::Ty) -> Decoration {
-	use b::play_toClient_ChatTypeParameterType::Ty as P;
+fn decoration(chat: b::play_to_client_chat_type::Ty) -> Decoration {
+	use b::play_to_client_chat_type_parameter_type::Ty as P;
 	Decoration {
-		key: chat.translationKey,
+		key: chat.translation_key,
 		parameters: chat
 			.parameters
 			.iter()
 			.map(|p| match p {
-				P::sender => Parameter::Sender,
-				P::target => Parameter::Target,
+				P::Sender => Parameter::Sender,
+				P::Target => Parameter::Target,
 				_ => Parameter::Content,
 			})
 			.collect(),
@@ -723,7 +723,7 @@ fn decoration(chat: b::play_toClient_ChatType::Ty) -> Decoration {
 	}
 }
 
-fn registered(cx: &mut Session, chat: b::play_toClient_ChatType::Ty) -> i32 {
+fn registered(cx: &mut Session, chat: b::play_to_client_chat_type::Ty) -> i32 {
 	let wanted = Some(decoration(chat));
 	let mut id = 0;
 	while registry_key(cx, FROM, "chat_type", id).is_some() {
@@ -739,83 +739,83 @@ fn registered(cx: &mut Session, chat: b::play_toClient_ChatType::Ty) -> i32 {
 
 fn system_chat(
 	cx: &mut Session,
-	chat: b::play_toClient_ChatType::Ty,
-	sender: &pds_Tag::Ty,
-	target: Option<&pds_Tag::Ty>,
-	content: &pds_Tag::Ty,
+	chat: b::play_to_client_chat_type::Ty,
+	sender: &Tag,
+	target: Option<&Tag>,
+	content: &Tag,
 ) -> Result<ClientA> {
 	let mut content = decoration(chat).nbt(sender, target, content);
 	localize(&mut content, TO.index(), FROM.index(), cx)?;
-	Ok(ClientA::system_chat(
-		a::play_toClient_packet_system_chat::Ty {
+	Ok(ClientA::SystemChat(
+		a::play_to_client_packet_system_chat::Ty {
 			content,
-			isActionBar: false,
+			is_action_bar: false,
 		},
 	))
 }
 
 pub fn tricky_profileless_chat_down_1_20_5(
-	p: b::play_toClient_packet_profileless_chat::Ty,
+	p: b::play_to_client_packet_profileless_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientA>> {
 	Ok(vec![match p.r#type {
-		b::play_toClient_ChatTypesHolder::Ty::Id(id) => {
-			ClientA::profileless_chat(a::play_toClient_packet_profileless_chat::Ty {
+		b::play_to_client_chat_types_holder::Ty::Id(id) => {
+			ClientA::ProfilelessChat(a::play_to_client_packet_profileless_chat::Ty {
 				message: p.message,
 				r#type: id,
 				name: p.name,
 				target: p.target,
 			})
 		}
-		b::play_toClient_ChatTypesHolder::Ty::Inline(t) => {
+		b::play_to_client_chat_types_holder::Ty::Inline(t) => {
 			system_chat(cx, t.chat, &p.name, p.target.as_ref(), &p.message)?
 		}
 	}])
 }
 
 pub fn tricky_player_chat_down_1_20_5(
-	p: b::play_toClient_packet_player_chat::Ty,
+	p: b::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<ClientA>> {
 	let r#type = match p.r#type {
-		b::play_toClient_ChatTypesHolder::Ty::Id(id) => id,
-		b::play_toClient_ChatTypesHolder::Ty::Inline(t) if p.signature.is_none() => {
-			let content = p.unsignedChatContent.unwrap_or(Tag::new(p.plainMessage));
+		b::play_to_client_chat_types_holder::Ty::Id(id) => id,
+		b::play_to_client_chat_types_holder::Ty::Inline(t) if p.signature.is_none() => {
+			let content = p.unsigned_chat_content.unwrap_or(Tag::new(p.plain_message));
 			return Ok(vec![system_chat(
 				cx,
 				t.chat,
-				&p.networkName,
-				p.networkTargetName.as_ref(),
+				&p.network_name,
+				p.network_target_name.as_ref(),
 				&content,
 			)?]);
 		}
-		b::play_toClient_ChatTypesHolder::Ty::Inline(t) => registered(cx, t.chat),
+		b::play_to_client_chat_types_holder::Ty::Inline(t) => registered(cx, t.chat),
 	};
-	use a::play_toClient_packet_player_chat__filterTypeMask::Ty as MaskA;
-	use b::play_toClient_packet_player_chat__filterTypeMask::Ty as MaskB;
-	Ok(vec![ClientA::player_chat(
-		a::play_toClient_packet_player_chat::Ty {
-			senderUuid: p.senderUuid,
+	use a::play_to_client_packet_player_chat_filter_type_mask::Ty as MaskA;
+	use b::play_to_client_packet_player_chat_filter_type_mask::Ty as MaskB;
+	Ok(vec![ClientA::PlayerChat(
+		a::play_to_client_packet_player_chat::Ty {
+			sender_uuid: p.sender_uuid,
 			index: p.index,
 			signature: p.signature,
-			plainMessage: p.plainMessage,
+			plain_message: p.plain_message,
 			timestamp: p.timestamp,
 			salt: p.salt,
-			previousMessages: p.previousMessages,
-			unsignedChatContent: p.unsignedChatContent,
-			filterTypeMask: match p.filterTypeMask {
-				MaskB::v2(mask) => MaskA::v2(mask),
-				MaskB::default(v) => MaskA::default(v),
+			previous_messages: p.previous_messages,
+			unsigned_chat_content: p.unsigned_chat_content,
+			filter_type_mask: match p.filter_type_mask {
+				MaskB::V2(mask) => MaskA::V2(mask),
+				MaskB::Default(v) => MaskA::Default(v),
 			},
 			r#type,
-			networkName: p.networkName,
-			networkTargetName: p.networkTargetName,
+			network_name: p.network_name,
+			network_target_name: p.network_target_name,
 		},
 	)])
 }
 
 pub fn tricky_projectile_power_1_21_1(
-	src: &a::play_toClient_packet_set_projectile_power::Ty,
+	src: &a::play_to_client_packet_set_projectile_power::Ty,
 	_cx: &mut Session,
 ) -> Result<f64> {
 	let p = &src.power;
@@ -843,22 +843,22 @@ fn motion(v: &b::vec3i16::Ty) -> (f64, f64, f64) {
 }
 
 pub fn tricky_spawn_entity_down_1_20_5(
-	p: b::play_toClient_packet_spawn_entity::Ty,
+	p: b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<a::play_toClient_packet_spawn_entity::Ty> {
+) -> Result<a::play_to_client_packet_spawn_entity::Ty> {
 	if entity_name(TO, p.r#type).is_some_and(|n| POWERED.contains(&n)) {
 		cx.state::<Projectiles>()
 			.0
-			.insert(p.entityId, motion(&p.velocity));
+			.insert(p.entity_id, motion(&p.velocity));
 	}
 	Ok(p)
 }
 
 pub fn tricky_entity_velocity_down_1_20_5(
-	p: b::play_toClient_packet_entity_velocity::Ty,
+	p: b::play_to_client_packet_entity_velocity::Ty,
 	cx: &mut Session,
-) -> Result<a::play_toClient_packet_entity_velocity::Ty> {
-	if let Some(v) = cx.state::<Projectiles>().0.get_mut(&p.entityId) {
+) -> Result<a::play_to_client_packet_entity_velocity::Ty> {
+	if let Some(v) = cx.state::<Projectiles>().0.get_mut(&p.entity_id) {
 		*v = motion(&p.velocity);
 	}
 	Ok(p)
@@ -869,11 +869,11 @@ pub fn tricky_entity_destroy_down_1_20_5(p: Vec<i32>, cx: &mut Session) -> Resul
 	for id in &p {
 		projectiles.remove(id);
 	}
-	Ok(vec![ClientA::entity_destroy(p)])
+	Ok(vec![ClientA::EntityDestroy(p)])
 }
 
 pub fn tricky_projectile_power_down_1_20_5(
-	src: &b::play_toClient_packet_set_projectile_power::Ty,
+	src: &b::play_to_client_packet_set_projectile_power::Ty,
 	cx: &mut Session,
 ) -> Result<a::vec3f64::Ty> {
 	let (x, y, z) = cx
@@ -886,7 +886,7 @@ pub fn tricky_projectile_power_down_1_20_5(
 	if length < 1.0e-7 {
 		return Err(Error::Dropped);
 	}
-	let scale = src.accelerationPower / length;
+	let scale = src.acceleration_power / length;
 	Ok(a::vec3f64::Ty {
 		x: x * scale,
 		y: y * scale,
@@ -897,10 +897,10 @@ pub fn tricky_projectile_power_down_1_20_5(
 const DISCS: &str = "music_disc_";
 
 pub fn tricky_world_event_1_21_1(
-	src: &a::play_toClient_packet_world_event::Ty,
+	src: &a::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	if src.effectId != 1010 {
+	if src.effect_id != 1010 {
 		return Ok(src.data);
 	}
 	let name = registry::names(FROM, "items")
@@ -911,10 +911,10 @@ pub fn tricky_world_event_1_21_1(
 }
 
 pub fn tricky_world_event_down_1_20_5(
-	src: &b::play_toClient_packet_world_event::Ty,
+	src: &b::play_to_client_packet_world_event::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	if src.effectId != 1010 {
+	if src.effect_id != 1010 {
 		return Ok(src.data);
 	}
 	let song = registry_key(cx, TO, "jukebox_song", src.data).ok_or(Error::Dropped)?;
@@ -932,26 +932,26 @@ pub fn tricky_sound_down_1_20_5(holder: SoundHolder, _cx: &mut Session) -> Resul
 }
 
 pub fn tricky_cooldown_item_1_21_1(
-	src: &a::play_toClient_packet_set_cooldown::Ty,
+	src: &a::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(FROM, TO, src.itemID))
+	Ok(item(FROM, TO, src.item_id))
 }
 
 pub fn tricky_cooldown_item_down_1_20_5(
-	src: &b::play_toClient_packet_set_cooldown::Ty,
+	src: &b::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(item(TO, FROM, src.itemID))
+	Ok(item(TO, FROM, src.item_id))
 }
 
 pub fn tricky_game_state_value_down_1_20_5(
-	src: &b::play_toClient_packet_game_state_change::Ty,
+	src: &b::play_to_client_packet_game_state_change::Ty,
 	_cx: &mut Session,
 ) -> Result<f32> {
 	Ok(match src.reason {
-		b::play_toClient_packet_game_state_change__reason::Ty::win_game => 1.0,
-		_ => src.gameMode,
+		b::play_to_client_packet_game_state_change_reason::Ty::WinGame => 1.0,
+		_ => src.game_mode,
 	})
 }
 
@@ -959,18 +959,18 @@ pub fn tricky_game_state_value_down_1_20_5(
 struct Menus(HashMap<i32, i32>);
 
 pub fn tricky_open_window_1_21_1(
-	p: a::play_toClient_packet_open_window::Ty,
+	p: a::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
-) -> Result<b::play_toClient_packet_open_window::Ty> {
-	cx.state::<Menus>().0.insert(p.windowId, p.inventoryType);
+) -> Result<b::play_to_client_packet_open_window::Ty> {
+	cx.state::<Menus>().0.insert(p.window_id, p.inventory_type);
 	Ok(p)
 }
 
 pub fn tricky_open_window_down_1_20_5(
-	p: b::play_toClient_packet_open_window::Ty,
+	p: b::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
-) -> Result<a::play_toClient_packet_open_window::Ty> {
-	cx.state::<Menus>().0.insert(p.windowId, p.inventoryType);
+) -> Result<a::play_to_client_packet_open_window::Ty> {
+	cx.state::<Menus>().0.insert(p.window_id, p.inventory_type);
 	Ok(p)
 }
 
@@ -989,12 +989,12 @@ fn enchantment_hint(
 }
 
 pub fn tricky_window_property_1_21_1(
-	src: &a::play_toClient_packet_craft_progress_bar::Ty,
+	src: &a::play_to_client_packet_craft_progress_bar::Ty,
 	cx: &mut Session,
 ) -> Result<i16> {
 	Ok(enchantment_hint(
 		cx,
-		src.windowId,
+		src.window_id,
 		src.property,
 		src.value,
 		enchantment_up,
@@ -1002,12 +1002,12 @@ pub fn tricky_window_property_1_21_1(
 }
 
 pub fn tricky_window_property_down_1_20_5(
-	src: &b::play_toClient_packet_craft_progress_bar::Ty,
+	src: &b::play_to_client_packet_craft_progress_bar::Ty,
 	cx: &mut Session,
 ) -> Result<i16> {
 	Ok(enchantment_hint(
 		cx,
-		src.windowId,
+		src.window_id,
 		src.property,
 		src.value,
 		enchantment_down,
@@ -1021,9 +1021,9 @@ struct Rotation {
 }
 
 pub fn tricky_look_1_21_1(
-	p: a::play_toServer_packet_look::Ty,
+	p: a::play_to_server_packet_look::Ty,
 	cx: &mut Session,
-) -> Result<b::play_toServer_packet_look::Ty> {
+) -> Result<b::play_to_server_packet_look::Ty> {
 	*cx.state::<Rotation>() = Rotation {
 		yaw: p.yaw,
 		pitch: p.pitch,
@@ -1032,9 +1032,9 @@ pub fn tricky_look_1_21_1(
 }
 
 pub fn tricky_position_look_1_21_1(
-	p: a::play_toServer_packet_position_look::Ty,
+	p: a::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
-) -> Result<b::play_toServer_packet_position_look::Ty> {
+) -> Result<b::play_to_server_packet_position_look::Ty> {
 	*cx.state::<Rotation>() = Rotation {
 		yaw: p.yaw,
 		pitch: p.pitch,
@@ -1043,7 +1043,7 @@ pub fn tricky_position_look_1_21_1(
 }
 
 pub fn tricky_use_item_rotation_1_21_1(
-	_src: &a::play_toServer_packet_use_item::Ty,
+	_src: &a::play_to_server_packet_use_item::Ty,
 	cx: &mut Session,
 ) -> Result<b::vec2f::Ty> {
 	let r = cx.state::<Rotation>();

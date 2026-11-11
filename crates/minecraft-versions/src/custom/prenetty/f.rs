@@ -3,8 +3,8 @@ use crate::gen::convert::{v1_6_4, v1_7};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
-type Client164 = v1_6_4::play_toClient_packet::Ty;
-type Client17 = v1_7::play_toClient_packet::Ty;
+type Client164 = v1_6_4::play_to_client_packet::Ty;
+type Client17 = v1_7::play_to_client_packet::Ty;
 
 macro_rules! flat {
 	($up:ident, $down:ident, $root:ident, $arm:ident, $ty:ident, [$($f:ident),*]) => {
@@ -21,132 +21,132 @@ macro_rules! flat {
 flat!(
 	prenetty_player_info_1_7,
 	prenetty_player_info_1_6_4,
-	play_toClient_packet,
-	player_info,
-	play_toClient_packet_player_info,
-	[playerName, online, ping]
+	play_to_client_packet,
+	PlayerInfo,
+	play_to_client_packet_player_info,
+	[player_name, online, ping]
 );
 flat!(
 	prenetty_scoreboard_objective_1_7,
 	prenetty_scoreboard_objective_1_6_4,
-	play_toClient_packet,
-	scoreboard_objective,
-	play_toClient_packet_scoreboard_objective,
-	[name, displayText, action]
+	play_to_client_packet,
+	ScoreboardObjective,
+	play_to_client_packet_scoreboard_objective,
+	[name, display_text, action]
 );
 flat!(
 	prenetty_scoreboard_display_objective_1_7,
 	prenetty_scoreboard_display_objective_1_6_4,
-	play_toClient_packet,
-	scoreboard_display_objective,
-	play_toClient_packet_scoreboard_display_objective,
+	play_to_client_packet,
+	ScoreboardDisplayObjective,
+	play_to_client_packet_scoreboard_display_objective,
 	[position, name]
 );
 flat!(
 	prenetty_spawn_entity_painting_1_7,
 	prenetty_spawn_entity_painting_1_6_4,
-	play_toClient_packet,
-	spawn_entity_painting,
-	play_toClient_packet_spawn_entity_painting,
-	[entityId, title, location, direction]
+	play_to_client_packet,
+	SpawnEntityPainting,
+	play_to_client_packet_spawn_entity_painting,
+	[entity_id, title, location, direction]
 );
 flat!(
 	prenetty_update_sign_1_7,
 	prenetty_update_sign_1_6_4,
-	play_toClient_packet,
-	update_sign,
-	play_toClient_packet_update_sign,
+	play_to_client_packet,
+	UpdateSign,
+	play_to_client_packet_update_sign,
 	[location, text1, text2, text3, text4]
 );
 flat!(
 	prenetty_update_sign_server_1_7,
 	prenetty_update_sign_server_1_6_4,
-	play_toServer_packet,
-	update_sign,
-	play_toServer_packet_update_sign,
+	play_to_server_packet,
+	UpdateSign,
+	play_to_server_packet_update_sign,
 	[location, text1, text2, text3, text4]
 );
 flat!(
 	prenetty_custom_payload_1_7,
 	prenetty_custom_payload_1_6_4,
-	play_toClient_packet,
-	custom_payload,
-	play_toClient_packet_custom_payload,
+	play_to_client_packet,
+	CustomPayload,
+	play_to_client_packet_custom_payload,
 	[channel, data]
 );
 flat!(
 	prenetty_custom_payload_server_1_7,
 	prenetty_custom_payload_server_1_6_4,
-	play_toServer_packet,
-	custom_payload,
-	play_toServer_packet_custom_payload,
+	play_to_server_packet,
+	CustomPayload,
+	play_to_server_packet_custom_payload,
 	[channel, data]
 );
 
 pub fn prenetty_respawn_1_7(
-	p: v1_6_4::play_toClient_packet_respawn::Ty,
+	p: v1_6_4::play_to_client_packet_respawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	Ok(vec![Client17::respawn(
-		v1_7::play_toClient_packet_respawn::Ty {
+	Ok(vec![Client17::Respawn(
+		v1_7::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
 			difficulty: p.difficulty,
 			gamemode: p.gamemode,
-			levelType: p.levelType,
+			level_type: p.level_type,
 		},
 	)])
 }
 
 pub fn prenetty_respawn_1_6_4(
-	p: v1_7::play_toClient_packet_respawn::Ty,
+	p: v1_7::play_to_client_packet_respawn::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	Ok(vec![Client164::respawn(
-		v1_6_4::play_toClient_packet_respawn::Ty {
+	Ok(vec![Client164::Respawn(
+		v1_6_4::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
 			difficulty: p.difficulty,
 			gamemode: p.gamemode,
-			worldHeight: 256,
-			levelType: p.levelType,
+			world_height: 256,
+			level_type: p.level_type,
 		},
 	)])
 }
 
 pub fn prenetty_open_window_1_7(
-	p: v1_6_4::play_toClient_packet_open_window::Ty,
+	p: v1_6_4::play_to_client_packet_open_window::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client17>> {
-	use v1_6_4::play_toClient_packet_open_window__entityId::Ty as Old;
-	use v1_7::play_toClient_packet_open_window__entityId::Ty as New;
-	Ok(vec![Client17::open_window(
-		v1_7::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId,
-			windowTitle: p.windowTitle,
-			slotCount: p.slotCount,
-			useProvidedTitle: p.useProvidedTitle,
-			entityId: match p.entityId {
-				Old::v11(id) => New::v11(id),
-				Old::default(t) => New::default(t),
+	use v1_6_4::play_to_client_packet_open_window_entity_id::Ty as Old;
+	use v1_7::play_to_client_packet_open_window_entity_id::Ty as New;
+	Ok(vec![Client17::OpenWindow(
+		v1_7::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id,
+			window_title: p.window_title,
+			slot_count: p.slot_count,
+			use_provided_title: p.use_provided_title,
+			entity_id: match p.entity_id {
+				Old::V11(id) => New::V11(id),
+				Old::Default(t) => New::Default(t),
 			},
 		},
 	)])
 }
 
 pub fn prenetty_open_window_1_6_4(
-	p: v1_7::play_toClient_packet_open_window::Ty,
+	p: v1_7::play_to_client_packet_open_window::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client164>> {
-	use v1_6_4::play_toClient_packet_open_window__entityId::Ty as Old;
-	use v1_7::play_toClient_packet_open_window__entityId::Ty as New;
-	Ok(vec![Client164::open_window(
-		v1_6_4::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId,
-			windowTitle: text::truncate(&p.windowTitle, 32),
-			slotCount: p.slotCount,
-			useProvidedTitle: p.useProvidedTitle,
-			entityId: match p.entityId {
-				New::v11(id) => Old::v11(id),
-				New::default(t) => Old::default(t),
+	use v1_6_4::play_to_client_packet_open_window_entity_id::Ty as Old;
+	use v1_7::play_to_client_packet_open_window_entity_id::Ty as New;
+	Ok(vec![Client164::OpenWindow(
+		v1_6_4::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id,
+			window_title: text::truncate(&p.window_title, 32),
+			slot_count: p.slot_count,
+			use_provided_title: p.use_provided_title,
+			entity_id: match p.entity_id {
+				New::V11(id) => Old::V11(id),
+				New::Default(t) => Old::Default(t),
 			},
 		},
 	)])
@@ -155,20 +155,20 @@ pub fn prenetty_open_window_1_6_4(
 macro_rules! score {
 	($name:ident, $from:ident, $to:ident) => {
 		pub fn $name(
-			p: $from::play_toClient_packet_scoreboard_score::Ty,
+			p: $from::play_to_client_packet_scoreboard_score::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
-			use $from::play_toClient_packet_scoreboard_score__action::Ty as A;
-			use $to::play_toClient_packet_scoreboard_score__action::Ty as B;
-			Ok(vec![$to::play_toClient_packet::Ty::scoreboard_score(
-				$to::play_toClient_packet_scoreboard_score::Ty {
-					itemName: p.itemName,
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			use $from::play_to_client_packet_scoreboard_score_action::Ty as A;
+			use $to::play_to_client_packet_scoreboard_score_action::Ty as B;
+			Ok(vec![$to::play_to_client_packet::Ty::ScoreboardScore(
+				$to::play_to_client_packet_scoreboard_score::Ty {
+					item_name: p.item_name,
 					action: match p.action {
-						A::v1 => B::v1,
-						A::default(t, s) => B::default(
+						A::V1 => B::V1,
+						A::Default(t, s) => B::Default(
 							t,
-							$to::play_toClient_packet_scoreboard_score__action__default::Ty {
-								scoreName: s.scoreName,
+							$to::play_to_client_packet_scoreboard_score_action_default::Ty {
+								score_name: s.score_name,
 								value: s.value,
 							},
 						),
@@ -185,31 +185,31 @@ score!(prenetty_scoreboard_score_1_6_4, v1_7, v1_6_4);
 macro_rules! team {
 	($name:ident, $from:ident, $to:ident) => {
 		pub fn $name(
-			p: $from::play_toClient_packet_scoreboard_team::Ty,
+			p: $from::play_to_client_packet_scoreboard_team::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
-			use $from::play_toClient_packet_scoreboard_team__mode::Ty as A;
-			use $to::play_toClient_packet_scoreboard_team__mode::Ty as B;
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			use $from::play_to_client_packet_scoreboard_team_mode::Ty as A;
+			use $to::play_to_client_packet_scoreboard_team_mode::Ty as B;
 			let mode = match p.mode {
-				A::v0(t) => B::v0($to::play_toClient_packet_scoreboard_team__mode__v0::Ty {
+				A::V0(t) => B::V0($to::play_to_client_packet_scoreboard_team_mode_v0::Ty {
 					name: t.name,
 					prefix: t.prefix,
 					suffix: t.suffix,
-					friendlyFire: t.friendlyFire,
+					friendly_fire: t.friendly_fire,
 					players: t.players,
 				}),
-				A::v2(t) => B::v2($to::play_toClient_packet_scoreboard_team__mode__v2::Ty {
+				A::V2(t) => B::V2($to::play_to_client_packet_scoreboard_team_mode_v2::Ty {
 					name: t.name,
 					prefix: t.prefix,
 					suffix: t.suffix,
-					friendlyFire: t.friendlyFire,
+					friendly_fire: t.friendly_fire,
 				}),
-				A::v3(players) => B::v3(players),
-				A::v4(players) => B::v4(players),
-				A::default(t) => B::default(t),
+				A::V3(players) => B::V3(players),
+				A::V4(players) => B::V4(players),
+				A::Default(t) => B::Default(t),
 			};
-			Ok(vec![$to::play_toClient_packet::Ty::scoreboard_team(
-				$to::play_toClient_packet_scoreboard_team::Ty { team: p.team, mode },
+			Ok(vec![$to::play_to_client_packet::Ty::ScoreboardTeam(
+				$to::play_to_client_packet_scoreboard_team::Ty { team: p.team, mode },
 			)])
 		}
 	};
@@ -221,21 +221,21 @@ team!(prenetty_scoreboard_team_1_6_4, v1_7, v1_6_4);
 macro_rules! attributes {
 	($name:ident, $from:ident, $to:ident) => {
 		pub fn $name(
-			p: $from::play_toClient_packet_update_attributes::Ty,
+			p: $from::play_to_client_packet_update_attributes::Ty,
 			_cx: &mut Session,
-		) -> Result<Vec<$to::play_toClient_packet::Ty>> {
+		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
 			let properties = p
 				.properties
 				.into_iter()
 				.map(
-					|a| $to::play_toClient_packet_update_attributes__properties__items::Ty {
+					|a| $to::play_to_client_packet_update_attributes_properties_items::Ty {
 						key: a.key,
 						value: a.value,
 						modifiers: a
 							.modifiers
 							.into_iter()
 							.map(|m| {
-								$to::play_toClient_packet_update_attributes__properties__items__modifiers__items::Ty {
+								$to::play_to_client_packet_update_attributes_properties_items_modifiers_items::Ty {
 															uuid: m.uuid,
 															amount: m.amount,
 															operation: m.operation,
@@ -245,9 +245,9 @@ macro_rules! attributes {
 					},
 				)
 				.collect();
-			Ok(vec![$to::play_toClient_packet::Ty::update_attributes(
-				$to::play_toClient_packet_update_attributes::Ty {
-					entityId: p.entityId,
+			Ok(vec![$to::play_to_client_packet::Ty::UpdateAttributes(
+				$to::play_to_client_packet_update_attributes::Ty {
+					entity_id: p.entity_id,
 					properties,
 				},
 			)])

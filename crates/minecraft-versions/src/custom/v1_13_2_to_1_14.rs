@@ -9,16 +9,16 @@ use crate::registry;
 use crate::session::Session;
 use nbt::{CompoundExt, Entry as Nbt, Payload as Tag};
 
-type Client13 = v1_13_2::play_toClient_packet::Ty;
-type Client14 = v1_14::play_toClient_packet::Ty;
-type Server13 = v1_13_2::play_toServer_packet::Ty;
+type Client13 = v1_13_2::play_to_client_packet::Ty;
+type Client14 = v1_14::play_to_client_packet::Ty;
+type Server13 = v1_13_2::play_to_server_packet::Ty;
 type Slot = v1_13_2::slot::Ty;
-type M13 = v1_13_2::entityMetadataItem::Ty;
-type M14 = v1_14::entityMetadataItem::Ty;
-type E13 = v1_13_2::entityMetadata__items::Ty;
-type E14 = v1_14::entityMetadata__items::Ty;
-type P13 = v1_13_2::particleData::Ty;
-type P14 = v1_14::particleData::Ty;
+type M13 = v1_13_2::entity_metadata_item::Ty;
+type M14 = v1_14::entity_metadata_item::Ty;
+type E13 = v1_13_2::entity_metadata_items::Ty;
+type E14 = v1_14::entity_metadata_items::Ty;
+type P13 = v1_13_2::particle_data::Ty;
+type P14 = v1_14::particle_data::Ty;
 
 const OLD: Version = Version::V1_13_2;
 const NEW: Version = Version::V1_14;
@@ -56,8 +56,8 @@ pub(super) fn item_id(version: Version, name: &str) -> Option<i32> {
 
 pub(super) fn item_name(version: Version, slot: &Slot) -> &'static str {
 	match slot {
-		Slot::r#true(s) => registry::names(version, "items")
-			.and_then(|n| n.name(s.itemId as u32))
+		Slot::True(s) => registry::names(version, "items")
+			.and_then(|n| n.name(s.item_id as u32))
 			.unwrap_or(""),
 		_ => "",
 	}
@@ -65,30 +65,30 @@ pub(super) fn item_name(version: Version, slot: &Slot) -> &'static str {
 
 pub(super) fn item(from: Version, to: Version, slot: Slot) -> Slot {
 	match slot {
-		Slot::r#true(mut s) => match remap("items", from, to, s.itemId) {
+		Slot::True(mut s) => match remap("items", from, to, s.item_id) {
 			Some(id) => {
-				s.itemId = id;
-				Slot::r#true(s)
+				s.item_id = id;
+				Slot::True(s)
 			}
-			None => Slot::r#false,
+			None => Slot::False,
 		},
 		empty => empty,
 	}
 }
 
 fn lore(slot: &mut Slot, f: fn(&str) -> String) {
-	let Slot::r#true(s) = slot else { return };
+	let Slot::True(s) = slot else { return };
 	let Some(Nbt {
-		value: Tag::compound(root),
+		value: Tag::Compound(root),
 		..
-	}) = &mut s.nbtData
+	}) = &mut s.nbt_data
 	else {
 		return;
 	};
 	let Some(display) = root.compound_mut("display") else {
 		return;
 	};
-	if let Some(Tag::list(list)) = display.field_mut("Lore").as_deref_mut() {
+	if let Some(Tag::List(list)) = display.field_mut("Lore").as_deref_mut() {
 		for line in list.strings_mut().into_iter().flatten() {
 			*line = f(line);
 		}
@@ -608,7 +608,7 @@ fn light_1_14(
 	full: bool,
 	sections: &[VillageSection],
 	surface: &[i64; 256],
-) -> v1_14::play_toClient_packet_update_light::Ty {
+) -> v1_14::play_to_client_packet_update_light::Ty {
 	let mut sky_mask = if full { 0x3ffff } else { 0 };
 	let mut block_mask = 0;
 	for s in sections {
@@ -640,13 +640,13 @@ fn light_1_14(
 	for s in sections {
 		put(&mut data, &s.block);
 	}
-	v1_14::play_toClient_packet_update_light::Ty {
-		chunkX: x,
-		chunkZ: z,
-		skyLightMask: sky_mask,
-		blockLightMask: block_mask,
-		emptySkyLightMask: 0,
-		emptyBlockLightMask: 0,
+	v1_14::play_to_client_packet_update_light::Ty {
+		chunk_x: x,
+		chunk_z: z,
+		sky_light_mask: sky_mask,
+		block_light_mask: block_mask,
+		empty_sky_light_mask: 0,
+		empty_block_light_mask: 0,
 		data,
 	}
 }
@@ -667,12 +667,12 @@ pub(super) fn pack_heights(h: &[i64; 256]) -> Vec<i64> {
 fn heightmaps(full: bool, motion: &[i64; 256], surface: &[i64; 256]) -> Nbt {
 	let maps = match full {
 		true => vec![
-			Nbt::new("MOTION_BLOCKING", Tag::longArray(pack_heights(motion))),
-			Nbt::new("WORLD_SURFACE", Tag::longArray(pack_heights(surface))),
+			Nbt::new("MOTION_BLOCKING", Tag::LongArray(pack_heights(motion))),
+			Nbt::new("WORLD_SURFACE", Tag::LongArray(pack_heights(surface))),
 		],
 		false => vec![],
 	};
-	Nbt::new("", Tag::compound(maps))
+	Nbt::new("", Tag::Compound(maps))
 }
 
 #[derive(Default)]
@@ -719,10 +719,10 @@ impl State14 {
 		};
 		if self.center != Some(target) {
 			self.center = Some(target);
-			out.push(Client14::update_view_position(
-				v1_14::play_toClient_packet_update_view_position::Ty {
-					chunkX: target.0,
-					chunkZ: target.1,
+			out.push(Client14::UpdateViewPosition(
+				v1_14::play_to_client_packet_update_view_position::Ty {
+					chunk_x: target.0,
+					chunk_z: target.1,
 				},
 			));
 		}
@@ -785,32 +785,32 @@ impl State14 {
 			let k = e.key;
 			let mut value = value_1_14(e.value)?;
 			match (name, k, &value) {
-				("player", 0, M14::v0(b)) => {
+				("player", 0, M14::V0(b)) => {
 					self.player_flags.insert(id, *b);
 					pose = true;
 				}
-				("player", 6, M14::v0(b)) => {
+				("player", 6, M14::V0(b)) => {
 					match b & 4 != 0 {
 						true => self.riptide.insert(id),
 						false => self.riptide.remove(&id),
 					};
 					pose = true;
 				}
-				(n, 7, M14::v2(h)) if is_living(n) && h.is_nan() => value = M14::v2(1.0),
-				(n, 9, M14::v1(s)) if n.ends_with("minecart") => {
-					value = M14::v1(state(OLD, NEW, *s))
+				(n, 7, M14::V2(h)) if is_living(n) && h.is_nan() => value = M14::V2(1.0),
+				(n, 9, M14::V1(s)) if n.ends_with("minecart") => {
+					value = M14::V1(state(OLD, NEW, *s))
 				}
-				("firework_rocket", 7, M14::v1(e)) => {
-					value = M14::v17(if *e == 0 { 0 } else { e + 1 })
+				("firework_rocket", 7, M14::V1(e)) => {
+					value = M14::V17(if *e == 0 { 0 } else { e + 1 })
 				}
-				("villager", 13, M14::v1(p)) | ("zombie_villager", 17, M14::v1(p)) => {
+				("villager", 13, M14::V1(p)) | ("zombie_villager", 17, M14::V1(p)) => {
 					value = villager_data(*p)
 				}
 				_ => {}
 			}
 			match key_1_14(name, k) {
 				Key::To(13) if is_mob(name) => {
-					if let M14::v0(b) = value {
+					if let M14::V0(b) = value {
 						let old = self.mob_flags.get(&id).copied().unwrap_or(0);
 						self.mob_flags.insert(id, (b & !4) | (old & 4));
 						flags = true;
@@ -819,8 +819,8 @@ impl State14 {
 				Key::To(key) => out.push(entry_14(key, value)),
 				Key::Aggressive => {
 					let on = match value {
-						M14::v7(b) => b,
-						M14::v0(b) => b != 0,
+						M14::V7(b) => b,
+						M14::V0(b) => b != 0,
 						_ => false,
 					};
 					self.aggressive(id, on);
@@ -833,11 +833,11 @@ impl State14 {
 		if flags {
 			out.push(entry_14(
 				13,
-				M14::v0(self.mob_flags.get(&id).copied().unwrap_or(0)),
+				M14::V0(self.mob_flags.get(&id).copied().unwrap_or(0)),
 			));
 		}
 		if pose && name == "player" && id != self.self_id {
-			out.push(entry_14(6, M14::v18(self.pose(id))));
+			out.push(entry_14(6, M14::V18(self.pose(id))));
 		}
 		Ok(out)
 	}
@@ -855,9 +855,9 @@ impl State14 {
 			let replaced = match (name, k) {
 				("pillager" | "ravager", 14..) | ("fox" | "panda", 15..) | ("cat", 18..) => true,
 				("player", 12) => {
-					if let M14::v10(Some(location)) = &e.value {
-						extra.push(Client13::bed(v1_13_2::play_toClient_packet_bed::Ty {
-							entityId: id,
+					if let M14::V10(Some(location)) = &e.value {
+						extra.push(Client13::Bed(v1_13_2::play_to_client_packet_bed::Ty {
+							entity_id: id,
 							location: pos13(location.clone()),
 						}));
 					}
@@ -869,15 +869,15 @@ impl State14 {
 				continue;
 			}
 			if is_mob(name) && k == 13 {
-				let M14::v0(b) = e.value else { continue };
-				out.push(entry_13(11, M13::v0(b & !4)));
+				let M14::V0(b) = e.value else { continue };
+				out.push(entry_13(11, M13::V0(b & !4)));
 				let on = b & 4 != 0;
 				match aggressive_key(name) {
-					Some(14) => out.push(entry_13(14, M13::v7(on))),
+					Some(14) => out.push(entry_13(14, M13::V7(on))),
 					Some(12) if matches!(name, "skeleton" | "stray" | "wither_skeleton") => {
-						out.push(entry_13(12, M13::v7(on)))
+						out.push(entry_13(12, M13::V7(on)))
 					}
-					Some(key) => out.push(entry_13(key, M13::v0(on as i8))),
+					Some(key) => out.push(entry_13(key, M13::V0(on as i8))),
 					None => {}
 				}
 				continue;
@@ -886,10 +886,10 @@ impl State14 {
 				continue;
 			};
 			let value = match (name, key, e.value) {
-				(n, 9, M14::v1(s)) if n.ends_with("minecart") => M14::v1(state(NEW, OLD, s)),
-				("firework_rocket", 7, M14::v17(v)) => M14::v1((v - 1).max(0)),
-				("cat", 15, M14::v1(v)) => M14::v1(ocelot_variant(v)),
-				(_, _, M14::v16(d)) => M14::v1(profession_1_13_2(d.villagerProfession)),
+				(n, 9, M14::V1(s)) if n.ends_with("minecart") => M14::V1(state(NEW, OLD, s)),
+				("firework_rocket", 7, M14::V17(v)) => M14::V1((v - 1).max(0)),
+				("cat", 15, M14::V1(v)) => M14::V1(ocelot_variant(v)),
+				(_, _, M14::V16(d)) => M14::V1(profession_1_13_2(d.villager_profession)),
 				(_, _, v) => v,
 			};
 			if let Some(value) = value_1_13_2(value) {
@@ -1010,9 +1010,9 @@ fn villager_data(profession: i32) -> M14 {
 		5 => 11,
 		_ => 0,
 	};
-	M14::v16(v1_14::entityMetadataItem__v16::Ty {
-		villagerType: 2,
-		villagerProfession: profession,
+	M14::V16(v1_14::entity_metadata_item_v16::Ty {
+		villager_type: 2,
+		villager_profession: profession,
 		level: 1,
 	})
 }
@@ -1052,27 +1052,27 @@ fn replacement_name(name: &str, metadata: &[E13]) -> Option<E13> {
 	(!metadata.iter().any(|e| e.key == 2)).then(|| {
 		entry_13(
 			2,
-			M13::v5(Some(serde_json::json!({ "text": display }).to_string())),
+			M13::V5(Some(serde_json::json!({ "text": display }).to_string())),
 		)
 	})
 }
 
 fn horse_armor_1_14(id: i32, value: &M14) -> Client14 {
 	let name = match value {
-		M14::v1(1) => "iron_horse_armor",
-		M14::v1(2) => "golden_horse_armor",
-		M14::v1(3) => "diamond_horse_armor",
+		M14::V1(1) => "iron_horse_armor",
+		M14::V1(2) => "golden_horse_armor",
+		M14::V1(3) => "diamond_horse_armor",
 		_ => "",
 	};
-	let item = item_id(NEW, name).map_or(Slot::r#false, |itemId| {
-		Slot::r#true(v1_14::slot__true::Ty {
-			itemId,
-			itemCount: 1,
-			nbtData: None,
+	let item = item_id(NEW, name).map_or(Slot::False, |item_id| {
+		Slot::True(v1_14::slot_true::Ty {
+			item_id,
+			item_count: 1,
+			nbt_data: None,
 		})
 	});
-	Client14::entity_equipment(v1_14::play_toClient_packet_entity_equipment::Ty {
-		entityId: id,
+	Client14::EntityEquipment(v1_14::play_to_client_packet_entity_equipment::Ty {
+		entity_id: id,
 		slot: 4,
 		item,
 	})
@@ -1080,26 +1080,26 @@ fn horse_armor_1_14(id: i32, value: &M14) -> Client14 {
 
 fn type_14(v: &M14) -> i32 {
 	match v {
-		M14::v0(_) => 0,
-		M14::v1(_) => 1,
-		M14::v2(_) => 2,
-		M14::v3(_) => 3,
-		M14::v4(_) => 4,
-		M14::v5(_) => 5,
-		M14::v6(_) => 6,
-		M14::v7(_) => 7,
-		M14::v8(_) => 8,
-		M14::v9(_) => 9,
-		M14::v10(_) => 10,
-		M14::v11(_) => 11,
-		M14::v12(_) => 12,
-		M14::v13(_) => 13,
-		M14::v14(_) => 14,
-		M14::v15(_) => 15,
-		M14::v16(_) => 16,
-		M14::v17(_) => 17,
-		M14::v18(_) => 18,
-		M14::default(t) => *t,
+		M14::V0(_) => 0,
+		M14::V1(_) => 1,
+		M14::V2(_) => 2,
+		M14::V3(_) => 3,
+		M14::V4(_) => 4,
+		M14::V5(_) => 5,
+		M14::V6(_) => 6,
+		M14::V7(_) => 7,
+		M14::V8(_) => 8,
+		M14::V9(_) => 9,
+		M14::V10(_) => 10,
+		M14::V11(_) => 11,
+		M14::V12(_) => 12,
+		M14::V13(_) => 13,
+		M14::V14(_) => 14,
+		M14::V15(_) => 15,
+		M14::V16(_) => 16,
+		M14::V17(_) => 17,
+		M14::V18(_) => 18,
+		M14::Default(t) => *t,
 	}
 }
 
@@ -1113,23 +1113,23 @@ pub(super) fn entry_14(key: u8, value: M14) -> E14 {
 
 fn entry_13(key: u8, value: M13) -> E13 {
 	let ty = match &value {
-		M13::v0(_) => 0,
-		M13::v1(_) => 1,
-		M13::v2(_) => 2,
-		M13::v3(_) => 3,
-		M13::v4(_) => 4,
-		M13::v5(_) => 5,
-		M13::v6(_) => 6,
-		M13::v7(_) => 7,
-		M13::v8(_) => 8,
-		M13::v9(_) => 9,
-		M13::v10(_) => 10,
-		M13::v11(_) => 11,
-		M13::v12(_) => 12,
-		M13::v13(_) => 13,
-		M13::v14(_) => 14,
-		M13::v15(_) => 15,
-		M13::default(t) => *t,
+		M13::V0(_) => 0,
+		M13::V1(_) => 1,
+		M13::V2(_) => 2,
+		M13::V3(_) => 3,
+		M13::V4(_) => 4,
+		M13::V5(_) => 5,
+		M13::V6(_) => 6,
+		M13::V7(_) => 7,
+		M13::V8(_) => 8,
+		M13::V9(_) => 9,
+		M13::V10(_) => 10,
+		M13::V11(_) => 11,
+		M13::V12(_) => 12,
+		M13::V13(_) => 13,
+		M13::V14(_) => 14,
+		M13::V15(_) => 15,
+		M13::Default(t) => *t,
 	};
 	E13 {
 		key,
@@ -1156,70 +1156,70 @@ fn pos13(p: v1_14::position::Ty) -> v1_13_2::position::Ty {
 
 fn value_1_14(v: M13) -> Result<M14> {
 	Ok(match v {
-		M13::v0(b) => M14::v0(b),
-		M13::v1(n) => M14::v1(n),
-		M13::v2(f) => M14::v2(f),
-		M13::v3(s) => M14::v3(s),
-		M13::v4(s) => M14::v4(s),
-		M13::v5(s) => M14::v5(s),
-		M13::v6(s) => M14::v6(slot14(s)),
-		M13::v7(b) => M14::v7(b),
-		M13::v8(r) => M14::v8(v1_14::entityMetadataItem__v8::Ty {
+		M13::V0(b) => M14::V0(b),
+		M13::V1(n) => M14::V1(n),
+		M13::V2(f) => M14::V2(f),
+		M13::V3(s) => M14::V3(s),
+		M13::V4(s) => M14::V4(s),
+		M13::V5(s) => M14::V5(s),
+		M13::V6(s) => M14::V6(slot14(s)),
+		M13::V7(b) => M14::V7(b),
+		M13::V8(r) => M14::V8(v1_14::entity_metadata_item_v8::Ty {
 			pitch: r.pitch,
 			yaw: r.yaw,
 			roll: r.roll,
 		}),
-		M13::v9(p) => M14::v9(pos14(p)),
-		M13::v10(p) => M14::v10(p.map(pos14)),
-		M13::v11(d) => M14::v11(d),
-		M13::v12(u) => M14::v12(u),
-		M13::v13(s) => M14::v13(state(OLD, NEW, s)),
-		M13::v14(n) => M14::v14(n),
-		M13::v15(p) => M14::v15(particle_1_14(p)?),
-		M13::default(t) => M14::default(t),
+		M13::V9(p) => M14::V9(pos14(p)),
+		M13::V10(p) => M14::V10(p.map(pos14)),
+		M13::V11(d) => M14::V11(d),
+		M13::V12(u) => M14::V12(u),
+		M13::V13(s) => M14::V13(state(OLD, NEW, s)),
+		M13::V14(n) => M14::V14(n),
+		M13::V15(p) => M14::V15(particle_1_14(p)?),
+		M13::Default(t) => M14::Default(t),
 	})
 }
 
 fn value_1_13_2(v: M14) -> Option<M13> {
 	Some(match v {
-		M14::v0(b) => M13::v0(b),
-		M14::v1(n) => M13::v1(n),
-		M14::v2(f) => M13::v2(f),
-		M14::v3(s) => M13::v3(s),
-		M14::v4(s) => M13::v4(s),
-		M14::v5(s) => M13::v5(s),
-		M14::v6(s) => M13::v6(slot13(s)),
-		M14::v7(b) => M13::v7(b),
-		M14::v8(r) => M13::v8(v1_13_2::entityMetadataItem__v8::Ty {
+		M14::V0(b) => M13::V0(b),
+		M14::V1(n) => M13::V1(n),
+		M14::V2(f) => M13::V2(f),
+		M14::V3(s) => M13::V3(s),
+		M14::V4(s) => M13::V4(s),
+		M14::V5(s) => M13::V5(s),
+		M14::V6(s) => M13::V6(slot13(s)),
+		M14::V7(b) => M13::V7(b),
+		M14::V8(r) => M13::V8(v1_13_2::entity_metadata_item_v8::Ty {
 			pitch: r.pitch,
 			yaw: r.yaw,
 			roll: r.roll,
 		}),
-		M14::v9(p) => M13::v9(pos13(p)),
-		M14::v10(p) => M13::v10(p.map(pos13)),
-		M14::v11(d) => M13::v11(d),
-		M14::v12(u) => M13::v12(u),
-		M14::v13(s) => M13::v13(state(NEW, OLD, s)),
-		M14::v14(n) => M13::v14(n),
-		M14::v15(p) => M13::v15(particle_1_13_2(p).ok()?),
-		M14::v16(_) | M14::v17(_) | M14::v18(_) => return None,
-		M14::default(t) => M13::default(t),
+		M14::V9(p) => M13::V9(pos13(p)),
+		M14::V10(p) => M13::V10(p.map(pos13)),
+		M14::V11(d) => M13::V11(d),
+		M14::V12(u) => M13::V12(u),
+		M14::V13(s) => M13::V13(state(NEW, OLD, s)),
+		M14::V14(n) => M13::V14(n),
+		M14::V15(p) => M13::V15(particle_1_13_2(p).ok()?),
+		M14::V16(_) | M14::V17(_) | M14::V18(_) => return None,
+		M14::Default(t) => M13::Default(t),
 	})
 }
 
 fn particle_data_1_14(id: i32, data: P13) -> Result<(i32, P14)> {
 	let id = remap("particles", OLD, NEW, id).ok_or(Error::Dropped)?;
 	let data = match data {
-		P13::v3(s) => P14::v3(state(OLD, NEW, s)),
-		P13::v11(d) => P14::v14(v1_14::particleData__v14::Ty {
+		P13::V3(s) => P14::V3(state(OLD, NEW, s)),
+		P13::V11(d) => P14::V14(v1_14::particle_data_v14::Ty {
 			red: d.red,
 			green: d.green,
 			blue: d.blue,
 			scale: d.scale,
 		}),
-		P13::v20(s) => P14::v23(state(OLD, NEW, s)),
-		P13::v27(s) => P14::v32(slot14(s)),
-		P13::default(_) => P14::default(id),
+		P13::V20(s) => P14::V23(state(OLD, NEW, s)),
+		P13::V27(s) => P14::V32(slot14(s)),
+		P13::Default(_) => P14::Default(id),
 	};
 	Ok((id, data))
 }
@@ -1227,65 +1227,65 @@ fn particle_data_1_14(id: i32, data: P13) -> Result<(i32, P14)> {
 fn particle_data_1_13_2(id: i32, data: P14) -> Result<(i32, P13)> {
 	let id = remap("particles", NEW, OLD, id).ok_or(Error::Dropped)?;
 	let data = match data {
-		P14::v3(s) => P13::v3(state(NEW, OLD, s)),
-		P14::v14(d) => P13::v11(v1_13_2::particleData__v11::Ty {
+		P14::V3(s) => P13::V3(state(NEW, OLD, s)),
+		P14::V14(d) => P13::V11(v1_13_2::particle_data_v11::Ty {
 			red: d.red,
 			green: d.green,
 			blue: d.blue,
 			scale: d.scale,
 		}),
-		P14::v23(s) => P13::v20(state(NEW, OLD, s)),
-		P14::v32(s) => P13::v27(slot13(s)),
-		P14::default(_) => P13::default(id),
+		P14::V23(s) => P13::V20(state(NEW, OLD, s)),
+		P14::V32(s) => P13::V27(slot13(s)),
+		P14::Default(_) => P13::Default(id),
 	};
 	Ok((id, data))
 }
 
 fn particle_1_14(p: v1_13_2::particle::Ty) -> Result<v1_14::particle::Ty> {
-	let (particleId, data) = particle_data_1_14(p.particleId, p.data)?;
-	Ok(v1_14::particle::Ty { particleId, data })
+	let (particle_id, data) = particle_data_1_14(p.particle_id, p.data)?;
+	Ok(v1_14::particle::Ty { particle_id, data })
 }
 
 fn particle_1_13_2(p: v1_14::particle::Ty) -> Result<v1_13_2::particle::Ty> {
-	let (particleId, data) = particle_data_1_13_2(p.particleId, p.data)?;
-	Ok(v1_13_2::particle::Ty { particleId, data })
+	let (particle_id, data) = particle_data_1_13_2(p.particle_id, p.data)?;
+	Ok(v1_13_2::particle::Ty { particle_id, data })
 }
 
 pub fn village_world_particles_1_14(
-	p: v1_13_2::play_toClient_packet_world_particles::Ty,
+	p: v1_13_2::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_14::play_toClient_packet_world_particles::Ty> {
-	let (particleId, data) = particle_data_1_14(p.particleId, p.data)?;
-	Ok(v1_14::play_toClient_packet_world_particles::Ty {
-		particleId,
-		longDistance: p.longDistance,
+) -> Result<v1_14::play_to_client_packet_world_particles::Ty> {
+	let (particle_id, data) = particle_data_1_14(p.particle_id, p.data)?;
+	Ok(v1_14::play_to_client_packet_world_particles::Ty {
+		particle_id,
+		long_distance: p.long_distance,
 		x: p.x,
 		y: p.y,
 		z: p.z,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
 		data,
 	})
 }
 
 pub fn village_world_particles_1_13_2(
-	p: v1_14::play_toClient_packet_world_particles::Ty,
+	p: v1_14::play_to_client_packet_world_particles::Ty,
 	_cx: &mut Session,
-) -> Result<v1_13_2::play_toClient_packet_world_particles::Ty> {
-	let (particleId, data) = particle_data_1_13_2(p.particleId, p.data)?;
-	Ok(v1_13_2::play_toClient_packet_world_particles::Ty {
-		particleId,
-		longDistance: p.longDistance,
+) -> Result<v1_13_2::play_to_client_packet_world_particles::Ty> {
+	let (particle_id, data) = particle_data_1_13_2(p.particle_id, p.data)?;
+	Ok(v1_13_2::play_to_client_packet_world_particles::Ty {
+		particle_id,
+		long_distance: p.long_distance,
 		x: p.x,
 		y: p.y,
 		z: p.z,
-		offsetX: p.offsetX,
-		offsetY: p.offsetY,
-		offsetZ: p.offsetZ,
-		particleData: p.particleData,
+		offset_x: p.offset_x,
+		offset_y: p.offset_y,
+		offset_z: p.offset_z,
+		particle_data: p.particle_data,
 		particles: p.particles,
 		data,
 	})
@@ -1294,29 +1294,29 @@ pub fn village_world_particles_1_13_2(
 type Node = v1_13_2::command_node::Ty;
 
 fn rename_parser(mut node: Node, up: bool) -> Node {
-	use v1_13_2::command_node__extraNodeData::Ty as Extra;
-	use v1_13_2::command_node__extraNodeData__v2__properties::Ty as Parser;
-	use v1_13_2::command_node__extraNodeData__v2__properties__brigadier_integer as Integer;
-	let Extra::v2(arg) = &mut node.extraNodeData else {
+	use v1_13_2::command_node_extra_node_data::Ty as Extra;
+	use v1_13_2::command_node_extra_node_data_v2_properties::Ty as Parser;
+	use v1_13_2::command_node_extra_node_data_v2_properties_brigadier_integer as Integer;
+	let Extra::V2(arg) = &mut node.extra_node_data else {
 		return node;
 	};
 	let (parser, properties) = match (up, &arg.properties) {
-		(true, Parser::minecraft_nbt) => ("minecraft:nbt_compound_tag", Parser::minecraft_nbt_compound_tag),
-		(false, Parser::minecraft_nbt_compound_tag) => ("minecraft:nbt", Parser::minecraft_nbt),
-		(false, Parser::default(p)) if p == "minecraft:nbt_tag" => (
+		(true, Parser::MinecraftNbt) => ("minecraft:nbt_compound_tag", Parser::MinecraftNbtCompoundTag),
+		(false, Parser::MinecraftNbtCompoundTag) => ("minecraft:nbt", Parser::MinecraftNbt),
+		(false, Parser::Default(p)) if p == "minecraft:nbt_tag" => (
 			"brigadier:string",
-			Parser::brigadier_string(v1_13_2::command_node__extraNodeData__v2__properties__brigadier_string::Ty::GREEDY_PHRASE),
+			Parser::BrigadierString(v1_13_2::command_node_extra_node_data_v2_properties_brigadier_string::Ty::GreedyPhrase),
 		),
-		(false, Parser::minecraft_time) => (
+		(false, Parser::MinecraftTime) => (
 			"brigadier:integer",
-			Parser::brigadier_integer(Integer::Ty {
-				flags: v1_13_2::command_node__extraNodeData__v2__properties__brigadier_integer__flags::Ty {
+			Parser::BrigadierInteger(Integer::Ty {
+				flags: v1_13_2::command_node_extra_node_data_v2_properties_brigadier_integer_flags::Ty {
 					unused: 0,
 					max_present: 0,
 					min_present: 1,
 				},
-				min: v1_13_2::command_node__extraNodeData__v2__properties__brigadier_integer__min::Ty::v1(0),
-				max: v1_13_2::command_node__extraNodeData__v2__properties__brigadier_integer__max::Ty::default(0),
+				min: v1_13_2::command_node_extra_node_data_v2_properties_brigadier_integer_min::Ty::V1(0),
+				max: v1_13_2::command_node_extra_node_data_v2_properties_brigadier_integer_max::Ty::Default(0),
 			}),
 		),
 		_ => return node,
@@ -1334,7 +1334,7 @@ pub fn village_command_node_1_13_2(node: Node, _cx: &mut Session) -> Result<Node
 	Ok(rename_parser(node, false))
 }
 
-type Explosion = v1_13_2::play_toClient_packet_explosion::Ty;
+type Explosion = v1_13_2::play_to_client_packet_explosion::Ty;
 
 pub fn village_explosion_1_14(p: Explosion, _cx: &mut Session) -> Result<Explosion> {
 	let origin = |v: f32| if v < 0.0 { v.trunc() } else { v };
@@ -1356,126 +1356,126 @@ pub fn village_explosion_1_13_2(p: Explosion, _cx: &mut Session) -> Result<Explo
 	})
 }
 
-fn difficulty_14(d: u8) -> v1_14::play_toClient_packet_difficulty__difficulty::Ty {
-	use v1_14::play_toClient_packet_difficulty__difficulty::Ty as D;
+fn difficulty_14(d: u8) -> v1_14::play_to_client_packet_difficulty_difficulty::Ty {
+	use v1_14::play_to_client_packet_difficulty_difficulty::Ty as D;
 	match d {
-		0 => D::peaceful,
-		1 => D::easy,
-		2 => D::normal,
-		3 => D::hard,
-		n => D::default(n),
+		0 => D::Peaceful,
+		1 => D::Easy,
+		2 => D::Normal,
+		3 => D::Hard,
+		n => D::Default(n),
 	}
 }
 
 fn difficulty_packet_14(d: u8) -> Client14 {
-	Client14::difficulty(v1_14::play_toClient_packet_difficulty::Ty {
+	Client14::Difficulty(v1_14::play_to_client_packet_difficulty::Ty {
 		difficulty: difficulty_14(d),
-		difficultyLocked: false,
+		difficulty_locked: false,
 	})
 }
 
 pub fn village_difficulty_1_14(
-	d: v1_13_2::play_toClient_packet_difficulty::Ty,
+	d: v1_13_2::play_to_client_packet_difficulty::Ty,
 	_cx: &mut Session,
-) -> Result<v1_14::play_toClient_packet_difficulty::Ty> {
-	Ok(v1_14::play_toClient_packet_difficulty::Ty {
-		difficulty: difficulty_14(v1_13_2::play_toClient_packet_difficulty::virtual_tag(&d)),
-		difficultyLocked: false,
+) -> Result<v1_14::play_to_client_packet_difficulty::Ty> {
+	Ok(v1_14::play_to_client_packet_difficulty::Ty {
+		difficulty: difficulty_14(v1_13_2::play_to_client_packet_difficulty::virtual_tag(&d)),
+		difficulty_locked: false,
 	})
 }
 
 pub fn village_difficulty_1_13_2(
-	d: v1_14::play_toClient_packet_difficulty::Ty,
+	d: v1_14::play_to_client_packet_difficulty::Ty,
 	cx: &mut Session,
-) -> Result<v1_13_2::play_toClient_packet_difficulty::Ty> {
-	use v1_13_2::play_toClient_packet_difficulty::Ty as D;
-	let value = v1_14::play_toClient_packet_difficulty__difficulty::virtual_tag(&d.difficulty);
+) -> Result<v1_13_2::play_to_client_packet_difficulty::Ty> {
+	use v1_13_2::play_to_client_packet_difficulty::Ty as D;
+	let value = v1_14::play_to_client_packet_difficulty_difficulty::virtual_tag(&d.difficulty);
 	cx.state::<State14>().difficulty = value;
 	Ok(match value {
-		0 => D::peaceful,
-		1 => D::easy,
-		2 => D::normal,
-		3 => D::hard,
-		n => D::default(n),
+		0 => D::Peaceful,
+		1 => D::Easy,
+		2 => D::Normal,
+		3 => D::Hard,
+		n => D::Default(n),
 	})
 }
 
 pub fn village_login_1_14(
-	p: v1_13_2::play_toClient_packet_login::Ty,
+	p: v1_13_2::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	cx.state::<State14>().reset(p.entityId, p.dimension);
+	cx.state::<State14>().reset(p.entity_id, p.dimension);
 	Ok(vec![
-		Client14::login(v1_14::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			gameMode: p.gameMode,
+		Client14::Login(v1_14::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
-			maxPlayers: p.maxPlayers,
-			levelType: p.levelType,
-			viewDistance: VIEW_DISTANCE,
-			reducedDebugInfo: p.reducedDebugInfo,
+			max_players: p.max_players,
+			level_type: p.level_type,
+			view_distance: VIEW_DISTANCE,
+			reduced_debug_info: p.reduced_debug_info,
 		}),
-		Client14::update_view_distance(VIEW_DISTANCE),
+		Client14::UpdateViewDistance(VIEW_DISTANCE),
 		difficulty_packet_14(p.difficulty),
 	])
 }
 
 pub fn village_login_1_13_2(
-	p: v1_14::play_toClient_packet_login::Ty,
+	p: v1_14::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let st = cx.state::<State14>();
-	st.reset(p.entityId, p.dimension);
-	Ok(vec![Client13::login(
-		v1_13_2::play_toClient_packet_login::Ty {
-			entityId: p.entityId,
-			gameMode: p.gameMode,
+	st.reset(p.entity_id, p.dimension);
+	Ok(vec![Client13::Login(
+		v1_13_2::play_to_client_packet_login::Ty {
+			entity_id: p.entity_id,
+			game_mode: p.game_mode,
 			dimension: p.dimension,
 			difficulty: st.difficulty,
-			maxPlayers: p.maxPlayers,
-			levelType: p.levelType,
-			reducedDebugInfo: p.reducedDebugInfo,
+			max_players: p.max_players,
+			level_type: p.level_type,
+			reduced_debug_info: p.reduced_debug_info,
 		},
 	)])
 }
 
 pub fn village_respawn_1_14(
-	p: v1_13_2::play_toClient_packet_respawn::Ty,
+	p: v1_13_2::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let st = cx.state::<State14>();
 	let id = st.self_id;
 	st.reset(id, p.dimension);
 	Ok(vec![
-		Client14::respawn(v1_14::play_toClient_packet_respawn::Ty {
+		Client14::Respawn(v1_14::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
 			gamemode: p.gamemode,
-			levelType: p.levelType,
+			level_type: p.level_type,
 		}),
 		difficulty_packet_14(p.difficulty),
-		Client14::update_view_distance(VIEW_DISTANCE),
+		Client14::UpdateViewDistance(VIEW_DISTANCE),
 	])
 }
 
 pub fn village_respawn_1_13_2(
-	p: v1_14::play_toClient_packet_respawn::Ty,
+	p: v1_14::play_to_client_packet_respawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let st = cx.state::<State14>();
 	let id = st.self_id;
 	st.reset(id, p.dimension);
-	Ok(vec![Client13::respawn(
-		v1_13_2::play_toClient_packet_respawn::Ty {
+	Ok(vec![Client13::Respawn(
+		v1_13_2::play_to_client_packet_respawn::Ty {
 			dimension: p.dimension,
 			difficulty: st.difficulty,
 			gamemode: p.gamemode,
-			levelType: p.levelType,
+			level_type: p.level_type,
 		},
 	)])
 }
 
 pub fn village_position_1_14(
-	p: v1_13_2::play_toClient_packet_position::Ty,
+	p: v1_13_2::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let st = cx.state::<State14>();
@@ -1485,30 +1485,30 @@ pub fn village_position_1_14(
 	st.pos = Some((x, z));
 	let mut out = Vec::new();
 	st.recenter(None, &mut out);
-	out.push(Client14::position(p));
+	out.push(Client14::Position(p));
 	Ok(out)
 }
 
 pub fn village_position_1_13_2(
-	p: v1_14::play_toServer_packet_position::Ty,
+	p: v1_14::play_to_server_packet_position::Ty,
 	cx: &mut Session,
-) -> Result<v1_13_2::play_toServer_packet_position::Ty> {
+) -> Result<v1_13_2::play_to_server_packet_position::Ty> {
 	cx.state::<State14>().pos = Some((p.x, p.z));
 	Ok(p)
 }
 
 pub fn village_position_look_1_13_2(
-	p: v1_14::play_toServer_packet_position_look::Ty,
+	p: v1_14::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
-) -> Result<v1_13_2::play_toServer_packet_position_look::Ty> {
+) -> Result<v1_13_2::play_to_server_packet_position_look::Ty> {
 	cx.state::<State14>().pos = Some((p.x, p.z));
 	Ok(p)
 }
 
 pub fn village_vehicle_move_1_13_2(
-	p: v1_14::play_toServer_packet_vehicle_move::Ty,
+	p: v1_14::play_to_server_packet_vehicle_move::Ty,
 	cx: &mut Session,
-) -> Result<v1_13_2::play_toServer_packet_vehicle_move::Ty> {
+) -> Result<v1_13_2::play_to_server_packet_vehicle_move::Ty> {
 	cx.state::<State14>().pos = Some((p.x, p.z));
 	Ok(p)
 }
@@ -1517,7 +1517,7 @@ pub struct VillageColumn {
 	pub sections: Vec<VillageSection>,
 	pub counts: Vec<i16>,
 	pub heightmaps: Nbt,
-	pub light: v1_14::play_toClient_packet_update_light::Ty,
+	pub light: v1_14::play_to_client_packet_update_light::Ty,
 	pub before: Vec<Client14>,
 }
 
@@ -1562,13 +1562,13 @@ pub fn village_column_1_14(
 }
 
 pub fn village_map_chunk_1_14(
-	p: v1_13_2::play_toClient_packet_map_chunk::Ty,
+	p: v1_13_2::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let sky = !cx.state::<State14>().no_sky;
-	let (sections, biomes) = sections_1_13_2(&p.chunkData, p.bitMap, p.groundUp, sky)
-		.or_else(|e| sections_1_13_2(&p.chunkData, p.bitMap, p.groundUp, !sky).map_err(|_| e))?;
-	let column = village_column_1_14(cx, p.x, p.z, p.groundUp, sections)?;
+	let (sections, biomes) = sections_1_13_2(&p.chunk_data, p.bit_map, p.ground_up, sky)
+		.or_else(|e| sections_1_13_2(&p.chunk_data, p.bit_map, p.ground_up, !sky).map_err(|_| e))?;
+	let column = village_column_1_14(cx, p.x, p.z, p.ground_up, sections)?;
 	let mut data = Vec::new();
 	for (sec, count) in column.sections.iter().zip(&column.counts) {
 		data.extend(count.to_be_bytes());
@@ -1576,36 +1576,40 @@ pub fn village_map_chunk_1_14(
 	}
 	data.extend(&biomes);
 	let mut out = column.before;
-	out.push(Client14::update_light(column.light));
-	out.push(Client14::map_chunk(
-		v1_14::play_toClient_packet_map_chunk::Ty {
+	out.push(Client14::UpdateLight(column.light));
+	out.push(Client14::MapChunk(
+		v1_14::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp: p.groundUp,
-			bitMap: p.bitMap,
+			ground_up: p.ground_up,
+			bit_map: p.bit_map,
 			heightmaps: column.heightmaps,
-			chunkData: data,
-			blockEntities: p.blockEntities,
+			chunk_data: data,
+			block_entities: p.block_entities,
 		},
 	));
 	Ok(out)
 }
 
 pub fn village_update_light_1_13_2(
-	p: v1_14::play_toClient_packet_update_light::Ty,
+	p: v1_14::play_to_client_packet_update_light::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let entry = cx
 		.state::<State14>()
 		.light
-		.entry((p.chunkX, p.chunkZ))
+		.entry((p.chunk_x, p.chunk_z))
 		.or_default();
 	entry.sky.resize(18, None);
 	entry.block.resize(18, None);
 	let mut r = Bytes::new(&p.data);
 	for (mask, empty, arrays) in [
-		(p.skyLightMask, p.emptySkyLightMask, &mut entry.sky),
-		(p.blockLightMask, p.emptyBlockLightMask, &mut entry.block),
+		(p.sky_light_mask, p.empty_sky_light_mask, &mut entry.sky),
+		(
+			p.block_light_mask,
+			p.empty_block_light_mask,
+			&mut entry.block,
+		),
 	] {
 		for (i, a) in arrays.iter_mut().enumerate() {
 			if mask & 1 << i != 0 {
@@ -1620,11 +1624,11 @@ pub fn village_update_light_1_13_2(
 }
 
 pub fn village_unload_chunk_1_13_2(
-	p: v1_14::play_toClient_packet_unload_chunk::Ty,
+	p: v1_14::play_to_client_packet_unload_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	cx.state::<State14>().light.remove(&(p.chunkX, p.chunkZ));
-	Ok(vec![Client13::unload_chunk(p)])
+	cx.state::<State14>().light.remove(&(p.chunk_x, p.chunk_z));
+	Ok(vec![Client13::UnloadChunk(p)])
 }
 
 pub fn village_section_light_1_13_2(
@@ -1654,14 +1658,14 @@ pub fn village_section_light_1_13_2(
 }
 
 pub fn village_map_chunk_1_13_2(
-	p: v1_14::play_toClient_packet_map_chunk::Ty,
+	p: v1_14::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	let ys: Vec<usize> = (0..16).filter(|y| p.bitMap & 1 << y != 0).collect();
+	let ys: Vec<usize> = (0..16).filter(|y| p.bit_map & 1 << y != 0).collect();
 	let light = village_section_light_1_13_2(cx, p.x, p.z, &ys);
 	let table = registry::state_table(NEW, OLD)
 		.ok_or_else(|| Error::Unconvertible("no 1.14 -> 1.13.2 block states".into()))?;
-	let mut r = Bytes::new(&p.chunkData);
+	let mut r = Bytes::new(&p.chunk_data);
 	let mut data = Vec::new();
 	for (block, sky) in light {
 		r.take(2)?;
@@ -1675,7 +1679,7 @@ pub fn village_map_chunk_1_13_2(
 			data.extend(sky);
 		}
 	}
-	if p.groundUp {
+	if p.ground_up {
 		data.extend(r.take(1024)?);
 	}
 	if !r.rest().is_empty() {
@@ -1684,14 +1688,14 @@ pub fn village_map_chunk_1_13_2(
 			r.rest().len()
 		));
 	}
-	Ok(vec![Client13::map_chunk(
-		v1_13_2::play_toClient_packet_map_chunk::Ty {
+	Ok(vec![Client13::MapChunk(
+		v1_13_2::play_to_client_packet_map_chunk::Ty {
 			x: p.x,
 			z: p.z,
-			groundUp: p.groundUp,
-			bitMap: p.bitMap,
-			chunkData: data,
-			blockEntities: p.blockEntities,
+			ground_up: p.ground_up,
+			bit_map: p.bit_map,
+			chunk_data: data,
+			block_entities: p.block_entities,
 		},
 	)])
 }
@@ -1732,38 +1736,38 @@ fn is_arrow(name: &str) -> bool {
 }
 
 pub fn village_spawn_entity_1_14(
-	p: v1_13_2::play_toClient_packet_spawn_entity::Ty,
+	p: v1_13_2::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	let Some(name) = object_1_14(p.r#type, p.objectData) else {
+	let Some(name) = object_1_14(p.r#type, p.object_data) else {
 		return Ok(vec![]);
 	};
 	let Some(ty) = entity_id(NEW, name) else {
 		return Ok(vec![]);
 	};
-	cx.state::<State14>().types.insert(p.entityId, name);
+	cx.state::<State14>().types.insert(p.entity_id, name);
 	let data = match name {
-		"falling_block" => state(OLD, NEW, p.objectData),
-		n if is_arrow(n) => p.objectData - 1,
-		_ => p.objectData,
+		"falling_block" => state(OLD, NEW, p.object_data),
+		n if is_arrow(n) => p.object_data - 1,
+		_ => p.object_data,
 	};
-	let velocity = (is_arrow(name) || name == "item" && p.objectData > 0).then(|| {
-		Client14::entity_velocity(v1_14::play_toClient_packet_entity_velocity::Ty {
-			entityId: p.entityId,
+	let velocity = (is_arrow(name) || name == "item" && p.object_data > 0).then(|| {
+		Client14::EntityVelocity(v1_14::play_to_client_packet_entity_velocity::Ty {
+			entity_id: p.entity_id,
 			velocity: p.velocity.clone(),
 		})
 	});
-	let mut out = vec![Client14::spawn_entity(
-		v1_14::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.objectUUID,
+	let mut out = vec![Client14::SpawnEntity(
+		v1_14::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.object_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			objectData: data,
+			object_data: data,
 			velocity: p.velocity,
 		},
 	)];
@@ -1772,7 +1776,7 @@ pub fn village_spawn_entity_1_14(
 }
 
 pub fn village_spawn_entity_1_13_2(
-	p: v1_14::play_toClient_packet_spawn_entity::Ty,
+	p: v1_14::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let name = entity_name(NEW, p.r#type);
@@ -1780,31 +1784,31 @@ pub fn village_spawn_entity_1_13_2(
 		return Ok(vec![]);
 	};
 	let st = cx.state::<State14>();
-	st.down_types.insert(p.entityId, name);
-	st.positions.insert(p.entityId, (p.x, p.y, p.z));
+	st.down_types.insert(p.entity_id, name);
+	st.positions.insert(p.entity_id, (p.x, p.y, p.z));
 	let data = match name {
-		"falling_block" => state(NEW, OLD, p.objectData),
-		n if is_arrow(n) => p.objectData + 1,
-		_ => fixed.unwrap_or(p.objectData),
+		"falling_block" => state(NEW, OLD, p.object_data),
+		n if is_arrow(n) => p.object_data + 1,
+		_ => fixed.unwrap_or(p.object_data),
 	};
-	Ok(vec![Client13::spawn_entity(
-		v1_13_2::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: p.objectUUID,
+	Ok(vec![Client13::SpawnEntity(
+		v1_13_2::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: p.object_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: p.pitch,
 			yaw: p.yaw,
-			objectData: data,
+			object_data: data,
 			velocity: p.velocity,
 		},
 	)])
 }
 
 pub fn village_spawn_entity_living_1_14(
-	p: v1_13_2::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_13_2::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let Some(mut ty) = remap("entities", OLD, NEW, p.r#type) else {
@@ -1814,26 +1818,26 @@ pub fn village_spawn_entity_living_1_14(
 	let tamed = p
 		.metadata
 		.iter()
-		.any(|e| e.key == 15 && matches!(e.value, M13::v1(v) if v != 0));
+		.any(|e| e.key == 15 && matches!(e.value, M13::V1(v) if v != 0));
 	if let (true, Some(cat)) = (name == "ocelot" && tamed, entity_id(NEW, "cat")) {
 		(ty, name) = (cat, "cat");
 	}
 	let st = cx.state::<State14>();
-	st.forget(p.entityId);
-	st.types.insert(p.entityId, name);
+	st.forget(p.entity_id);
+	st.types.insert(p.entity_id, name);
 	let mut extra = Vec::new();
-	let metadata = st.metadata_1_14(p.entityId, p.metadata, &mut extra)?;
-	let mut out = vec![Client14::spawn_entity_living(
-		v1_14::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
-			entityUUID: p.entityUUID,
+	let metadata = st.metadata_1_14(p.entity_id, p.metadata, &mut extra)?;
+	let mut out = vec![Client14::SpawnEntityLiving(
+		v1_14::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
+			entity_uuid: p.entity_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 			metadata,
 		},
@@ -1843,7 +1847,7 @@ pub fn village_spawn_entity_living_1_14(
 }
 
 pub fn village_spawn_entity_living_1_13_2(
-	p: v1_14::play_toClient_packet_spawn_entity_living::Ty,
+	p: v1_14::play_to_client_packet_spawn_entity_living::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let Some(ty) = remap("entities", NEW, OLD, p.r#type) else {
@@ -1851,23 +1855,23 @@ pub fn village_spawn_entity_living_1_13_2(
 	};
 	let name = entity_name(NEW, p.r#type);
 	let st = cx.state::<State14>();
-	st.forget(p.entityId);
-	st.down_types.insert(p.entityId, name);
-	st.positions.insert(p.entityId, (p.x, p.y, p.z));
+	st.forget(p.entity_id);
+	st.down_types.insert(p.entity_id, name);
+	st.positions.insert(p.entity_id, (p.x, p.y, p.z));
 	let mut extra = Vec::new();
-	let mut metadata = st.metadata_1_13_2(p.entityId, p.metadata, &mut extra)?;
+	let mut metadata = st.metadata_1_13_2(p.entity_id, p.metadata, &mut extra)?;
 	metadata.extend(replacement_name(name, &metadata));
-	let mut out = vec![Client13::spawn_entity_living(
-		v1_13_2::play_toClient_packet_spawn_entity_living::Ty {
-			entityId: p.entityId,
-			entityUUID: p.entityUUID,
+	let mut out = vec![Client13::SpawnEntityLiving(
+		v1_13_2::play_to_client_packet_spawn_entity_living::Ty {
+			entity_id: p.entity_id,
+			entity_uuid: p.entity_uuid,
 			r#type: ty,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			yaw: p.yaw,
 			pitch: p.pitch,
-			headPitch: p.headPitch,
+			head_pitch: p.head_pitch,
 			velocity: p.velocity,
 			metadata,
 		},
@@ -1877,18 +1881,18 @@ pub fn village_spawn_entity_living_1_13_2(
 }
 
 pub fn village_named_entity_spawn_1_14(
-	p: v1_13_2::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_13_2::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let st = cx.state::<State14>();
-	st.forget(p.entityId);
-	st.types.insert(p.entityId, "player");
+	st.forget(p.entity_id);
+	st.types.insert(p.entity_id, "player");
 	let mut extra = Vec::new();
-	let metadata = st.metadata_1_14(p.entityId, p.metadata, &mut extra)?;
-	let mut out = vec![Client14::named_entity_spawn(
-		v1_14::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: p.playerUUID,
+	let metadata = st.metadata_1_14(p.entity_id, p.metadata, &mut extra)?;
+	let mut out = vec![Client14::NamedEntitySpawn(
+		v1_14::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: p.player_uuid,
 			x: p.x,
 			y: p.y,
 			z: p.z,
@@ -1902,19 +1906,19 @@ pub fn village_named_entity_spawn_1_14(
 }
 
 pub fn village_named_entity_spawn_1_13_2(
-	p: v1_14::play_toClient_packet_named_entity_spawn::Ty,
+	p: v1_14::play_to_client_packet_named_entity_spawn::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let st = cx.state::<State14>();
-	st.forget(p.entityId);
-	st.down_types.insert(p.entityId, "player");
-	st.positions.insert(p.entityId, (p.x, p.y, p.z));
+	st.forget(p.entity_id);
+	st.down_types.insert(p.entity_id, "player");
+	st.positions.insert(p.entity_id, (p.x, p.y, p.z));
 	let mut extra = Vec::new();
-	let metadata = st.metadata_1_13_2(p.entityId, p.metadata, &mut extra)?;
-	let mut out = vec![Client13::named_entity_spawn(
-		v1_13_2::play_toClient_packet_named_entity_spawn::Ty {
-			entityId: p.entityId,
-			playerUUID: p.playerUUID,
+	let metadata = st.metadata_1_13_2(p.entity_id, p.metadata, &mut extra)?;
+	let mut out = vec![Client13::NamedEntitySpawn(
+		v1_13_2::play_to_client_packet_named_entity_spawn::Ty {
+			entity_id: p.entity_id,
+			player_uuid: p.player_uuid,
 			x: p.x,
 			y: p.y,
 			z: p.z,
@@ -1928,16 +1932,16 @@ pub fn village_named_entity_spawn_1_13_2(
 }
 
 pub fn village_entity_metadata_1_14(
-	p: v1_13_2::play_toClient_packet_entity_metadata::Ty,
+	p: v1_13_2::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let mut extra = Vec::new();
 	let metadata = cx
 		.state::<State14>()
-		.metadata_1_14(p.entityId, p.metadata, &mut extra)?;
-	let mut out = vec![Client14::entity_metadata(
-		v1_14::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+		.metadata_1_14(p.entity_id, p.metadata, &mut extra)?;
+	let mut out = vec![Client14::EntityMetadata(
+		v1_14::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)];
@@ -1946,16 +1950,16 @@ pub fn village_entity_metadata_1_14(
 }
 
 pub fn village_entity_metadata_1_13_2(
-	p: v1_14::play_toClient_packet_entity_metadata::Ty,
+	p: v1_14::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let mut extra = Vec::new();
 	let metadata = cx
 		.state::<State14>()
-		.metadata_1_13_2(p.entityId, p.metadata, &mut extra)?;
-	let mut out = vec![Client13::entity_metadata(
-		v1_13_2::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+		.metadata_1_13_2(p.entity_id, p.metadata, &mut extra)?;
+	let mut out = vec![Client13::EntityMetadata(
+		v1_13_2::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)];
@@ -1964,15 +1968,15 @@ pub fn village_entity_metadata_1_13_2(
 }
 
 pub fn village_entity_equipment_1_13_2(
-	p: v1_14::play_toClient_packet_entity_equipment::Ty,
+	p: v1_14::play_to_client_packet_entity_equipment::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let item = slot13(p.item);
-	let horse = cx.state::<State14>().down_types.get(&p.entityId).copied() == Some("horse");
+	let horse = cx.state::<State14>().down_types.get(&p.entity_id).copied() == Some("horse");
 	if !horse {
-		return Ok(vec![Client13::entity_equipment(
-			v1_13_2::play_toClient_packet_entity_equipment::Ty {
-				entityId: p.entityId,
+		return Ok(vec![Client13::EntityEquipment(
+			v1_13_2::play_to_client_packet_entity_equipment::Ty {
+				entity_id: p.entity_id,
 				slot: p.slot,
 				item,
 			},
@@ -1985,34 +1989,34 @@ pub fn village_entity_equipment_1_13_2(
 		"diamond_horse_armor" => 3,
 		_ => return Ok(vec![]),
 	};
-	Ok(vec![Client13::entity_metadata(
-		v1_13_2::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
-			metadata: vec![entry_13(16, M13::v1(armor))],
+	Ok(vec![Client13::EntityMetadata(
+		v1_13_2::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
+			metadata: vec![entry_13(16, M13::V1(armor))],
 		},
 	)])
 }
 
 pub fn village_entity_status_1_13_2(
-	p: v1_14::play_toClient_packet_entity_status::Ty,
+	p: v1_14::play_to_client_packet_entity_status::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let st = cx.state::<State14>();
-	if p.entityStatus != 3 {
-		return Ok(vec![Client13::entity_status(p)]);
+	if p.entity_status != 3 {
+		return Ok(vec![Client13::EntityStatus(p)]);
 	}
-	if p.entityId == st.self_id {
+	if p.entity_id == st.self_id {
 		return Ok(vec![]);
 	}
-	let player = st.down_types.get(&p.entityId).copied() == Some("player");
-	let id = p.entityId;
-	let mut out = vec![Client13::entity_status(p)];
+	let player = st.down_types.get(&p.entity_id).copied() == Some("player");
+	let id = p.entity_id;
+	let mut out = vec![Client13::EntityStatus(p)];
 	if player {
 		out.extend((0..6).map(|slot| {
-			Client13::entity_equipment(v1_13_2::play_toClient_packet_entity_equipment::Ty {
-				entityId: id,
+			Client13::EntityEquipment(v1_13_2::play_to_client_packet_entity_equipment::Ty {
+				entity_id: id,
 				slot,
-				item: Slot::r#false,
+				item: Slot::False,
 			})
 		}));
 	}
@@ -2031,49 +2035,57 @@ fn relative(d: i16) -> f64 {
 }
 
 pub fn village_entity_teleport_1_13_2(
-	p: v1_14::play_toClient_packet_entity_teleport::Ty,
+	p: v1_14::play_to_client_packet_entity_teleport::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	cx.state::<State14>()
 		.positions
-		.insert(p.entityId, (p.x, p.y, p.z));
-	Ok(vec![Client13::entity_teleport(p)])
+		.insert(p.entity_id, (p.x, p.y, p.z));
+	Ok(vec![Client13::EntityTeleport(p)])
 }
 
 pub fn village_rel_entity_move_1_13_2(
-	p: v1_14::play_toClient_packet_rel_entity_move::Ty,
+	p: v1_14::play_to_client_packet_rel_entity_move::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	moved(cx, p.entityId, |(x, y, z)| {
-		(x + relative(p.dX), y + relative(p.dY), z + relative(p.dZ))
+	moved(cx, p.entity_id, |(x, y, z)| {
+		(
+			x + relative(p.d_x),
+			y + relative(p.d_y),
+			z + relative(p.d_z),
+		)
 	});
-	Ok(vec![Client13::rel_entity_move(p)])
+	Ok(vec![Client13::RelEntityMove(p)])
 }
 
 pub fn village_entity_move_look_1_13_2(
-	p: v1_14::play_toClient_packet_entity_move_look::Ty,
+	p: v1_14::play_to_client_packet_entity_move_look::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	moved(cx, p.entityId, |(x, y, z)| {
-		(x + relative(p.dX), y + relative(p.dY), z + relative(p.dZ))
+	moved(cx, p.entity_id, |(x, y, z)| {
+		(
+			x + relative(p.d_x),
+			y + relative(p.d_y),
+			z + relative(p.d_z),
+		)
 	});
-	Ok(vec![Client13::entity_move_look(p)])
+	Ok(vec![Client13::EntityMoveLook(p)])
 }
 
 pub fn village_entity_sound_effect_1_13_2(
-	p: v1_14::play_toClient_packet_entity_sound_effect::Ty,
+	p: v1_14::play_to_client_packet_entity_sound_effect::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	let Some(soundId) = remap("sounds", NEW, OLD, p.soundId) else {
+	let Some(sound_id) = remap("sounds", NEW, OLD, p.sound_id) else {
 		return Ok(vec![]);
 	};
-	let Some((x, y, z)) = cx.state::<State14>().positions.get(&p.entityId).copied() else {
+	let Some((x, y, z)) = cx.state::<State14>().positions.get(&p.entity_id).copied() else {
 		return Ok(vec![]);
 	};
-	Ok(vec![Client13::sound_effect(
-		v1_13_2::play_toClient_packet_sound_effect::Ty {
-			soundId,
-			soundCategory: p.soundCategory,
+	Ok(vec![Client13::SoundEffect(
+		v1_13_2::play_to_client_packet_sound_effect::Ty {
+			sound_id,
+			sound_category: p.sound_category,
 			x: (x * 8.0) as i32,
 			y: (y * 8.0) as i32,
 			z: (z * 8.0) as i32,
@@ -2090,23 +2102,23 @@ fn self_moved(cx: &mut Session, x: f64, y: f64, z: f64) {
 }
 
 pub fn village_player_position_1_14(
-	p: v1_13_2::play_toServer_packet_position::Ty,
+	p: v1_13_2::play_to_server_packet_position::Ty,
 	cx: &mut Session,
-) -> Result<v1_14::play_toServer_packet_position::Ty> {
+) -> Result<v1_14::play_to_server_packet_position::Ty> {
 	self_moved(cx, p.x, p.y, p.z);
 	Ok(p)
 }
 
 pub fn village_player_position_look_1_14(
-	p: v1_13_2::play_toServer_packet_position_look::Ty,
+	p: v1_13_2::play_to_server_packet_position_look::Ty,
 	cx: &mut Session,
-) -> Result<v1_14::play_toServer_packet_position_look::Ty> {
+) -> Result<v1_14::play_to_server_packet_position_look::Ty> {
 	self_moved(cx, p.x, p.y, p.z);
 	Ok(p)
 }
 
 pub fn village_teleport_1_13_2(
-	p: v1_14::play_toClient_packet_position::Ty,
+	p: v1_14::play_to_client_packet_position::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let st = cx.state::<State14>();
@@ -2115,7 +2127,7 @@ pub fn village_teleport_1_13_2(
 	let axis = |bit: i8, old: f64, new: f64| if p.flags & bit != 0 { old + new } else { new };
 	st.positions
 		.insert(id, (axis(1, ox, p.x), axis(2, oy, p.y), axis(4, oz, p.z)));
-	Ok(vec![Client13::position(p)])
+	Ok(vec![Client13::Position(p)])
 }
 
 fn forget_all(ids: &[i32], cx: &mut Session) {
@@ -2127,49 +2139,49 @@ fn forget_all(ids: &[i32], cx: &mut Session) {
 
 pub fn village_entity_destroy_1_14(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client14>> {
 	forget_all(&ids, cx);
-	Ok(vec![Client14::entity_destroy(ids)])
+	Ok(vec![Client14::EntityDestroy(ids)])
 }
 
 pub fn village_entity_destroy_1_13_2(ids: Vec<i32>, cx: &mut Session) -> Result<Vec<Client13>> {
 	forget_all(&ids, cx);
-	Ok(vec![Client13::entity_destroy(ids)])
+	Ok(vec![Client13::EntityDestroy(ids)])
 }
 
 pub fn village_bed_1_14(
-	p: v1_13_2::play_toClient_packet_bed::Ty,
+	p: v1_13_2::play_to_client_packet_bed::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	let st = cx.state::<State14>();
-	st.sleeping.insert(p.entityId);
-	let mut metadata = vec![entry_14(12, M14::v10(Some(pos14(p.location))))];
-	if p.entityId != st.self_id {
-		metadata.push(entry_14(6, M14::v18(st.pose(p.entityId))));
+	st.sleeping.insert(p.entity_id);
+	let mut metadata = vec![entry_14(12, M14::V10(Some(pos14(p.location))))];
+	if p.entity_id != st.self_id {
+		metadata.push(entry_14(6, M14::V18(st.pose(p.entity_id))));
 	}
-	Ok(vec![Client14::entity_metadata(
-		v1_14::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	Ok(vec![Client14::EntityMetadata(
+		v1_14::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata,
 		},
 	)])
 }
 
 pub fn village_animation_1_14(
-	p: v1_13_2::play_toClient_packet_animation::Ty,
+	p: v1_13_2::play_to_client_packet_animation::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	let id = p.entityId;
+	let id = p.entity_id;
 	let wake = p.animation == 2;
-	let mut out = vec![Client14::animation(p)];
+	let mut out = vec![Client14::Animation(p)];
 	if wake {
 		let st = cx.state::<State14>();
 		st.sleeping.remove(&id);
-		let mut metadata = vec![entry_14(12, M14::v10(None))];
+		let mut metadata = vec![entry_14(12, M14::V10(None))];
 		if id != st.self_id {
-			metadata.push(entry_14(6, M14::v18(st.pose(id))));
+			metadata.push(entry_14(6, M14::V18(st.pose(id))));
 		}
-		out.push(Client14::entity_metadata(
-			v1_14::play_toClient_packet_entity_metadata::Ty {
-				entityId: id,
+		out.push(Client14::EntityMetadata(
+			v1_14::play_to_client_packet_entity_metadata::Ty {
+				entity_id: id,
 				metadata,
 			},
 		));
@@ -2233,72 +2245,72 @@ fn window_title_1_13_2(id: i32, title: String, fallback: Option<&str>) -> String
 }
 
 pub fn village_open_window_1_14(
-	p: v1_13_2::play_toClient_packet_open_window::Ty,
+	p: v1_13_2::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
-	use v1_13_2::play_toClient_packet_open_window__entityId::Ty as Horse;
-	if let Horse::EntityHorse(entityId) = p.entityId {
-		return Ok(vec![Client14::open_horse_window(
-			v1_14::play_toClient_packet_open_horse_window::Ty {
-				windowId: p.windowId,
-				nbSlots: p.slotCount as i32,
-				entityId,
+	use v1_13_2::play_to_client_packet_open_window_entity_id::Ty as Horse;
+	if let Horse::EntityHorse(entity_id) = p.entity_id {
+		return Ok(vec![Client14::OpenHorseWindow(
+			v1_14::play_to_client_packet_open_horse_window::Ty {
+				window_id: p.window_id,
+				nb_slots: p.slot_count as i32,
+				entity_id,
 			},
 		)]);
 	}
-	let Some(ty) = window_type_1_14(&p.inventoryType, p.slotCount) else {
+	let Some(ty) = window_type_1_14(&p.inventory_type, p.slot_count) else {
 		return unconvertible(format!(
 			"no 1.14 window for {} with {} slots",
-			p.inventoryType, p.slotCount
+			p.inventory_type, p.slot_count
 		));
 	};
 	if ty == 18 {
-		cx.state::<State14>().trade_window = p.windowId;
+		cx.state::<State14>().trade_window = p.window_id;
 	}
-	Ok(vec![Client14::open_window(
-		v1_14::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId as i32,
-			inventoryType: ty,
-			windowTitle: p.windowTitle,
+	Ok(vec![Client14::OpenWindow(
+		v1_14::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id as i32,
+			inventory_type: ty,
+			window_title: p.window_title,
 		},
 	)])
 }
 
 pub fn village_open_window_1_13_2(
-	p: v1_14::play_toClient_packet_open_window::Ty,
+	p: v1_14::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	let Some((kind, slots, fallback)) = window_type_1_13_2(p.inventoryType) else {
+	let Some((kind, slots, fallback)) = window_type_1_13_2(p.inventory_type) else {
 		return Ok(vec![]);
 	};
 	if kind == "minecraft:villager" {
-		cx.state::<State14>().trade_window = p.windowId as u8;
+		cx.state::<State14>().trade_window = p.window_id as u8;
 	}
-	Ok(vec![Client13::open_window(
-		v1_13_2::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId as u8,
-			entityId: v1_13_2::play_toClient_packet_open_window__entityId::Ty::default(
+	Ok(vec![Client13::OpenWindow(
+		v1_13_2::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id as u8,
+			entity_id: v1_13_2::play_to_client_packet_open_window_entity_id::Ty::Default(
 				kind.to_owned(),
 			),
-			inventoryType: kind.to_owned(),
-			windowTitle: window_title_1_13_2(p.inventoryType, p.windowTitle, fallback),
-			slotCount: slots,
+			inventory_type: kind.to_owned(),
+			window_title: window_title_1_13_2(p.inventory_type, p.window_title, fallback),
+			slot_count: slots,
 		},
 	)])
 }
 
 pub fn village_open_horse_window_1_13_2(
-	p: v1_14::play_toClient_packet_open_horse_window::Ty,
+	p: v1_14::play_to_client_packet_open_horse_window::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
-	Ok(vec![Client13::open_window(
-		v1_13_2::play_toClient_packet_open_window::Ty {
-			windowId: p.windowId,
-			inventoryType: "EntityHorse".to_owned(),
-			windowTitle: "{\"translate\":\"entity.minecraft.horse\"}".to_owned(),
-			slotCount: p.nbSlots as u8,
-			entityId: v1_13_2::play_toClient_packet_open_window__entityId::Ty::EntityHorse(
-				p.entityId,
+	Ok(vec![Client13::OpenWindow(
+		v1_13_2::play_to_client_packet_open_window::Ty {
+			window_id: p.window_id,
+			inventory_type: "EntityHorse".to_owned(),
+			window_title: "{\"translate\":\"entity.minecraft.horse\"}".to_owned(),
+			slot_count: p.nb_slots as u8,
+			entity_id: v1_13_2::play_to_client_packet_open_window_entity_id::Ty::EntityHorse(
+				p.entity_id,
 			),
 		},
 	)])
@@ -2311,59 +2323,59 @@ fn bad(e: crate::pds::Error) -> Error {
 fn trade_list_1_14(
 	data: &[u8],
 	cx: &mut Session,
-) -> Result<v1_14::play_toClient_packet_trade_list::Ty> {
+) -> Result<v1_14::play_to_client_packet_trade_list::Ty> {
 	let mut input = Input::new(data);
-	let windowId = pds_i32::deserialize(&mut input).map_err(bad)?;
+	let window_id = pds_i32::deserialize(&mut input).map_err(bad)?;
 	let count = pds_u8::deserialize(&mut input).map_err(bad)?;
 	let slot = |input: &mut Input| v1_13_2::slot::deserialize(input).map(slot14).map_err(bad);
 	let trades = (0..count)
 		.map(|_| {
-			let inputItem1 = slot(&mut input)?;
-			let outputItem = slot(&mut input)?;
-			let inputItem2 = match pds_bool::deserialize(&mut input).map_err(bad)? {
+			let input_item1 = slot(&mut input)?;
+			let output_item = slot(&mut input)?;
+			let input_item2 = match pds_bool::deserialize(&mut input).map_err(bad)? {
 				true => Some(slot(&mut input)?),
 				false => None,
 			};
-			Ok(v1_14::play_toClient_packet_trade_list__trades__items::Ty {
-				inputItem1,
-				outputItem,
-				inputItem2,
-				tradeDisabled: pds_bool::deserialize(&mut input).map_err(bad)?,
-				nbTradeUses: pds_i32::deserialize(&mut input).map_err(bad)?,
-				maximumNbTradeUses: pds_i32::deserialize(&mut input).map_err(bad)?,
+			Ok(v1_14::play_to_client_packet_trade_list_trades_items::Ty {
+				input_item1,
+				output_item,
+				input_item2,
+				trade_disabled: pds_bool::deserialize(&mut input).map_err(bad)?,
+				nb_trade_uses: pds_i32::deserialize(&mut input).map_err(bad)?,
+				maximum_nb_trade_uses: pds_i32::deserialize(&mut input).map_err(bad)?,
 				xp: 0,
-				specialPrice: 0,
-				priceMultiplier: 0.0,
+				special_price: 0,
+				price_multiplier: 0.0,
 			})
 		})
 		.collect::<Result<Vec<_>>>()?;
-	cx.state::<State14>().trade_window = windowId as u8;
-	Ok(v1_14::play_toClient_packet_trade_list::Ty {
-		windowId,
+	cx.state::<State14>().trade_window = window_id as u8;
+	Ok(v1_14::play_to_client_packet_trade_list::Ty {
+		window_id,
 		trades,
-		villagerLevel: 0,
+		villager_level: 0,
 		experience: 0,
-		isRegularVillager: false,
+		is_regular_villager: false,
 	})
 }
 
 pub fn village_custom_payload_1_14(
-	p: v1_13_2::play_toClient_packet_custom_payload::Ty,
+	p: v1_13_2::play_to_client_packet_custom_payload::Ty,
 	cx: &mut Session,
 ) -> Result<Vec<Client14>> {
 	Ok(vec![
 		match p.channel.strip_prefix("minecraft:").unwrap_or(&p.channel) {
-			"trader_list" => Client14::trade_list(trade_list_1_14(&p.data, cx)?),
+			"trader_list" => Client14::TradeList(trade_list_1_14(&p.data, cx)?),
 			"book_open" => {
-				Client14::open_book(pds_varint::deserialize(&mut Input::new(&p.data)).map_err(bad)?)
+				Client14::OpenBook(pds_varint::deserialize(&mut Input::new(&p.data)).map_err(bad)?)
 			}
-			_ => Client14::custom_payload(p),
+			_ => Client14::CustomPayload(p),
 		},
 	])
 }
 
 fn payload_13(channel: &str, data: Vec<u8>) -> Client13 {
-	Client13::custom_payload(v1_13_2::play_toClient_packet_custom_payload::Ty {
+	Client13::CustomPayload(v1_13_2::play_to_client_packet_custom_payload::Ty {
 		channel: channel.to_owned(),
 		data,
 	})
@@ -2376,22 +2388,22 @@ pub fn village_open_book_1_13_2(hand: i32, _cx: &mut Session) -> Result<Vec<Clie
 }
 
 pub fn village_trade_list_1_13_2(
-	p: v1_14::play_toClient_packet_trade_list::Ty,
+	p: v1_14::play_to_client_packet_trade_list::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client13>> {
 	let mut o = Output::new();
-	pds_i32::serialize(&p.windowId, &mut o).map_err(bad)?;
+	pds_i32::serialize(&p.window_id, &mut o).map_err(bad)?;
 	pds_u8::serialize(&(p.trades.len() as u8), &mut o).map_err(bad)?;
 	for t in p.trades {
-		v1_13_2::slot::serialize(&slot13(t.inputItem1), &mut o).map_err(bad)?;
-		v1_13_2::slot::serialize(&slot13(t.outputItem), &mut o).map_err(bad)?;
-		pds_bool::serialize(&t.inputItem2.is_some(), &mut o).map_err(bad)?;
-		if let Some(s) = t.inputItem2 {
+		v1_13_2::slot::serialize(&slot13(t.input_item1), &mut o).map_err(bad)?;
+		v1_13_2::slot::serialize(&slot13(t.output_item), &mut o).map_err(bad)?;
+		pds_bool::serialize(&t.input_item2.is_some(), &mut o).map_err(bad)?;
+		if let Some(s) = t.input_item2 {
 			v1_13_2::slot::serialize(&slot13(s), &mut o).map_err(bad)?;
 		}
-		pds_bool::serialize(&t.tradeDisabled, &mut o).map_err(bad)?;
-		pds_i32::serialize(&t.nbTradeUses, &mut o).map_err(bad)?;
-		pds_i32::serialize(&t.maximumNbTradeUses, &mut o).map_err(bad)?;
+		pds_bool::serialize(&t.trade_disabled, &mut o).map_err(bad)?;
+		pds_i32::serialize(&t.nb_trade_uses, &mut o).map_err(bad)?;
+		pds_i32::serialize(&t.maximum_nb_trade_uses, &mut o).map_err(bad)?;
 	}
 	Ok(vec![payload_13("minecraft:trader_list", o.into_inner())])
 }
@@ -2402,32 +2414,32 @@ pub fn village_select_trade_1_13_2(slot: i32, cx: &mut Session) -> Result<Vec<Se
 	let stone = item_id(OLD, "stone").unwrap_or(1);
 	let resync = Nbt::new(
 		"",
-		Tag::compound(vec![Nbt::new("force_resync", Tag::double(f64::NAN))]),
+		Tag::Compound(vec![Nbt::new("force_resync", Tag::Double(f64::NAN))]),
 	);
 	Ok(vec![
-		Server13::select_trade(slot),
-		Server13::window_click(v1_13_2::play_toServer_packet_window_click::Ty {
-			windowId: st.trade_window,
+		Server13::SelectTrade(slot),
+		Server13::WindowClick(v1_13_2::play_to_server_packet_window_click::Ty {
+			window_id: st.trade_window,
 			slot: -999,
-			mouseButton: 2,
+			mouse_button: 2,
 			action: i16::MIN.wrapping_add(st.actions),
 			mode: 5,
-			item: Slot::r#true(v1_13_2::slot__true::Ty {
-				itemId: stone,
-				itemCount: 1,
-				nbtData: Some(resync),
+			item: Slot::True(v1_13_2::slot_true::Ty {
+				item_id: stone,
+				item_count: 1,
+				nbt_data: Some(resync),
 			}),
 		}),
 	])
 }
 
-type Tags13 = Vec<v1_13_2::play_toClient_packet_tags__blockTags__items::Ty>;
-type Tags14 = Vec<v1_14::play_toClient_packet_tags__blockTags__items::Ty>;
+type Tags13 = Vec<v1_13_2::play_to_client_packet_tags_block_tags_items::Ty>;
+type Tags14 = Vec<v1_14::play_to_client_packet_tags_block_tags_items::Ty>;
 
 fn tags_up(tags: Tags13, f: impl Fn(i32) -> Option<i32>) -> Tags14 {
 	tags.into_iter()
-		.map(|t| v1_14::play_toClient_packet_tags__blockTags__items::Ty {
-			tagName: t.tagName,
+		.map(|t| v1_14::play_to_client_packet_tags_block_tags_items::Ty {
+			tag_name: t.tag_name,
 			entries: t.entries.into_iter().filter_map(&f).collect(),
 		})
 		.collect()
@@ -2436,8 +2448,8 @@ fn tags_up(tags: Tags13, f: impl Fn(i32) -> Option<i32>) -> Tags14 {
 fn tags_down(tags: Tags14, f: impl Fn(i32) -> Option<i32>) -> Tags13 {
 	tags.into_iter()
 		.map(
-			|t| v1_13_2::play_toClient_packet_tags__blockTags__items::Ty {
-				tagName: t.tagName,
+			|t| v1_13_2::play_to_client_packet_tags_block_tags_items::Ty {
+				tag_name: t.tag_name,
 				entries: t.entries.into_iter().filter_map(&f).collect(),
 			},
 		)
@@ -2445,38 +2457,38 @@ fn tags_down(tags: Tags14, f: impl Fn(i32) -> Option<i32>) -> Tags13 {
 }
 
 pub fn village_tags_1_14(
-	p: v1_13_2::play_toClient_packet_tags::Ty,
+	p: v1_13_2::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<v1_14::play_toClient_packet_tags::Ty> {
-	Ok(v1_14::play_toClient_packet_tags::Ty {
-		blockTags: tags_up(p.blockTags, |id| remap("blocks", OLD, NEW, id)),
-		itemTags: tags_up(p.itemTags, |id| remap("items", OLD, NEW, id)),
-		fluidTags: tags_up(p.fluidTags, Some),
-		entityTags: Vec::new(),
+) -> Result<v1_14::play_to_client_packet_tags::Ty> {
+	Ok(v1_14::play_to_client_packet_tags::Ty {
+		block_tags: tags_up(p.block_tags, |id| remap("blocks", OLD, NEW, id)),
+		item_tags: tags_up(p.item_tags, |id| remap("items", OLD, NEW, id)),
+		fluid_tags: tags_up(p.fluid_tags, Some),
+		entity_tags: Vec::new(),
 	})
 }
 
 pub fn village_tags_1_13_2(
-	p: v1_14::play_toClient_packet_tags::Ty,
+	p: v1_14::play_to_client_packet_tags::Ty,
 	_cx: &mut Session,
-) -> Result<v1_13_2::play_toClient_packet_tags::Ty> {
-	Ok(v1_13_2::play_toClient_packet_tags::Ty {
-		blockTags: tags_down(p.blockTags, |id| remap("blocks", NEW, OLD, id)),
-		itemTags: tags_down(p.itemTags, |id| remap("items", NEW, OLD, id)),
-		fluidTags: tags_down(p.fluidTags, Some),
+) -> Result<v1_13_2::play_to_client_packet_tags::Ty> {
+	Ok(v1_13_2::play_to_client_packet_tags::Ty {
+		block_tags: tags_down(p.block_tags, |id| remap("blocks", NEW, OLD, id)),
+		item_tags: tags_down(p.item_tags, |id| remap("items", NEW, OLD, id)),
+		fluid_tags: tags_down(p.fluid_tags, Some),
 	})
 }
 
-type Recipe13 = v1_13_2::play_toClient_packet__declare_recipes__items::Ty;
-type Recipe14 = v1_14::play_toClient_packet__declare_recipes__items::Ty;
+type Recipe13 = v1_13_2::play_to_client_packet_declare_recipes_items::Ty;
+type Recipe14 = v1_14::play_to_client_packet_declare_recipes_items::Ty;
 
 pub fn village_recipe_1_14(r: Recipe13, _cx: &mut Session) -> Result<Recipe14> {
-	use v1_13_2::play_toClient_packet__declare_recipes__items__data::Ty as D13;
-	use v1_14::play_toClient_packet__declare_recipes__items__data::Ty as D14;
+	use v1_13_2::play_to_client_packet_declare_recipes_items_data::Ty as D13;
+	use v1_14::play_to_client_packet_declare_recipes_items_data::Ty as D14;
 	let items = |v: Vec<Slot>| v.into_iter().map(slot14).collect::<Vec<_>>();
 	let data = match r.data {
-		D13::crafting_shaped(s) => {
-			D14::minecraft_crafting_shaped(v1_14::play_toClient_packet__declare_recipes__items__data__minecraft_crafting_shaped::Ty {
+		D13::CraftingShaped(s) => {
+			D14::MinecraftCraftingShaped(v1_14::play_to_client_packet_declare_recipes_items_data_minecraft_crafting_shaped::Ty {
 				width: s.width,
 				height: s.height,
 				group: s.group,
@@ -2484,49 +2496,49 @@ pub fn village_recipe_1_14(r: Recipe13, _cx: &mut Session) -> Result<Recipe14> {
 				result: slot14(s.result),
 			})
 		}
-		D13::crafting_shapeless(s) => {
-			D14::minecraft_crafting_shapeless(v1_14::play_toClient_packet__declare_recipes__items__data__minecraft_crafting_shapeless::Ty {
+		D13::CraftingShapeless(s) => {
+			D14::MinecraftCraftingShapeless(v1_14::play_to_client_packet_declare_recipes_items_data_minecraft_crafting_shapeless::Ty {
 				group: s.group,
 				ingredients: s.ingredients.into_iter().map(items).collect(),
 				result: slot14(s.result),
 			})
 		}
-		D13::smelting(s) => D14::minecraft_smelting(v1_14::minecraft_smelting_format::Ty {
+		D13::Smelting(s) => D14::MinecraftSmelting(v1_14::minecraft_smelting_format::Ty {
 			group: s.group,
 			ingredient: items(s.ingredient),
 			result: slot14(s.result),
 			experience: s.experience,
-			cookTime: s.cookTime,
+			cook_time: s.cook_time,
 		}),
-		D13::crafting_special_armordye => D14::minecraft_crafting_special_armordye,
-		D13::crafting_special_bannerduplicate => D14::minecraft_crafting_special_bannerduplicate,
-		D13::crafting_special_bookcloning => D14::minecraft_crafting_special_bookcloning,
-		D13::crafting_special_firework_rocket => D14::minecraft_crafting_special_firework_rocket,
-		D13::crafting_special_firework_star => D14::minecraft_crafting_special_firework_star,
-		D13::crafting_special_firework_star_fade => D14::minecraft_crafting_special_firework_star_fade,
-		D13::crafting_special_mapcloning => D14::minecraft_crafting_special_mapcloning,
-		D13::crafting_special_mapextending => D14::minecraft_crafting_special_mapextending,
-		D13::crafting_special_shielddecoration => D14::minecraft_crafting_special_shielddecoration,
-		D13::crafting_special_shulkerboxcoloring => D14::minecraft_crafting_special_shulkerboxcoloring,
-		D13::crafting_special_tippedarrow => D14::minecraft_crafting_special_tippedarrow,
-		D13::crafting_special_banneraddpattern | D13::crafting_special_repairitem | D13::default(_) => {
+		D13::CraftingSpecialArmordye => D14::MinecraftCraftingSpecialArmordye,
+		D13::CraftingSpecialBannerduplicate => D14::MinecraftCraftingSpecialBannerduplicate,
+		D13::CraftingSpecialBookcloning => D14::MinecraftCraftingSpecialBookcloning,
+		D13::CraftingSpecialFireworkRocket => D14::MinecraftCraftingSpecialFireworkRocket,
+		D13::CraftingSpecialFireworkStar => D14::MinecraftCraftingSpecialFireworkStar,
+		D13::CraftingSpecialFireworkStarFade => D14::MinecraftCraftingSpecialFireworkStarFade,
+		D13::CraftingSpecialMapcloning => D14::MinecraftCraftingSpecialMapcloning,
+		D13::CraftingSpecialMapextending => D14::MinecraftCraftingSpecialMapextending,
+		D13::CraftingSpecialShielddecoration => D14::MinecraftCraftingSpecialShielddecoration,
+		D13::CraftingSpecialShulkerboxcoloring => D14::MinecraftCraftingSpecialShulkerboxcoloring,
+		D13::CraftingSpecialTippedarrow => D14::MinecraftCraftingSpecialTippedarrow,
+		D13::CraftingSpecialBanneraddpattern | D13::CraftingSpecialRepairitem | D13::Default(_) => {
 			return Err(Error::Dropped)
 		}
 	};
 	Ok(Recipe14 {
 		r#type: format!("minecraft:{}", r.r#type.trim_start_matches("minecraft:")),
-		recipeId: r.recipeId,
+		recipe_id: r.recipe_id,
 		data,
 	})
 }
 
 pub fn village_recipe_1_13_2(r: Recipe14, _cx: &mut Session) -> Result<Recipe13> {
-	use v1_13_2::play_toClient_packet__declare_recipes__items__data::Ty as D13;
-	use v1_14::play_toClient_packet__declare_recipes__items__data::Ty as D14;
+	use v1_13_2::play_to_client_packet_declare_recipes_items_data::Ty as D13;
+	use v1_14::play_to_client_packet_declare_recipes_items_data::Ty as D14;
 	let items = |v: Vec<Slot>| v.into_iter().map(slot13).collect::<Vec<_>>();
 	let data = match r.data {
-		D14::minecraft_crafting_shaped(s) => D13::crafting_shaped(
-			v1_13_2::play_toClient_packet__declare_recipes__items__data__crafting_shaped::Ty {
+		D14::MinecraftCraftingShaped(s) => D13::CraftingShaped(
+			v1_13_2::play_to_client_packet_declare_recipes_items_data_crafting_shaped::Ty {
 				width: s.width,
 				height: s.height,
 				group: s.group,
@@ -2538,49 +2550,45 @@ pub fn village_recipe_1_13_2(r: Recipe14, _cx: &mut Session) -> Result<Recipe13>
 				result: slot13(s.result),
 			},
 		),
-		D14::minecraft_crafting_shapeless(s) => D13::crafting_shapeless(
-			v1_13_2::play_toClient_packet__declare_recipes__items__data__crafting_shapeless::Ty {
+		D14::MinecraftCraftingShapeless(s) => D13::CraftingShapeless(
+			v1_13_2::play_to_client_packet_declare_recipes_items_data_crafting_shapeless::Ty {
 				group: s.group,
 				ingredients: s.ingredients.into_iter().map(items).collect(),
 				result: slot13(s.result),
 			},
 		),
-		D14::minecraft_smelting(s) => D13::smelting(
-			v1_13_2::play_toClient_packet__declare_recipes__items__data__smelting::Ty {
+		D14::MinecraftSmelting(s) => D13::Smelting(
+			v1_13_2::play_to_client_packet_declare_recipes_items_data_smelting::Ty {
 				group: s.group,
 				ingredient: items(s.ingredient),
 				result: slot13(s.result),
 				experience: s.experience,
-				cookTime: s.cookTime,
+				cook_time: s.cook_time,
 			},
 		),
-		D14::minecraft_crafting_special_armordye => D13::crafting_special_armordye,
-		D14::minecraft_crafting_special_banneraddpattern => D13::crafting_special_banneraddpattern,
-		D14::minecraft_crafting_special_bannerduplicate => D13::crafting_special_bannerduplicate,
-		D14::minecraft_crafting_special_bookcloning => D13::crafting_special_bookcloning,
-		D14::minecraft_crafting_special_firework_rocket => D13::crafting_special_firework_rocket,
-		D14::minecraft_crafting_special_firework_star => D13::crafting_special_firework_star,
-		D14::minecraft_crafting_special_firework_star_fade => {
-			D13::crafting_special_firework_star_fade
-		}
-		D14::minecraft_crafting_special_mapcloning => D13::crafting_special_mapcloning,
-		D14::minecraft_crafting_special_mapextending => D13::crafting_special_mapextending,
-		D14::minecraft_crafting_special_repairitem => D13::crafting_special_repairitem,
-		D14::minecraft_crafting_special_shielddecoration => D13::crafting_special_shielddecoration,
-		D14::minecraft_crafting_special_shulkerboxcoloring => {
-			D13::crafting_special_shulkerboxcoloring
-		}
-		D14::minecraft_crafting_special_tippedarrow => D13::crafting_special_tippedarrow,
+		D14::MinecraftCraftingSpecialArmordye => D13::CraftingSpecialArmordye,
+		D14::MinecraftCraftingSpecialBanneraddpattern => D13::CraftingSpecialBanneraddpattern,
+		D14::MinecraftCraftingSpecialBannerduplicate => D13::CraftingSpecialBannerduplicate,
+		D14::MinecraftCraftingSpecialBookcloning => D13::CraftingSpecialBookcloning,
+		D14::MinecraftCraftingSpecialFireworkRocket => D13::CraftingSpecialFireworkRocket,
+		D14::MinecraftCraftingSpecialFireworkStar => D13::CraftingSpecialFireworkStar,
+		D14::MinecraftCraftingSpecialFireworkStarFade => D13::CraftingSpecialFireworkStarFade,
+		D14::MinecraftCraftingSpecialMapcloning => D13::CraftingSpecialMapcloning,
+		D14::MinecraftCraftingSpecialMapextending => D13::CraftingSpecialMapextending,
+		D14::MinecraftCraftingSpecialRepairitem => D13::CraftingSpecialRepairitem,
+		D14::MinecraftCraftingSpecialShielddecoration => D13::CraftingSpecialShielddecoration,
+		D14::MinecraftCraftingSpecialShulkerboxcoloring => D13::CraftingSpecialShulkerboxcoloring,
+		D14::MinecraftCraftingSpecialTippedarrow => D13::CraftingSpecialTippedarrow,
 		_ => return Err(Error::Dropped),
 	};
 	Ok(Recipe13 {
-		recipeId: r.recipeId,
+		recipe_id: r.recipe_id,
 		r#type: r.r#type.trim_start_matches("minecraft:").to_owned(),
 		data,
 	})
 }
 
-type Statistic = v1_13_2::play_toClient_packet__statistics__items::Ty;
+type Statistic = v1_13_2::play_to_client_packet_statistics_items::Ty;
 
 pub(super) fn statistic(
 	s: Statistic,
@@ -2588,16 +2596,16 @@ pub(super) fn statistic(
 	to: Version,
 	custom: i32,
 ) -> Result<Statistic> {
-	let id = match s.categoryId {
-		0 => remap("blocks", from, to, s.statisticId),
-		1..=5 => remap("items", from, to, s.statisticId),
-		6 | 7 => remap("entities", from, to, s.statisticId),
+	let id = match s.category_id {
+		0 => remap("blocks", from, to, s.statistic_id),
+		1..=5 => remap("items", from, to, s.statistic_id),
+		6 | 7 => remap("entities", from, to, s.statistic_id),
 		_ => (0..custom)
-			.contains(&s.statisticId)
-			.then_some(s.statisticId),
+			.contains(&s.statistic_id)
+			.then_some(s.statistic_id),
 	};
 	Ok(Statistic {
-		statisticId: id.ok_or(Error::Dropped)?,
+		statistic_id: id.ok_or(Error::Dropped)?,
 		..s
 	})
 }
@@ -2611,45 +2619,45 @@ pub fn village_statistic_1_13_2(s: Statistic, _cx: &mut Session) -> Result<Stati
 }
 
 pub fn village_block_change_1_14(
-	p: &v1_13_2::play_toClient_packet_block_change::Ty,
+	p: &v1_13_2::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(OLD, NEW, p.r#type))
 }
 
 pub fn village_block_change_1_13_2(
-	p: &v1_14::play_toClient_packet_block_change::Ty,
+	p: &v1_14::play_to_client_packet_block_change::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	Ok(state(NEW, OLD, p.r#type))
 }
 
 pub fn village_multi_block_change_1_14(
-	r: &v1_13_2::play_toClient_packet_multi_block_change__records__items::Ty,
+	r: &v1_13_2::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(OLD, NEW, r.blockId))
+	Ok(state(OLD, NEW, r.block_id))
 }
 
 pub fn village_multi_block_change_1_13_2(
-	r: &v1_14::play_toClient_packet_multi_block_change__records__items::Ty,
+	r: &v1_14::play_to_client_packet_multi_block_change_records_items::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	Ok(state(NEW, OLD, r.blockId))
+	Ok(state(NEW, OLD, r.block_id))
 }
 
 pub fn village_block_action_1_14(
-	p: &v1_13_2::play_toClient_packet_block_action::Ty,
+	p: &v1_13_2::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("blocks", OLD, NEW, p.blockId).ok_or(Error::Dropped)
+	remap("blocks", OLD, NEW, p.block_id).ok_or(Error::Dropped)
 }
 
 pub fn village_block_action_1_13_2(
-	p: &v1_14::play_toClient_packet_block_action::Ty,
+	p: &v1_14::play_to_client_packet_block_action::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("blocks", NEW, OLD, p.blockId).ok_or(Error::Dropped)
+	remap("blocks", NEW, OLD, p.block_id).ok_or(Error::Dropped)
 }
 
 pub(super) fn world_event(effect: i32, data: i32, from: Version, to: Version) -> Result<i32> {
@@ -2661,43 +2669,43 @@ pub(super) fn world_event(effect: i32, data: i32, from: Version, to: Version) ->
 }
 
 pub fn village_world_event_1_14(
-	p: &v1_13_2::play_toClient_packet_world_event::Ty,
+	p: &v1_13_2::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	world_event(p.effectId, p.data, OLD, NEW)
+	world_event(p.effect_id, p.data, OLD, NEW)
 }
 
 pub fn village_world_event_1_13_2(
-	p: &v1_14::play_toClient_packet_world_event::Ty,
+	p: &v1_14::play_to_client_packet_world_event::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	world_event(p.effectId, p.data, NEW, OLD)
+	world_event(p.effect_id, p.data, NEW, OLD)
 }
 
 pub fn village_sound_effect_1_14(
-	p: &v1_13_2::play_toClient_packet_sound_effect::Ty,
+	p: &v1_13_2::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", OLD, NEW, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", OLD, NEW, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_sound_effect_1_13_2(
-	p: &v1_14::play_toClient_packet_sound_effect::Ty,
+	p: &v1_14::play_to_client_packet_sound_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("sounds", NEW, OLD, p.soundId).ok_or(Error::Dropped)
+	remap("sounds", NEW, OLD, p.sound_id).ok_or(Error::Dropped)
 }
 
 pub fn village_set_cooldown_1_14(
-	p: &v1_13_2::play_toClient_packet_set_cooldown::Ty,
+	p: &v1_13_2::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("items", OLD, NEW, p.itemID).ok_or(Error::Dropped)
+	remap("items", OLD, NEW, p.item_id).ok_or(Error::Dropped)
 }
 
 pub fn village_set_cooldown_1_13_2(
-	p: &v1_14::play_toClient_packet_set_cooldown::Ty,
+	p: &v1_14::play_to_client_packet_set_cooldown::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
-	remap("items", NEW, OLD, p.itemID).ok_or(Error::Dropped)
+	remap("items", NEW, OLD, p.item_id).ok_or(Error::Dropped)
 }

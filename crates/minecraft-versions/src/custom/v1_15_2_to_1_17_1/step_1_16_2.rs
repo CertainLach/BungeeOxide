@@ -83,26 +83,26 @@ pub fn nether_slot_1_16_1(v: Slot, _cx: &mut Session) -> Result<Slot> {
 }
 
 pub fn nether_login_up_1_16_2(
-	v: old::play_toClient_packet_login::Ty,
+	v: old::play_to_client_packet_login::Ty,
 	cx: &mut Session,
-) -> Result<new::play_toClient_packet_login::Ty> {
-	player(cx, TO, v.entityId);
-	Ok(new::play_toClient_packet_login::Ty {
-		entityId: v.entityId,
-		isHardcore: v.gameMode & 8 != 0,
-		gameMode: v.gameMode & !8,
-		previousGameMode: v.previousGameMode,
-		worldNames: v.worldNames,
-		dimensionCodec: codec(TO)?,
+) -> Result<new::play_to_client_packet_login::Ty> {
+	player(cx, TO, v.entity_id);
+	Ok(new::play_to_client_packet_login::Ty {
+		entity_id: v.entity_id,
+		is_hardcore: v.game_mode & 8 != 0,
+		game_mode: v.game_mode & !8,
+		previous_game_mode: v.previous_game_mode,
+		world_names: v.world_names,
+		dimension_codec: codec(TO)?,
 		dimension: element(&v.dimension)?,
-		worldName: v.worldName,
-		hashedSeed: v.hashedSeed,
-		maxPlayers: v.maxPlayers as i32,
-		viewDistance: v.viewDistance,
-		reducedDebugInfo: v.reducedDebugInfo,
-		enableRespawnScreen: v.enableRespawnScreen,
-		isDebug: v.isDebug,
-		isFlat: v.isFlat,
+		world_name: v.world_name,
+		hashed_seed: v.hashed_seed,
+		max_players: v.max_players as i32,
+		view_distance: v.view_distance,
+		reduced_debug_info: v.reduced_debug_info,
+		enable_respawn_screen: v.enable_respawn_screen,
+		is_debug: v.is_debug,
+		is_flat: v.is_flat,
 	})
 }
 
@@ -129,78 +129,78 @@ fn biome_ids(codec: &Entry) -> std::collections::HashMap<i32, i32> {
 }
 
 pub fn nether_login_1_16_1(
-	v: new::play_toClient_packet_login::Ty,
+	v: new::play_to_client_packet_login::Ty,
 	cx: &mut Session,
-) -> Result<old::play_toClient_packet_login::Ty> {
-	player(cx, TO, v.entityId);
-	cx.state::<Biomes>().0 = biome_ids(&v.dimensionCodec);
-	Ok(old::play_toClient_packet_login::Ty {
-		entityId: v.entityId,
-		gameMode: v.gameMode | if v.isHardcore { 8 } else { 0 },
-		previousGameMode: v.previousGameMode,
-		worldNames: v.worldNames,
-		dimensionCodec: codec(FROM)?,
+) -> Result<old::play_to_client_packet_login::Ty> {
+	player(cx, TO, v.entity_id);
+	cx.state::<Biomes>().0 = biome_ids(&v.dimension_codec);
+	Ok(old::play_to_client_packet_login::Ty {
+		entity_id: v.entity_id,
+		game_mode: v.game_mode | if v.is_hardcore { 8 } else { 0 },
+		previous_game_mode: v.previous_game_mode,
+		world_names: v.world_names,
+		dimension_codec: codec(FROM)?,
 		dimension: dimension_name(&v.dimension),
-		worldName: v.worldName,
-		hashedSeed: v.hashedSeed,
-		maxPlayers: v.maxPlayers.clamp(0, 255) as u8,
-		viewDistance: v.viewDistance,
-		reducedDebugInfo: v.reducedDebugInfo,
-		enableRespawnScreen: v.enableRespawnScreen,
-		isDebug: v.isDebug,
-		isFlat: v.isFlat,
+		world_name: v.world_name,
+		hashed_seed: v.hashed_seed,
+		max_players: v.max_players.clamp(0, 255) as u8,
+		view_distance: v.view_distance,
+		reduced_debug_info: v.reduced_debug_info,
+		enable_respawn_screen: v.enable_respawn_screen,
+		is_debug: v.is_debug,
+		is_flat: v.is_flat,
 	})
 }
 
 pub fn nether_respawn_up_1_16_2(
-	v: old::play_toClient_packet_respawn::Ty,
+	v: old::play_to_client_packet_respawn::Ty,
 	_cx: &mut Session,
-) -> Result<new::play_toClient_packet_respawn::Ty> {
-	Ok(new::play_toClient_packet_respawn::Ty {
+) -> Result<new::play_to_client_packet_respawn::Ty> {
+	Ok(new::play_to_client_packet_respawn::Ty {
 		dimension: element(&v.dimension)?,
-		worldName: v.worldName,
-		hashedSeed: v.hashedSeed,
+		world_name: v.world_name,
+		hashed_seed: v.hashed_seed,
 		gamemode: v.gamemode,
-		previousGamemode: v.previousGamemode,
-		isDebug: v.isDebug,
-		isFlat: v.isFlat,
-		copyMetadata: v.copyMetadata,
+		previous_gamemode: v.previous_gamemode,
+		is_debug: v.is_debug,
+		is_flat: v.is_flat,
+		copy_metadata: v.copy_metadata,
 	})
 }
 
 pub fn nether_respawn_1_16_1(
-	v: new::play_toClient_packet_respawn::Ty,
+	v: new::play_to_client_packet_respawn::Ty,
 	_cx: &mut Session,
-) -> Result<old::play_toClient_packet_respawn::Ty> {
-	Ok(old::play_toClient_packet_respawn::Ty {
+) -> Result<old::play_to_client_packet_respawn::Ty> {
+	Ok(old::play_to_client_packet_respawn::Ty {
 		dimension: dimension_name(&v.dimension),
-		worldName: v.worldName,
-		hashedSeed: v.hashedSeed,
+		world_name: v.world_name,
+		hashed_seed: v.hashed_seed,
 		gamemode: v.gamemode,
-		previousGamemode: v.previousGamemode,
-		isDebug: v.isDebug,
-		isFlat: v.isFlat,
-		copyMetadata: v.copyMetadata,
+		previous_gamemode: v.previous_gamemode,
+		is_debug: v.is_debug,
+		is_flat: v.is_flat,
+		copy_metadata: v.copy_metadata,
 	})
 }
 
 pub fn nether_map_chunk_up_1_16_2(
-	v: old::play_toClient_packet_map_chunk::Ty,
+	v: old::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
-) -> Result<new::play_toClient_packet_map_chunk::Ty> {
-	use new::play_toClient_packet_map_chunk__biomes::Ty as B;
-	let present = (v.bitMap as u32).count_ones() as usize;
-	Ok(new::play_toClient_packet_map_chunk::Ty {
+) -> Result<new::play_to_client_packet_map_chunk::Ty> {
+	use new::play_to_client_packet_map_chunk_biomes::Ty as B;
+	let present = (v.bit_map as u32).count_ones() as usize;
+	Ok(new::play_to_client_packet_map_chunk::Ty {
 		x: v.x,
 		z: v.z,
-		bitMap: v.bitMap,
+		bit_map: v.bit_map,
 		heightmaps: v.heightmaps,
 		biomes: match v.biomes {
-			old::play_toClient_packet_map_chunk__biomes::Ty::r#true(b) => B::r#true(b),
-			old::play_toClient_packet_map_chunk__biomes::Ty::r#false => B::r#false,
+			old::play_to_client_packet_map_chunk_biomes::Ty::True(b) => B::True(b),
+			old::play_to_client_packet_map_chunk_biomes::Ty::False => B::False,
 		},
-		chunkData: chunk::convert_sections(&v.chunkData, present, F1_16, F1_16_2)?,
-		blockEntities: v.blockEntities,
+		chunk_data: chunk::convert_sections(&v.chunk_data, present, F1_16, F1_16_2)?,
+		block_entities: v.block_entities,
 	})
 }
 
@@ -213,29 +213,29 @@ pub fn nether_biomes_1_16_1(cx: &mut Session, biomes: Vec<i32>) -> Vec<i32> {
 }
 
 pub fn nether_map_chunk_1_16_1(
-	v: new::play_toClient_packet_map_chunk::Ty,
+	v: new::play_to_client_packet_map_chunk::Ty,
 	cx: &mut Session,
-) -> Result<old::play_toClient_packet_map_chunk::Ty> {
-	use old::play_toClient_packet_map_chunk__biomes::Ty as B;
-	let present = (v.bitMap as u32).count_ones() as usize;
+) -> Result<old::play_to_client_packet_map_chunk::Ty> {
+	use old::play_to_client_packet_map_chunk_biomes::Ty as B;
+	let present = (v.bit_map as u32).count_ones() as usize;
 	let full = matches!(
 		v.biomes,
-		new::play_toClient_packet_map_chunk__biomes::Ty::r#true(_)
+		new::play_to_client_packet_map_chunk_biomes::Ty::True(_)
 	);
-	Ok(old::play_toClient_packet_map_chunk::Ty {
+	Ok(old::play_to_client_packet_map_chunk::Ty {
 		x: v.x,
 		z: v.z,
-		ignoreOldData: full,
-		bitMap: v.bitMap,
+		ignore_old_data: full,
+		bit_map: v.bit_map,
 		heightmaps: v.heightmaps,
 		biomes: match v.biomes {
-			new::play_toClient_packet_map_chunk__biomes::Ty::r#true(b) => {
-				B::r#true(nether_biomes_1_16_1(cx, b))
+			new::play_to_client_packet_map_chunk_biomes::Ty::True(b) => {
+				B::True(nether_biomes_1_16_1(cx, b))
 			}
-			new::play_toClient_packet_map_chunk__biomes::Ty::r#false => B::r#false,
+			new::play_to_client_packet_map_chunk_biomes::Ty::False => B::False,
 		},
-		chunkData: chunk::convert_sections(&v.chunkData, present, F1_16_2, F1_16)?,
-		blockEntities: v.blockEntities,
+		chunk_data: chunk::convert_sections(&v.chunk_data, present, F1_16_2, F1_16)?,
+		block_entities: v.block_entities,
 	})
 }
 
@@ -258,7 +258,7 @@ pub fn nether_acknowledge_player_digging_1_16_1(v: Digging, _cx: &mut Session) -
 	Ok(digging(v, TO, FROM))
 }
 
-type Particles = t16::play_toClient_packet_world_particles::Ty;
+type Particles = t16::play_to_client_packet_world_particles::Ty;
 
 fn particles(
 	mut v: Particles,
@@ -267,12 +267,12 @@ fn particles(
 	slot: fn(Slot) -> Slot,
 ) -> Result<Particles> {
 	let p = kept(meta::particle(
-		meta::particle_16(v.particleId, v.data),
+		meta::particle_16(v.particle_id, v.data),
 		from,
 		to,
 		slot,
 	))?;
-	v.particleId = p.id;
+	v.particle_id = p.id;
 	v.data = kept(meta::data_16(p))?;
 	Ok(v)
 }
@@ -290,14 +290,17 @@ pub(super) fn record(state: i32, x: i32, y: i32, z: i32) -> i64 {
 }
 
 pub fn nether_multi_block_change_up_1_16_2(
-	p: old::play_toClient_packet_multi_block_change::Ty,
+	p: old::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<new::play_toClient_packet::Ty>> {
+) -> Result<Vec<new::play_to_client_packet::Ty>> {
 	let mut sections: BTreeMap<u8, Vec<i64>> = BTreeMap::new();
 	for r in p.records {
-		let (x, z) = ((r.horizontalPos >> 4) as i32, (r.horizontalPos & 15) as i32);
+		let (x, z) = (
+			(r.horizontal_pos >> 4) as i32,
+			(r.horizontal_pos & 15) as i32,
+		);
 		sections.entry(r.y >> 4).or_default().push(record(
-			state(FROM, TO, r.blockId),
+			state(FROM, TO, r.block_id),
 			x,
 			r.y as i32,
 			z,
@@ -306,15 +309,15 @@ pub fn nether_multi_block_change_up_1_16_2(
 	Ok(sections
 		.into_iter()
 		.map(|(y, records)| {
-			new::play_toClient_packet::Ty::multi_block_change(
-				new::play_toClient_packet_multi_block_change::Ty {
-					chunkCoordinates:
-						new::play_toClient_packet_multi_block_change__chunkCoordinates::Ty {
-							x: p.chunkX,
-							z: p.chunkZ,
+			new::play_to_client_packet::Ty::MultiBlockChange(
+				new::play_to_client_packet_multi_block_change::Ty {
+					chunk_coordinates:
+						new::play_to_client_packet_multi_block_change_chunk_coordinates::Ty {
+							x: p.chunk_x,
+							z: p.chunk_z,
 							y: y as u32,
 						},
-					notTrustEdges: false,
+					not_trust_edges: false,
 					records,
 				},
 			)
@@ -327,20 +330,20 @@ pub(super) fn section_y(y: u32) -> i32 {
 }
 
 pub fn nether_multi_block_change_1_16_1(
-	p: new::play_toClient_packet_multi_block_change::Ty,
+	p: new::play_to_client_packet_multi_block_change::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toClient_packet::Ty>> {
-	let base = section_y(p.chunkCoordinates.y) * 16;
+) -> Result<Vec<old::play_to_client_packet::Ty>> {
+	let base = section_y(p.chunk_coordinates.y) * 16;
 	let records: Vec<_> = p
 		.records
 		.into_iter()
 		.filter_map(|r| {
 			let y = base + (r & 15) as i32;
 			(0..256).contains(&y).then(|| {
-				old::play_toClient_packet_multi_block_change__records__items::Ty {
-					horizontalPos: ((((r >> 8) & 15) << 4) | ((r >> 4) & 15)) as u8,
+				old::play_to_client_packet_multi_block_change_records_items::Ty {
+					horizontal_pos: ((((r >> 8) & 15) << 4) | ((r >> 4) & 15)) as u8,
 					y: y as u8,
-					blockId: state(TO, FROM, (r >> 12) as i32),
+					block_id: state(TO, FROM, (r >> 12) as i32),
 				}
 			})
 		})
@@ -348,10 +351,10 @@ pub fn nether_multi_block_change_1_16_1(
 	if records.is_empty() {
 		return Ok(vec![]);
 	}
-	Ok(vec![old::play_toClient_packet::Ty::multi_block_change(
-		old::play_toClient_packet_multi_block_change::Ty {
-			chunkX: p.chunkCoordinates.x,
-			chunkZ: p.chunkCoordinates.z,
+	Ok(vec![old::play_to_client_packet::Ty::MultiBlockChange(
+		old::play_to_client_packet_multi_block_change::Ty {
+			chunk_x: p.chunk_coordinates.x,
+			chunk_z: p.chunk_coordinates.z,
 			records,
 		},
 	)])
@@ -360,27 +363,27 @@ pub fn nether_multi_block_change_1_16_1(
 pub fn nether_statistics_up_1_16_2(
 	p: Vec<Stat>,
 	_cx: &mut Session,
-) -> Result<Vec<new::play_toClient_packet::Ty>> {
-	Ok(vec![new::play_toClient_packet::Ty::statistics(statistics(
-		p, FROM, TO,
-	))])
+) -> Result<Vec<new::play_to_client_packet::Ty>> {
+	Ok(vec![new::play_to_client_packet::Ty::Statistics(
+		statistics(p, FROM, TO),
+	)])
 }
 
 pub fn nether_statistics_1_16_1(
 	p: Vec<Stat>,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toClient_packet::Ty>> {
-	Ok(vec![old::play_toClient_packet::Ty::statistics(statistics(
-		p, TO, FROM,
-	))])
+) -> Result<Vec<old::play_to_client_packet::Ty>> {
+	Ok(vec![old::play_to_client_packet::Ty::Statistics(
+		statistics(p, TO, FROM),
+	)])
 }
 
 pub fn nether_spawn_entity_up_1_16_2(
 	p: SpawnObject,
 	cx: &mut Session,
-) -> Result<Vec<new::play_toClient_packet::Ty>> {
+) -> Result<Vec<new::play_to_client_packet::Ty>> {
 	Ok(spawn_object(p, FROM, TO, cx)
-		.map(new::play_toClient_packet::Ty::spawn_entity)
+		.map(new::play_to_client_packet::Ty::SpawnEntity)
 		.into_iter()
 		.collect())
 }
@@ -388,9 +391,9 @@ pub fn nether_spawn_entity_up_1_16_2(
 pub fn nether_spawn_entity_1_16_1(
 	p: SpawnObject,
 	cx: &mut Session,
-) -> Result<Vec<old::play_toClient_packet::Ty>> {
+) -> Result<Vec<old::play_to_client_packet::Ty>> {
 	Ok(spawn_object(p, TO, FROM, cx)
-		.map(old::play_toClient_packet::Ty::spawn_entity)
+		.map(old::play_to_client_packet::Ty::SpawnEntity)
 		.into_iter()
 		.collect())
 }
@@ -415,28 +418,28 @@ fn piglin_swap(items: &mut [(u8, Meta)], kind: &str) {
 	}
 }
 
-type Metadata = t16::play_toClient_packet_entity_metadata::Ty;
+type Metadata = t16::play_to_client_packet_entity_metadata::Ty;
 
 pub fn nether_entity_metadata_up_1_16_2(v: Metadata, cx: &mut Session) -> Result<Metadata> {
-	let kind = kind_of(cx, TO, v.entityId).name;
+	let kind = kind_of(cx, TO, v.entity_id).name;
 	let mut items = meta::remap_values(meta::decode_16(v.metadata), FROM, TO, &mut slot_up);
 	meta::minecart_block(&mut items, kind, 10, FROM, TO);
 	piglin_swap(&mut items, kind);
 	Ok(Metadata {
-		entityId: v.entityId,
+		entity_id: v.entity_id,
 		metadata: meta::encode_16(items),
 	})
 }
 
 pub fn nether_entity_metadata_1_16_1(v: Metadata, cx: &mut Session) -> Result<Metadata> {
-	let tracked = kind_of(cx, TO, v.entityId);
+	let tracked = kind_of(cx, TO, v.entity_id);
 	let kind = tracked.name;
 	let mut items = meta::remap_values(meta::decode_16(v.metadata), TO, FROM, &mut slot_down);
 	meta::minecart_block(&mut items, kind, 10, TO, FROM);
 	piglin_swap(&mut items, kind);
 	meta::substituted(&mut items, tracked);
 	Ok(Metadata {
-		entityId: v.entityId,
+		entity_id: v.entity_id,
 		metadata: meta::encode_16(items),
 	})
 }
@@ -496,36 +499,36 @@ struct Held(i16);
 pub fn nether_client_held_item_slot_up_1_16_2(
 	slot: i8,
 	cx: &mut Session,
-) -> Result<Vec<new::play_toClient_packet::Ty>> {
+) -> Result<Vec<new::play_to_client_packet::Ty>> {
 	cx.state::<Held>().0 = slot as i16;
-	Ok(vec![new::play_toClient_packet::Ty::held_item_slot(slot)])
+	Ok(vec![new::play_to_client_packet::Ty::HeldItemSlot(slot)])
 }
 
 pub fn nether_client_held_item_slot_1_16_1(
 	slot: i8,
 	cx: &mut Session,
-) -> Result<Vec<old::play_toClient_packet::Ty>> {
+) -> Result<Vec<old::play_to_client_packet::Ty>> {
 	cx.state::<Held>().0 = slot as i16;
-	Ok(vec![old::play_toClient_packet::Ty::held_item_slot(slot)])
+	Ok(vec![old::play_to_client_packet::Ty::HeldItemSlot(slot)])
 }
 
 pub fn nether_server_held_item_slot_up_1_16_2(
 	slot: i16,
 	cx: &mut Session,
-) -> Result<Vec<new::play_toServer_packet::Ty>> {
+) -> Result<Vec<new::play_to_server_packet::Ty>> {
 	cx.state::<Held>().0 = slot;
-	Ok(vec![new::play_toServer_packet::Ty::held_item_slot(slot)])
+	Ok(vec![new::play_to_server_packet::Ty::HeldItemSlot(slot)])
 }
 
 pub fn nether_server_held_item_slot_1_16_1(
 	slot: i16,
 	cx: &mut Session,
-) -> Result<Vec<old::play_toServer_packet::Ty>> {
+) -> Result<Vec<old::play_to_server_packet::Ty>> {
 	cx.state::<Held>().0 = slot;
-	Ok(vec![old::play_toServer_packet::Ty::held_item_slot(slot)])
+	Ok(vec![old::play_to_server_packet::Ty::HeldItemSlot(slot)])
 }
 
-type EditBook = t16::play_toServer_packet_edit_book::Ty;
+type EditBook = t16::play_to_server_packet_edit_book::Ty;
 
 pub fn nether_edit_book_up_1_16_2(v: EditBook, cx: &mut Session) -> Result<EditBook> {
 	Ok(EditBook {
@@ -548,57 +551,57 @@ pub fn nether_edit_book_1_16_1(v: EditBook, _cx: &mut Session) -> Result<EditBoo
 }
 
 pub fn nether_crafting_book_data_up_1_16_2(
-	p: old::play_toServer_packet_crafting_book_data::Ty,
+	p: old::play_to_server_packet_crafting_book_data::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<new::play_toServer_packet::Ty>> {
-	use old::play_toServer_packet_crafting_book_data::Ty as D;
+) -> Result<Vec<new::play_to_server_packet::Ty>> {
+	use old::play_to_server_packet_crafting_book_data::Ty as D;
 	Ok(match p {
-		D::v0(recipe) => vec![new::play_toServer_packet::Ty::displayed_recipe(recipe)],
-		D::v1(s) => [
-			(s.craftingBookOpen, s.craftingFilter),
-			(s.smeltingBookOpen, s.smeltingFilter),
-			(s.blastingBookOpen, s.blastingFilter),
-			(s.smokingBookOpen, s.smokingFilter),
+		D::V0(recipe) => vec![new::play_to_server_packet::Ty::DisplayedRecipe(recipe)],
+		D::V1(s) => [
+			(s.crafting_book_open, s.crafting_filter),
+			(s.smelting_book_open, s.smelting_filter),
+			(s.blasting_book_open, s.blasting_filter),
+			(s.smoking_book_open, s.smoking_filter),
 		]
 		.into_iter()
 		.enumerate()
-		.map(|(i, (bookOpen, filterActive))| {
-			new::play_toServer_packet::Ty::recipe_book(new::play_toServer_packet_recipe_book::Ty {
-				bookId: i as i32,
-				bookOpen,
-				filterActive,
+		.map(|(i, (book_open, filter_active))| {
+			new::play_to_server_packet::Ty::RecipeBook(new::play_to_server_packet_recipe_book::Ty {
+				book_id: i as i32,
+				book_open,
+				filter_active,
 			})
 		})
 		.collect(),
-		D::default(_) => vec![],
+		D::Default(_) => vec![],
 	})
 }
 
 pub fn nether_displayed_recipe_1_16_1(
 	recipe: String,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toServer_packet::Ty>> {
-	Ok(vec![old::play_toServer_packet::Ty::crafting_book_data(
-		old::play_toServer_packet_crafting_book_data::Ty::v0(recipe),
+) -> Result<Vec<old::play_to_server_packet::Ty>> {
+	Ok(vec![old::play_to_server_packet::Ty::CraftingBookData(
+		old::play_to_server_packet_crafting_book_data::Ty::V0(recipe),
 	)])
 }
 
 pub fn nether_recipe_book_1_16_1(
-	p: new::play_toServer_packet_recipe_book::Ty,
+	p: new::play_to_server_packet_recipe_book::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<old::play_toServer_packet::Ty>> {
-	let open = |i| p.bookId == i && p.bookOpen;
-	Ok(vec![old::play_toServer_packet::Ty::crafting_book_data(
-		old::play_toServer_packet_crafting_book_data::Ty::v1(
-			old::play_toServer_packet_crafting_book_data__v1::Ty {
-				craftingBookOpen: open(0),
-				craftingFilter: p.filterActive,
-				smeltingBookOpen: open(1),
-				smeltingFilter: p.filterActive,
-				blastingBookOpen: open(2),
-				blastingFilter: p.filterActive,
-				smokingBookOpen: open(3),
-				smokingFilter: p.filterActive,
+) -> Result<Vec<old::play_to_server_packet::Ty>> {
+	let open = |i| p.book_id == i && p.book_open;
+	Ok(vec![old::play_to_server_packet::Ty::CraftingBookData(
+		old::play_to_server_packet_crafting_book_data::Ty::V1(
+			old::play_to_server_packet_crafting_book_data_v1::Ty {
+				crafting_book_open: open(0),
+				crafting_filter: p.filter_active,
+				smelting_book_open: open(1),
+				smelting_filter: p.filter_active,
+				blasting_book_open: open(2),
+				blasting_filter: p.filter_active,
+				smoking_book_open: open(3),
+				smoking_filter: p.filter_active,
 			},
 		),
 	)])

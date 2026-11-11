@@ -9,7 +9,7 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 
 use flate2::read::ZlibDecoder;
-use minecraft_protocol::gen::*;
+use minecraft_protocol::gen;
 use minecraft_protocol::pds::{self, Input, Output};
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -260,10 +260,10 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 	let mut fx = Effect::default();
 	let report = match (dir, state) {
 		(Dir::C2s, State::Handshaking) => {
-			use pds_handshaking_toServer_packet as p;
+			use gen::handshaking::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::set_protocol(h)) = v {
-				let next = if h.nextState == 1 {
+			if let Some(p::Ty::SetProtocol(h)) = v {
+				let next = if h.next_state == 1 {
 					State::Status
 				} else {
 					State::Login
@@ -273,56 +273,65 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			}
 			r
 		}
-		(Dir::S2c, State::Handshaking) => check!(pds_handshaking_toClient_packet, data, opts).1,
-		(Dir::C2s, State::Status) => check!(pds_status_toServer_packet, data, opts).1,
-		(Dir::S2c, State::Status) => check!(pds_status_toClient_packet, data, opts).1,
+		(Dir::S2c, State::Handshaking) => {
+			use gen::handshaking::to_client::packet as p;
+			check!(p, data, opts).1
+		}
+		(Dir::C2s, State::Status) => {
+			use gen::status::to_server::packet as p;
+			check!(p, data, opts).1
+		}
+		(Dir::S2c, State::Status) => {
+			use gen::status::to_client::packet as p;
+			check!(p, data, opts).1
+		}
 		(Dir::C2s, State::Login) => {
-			use pds_login_toServer_packet as p;
+			use gen::login::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::login_acknowledged(_)) = v {
+			if let Some(p::Ty::LoginAcknowledged(_)) = v {
 				fx.c2s = Some(State::Configuration);
 			}
 			r
 		}
 		(Dir::S2c, State::Login) => {
-			use pds_login_toClient_packet as p;
+			use gen::login::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
 			match v {
-				Some(p::Ty::success(_)) => fx.s2c = Some(State::Configuration),
-				Some(p::Ty::compress(t)) => fx.threshold = Some(t),
-				Some(p::Ty::encryption_begin(_)) => fx.opaque = true,
+				Some(p::Ty::Success(_)) => fx.s2c = Some(State::Configuration),
+				Some(p::Ty::Compress(t)) => fx.threshold = Some(t),
+				Some(p::Ty::EncryptionBegin(_)) => fx.opaque = true,
 				_ => {}
 			}
 			r
 		}
 		(Dir::C2s, State::Configuration) => {
-			use pds_configuration_toServer_packet as p;
+			use gen::configuration::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::finish_configuration(_)) = v {
+			if let Some(p::Ty::FinishConfiguration(_)) = v {
 				fx.c2s = Some(State::Play);
 			}
 			r
 		}
 		(Dir::S2c, State::Configuration) => {
-			use pds_configuration_toClient_packet as p;
+			use gen::configuration::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::finish_configuration(_)) = v {
+			if let Some(p::Ty::FinishConfiguration(_)) = v {
 				fx.s2c = Some(State::Play);
 			}
 			r
 		}
 		(Dir::C2s, State::Play) => {
-			use pds_play_toServer_packet as p;
+			use gen::play::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::configuration_acknowledged(_)) = v {
+			if let Some(p::Ty::ConfigurationAcknowledged(_)) = v {
 				fx.c2s = Some(State::Configuration);
 			}
 			r
 		}
 		(Dir::S2c, State::Play) => {
-			use pds_play_toClient_packet as p;
+			use gen::play::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
-			if let Some(p::Ty::start_configuration(_)) = v {
+			if let Some(p::Ty::StartConfiguration(_)) = v {
 				fx.s2c = Some(State::Configuration);
 			}
 			r

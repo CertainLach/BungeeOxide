@@ -13,8 +13,8 @@ use std::collections::HashMap;
 const OLD: Version = Version::V1_21_4;
 const NEW: Version = Version::V1_21_5;
 
-remaps!(Version::V1_21_4 => Version::V1_21_5 { late_sound_up_1_21_5: a::ItemSoundHolder::Ty = remap::sound; });
-remaps!(Version::V1_21_5 => Version::V1_21_4 { late_sound_down_1_21_4: a::ItemSoundHolder::Ty = remap::sound; });
+remaps!(Version::V1_21_4 => Version::V1_21_5 { late_sound_up_1_21_5: a::item_sound_holder::Ty = remap::sound; });
+remaps!(Version::V1_21_5 => Version::V1_21_4 { late_sound_down_1_21_4: a::item_sound_holder::Ty = remap::sound; });
 
 blocks!(a => b, Version::V1_21_4 => Version::V1_21_5 {
 	block_change: late_block_change_up_1_21_5, multi_block: late_multi_block_up_1_21_5, block_action: late_block_action_up_1_21_5,
@@ -46,20 +46,20 @@ const TAG_RENAMES_DOWN: &[(&str, &str, &str)] = &[(
 tags!(a => b, Version::V1_21_4 => Version::V1_21_5, TAG_RENAMES_UP, { config: late_config_tags_up_1_21_5, play: late_play_tags_up_1_21_5 });
 tags!(b => a, Version::V1_21_5 => Version::V1_21_4, TAG_RENAMES_DOWN, { config: late_config_tags_down_1_21_4, play: late_play_tags_down_1_21_4 });
 
-pub fn late_slot_up_1_21_5(v: a::Slot::Ty, _cx: &mut Session) -> Result<b::Slot::Ty> {
+pub fn late_slot_up_1_21_5(v: a::slot::Ty, _cx: &mut Session) -> Result<b::slot::Ty> {
 	slot_up(v)
 }
 
 #[derive(Default)]
-struct Sent(HashMap<Vec<u8>, b::Slot__default::Ty>);
+struct Sent(HashMap<Vec<u8>, b::slot_default::Ty>);
 
-pub fn late_slot_down_1_21_4(v: b::Slot::Ty, cx: &mut Session) -> Result<a::Slot::Ty> {
+pub fn late_slot_down_1_21_4(v: b::slot::Ty, cx: &mut Session) -> Result<a::slot::Ty> {
 	let down = slot_down(v.clone())?;
-	if let (b::Slot::Ty::default(_, original), a::Slot::Ty::default(_, d)) = (v, &down) {
-		if original.components.is_empty() && original.removeComponents.is_empty() {
+	if let (b::slot::Ty::Default(_, original), a::slot::Ty::Default(_, d)) = (v, &down) {
+		if original.components.is_empty() && original.remove_components.is_empty() {
 			return Ok(down);
 		}
-		let key = encode(d, a::Slot__default::serialize)?;
+		let key = encode(d, a::slot_default::serialize)?;
 		let sent = &mut cx.state::<Sent>().0;
 		if sent.len() >= 4096 {
 			sent.clear();
@@ -72,8 +72,8 @@ pub fn late_slot_down_1_21_4(v: b::Slot::Ty, cx: &mut Session) -> Result<a::Slot
 pub fn late_display_item_up_1_21_5(
 	v: i32,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_SlotDisplay::Ty> {
-	Ok(b::play_toClient_SlotDisplay::Ty::item(remap::item(
+) -> Result<b::play_to_client_slot_display::Ty> {
+	Ok(b::play_to_client_slot_display::Ty::Item(remap::item(
 		OLD, NEW, v,
 	)?))
 }
@@ -81,51 +81,51 @@ pub fn late_display_item_up_1_21_5(
 pub fn late_display_item_down_1_21_4(
 	v: i32,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_SlotDisplay::Ty> {
-	Ok(a::play_toClient_SlotDisplay::Ty::item(remap::item(
+) -> Result<a::play_to_client_slot_display::Ty> {
+	Ok(a::play_to_client_slot_display::Ty::Item(remap::item(
 		NEW, OLD, v,
 	)?))
 }
 
 pub fn late_trim_pattern_up_1_21_5(
-	_v: &a::play_toClient_SlotDisplay__smithing_trim::Ty,
+	_v: &a::play_to_client_slot_display_smithing_trim::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_SlotDisplay__smithing_trim__pattern::Ty> {
-	Ok(b::play_toClient_SlotDisplay__smithing_trim__pattern::Ty::Id(0))
+) -> Result<b::play_to_client_slot_display_smithing_trim_pattern::Ty> {
+	Ok(b::play_to_client_slot_display_smithing_trim_pattern::Ty::Id(0))
 }
 
 pub fn late_trim_pattern_down_1_21_4(
-	_v: &b::play_toClient_SlotDisplay__smithing_trim::Ty,
+	_v: &b::play_to_client_slot_display_smithing_trim::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_SlotDisplay::Ty> {
-	Ok(a::play_toClient_SlotDisplay::Ty::empty)
+) -> Result<a::play_to_client_slot_display::Ty> {
+	Ok(a::play_to_client_slot_display::Ty::Empty)
 }
 
 pub fn late_trade_input1_up_1_21_5(
-	v: &a::play_toClient_packet_trade_list__trades__items::Ty,
+	v: &a::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_trade_list__trades__items__inputItem1::Ty> {
-	let i = &v.inputItem1;
+) -> Result<b::play_to_client_packet_trade_list_trades_items_input_item1::Ty> {
+	let i = &v.input_item1;
 	Ok(
-		b::play_toClient_packet_trade_list__trades__items__inputItem1::Ty {
-			itemId: remap::item(OLD, NEW, i.itemId)?,
-			itemCount: i.itemCount,
+		b::play_to_client_packet_trade_list_trades_items_input_item1::Ty {
+			item_id: remap::item(OLD, NEW, i.item_id)?,
+			item_count: i.item_count,
 			components: components_up(i.components.clone())?,
 		},
 	)
 }
 
 pub fn late_trade_input2_up_1_21_5(
-	v: &a::play_toClient_packet_trade_list__trades__items::Ty,
+	v: &a::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
-) -> Result<Option<b::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty>> {
-	v.inputItem2
+) -> Result<Option<b::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty>> {
+	v.input_item2
 		.as_ref()
 		.map(|i| {
 			Ok(
-				b::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty {
-					itemId: remap::item(OLD, NEW, i.itemId)?,
-					itemCount: i.itemCount,
+				b::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty {
+					item_id: remap::item(OLD, NEW, i.item_id)?,
+					item_count: i.item_count,
 					components: components_up(i.components.clone())?,
 				},
 			)
@@ -134,34 +134,34 @@ pub fn late_trade_input2_up_1_21_5(
 }
 
 pub fn late_trade_input1_down_1_21_4(
-	v: &b::play_toClient_packet_trade_list__trades__items::Ty,
+	v: &b::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_trade_list__trades__items__inputItem1::Ty> {
-	let i = &v.inputItem1;
+) -> Result<a::play_to_client_packet_trade_list_trades_items_input_item1::Ty> {
+	let i = &v.input_item1;
 	let components = components_down(i.components.clone())?;
 	Ok(
-		a::play_toClient_packet_trade_list__trades__items__inputItem1::Ty {
-			itemId: remap::item(NEW, OLD, i.itemId)?,
-			itemCount: i.itemCount,
-			addedComponentCount: components.len() as i32,
+		a::play_to_client_packet_trade_list_trades_items_input_item1::Ty {
+			item_id: remap::item(NEW, OLD, i.item_id)?,
+			item_count: i.item_count,
+			added_component_count: components.len() as i32,
 			components,
 		},
 	)
 }
 
 pub fn late_trade_input2_down_1_21_4(
-	v: &b::play_toClient_packet_trade_list__trades__items::Ty,
+	v: &b::play_to_client_packet_trade_list_trades_items::Ty,
 	_cx: &mut Session,
-) -> Result<Option<a::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty>> {
-	v.inputItem2
+) -> Result<Option<a::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty>> {
+	v.input_item2
 		.as_ref()
 		.map(|i| {
 			let components = components_down(i.components.clone())?;
 			Ok(
-				a::play_toClient_packet_trade_list__trades__items__inputItem2__items::Ty {
-					itemId: remap::item(NEW, OLD, i.itemId)?,
-					itemCount: i.itemCount,
-					addedComponentCount: components.len() as i32,
+				a::play_to_client_packet_trade_list_trades_items_input_item2_items::Ty {
+					item_id: remap::item(NEW, OLD, i.item_id)?,
+					item_count: i.item_count,
+					added_component_count: components.len() as i32,
 					components,
 				},
 			)
@@ -170,38 +170,38 @@ pub fn late_trade_input2_down_1_21_4(
 }
 
 pub fn late_recipe_items_up_1_21_5(
-	v: &a::play_toClient_packet_declare_recipes__recipes__items::Ty,
+	v: &a::play_to_client_packet_declare_recipes_recipes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<i32>> {
 	remap::items(OLD, NEW, v.items.clone())
 }
 
 pub fn late_recipe_items_down_1_21_4(
-	v: &b::play_toClient_packet_declare_recipes__recipes__items::Ty,
+	v: &b::play_to_client_packet_declare_recipes_recipes_items::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<i32>> {
 	remap::items(NEW, OLD, v.items.clone())
 }
 
 pub fn late_stonecutter_up_1_21_5(
-	v: &a::play_toClient_packet_declare_recipes__stoneCutterRecipes__items::Ty,
+	v: &a::play_to_client_packet_declare_recipes_stone_cutter_recipes_items::Ty,
 	_cx: &mut Session,
-) -> Result<b::IDSet::Ty> {
+) -> Result<b::id_set::Ty> {
 	remap::item_set(OLD, NEW, v.input.clone())
 }
 
 pub fn late_stonecutter_down_1_21_4(
-	v: &b::play_toClient_packet_declare_recipes__stoneCutterRecipes__items::Ty,
+	v: &b::play_to_client_packet_declare_recipes_stone_cutter_recipes_items::Ty,
 	_cx: &mut Session,
-) -> Result<a::IDSet::Ty> {
+) -> Result<a::id_set::Ty> {
 	remap::item_set(NEW, OLD, v.input.clone())
 }
 
 pub fn late_requirements_up_1_21_5(
-	v: &a::play_toClient_packet_recipe_book_add__entries__items__recipe::Ty,
+	v: &a::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty,
 	_cx: &mut Session,
-) -> Result<Option<Vec<b::IDSet::Ty>>> {
-	v.craftingRequirements
+) -> Result<Option<Vec<b::id_set::Ty>>> {
+	v.crafting_requirements
 		.clone()
 		.map(|s| {
 			s.into_iter()
@@ -212,10 +212,10 @@ pub fn late_requirements_up_1_21_5(
 }
 
 pub fn late_requirements_down_1_21_4(
-	v: &b::play_toClient_packet_recipe_book_add__entries__items__recipe::Ty,
+	v: &b::play_to_client_packet_recipe_book_add_entries_items_recipe::Ty,
 	_cx: &mut Session,
-) -> Result<Option<Vec<a::IDSet::Ty>>> {
-	v.craftingRequirements
+) -> Result<Option<Vec<a::id_set::Ty>>> {
+	v.crafting_requirements
 		.clone()
 		.map(|s| {
 			s.into_iter()
@@ -226,46 +226,46 @@ pub fn late_requirements_down_1_21_4(
 }
 
 pub fn late_spawn_type_up_1_21_5(
-	v: &a::play_toClient_packet_spawn_entity::Ty,
+	v: &a::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	shared::spawned(cx, v.entityId, OLD, v.r#type);
+	shared::spawned(cx, v.entity_id, OLD, v.r#type);
 	remap::entity(OLD, NEW, v.r#type)
 }
 
 pub fn late_object_data_up_1_21_5(
-	v: &a::play_toClient_packet_spawn_entity::Ty,
+	v: &a::play_to_client_packet_spawn_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<i32> {
 	match crate::registry::names(OLD, "entities").and_then(|n| n.name(v.r#type.max(0) as u32)) {
-		Some("falling_block") => remap::state(OLD, NEW, v.objectData),
-		_ => Ok(v.objectData),
+		Some("falling_block") => remap::state(OLD, NEW, v.object_data),
+		_ => Ok(v.object_data),
 	}
 }
 
 pub fn late_experience_orb_up_1_21_5(
-	p: a::play_toClient_packet_spawn_entity_experience_orb::Ty,
+	p: a::play_to_client_packet_spawn_entity_experience_orb::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let r#type = crate::registry::names(NEW, "entities")
 		.and_then(|n| n.id("experience_orb"))
 		.unwrap_or(0) as i32;
-	world::spawned(cx, p.entityId, NEW, r#type);
+	world::spawned(cx, p.entity_id, NEW, r#type);
 	let uuid = 0x7064_7332_0000_4000_8000_0000_0000_0000u128
-		| (p.entityId as u32 as u128)
+		| (p.entity_id as u32 as u128)
 		| 0x0001_0000_0000u128;
-	Ok(vec![b::play_toClient_packet::Ty::spawn_entity(
-		b::play_toClient_packet_spawn_entity::Ty {
-			entityId: p.entityId,
-			objectUUID: uuid,
+	Ok(vec![b::play_to_client_packet::Ty::SpawnEntity(
+		b::play_to_client_packet_spawn_entity::Ty {
+			entity_id: p.entity_id,
+			object_uuid: uuid,
 			r#type,
 			x: p.x,
 			y: p.y,
 			z: p.z,
 			pitch: 0,
 			yaw: 0,
-			headPitch: 0,
-			objectData: p.count as i32,
+			head_pitch: 0,
+			object_data: p.count as i32,
 			velocity: b::vec3i16::Ty { x: 0, y: 0, z: 0 },
 		},
 	)])
@@ -289,10 +289,10 @@ pub fn late_heightmap_name_1_21_4(id: i32) -> Option<&'static str> {
 }
 
 pub fn late_heightmaps_up_1_21_5(
-	v: &a::play_toClient_packet_map_chunk::Ty,
+	v: &a::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet_map_chunk__heightmaps__items::Ty>> {
-	let Payload::compound(entries) = &v.heightmaps.value else {
+) -> Result<Vec<b::play_to_client_packet_map_chunk_heightmaps_items::Ty>> {
+	let Payload::Compound(entries) = &v.heightmaps.value else {
 		return Ok(Vec::new());
 	};
 	Ok(entries
@@ -300,8 +300,8 @@ pub fn late_heightmaps_up_1_21_5(
 		.filter_map(|e| {
 			let r#type = late_heightmap_type_1_21_5(&e.name)?;
 			match &e.value {
-				Payload::longArray(data) => {
-					Some(b::play_toClient_packet_map_chunk__heightmaps__items::Ty {
+				Payload::LongArray(data) => {
+					Some(b::play_to_client_packet_map_chunk_heightmaps_items::Ty {
 						r#type,
 						data: data.clone(),
 					})
@@ -313,16 +313,16 @@ pub fn late_heightmaps_up_1_21_5(
 }
 
 pub fn late_heightmaps_down_1_21_4(
-	v: &b::play_toClient_packet_map_chunk::Ty,
+	v: &b::play_to_client_packet_map_chunk::Ty,
 	_cx: &mut Session,
 ) -> Result<nbt::Tag> {
-	Ok(Tag::new(Payload::compound(
+	Ok(Tag::new(Payload::Compound(
 		v.heightmaps
 			.iter()
 			.filter_map(|h| {
 				Some(Entry::new(
 					late_heightmap_name_1_21_4(h.r#type)?,
-					Payload::longArray(h.data.clone()),
+					Payload::LongArray(h.data.clone()),
 				))
 			})
 			.collect(),
@@ -331,19 +331,19 @@ pub fn late_heightmaps_down_1_21_4(
 
 fn sign_text(side: &mut Payload) {
 	for field in ["messages", "filtered_messages"] {
-		if let Some(Payload::list(nbt::List {
-			items: ListItems::string(lines),
+		if let Some(Payload::List(nbt::List {
+			items: ListItems::String(lines),
 			..
 		})) = side.field(field)
 		{
 			let converted = lines
 				.iter()
 				.map(|l| match text::from_json(l) {
-					Payload::compound(c) => c,
+					Payload::Compound(c) => c,
 					_ => Vec::new(),
 				})
 				.collect();
-			side.put(field, List::new(ListItems::compound(converted)));
+			side.put(field, List::new(ListItems::Compound(converted)));
 		}
 	}
 }
@@ -356,41 +356,41 @@ fn block_entity(tag: Option<nbt::Tag>) -> Option<nbt::Tag> {
 			tag.value.put(side, s);
 		}
 	}
-	if let Some(Payload::string(name)) = tag.value.field("CustomName").cloned() {
+	if let Some(Payload::String(name)) = tag.value.field("CustomName").cloned() {
 		tag.value.put("CustomName", text::from_json(&name));
 	}
 	Some(Tag::new(tag.value))
 }
 
 pub fn late_chunk_block_entity_up_1_21_5(
-	v: &a::chunkBlockEntity::Ty,
+	v: &a::chunk_block_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(block_entity(v.nbtData.clone()))
+	Ok(block_entity(v.nbt_data.clone()))
 }
 
 pub fn late_tile_entity_up_1_21_5(
-	v: &a::play_toClient_packet_tile_entity_data::Ty,
+	v: &a::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(block_entity(v.nbtData.clone()))
+	Ok(block_entity(v.nbt_data.clone()))
 }
 
 pub fn late_chunk_biomes_up_1_21_5(
-	v: Vec<a::play_toClient_packet__chunk_biomes__items::Ty>,
+	v: Vec<a::play_to_client_packet_chunk_biomes_items::Ty>,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let biomes = world::biomes(cx);
 	let items = v
 		.into_iter()
 		.map(|c| {
-			Ok(b::play_toClient_packet__chunk_biomes__items::Ty {
+			Ok(b::play_to_client_packet_chunk_biomes_items::Ty {
 				data: chunk::biomes_step(OLD, NEW, &c.data, biomes)?,
 				position: c.position,
 			})
 		})
 		.collect::<Result<_>>()?;
-	Ok(vec![b::play_toClient_packet::Ty::chunk_biomes(items)])
+	Ok(vec![b::play_to_client_packet::Ty::ChunkBiomes(items)])
 }
 
 #[derive(Default)]
@@ -399,24 +399,24 @@ struct Chat {
 }
 
 pub fn late_login_up_1_21_5(
-	p: &a::play_toClient_packet_login::Ty,
+	p: &a::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	cx.state::<Chat>().index = 0;
-	world::world(cx).player = Some(p.entityId);
-	Ok(p.entityId)
+	world::world(cx).player = Some(p.entity_id);
+	Ok(p.entity_id)
 }
 
 pub fn late_login_down_1_21_4(
-	p: &b::play_toClient_packet_login::Ty,
+	p: &b::play_to_client_packet_login::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	world::world(cx).player = Some(p.entityId);
-	Ok(p.entityId)
+	world::world(cx).player = Some(p.entity_id);
+	Ok(p.entity_id)
 }
 
 pub fn late_chat_index_up_1_21_5(
-	_p: &a::play_toClient_packet_player_chat::Ty,
+	_p: &a::play_to_client_packet_player_chat::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
 	let chat = cx.state::<Chat>();
@@ -447,46 +447,46 @@ const VISIBILITY: &[&str] = &["always", "never", "hideForOtherTeams", "hideForOw
 const COLLISION: &[&str] = &["always", "never", "pushOtherTeams", "pushOwnTeam"];
 
 pub fn late_teams_up_1_21_5(
-	v: a::play_toClient_packet_teams::Ty,
+	v: a::play_to_client_packet_teams::Ty,
 	_cx: &mut Session,
-) -> Result<b::play_toClient_packet_teams::Ty> {
-	use a::play_toClient_packet_teams__mode::Ty as A;
-	use b::play_toClient_packet_teams__mode::Ty as B;
+) -> Result<b::play_to_client_packet_teams::Ty> {
+	use a::play_to_client_packet_teams_mode::Ty as A;
+	use b::play_to_client_packet_teams_mode::Ty as B;
 	let mode = match v.mode {
-		A::v0(t) => B::v0(b::play_toClient_packet_teams__mode__v0::Ty {
+		A::V0(t) => B::V0(b::play_to_client_packet_teams_mode_v0::Ty {
 			name: text::up(t.name),
-			friendlyFire: t.friendlyFire,
-			nameTagVisibility: visibility(&t.nameTagVisibility),
-			collisionRule: collision(&t.collisionRule),
+			friendly_fire: t.friendly_fire,
+			name_tag_visibility: visibility(&t.name_tag_visibility),
+			collision_rule: collision(&t.collision_rule),
 			formatting: t.formatting,
 			prefix: text::up(t.prefix),
 			suffix: text::up(t.suffix),
 			players: t.players,
 		}),
-		A::v2(t) => B::v2(b::play_toClient_packet_teams__mode__v2::Ty {
+		A::V2(t) => B::V2(b::play_to_client_packet_teams_mode_v2::Ty {
 			name: text::up(t.name),
-			friendlyFire: t.friendlyFire,
-			nameTagVisibility: visibility(&t.nameTagVisibility),
-			collisionRule: collision(&t.collisionRule),
+			friendly_fire: t.friendly_fire,
+			name_tag_visibility: visibility(&t.name_tag_visibility),
+			collision_rule: collision(&t.collision_rule),
 			formatting: t.formatting,
 			prefix: text::up(t.prefix),
 			suffix: text::up(t.suffix),
 		}),
 		other => recode(
 			&other,
-			a::play_toClient_packet_teams__mode::serialize,
-			b::play_toClient_packet_teams__mode::deserialize,
+			a::play_to_client_packet_teams_mode::serialize,
+			b::play_to_client_packet_teams_mode::deserialize,
 		)?,
 	};
-	Ok(b::play_toClient_packet_teams::Ty { team: v.team, mode })
+	Ok(b::play_to_client_packet_teams::Ty { team: v.team, mode })
 }
 
 pub fn late_teams_down_1_21_4(
-	v: b::play_toClient_packet_teams::Ty,
+	v: b::play_to_client_packet_teams::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_teams::Ty> {
-	use a::play_toClient_packet_teams__mode::Ty as A;
-	use b::play_toClient_packet_teams__mode::Ty as B;
+) -> Result<a::play_to_client_packet_teams::Ty> {
+	use a::play_to_client_packet_teams_mode::Ty as A;
+	use b::play_to_client_packet_teams_mode::Ty as B;
 	let name = |list: &[&str], i: i32| {
 		list.get(i.max(0) as usize)
 			.copied()
@@ -494,56 +494,56 @@ pub fn late_teams_down_1_21_4(
 			.to_owned()
 	};
 	let mode = match v.mode {
-		B::v0(t) => A::v0(a::play_toClient_packet_teams__mode__v0::Ty {
+		B::V0(t) => A::V0(a::play_to_client_packet_teams_mode_v0::Ty {
 			name: text::down(t.name),
-			friendlyFire: t.friendlyFire,
-			nameTagVisibility: name(VISIBILITY, t.nameTagVisibility),
-			collisionRule: name(COLLISION, t.collisionRule),
+			friendly_fire: t.friendly_fire,
+			name_tag_visibility: name(VISIBILITY, t.name_tag_visibility),
+			collision_rule: name(COLLISION, t.collision_rule),
 			formatting: t.formatting,
 			prefix: text::down(t.prefix),
 			suffix: text::down(t.suffix),
 			players: t.players,
 		}),
-		B::v2(t) => A::v2(a::play_toClient_packet_teams__mode__v2::Ty {
+		B::V2(t) => A::V2(a::play_to_client_packet_teams_mode_v2::Ty {
 			name: text::down(t.name),
-			friendlyFire: t.friendlyFire,
-			nameTagVisibility: name(VISIBILITY, t.nameTagVisibility),
-			collisionRule: name(COLLISION, t.collisionRule),
+			friendly_fire: t.friendly_fire,
+			name_tag_visibility: name(VISIBILITY, t.name_tag_visibility),
+			collision_rule: name(COLLISION, t.collision_rule),
 			formatting: t.formatting,
 			prefix: text::down(t.prefix),
 			suffix: text::down(t.suffix),
 		}),
 		other => recode(
 			&other,
-			b::play_toClient_packet_teams__mode::serialize,
-			a::play_toClient_packet_teams__mode::deserialize,
+			b::play_to_client_packet_teams_mode::serialize,
+			a::play_to_client_packet_teams_mode::deserialize,
 		)?,
 	};
-	Ok(a::play_toClient_packet_teams::Ty { team: v.team, mode })
+	Ok(a::play_to_client_packet_teams::Ty { team: v.team, mode })
 }
 
 pub fn late_entity_status_up_1_21_5(
-	p: a::play_toClient_packet_entity_status::Ty,
+	p: a::play_to_client_packet_entity_status::Ty,
 	_cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
-	let (sound, volume) = match p.entityStatus {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
+	let (sound, volume) = match p.entity_status {
 		29 => ("item.shield.block", 1.0),
 		30 => ("item.shield.break", 0.8),
-		_ => return Ok(vec![b::play_toClient_packet::Ty::entity_status(p)]),
+		_ => return Ok(vec![b::play_to_client_packet::Ty::EntityStatus(p)]),
 	};
 	let Some(id) = remap::sound_id(NEW, sound) else {
 		return Ok(vec![]);
 	};
-	let seed = (p.entityId as i64).wrapping_mul(0x5DEECE66D) ^ 0x2545F491;
-	Ok(vec![b::play_toClient_packet::Ty::entity_sound_effect(
-		b::play_toClient_packet_entity_sound_effect::Ty {
-			sound: b::ItemSoundHolder::Ty::Id(id),
-			soundCategory: recode(
+	let seed = (p.entity_id as i64).wrapping_mul(0x5DEECE66D) ^ 0x2545F491;
+	Ok(vec![b::play_to_client_packet::Ty::EntitySoundEffect(
+		b::play_to_client_packet_entity_sound_effect::Ty {
+			sound: b::item_sound_holder::Ty::Id(id),
+			sound_category: recode(
 				&7,
 				crate::pds_native::pds_varint::serialize,
-				b::soundSource::deserialize,
+				b::sound_source::deserialize,
 			)?,
-			entityId: p.entityId,
+			entity_id: p.entity_id,
 			volume,
 			pitch: 0.8 + ((seed >> 8) & 0xff) as f32 / 255.0 * 0.4,
 			seed,
@@ -552,10 +552,10 @@ pub fn late_entity_status_up_1_21_5(
 }
 
 pub fn late_effect_flags_up_1_21_5(
-	p: &a::play_toClient_packet_entity_effect::Ty,
+	p: &a::play_to_client_packet_entity_effect::Ty,
 	_cx: &mut Session,
 ) -> Result<u8> {
-	Ok(if p.effectId == 8 {
+	Ok(if p.effect_id == 8 {
 		p.flags | 0x08
 	} else {
 		p.flags
@@ -575,29 +575,29 @@ pub fn late_text_down_1_21_4(v: nbt::Tag, _cx: &mut Session) -> Result<nbt::Tag>
 macro_rules! text_arms {
 	($($arm:ident: $up:ident, $down:ident;)*) => {
 		$(
-			pub fn $up(v: nbt::Tag, _cx: &mut Session) -> Result<Vec<b::play_toClient_packet::Ty>> {
-				Ok(vec![b::play_toClient_packet::Ty::$arm(text::up(v))])
+			pub fn $up(v: nbt::Tag, _cx: &mut Session) -> Result<Vec<b::play_to_client_packet::Ty>> {
+				Ok(vec![b::play_to_client_packet::Ty::$arm(text::up(v))])
 			}
 
-			pub fn $down(v: nbt::Tag, _cx: &mut Session) -> Result<Vec<a::play_toClient_packet::Ty>> {
-				Ok(vec![a::play_toClient_packet::Ty::$arm(text::down(v))])
+			pub fn $down(v: nbt::Tag, _cx: &mut Session) -> Result<Vec<a::play_to_client_packet::Ty>> {
+				Ok(vec![a::play_to_client_packet::Ty::$arm(text::down(v))])
 			}
 		)*
 	};
 }
 
 text_arms! {
-	action_bar: late_action_bar_up_1_21_5, late_action_bar_down_1_21_4;
-	set_title_text: late_title_up_1_21_5, late_title_down_1_21_4;
-	set_title_subtitle: late_subtitle_up_1_21_5, late_subtitle_down_1_21_4;
-	kick_disconnect: late_kick_up_1_21_5, late_kick_down_1_21_4;
+	ActionBar: late_action_bar_up_1_21_5, late_action_bar_down_1_21_4;
+	SetTitleText: late_title_up_1_21_5, late_title_down_1_21_4;
+	SetTitleSubtitle: late_subtitle_up_1_21_5, late_subtitle_down_1_21_4;
+	KickDisconnect: late_kick_up_1_21_5, late_kick_down_1_21_4;
 }
 
 pub fn late_config_disconnect_up_1_21_5(
 	v: nbt::Tag,
 	_cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
-	Ok(vec![b::configuration_toClient_packet::Ty::disconnect(
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
+	Ok(vec![b::configuration_to_client_packet::Ty::Disconnect(
 		text::up(v),
 	)])
 }
@@ -605,18 +605,18 @@ pub fn late_config_disconnect_up_1_21_5(
 pub fn late_config_disconnect_down_1_21_4(
 	v: nbt::Tag,
 	_cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
-	Ok(vec![a::configuration_toClient_packet::Ty::disconnect(
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
+	Ok(vec![a::configuration_to_client_packet::Ty::Disconnect(
 		text::down(v),
 	)])
 }
 
-pub(super) type Links = Vec<a::configuration_toClient_packet__server_links__items::Ty>;
+pub(super) type Links = Vec<a::configuration_to_client_packet_server_links_items::Ty>;
 
 pub(super) fn links(mut v: Links, f: Text) -> Links {
 	for l in &mut v {
-		if let a::configuration_toClient_packet__server_links__items__hasKnownType::Ty::r#false(t) =
-			&mut l.hasKnownType
+		if let a::configuration_to_client_packet_server_links_items_has_known_type::Ty::False(t) =
+			&mut l.has_known_type
 		{
 			*t = f(t.clone());
 		}
@@ -627,8 +627,8 @@ pub(super) fn links(mut v: Links, f: Text) -> Links {
 pub fn late_config_links_up_1_21_5(
 	v: Links,
 	_cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
-	Ok(vec![b::configuration_toClient_packet::Ty::server_links(
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
+	Ok(vec![b::configuration_to_client_packet::Ty::ServerLinks(
 		links(v, text::up),
 	)])
 }
@@ -636,8 +636,8 @@ pub fn late_config_links_up_1_21_5(
 pub fn late_config_links_down_1_21_4(
 	v: Links,
 	_cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
-	Ok(vec![a::configuration_toClient_packet::Ty::server_links(
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
+	Ok(vec![a::configuration_to_client_packet::Ty::ServerLinks(
 		links(v, text::down),
 	)])
 }
@@ -645,8 +645,8 @@ pub fn late_config_links_down_1_21_4(
 pub fn late_links_up_1_21_5(
 	v: Links,
 	_cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
-	Ok(vec![b::play_toClient_packet::Ty::server_links(links(
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
+	Ok(vec![b::play_to_client_packet::Ty::ServerLinks(links(
 		v,
 		text::up,
 	))])
@@ -655,8 +655,8 @@ pub fn late_links_up_1_21_5(
 pub fn late_links_down_1_21_4(
 	v: Links,
 	_cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
-	Ok(vec![a::play_toClient_packet::Ty::server_links(links(
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	Ok(vec![a::play_to_client_packet::Ty::ServerLinks(links(
 		v,
 		text::down,
 	))])
@@ -667,34 +667,34 @@ fn opt(v: Option<nbt::Tag>, f: Text) -> Option<nbt::Tag> {
 }
 
 pub(super) fn system_chat(
-	mut v: a::play_toClient_packet_system_chat::Ty,
+	mut v: a::play_to_client_packet_system_chat::Ty,
 	f: Text,
-) -> a::play_toClient_packet_system_chat::Ty {
+) -> a::play_to_client_packet_system_chat::Ty {
 	v.content = f(v.content);
 	v
 }
 
 pub(super) fn header(
-	mut v: a::play_toClient_packet_playerlist_header::Ty,
+	mut v: a::play_to_client_packet_playerlist_header::Ty,
 	f: Text,
-) -> a::play_toClient_packet_playerlist_header::Ty {
+) -> a::play_to_client_packet_playerlist_header::Ty {
 	v.header = f(v.header);
 	v.footer = f(v.footer);
 	v
 }
 
 pub(super) fn death(
-	mut v: a::play_toClient_packet_death_combat_event::Ty,
+	mut v: a::play_to_client_packet_death_combat_event::Ty,
 	f: Text,
-) -> a::play_toClient_packet_death_combat_event::Ty {
+) -> a::play_to_client_packet_death_combat_event::Ty {
 	v.message = f(v.message);
 	v
 }
 
 pub(super) fn profileless(
-	mut v: a::play_toClient_packet_profileless_chat::Ty,
+	mut v: a::play_to_client_packet_profileless_chat::Ty,
 	f: Text,
-) -> a::play_toClient_packet_profileless_chat::Ty {
+) -> a::play_to_client_packet_profileless_chat::Ty {
 	v.message = f(v.message);
 	v.name = f(v.name);
 	v.target = opt(v.target, f);
@@ -702,57 +702,57 @@ pub(super) fn profileless(
 }
 
 pub(super) fn objective(
-	v: a::play_toClient_packet_scoreboard_objective::Ty,
+	v: a::play_to_client_packet_scoreboard_objective::Ty,
 	f: Text,
-) -> a::play_toClient_packet_scoreboard_objective::Ty {
-	use a::play_toClient_packet_scoreboard_objective__action::Ty as A;
-	use a::play_toClient_packet_scoreboard_objective__action__v0__styling::Ty as S0;
-	use a::play_toClient_packet_scoreboard_objective__action__v2__styling::Ty as S2;
+) -> a::play_to_client_packet_scoreboard_objective::Ty {
+	use a::play_to_client_packet_scoreboard_objective_action::Ty as A;
+	use a::play_to_client_packet_scoreboard_objective_action_v0_styling::Ty as S0;
+	use a::play_to_client_packet_scoreboard_objective_action_v2_styling::Ty as S2;
 	let action = match v.action {
-		A::v0(mut o) => {
-			o.displayText = f(o.displayText);
+		A::V0(mut o) => {
+			o.display_text = f(o.display_text);
 			o.styling = match o.styling {
-				S0::v1(t) => S0::v1(f(t)),
-				S0::v2(t) => S0::v2(f(t)),
+				S0::V1(t) => S0::V1(f(t)),
+				S0::V2(t) => S0::V2(f(t)),
 				other => other,
 			};
-			A::v0(o)
+			A::V0(o)
 		}
-		A::v2(mut o) => {
-			o.displayText = f(o.displayText);
+		A::V2(mut o) => {
+			o.display_text = f(o.display_text);
 			o.styling = match o.styling {
-				S2::v1(t) => S2::v1(f(t)),
-				S2::v2(t) => S2::v2(f(t)),
+				S2::V1(t) => S2::V1(f(t)),
+				S2::V2(t) => S2::V2(f(t)),
 				other => other,
 			};
-			A::v2(o)
+			A::V2(o)
 		}
 		other => other,
 	};
-	a::play_toClient_packet_scoreboard_objective::Ty { action, ..v }
+	a::play_to_client_packet_scoreboard_objective::Ty { action, ..v }
 }
 
 pub(super) fn score(
-	mut v: a::play_toClient_packet_scoreboard_score::Ty,
+	mut v: a::play_to_client_packet_scoreboard_score::Ty,
 	f: Text,
-) -> a::play_toClient_packet_scoreboard_score::Ty {
-	use a::play_toClient_packet_scoreboard_score__styling::Ty as S;
+) -> a::play_to_client_packet_scoreboard_score::Ty {
+	use a::play_to_client_packet_scoreboard_score_styling::Ty as S;
 	v.display_name = opt(v.display_name, f);
 	v.styling = match v.styling {
-		S::v1(t) => S::v1(f(t)),
-		S::v2(t) => S::v2(f(t)),
+		S::V1(t) => S::V1(f(t)),
+		S::V2(t) => S::V2(f(t)),
 		other => other,
 	};
 	v
 }
 
 pub(super) fn player_info(
-	mut v: a::play_toClient_packet_player_info::Ty,
+	mut v: a::play_to_client_packet_player_info::Ty,
 	f: Text,
-) -> a::play_toClient_packet_player_info::Ty {
-	use a::play_toClient_packet_player_info__data__items__displayName::Ty as Name;
+) -> a::play_to_client_packet_player_info::Ty {
+	use a::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
 	for d in &mut v.data {
-		if let Name::r#true(Some(name)) = &mut d.displayName {
+		if let Name::True(Some(name)) = &mut d.display_name {
 			*name = f(name.clone());
 		}
 	}
@@ -760,35 +760,35 @@ pub(super) fn player_info(
 }
 
 pub(super) fn boss_bar(
-	mut v: a::play_toClient_packet_boss_bar::Ty,
+	mut v: a::play_to_client_packet_boss_bar::Ty,
 	f: Text,
-) -> a::play_toClient_packet_boss_bar::Ty {
-	use a::play_toClient_packet_boss_bar__action::Ty as A;
+) -> a::play_to_client_packet_boss_bar::Ty {
+	use a::play_to_client_packet_boss_bar_action::Ty as A;
 	v.action = match v.action {
-		A::v0(mut b) => {
+		A::V0(mut b) => {
 			b.title = f(b.title);
-			A::v0(b)
+			A::V0(b)
 		}
-		A::v3(t) => A::v3(f(t)),
+		A::V3(t) => A::V3(f(t)),
 		other => other,
 	};
 	v
 }
 
 pub(super) fn map(
-	mut v: a::play_toClient_packet_map::Ty,
+	mut v: a::play_to_client_packet_map::Ty,
 	f: Text,
-) -> a::play_toClient_packet_map::Ty {
+) -> a::play_to_client_packet_map::Ty {
 	for icon in v.icons.iter_mut().flatten() {
-		icon.displayName = opt(icon.displayName.take(), f);
+		icon.display_name = opt(icon.display_name.take(), f);
 	}
 	v
 }
 
 pub(super) fn tab_complete(
-	mut v: a::play_toClient_packet_tab_complete::Ty,
+	mut v: a::play_to_client_packet_tab_complete::Ty,
 	f: Text,
-) -> a::play_toClient_packet_tab_complete::Ty {
+) -> a::play_to_client_packet_tab_complete::Ty {
 	for m in &mut v.matches {
 		m.tooltip = opt(m.tooltip.take(), f);
 	}
@@ -796,9 +796,9 @@ pub(super) fn tab_complete(
 }
 
 pub(super) fn server_data(
-	mut v: a::play_toClient_packet_server_data::Ty,
+	mut v: a::play_to_client_packet_server_data::Ty,
 	f: Text,
-) -> a::play_toClient_packet_server_data::Ty {
+) -> a::play_to_client_packet_server_data::Ty {
 	v.motd = f(v.motd);
 	v
 }
@@ -807,7 +807,7 @@ pub(super) fn resource_pack(
 	mut v: a::packet_common_add_resource_pack::Ty,
 	f: Text,
 ) -> a::packet_common_add_resource_pack::Ty {
-	v.promptMessage = opt(v.promptMessage, f);
+	v.prompt_message = opt(v.prompt_message, f);
 	v
 }
 
@@ -826,83 +826,83 @@ macro_rules! texts {
 }
 
 texts! {
-	play_toClient_packet_system_chat: system_chat => late_system_chat_up_1_21_5, late_system_chat_down_1_21_4;
-	play_toClient_packet_playerlist_header: header => late_header_up_1_21_5, late_header_down_1_21_4;
-	play_toClient_packet_death_combat_event: death => late_death_up_1_21_5, late_death_down_1_21_4;
-	play_toClient_packet_profileless_chat: profileless => late_profileless_up_1_21_5, late_profileless_down_1_21_4;
-	play_toClient_packet_scoreboard_objective: objective => late_objective_up_1_21_5, late_objective_down_1_21_4;
-	play_toClient_packet_scoreboard_score: score => late_score_up_1_21_5, late_score_down_1_21_4;
-	play_toClient_packet_player_info: player_info => late_player_info_up_1_21_5, late_player_info_down_1_21_4;
-	play_toClient_packet_boss_bar: boss_bar => late_boss_bar_up_1_21_5, late_boss_bar_down_1_21_4;
-	play_toClient_packet_map: map => late_map_up_1_21_5, late_map_down_1_21_4;
-	play_toClient_packet_tab_complete: tab_complete => late_tab_complete_up_1_21_5, late_tab_complete_down_1_21_4;
-	play_toClient_packet_server_data: server_data => late_server_data_up_1_21_5, late_server_data_down_1_21_4;
+	play_to_client_packet_system_chat: system_chat => late_system_chat_up_1_21_5, late_system_chat_down_1_21_4;
+	play_to_client_packet_playerlist_header: header => late_header_up_1_21_5, late_header_down_1_21_4;
+	play_to_client_packet_death_combat_event: death => late_death_up_1_21_5, late_death_down_1_21_4;
+	play_to_client_packet_profileless_chat: profileless => late_profileless_up_1_21_5, late_profileless_down_1_21_4;
+	play_to_client_packet_scoreboard_objective: objective => late_objective_up_1_21_5, late_objective_down_1_21_4;
+	play_to_client_packet_scoreboard_score: score => late_score_up_1_21_5, late_score_down_1_21_4;
+	play_to_client_packet_player_info: player_info => late_player_info_up_1_21_5, late_player_info_down_1_21_4;
+	play_to_client_packet_boss_bar: boss_bar => late_boss_bar_up_1_21_5, late_boss_bar_down_1_21_4;
+	play_to_client_packet_map: map => late_map_up_1_21_5, late_map_down_1_21_4;
+	play_to_client_packet_tab_complete: tab_complete => late_tab_complete_up_1_21_5, late_tab_complete_down_1_21_4;
+	play_to_client_packet_server_data: server_data => late_server_data_up_1_21_5, late_server_data_down_1_21_4;
 	packet_common_add_resource_pack: resource_pack => late_resource_pack_up_1_21_5, late_resource_pack_down_1_21_4;
 }
 
 pub fn late_open_window_up_1_21_5(
-	mut v: a::play_toClient_packet_open_window::Ty,
+	mut v: a::play_to_client_packet_open_window::Ty,
 	cx: &mut Session,
-) -> Result<b::play_toClient_packet_open_window::Ty> {
-	v.windowTitle = text::up(v.windowTitle);
-	cx.state::<Inventory>().windows.remove(&v.windowId);
+) -> Result<b::play_to_client_packet_open_window::Ty> {
+	v.window_title = text::up(v.window_title);
+	cx.state::<Inventory>().windows.remove(&v.window_id);
 	Ok(v)
 }
 
 pub fn late_open_window_down_1_21_4(
-	mut v: b::play_toClient_packet_open_window::Ty,
+	mut v: b::play_to_client_packet_open_window::Ty,
 	_cx: &mut Session,
-) -> Result<a::play_toClient_packet_open_window::Ty> {
-	v.windowTitle = text::down(v.windowTitle);
+) -> Result<a::play_to_client_packet_open_window::Ty> {
+	v.window_title = text::down(v.window_title);
 	Ok(v)
 }
 
 pub fn late_chat_content_up_1_21_5(
-	v: &a::play_toClient_packet_player_chat::Ty,
+	v: &a::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(v.unsignedChatContent.clone().map(text::up))
+	Ok(v.unsigned_chat_content.clone().map(text::up))
 }
 
 pub fn late_chat_name_up_1_21_5(
-	v: &a::play_toClient_packet_player_chat::Ty,
+	v: &a::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<nbt::Tag> {
-	Ok(text::up(v.networkName.clone()))
+	Ok(text::up(v.network_name.clone()))
 }
 
 pub fn late_chat_target_up_1_21_5(
-	v: &a::play_toClient_packet_player_chat::Ty,
+	v: &a::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(v.networkTargetName.clone().map(text::up))
+	Ok(v.network_target_name.clone().map(text::up))
 }
 
 pub fn late_chat_content_down_1_21_4(
-	v: &b::play_toClient_packet_player_chat::Ty,
+	v: &b::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(v.unsignedChatContent.clone().map(text::down))
+	Ok(v.unsigned_chat_content.clone().map(text::down))
 }
 
 pub fn late_chat_name_down_1_21_4(
-	v: &b::play_toClient_packet_player_chat::Ty,
+	v: &b::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<nbt::Tag> {
-	Ok(text::down(v.networkName.clone()))
+	Ok(text::down(v.network_name.clone()))
 }
 
 pub fn late_chat_target_down_1_21_4(
-	v: &b::play_toClient_packet_player_chat::Ty,
+	v: &b::play_to_client_packet_player_chat::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(v.networkTargetName.clone().map(text::down))
+	Ok(v.network_target_name.clone().map(text::down))
 }
 
 #[derive(Default)]
 struct Inventory {
-	windows: HashMap<i32, Vec<a::Slot::Ty>>,
-	cursor: Option<a::Slot::Ty>,
+	windows: HashMap<i32, Vec<a::slot::Ty>>,
+	cursor: Option<a::slot::Ty>,
 }
 
 fn player_slot(index: i32) -> Option<usize> {
@@ -915,7 +915,7 @@ fn player_slot(index: i32) -> Option<usize> {
 	})
 }
 
-fn track(cx: &mut Session, window: i32, slot: i32, item: a::Slot::Ty) {
+fn track(cx: &mut Session, window: i32, slot: i32, item: a::slot::Ty) {
 	let inv = cx.state::<Inventory>();
 	if window == -1 && slot == -1 {
 		inv.cursor = Some(item);
@@ -927,65 +927,65 @@ fn track(cx: &mut Session, window: i32, slot: i32, item: a::Slot::Ty) {
 	};
 	let slots = inv.windows.entry(window).or_default();
 	if slots.len() <= slot {
-		slots.resize(slot + 1, a::Slot::Ty::v0);
+		slots.resize(slot + 1, a::slot::Ty::V0);
 	}
 	slots[slot] = item;
 }
 
 pub fn late_window_items_up_1_21_5(
-	p: &a::play_toClient_packet_window_items::Ty,
+	p: &a::play_to_client_packet_window_items::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::Slot::Ty>> {
+) -> Result<Vec<b::slot::Ty>> {
 	let inv = cx.state::<Inventory>();
-	inv.windows.insert(p.windowId, p.items.clone());
-	inv.cursor = Some(p.carriedItem.clone());
+	inv.windows.insert(p.window_id, p.items.clone());
+	inv.cursor = Some(p.carried_item.clone());
 	slots_up(p.items.clone())
 }
 
 pub fn late_set_slot_up_1_21_5(
-	p: &a::play_toClient_packet_set_slot::Ty,
+	p: &a::play_to_client_packet_set_slot::Ty,
 	cx: &mut Session,
-) -> Result<b::Slot::Ty> {
-	track(cx, p.windowId, p.slot as i32, p.item.clone());
+) -> Result<b::slot::Ty> {
+	track(cx, p.window_id, p.slot as i32, p.item.clone());
 	slot_up(p.item.clone())
 }
 
 pub fn late_player_inventory_up_1_21_5(
-	p: &a::play_toClient_packet_set_player_inventory::Ty,
+	p: &a::play_to_client_packet_set_player_inventory::Ty,
 	cx: &mut Session,
-) -> Result<b::Slot::Ty> {
-	if let Some(slot) = player_slot(p.slotId) {
+) -> Result<b::slot::Ty> {
+	if let Some(slot) = player_slot(p.slot_id) {
 		track(cx, 0, slot as i32, p.contents.clone());
 	}
 	slot_up(p.contents.clone())
 }
 
 pub fn late_cursor_up_1_21_5(
-	v: a::Slot::Ty,
+	v: a::slot::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	cx.state::<Inventory>().cursor = Some(v.clone());
-	Ok(vec![b::play_toClient_packet::Ty::set_cursor_item(slot_up(
+	Ok(vec![b::play_to_client_packet::Ty::SetCursorItem(slot_up(
 		v,
 	)?)])
 }
 
-fn item_of(s: &a::Slot::Ty) -> Option<i32> {
+fn item_of(s: &a::slot::Ty) -> Option<i32> {
 	match s {
-		a::Slot::Ty::default(_, d) => Some(d.itemId),
-		a::Slot::Ty::v0 => None,
+		a::slot::Ty::Default(_, d) => Some(d.item_id),
+		a::slot::Ty::V0 => None,
 	}
 }
 
-fn component_types(s: &a::Slot::Ty) -> Vec<i32> {
-	let Ok(b::Slot::Ty::default(_, d)) = slot_up(s.clone()) else {
+fn component_types(s: &a::slot::Ty) -> Vec<i32> {
+	let Ok(b::slot::Ty::Default(_, d)) = slot_up(s.clone()) else {
 		return Vec::new();
 	};
 	let mut types: Vec<i32> = d
 		.components
 		.iter()
 		.filter_map(|c| {
-			let bytes = encode(c, b::SlotComponent::serialize).ok()?;
+			let bytes = encode(c, b::slot_component::serialize).ok()?;
 			let mut at = 0;
 			super::util::read_varint(&bytes, &mut at).ok()
 		})
@@ -994,21 +994,21 @@ fn component_types(s: &a::Slot::Ty) -> Vec<i32> {
 	types
 }
 
-fn recover(inv: &Inventory, window: i32, slot: i16, h: &Option<b::HashedSlot::Ty>) -> a::Slot::Ty {
-	let Some(h) = h else { return a::Slot::Ty::v0 };
-	let id = remap::item(NEW, OLD, h.itemId).unwrap_or(0);
+fn recover(inv: &Inventory, window: i32, slot: i16, h: &Option<b::hashed_slot::Ty>) -> a::slot::Ty {
+	let Some(h) = h else { return a::slot::Ty::V0 };
+	let id = remap::item(NEW, OLD, h.item_id).unwrap_or(0);
 	let mut wanted: Vec<i32> = h
 		.components
 		.iter()
 		.filter_map(|c| {
-			let bytes = encode(&c.r#type, b::SlotComponentType::serialize).ok()?;
+			let bytes = encode(&c.r#type, b::slot_component_type::serialize).ok()?;
 			let mut at = 0;
 			super::util::read_varint(&bytes, &mut at).ok()
 		})
 		.collect();
 	wanted.sort();
 	let window_slots = inv.windows.get(&window);
-	let mut candidates: Vec<&a::Slot::Ty> = Vec::new();
+	let mut candidates: Vec<&a::slot::Ty> = Vec::new();
 	if let Some(s) = window_slots
 		.and_then(|w| w.get(slot.max(0) as usize))
 		.filter(|_| slot >= 0)
@@ -1020,7 +1020,7 @@ fn recover(inv: &Inventory, window: i32, slot: i16, h: &Option<b::HashedSlot::Ty
 	if window != 0 {
 		candidates.extend(inv.windows.get(&0).into_iter().flatten());
 	}
-	let same: Vec<&a::Slot::Ty> = candidates
+	let same: Vec<&a::slot::Ty> = candidates
 		.into_iter()
 		.filter(|s| item_of(s) == Some(id))
 		.collect();
@@ -1029,67 +1029,67 @@ fn recover(inv: &Inventory, window: i32, slot: i16, h: &Option<b::HashedSlot::Ty
 		.find(|s| component_types(s) == wanted)
 		.or(same.first());
 	match best {
-		Some(a::Slot::Ty::default(_, d)) => a::Slot::Ty::default(h.itemCount, d.clone()),
-		_ => a::Slot::Ty::default(
-			h.itemCount,
-			a::Slot__default::Ty {
-				itemId: id,
-				addedComponentCount: 0,
-				removedComponentCount: 0,
+		Some(a::slot::Ty::Default(_, d)) => a::slot::Ty::Default(h.item_count, d.clone()),
+		_ => a::slot::Ty::Default(
+			h.item_count,
+			a::slot_default::Ty {
+				item_id: id,
+				added_component_count: 0,
+				removed_component_count: 0,
 				components: Vec::new(),
-				removeComponents: Vec::new(),
+				remove_components: Vec::new(),
 			},
 		),
 	}
 }
 
 pub fn late_window_click_down_1_21_4(
-	p: b::play_toServer_packet_window_click::Ty,
+	p: b::play_to_server_packet_window_click::Ty,
 	cx: &mut Session,
-) -> Result<a::play_toServer_packet_window_click::Ty> {
+) -> Result<a::play_to_server_packet_window_click::Ty> {
 	let inv = cx.state::<Inventory>();
-	let changed: Vec<(i16, a::Slot::Ty)> = p
-		.changedSlots
+	let changed: Vec<(i16, a::slot::Ty)> = p
+		.changed_slots
 		.iter()
-		.map(|c| (c.location, recover(inv, p.windowId, c.location, &c.item)))
+		.map(|c| (c.location, recover(inv, p.window_id, c.location, &c.item)))
 		.collect();
-	let cursor = recover(inv, p.windowId, -1, &p.cursorItem);
+	let cursor = recover(inv, p.window_id, -1, &p.cursor_item);
 	for (slot, item) in &changed {
-		track(cx, p.windowId, *slot as i32, item.clone());
+		track(cx, p.window_id, *slot as i32, item.clone());
 	}
 	cx.state::<Inventory>().cursor = Some(cursor.clone());
-	Ok(a::play_toServer_packet_window_click::Ty {
-		windowId: p.windowId,
-		stateId: p.stateId,
+	Ok(a::play_to_server_packet_window_click::Ty {
+		window_id: p.window_id,
+		state_id: p.state_id,
 		slot: p.slot,
-		mouseButton: p.mouseButton,
+		mouse_button: p.mouse_button,
 		mode: p.mode,
-		changedSlots: changed
+		changed_slots: changed
 			.into_iter()
 			.map(
-				|(location, item)| a::play_toServer_packet_window_click__changedSlots__items::Ty {
+				|(location, item)| a::play_to_server_packet_window_click_changed_slots_items::Ty {
 					location,
 					item,
 				},
 			)
 			.collect(),
-		cursorItem: cursor,
+		cursor_item: cursor,
 	})
 }
 
 pub fn late_creative_slot_down_1_21_4(
-	p: &b::play_toServer_packet_set_creative_slot::Ty,
+	p: &b::play_to_server_packet_set_creative_slot::Ty,
 	cx: &mut Session,
-) -> Result<a::Slot::Ty> {
+) -> Result<a::slot::Ty> {
 	let item = slot_down(super::slots::late_to_slot_1_21_5(p.item.clone())?)?;
 	track(cx, 0, p.slot as i32, item.clone());
 	Ok(item)
 }
 
 pub fn late_creative_slot_up_1_21_5(
-	p: &a::play_toServer_packet_set_creative_slot::Ty,
+	p: &a::play_to_server_packet_set_creative_slot::Ty,
 	_cx: &mut Session,
-) -> Result<b::UntrustedSlot::Ty> {
+) -> Result<b::untrusted_slot::Ty> {
 	super::slots::late_to_untrusted_1_21_5(slot_up(p.item.clone())?)
 }
 
@@ -1099,9 +1099,9 @@ fn variant(entries: &[&str], asset: impl Fn(&str) -> String) -> Vec<(String, Opt
 		.map(|k| {
 			(
 				format!("minecraft:{k}"),
-				Some(Tag::new(Payload::compound(vec![Entry::new(
+				Some(Tag::new(Payload::Compound(vec![Entry::new(
 					"asset_id",
-					Payload::string(asset(k)),
+					Payload::String(asset(k)),
 				)]))),
 			)
 		})
@@ -1114,15 +1114,15 @@ struct Registries {
 }
 
 pub fn late_registry_data_up_1_21_5(
-	mut p: a::configuration_toClient_packet_registry_data::Ty,
+	mut p: a::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	cx.state::<Registries>()
 		.seen
 		.push(p.id.strip_prefix("minecraft:").unwrap_or(&p.id).to_owned());
 	shared::registry_entries(&mut p, "wolf_variant", |_, e| {
-		let mut assets = Payload::compound(vec![]);
+		let mut assets = Payload::Compound(vec![]);
 		for (old, new) in [
 			("wild_texture", "wild"),
 			("tame_texture", "tame"),
@@ -1148,15 +1148,15 @@ pub fn late_registry_data_up_1_21_5(
 			}
 		});
 	}
-	Ok(vec![b::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![b::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
 pub fn late_finish_configuration_up_1_21_5(
-	p: a::configuration_toClient_packet_finish_configuration::Ty,
+	p: a::configuration_to_client_packet_finish_configuration::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<b::configuration_to_client_packet::Ty>> {
 	let seen = std::mem::take(&mut cx.state::<Registries>().seen);
-	let classic = Payload::compound(vec![
+	let classic = Payload::Compound(vec![
 		Entry::new("ambient_sound", Payload::from("entity.wolf.ambient")),
 		Entry::new("death_sound", Payload::from("entity.wolf.death")),
 		Entry::new("growl_sound", Payload::from("entity.wolf.growl")),
@@ -1209,14 +1209,14 @@ pub fn late_finish_configuration_up_1_21_5(
 			vec![("minecraft:classic".to_owned(), Some(Tag::new(classic)))],
 		),
 	];
-	let mut out: Vec<b::configuration_toClient_packet::Ty> = added
+	let mut out: Vec<b::configuration_to_client_packet::Ty> = added
 		.into_iter()
 		.filter(|(id, _)| !seen.iter().any(|s| s == id))
 		.map(|(id, entries)| {
-			b::configuration_toClient_packet::Ty::registry_data(shared::registry(id, entries))
+			b::configuration_to_client_packet::Ty::RegistryData(shared::registry(id, entries))
 		})
 		.collect();
-	out.push(b::configuration_toClient_packet::Ty::finish_configuration(
+	out.push(b::configuration_to_client_packet::Ty::FinishConfiguration(
 		p,
 	));
 	Ok(out)
@@ -1242,120 +1242,120 @@ const MINECARTS: &[&str] = &[
 	"command_block_minecart",
 ];
 
-fn particle_up(p: a::Particle::Ty) -> Result<b::Particle::Ty> {
-	use a::Particle::Ty as A;
-	use b::Particle::Ty as B;
+fn particle_up(p: a::particle::Ty) -> Result<b::particle::Ty> {
+	use a::particle::Ty as A;
+	use b::particle::Ty as B;
 	let state = |s: i32| remap::state(OLD, NEW, s);
 	Ok(match p {
-		A::block(s) => B::block(state(s)?),
-		A::block_marker(s) => B::block_marker(state(s)?),
-		A::falling_dust(s) => B::falling_dust(state(s)?),
-		A::dust_pillar(s) => B::dust_pillar(state(s)?),
-		A::block_crumble(s) => B::block_crumble(state(s)?),
-		A::item(s) => B::item(slot_up(s)?),
+		A::Block(s) => B::Block(state(s)?),
+		A::BlockMarker(s) => B::BlockMarker(state(s)?),
+		A::FallingDust(s) => B::FallingDust(state(s)?),
+		A::DustPillar(s) => B::DustPillar(state(s)?),
+		A::BlockCrumble(s) => B::BlockCrumble(state(s)?),
+		A::Item(s) => B::Item(slot_up(s)?),
 		other => super::components::retag(
 			|t| super::util::remap("particles", OLD, NEW, t),
 			&other,
-			a::Particle::serialize,
-			b::Particle::deserialize,
+			a::particle::serialize,
+			b::particle::deserialize,
 		)?
 		.ok_or(Error::Dropped)?,
 	})
 }
 
-fn value_up(v: a::entityMetadataEntry__value::Ty) -> Result<b::entityMetadataEntry__value::Ty> {
-	use a::entityMetadataEntry__value::Ty as A;
-	use b::entityMetadataEntry__value::Ty as B;
+fn value_up(v: a::entity_metadata_entry_value::Ty) -> Result<b::entity_metadata_entry_value::Ty> {
+	use a::entity_metadata_entry_value::Ty as A;
+	use b::entity_metadata_entry_value::Ty as B;
 	Ok(match v {
-		A::byte(x) => B::byte(x),
-		A::int(x) => B::int(x),
-		A::long(x) => B::long(x),
-		A::float(x) => B::float(x),
-		A::string(x) => B::string(x),
-		A::component(x) => B::component(text::up(x)),
-		A::optional_component(x) => B::optional_component(x.map(text::up)),
-		A::item_stack(x) => B::item_stack(slot_up(x)?),
-		A::boolean(x) => B::boolean(x),
-		A::rotations(x) => B::rotations(b::entityMetadataEntry__value__rotations::Ty {
+		A::Byte(x) => B::Byte(x),
+		A::Int(x) => B::Int(x),
+		A::Long(x) => B::Long(x),
+		A::Float(x) => B::Float(x),
+		A::String(x) => B::String(x),
+		A::Component(x) => B::Component(text::up(x)),
+		A::OptionalComponent(x) => B::OptionalComponent(x.map(text::up)),
+		A::ItemStack(x) => B::ItemStack(slot_up(x)?),
+		A::Boolean(x) => B::Boolean(x),
+		A::Rotations(x) => B::Rotations(b::entity_metadata_entry_value_rotations::Ty {
 			pitch: x.pitch,
 			yaw: x.yaw,
 			roll: x.roll,
 		}),
-		A::block_pos(x) => B::block_pos(x),
-		A::optional_block_pos(x) => B::optional_block_pos(x),
-		A::direction(x) => B::direction(x),
-		A::optional_uuid(x) => B::optional_uuid(x),
-		A::block_state(x) => B::block_state(remap::state(OLD, NEW, x)?),
-		A::optional_block_state(x) => B::optional_block_state(remap::state(OLD, NEW, x)?),
-		A::compound_tag(x) => B::compound_tag(x),
-		A::particle(x) => B::particle(particle_up(x)?),
-		A::particles(x) => B::particles(x.into_iter().map(particle_up).collect::<Result<_>>()?),
-		A::villager_data(x) => B::villager_data(b::entityMetadataEntry__value__villager_data::Ty {
-			villagerType: x.villagerType,
-			villagerProfession: x.villagerProfession,
+		A::BlockPos(x) => B::BlockPos(x),
+		A::OptionalBlockPos(x) => B::OptionalBlockPos(x),
+		A::Direction(x) => B::Direction(x),
+		A::OptionalUuid(x) => B::OptionalUuid(x),
+		A::BlockState(x) => B::BlockState(remap::state(OLD, NEW, x)?),
+		A::OptionalBlockState(x) => B::OptionalBlockState(remap::state(OLD, NEW, x)?),
+		A::CompoundTag(x) => B::CompoundTag(x),
+		A::Particle(x) => B::Particle(particle_up(x)?),
+		A::Particles(x) => B::Particles(x.into_iter().map(particle_up).collect::<Result<_>>()?),
+		A::VillagerData(x) => B::VillagerData(b::entity_metadata_entry_value_villager_data::Ty {
+			villager_type: x.villager_type,
+			villager_profession: x.villager_profession,
 			level: x.level,
 		}),
-		A::optional_unsigned_int(x) => B::optional_unsigned_int(x),
-		A::pose(x) => B::pose(x),
-		A::cat_variant(x) => B::cat_variant(x),
-		A::wolf_variant(x) => B::wolf_variant(match x {
-			a::entityMetadataEntry__value__wolf_variant::Ty::Id(id) => id,
-			a::entityMetadataEntry__value__wolf_variant::Ty::Inline(_) => 0,
+		A::OptionalUnsignedInt(x) => B::OptionalUnsignedInt(x),
+		A::Pose(x) => B::Pose(x),
+		A::CatVariant(x) => B::CatVariant(x),
+		A::WolfVariant(x) => B::WolfVariant(match x {
+			a::entity_metadata_entry_value_wolf_variant::Ty::Id(id) => id,
+			a::entity_metadata_entry_value_wolf_variant::Ty::Inline(_) => 0,
 		}),
-		A::frog_variant(x) => B::frog_variant(x),
-		A::optional_global_pos(None) => B::optional_global_pos(None),
-		A::optional_global_pos(Some(_)) => return Err(Error::Dropped),
-		A::painting_variant(x) => B::painting_variant(recode(
+		A::FrogVariant(x) => B::FrogVariant(x),
+		A::OptionalGlobalPos(None) => B::OptionalGlobalPos(None),
+		A::OptionalGlobalPos(Some(_)) => return Err(Error::Dropped),
+		A::PaintingVariant(x) => B::PaintingVariant(recode(
 			&x,
-			a::entityMetadataEntry__value__painting_variant::serialize,
-			b::entityMetadataEntry__value__painting_variant::deserialize,
+			a::entity_metadata_entry_value_painting_variant::serialize,
+			b::entity_metadata_entry_value_painting_variant::deserialize,
 		)?),
-		A::sniffer_state(x) => B::sniffer_state(x),
-		A::armadillo_state(x) => B::armadillo_state(x),
-		A::vector3(x) => B::vector3(x),
-		A::quaternion(x) => B::quaternion(x),
-		A::default(_) => return Err(Error::Dropped),
+		A::SnifferState(x) => B::SnifferState(x),
+		A::ArmadilloState(x) => B::ArmadilloState(x),
+		A::Vector3(x) => B::Vector3(x),
+		A::Quaternion(x) => B::Quaternion(x),
+		A::Default(_) => return Err(Error::Dropped),
 	})
 }
 
-fn saddle(entity: i32, on: bool) -> b::play_toClient_packet::Ty {
+fn saddle(entity: i32, on: bool) -> b::play_to_client_packet::Ty {
 	let item = match crate::registry::names(NEW, "items").and_then(|n| n.id("saddle")) {
-		Some(id) if on => b::Slot::Ty::default(
+		Some(id) if on => b::slot::Ty::Default(
 			1,
-			b::Slot__default::Ty {
-				itemId: id as i32,
-				addedComponentCount: 0,
-				removedComponentCount: 0,
+			b::slot_default::Ty {
+				item_id: id as i32,
+				added_component_count: 0,
+				removed_component_count: 0,
 				components: Vec::new(),
-				removeComponents: Vec::new(),
+				remove_components: Vec::new(),
 			},
 		),
-		_ => b::Slot::Ty::v0,
+		_ => b::slot::Ty::V0,
 	};
-	b::play_toClient_packet::Ty::entity_equipment(b::play_toClient_packet_entity_equipment::Ty {
-		entityId: entity,
+	b::play_to_client_packet::Ty::EntityEquipment(b::play_to_client_packet_entity_equipment::Ty {
+		entity_id: entity,
 		equipments: vec![
-			b::play_toClient_packet_entity_equipment__equipments__items::Ty { slot: 7, item },
+			b::play_to_client_packet_entity_equipment_equipments_items::Ty { slot: 7, item },
 		],
 	})
 }
 
 pub fn late_metadata_up_1_21_5(
-	p: a::play_toClient_packet_entity_metadata::Ty,
+	p: a::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<Vec<b::play_toClient_packet::Ty>> {
-	let kind = world::kind(cx, OLD, p.entityId).unwrap_or_default();
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
+	let kind = world::kind(cx, OLD, p.entity_id).unwrap_or_default();
 	let kind = kind.as_str();
 	let mut extra = Vec::new();
 	let mut out = Vec::new();
 	for e in p.metadata {
-		use a::entityMetadataEntry__value::Ty as A;
+		use a::entity_metadata_entry_value::Ty as A;
 		let mut key = e.key;
 		let value = match (kind, key, e.value) {
-			(k, 11, A::int(state)) if MINECARTS.contains(&k) => {
+			(k, 11, A::Int(state)) if MINECARTS.contains(&k) => {
 				match remap::state(OLD, NEW, state)? {
 					0 => continue,
-					s => b::entityMetadataEntry__value::Ty::optional_block_state(s),
+					s => b::entity_metadata_entry_value::Ty::OptionalBlockState(s),
 				}
 			}
 			(k, 13, _) if MINECARTS.contains(&k) => continue,
@@ -1363,20 +1363,20 @@ pub fn late_metadata_up_1_21_5(
 				key -= 1;
 				value_up(v)?
 			}
-			("mooshroom", 17, A::string(s)) => {
-				b::entityMetadataEntry__value::Ty::int(if s == "red" { 0 } else { 1 })
+			("mooshroom", 17, A::String(s)) => {
+				b::entity_metadata_entry_value::Ty::Int(if s == "red" { 0 } else { 1 })
 			}
-			("pig", 17, A::boolean(on)) | ("strider", 19, A::boolean(on)) => {
-				extra.push(saddle(p.entityId, on));
+			("pig", 17, A::Boolean(on)) | ("strider", 19, A::Boolean(on)) => {
+				extra.push(saddle(p.entity_id, on));
 				continue;
 			}
 			("pig", 18, v) => {
 				key = 17;
 				value_up(v)?
 			}
-			(k, 17, A::byte(flags)) if HORSES.contains(&k) => {
-				extra.push(saddle(p.entityId, flags & 0x04 != 0));
-				b::entityMetadataEntry__value::Ty::byte(flags)
+			(k, 17, A::Byte(flags)) if HORSES.contains(&k) => {
+				extra.push(saddle(p.entity_id, flags & 0x04 != 0));
+				b::entity_metadata_entry_value::Ty::Byte(flags)
 			}
 			("dolphin", 17, _) => continue,
 			("dolphin", 18 | 19, v) => {
@@ -1394,11 +1394,11 @@ pub fn late_metadata_up_1_21_5(
 				Err(e) => return Err(e),
 			},
 		};
-		out.push(b::entityMetadataEntry::Ty { key, value });
+		out.push(b::entity_metadata_entry::Ty { key, value });
 	}
-	let mut packets = vec![b::play_toClient_packet::Ty::entity_metadata(
-		b::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	let mut packets = vec![b::play_to_client_packet::Ty::EntityMetadata(
+		b::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata: out,
 		},
 	)];
@@ -1407,49 +1407,52 @@ pub fn late_metadata_up_1_21_5(
 }
 
 pub fn late_untrusted_down_1_21_4(
-	v: b::UntrustedSlot::Ty,
+	v: b::untrusted_slot::Ty,
 	_cx: &mut Session,
-) -> Result<a::Slot::Ty> {
+) -> Result<a::slot::Ty> {
 	slot_down(super::slots::late_to_slot_1_21_5(v)?)
 }
 
-pub fn late_untrusted_up_1_21_5(v: a::Slot::Ty, _cx: &mut Session) -> Result<b::UntrustedSlot::Ty> {
+pub fn late_untrusted_up_1_21_5(
+	v: a::slot::Ty,
+	_cx: &mut Session,
+) -> Result<b::untrusted_slot::Ty> {
 	super::slots::late_to_untrusted_1_21_5(slot_up(v)?)
 }
 
-fn hashed(s: &a::Slot::Ty, cx: &mut Session) -> Result<Option<b::HashedSlot::Ty>> {
-	let a::Slot::Ty::default(count, d) = s else {
+fn hashed(s: &a::slot::Ty, cx: &mut Session) -> Result<Option<b::hashed_slot::Ty>> {
+	let a::slot::Ty::Default(count, d) = s else {
 		return Ok(None);
 	};
-	let key = encode(d, a::Slot__default::serialize)?;
+	let key = encode(d, a::slot_default::serialize)?;
 	let slot = match cx.state::<Sent>().0.get(&key) {
-		Some(original) => b::Slot::Ty::default(*count, original.clone()),
+		Some(original) => b::slot::Ty::Default(*count, original.clone()),
 		None => slot_up(s.clone())?,
 	};
 	Ok(hash::slot(&slot, cx.state::<hash::Keys>()))
 }
 
 pub fn late_window_click_up_1_21_5(
-	p: a::play_toServer_packet_window_click::Ty,
+	p: a::play_to_server_packet_window_click::Ty,
 	cx: &mut Session,
-) -> Result<b::play_toServer_packet_window_click::Ty> {
-	let mut changedSlots = Vec::with_capacity(p.changedSlots.len());
-	for c in &p.changedSlots {
-		changedSlots.push(
-			b::play_toServer_packet_window_click__changedSlots__items::Ty {
+) -> Result<b::play_to_server_packet_window_click::Ty> {
+	let mut changed_slots = Vec::with_capacity(p.changed_slots.len());
+	for c in &p.changed_slots {
+		changed_slots.push(
+			b::play_to_server_packet_window_click_changed_slots_items::Ty {
 				location: c.location,
 				item: hashed(&c.item, cx)?,
 			},
 		);
 	}
-	Ok(b::play_toServer_packet_window_click::Ty {
-		windowId: p.windowId,
-		stateId: p.stateId,
+	Ok(b::play_to_server_packet_window_click::Ty {
+		window_id: p.window_id,
+		state_id: p.state_id,
 		slot: p.slot,
-		mouseButton: p.mouseButton,
+		mouse_button: p.mouse_button,
 		mode: p.mode,
-		changedSlots,
-		cursorItem: hashed(&p.cursorItem, cx)?,
+		changed_slots,
+		cursor_item: hashed(&p.cursor_item, cx)?,
 	})
 }
 
@@ -1475,9 +1478,9 @@ const TEXT_FIELDS: &[(&str, &str)] = &[
 ];
 
 pub fn late_registry_data_down_1_21_4(
-	mut p: b::configuration_toClient_packet_registry_data::Ty,
+	mut p: b::configuration_to_client_packet_registry_data::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::configuration_toClient_packet::Ty>> {
+) -> Result<Vec<a::configuration_to_client_packet::Ty>> {
 	shared::count_biomes(&p, cx);
 	let id = p.id.strip_prefix("minecraft:").unwrap_or(&p.id).to_owned();
 	cx.state::<hash::Keys>().0.insert(
@@ -1500,7 +1503,7 @@ pub fn late_registry_data_down_1_21_4(
 			}
 		}
 		e.take("spawn_conditions");
-		e.put("biomes", List::new(ListItems::string(Vec::new())));
+		e.put("biomes", List::new(ListItems::String(Vec::new())));
 	});
 	for (registry, field) in [
 		("trim_material", "ingredient"),
@@ -1513,14 +1516,14 @@ pub fn late_registry_data_down_1_21_4(
 		});
 	}
 	shared::registry_entries(&mut p, "enchantment", |_, e| {
-		if let Some(Payload::list(nbt::List {
-			items: ListItems::string(slots),
+		if let Some(Payload::List(nbt::List {
+			items: ListItems::String(slots),
 			..
 		})) = e.take("slots")
 		{
 			e.put(
 				"slots",
-				List::new(ListItems::string(
+				List::new(ListItems::String(
 					slots.into_iter().filter(|s| s != "saddle").collect(),
 				)),
 			);
@@ -1533,7 +1536,7 @@ pub fn late_registry_data_down_1_21_4(
 			}
 		});
 	}
-	Ok(vec![a::configuration_toClient_packet::Ty::registry_data(p)])
+	Ok(vec![a::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
 const CATS: &[&str] = &[
@@ -1562,89 +1565,87 @@ fn static_variant(cx: &mut Session, registry: &str, names: &[&str], id: i32, fal
 		.map_or(fallback, |i| i as i32)
 }
 
-fn particle_down(p: b::Particle::Ty) -> Result<a::Particle::Ty> {
-	use a::Particle::Ty as A;
-	use b::Particle::Ty as B;
+fn particle_down(p: b::particle::Ty) -> Result<a::particle::Ty> {
+	use a::particle::Ty as A;
+	use b::particle::Ty as B;
 	let state = |s: i32| remap::state(NEW, OLD, s);
 	Ok(match p {
-		B::block(s) => A::block(state(s)?),
-		B::block_marker(s) => A::block_marker(state(s)?),
-		B::falling_dust(s) => A::falling_dust(state(s)?),
-		B::dust_pillar(s) => A::dust_pillar(state(s)?),
-		B::block_crumble(s) => A::block_crumble(state(s)?),
-		B::item(s) => A::item(slot_down(s)?),
+		B::Block(s) => A::Block(state(s)?),
+		B::BlockMarker(s) => A::BlockMarker(state(s)?),
+		B::FallingDust(s) => A::FallingDust(state(s)?),
+		B::DustPillar(s) => A::DustPillar(state(s)?),
+		B::BlockCrumble(s) => A::BlockCrumble(state(s)?),
+		B::Item(s) => A::Item(slot_down(s)?),
 		other => super::components::retag(
 			|t| super::util::remap("particles", NEW, OLD, t),
 			&other,
-			b::Particle::serialize,
-			a::Particle::deserialize,
+			b::particle::serialize,
+			a::particle::deserialize,
 		)?
 		.ok_or(Error::Dropped)?,
 	})
 }
 
 fn value_down(
-	v: b::entityMetadataEntry__value::Ty,
+	v: b::entity_metadata_entry_value::Ty,
 	cx: &mut Session,
-) -> Result<a::entityMetadataEntry__value::Ty> {
-	use a::entityMetadataEntry__value::Ty as A;
-	use b::entityMetadataEntry__value::Ty as B;
+) -> Result<a::entity_metadata_entry_value::Ty> {
+	use a::entity_metadata_entry_value::Ty as A;
+	use b::entity_metadata_entry_value::Ty as B;
 	Ok(match v {
-		B::byte(x) => A::byte(x),
-		B::int(x) => A::int(x),
-		B::long(x) => A::long(x),
-		B::float(x) => A::float(x),
-		B::string(x) => A::string(x),
-		B::component(x) => A::component(text::down(x)),
-		B::optional_component(x) => A::optional_component(x.map(text::down)),
-		B::item_stack(x) => A::item_stack(slot_down(x)?),
-		B::boolean(x) => A::boolean(x),
-		B::rotations(x) => A::rotations(a::entityMetadataEntry__value__rotations::Ty {
+		B::Byte(x) => A::Byte(x),
+		B::Int(x) => A::Int(x),
+		B::Long(x) => A::Long(x),
+		B::Float(x) => A::Float(x),
+		B::String(x) => A::String(x),
+		B::Component(x) => A::Component(text::down(x)),
+		B::OptionalComponent(x) => A::OptionalComponent(x.map(text::down)),
+		B::ItemStack(x) => A::ItemStack(slot_down(x)?),
+		B::Boolean(x) => A::Boolean(x),
+		B::Rotations(x) => A::Rotations(a::entity_metadata_entry_value_rotations::Ty {
 			pitch: x.pitch,
 			yaw: x.yaw,
 			roll: x.roll,
 		}),
-		B::block_pos(x) => A::block_pos(x),
-		B::optional_block_pos(x) => A::optional_block_pos(x),
-		B::direction(x) => A::direction(x),
-		B::optional_uuid(x) => A::optional_uuid(x),
-		B::block_state(x) => A::block_state(remap::state(NEW, OLD, x)?),
-		B::optional_block_state(x) => A::optional_block_state(remap::state(NEW, OLD, x)?),
-		B::compound_tag(x) => A::compound_tag(x),
-		B::particle(x) => A::particle(particle_down(x)?),
-		B::particles(x) => A::particles(
+		B::BlockPos(x) => A::BlockPos(x),
+		B::OptionalBlockPos(x) => A::OptionalBlockPos(x),
+		B::Direction(x) => A::Direction(x),
+		B::OptionalUuid(x) => A::OptionalUuid(x),
+		B::BlockState(x) => A::BlockState(remap::state(NEW, OLD, x)?),
+		B::OptionalBlockState(x) => A::OptionalBlockState(remap::state(NEW, OLD, x)?),
+		B::CompoundTag(x) => A::CompoundTag(x),
+		B::Particle(x) => A::Particle(particle_down(x)?),
+		B::Particles(x) => A::Particles(
 			x.into_iter()
 				.filter_map(|p| particle_down(p).ok())
 				.collect(),
 		),
-		B::villager_data(x) => A::villager_data(a::entityMetadataEntry__value__villager_data::Ty {
-			villagerType: x.villagerType,
-			villagerProfession: x.villagerProfession,
+		B::VillagerData(x) => A::VillagerData(a::entity_metadata_entry_value_villager_data::Ty {
+			villager_type: x.villager_type,
+			villager_profession: x.villager_profession,
 			level: x.level,
 		}),
-		B::optional_unsigned_int(x) => A::optional_unsigned_int(x),
-		B::pose(x) => A::pose(x),
-		B::cat_variant(x) => A::cat_variant(static_variant(cx, "cat_variant", CATS, x, 1)),
-		B::frog_variant(x) => A::frog_variant(static_variant(cx, "frog_variant", FROGS, x, 0)),
-		B::wolf_variant(x) => {
-			A::wolf_variant(a::entityMetadataEntry__value__wolf_variant::Ty::Id(x))
-		}
-		B::optional_global_pos(None) => A::optional_global_pos(None),
-		B::painting_variant(x) => A::painting_variant(recode(
+		B::OptionalUnsignedInt(x) => A::OptionalUnsignedInt(x),
+		B::Pose(x) => A::Pose(x),
+		B::CatVariant(x) => A::CatVariant(static_variant(cx, "cat_variant", CATS, x, 1)),
+		B::FrogVariant(x) => A::FrogVariant(static_variant(cx, "frog_variant", FROGS, x, 0)),
+		B::WolfVariant(x) => A::WolfVariant(a::entity_metadata_entry_value_wolf_variant::Ty::Id(x)),
+		B::OptionalGlobalPos(None) => A::OptionalGlobalPos(None),
+		B::PaintingVariant(x) => A::PaintingVariant(recode(
 			&x,
-			b::entityMetadataEntry__value__painting_variant::serialize,
-			a::entityMetadataEntry__value__painting_variant::deserialize,
+			b::entity_metadata_entry_value_painting_variant::serialize,
+			a::entity_metadata_entry_value_painting_variant::deserialize,
 		)?),
-		B::sniffer_state(x) => A::sniffer_state(x),
-		B::armadillo_state(x) => A::armadillo_state(x),
-		B::vector3(x) => A::vector3(x),
-		B::quaternion(x) => A::quaternion(x),
-		B::optional_global_pos(Some(_))
-		| B::cow_variant(_)
-		| B::wolf_sound_variant(_)
-		| B::pig_variant(_)
-		| B::chicken_variant(_)
-		| B::default(_) => {
+		B::SnifferState(x) => A::SnifferState(x),
+		B::ArmadilloState(x) => A::ArmadilloState(x),
+		B::Vector3(x) => A::Vector3(x),
+		B::Quaternion(x) => A::Quaternion(x),
+		B::OptionalGlobalPos(Some(_))
+		| B::CowVariant(_)
+		| B::WolfSoundVariant(_)
+		| B::PigVariant(_)
+		| B::ChickenVariant(_)
+		| B::Default(_) => {
 			return Err(Error::Dropped);
 		}
 	})
@@ -1653,26 +1654,26 @@ fn value_down(
 #[derive(Default)]
 struct Horses(HashMap<i32, (i8, bool)>);
 
-fn entry(key: u8, value: a::entityMetadataEntry__value::Ty) -> a::entityMetadataEntry::Ty {
-	a::entityMetadataEntry::Ty { key, value }
+fn entry(key: u8, value: a::entity_metadata_entry_value::Ty) -> a::entity_metadata_entry::Ty {
+	a::entity_metadata_entry::Ty { key, value }
 }
 
 pub fn late_metadata_down_1_21_4(
-	p: b::play_toClient_packet_entity_metadata::Ty,
+	p: b::play_to_client_packet_entity_metadata::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
-	use a::entityMetadataEntry__value::Ty as A;
-	use b::entityMetadataEntry__value::Ty as B;
-	let kind = world::kind(cx, NEW, p.entityId).unwrap_or_default();
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	use a::entity_metadata_entry_value::Ty as A;
+	use b::entity_metadata_entry_value::Ty as B;
+	let kind = world::kind(cx, NEW, p.entity_id).unwrap_or_default();
 	let kind = kind.as_str();
 	let mut out = Vec::new();
 	for e in p.metadata {
 		let mut key = e.key;
 		let v = match (kind, key, e.value) {
-			(k, 11, B::optional_block_state(s)) if MINECARTS.contains(&k) => {
+			(k, 11, B::OptionalBlockState(s)) if MINECARTS.contains(&k) => {
 				if s != 0 {
-					out.push(entry(11, A::int(remap::state(NEW, OLD, s)?)));
-					out.push(entry(13, A::boolean(true)));
+					out.push(entry(11, A::Int(remap::state(NEW, OLD, s)?)));
+					out.push(entry(13, A::Boolean(true)));
 				}
 				continue;
 			}
@@ -1680,19 +1681,19 @@ pub fn late_metadata_down_1_21_4(
 				key += 1;
 				v
 			}
-			("mooshroom", 17, B::int(t)) => {
+			("mooshroom", 17, B::Int(t)) => {
 				out.push(entry(
 					17,
-					A::string(if t == 0 { "red" } else { "brown" }.to_owned()),
+					A::String(if t == 0 { "red" } else { "brown" }.to_owned()),
 				));
 				continue;
 			}
-			(k, 17, B::byte(flags)) if HORSES.contains(&k) => {
-				let horse = cx.state::<Horses>().0.entry(p.entityId).or_default();
+			(k, 17, B::Byte(flags)) if HORSES.contains(&k) => {
+				let horse = cx.state::<Horses>().0.entry(p.entity_id).or_default();
 				horse.0 = flags;
 				out.push(entry(
 					17,
-					A::byte(if horse.1 { flags | 0x04 } else { flags }),
+					A::Byte(if horse.1 { flags | 0x04 } else { flags }),
 				));
 				continue;
 			}
@@ -1709,42 +1710,42 @@ pub fn late_metadata_down_1_21_4(
 			Err(e) => return Err(e),
 		}
 	}
-	Ok(vec![a::play_toClient_packet::Ty::entity_metadata(
-		a::play_toClient_packet_entity_metadata::Ty {
-			entityId: p.entityId,
+	Ok(vec![a::play_to_client_packet::Ty::EntityMetadata(
+		a::play_to_client_packet_entity_metadata::Ty {
+			entity_id: p.entity_id,
 			metadata: out,
 		},
 	)])
 }
 
 pub fn late_equipment_down_1_21_4(
-	p: b::play_toClient_packet_entity_equipment::Ty,
+	p: b::play_to_client_packet_entity_equipment::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
-	use a::entityMetadataEntry__value::Ty as A;
-	let kind = world::kind(cx, NEW, p.entityId).unwrap_or_default();
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	use a::entity_metadata_entry_value::Ty as A;
+	let kind = world::kind(cx, NEW, p.entity_id).unwrap_or_default();
 	let mut equipments = Vec::new();
 	let mut metadata = Vec::new();
 	for e in p.equipments {
 		if e.slot != 7 {
 			equipments.push(
-				a::play_toClient_packet_entity_equipment__equipments__items::Ty {
+				a::play_to_client_packet_entity_equipment_equipments_items::Ty {
 					slot: e.slot,
 					item: slot_down(e.item)?,
 				},
 			);
 			continue;
 		}
-		let on = !matches!(e.item, b::Slot::Ty::v0);
+		let on = !matches!(e.item, b::slot::Ty::V0);
 		match kind.as_str() {
-			"pig" => metadata.push(entry(17, A::boolean(on))),
-			"strider" => metadata.push(entry(19, A::boolean(on))),
+			"pig" => metadata.push(entry(17, A::Boolean(on))),
+			"strider" => metadata.push(entry(19, A::Boolean(on))),
 			k if HORSES.contains(&k) => {
-				let horse = cx.state::<Horses>().0.entry(p.entityId).or_default();
+				let horse = cx.state::<Horses>().0.entry(p.entity_id).or_default();
 				horse.1 = on;
 				metadata.push(entry(
 					17,
-					A::byte(if on { horse.0 | 0x04 } else { horse.0 & !0x04 }),
+					A::Byte(if on { horse.0 | 0x04 } else { horse.0 & !0x04 }),
 				));
 			}
 			_ => {}
@@ -1752,17 +1753,17 @@ pub fn late_equipment_down_1_21_4(
 	}
 	let mut out = Vec::new();
 	if !equipments.is_empty() {
-		out.push(a::play_toClient_packet::Ty::entity_equipment(
-			a::play_toClient_packet_entity_equipment::Ty {
-				entityId: p.entityId,
+		out.push(a::play_to_client_packet::Ty::EntityEquipment(
+			a::play_to_client_packet_entity_equipment::Ty {
+				entity_id: p.entity_id,
 				equipments,
 			},
 		));
 	}
 	if !metadata.is_empty() {
-		out.push(a::play_toClient_packet::Ty::entity_metadata(
-			a::play_toClient_packet_entity_metadata::Ty {
-				entityId: p.entityId,
+		out.push(a::play_to_client_packet::Ty::EntityMetadata(
+			a::play_to_client_packet_entity_metadata::Ty {
+				entity_id: p.entity_id,
 				metadata,
 			},
 		));
@@ -1771,60 +1772,60 @@ pub fn late_equipment_down_1_21_4(
 }
 
 pub fn late_spawn_entity_down_1_21_4(
-	p: b::play_toClient_packet_spawn_entity::Ty,
+	p: b::play_to_client_packet_spawn_entity::Ty,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
-	let name = shared::spawned(cx, p.entityId, NEW, p.r#type);
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	let name = shared::spawned(cx, p.entity_id, NEW, p.r#type);
 	if name == Some("experience_orb") {
-		let mut out = vec![a::play_toClient_packet::Ty::spawn_entity_experience_orb(
-			a::play_toClient_packet_spawn_entity_experience_orb::Ty {
-				entityId: p.entityId,
+		let mut out = vec![a::play_to_client_packet::Ty::SpawnEntityExperienceOrb(
+			a::play_to_client_packet_spawn_entity_experience_orb::Ty {
+				entity_id: p.entity_id,
 				x: p.x,
 				y: p.y,
 				z: p.z,
-				count: p.objectData.clamp(1, i16::MAX as i32) as i16,
+				count: p.object_data.clamp(1, i16::MAX as i32) as i16,
 			},
 		)];
 		let v = &p.velocity;
 		if v.x != 0 || v.y != 0 || v.z != 0 {
-			out.push(a::play_toClient_packet::Ty::entity_velocity(
-				a::play_toClient_packet_entity_velocity::Ty {
-					entityId: p.entityId,
+			out.push(a::play_to_client_packet::Ty::EntityVelocity(
+				a::play_to_client_packet_entity_velocity::Ty {
+					entity_id: p.entity_id,
 					velocity: p.velocity,
 				},
 			));
 		}
 		return Ok(out);
 	}
-	let objectData = if name == Some("falling_block") {
-		remap::state(NEW, OLD, p.objectData)?
+	let object_data = if name == Some("falling_block") {
+		remap::state(NEW, OLD, p.object_data)?
 	} else {
-		p.objectData
+		p.object_data
 	};
-	Ok(vec![a::play_toClient_packet::Ty::spawn_entity(
-		a::play_toClient_packet_spawn_entity::Ty {
+	Ok(vec![a::play_to_client_packet::Ty::SpawnEntity(
+		a::play_to_client_packet_spawn_entity::Ty {
 			r#type: remap::entity(NEW, OLD, p.r#type)?,
-			objectData,
+			object_data,
 			..p
 		},
 	)])
 }
 
 pub fn late_chunk_biomes_down_1_21_4(
-	v: Vec<b::play_toClient_packet__chunk_biomes__items::Ty>,
+	v: Vec<b::play_to_client_packet_chunk_biomes_items::Ty>,
 	cx: &mut Session,
-) -> Result<Vec<a::play_toClient_packet::Ty>> {
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
 	let biomes = world::biomes(cx);
 	let items = v
 		.into_iter()
 		.map(|c| {
-			Ok(a::play_toClient_packet__chunk_biomes__items::Ty {
+			Ok(a::play_to_client_packet_chunk_biomes_items::Ty {
 				data: chunk::biomes_step(NEW, OLD, &c.data, biomes)?,
 				position: c.position,
 			})
 		})
 		.collect::<Result<_>>()?;
-	Ok(vec![a::play_toClient_packet::Ty::chunk_biomes(items)])
+	Ok(vec![a::play_to_client_packet::Ty::ChunkBiomes(items)])
 }
 
 fn block_entity_down(tag: Option<nbt::Tag>) -> Option<nbt::Tag> {
@@ -1833,7 +1834,7 @@ fn block_entity_down(tag: Option<nbt::Tag>) -> Option<nbt::Tag> {
 		if let Some(mut s) = tag.value.take(side) {
 			for field in ["messages", "filtered_messages"] {
 				if let Some(lines) = s.field(field).and_then(text::json_lines) {
-					s.put(field, List::new(ListItems::string(lines)));
+					s.put(field, List::new(ListItems::String(lines)));
 				}
 			}
 			tag.value.put(side, s);
@@ -1841,21 +1842,21 @@ fn block_entity_down(tag: Option<nbt::Tag>) -> Option<nbt::Tag> {
 	}
 	if let Some(name) = tag.value.take("CustomName") {
 		tag.value
-			.put("CustomName", Payload::string(text::to_json(name)));
+			.put("CustomName", Payload::String(text::to_json(name)));
 	}
 	Some(Tag::new(tag.value))
 }
 
 pub fn late_chunk_block_entity_down_1_21_4(
-	v: &b::chunkBlockEntity::Ty,
+	v: &b::chunk_block_entity::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(block_entity_down(v.nbtData.clone()))
+	Ok(block_entity_down(v.nbt_data.clone()))
 }
 
 pub fn late_tile_entity_down_1_21_4(
-	v: &b::play_toClient_packet_tile_entity_data::Ty,
+	v: &b::play_to_client_packet_tile_entity_data::Ty,
 	_cx: &mut Session,
 ) -> Result<Option<nbt::Tag>> {
-	Ok(block_entity_down(v.nbtData.clone()))
+	Ok(block_entity_down(v.nbt_data.clone()))
 }
