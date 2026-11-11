@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 pub enum PacketStopSound {
     V1(super::super::super::Varint),
     V2(String),
-    V3(super::PacketStopSound368),
+    V3(super::PacketStopSound40),
     Default(super::super::super::I8),
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
@@ -13,7 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     match _0 {
         Ty::V1(__v) => super::super::super::varint::serialize(__v, output),
         Ty::V2(__v) => super::super::super::pstring_96::serialize(__v, output),
-        Ty::V3(__v) => super::packet_stop_sound_368::serialize(__v, output),
+        Ty::V3(__v) => super::packet_stop_sound_40::serialize(__v, output),
         Ty::Default(_) => Ok(()),
     }
 }
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
         return Ok(Ty::V2(super::super::super::pstring_96::deserialize(input, )?));
     }
     if (__tag.clone() == 3_i8) {
-        return Ok(Ty::V3(super::packet_stop_sound_368::deserialize(input, )?));
+        return Ok(Ty::V3(super::packet_stop_sound_40::deserialize(input, )?));
     }
     Ok(Ty::Default(__tagv))
 }
@@ -37,7 +37,7 @@ pub fn size_of(_0: &Ty) -> usize {
     super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
         Ty::V1(__v) => super::super::super::varint::size_of(__v),
         Ty::V2(__v) => super::super::super::pstring_96::size_of(__v),
-        Ty::V3(__v) => super::packet_stop_sound_368::size_of(__v),
+        Ty::V3(__v) => super::packet_stop_sound_40::size_of(__v),
         Ty::Default(_) => 0,
     }
 }

@@ -11,12 +11,12 @@ pub struct DebugSubscriptionEvent4<'i> {
     pub inventory: super::Pstring96::<'i>,
     pub wants_golem: super::super::Bool,
     pub anger_level: super::super::I32,
-    pub activities: super::array::Inline105::<'i>,
-    pub behaviors: super::array::Inline105::<'i>,
-    pub memories: super::array::Inline105::<'i>,
-    pub gossips: super::array::Inline105::<'i>,
-    pub pois: super::super::array::Inline101,
-    pub potential_pois: super::super::array::Inline101,
+    pub activities: super::array::Inline57::<'i>,
+    pub behaviors: super::array::Inline57::<'i>,
+    pub memories: super::array::Inline57::<'i>,
+    pub gossips: super::array::Inline57::<'i>,
+    pub pois: super::super::array::Inline56,
+    pub potential_pois: super::super::array::Inline56,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
@@ -51,27 +51,27 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.anger_level,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.activities,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.behaviors,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.memories,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.gossips,
         output,
     )?;
-    super::super::array::inline_101::serialize(
+    super::super::array::inline_56::serialize(
         &_0.pois,
         output,
     )?;
-    super::super::array::inline_101::serialize(
+    super::super::array::inline_56::serialize(
         &_0.potential_pois,
         output,
     )?;
@@ -102,22 +102,22 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_angerLevel = super::super::i32::deserialize(
         input,
     )?;
-    let f_activities = super::array::inline_105::deserialize(
+    let f_activities = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_behaviors = super::array::inline_105::deserialize(
+    let f_behaviors = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_memories = super::array::inline_105::deserialize(
+    let f_memories = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_gossips = super::array::inline_105::deserialize(
+    let f_gossips = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_pois = super::super::array::inline_101::deserialize(
+    let f_pois = super::super::array::inline_56::deserialize(
         input,
     )?;
-    let f_potentialPois = super::super::array::inline_101::deserialize(
+    let f_potentialPois = super::super::array::inline_56::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -150,33 +150,33 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::i32::size_of(
         &_0.anger_level
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.activities
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.behaviors
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.memories
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.gossips
     )
-    + super::super::array::inline_101::size_of(
+    + super::super::array::inline_56::size_of(
         &_0.pois
     )
-    + super::super::array::inline_101::size_of(
+    + super::super::array::inline_56::size_of(
         &_0.potential_pois
     )
 }
 pub fn view<'i>(_0: &'i super::super::DebugSubscriptionEvent4) -> Ty<'i> {
     Ty {
-        name: super::pstring_96::view(&_0.name),profession: super::pstring_96::view(&_0.profession),xp: ::core::clone::Clone::clone(&_0.xp),health: ::core::clone::Clone::clone(&_0.health),max_health: ::core::clone::Clone::clone(&_0.max_health),inventory: super::pstring_96::view(&_0.inventory),wants_golem: ::core::clone::Clone::clone(&_0.wants_golem),anger_level: ::core::clone::Clone::clone(&_0.anger_level),activities: super::array::inline_105::view(&_0.activities),behaviors: super::array::inline_105::view(&_0.behaviors),memories: super::array::inline_105::view(&_0.memories),gossips: super::array::inline_105::view(&_0.gossips),pois: ::core::clone::Clone::clone(&_0.pois),potential_pois: ::core::clone::Clone::clone(&_0.potential_pois)
+        name: super::pstring_96::view(&_0.name),profession: super::pstring_96::view(&_0.profession),xp: ::core::clone::Clone::clone(&_0.xp),health: ::core::clone::Clone::clone(&_0.health),max_health: ::core::clone::Clone::clone(&_0.max_health),inventory: super::pstring_96::view(&_0.inventory),wants_golem: ::core::clone::Clone::clone(&_0.wants_golem),anger_level: ::core::clone::Clone::clone(&_0.anger_level),activities: super::array::inline_57::view(&_0.activities),behaviors: super::array::inline_57::view(&_0.behaviors),memories: super::array::inline_57::view(&_0.memories),gossips: super::array::inline_57::view(&_0.gossips),pois: ::core::clone::Clone::clone(&_0.pois),potential_pois: ::core::clone::Clone::clone(&_0.potential_pois)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::DebugSubscriptionEvent4) -> Ty<'i> {
     Ty {
-        name: super::pstring_96::view(&mut _0.name),profession: super::pstring_96::view(&mut _0.profession),xp: ::core::clone::Clone::clone(&mut _0.xp),health: ::core::clone::Clone::clone(&mut _0.health),max_health: ::core::clone::Clone::clone(&mut _0.max_health),inventory: super::pstring_96::view(&mut _0.inventory),wants_golem: ::core::clone::Clone::clone(&mut _0.wants_golem),anger_level: ::core::clone::Clone::clone(&mut _0.anger_level),activities: super::array::inline_105::view(&mut _0.activities),behaviors: super::array::inline_105::view(&mut _0.behaviors),memories: super::array::inline_105::view(&mut _0.memories),gossips: super::array::inline_105::view(&mut _0.gossips),pois: ::core::mem::take(&mut _0.pois),potential_pois: ::core::mem::take(&mut _0.potential_pois)
+        name: super::pstring_96::view(&mut _0.name),profession: super::pstring_96::view(&mut _0.profession),xp: ::core::clone::Clone::clone(&mut _0.xp),health: ::core::clone::Clone::clone(&mut _0.health),max_health: ::core::clone::Clone::clone(&mut _0.max_health),inventory: super::pstring_96::view(&mut _0.inventory),wants_golem: ::core::clone::Clone::clone(&mut _0.wants_golem),anger_level: ::core::clone::Clone::clone(&mut _0.anger_level),activities: super::array::inline_57::view(&mut _0.activities),behaviors: super::array::inline_57::view(&mut _0.behaviors),memories: super::array::inline_57::view(&mut _0.memories),gossips: super::array::inline_57::view(&mut _0.gossips),pois: ::core::mem::take(&mut _0.pois),potential_pois: ::core::mem::take(&mut _0.potential_pois)
     }
 }
  pub type Ty<'i> = DebugSubscriptionEvent4<'i>;

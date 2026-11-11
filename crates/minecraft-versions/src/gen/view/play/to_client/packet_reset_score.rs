@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResetScore<'i> {
     pub entity_name: super::super::super::Pstring96::<'i>,
-    pub objective_name: super::super::super::Option22::<'i>,
+    pub objective_name: super::super::super::Option18::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::super::pstring_96::serialize(
         &_0.entity_name,
         output,
     )?;
-    super::super::super::option_22::serialize(
+    super::super::super::option_18::serialize(
         &_0.objective_name,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_entity_name = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_objective_name = super::super::super::option_22::deserialize(
+    let f_objective_name = super::super::super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,13 +33,13 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.entity_name
     )
-    + super::super::super::option_22::size_of(
+    + super::super::super::option_18::size_of(
         &_0.objective_name
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketResetScore) -> Ty<'i> {
     Ty {
-        entity_name: super::super::super::pstring_96::view(&_0.entity_name),objective_name: super::super::super::option_22::view(&_0.objective_name)
+        entity_name: super::super::super::pstring_96::view(&_0.entity_name),objective_name: super::super::super::option_18::view(&_0.objective_name)
     }
 }
  pub type Ty<'i> = PacketResetScore<'i>;

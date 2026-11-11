@@ -3,11 +3,11 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ResolvableProfile {
-    pub anon: super::ResolvableProfile71,
+    pub anon: super::ResolvableProfile25,
     pub skin_patch: super::PlayerSkinPatch,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::resolvable_profile_71::serialize(
+    super::resolvable_profile_25::serialize(
         &_0.anon,
         output,
     )?;
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_ANON = super::resolvable_profile_71::deserialize(
+    let f_ANON = super::resolvable_profile_25::deserialize(
         input,
     )?;
     let f_skinPatch = super::player_skin_patch::deserialize(
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::resolvable_profile_71::size_of(
+    + super::resolvable_profile_25::size_of(
         &_0.anon
     )
     + super::player_skin_patch::size_of(

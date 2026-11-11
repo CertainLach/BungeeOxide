@@ -3,25 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTrackedWaypoint<'i> {
-    pub operation: super::super::super::super::play::to_client::PacketTrackedWaypoint384,
-    pub waypoint: super::PacketTrackedWaypoint390::<'i>,
+    pub operation: super::super::super::super::play::to_client::PacketTrackedWaypoint48,
+    pub waypoint: super::PacketTrackedWaypoint54::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::play::to_client::packet_tracked_waypoint_384::serialize(
+    super::super::super::super::play::to_client::packet_tracked_waypoint_48::serialize(
         &_0.operation,
         output,
     )?;
-    super::packet_tracked_waypoint_390::serialize(
+    super::packet_tracked_waypoint_54::serialize(
         &_0.waypoint,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_operation = super::super::super::super::play::to_client::packet_tracked_waypoint_384::deserialize(
+    let f_operation = super::super::super::super::play::to_client::packet_tracked_waypoint_48::deserialize(
         input,
     )?;
-    let f_waypoint = super::packet_tracked_waypoint_390::deserialize(
+    let f_waypoint = super::packet_tracked_waypoint_54::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -30,16 +30,16 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     0
-    + super::super::super::super::play::to_client::packet_tracked_waypoint_384::size_of(
+    + super::super::super::super::play::to_client::packet_tracked_waypoint_48::size_of(
         &_0.operation
     )
-    + super::packet_tracked_waypoint_390::size_of(
+    + super::packet_tracked_waypoint_54::size_of(
         &_0.waypoint
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTrackedWaypoint) -> Ty<'i> {
     Ty {
-        operation: ::core::clone::Clone::clone(&_0.operation),waypoint: super::packet_tracked_waypoint_390::view(&_0.waypoint)
+        operation: ::core::clone::Clone::clone(&_0.operation),waypoint: super::packet_tracked_waypoint_54::view(&_0.waypoint)
     }
 }
  pub type Ty<'i> = PacketTrackedWaypoint<'i>;

@@ -8,8 +8,8 @@ pub struct ItemStackTemplate<'i> {
     pub item_count: super::super::Varint,
     pub added_component_count: super::super::Varint,
     pub removed_component_count: super::super::Varint,
-    pub components: super::array::Sized380::<'i>,
-    pub remove_components: super::super::array::Sized371,
+    pub components: super::array::Sized366::<'i>,
+    pub remove_components: super::super::array::Sized367,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::varint::serialize(
@@ -28,11 +28,11 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.removed_component_count,
         output,
     )?;
-    super::array::sized_380::serialize(
+    super::array::sized_366::serialize(
         &_0.components,
         output,
     )?;
-    super::super::array::sized_371::serialize(
+    super::super::array::sized_367::serialize(
         &_0.remove_components,
         output,
     )?;
@@ -51,15 +51,15 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_removedComponentCount = super::super::varint::deserialize(
         input,
     )?;
-    let f_components = super::array::sized_380::deserialize(
+    let f_components = super::array::sized_366::deserialize(
         input,
-        super::array::sized_380::Args {
+        super::array::sized_366::Args {
             count: {let _0: &super::super::Varint = &f_addedComponentCount;_0}
         },
     )?;
-    let f_removeComponents = super::super::array::sized_371::deserialize(
+    let f_removeComponents = super::super::array::sized_367::deserialize(
         input,
-        super::super::array::sized_371::Args {
+        super::super::array::sized_367::Args {
             count: {let _0: &super::super::Varint = &f_removedComponentCount;_0}
         },
     )?;
@@ -81,21 +81,21 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::varint::size_of(
         &_0.removed_component_count
     )
-    + super::array::sized_380::size_of(
+    + super::array::sized_366::size_of(
         &_0.components
     )
-    + super::super::array::sized_371::size_of(
+    + super::super::array::sized_367::size_of(
         &_0.remove_components
     )
 }
 pub fn view<'i>(_0: &'i super::super::ItemStackTemplate) -> Ty<'i> {
     Ty {
-        item_id: ::core::clone::Clone::clone(&_0.item_id),item_count: ::core::clone::Clone::clone(&_0.item_count),added_component_count: ::core::clone::Clone::clone(&_0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&_0.removed_component_count),components: super::array::sized_380::view(&_0.components),remove_components: ::core::clone::Clone::clone(&_0.remove_components)
+        item_id: ::core::clone::Clone::clone(&_0.item_id),item_count: ::core::clone::Clone::clone(&_0.item_count),added_component_count: ::core::clone::Clone::clone(&_0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&_0.removed_component_count),components: super::array::sized_366::view(&_0.components),remove_components: ::core::clone::Clone::clone(&_0.remove_components)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::ItemStackTemplate) -> Ty<'i> {
     Ty {
-        item_id: ::core::clone::Clone::clone(&mut _0.item_id),item_count: ::core::clone::Clone::clone(&mut _0.item_count),added_component_count: ::core::clone::Clone::clone(&mut _0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&mut _0.removed_component_count),components: super::array::sized_380::into_view(&mut _0.components),remove_components: ::core::mem::take(&mut _0.remove_components)
+        item_id: ::core::clone::Clone::clone(&mut _0.item_id),item_count: ::core::clone::Clone::clone(&mut _0.item_count),added_component_count: ::core::clone::Clone::clone(&mut _0.added_component_count),removed_component_count: ::core::clone::Clone::clone(&mut _0.removed_component_count),components: super::array::sized_366::into_view(&mut _0.components),remove_components: ::core::mem::take(&mut _0.remove_components)
     }
 }
  pub type Ty<'i> = ItemStackTemplate<'i>;

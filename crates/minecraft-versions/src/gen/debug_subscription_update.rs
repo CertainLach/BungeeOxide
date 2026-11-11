@@ -6,10 +6,10 @@ pub enum DebugSubscriptionUpdate {
     DedicatedServerTickTime,
     Bees(Option<super::DebugSubscriptionUpdate9>),
     VillageSections(Option<super::Void>),
-    Raids(Option<Vec<super::PositionV114>>),
+    Raids(Option<Vec<super::Position>>),
     Structures(Option<Vec<super::DebugStructureInfo>>),
     GameEventListeners(Option<super::Varint>),
-    NeighborUpdates(Option<super::PositionV114>),
+    NeighborUpdates(Option<super::Position>),
     GameEvents(Option<super::DebugSubscriptionUpdate10>),
     Brains(Option<super::DebugSubscriptionUpdate11>),
     Breezes(Option<super::DebugSubscriptionUpdate12>),
@@ -30,7 +30,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::Raids(__v) => super::option_90::serialize(__v, output),
         Ty::Structures(__v) => super::option_91::serialize(__v, output),
         Ty::GameEventListeners(__v) => super::option_23::serialize(__v, output),
-        Ty::NeighborUpdates(__v) => super::option_18::serialize(__v, output),
+        Ty::NeighborUpdates(__v) => super::option_16::serialize(__v, output),
         Ty::GameEvents(__v) => super::option_28::serialize(__v, output),
         Ty::Brains(__v) => super::option_29::serialize(__v, output),
         Ty::Breezes(__v) => super::option_30::serialize(__v, output),
@@ -65,7 +65,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
         return Ok(Ty::GameEventListeners(super::option_23::deserialize(input, )?));
     }
     if (__tag.clone() == 14_i32) {
-        return Ok(Ty::NeighborUpdates(super::option_18::deserialize(input, )?));
+        return Ok(Ty::NeighborUpdates(super::option_16::deserialize(input, )?));
     }
     if (__tag.clone() == 15_i32) {
         return Ok(Ty::GameEvents(super::option_28::deserialize(input, )?));
@@ -104,7 +104,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::Raids(__v) => super::option_90::size_of(__v),
         Ty::Structures(__v) => super::option_91::size_of(__v),
         Ty::GameEventListeners(__v) => super::option_23::size_of(__v),
-        Ty::NeighborUpdates(__v) => super::option_18::size_of(__v),
+        Ty::NeighborUpdates(__v) => super::option_16::size_of(__v),
         Ty::GameEvents(__v) => super::option_28::size_of(__v),
         Ty::Brains(__v) => super::option_29::size_of(__v),
         Ty::Breezes(__v) => super::option_30::size_of(__v),

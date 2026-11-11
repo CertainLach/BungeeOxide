@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.action,
         output,
     )?;
-    super::super::super::array::inline_105::serialize(
+    super::super::super::array::inline_57::serialize(
         &_0.entries,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_action = super::super::super::varint::deserialize(
         input,
     )?;
-    let f_entries = super::super::super::array::inline_105::deserialize(
+    let f_entries = super::super::super::array::inline_57::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::super::super::varint::size_of(
         &_0.action
     )
-    + super::super::super::array::inline_105::size_of(
+    + super::super::super::array::inline_57::size_of(
         &_0.entries
     )
 }

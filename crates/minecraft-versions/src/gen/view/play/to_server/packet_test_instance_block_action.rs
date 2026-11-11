@@ -3,12 +3,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTestInstanceBlockAction<'i> {
-    pub pos: super::super::super::super::PositionV114,
+    pub pos: super::super::super::super::Position,
     pub action: super::super::super::super::Varint,
-    pub data: super::PacketTestInstanceBlockAction2::<'i>,
+    pub data: super::PacketTestInstanceBlockAction0::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::super::super::super::position_v1_14::serialize(
+    super::super::super::super::position::serialize(
         &_0.pos,
         output,
     )?;
@@ -16,20 +16,20 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.action,
         output,
     )?;
-    super::packet_test_instance_block_action_2::serialize(
+    super::packet_test_instance_block_action_0::serialize(
         &_0.data,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_pos = super::super::super::super::position_v1_14::deserialize(
+    let f_pos = super::super::super::super::position::deserialize(
         input,
     )?;
     let f_action = super::super::super::super::varint::deserialize(
         input,
     )?;
-    let f_data = super::packet_test_instance_block_action_2::deserialize(
+    let f_data = super::packet_test_instance_block_action_0::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -38,24 +38,24 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     0
-    + super::super::super::super::position_v1_14::size_of(
+    + super::super::super::super::position::size_of(
         &_0.pos
     )
     + super::super::super::super::varint::size_of(
         &_0.action
     )
-    + super::packet_test_instance_block_action_2::size_of(
+    + super::packet_test_instance_block_action_0::size_of(
         &_0.data
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketTestInstanceBlockAction) -> Ty<'i> {
     Ty {
-        pos: ::core::clone::Clone::clone(&_0.pos),action: ::core::clone::Clone::clone(&_0.action),data: super::packet_test_instance_block_action_2::view(&_0.data)
+        pos: ::core::clone::Clone::clone(&_0.pos),action: ::core::clone::Clone::clone(&_0.action),data: super::packet_test_instance_block_action_0::view(&_0.data)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_server::PacketTestInstanceBlockAction) -> Ty<'i> {
     Ty {
-        pos: ::core::clone::Clone::clone(&mut _0.pos),action: ::core::clone::Clone::clone(&mut _0.action),data: super::packet_test_instance_block_action_2::into_view(&mut _0.data)
+        pos: ::core::clone::Clone::clone(&mut _0.pos),action: ::core::clone::Clone::clone(&mut _0.action),data: super::packet_test_instance_block_action_0::into_view(&mut _0.data)
     }
 }
  pub type Ty<'i> = PacketTestInstanceBlockAction<'i>;

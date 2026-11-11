@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.message_id,
         output,
     )?;
-    super::super::super::option_20::serialize(
+    super::super::super::option_17::serialize(
         &_0.data,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_messageId = super::super::super::varint::deserialize(
         input,
     )?;
-    let f_data = super::super::super::option_20::deserialize(
+    let f_data = super::super::super::option_17::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::super::super::varint::size_of(
         &_0.message_id
     )
-    + super::super::super::option_20::size_of(
+    + super::super::super::option_17::size_of(
         &_0.data
     )
 }

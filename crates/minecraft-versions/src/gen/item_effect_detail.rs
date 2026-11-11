@@ -32,7 +32,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.show_icon,
         output,
     )?;
-    super::option_6::serialize(
+    super::option_4::serialize(
         &_0.hidden_effect,
         output,
     )?;
@@ -54,7 +54,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_showIcon = super::bool::deserialize(
         input,
     )?;
-    let f_hiddenEffect = super::option_6::deserialize(
+    let f_hiddenEffect = super::option_4::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -78,7 +78,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::bool::size_of(
         &_0.show_icon
     )
-    + super::option_6::size_of(
+    + super::option_4::size_of(
         &_0.hidden_effect
     )
 }

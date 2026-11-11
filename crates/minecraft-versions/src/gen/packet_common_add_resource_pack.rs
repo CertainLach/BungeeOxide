@@ -26,7 +26,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.forced,
         output,
     )?;
-    super::option_11::serialize(
+    super::option_9::serialize(
         &_0.prompt_message,
         output,
     )?;
@@ -45,7 +45,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_forced = super::bool::deserialize(
         input,
     )?;
-    let f_promptMessage = super::option_11::deserialize(
+    let f_promptMessage = super::option_9::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -66,7 +66,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::bool::size_of(
         &_0.forced
     )
-    + super::option_11::size_of(
+    + super::option_9::size_of(
         &_0.prompt_message
     )
 }

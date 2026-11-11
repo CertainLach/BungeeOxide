@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 pub struct GameProfileProperty<'i> {
     pub name: super::Pstring96::<'i>,
     pub value: super::Pstring96::<'i>,
-    pub signature: super::Option22::<'i>,
+    pub signature: super::Option18::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
@@ -16,7 +16,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.value,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.signature,
         output,
     )?;
@@ -29,7 +29,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_value = super::pstring_96::deserialize(
         input,
     )?;
-    let f_signature = super::option_22::deserialize(
+    let f_signature = super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -44,13 +44,13 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::pstring_96::size_of(
         &_0.value
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.signature
     )
 }
 pub fn view<'i>(_0: &'i super::super::GameProfileProperty) -> Ty<'i> {
     Ty {
-        name: super::pstring_96::view(&_0.name),value: super::pstring_96::view(&_0.value),signature: super::option_22::view(&_0.signature)
+        name: super::pstring_96::view(&_0.name),value: super::pstring_96::view(&_0.value),signature: super::option_18::view(&_0.signature)
     }
 }
  pub type Ty<'i> = GameProfileProperty<'i>;

@@ -3,16 +3,16 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PartialResolvableProfile<'i> {
-    pub name: super::Option22::<'i>,
-    pub uuid: super::super::Option10,
+    pub name: super::Option18::<'i>,
+    pub uuid: super::super::Option8,
     pub properties: super::array::Inline27::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.name,
         output,
     )?;
-    super::super::option_10::serialize(
+    super::super::option_8::serialize(
         &_0.uuid,
         output,
     )?;
@@ -23,10 +23,10 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_name = super::option_22::deserialize(
+    let f_name = super::option_18::deserialize(
         input,
     )?;
-    let f_uuid = super::super::option_10::deserialize(
+    let f_uuid = super::super::option_8::deserialize(
         input,
     )?;
     let f_properties = super::array::inline_27::deserialize(
@@ -38,10 +38,10 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     0
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.name
     )
-    + super::super::option_10::size_of(
+    + super::super::option_8::size_of(
         &_0.uuid
     )
     + super::array::inline_27::size_of(
@@ -50,12 +50,12 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 }
 pub fn view<'i>(_0: &'i super::super::PartialResolvableProfile) -> Ty<'i> {
     Ty {
-        name: super::option_22::view(&_0.name),uuid: ::core::clone::Clone::clone(&_0.uuid),properties: super::array::inline_27::view(&_0.properties)
+        name: super::option_18::view(&_0.name),uuid: ::core::clone::Clone::clone(&_0.uuid),properties: super::array::inline_27::view(&_0.properties)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::PartialResolvableProfile) -> Ty<'i> {
     Ty {
-        name: super::option_22::view(&mut _0.name),uuid: ::core::mem::take(&mut _0.uuid),properties: super::array::inline_27::view(&mut _0.properties)
+        name: super::option_18::view(&mut _0.name),uuid: ::core::mem::take(&mut _0.uuid),properties: super::array::inline_27::view(&mut _0.properties)
     }
 }
  pub type Ty<'i> = PartialResolvableProfile<'i>;

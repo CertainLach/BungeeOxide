@@ -7,7 +7,7 @@ pub struct PacketCommonAddResourcePack<'i> {
     pub url: super::Pstring96::<'i>,
     pub hash: super::Pstring96::<'i>,
     pub forced: super::super::Bool,
-    pub prompt_message: super::Option11::<'i>,
+    pub prompt_message: super::Option9::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::uuid::serialize(
@@ -26,7 +26,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.forced,
         output,
     )?;
-    super::option_11::serialize(
+    super::option_9::serialize(
         &_0.prompt_message,
         output,
     )?;
@@ -45,7 +45,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_forced = super::super::bool::deserialize(
         input,
     )?;
-    let f_promptMessage = super::option_11::deserialize(
+    let f_promptMessage = super::option_9::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -66,18 +66,18 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::bool::size_of(
         &_0.forced
     )
-    + super::option_11::size_of(
+    + super::option_9::size_of(
         &_0.prompt_message
     )
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonAddResourcePack) -> Ty<'i> {
     Ty {
-        uuid: ::core::clone::Clone::clone(&_0.uuid),url: super::pstring_96::view(&_0.url),hash: super::pstring_96::view(&_0.hash),forced: ::core::clone::Clone::clone(&_0.forced),prompt_message: super::option_11::view(&_0.prompt_message)
+        uuid: ::core::clone::Clone::clone(&_0.uuid),url: super::pstring_96::view(&_0.url),hash: super::pstring_96::view(&_0.hash),forced: ::core::clone::Clone::clone(&_0.forced),prompt_message: super::option_9::view(&_0.prompt_message)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::PacketCommonAddResourcePack) -> Ty<'i> {
     Ty {
-        uuid: ::core::clone::Clone::clone(&mut _0.uuid),url: super::pstring_96::view(&mut _0.url),hash: super::pstring_96::view(&mut _0.hash),forced: ::core::clone::Clone::clone(&mut _0.forced),prompt_message: super::option_11::into_view(&mut _0.prompt_message)
+        uuid: ::core::clone::Clone::clone(&mut _0.uuid),url: super::pstring_96::view(&mut _0.url),hash: super::pstring_96::view(&mut _0.hash),forced: ::core::clone::Clone::clone(&mut _0.forced),prompt_message: super::option_9::into_view(&mut _0.prompt_message)
     }
 }
  pub type Ty<'i> = PacketCommonAddResourcePack<'i>;

@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonCustomClickAction<'i> {
     pub id: super::Pstring96::<'i>,
-    pub nbt: super::Option11::<'i>,
+    pub nbt: super::Option9::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
         &_0.id,
         output,
     )?;
-    super::option_11::serialize(
+    super::option_9::serialize(
         &_0.nbt,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_id = super::pstring_96::deserialize(
         input,
     )?;
-    let f_nbt = super::option_11::deserialize(
+    let f_nbt = super::option_9::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,18 +33,18 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::pstring_96::size_of(
         &_0.id
     )
-    + super::option_11::size_of(
+    + super::option_9::size_of(
         &_0.nbt
     )
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonCustomClickAction) -> Ty<'i> {
     Ty {
-        id: super::pstring_96::view(&_0.id),nbt: super::option_11::view(&_0.nbt)
+        id: super::pstring_96::view(&_0.id),nbt: super::option_9::view(&_0.nbt)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::PacketCommonCustomClickAction) -> Ty<'i> {
     Ty {
-        id: super::pstring_96::view(&mut _0.id),nbt: super::option_11::into_view(&mut _0.nbt)
+        id: super::pstring_96::view(&mut _0.id),nbt: super::option_9::into_view(&mut _0.nbt)
     }
 }
  pub type Ty<'i> = PacketCommonCustomClickAction<'i>;

@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 pub enum PacketStopSound<'i> {
     V1(super::super::super::super::Varint),
     V2(super::super::super::Pstring96::<'i>),
-    V3(super::PacketStopSound368::<'i>),
+    V3(super::PacketStopSound40::<'i>),
     Default(super::super::super::super::I8),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -13,7 +13,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     match _0 {
         Ty::V1(__v) => super::super::super::super::varint::serialize(__v, output),
         Ty::V2(__v) => super::super::super::pstring_96::serialize(__v, output),
-        Ty::V3(__v) => super::packet_stop_sound_368::serialize(__v, output),
+        Ty::V3(__v) => super::packet_stop_sound_40::serialize(__v, output),
         Ty::Default(_) => Ok(()),
     }
 }
@@ -29,7 +29,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
         return Ok(Ty::V2(super::super::super::pstring_96::deserialize(input, )?));
     }
     if (__tag.clone() == 3_i8) {
-        return Ok(Ty::V3(super::packet_stop_sound_368::deserialize(input, )?));
+        return Ok(Ty::V3(super::packet_stop_sound_40::deserialize(input, )?));
     }
     Ok(Ty::Default(__tagv))
 }
@@ -37,7 +37,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     super::super::super::super::i8::size_of(&virtual_tag(_0)) + match _0 {
         Ty::V1(__v) => super::super::super::super::varint::size_of(__v),
         Ty::V2(__v) => super::super::super::pstring_96::size_of(__v),
-        Ty::V3(__v) => super::packet_stop_sound_368::size_of(__v),
+        Ty::V3(__v) => super::packet_stop_sound_40::size_of(__v),
         Ty::Default(_) => 0,
     }
 }
@@ -61,7 +61,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketStopS
     match _0 {
         super::super::super::super::play::to_client::PacketStopSound::V1(__v) => Ty::V1(::core::clone::Clone::clone(__v)),
         super::super::super::super::play::to_client::PacketStopSound::V2(__v) => Ty::V2(super::super::super::pstring_96::view(__v)),
-        super::super::super::super::play::to_client::PacketStopSound::V3(__v) => Ty::V3(super::packet_stop_sound_368::view(__v)),
+        super::super::super::super::play::to_client::PacketStopSound::V3(__v) => Ty::V3(super::packet_stop_sound_40::view(__v)),
         super::super::super::super::play::to_client::PacketStopSound::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
     }
 }

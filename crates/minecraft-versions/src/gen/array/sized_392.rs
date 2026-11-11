@@ -2,13 +2,13 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub count: &'a super::super::Varint,
-    pub height: &'a super::super::Varint,
+    pub count: &'a super::super::I16,
 }
-pub type Ty = Vec<Vec<Vec<super::super::SlotV113>>>;
+pub type Ty = Vec<super::super::v1_0_1::play::to_client::PacketMultiBlockChange0>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+    let _: super::super::Varint = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
     for e in _0.iter() {
-        super::sized_385::serialize(e, output)?;
+        super::super::v1_0_1::play::to_client::packet_multi_block_change_0::serialize(e, output)?;
     }
     Ok(())
 }
@@ -16,15 +16,13 @@ pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
     let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
-        out.push(super::sized_385::deserialize(input, super::sized_385::Args {
-            count: {let _0 = args.height;_0}
-        },)?);
+        out.push(super::super::v1_0_1::play::to_client::packet_multi_block_change_0::deserialize(input, )?);
     }
     Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
     let mut n = 0;
-    for e in _0.iter() { n += super::sized_385::size_of(e); }
+    for e in _0.iter() { n += super::super::v1_0_1::play::to_client::packet_multi_block_change_0::size_of(e); }
     n
 }
 pub fn virtual_size(_0: &Ty) -> super::super::Varint {

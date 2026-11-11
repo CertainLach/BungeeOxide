@@ -6,10 +6,10 @@ pub enum DebugSubscriptionEvent {
     DedicatedServerTickTime,
     Bees(super::DebugSubscriptionEvent2),
     VillageSections,
-    Raids(Vec<super::PositionV114>),
+    Raids(Vec<super::Position>),
     Structures(Vec<super::DebugStructureInfo>),
     GameEventListeners(super::Varint),
-    NeighborUpdates(super::PositionV114),
+    NeighborUpdates(super::Position),
     GameEvents(super::DebugSubscriptionEvent3),
     Brains(super::DebugSubscriptionEvent4),
     Breezes(super::DebugSubscriptionEvent5),
@@ -27,10 +27,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         Ty::DedicatedServerTickTime => Ok(()),
         Ty::Bees(__v) => super::debug_subscription_event_2::serialize(__v, output),
         Ty::VillageSections => Ok(()),
-        Ty::Raids(__v) => super::array::inline_101::serialize(__v, output),
+        Ty::Raids(__v) => super::array::inline_56::serialize(__v, output),
         Ty::Structures(__v) => super::array::inline_25::serialize(__v, output),
         Ty::GameEventListeners(__v) => super::varint::serialize(__v, output),
-        Ty::NeighborUpdates(__v) => super::position_v1_14::serialize(__v, output),
+        Ty::NeighborUpdates(__v) => super::position::serialize(__v, output),
         Ty::GameEvents(__v) => super::debug_subscription_event_3::serialize(__v, output),
         Ty::Brains(__v) => super::debug_subscription_event_4::serialize(__v, output),
         Ty::Breezes(__v) => super::debug_subscription_event_5::serialize(__v, output),
@@ -54,7 +54,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     }
     if (__tag.clone() == 10_i32) { return Ok(Ty::VillageSections); }
     if (__tag.clone() == 11_i32) {
-        return Ok(Ty::Raids(super::array::inline_101::deserialize(input, )?));
+        return Ok(Ty::Raids(super::array::inline_56::deserialize(input, )?));
     }
     if (__tag.clone() == 12_i32) {
         return Ok(Ty::Structures(super::array::inline_25::deserialize(input, )?));
@@ -63,7 +63,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
         return Ok(Ty::GameEventListeners(super::varint::deserialize(input, )?));
     }
     if (__tag.clone() == 14_i32) {
-        return Ok(Ty::NeighborUpdates(super::position_v1_14::deserialize(input, )?));
+        return Ok(Ty::NeighborUpdates(super::position::deserialize(input, )?));
     }
     if (__tag.clone() == 15_i32) {
         return Ok(Ty::GameEvents(super::debug_subscription_event_3::deserialize(input, )?));
@@ -99,10 +99,10 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::DedicatedServerTickTime => 0,
         Ty::Bees(__v) => super::debug_subscription_event_2::size_of(__v),
         Ty::VillageSections => 0,
-        Ty::Raids(__v) => super::array::inline_101::size_of(__v),
+        Ty::Raids(__v) => super::array::inline_56::size_of(__v),
         Ty::Structures(__v) => super::array::inline_25::size_of(__v),
         Ty::GameEventListeners(__v) => super::varint::size_of(__v),
-        Ty::NeighborUpdates(__v) => super::position_v1_14::size_of(__v),
+        Ty::NeighborUpdates(__v) => super::position::size_of(__v),
         Ty::GameEvents(__v) => super::debug_subscription_event_3::size_of(__v),
         Ty::Brains(__v) => super::debug_subscription_event_4::size_of(__v),
         Ty::Breezes(__v) => super::debug_subscription_event_5::size_of(__v),

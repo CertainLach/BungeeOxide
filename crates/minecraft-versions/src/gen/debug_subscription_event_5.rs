@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionEvent5 {
     pub attack_target: Option<super::Varint>,
-    pub jump_target: Option<super::PositionV114>,
+    pub jump_target: Option<super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     super::option_23::serialize(
         &_0.attack_target,
         output,
     )?;
-    super::option_18::serialize(
+    super::option_16::serialize(
         &_0.jump_target,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_attackTarget = super::option_23::deserialize(
         input,
     )?;
-    let f_jumpTarget = super::option_18::deserialize(
+    let f_jumpTarget = super::option_16::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::option_23::size_of(
         &_0.attack_target
     )
-    + super::option_18::size_of(
+    + super::option_16::size_of(
         &_0.jump_target
     )
 }

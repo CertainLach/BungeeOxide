@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.content,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.filtered_content,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_content = super::pstring_96::deserialize(
         input,
     )?;
-    let f_filteredContent = super::option_22::deserialize(
+    let f_filteredContent = super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::pstring_96::size_of(
         &_0.content
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.filtered_content
     )
 }

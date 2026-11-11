@@ -7,7 +7,7 @@ pub struct ItemConsumeEffect17 {
     pub probability: super::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::array::inline_37::serialize(
+    super::array::inline_35::serialize(
         &_0.effects,
         output,
     )?;
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_effects = super::array::inline_37::deserialize(
+    let f_effects = super::array::inline_35::deserialize(
         input,
     )?;
     let f_probability = super::f32::deserialize(
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::array::inline_37::size_of(
+    + super::array::inline_35::size_of(
         &_0.effects
     )
     + super::f32::size_of(

@@ -12,7 +12,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.translation_key,
         output,
     )?;
-    super::super::super::array::inline_90::serialize(
+    super::super::super::array::inline_53::serialize(
         &_0.parameters,
         output,
     )?;
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_translationKey = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_parameters = super::super::super::array::inline_90::deserialize(
+    let f_parameters = super::super::super::array::inline_53::deserialize(
         input,
     )?;
     let f_style = super::super::super::anonymous_nbt::deserialize(
@@ -41,7 +41,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.translation_key
     )
-    + super::super::super::array::inline_90::size_of(
+    + super::super::super::array::inline_53::size_of(
         &_0.parameters
     )
     + super::super::super::anonymous_nbt::size_of(

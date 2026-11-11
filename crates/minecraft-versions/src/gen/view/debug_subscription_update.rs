@@ -9,7 +9,7 @@ pub enum DebugSubscriptionUpdate<'i> {
     Raids(super::super::Option90),
     Structures(super::super::Option91),
     GameEventListeners(super::super::Option23),
-    NeighborUpdates(super::super::Option18),
+    NeighborUpdates(super::super::Option16),
     GameEvents(super::super::Option28),
     Brains(super::Option29::<'i>),
     Breezes(super::super::Option30),
@@ -30,7 +30,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         Ty::Raids(__v) => super::super::option_90::serialize(__v, output),
         Ty::Structures(__v) => super::super::option_91::serialize(__v, output),
         Ty::GameEventListeners(__v) => super::super::option_23::serialize(__v, output),
-        Ty::NeighborUpdates(__v) => super::super::option_18::serialize(__v, output),
+        Ty::NeighborUpdates(__v) => super::super::option_16::serialize(__v, output),
         Ty::GameEvents(__v) => super::super::option_28::serialize(__v, output),
         Ty::Brains(__v) => super::option_29::serialize(__v, output),
         Ty::Breezes(__v) => super::super::option_30::serialize(__v, output),
@@ -65,7 +65,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
         return Ok(Ty::GameEventListeners(super::super::option_23::deserialize(input, )?));
     }
     if (__tag.clone() == 14_i32) {
-        return Ok(Ty::NeighborUpdates(super::super::option_18::deserialize(input, )?));
+        return Ok(Ty::NeighborUpdates(super::super::option_16::deserialize(input, )?));
     }
     if (__tag.clone() == 15_i32) {
         return Ok(Ty::GameEvents(super::super::option_28::deserialize(input, )?));
@@ -104,7 +104,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
         Ty::Raids(__v) => super::super::option_90::size_of(__v),
         Ty::Structures(__v) => super::super::option_91::size_of(__v),
         Ty::GameEventListeners(__v) => super::super::option_23::size_of(__v),
-        Ty::NeighborUpdates(__v) => super::super::option_18::size_of(__v),
+        Ty::NeighborUpdates(__v) => super::super::option_16::size_of(__v),
         Ty::GameEvents(__v) => super::super::option_28::size_of(__v),
         Ty::Brains(__v) => super::option_29::size_of(__v),
         Ty::Breezes(__v) => super::super::option_30::size_of(__v),

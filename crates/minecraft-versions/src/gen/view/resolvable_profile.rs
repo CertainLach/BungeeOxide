@@ -3,11 +3,11 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ResolvableProfile<'i> {
-    pub anon: super::ResolvableProfile71::<'i>,
+    pub anon: super::ResolvableProfile25::<'i>,
     pub skin_patch: super::PlayerSkinPatch::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::resolvable_profile_71::serialize(
+    super::resolvable_profile_25::serialize(
         &_0.anon,
         output,
     )?;
@@ -18,7 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_ANON = super::resolvable_profile_71::deserialize(
+    let f_ANON = super::resolvable_profile_25::deserialize(
         input,
     )?;
     let f_skinPatch = super::player_skin_patch::deserialize(
@@ -30,7 +30,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     0
-    + super::resolvable_profile_71::size_of(
+    + super::resolvable_profile_25::size_of(
         &_0.anon
     )
     + super::player_skin_patch::size_of(
@@ -39,12 +39,12 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 }
 pub fn view<'i>(_0: &'i super::super::ResolvableProfile) -> Ty<'i> {
     Ty {
-        anon: super::resolvable_profile_71::view(&_0.anon),skin_patch: super::player_skin_patch::view(&_0.skin_patch)
+        anon: super::resolvable_profile_25::view(&_0.anon),skin_patch: super::player_skin_patch::view(&_0.skin_patch)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::ResolvableProfile) -> Ty<'i> {
     Ty {
-        anon: super::resolvable_profile_71::into_view(&mut _0.anon),skin_patch: super::player_skin_patch::view(&mut _0.skin_patch)
+        anon: super::resolvable_profile_25::into_view(&mut _0.anon),skin_patch: super::player_skin_patch::view(&mut _0.skin_patch)
     }
 }
  pub type Ty<'i> = ResolvableProfile<'i>;

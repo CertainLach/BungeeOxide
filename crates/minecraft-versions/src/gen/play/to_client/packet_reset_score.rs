@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.entity_name,
         output,
     )?;
-    super::super::super::option_22::serialize(
+    super::super::super::option_18::serialize(
         &_0.objective_name,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_entity_name = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_objective_name = super::super::super::option_22::deserialize(
+    let f_objective_name = super::super::super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.entity_name
     )
-    + super::super::super::option_22::size_of(
+    + super::super::super::option_18::size_of(
         &_0.objective_name
     )
 }

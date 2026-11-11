@@ -6,38 +6,38 @@ pub struct PlayerSkinPatch {
     pub body: Option<String>,
     pub cape: Option<String>,
     pub elytra: Option<String>,
-    pub model: Option<super::PlayerSkinPatch71>,
+    pub model: Option<super::PlayerSkinPatch25>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.body,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.cape,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.elytra,
         output,
     )?;
-    super::option_37::serialize(
+    super::option_35::serialize(
         &_0.model,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_body = super::option_22::deserialize(
+    let f_body = super::option_18::deserialize(
         input,
     )?;
-    let f_cape = super::option_22::deserialize(
+    let f_cape = super::option_18::deserialize(
         input,
     )?;
-    let f_elytra = super::option_22::deserialize(
+    let f_elytra = super::option_18::deserialize(
         input,
     )?;
-    let f_model = super::option_37::deserialize(
+    let f_model = super::option_35::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -46,16 +46,16 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.body
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.cape
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.elytra
     )
-    + super::option_37::size_of(
+    + super::option_35::size_of(
         &_0.model
     )
 }

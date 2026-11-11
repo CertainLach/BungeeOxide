@@ -131,12 +131,12 @@ macro_rules! slots_with_nbt {
 			);
 			assert_eq!(items.window_id, 0);
 			assert_eq!(debug(&items.items[0]), "_1");
-			let gen::slot_v1_3_2::Ty::Default(id, sword) = &items.items[1] else {
+			let gen::v1_3_2::Slot::Default(id, sword) = &items.items[1] else {
 				panic!()
 			};
 			assert_eq!((*id, sword.item_count, sword.item_damage), (276, 1, 5));
 			assert_eq!(sword.nbt_data.as_deref(), Some(GZIP));
-			let gen::slot_v1_3_2::Ty::Default(id, stone) = &items.items[2] else {
+			let gen::v1_3_2::Slot::Default(id, stone) = &items.items[2] else {
 				panic!()
 			};
 			assert_eq!((*id, stone.item_count, &stone.nbt_data), (1, 64, &None));
@@ -498,7 +498,7 @@ fn metadata_with_nbt_slots_1_4_5_to_1_6_4() {
 	assert_eq!(debug(&m[3].value), "V5(_1)");
 	assert_eq!(
 		debug(&m[4].value),
-		"V6(EntityMetadataItemV145684 { x: 1, y: 64, z: -3 })"
+		"V6(EntityMetadataItem2 { x: 1, y: 64, z: -3 })"
 	);
 	assert_eq!((m[5].anon.r#type, m[5].anon.key), (3, 6));
 	expect!(v1_4_5::play::to_client::packet::EntityMetadata, meta());
@@ -569,9 +569,8 @@ fn metadata_without_nbt_1_4_2() {
 			.u8(0x7f)
 	)
 	.metadata;
-	assert!(debug(&m[0].value).starts_with(
-		"V5(Default(264, EntityMetadataItemV142682 { item_count: 1, item_damage: 0 })"
-	));
+	assert!(debug(&m[0].value)
+		.starts_with("V5(Default(264, EntityMetadataItem2 { item_count: 1, item_damage: 0 })"));
 	assert_eq!(debug(&m[1].value), "V5(_1)");
 	let map = expect!(
 		v1_4_2::play::to_client::packet::Map,
@@ -615,7 +614,7 @@ macro_rules! metadata_b1_5 {
 			.metadata;
 			assert_eq!(
 				debug(&m[0].value),
-				"V5(EntityMetadataItemV101669 { id: -1, item_count: 0, item_damage: 0 })"
+				"V5(EntityMetadataItem2 { id: -1, item_count: 0, item_damage: 0 })"
 			);
 			assert_eq!(debug(&m[1].value), "V4(\"x\")");
 			let item = expect!(
@@ -843,7 +842,7 @@ fn play_1_5() {
 	);
 	assert_eq!(
 		debug(&score.action),
-		"Default(0, PacketScoreboardScoreV151357 { score_name: \"kills\", value: 3 })"
+		"Default(0, PacketScoreboardScore0 { score_name: \"kills\", value: 3 })"
 	);
 	let particles = expect!(
 		v1_5_2::play::to_client::packet::WorldParticles,

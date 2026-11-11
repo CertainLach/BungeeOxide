@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 use std::ops::Range;
 
-use minecraft_versions::gen::play::to_client::packet_v26_1 as owned;
-use minecraft_versions::gen::view::play::to_client::packet_v26_1 as view;
+use minecraft_versions::gen::play::to_client::packet as owned;
+use minecraft_versions::gen::view::play::to_client::packet as view;
 use minecraft_versions::pds::{Input, Output};
 use minecraft_versions::{convert, index_of, Root, Session};
 use nbt::gen::view::{list_0 as items, payload};

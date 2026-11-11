@@ -14,11 +14,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.shape,
         output,
     )?;
-    super::array::inline_82::serialize(
+    super::array::inline_50::serialize(
         &_0.colors,
         output,
     )?;
-    super::array::inline_82::serialize(
+    super::array::inline_50::serialize(
         &_0.fade_colors,
         output,
     )?;
@@ -36,10 +36,10 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_shape = super::item_firework_explosion_17::deserialize(
         input,
     )?;
-    let f_colors = super::array::inline_82::deserialize(
+    let f_colors = super::array::inline_50::deserialize(
         input,
     )?;
-    let f_fadeColors = super::array::inline_82::deserialize(
+    let f_fadeColors = super::array::inline_50::deserialize(
         input,
     )?;
     let f_hasTrail = super::bool::deserialize(
@@ -57,10 +57,10 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::item_firework_explosion_17::size_of(
         &_0.shape
     )
-    + super::array::inline_82::size_of(
+    + super::array::inline_50::size_of(
         &_0.colors
     )
-    + super::array::inline_82::size_of(
+    + super::array::inline_50::size_of(
         &_0.fade_colors
     )
     + super::bool::size_of(

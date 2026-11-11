@@ -6,6 +6,6 @@ pub mod inline_3;
 pub mod sized;
 pub use self::sized::Ty as Sized;
 pub use self::inline_3::Ty as Inline3;
-pub use self::inline_0::Ty as Inline0;
-pub use self::inline_1::Ty as Inline1;
 pub use self::inline_2::Ty as Inline2;
+pub use self::inline_1::Ty as Inline1;
+pub use self::inline_0::Ty as Inline0;

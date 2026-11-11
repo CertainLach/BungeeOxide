@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBookPage<'i> {
     pub content: super::Pstring96::<'i>,
-    pub filtered_content: super::Option22::<'i>,
+    pub filtered_content: super::Option18::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
         &_0.content,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.filtered_content,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_content = super::pstring_96::deserialize(
         input,
     )?;
-    let f_filteredContent = super::option_22::deserialize(
+    let f_filteredContent = super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,13 +33,13 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::pstring_96::size_of(
         &_0.content
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.filtered_content
     )
 }
 pub fn view<'i>(_0: &'i super::super::ItemBookPage) -> Ty<'i> {
     Ty {
-        content: super::pstring_96::view(&_0.content),filtered_content: super::option_22::view(&_0.filtered_content)
+        content: super::pstring_96::view(&_0.content),filtered_content: super::option_18::view(&_0.filtered_content)
     }
 }
  pub type Ty<'i> = ItemBookPage<'i>;

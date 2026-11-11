@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.sound_name,
         output,
     )?;
-    super::option_14::serialize(
+    super::option_12::serialize(
         &_0.fixed_range,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_soundName = super::pstring_96::deserialize(
         input,
     )?;
-    let f_fixedRange = super::option_14::deserialize(
+    let f_fixedRange = super::option_12::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::pstring_96::size_of(
         &_0.sound_name
     )
-    + super::option_14::size_of(
+    + super::option_12::size_of(
         &_0.fixed_range
     )
 }

@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginPluginResponse<'i> {
     pub message_id: super::super::super::super::Varint,
-    pub data: super::super::super::Option20::<'i>,
+    pub data: super::super::super::Option17::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::super::super::varint::serialize(
         &_0.message_id,
         output,
     )?;
-    super::super::super::option_20::serialize(
+    super::super::super::option_17::serialize(
         &_0.data,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_messageId = super::super::super::super::varint::deserialize(
         input,
     )?;
-    let f_data = super::super::super::option_20::deserialize(
+    let f_data = super::super::super::option_17::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,13 +33,13 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::super::super::varint::size_of(
         &_0.message_id
     )
-    + super::super::super::option_20::size_of(
+    + super::super::super::option_17::size_of(
         &_0.data
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::login::to_server::PacketLoginPluginResponse) -> Ty<'i> {
     Ty {
-        message_id: ::core::clone::Clone::clone(&_0.message_id),data: super::super::super::option_20::view(&_0.data)
+        message_id: ::core::clone::Clone::clone(&_0.message_id),data: super::super::super::option_17::view(&_0.data)
     }
 }
  pub type Ty<'i> = PacketLoginPluginResponse<'i>;

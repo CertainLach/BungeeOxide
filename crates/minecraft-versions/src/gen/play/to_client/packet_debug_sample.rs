@@ -7,7 +7,7 @@ pub struct PacketDebugSample {
     pub r#type: super::super::super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::array::inline_83::serialize(
+    super::super::super::array::inline_51::serialize(
         &_0.sample,
         output,
     )?;
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_sample = super::super::super::array::inline_83::deserialize(
+    let f_sample = super::super::super::array::inline_51::deserialize(
         input,
     )?;
     let f_type = super::super::super::varint::deserialize(
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::super::super::array::inline_83::size_of(
+    + super::super::super::array::inline_51::size_of(
         &_0.sample
     )
     + super::super::super::varint::size_of(

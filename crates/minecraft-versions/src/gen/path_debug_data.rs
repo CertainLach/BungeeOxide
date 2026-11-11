@@ -8,28 +8,28 @@ pub struct PathDebugData {
     pub target_nodes: Vec<super::Node>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::array::inline_40::serialize(
+    super::array::inline_38::serialize(
         &_0.open_set,
         output,
     )?;
-    super::array::inline_40::serialize(
+    super::array::inline_38::serialize(
         &_0.closed_set,
         output,
     )?;
-    super::array::inline_40::serialize(
+    super::array::inline_38::serialize(
         &_0.target_nodes,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_openSet = super::array::inline_40::deserialize(
+    let f_openSet = super::array::inline_38::deserialize(
         input,
     )?;
-    let f_closedSet = super::array::inline_40::deserialize(
+    let f_closedSet = super::array::inline_38::deserialize(
         input,
     )?;
-    let f_targetNodes = super::array::inline_40::deserialize(
+    let f_targetNodes = super::array::inline_38::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -38,13 +38,13 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::array::inline_40::size_of(
+    + super::array::inline_38::size_of(
         &_0.open_set
     )
-    + super::array::inline_40::size_of(
+    + super::array::inline_38::size_of(
         &_0.closed_set
     )
-    + super::array::inline_40::size_of(
+    + super::array::inline_38::size_of(
         &_0.target_nodes
     )
 }

@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 pub struct Path {
     pub reached: super::Bool,
     pub next_node_index: super::I32,
-    pub target: super::PositionV114,
+    pub target: super::Position,
     pub nodes: Vec<super::Node>,
     pub debug_data: super::PathDebugData,
 }
@@ -18,11 +18,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.next_node_index,
         output,
     )?;
-    super::position_v1_14::serialize(
+    super::position::serialize(
         &_0.target,
         output,
     )?;
-    super::array::inline_40::serialize(
+    super::array::inline_38::serialize(
         &_0.nodes,
         output,
     )?;
@@ -39,10 +39,10 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_nextNodeIndex = super::i32::deserialize(
         input,
     )?;
-    let f_target = super::position_v1_14::deserialize(
+    let f_target = super::position::deserialize(
         input,
     )?;
-    let f_nodes = super::array::inline_40::deserialize(
+    let f_nodes = super::array::inline_38::deserialize(
         input,
     )?;
     let f_debugData = super::path_debug_data::deserialize(
@@ -60,10 +60,10 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::i32::size_of(
         &_0.next_node_index
     )
-    + super::position_v1_14::size_of(
+    + super::position::size_of(
         &_0.target
     )
-    + super::array::inline_40::size_of(
+    + super::array::inline_38::size_of(
         &_0.nodes
     )
     + super::path_debug_data::size_of(

@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTags0<'i> {
     pub tag_type: super::super::super::Pstring96::<'i>,
-    pub tags: super::super::super::array::Inline363::<'i>,
+    pub tags: super::super::super::array::Inline149::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::super::pstring_96::serialize(
         &_0.tag_type,
         output,
     )?;
-    super::super::super::array::inline_363::serialize(
+    super::super::super::array::inline_149::serialize(
         &_0.tags,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_tagType = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_tags = super::super::super::array::inline_363::deserialize(
+    let f_tags = super::super::super::array::inline_149::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,18 +33,18 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.tag_type
     )
-    + super::super::super::array::inline_363::size_of(
+    + super::super::super::array::inline_149::size_of(
         &_0.tags
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::PacketTags0) -> Ty<'i> {
     Ty {
-        tag_type: super::super::super::pstring_96::view(&_0.tag_type),tags: super::super::super::array::inline_363::view(&_0.tags)
+        tag_type: super::super::super::pstring_96::view(&_0.tag_type),tags: super::super::super::array::inline_149::view(&_0.tags)
     }
 }
  pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::PacketTags0) -> Ty<'i> {
     Ty {
-        tag_type: super::super::super::pstring_96::view(&mut _0.tag_type),tags: super::super::super::array::inline_363::into_view(&mut _0.tags)
+        tag_type: super::super::super::pstring_96::view(&mut _0.tag_type),tags: super::super::super::array::inline_149::into_view(&mut _0.tags)
     }
 }
  pub type Ty<'i> = PacketTags0<'i>;

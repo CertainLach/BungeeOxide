@@ -3,25 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTrackedWaypoint {
-    pub operation: super::PacketTrackedWaypoint384,
-    pub waypoint: super::PacketTrackedWaypoint390,
+    pub operation: super::PacketTrackedWaypoint48,
+    pub waypoint: super::PacketTrackedWaypoint54,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::packet_tracked_waypoint_384::serialize(
+    super::packet_tracked_waypoint_48::serialize(
         &_0.operation,
         output,
     )?;
-    super::packet_tracked_waypoint_390::serialize(
+    super::packet_tracked_waypoint_54::serialize(
         &_0.waypoint,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_operation = super::packet_tracked_waypoint_384::deserialize(
+    let f_operation = super::packet_tracked_waypoint_48::deserialize(
         input,
     )?;
-    let f_waypoint = super::packet_tracked_waypoint_390::deserialize(
+    let f_waypoint = super::packet_tracked_waypoint_54::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -30,10 +30,10 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::packet_tracked_waypoint_384::size_of(
+    + super::packet_tracked_waypoint_48::size_of(
         &_0.operation
     )
-    + super::packet_tracked_waypoint_390::size_of(
+    + super::packet_tracked_waypoint_54::size_of(
         &_0.waypoint
     )
 }

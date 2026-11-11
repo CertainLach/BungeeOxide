@@ -3,33 +3,33 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugStructureInfo {
-    pub bounding_box_min: super::PositionV114,
-    pub bounding_box_max: super::PositionV114,
+    pub bounding_box_min: super::Position,
+    pub bounding_box_max: super::Position,
     pub pieces: Vec<super::DebugStructureInfo2>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::position_v1_14::serialize(
+    super::position::serialize(
         &_0.bounding_box_min,
         output,
     )?;
-    super::position_v1_14::serialize(
+    super::position::serialize(
         &_0.bounding_box_max,
         output,
     )?;
-    super::array::inline_116::serialize(
+    super::array::inline_111::serialize(
         &_0.pieces,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_boundingBoxMin = super::position_v1_14::deserialize(
+    let f_boundingBoxMin = super::position::deserialize(
         input,
     )?;
-    let f_boundingBoxMax = super::position_v1_14::deserialize(
+    let f_boundingBoxMax = super::position::deserialize(
         input,
     )?;
-    let f_pieces = super::array::inline_116::deserialize(
+    let f_pieces = super::array::inline_111::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -38,13 +38,13 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::position_v1_14::size_of(
+    + super::position::size_of(
         &_0.bounding_box_min
     )
-    + super::position_v1_14::size_of(
+    + super::position::size_of(
         &_0.bounding_box_max
     )
-    + super::array::inline_116::size_of(
+    + super::array::inline_111::size_of(
         &_0.pieces
     )
 }

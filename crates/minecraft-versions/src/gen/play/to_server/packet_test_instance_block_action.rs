@@ -3,12 +3,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTestInstanceBlockAction {
-    pub pos: super::super::super::PositionV114,
+    pub pos: super::super::super::Position,
     pub action: super::super::super::Varint,
-    pub data: super::PacketTestInstanceBlockAction2,
+    pub data: super::PacketTestInstanceBlockAction0,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position_v1_14::serialize(
+    super::super::super::position::serialize(
         &_0.pos,
         output,
     )?;
@@ -16,20 +16,20 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.action,
         output,
     )?;
-    super::packet_test_instance_block_action_2::serialize(
+    super::packet_test_instance_block_action_0::serialize(
         &_0.data,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_pos = super::super::super::position_v1_14::deserialize(
+    let f_pos = super::super::super::position::deserialize(
         input,
     )?;
     let f_action = super::super::super::varint::deserialize(
         input,
     )?;
-    let f_data = super::packet_test_instance_block_action_2::deserialize(
+    let f_data = super::packet_test_instance_block_action_0::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -38,13 +38,13 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::super::super::position_v1_14::size_of(
+    + super::super::super::position::size_of(
         &_0.pos
     )
     + super::super::super::varint::size_of(
         &_0.action
     )
-    + super::packet_test_instance_block_action_2::size_of(
+    + super::packet_test_instance_block_action_0::size_of(
         &_0.data
     )
 }

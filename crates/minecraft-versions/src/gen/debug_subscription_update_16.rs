@@ -3,12 +3,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionUpdate16 {
-    pub pos: super::PositionV114,
+    pub pos: super::Position,
     pub poi_type: super::Varint,
     pub free_ticket_count: super::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::position_v1_14::serialize(
+    super::position::serialize(
         &_0.pos,
         output,
     )?;
@@ -23,7 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_pos = super::position_v1_14::deserialize(
+    let f_pos = super::position::deserialize(
         input,
     )?;
     let f_poiType = super::varint::deserialize(
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::position_v1_14::size_of(
+    + super::position::size_of(
         &_0.pos
     )
     + super::varint::size_of(

@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.value,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.signature,
         output,
     )?;
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_value = super::pstring_96::deserialize(
         input,
     )?;
-    let f_signature = super::option_22::deserialize(
+    let f_signature = super::option_18::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -44,7 +44,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::pstring_96::size_of(
         &_0.value
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.signature
     )
 }

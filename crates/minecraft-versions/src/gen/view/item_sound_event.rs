@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemSoundEvent<'i> {
     pub sound_name: super::Pstring96::<'i>,
-    pub fixed_range: super::super::Option14,
+    pub fixed_range: super::super::Option12,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
         &_0.sound_name,
         output,
     )?;
-    super::super::option_14::serialize(
+    super::super::option_12::serialize(
         &_0.fixed_range,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_soundName = super::pstring_96::deserialize(
         input,
     )?;
-    let f_fixedRange = super::super::option_14::deserialize(
+    let f_fixedRange = super::super::option_12::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::pstring_96::size_of(
         &_0.sound_name
     )
-    + super::super::option_14::size_of(
+    + super::super::option_12::size_of(
         &_0.fixed_range
     )
 }

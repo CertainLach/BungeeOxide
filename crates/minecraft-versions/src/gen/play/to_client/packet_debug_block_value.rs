@@ -3,11 +3,11 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDebugBlockValue {
-    pub block_pos: super::super::super::PositionV114,
+    pub block_pos: super::super::super::Position,
     pub update: super::super::super::DebugSubscriptionUpdate,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position_v1_14::serialize(
+    super::super::super::position::serialize(
         &_0.block_pos,
         output,
     )?;
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_blockPos = super::super::super::position_v1_14::deserialize(
+    let f_blockPos = super::super::super::position::deserialize(
         input,
     )?;
     let f_update = super::super::super::debug_subscription_update::deserialize(
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::super::super::position_v1_14::size_of(
+    + super::super::super::position::size_of(
         &_0.block_pos
     )
     + super::super::super::debug_subscription_update::size_of(

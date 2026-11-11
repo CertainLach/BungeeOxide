@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatType<'i> {
     pub translation_key: super::super::super::Pstring96::<'i>,
-    pub parameters: super::super::super::super::array::Inline90,
+    pub parameters: super::super::super::super::array::Inline53,
     pub style: super::super::super::AnonymousNbt::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -12,7 +12,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
         &_0.translation_key,
         output,
     )?;
-    super::super::super::super::array::inline_90::serialize(
+    super::super::super::super::array::inline_53::serialize(
         &_0.parameters,
         output,
     )?;
@@ -26,7 +26,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_translationKey = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_parameters = super::super::super::super::array::inline_90::deserialize(
+    let f_parameters = super::super::super::super::array::inline_53::deserialize(
         input,
     )?;
     let f_style = super::super::super::anonymous_nbt::deserialize(
@@ -41,7 +41,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.translation_key
     )
-    + super::super::super::super::array::inline_90::size_of(
+    + super::super::super::super::array::inline_53::size_of(
         &_0.parameters
     )
     + super::super::super::anonymous_nbt::size_of(

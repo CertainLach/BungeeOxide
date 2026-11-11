@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct GlobalPos {
     pub dimension_name: String,
-    pub location: super::PositionV114,
+    pub location: super::Position,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
         &_0.dimension_name,
         output,
     )?;
-    super::position_v1_14::serialize(
+    super::position::serialize(
         &_0.location,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_dimensionName = super::pstring_96::deserialize(
         input,
     )?;
-    let f_location = super::position_v1_14::deserialize(
+    let f_location = super::position::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::pstring_96::size_of(
         &_0.dimension_name
     )
-    + super::position_v1_14::size_of(
+    + super::position::size_of(
         &_0.location
     )
 }

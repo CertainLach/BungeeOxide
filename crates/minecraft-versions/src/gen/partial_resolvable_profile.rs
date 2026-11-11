@@ -8,11 +8,11 @@ pub struct PartialResolvableProfile {
     pub properties: Vec<super::GameProfileProperty>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.name,
         output,
     )?;
-    super::option_10::serialize(
+    super::option_8::serialize(
         &_0.uuid,
         output,
     )?;
@@ -23,10 +23,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_name = super::option_22::deserialize(
+    let f_name = super::option_18::deserialize(
         input,
     )?;
-    let f_uuid = super::option_10::deserialize(
+    let f_uuid = super::option_8::deserialize(
         input,
     )?;
     let f_properties = super::array::inline_27::deserialize(
@@ -38,10 +38,10 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.name
     )
-    + super::option_10::size_of(
+    + super::option_8::size_of(
         &_0.uuid
     )
     + super::array::inline_27::size_of(

@@ -15,8 +15,8 @@ pub struct DebugSubscriptionUpdate11 {
     pub behaviors: Vec<String>,
     pub memories: Vec<String>,
     pub gossips: Vec<String>,
-    pub pois: Vec<super::PositionV114>,
-    pub potential_pois: Vec<super::PositionV114>,
+    pub pois: Vec<super::Position>,
+    pub potential_pois: Vec<super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     super::pstring_96::serialize(
@@ -51,27 +51,27 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.anger_level,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.activities,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.behaviors,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.memories,
         output,
     )?;
-    super::array::inline_105::serialize(
+    super::array::inline_57::serialize(
         &_0.gossips,
         output,
     )?;
-    super::array::inline_101::serialize(
+    super::array::inline_56::serialize(
         &_0.pois,
         output,
     )?;
-    super::array::inline_101::serialize(
+    super::array::inline_56::serialize(
         &_0.potential_pois,
         output,
     )?;
@@ -102,22 +102,22 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_angerLevel = super::i32::deserialize(
         input,
     )?;
-    let f_activities = super::array::inline_105::deserialize(
+    let f_activities = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_behaviors = super::array::inline_105::deserialize(
+    let f_behaviors = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_memories = super::array::inline_105::deserialize(
+    let f_memories = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_gossips = super::array::inline_105::deserialize(
+    let f_gossips = super::array::inline_57::deserialize(
         input,
     )?;
-    let f_pois = super::array::inline_101::deserialize(
+    let f_pois = super::array::inline_56::deserialize(
         input,
     )?;
-    let f_potentialPois = super::array::inline_101::deserialize(
+    let f_potentialPois = super::array::inline_56::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -150,22 +150,22 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::i32::size_of(
         &_0.anger_level
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.activities
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.behaviors
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.memories
     )
-    + super::array::inline_105::size_of(
+    + super::array::inline_57::size_of(
         &_0.gossips
     )
-    + super::array::inline_101::size_of(
+    + super::array::inline_56::size_of(
         &_0.pois
     )
-    + super::array::inline_101::size_of(
+    + super::array::inline_56::size_of(
         &_0.potential_pois
     )
 }

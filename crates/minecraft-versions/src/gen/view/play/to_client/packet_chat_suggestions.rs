@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatSuggestions<'i> {
     pub action: super::super::super::super::Varint,
-    pub entries: super::super::super::array::Inline105::<'i>,
+    pub entries: super::super::super::array::Inline57::<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
     super::super::super::super::varint::serialize(
         &_0.action,
         output,
     )?;
-    super::super::super::array::inline_105::serialize(
+    super::super::super::array::inline_57::serialize(
         &_0.entries,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
     let f_action = super::super::super::super::varint::deserialize(
         input,
     )?;
-    let f_entries = super::super::super::array::inline_105::deserialize(
+    let f_entries = super::super::super::array::inline_57::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,13 +33,13 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     + super::super::super::super::varint::size_of(
         &_0.action
     )
-    + super::super::super::array::inline_105::size_of(
+    + super::super::super::array::inline_57::size_of(
         &_0.entries
     )
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketChatSuggestions) -> Ty<'i> {
     Ty {
-        action: ::core::clone::Clone::clone(&_0.action),entries: super::super::super::array::inline_105::view(&_0.entries)
+        action: ::core::clone::Clone::clone(&_0.action),entries: super::super::super::array::inline_57::view(&_0.entries)
     }
 }
  pub type Ty<'i> = PacketChatSuggestions<'i>;

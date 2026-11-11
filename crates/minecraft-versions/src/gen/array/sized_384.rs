@@ -2,12 +2,12 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-    pub count: &'a usize,
+    pub count: &'a super::super::Varint,
 }
-pub type Ty = Vec<super::super::I32>;
+pub type Ty = Vec<super::super::v1_21_3::SlotComponentType>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     for e in _0.iter() {
-        super::super::i32::serialize(e, output)?;
+        super::super::v1_21_3::slot_component_type::serialize(e, output)?;
     }
     Ok(())
 }
@@ -15,13 +15,13 @@ pub fn deserialize(input: &mut Input, args: Args<'_>,) -> Result<Ty> {
     let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
     let mut out = Vec::with_capacity(count.min(input.remaining()));
     for _ in 0..count {
-        out.push(super::super::i32::deserialize(input, )?);
+        out.push(super::super::v1_21_3::slot_component_type::deserialize(input, )?);
     }
     Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
     let mut n = 0;
-    for e in _0.iter() { n += super::super::i32::size_of(e); }
+    for e in _0.iter() { n += super::super::v1_21_3::slot_component_type::size_of(e); }
     n
 }
 pub fn virtual_size(_0: &Ty) -> super::super::Varint {

@@ -3,12 +3,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetTestBlock {
-    pub position: super::super::super::PositionV114,
+    pub position: super::super::super::Position,
     pub mode: super::super::super::Varint,
     pub message: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::super::super::position_v1_14::serialize(
+    super::super::super::position::serialize(
         &_0.position,
         output,
     )?;
@@ -23,7 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_position = super::super::super::position_v1_14::deserialize(
+    let f_position = super::super::super::position::deserialize(
         input,
     )?;
     let f_mode = super::super::super::varint::deserialize(
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::super::super::position_v1_14::size_of(
+    + super::super::super::position::size_of(
         &_0.position
     )
     + super::super::super::varint::size_of(

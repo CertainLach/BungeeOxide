@@ -8,8 +8,8 @@ pub struct ItemStackTemplate {
     pub item_count: super::Varint,
     pub added_component_count: super::Varint,
     pub removed_component_count: super::Varint,
-    pub components: Vec<super::SlotComponentV261>,
-    pub remove_components: Vec<super::SlotComponentTypeV261>,
+    pub components: Vec<super::SlotComponent>,
+    pub remove_components: Vec<super::SlotComponentType>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     super::varint::serialize(
@@ -28,11 +28,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.removed_component_count,
         output,
     )?;
-    super::array::sized_380::serialize(
+    super::array::sized_366::serialize(
         &_0.components,
         output,
     )?;
-    super::array::sized_371::serialize(
+    super::array::sized_367::serialize(
         &_0.remove_components,
         output,
     )?;
@@ -51,15 +51,15 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_removedComponentCount = super::varint::deserialize(
         input,
     )?;
-    let f_components = super::array::sized_380::deserialize(
+    let f_components = super::array::sized_366::deserialize(
         input,
-        super::array::sized_380::Args {
+        super::array::sized_366::Args {
             count: {let _0: &super::Varint = &f_addedComponentCount;_0}
         },
     )?;
-    let f_removeComponents = super::array::sized_371::deserialize(
+    let f_removeComponents = super::array::sized_367::deserialize(
         input,
-        super::array::sized_371::Args {
+        super::array::sized_367::Args {
             count: {let _0: &super::Varint = &f_removedComponentCount;_0}
         },
     )?;
@@ -81,10 +81,10 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::varint::size_of(
         &_0.removed_component_count
     )
-    + super::array::sized_380::size_of(
+    + super::array::sized_366::size_of(
         &_0.components
     )
-    + super::array::sized_371::size_of(
+    + super::array::sized_367::size_of(
         &_0.remove_components
     )
 }

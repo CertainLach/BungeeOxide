@@ -2,4 +2,6 @@
 pub mod handshaking;
 pub mod login;
 pub mod play;
+pub mod previous_messages_0;
 pub mod status;
+pub use self::previous_messages_0::PreviousMessages0;

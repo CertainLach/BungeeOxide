@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTags0 {
     pub tag_type: String,
-    pub tags: Vec<super::super::super::Tags744>,
+    pub tags: Vec<super::super::super::Tags102>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
     super::super::super::pstring_96::serialize(
         &_0.tag_type,
         output,
     )?;
-    super::super::super::array::inline_363::serialize(
+    super::super::super::array::inline_149::serialize(
         &_0.tags,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_tagType = super::super::super::pstring_96::deserialize(
         input,
     )?;
-    let f_tags = super::super::super::array::inline_363::deserialize(
+    let f_tags = super::super::super::array::inline_149::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::super::super::pstring_96::size_of(
         &_0.tag_type
     )
-    + super::super::super::array::inline_363::size_of(
+    + super::super::super::array::inline_149::size_of(
         &_0.tags
     )
 }

@@ -3,17 +3,17 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionUpdate9 {
-    pub hive_pos: Option<super::PositionV114>,
-    pub flower_pos: Option<super::PositionV114>,
+    pub hive_pos: Option<super::Position>,
+    pub flower_pos: Option<super::Position>,
     pub travel_ticks: super::Varint,
-    pub blacklisted_hives: Vec<super::PositionV114>,
+    pub blacklisted_hives: Vec<super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-    super::option_18::serialize(
+    super::option_16::serialize(
         &_0.hive_pos,
         output,
     )?;
-    super::option_18::serialize(
+    super::option_16::serialize(
         &_0.flower_pos,
         output,
     )?;
@@ -21,23 +21,23 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.travel_ticks,
         output,
     )?;
-    super::array::inline_101::serialize(
+    super::array::inline_56::serialize(
         &_0.blacklisted_hives,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
-    let f_hivePos = super::option_18::deserialize(
+    let f_hivePos = super::option_16::deserialize(
         input,
     )?;
-    let f_flowerPos = super::option_18::deserialize(
+    let f_flowerPos = super::option_16::deserialize(
         input,
     )?;
     let f_travelTicks = super::varint::deserialize(
         input,
     )?;
-    let f_blacklistedHives = super::array::inline_101::deserialize(
+    let f_blacklistedHives = super::array::inline_56::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -46,16 +46,16 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
     0
-    + super::option_18::size_of(
+    + super::option_16::size_of(
         &_0.hive_pos
     )
-    + super::option_18::size_of(
+    + super::option_16::size_of(
         &_0.flower_pos
     )
     + super::varint::size_of(
         &_0.travel_ticks
     )
-    + super::array::inline_101::size_of(
+    + super::array::inline_56::size_of(
         &_0.blacklisted_hives
     )
 }

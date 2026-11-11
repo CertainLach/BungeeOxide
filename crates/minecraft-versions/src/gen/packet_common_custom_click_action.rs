@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
         &_0.id,
         output,
     )?;
-    super::option_11::serialize(
+    super::option_9::serialize(
         &_0.nbt,
         output,
     )?;
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input, ) -> Result<Ty> {
     let f_id = super::pstring_96::deserialize(
         input,
     )?;
-    let f_nbt = super::option_11::deserialize(
+    let f_nbt = super::option_9::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
     + super::pstring_96::size_of(
         &_0.id
     )
-    + super::option_11::size_of(
+    + super::option_9::size_of(
         &_0.nbt
     )
 }

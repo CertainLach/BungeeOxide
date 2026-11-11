@@ -3,41 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PlayerSkinPatch<'i> {
-    pub body: super::Option22::<'i>,
-    pub cape: super::Option22::<'i>,
-    pub elytra: super::Option22::<'i>,
-    pub model: super::super::Option37,
+    pub body: super::Option18::<'i>,
+    pub cape: super::Option18::<'i>,
+    pub elytra: super::Option18::<'i>,
+    pub model: super::super::Option35,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.body,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.cape,
         output,
     )?;
-    super::option_22::serialize(
+    super::option_18::serialize(
         &_0.elytra,
         output,
     )?;
-    super::super::option_37::serialize(
+    super::super::option_35::serialize(
         &_0.model,
         output,
     )?;
     Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
-    let f_body = super::option_22::deserialize(
+    let f_body = super::option_18::deserialize(
         input,
     )?;
-    let f_cape = super::option_22::deserialize(
+    let f_cape = super::option_18::deserialize(
         input,
     )?;
-    let f_elytra = super::option_22::deserialize(
+    let f_elytra = super::option_18::deserialize(
         input,
     )?;
-    let f_model = super::super::option_37::deserialize(
+    let f_model = super::super::option_35::deserialize(
         input,
     )?;
     Ok(Ty {
@@ -46,22 +46,22 @@ pub fn deserialize<'i>(input: &mut Input<'i>, ) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
     0
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.body
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.cape
     )
-    + super::option_22::size_of(
+    + super::option_18::size_of(
         &_0.elytra
     )
-    + super::super::option_37::size_of(
+    + super::super::option_35::size_of(
         &_0.model
     )
 }
 pub fn view<'i>(_0: &'i super::super::PlayerSkinPatch) -> Ty<'i> {
     Ty {
-        body: super::option_22::view(&_0.body),cape: super::option_22::view(&_0.cape),elytra: super::option_22::view(&_0.elytra),model: ::core::clone::Clone::clone(&_0.model)
+        body: super::option_18::view(&_0.body),cape: super::option_18::view(&_0.cape),elytra: super::option_18::view(&_0.elytra),model: ::core::clone::Clone::clone(&_0.model)
     }
 }
  pub type Ty<'i> = PlayerSkinPatch<'i>;
