@@ -8,6 +8,7 @@ pub struct Args<'a> {
 }
 pub type Ty = Vec<u8>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+	let _: pds_varint::Ty = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
 	for b in _0.iter() {
 		pds_u8::serialize(b, output)?;
 	}
@@ -28,5 +29,5 @@ pub fn size_of(_0: &Ty) -> usize {
 	_0.len()
 }
 pub fn virtual_size(_0: &Ty) -> pds_varint::Ty {
-	_0.len().try_into().expect("buffer length")
+	_0.len().try_into().unwrap_or_default()
 }

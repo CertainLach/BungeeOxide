@@ -8,6 +8,7 @@ pub struct Args<'a> {
 }
 pub type Ty = Vec<pds_SlotComponentType::Ty>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+	let _: pds_varint::Ty = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
 	for e in _0.iter() {
 		pds_SlotComponentType::serialize(e, output)?;
 	}
@@ -29,5 +30,5 @@ pub fn size_of(_0: &Ty) -> usize {
 	n
 }
 pub fn virtual_size(_0: &Ty) -> pds_varint::Ty {
-	_0.len().try_into().expect("array length")
+	_0.len().try_into().unwrap_or_default()
 }
