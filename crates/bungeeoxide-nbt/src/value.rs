@@ -124,7 +124,7 @@ impl Payload {
 		self.as_compound()?.field(name)
 	}
 
-	pub fn field_mut(&mut self, name: &str) -> Option<PayloadMut<'_>> {
+	pub fn field_mut(&mut self, name: &str) -> Option<&mut Payload> {
 		self.as_compound_mut()?.field_mut(name)
 	}
 
@@ -205,36 +205,10 @@ impl From<ListItems> for Payload {
 	}
 }
 
-pub struct PayloadMut<'a> {
-	kind: &'a mut u8,
-	value: &'a mut Payload,
-}
-
-impl Deref for PayloadMut<'_> {
-	type Target = Payload;
-
-	fn deref(&self) -> &Payload {
-		self.value
-	}
-}
-
-impl DerefMut for PayloadMut<'_> {
-	fn deref_mut(&mut self) -> &mut Payload {
-		self.value
-	}
-}
-
-impl Drop for PayloadMut<'_> {
-	fn drop(&mut self) {
-		*self.kind = self.value.kind();
-	}
-}
-
 impl Entry {
 	pub fn new(name: impl Into<String>, value: impl Into<Payload>) -> Entry {
 		let value = value.into();
 		Entry {
-			r#type: value.kind(),
 			name: name.into(),
 			value,
 		}
@@ -242,14 +216,10 @@ impl Entry {
 
 	pub fn set(&mut self, value: impl Into<Payload>) {
 		self.value = value.into();
-		self.r#type = self.value.kind();
 	}
 
-	pub fn value_mut(&mut self) -> PayloadMut<'_> {
-		PayloadMut {
-			kind: &mut self.r#type,
-			value: &mut self.value,
-		}
+	pub fn value_mut(&mut self) -> &mut Payload {
+		&mut self.value
 	}
 
 	pub fn root(tag: &mut Option<Entry>) -> &mut Vec<Entry> {
@@ -278,11 +248,8 @@ impl Tag {
 		self.r#type = self.value.kind();
 	}
 
-	pub fn value_mut(&mut self) -> PayloadMut<'_> {
-		PayloadMut {
-			kind: &mut self.r#type,
-			value: &mut self.value,
-		}
+	pub fn value_mut(&mut self) -> &mut Payload {
+		&mut self.value
 	}
 
 	pub fn named(self, name: impl Into<String>) -> Entry {
@@ -346,10 +313,7 @@ impl ListItems {
 
 impl List {
 	pub fn new(items: ListItems) -> List {
-		List {
-			r#type: items.kind(),
-			items,
-		}
+		List { items }
 	}
 
 	pub fn of(values: Vec<Payload>) -> List {
@@ -454,7 +418,7 @@ impl List {
 
 pub trait CompoundExt {
 	fn field(&self, name: &str) -> Option<&Payload>;
-	fn field_mut(&mut self, name: &str) -> Option<PayloadMut<'_>>;
+	fn field_mut(&mut self, name: &str) -> Option<&mut Payload>;
 	fn compound_mut(&mut self, name: &str) -> Option<&mut Vec<Entry>>;
 	fn compounds_mut(&mut self, name: &str) -> Option<&mut Vec<Vec<Entry>>>;
 	fn rename(&mut self, from: &str, to: &str);
@@ -465,7 +429,7 @@ impl CompoundExt for [Entry] {
 		self.iter().find(|e| e.name == name).map(|e| &e.value)
 	}
 
-	fn field_mut(&mut self, name: &str) -> Option<PayloadMut<'_>> {
+	fn field_mut(&mut self, name: &str) -> Option<&mut Payload> {
 		self.iter_mut()
 			.find(|e| e.name == name)
 			.map(Entry::value_mut)
@@ -555,12 +519,9 @@ mod tests {
 			(Payload::LongArray(vec![1]), 12),
 		];
 		for (value, kind) in cases {
-			assert_eq!(Entry::new("x", value.clone()).r#type, kind);
 			assert_eq!(Tag::new(value.clone()).r#type, kind);
 			assert_eq!(value.kind(), kind);
 		}
-		assert_eq!(List::new(ListItems::Compound(vec![])).r#type, 10);
-		assert_eq!(List::of(vec![]).r#type, 0);
 		assert_eq!(
 			List::of(vec![Payload::String("a".into()), 1i32.into(), "b".into()]),
 			List::new(ListItems::String(vec!["a".into(), "b".into()]))
@@ -571,9 +532,6 @@ mod tests {
 	fn mutation_keeps_the_type_byte() {
 		let mut c = sample();
 		*c.field_mut("a").unwrap() = "now a string".into();
-		assert_eq!(c[0].r#type, 8);
-		c.put("b", 5i64);
-		assert_eq!((c[1].r#type, &c[1].value), (4, &Payload::Long(5)));
 		if let Some(Payload::Compound(inner)) = c.field_mut("c").as_deref_mut() {
 			inner.put("d", 3i16);
 		}
@@ -583,15 +541,12 @@ mod tests {
 		);
 		let mut e = Entry::new("e", 1i32);
 		e.set(Payload::Double(1.5));
-		assert_eq!(e.r#type, 6);
 		*e.value_mut() = Payload::Compound(vec![]);
-		assert_eq!(e.r#type, 10);
 		let mut t = Tag::new(1i32);
 		*t.value_mut() = Payload::End;
 		assert_eq!(t.r#type, 0);
 		let mut l = List::new(ListItems::Int(vec![1]));
 		l.set(ListItems::String(vec![]));
-		assert_eq!(l.r#type, 8);
 	}
 
 	#[test]

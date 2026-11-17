@@ -179,7 +179,11 @@ impl Online {
 	}
 }
 
-pub async fn authenticate(p: &mut Proxy, endpoints: &Endpoints, username: &str) -> Result<GameProfile> {
+pub async fn authenticate(
+	p: &mut Proxy,
+	endpoints: &Endpoints,
+	username: &str,
+) -> Result<GameProfile> {
 	let key = tokio::task::spawn_blocking(legacy::rsa_key).await?;
 	let public = key
 		.to_public_key()
@@ -193,8 +197,12 @@ pub async fn authenticate(p: &mut Proxy, endpoints: &Endpoints, username: &str) 
 		verify_token: token.to_vec(),
 		should_authenticate: true,
 	});
-	p.send(Root::LoginToClient, PIVOT, encode(&request, login_c::serialize)?)
-		.await?;
+	p.send(
+		Root::LoginToClient,
+		PIVOT,
+		encode(&request, login_c::serialize)?,
+	)
+	.await?;
 	let data = next(&mut p.client).await?;
 	let (shared, verify) = if (Version::V1_19..Version::V1_19_3).contains(&p.cv) {
 		let reply = match p.cv < Version::V1_19_2 {
@@ -244,7 +252,9 @@ pub async fn authenticate(p: &mut Proxy, endpoints: &Endpoints, username: &str) 
 	blocking(move || auth::has_joined(&endpoints, &name, &hash))
 		.await?
 		.ok_or_else(|| {
-			anyhow!("the session server did not see {username} join, restart the game and try again")
+			anyhow!(
+				"the session server did not see {username} join, restart the game and try again"
+			)
 		})
 }
 

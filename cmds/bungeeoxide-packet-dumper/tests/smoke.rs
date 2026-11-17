@@ -4,9 +4,9 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::Duration;
 
+use bungeeoxide_minecraft_v1_21_11 as gen;
 use flate2::write::ZlibEncoder;
 use flate2::Compression;
-use bungeeoxide_minecraft_v1_21_11 as gen;
 use pds_bytes_runtime::{self as pds, Output};
 
 const THRESHOLD: usize = 64;

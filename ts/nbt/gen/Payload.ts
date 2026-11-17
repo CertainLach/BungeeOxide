@@ -132,3 +132,20 @@ export function assert_tag(_0: Ty, __tag: pds$u8.Ty): void {
         throw new PdsError("InvalidValue", "union variant does not match its external tag");
     }
 }
+export function virtual_tag(_0: Ty): pds$u8.Ty {
+    switch (_0.kind) {
+        case "end": return 0;
+        case "byte": return 1;
+        case "short": return 2;
+        case "int": return 3;
+        case "long": return 4;
+        case "float": return 5;
+        case "double": return 6;
+        case "byteArray": return 7;
+        case "string": return 8;
+        case "list": return 9;
+        case "compound": return 10;
+        case "intArray": return 11;
+        case "longArray": return 12;
+    }
+}

@@ -145,6 +145,23 @@ pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &super::super::U8) {
 		"union variant does not match its external tag",
 	);
 }
+pub fn virtual_tag<'i>(_0: &Ty<'i>) -> super::super::U8 {
+	match _0 {
+		Ty::End(_) => 0_u8,
+		Ty::Byte(_) => 1_u8,
+		Ty::Short(_) => 2_u8,
+		Ty::Int(_) => 3_u8,
+		Ty::Long(_) => 4_u8,
+		Ty::Float(_) => 5_u8,
+		Ty::Double(_) => 6_u8,
+		Ty::ByteArray(_) => 7_u8,
+		Ty::String(_) => 8_u8,
+		Ty::List(_) => 9_u8,
+		Ty::Compound(_) => 10_u8,
+		Ty::IntArray(_) => 11_u8,
+		Ty::LongArray(_) => 12_u8,
+	}
+}
 pub fn view<'i>(_0: &'i super::super::List0) -> Ty<'i> {
 	match _0 {
 		super::super::List0::End(__v) => Ty::End(::core::clone::Clone::clone(__v)),

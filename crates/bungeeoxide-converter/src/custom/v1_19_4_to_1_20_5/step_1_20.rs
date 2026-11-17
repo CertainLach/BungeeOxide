@@ -3,7 +3,7 @@ use crate::gen::convert::Version;
 use crate::gen::convert::{v1_19_4 as old, v1_20 as new};
 use crate::pds::convert::{Error, Result};
 use crate::Session;
-use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload, PayloadMut};
+use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload};
 
 const OLD: Version = Version::V1_19_4;
 const NEW: Version = Version::V1_20;
@@ -251,7 +251,7 @@ fn damage_type(name: &str, id: i32) -> Payload {
 pub(super) fn registry_entries<'a>(
 	codec: &'a mut Payload,
 	registry: &str,
-) -> Option<PayloadMut<'a>> {
+) -> Option<&'a mut Payload> {
 	let reg = codec
 		.as_compound_mut()?
 		.compound_mut(&format!("minecraft:{registry}"))?;

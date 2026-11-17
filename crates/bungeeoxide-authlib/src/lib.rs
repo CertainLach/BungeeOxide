@@ -352,7 +352,10 @@ pub fn has_joined(
 		.call();
 	let reply = reply(&url, response)?;
 	if !reply.ok() {
-		bail!("the session server could not check the join, {}", reply.error());
+		bail!(
+			"the session server could not check the join, {}",
+			reply.error()
+		);
 	}
 	if reply.status == 204 || reply.body.trim().is_empty() {
 		return Ok(None);

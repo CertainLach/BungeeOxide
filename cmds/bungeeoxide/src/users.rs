@@ -223,12 +223,17 @@ mod tests {
 		"#;
 		let parsed = parse(config, Path::new("/srv/bridge/users.toml")).unwrap();
 		assert_eq!(parsed.endpoints.session, "http://127.0.0.1:25661");
-		assert_eq!(parsed.endpoints.services, "https://api.minecraftservices.com");
+		assert_eq!(
+			parsed.endpoints.services,
+			"https://api.minecraftservices.com"
+		);
 		let steve = find(&parsed.users, "steve");
 		assert_eq!(steve.uuid, Some(0x853c80ef3c3749fdaa49938b674adae6));
 		assert!(steve.downstream && steve.allow_goto);
 		assert_eq!(steve.upstream.as_ref().unwrap().label, "Notch");
-		assert!(steve.admit(Some(0x853c80ef3c3749fdaa49938b674adae6)).is_ok());
+		assert!(steve
+			.admit(Some(0x853c80ef3c3749fdaa49938b674adae6))
+			.is_ok());
 		assert!(steve.admit(Some(1)).is_err());
 		assert!(steve.admit(None).is_err());
 		let alex = find(&parsed.users, "Alex");

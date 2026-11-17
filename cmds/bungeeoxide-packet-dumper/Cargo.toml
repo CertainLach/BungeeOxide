@@ -1,7 +1,7 @@
 [package]
 name = "bungeeoxide-packet-dumper"
 description = "Proxy between a Minecraft 1.21.11 client and server that reports packets which do not survive decoding and re-encoding"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license.workspace = true
 

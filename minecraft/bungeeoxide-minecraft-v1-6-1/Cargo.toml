@@ -2,7 +2,7 @@
 [package]
 name = "bungeeoxide-minecraft-v1-6-1"
 description = "Minecraft 1.6.1 protocol types"
-version = "0.1.1"
+version = "0.1.2"
 edition.workspace = true
 license.workspace = true
 

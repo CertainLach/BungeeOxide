@@ -75,7 +75,8 @@ impl Account {
 	pub fn new(source: Source, endpoints: Endpoints, cache: Option<PathBuf>) -> Self {
 		let label = match &source {
 			Source::Prism {
-				profile: Some(name), ..
+				profile: Some(name),
+				..
 			}
 			| Source::Process {
 				profile: Some(name),
@@ -668,7 +669,10 @@ mod tests {
 		let unknown = steve
 			.prism(&dir.join("accounts.json"), Some("jeb_"), None, false)
 			.unwrap_err();
-		assert!(format!("{unknown:#}").contains("msa_client_id"), "{unknown:#}");
+		assert!(
+			format!("{unknown:#}").contains("msa_client_id"),
+			"{unknown:#}"
+		);
 		fs::remove_dir_all(&dir).unwrap();
 	}
 }

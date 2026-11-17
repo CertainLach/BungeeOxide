@@ -313,13 +313,16 @@ async fn bridge(target: SocketAddr) -> SocketAddr {
 		motd: "modern bridge".to_owned(),
 		threshold: 64,
 		server_version: Version::V26_1,
-		users: vec![User {
-			allow_goto: true,
-			..User::guest("modern")
-		}, User {
-			allow_goto: true,
-			..User::guest("old")
-		}],
+		users: vec![
+			User {
+				allow_goto: true,
+				..User::guest("modern")
+			},
+			User {
+				allow_goto: true,
+				..User::guest("old")
+			},
+		],
 		..Config::default()
 	});
 	tokio::spawn(serve(listener, config));

@@ -20,7 +20,7 @@ pub mod pds {
 	pub use pds_bytes_runtime::*;
 }
 
-pub use value::{CompoundExt, CompoundVecExt, PayloadMut};
+pub use value::{CompoundExt, CompoundVecExt};
 
 pub use gen::{Compound, Entry, List, List0 as ListItems, Payload, Tag};
 

@@ -13,9 +13,8 @@ use bungeeoxide_converter::gen::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
 	login_to_client_packet_success, login_to_server_packet as login_s,
-	login_to_server_packet_encryption_begin,
-	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
-	play_to_server_packet as play_s,
+	login_to_server_packet_encryption_begin, play_to_client_packet as play_c,
+	play_to_client_packet_chat, play_to_client_packet_login, play_to_server_packet as play_s,
 };
 use futures::SinkExt;
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
@@ -317,7 +316,8 @@ async fn pre_netty_servers_are_refused_for_mapped_players() -> Result<()> {
 }
 
 async fn verify(conn: &mut Conn, name: &str, session: &Session, known: bool) -> Result<()> {
-	let login_c::Ty::EncryptionBegin(request) = decode(&receive(conn).await?, login_c::deserialize)?
+	let login_c::Ty::EncryptionBegin(request) =
+		decode(&receive(conn).await?, login_c::deserialize)?
 	else {
 		bail!("expected the proxy to ask for encryption");
 	};

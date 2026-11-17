@@ -4,15 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct List {
-	pub r#type: super::U8,
+	//  type - virtual field
 	pub items: super::List0,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::u8::serialize(&_0.r#type, output)?;
-	super::list_0::debug_assert_tag(&_0.items, {
-		let _0: &super::U8 = &_0.r#type;
-		_0
-	});
+	super::u8::serialize(
+		&{
+			let _0: &super::List0 = &_0.items;
+			let __v1: super::U8 = super::list_0::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		},
+		output,
+	)?;
 	super::list_0::serialize(&_0.items, output)?;
 	Ok(())
 }
@@ -28,13 +32,25 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			},
 		},
 	)?;
-	Ok(Ty {
-		r#type: f_type,
-		items: f_items,
-	})
+	debug_assert!(
+		&f_type
+			== &{
+				let _0: &super::List0 = &f_items;
+				let __v1: super::U8 = super::list_0::virtual_tag(_0);
+				let _0 = &__v1;
+				_0.clone()
+			},
+		"virtual field type does not match its value source"
+	);
+	Ok(Ty { items: f_items })
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::u8::size_of(&_0.r#type) + super::list_0::size_of(&_0.items)
+	0 + super::u8::size_of(&{
+		let _0: &super::List0 = &_0.items;
+		let __v1: super::U8 = super::list_0::virtual_tag(_0);
+		let _0 = &__v1;
+		_0.clone()
+	}) + super::list_0::size_of(&_0.items)
 }
 pub type Ty = List;
 pub fn serialize_guarded(_0: &Ty, output: &mut Output) -> Result<()> {

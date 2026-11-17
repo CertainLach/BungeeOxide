@@ -120,7 +120,7 @@ def(Payload) {
 };
 
 def(List) => container {
-	field(type) => u8;
+	virtual_field(type, value: ./items/@tag) => u8;
 
 	field(items) => union(tag: ../type) {
 		variant(end, match: 0) => i32;
@@ -152,7 +152,7 @@ def(List) => container {
 };
 
 def(Entry) => container {
-	field(type) => u8;
+	virtual_field(type, value: ./value/@tag) => u8;
 
 	field(name) => string;
 

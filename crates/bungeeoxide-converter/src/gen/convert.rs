@@ -54389,9 +54389,11 @@ pub fn down_v1_5_1_1_5_2_v1_5_1_play_toClient_packet_231(
 		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -55014,9 +55016,11 @@ pub fn up_v1_5_2_1_6_1_v1_6_1_play_toClient_packet_248(
 		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -55495,9 +55499,11 @@ pub fn down_v1_5_2_1_6_1_v1_5_1_play_toClient_packet_259(
 		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_5_1::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -56220,9 +56226,11 @@ pub fn up_v1_6_1_1_6_2_v1_6_2_play_toClient_packet_281(
 		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -56827,9 +56835,11 @@ pub fn down_v1_6_1_1_6_2_v1_6_1_play_toClient_packet_285(
 		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_1::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -57629,9 +57639,11 @@ pub fn down_v1_6_2_1_6_4_v1_6_2_play_toClient_packet_305(
 		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardScore(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardScore(p)]
 		}
-		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardTeam(p) => {
 			vec![::bungeeoxide_minecraft::v1_6_2::play::to_client::Packet::ScoreboardTeam(p)]
 		}
@@ -65436,9 +65448,11 @@ pub fn up_v1_9_1_9_2_v1_9_2_play_toClient_packet_570(
 		::bungeeoxide_minecraft::v1_9::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_9::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_9::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_9::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -66625,9 +66639,11 @@ pub fn up_v1_9_2_1_9_4_v1_9_4_play_toClient_packet_590(
 		::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -67330,9 +67346,11 @@ pub fn down_v1_9_2_1_9_4_v1_9_2_play_toClient_packet_593(
 		::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_9_2::play::to_client::Packet::EntityMetadata(
 				down_v1_9_2_1_9_4_v1_9_play_toClient_packet_entity_metadata_604(p, cx)?,
@@ -68715,9 +68733,11 @@ pub fn down_v1_9_4_1_10_v1_9_4_play_toClient_packet_626(
 		::bungeeoxide_minecraft::v1_10::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_10::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_10::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_9_4::play::to_client::Packet::ScoreboardDisplayObjective(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_10::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::legacy_down_entity_metadata_1_9_4(p, cx)
 		}
@@ -72508,11 +72528,13 @@ pub fn up_v1_12_1_12_1_v1_12_1_play_toClient_packet_714(
 		::bungeeoxide_minecraft::v1_12::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_12_1::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_12::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_12::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_12_1::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_12::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_12_1::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -77897,11 +77919,13 @@ pub fn down_v1_12_2_1_13_v1_12_2_play_toClient_packet_819(
 		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_12_2::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_12_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_12_2::play::to_client::Packet::EntityMetadata(
 				down_v1_12_2_1_13_v1_12_play_toClient_packet_entity_metadata_848(p, cx)?,
@@ -81200,11 +81224,13 @@ pub fn up_v1_13_1_13_1_v1_13_1_play_toServer_packet_976(
 		::bungeeoxide_minecraft::v1_13::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_13_1::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_13::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_13::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_13_1::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_13::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_13_1::play::to_server::Packet::SetCreativeSlot(
 				up_v1_13_1_13_1_v1_13_play_toServer_packet_set_creative_slot_980(p, cx)?,
@@ -82558,11 +82584,13 @@ pub fn up_v1_13_1_1_13_2_v1_13_2_play_toClient_packet_987(
 		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::HeldItemSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_13_2::play::to_client::Packet::HeldItemSlot(p)]
 		}
-		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_13_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_13::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_13_2::play::to_client::Packet::EntityMetadata(
 				up_v1_13_1_1_13_2_v1_13_2_play_toClient_packet_entity_metadata_1003(p, cx)?,
@@ -86305,13 +86333,15 @@ pub fn down_v1_13_2_1_14_v1_13_2_play_toClient_packet_1123(
 		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::UpdateViewDistance(p) => {
 			return Ok(vec![])
 		}
-		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_13_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				down_v1_13_2_1_14_v1_8_play_toClient_packet_scoreboard_display_objective_1153(
 					p, cx,
 				)?,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::village_entity_metadata_1_13_2(p, cx)
 		}
@@ -87329,11 +87359,13 @@ pub fn down_v1_13_2_1_14_v1_13_2_play_toServer_packet_1179(
 				down_v1_13_2_1_14_v1_13_play_toServer_packet_update_command_block_1189(p, cx)?,
 			),
 		],
-		::bungeeoxide_minecraft::v1_14::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_14::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_13_2::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_14::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_13_2::play::to_server::Packet::SetCreativeSlot(
 				down_v1_13_2_1_14_v1_13_2_play_toServer_packet_set_creative_slot_1190(p, cx)?,
@@ -89389,11 +89421,13 @@ pub fn up_v1_14_1_1_14_3_v1_14_3_play_toClient_packet_1237(
 		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::UpdateViewDistance(p) => {
 			vec![::bungeeoxide_minecraft::v1_14_3::play::to_client::Packet::UpdateViewDistance(p)]
 		}
-		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_14_3::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_14::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_14_3::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -94645,11 +94679,13 @@ pub fn down_v1_14_4_1_15_v1_14_4_play_toClient_packet_1365(
 		::bungeeoxide_minecraft::v1_15::play::to_client::Packet::UpdateViewDistance(p) => {
 			vec![::bungeeoxide_minecraft::v1_14_4::play::to_client::Packet::UpdateViewDistance(p)]
 		}
-		::bungeeoxide_minecraft::v1_15::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_15::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_14_4::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_15::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::village_entity_metadata_1_14_4(p, cx)
 		}
@@ -103379,11 +103415,13 @@ pub fn up_v1_16_1_1_16_2_v1_16_2_play_toClient_packet_1680(
 		::bungeeoxide_minecraft::v1_16::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_16::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_16::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_16::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::EntityMetadata(
 				up_v1_16_1_1_16_2_v1_16_play_toClient_packet_entity_metadata_1700(p, cx)?,
@@ -104233,13 +104271,15 @@ pub fn down_v1_16_1_1_16_2_v1_16_play_toClient_packet_1725(
 		::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::Statistics(p) => {
 			return crate::custom::nether_statistics_1_16_1(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::AcknowledgePlayerDigging(p) => vec![
+		::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::AcknowledgePlayerDigging(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_16::play::to_client::Packet::AcknowledgePlayerDigging(
 				down_v1_16_1_1_16_2_v1_14_4_play_toClient_packet_acknowledge_player_digging_1727(
 					p, cx,
 				)?,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::BlockBreakAnimation(p) => {
 			vec![::bungeeoxide_minecraft::v1_16::play::to_client::Packet::BlockBreakAnimation(p)]
 		}
@@ -104714,11 +104754,13 @@ pub fn up_v1_16_1_1_16_2_v1_16_2_play_toServer_packet_1770(
 		::bungeeoxide_minecraft::v1_16::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_16_2::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_16::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_16::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_16::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_server::Packet::SetCreativeSlot(
 				up_v1_16_1_1_16_2_v1_13_2_play_toServer_packet_set_creative_slot_1773(p, cx)?,
@@ -107597,11 +107639,13 @@ pub fn down_v1_16_2_1_17_v1_16_2_play_toClient_packet_1846(
 				down_v1_16_2_1_17_v1_14_position_1880(p, cx)?,
 			),
 		],
-		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_client::Packet::EntityMetadata(
 				down_v1_16_2_1_17_v1_16_play_toClient_packet_entity_metadata_1881(p, cx)?,
@@ -108664,11 +108708,13 @@ pub fn down_v1_16_2_1_17_v1_16_2_play_toServer_packet_1928(
 				down_v1_16_2_1_17_v1_14_play_toServer_packet_update_command_block_1938(p, cx)?,
 			),
 		],
-		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_16_2::play::to_server::Packet::SetCreativeSlot(
 				down_v1_16_2_1_17_v1_13_2_play_toServer_packet_set_creative_slot_1939(p, cx)?,
@@ -109024,11 +109070,13 @@ pub fn up_v1_17_1_17_1_v1_17_1_play_toClient_packet_1946(
 		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_17::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -110414,11 +110462,13 @@ pub fn up_v1_17_1_17_1_v1_17_1_play_toServer_packet_1983(
 		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_17::play::to_server::Packet::SetCreativeSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::SetCreativeSlot(p)]
 		}
@@ -113326,11 +113376,13 @@ pub fn down_v1_17_1_1_18_v1_17_1_play_toClient_packet_2042(
 		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_client::Packet::EntityMetadata(
 				down_v1_17_1_1_18_v1_17_play_toClient_packet_entity_metadata_2059(p, cx)?,
@@ -113947,11 +113999,13 @@ pub fn down_v1_17_1_1_18_v1_17_1_play_toServer_packet_2094(
 		::bungeeoxide_minecraft::v1_18::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_18::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_18::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_18::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_17_1::play::to_server::Packet::SetCreativeSlot(
 				down_v1_17_1_1_18_v1_13_2_play_toServer_packet_set_creative_slot_2099(p, cx)?,
@@ -114418,11 +114472,13 @@ pub fn up_v1_18_1_18_2_v1_18_2_play_toClient_packet_2102(
 		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_18_2::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_18_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_18::play::to_client::Packet::EntityMetadata(p) => {
 			vec![::bungeeoxide_minecraft::v1_18_2::play::to_client::Packet::EntityMetadata(p)]
 		}
@@ -118846,11 +118902,13 @@ pub fn down_v1_18_2_1_19_v1_18_2_play_toClient_packet_2210(
 		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::ShouldDisplayChatPreview(p) => {
 			return Ok(vec![])
 		}
-		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_18_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::caves_entity_metadata_down_1_18_2(p, cx)
 		}
@@ -120324,11 +120382,13 @@ pub fn up_v1_19_1_19_2_v1_19_2_play_toClient_packet_2282(
 				),
 			]
 		}
-		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_19_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_19::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_19_2::play::to_client::Packet::EntityMetadata(
 				up_v1_19_1_19_2_v1_19_play_toClient_packet_entity_metadata_2293(p, cx)?,
@@ -121883,11 +121943,13 @@ pub fn up_v1_19_1_19_2_v1_19_2_play_toServer_packet_2334(
 		::bungeeoxide_minecraft::v1_19::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_19_2::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_19::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_19::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_19_2::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_19::play::to_server::Packet::SetCreativeSlot(p) => {
 			vec![::bungeeoxide_minecraft::v1_19_2::play::to_server::Packet::SetCreativeSlot(p)]
 		}
@@ -134118,11 +134180,13 @@ pub fn down_v1_19_4_1_20_v1_19_4_play_toClient_packet_2720(
 		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_19_4::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_19_4::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::trails_entity_metadata_1_20_to_1_19_4(p, cx)
 		}
@@ -134724,11 +134788,13 @@ pub fn down_v1_19_4_1_20_v1_19_4_play_toServer_packet_2772(
 		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_19_4::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_19_4::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_19_4::play::to_server::Packet::SetCreativeSlot(
 				down_v1_19_4_1_20_v1_13_2_play_toServer_packet_set_creative_slot_2776(p, cx)?,
@@ -136130,13 +136196,15 @@ pub fn up_v1_20_1_20_2_v1_20_2_play_toClient_packet_2783(
 		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_2::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_2::play::to_client::Packet::ScoreboardDisplayObjective(
 				up_v1_20_1_20_2_v1_20_2_play_toClient_packet_scoreboard_display_objective_2800(
 					p, cx,
 				)?,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20::play::to_client::Packet::EntityMetadata(p) => {
 			return crate::custom::trails_entity_metadata_1_20_to_1_20_2(p, cx)
 		}
@@ -137829,11 +137897,13 @@ pub fn up_v1_20_1_20_2_v1_20_2_play_toServer_packet_2883(
 		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::SetCreativeSlot(
 				up_v1_20_1_20_2_v1_20_2_play_toServer_packet_set_creative_slot_2888(p, cx)?,
@@ -144727,9 +144797,11 @@ pub fn up_v1_20_2_1_20_3_v1_20_3_play_toServer_packet_3196(
 		::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -145027,9 +145099,11 @@ pub fn down_v1_20_2_1_20_3_v1_20_2_play_toServer_packet_3202(
 		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_2::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -145369,13 +145443,15 @@ pub fn down_v1_20_3_1_20_5_v1_20_3_configuration_toClient_packet_3211(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::AddResourcePack(p) => vec![
+		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::AddResourcePack(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_3::configuration::to_client::Packet::AddResourcePack(
 				down_v1_20_3_1_20_5_v1_20_3_configuration_toClient_packet_add_resource_pack_3212(
 					p, cx,
 				)?,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::StoreCookie(p) => {
 			return Ok(vec![])
 		}
@@ -150820,9 +150896,11 @@ pub fn up_v1_20_3_1_20_5_v1_20_5_play_toServer_packet_3442(
 		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -151175,9 +151253,11 @@ pub fn down_v1_20_3_1_20_5_v1_20_3_play_toServer_packet_3452(
 		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_3::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -151416,9 +151496,11 @@ pub fn up_v1_20_5_1_21_1_v1_21_1_configuration_toClient_packet_3463(
 		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_1_21_1(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::Default(t) => {
 			vec![::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Default(t)]
 		}
@@ -151511,9 +151593,11 @@ pub fn down_v1_20_5_1_21_1_v1_20_5_configuration_toClient_packet_3464(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_down_1_20_5(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_5::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => return Ok(vec![]),
@@ -159014,9 +159098,11 @@ pub fn up_v1_20_5_1_21_1_v1_21_1_play_toServer_packet_3711(
 		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::EnchantItem(p) => vec![
 			::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::EnchantItem(
 				up_v1_20_5_1_21_1_v1_21_1_play_toServer_packet_enchant_item_3712(p, cx)?,
@@ -159414,9 +159500,11 @@ pub fn down_v1_20_5_1_21_1_v1_20_5_play_toServer_packet_3721(
 		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::EnchantItem(p) => vec![
 			::bungeeoxide_minecraft::v1_20_5::play::to_server::Packet::EnchantItem(
 				down_v1_20_5_1_21_1_v1_0_1_play_toServer_packet_enchant_item_3722(p, cx)?,
@@ -159669,9 +159757,11 @@ pub fn up_v1_21_1_1_21_3_v1_21_1_configuration_toClient_packet_3732(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_1_21_3(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -159774,9 +159864,11 @@ pub fn down_v1_21_1_1_21_3_v1_21_1_configuration_toClient_packet_3733(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_down_1_21_1(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -159871,9 +159963,11 @@ pub fn up_v1_21_1_1_21_3_v1_21_3_configuration_toServer_packet_3734(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_20_5::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_20_5::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_20_5::configuration::to_server::Packet::Default(t) => {
 			vec![::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::Default(t)]
 		}
@@ -159956,9 +160050,11 @@ pub fn down_v1_21_1_1_21_3_v1_20_5_configuration_toServer_packet_3736(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_20_5::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::Default(t) => {
 			vec![::bungeeoxide_minecraft::v1_20_5::configuration::to_server::Packet::Default(t)]
 		}
@@ -167825,9 +167921,11 @@ pub fn up_v1_21_1_1_21_3_v1_21_3_play_toServer_packet_3993(
 		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::EnchantItem(p) => vec![
 			::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::EnchantItem(
 				up_v1_21_1_1_21_3_v1_21_3_play_toServer_packet_enchant_item_3994(p, cx)?,
@@ -168282,9 +168380,11 @@ pub fn down_v1_21_1_1_21_3_v1_21_1_play_toServer_packet_4002(
 		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::EnchantItem(p) => vec![
 			::bungeeoxide_minecraft::v1_21_1::play::to_server::Packet::EnchantItem(
 				down_v1_21_1_1_21_3_v1_21_1_play_toServer_packet_enchant_item_4003(p, cx)?,
@@ -168543,9 +168643,11 @@ pub fn up_v1_21_3_1_21_4_v1_21_1_configuration_toClient_packet_4015(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_up_1_21_4(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -168648,9 +168750,11 @@ pub fn down_v1_21_3_1_21_4_v1_21_1_configuration_toClient_packet_4016(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::tricky_config_tags_down_1_21_3(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -168711,9 +168815,11 @@ pub fn up_v1_21_3_1_21_4_v1_21_4_configuration_toServer_packet_4017(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::Default(t) => {
 			vec![::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::Default(t)]
 		}
@@ -168764,9 +168870,11 @@ pub fn down_v1_21_3_1_21_4_v1_21_3_configuration_toServer_packet_4018(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_3::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::CustomReportDetails(
 			p,
 		) => return Ok(vec![]),
@@ -176989,9 +177097,11 @@ pub fn up_v1_21_3_1_21_4_v1_21_4_play_toServer_packet_4301(
 		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -177308,9 +177418,11 @@ pub fn down_v1_21_3_1_21_4_v1_21_3_play_toServer_packet_4307(
 		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_3::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -177570,9 +177682,11 @@ pub fn up_v1_21_4_1_21_5_v1_21_1_configuration_toClient_packet_4314(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_1_21_5(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -177684,9 +177798,11 @@ pub fn down_v1_21_4_1_21_5_v1_21_1_configuration_toClient_packet_4316(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_4(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -184512,9 +184628,11 @@ pub fn up_v1_21_4_1_21_5_v1_21_5_play_toServer_packet_4556(
 		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -184851,9 +184969,11 @@ pub fn down_v1_21_4_1_21_5_v1_21_4_play_toServer_packet_4563(
 		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_4::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -185138,9 +185258,11 @@ pub fn up_v1_21_5_1_21_6_v1_21_6_configuration_toClient_packet_4571(
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_1_21_6(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -185255,9 +185377,11 @@ pub fn down_v1_21_5_1_21_6_v1_21_1_configuration_toClient_packet_4573(
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_5(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_1::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -185324,9 +185448,11 @@ pub fn up_v1_21_5_1_21_6_v1_21_6_configuration_toServer_packet_4575(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::CustomReportDetails(
 			p,
 		) => return Ok(vec![]),
@@ -185383,9 +185509,11 @@ pub fn down_v1_21_5_1_21_6_v1_21_4_configuration_toServer_packet_4576(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_4::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::CustomClickAction(
 			p,
 		) => return Ok(vec![]),
@@ -196347,9 +196475,11 @@ pub fn up_v1_21_5_1_21_6_v1_21_6_play_toServer_packet_4969(
 		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -196790,9 +196920,11 @@ pub fn down_v1_21_5_1_21_6_v1_21_5_play_toServer_packet_4980(
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_5::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -197064,9 +197196,11 @@ pub fn up_v1_21_6_1_21_8_v1_21_6_configuration_toClient_packet_4992(
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_1_21_8(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -197182,9 +197316,11 @@ pub fn down_v1_21_6_1_21_8_v1_21_6_configuration_toClient_packet_4993(
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_6(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -202667,9 +202803,11 @@ pub fn up_v1_21_6_1_21_8_v1_21_6_play_toServer_packet_5123(
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -203027,9 +203165,11 @@ pub fn down_v1_21_6_1_21_8_v1_21_6_play_toServer_packet_5131(
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -203321,9 +203461,11 @@ pub fn up_v1_21_8_1_21_9_v1_21_9_configuration_toClient_packet_5140(
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_1_21_9(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -203444,9 +203586,11 @@ pub fn down_v1_21_8_1_21_9_v1_21_6_configuration_toClient_packet_5142(
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_8(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -203516,9 +203660,11 @@ pub fn up_v1_21_8_1_21_9_v1_21_9_configuration_toServer_packet_5144(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::CustomClickAction(
 			p,
 		) => vec![
@@ -203576,9 +203722,11 @@ pub fn down_v1_21_8_1_21_9_v1_21_6_configuration_toServer_packet_5145(
 				p,
 			),
 		],
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_server::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_server::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::configuration::to_server::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_server::Packet::CustomClickAction(
 			p,
 		) => vec![
@@ -213935,9 +214083,11 @@ pub fn up_v1_21_8_1_21_9_v1_21_9_play_toServer_packet_5513(
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -214340,9 +214490,11 @@ pub fn down_v1_21_8_1_21_9_v1_21_6_play_toServer_packet_5523(
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::ConfigurationAcknowledged(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_6::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -214606,9 +214758,11 @@ pub fn up_v1_21_9_1_21_11_v1_21_9_configuration_toClient_packet_5534(
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_1_21_11(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -214729,9 +214883,11 @@ pub fn down_v1_21_9_1_21_11_v1_21_9_configuration_toClient_packet_5535(
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_9(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -218795,9 +218951,11 @@ pub fn up_v1_21_9_1_21_11_v1_21_11_play_toClient_packet_5537(
 		::bungeeoxide_minecraft::v1_21_9::play::to_client::Packet::Statistics(p) => {
 			return crate::custom::late_statistics_up_1_21_11(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::play::to_client::Packet::AcknowledgePlayerDigging(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::play::to_client::Packet::AcknowledgePlayerDigging(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::AcknowledgePlayerDigging(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::play::to_client::Packet::BlockBreakAnimation(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::BlockBreakAnimation(p)]
 		}
@@ -224106,11 +224264,13 @@ pub fn up_v1_21_9_1_21_11_v1_21_11_play_toServer_packet_5823(
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::ConfigurationAcknowledged(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -224131,9 +224291,11 @@ pub fn up_v1_21_9_1_21_11_v1_21_11_play_toServer_packet_5823(
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::CustomPayload(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::CustomPayload(p)]
 		}
-		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::DebugSubscriptionRequest(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::DebugSubscriptionRequest(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::DebugSubscriptionRequest(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::play::to_server::Packet::EditBook(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::EditBook(p)]
 		}
@@ -224800,9 +224962,11 @@ pub fn up_v1_21_11_26_1_v1_21_9_configuration_toClient_packet_5848(
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_up_26_1(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -224923,9 +225087,11 @@ pub fn down_v1_21_11_26_1_v1_21_9_configuration_toClient_packet_5849(
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::Tags(p) => {
 			return crate::custom::late_config_tags_down_1_21_11(p, cx)
 		}
-		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => vec![
+		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::SelectKnownPacks(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v1_21_9::configuration::to_client::Packet::CustomReportDetails(
 			p,
 		) => vec![
@@ -233597,9 +233763,11 @@ pub fn down_v1_21_11_26_1_v1_21_11_play_toClient_packet_5992(
 		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::Statistics(p) => {
 			return crate::custom::late_statistics_down_1_21_11(p, cx)
 		}
-		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::AcknowledgePlayerDigging(p) => vec![
+		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::AcknowledgePlayerDigging(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::AcknowledgePlayerDigging(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::BlockBreakAnimation(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::BlockBreakAnimation(p)]
 		}
@@ -233913,11 +234081,13 @@ pub fn down_v1_21_11_26_1_v1_21_11_play_toClient_packet_5992(
 		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::SpawnPosition(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::SpawnPosition(p)]
 		}
-		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => vec![
+		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::ScoreboardDisplayObjective(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::ScoreboardDisplayObjective(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v26_1::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_client::Packet::EntityMetadata(
 				down_v1_21_11_26_1_v1_21_11_play_toClient_packet_entity_metadata_6100(p, cx)?,
@@ -234820,11 +234990,13 @@ pub fn down_v1_21_11_26_1_v1_21_11_play_toServer_packet_6147(
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::TabComplete(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::TabComplete(p)]
 		}
-		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::ConfigurationAcknowledged(p) => vec![
+		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::ConfigurationAcknowledged(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::ConfigurationAcknowledged(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::EnchantItem(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::EnchantItem(p)]
 		}
@@ -234845,9 +235017,11 @@ pub fn down_v1_21_11_26_1_v1_21_11_play_toServer_packet_6147(
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::CustomPayload(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::CustomPayload(p)]
 		}
-		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::DebugSubscriptionRequest(p) => vec![
+		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::DebugSubscriptionRequest(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::DebugSubscriptionRequest(p),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::EditBook(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::EditBook(p)]
 		}
@@ -234941,11 +235115,13 @@ pub fn down_v1_21_11_26_1_v1_21_11_play_toServer_packet_6147(
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::UpdateCommandBlock(p) => {
 			vec![::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::UpdateCommandBlock(p)]
 		}
-		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::UpdateCommandBlockMinecart(p) => vec![
+		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::UpdateCommandBlockMinecart(p) => {
+			vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::UpdateCommandBlockMinecart(
 				p,
 			),
-		],
+		]
+		}
 		::bungeeoxide_minecraft::v26_1::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v1_21_11::play::to_server::Packet::SetCreativeSlot(
 				down_v1_21_11_26_1_v1_21_11_play_toServer_packet_set_creative_slot_6156(p, cx)?,

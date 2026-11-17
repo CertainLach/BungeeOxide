@@ -8,9 +8,9 @@ use std::sync::atomic::{AtomicBool, AtomicI32, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 
-use flate2::read::ZlibDecoder;
 use bungeeoxide_minecraft_v1_21_11 as gen;
 use clap::Parser;
+use flate2::read::ZlibDecoder;
 use pds_bytes_runtime::{self as pds, Input, Output};
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
