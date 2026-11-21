@@ -9,7 +9,6 @@ members = [
 	"crates/bungeeoxide-authlib",
 	"crates/bungeeoxide-converter",
 	"crates/bungeeoxide-nbt",
-	"crates/pds-bytes-runtime",
 ]
 default-members = ["cmds/bungeeoxide"]
 
@@ -81,7 +80,8 @@ bungeeoxide-pds-natives = { version = "0.1.2", path = "crates/bungeeoxide-pds-na
 bungeeoxide-authlib = { version = "0.1.2", path = "crates/bungeeoxide-authlib" }
 bungeeoxide-converter = { version = "0.1.2", path = "crates/bungeeoxide-converter" }
 bungeeoxide-nbt = { version = "0.1.2", path = "crates/bungeeoxide-nbt" }
-pds-bytes-runtime = { version = "0.1.1", path = "crates/pds-bytes-runtime" }
+
+pds-bytes-runtime = { version = "0.1.1" }
 
 aes = "0.8"
 anyhow = "1.0"

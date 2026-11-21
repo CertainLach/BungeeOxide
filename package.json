@@ -1,0 +1,16 @@
+{
+	"name": "@in3pre3/workspace",
+	"private": true,
+	"type": "module",
+	"workspaces": [
+		"ts/*"
+	],
+	"devDependencies": {
+		"@deltarocks/raphus": "^0.1.1",
+		"@types/node": "^26.6.6"
+	},
+	"catalog": {
+		"@deltarocks/pds-bytes-runtime": "^0.1.0",
+		"@std/assert": "jsr:^1.0.19"
+	}
+}

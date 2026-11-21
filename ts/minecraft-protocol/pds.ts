@@ -1,1 +1,1 @@
-export * from "../pds-runtime/mod.ts";
+export * from "@deltarocks/pds-bytes-runtime";
