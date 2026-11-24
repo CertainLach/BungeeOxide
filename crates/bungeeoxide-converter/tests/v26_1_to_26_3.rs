@@ -1236,8 +1236,19 @@ fn text(p: &Payload, path: &[&str]) -> String {
 }
 
 fn enchantment_terms(root: Root, from: Version, to: Version, terms: &str, cx: &mut Session) -> Payload {
+	let effects = enchantment_effects(
+		root,
+		from,
+		to,
+		&format!("{{\"minecraft:damage\":[{{effect:{{type:\"minecraft:add\",value:1.0f}},requirements:{terms}}}]}}"),
+		cx,
+	);
+	at(&effects, &["minecraft:damage", "0", "requirements"])
+}
+
+fn enchantment_effects(root: Root, from: Version, to: Version, effects: &str, cx: &mut Session) -> Payload {
 	let entry = Tag::new(snbt(&format!(
-		"{{description:\"x\",supported_items:\"#minecraft:swords\",weight:1,max_level:1,min_cost:{{base:1,per_level_above_first:1}},max_cost:{{base:1,per_level_above_first:1}},anvil_cost:1,slots:[\"any\"],effects:{{\"minecraft:damage\":[{{effect:{{type:\"minecraft:add\",value:1.0f}},requirements:{terms}}}]}}}}"
+		"{{description:\"x\",supported_items:\"#minecraft:swords\",weight:1,max_level:1,min_cost:{{base:1,per_level_above_first:1}},max_cost:{{base:1,per_level_above_first:1}},anvil_cost:1,slots:[\"any\"],effects:{effects}}}"
 	)));
 	let packet = y::configuration_to_client_packet::Ty::RegistryData(y::configuration_to_client_packet_registry_data::Ty {
 		id: "minecraft:enchantment".into(),
@@ -1255,7 +1266,7 @@ fn enchantment_terms(root: Root, from: Version, to: Version, terms: &str, cx: &m
 		panic!()
 	};
 	let value = r.entries[0].value.as_ref().unwrap().value.clone();
-	at(&value, &["effects", "minecraft:damage", "0", "requirements"]).clone()
+	at(&value, &["effects"])
 }
 
 #[test]
@@ -1300,6 +1311,78 @@ fn enchantment_number_providers_split_and_merge() {
 	assert_eq!(at(&sum, &["summands", "0", "value"]), Payload::Int(1));
 	assert_eq!(text(&sum, &["summands", "1", "type"]), "minecraft:constant");
 	assert_eq!(at(&sum, &["summands", "1", "value"]), Payload::Int(2));
+}
+
+#[test]
+fn enchantment_terms_inline_and_match_block_go_down() {
+	let mut cx = Session::new();
+	let down = enchantment_terms(
+		Root::ConfigurationToClient,
+		Version::V26_3,
+		Version::V26_2,
+		"{type:\"minecraft:any_of\",terms:{type:\"minecraft:all_of\",terms:[{type:\"minecraft:match_block\",blocks:\"minecraft:stone\",state:{axis:\"y\"}},{type:\"minecraft:match_block\",blocks:\"#minecraft:logs\"},{type:\"minecraft:match_block\",blocks:[\"minecraft:stone\",\"minecraft:dirt\"]}]}}",
+		&mut cx,
+	);
+	assert_eq!(text(&down, &["condition"]), "minecraft:any_of");
+	let inner = at(&down, &["terms", "0"]);
+	assert_eq!(text(&inner, &["condition"]), "minecraft:all_of");
+	let single = at(&inner, &["terms", "0"]);
+	assert_eq!(text(&single, &["condition"]), "minecraft:block_state_property");
+	assert_eq!(text(&single, &["block"]), "minecraft:stone");
+	assert_eq!(text(&single, &["properties", "axis"]), "y");
+	for i in ["1", "2"] {
+		let t = at(&inner, &["terms", i]);
+		assert_eq!(text(&t, &["condition"]), "minecraft:all_of");
+		assert!(at(&t, &["terms"]).values().is_empty());
+	}
+
+	let effects = enchantment_effects(
+		Root::ConfigurationToClient,
+		Version::V26_3,
+		Version::V26_2,
+		"{\"minecraft:post_attack\":[{enchanted:\"attacker\",affected:\"victim\",effect:{type:\"minecraft:all_of\",effects:[{type:\"minecraft:ignite\",duration:1}]}}]}",
+		&mut cx,
+	);
+	let effect = at(&effects, &["minecraft:post_attack", "0", "effect"]);
+	assert_eq!(text(&effect, &["type"]), "minecraft:all_of");
+	assert!(effect.field("condition").is_none());
+}
+
+#[test]
+fn enchantment_block_state_providers() {
+	let mut cx = Session::new();
+	let up = enchantment_effects(
+		Root::ConfigurationToClient,
+		Version::V26_2,
+		Version::V26_3,
+		"{\"minecraft:location_changed\":[{effect:{type:\"minecraft:replace_disk\",radius:1,height:1,block_state:{type:\"minecraft:simple_state_provider\",state:{Name:\"minecraft:frosted_ice\",Properties:{age:\"0\"}}}}},{effect:{type:\"minecraft:replace_block\",block_state:{type:\"minecraft:weighted_state_provider\",entries:[{data:{Name:\"minecraft:stone\"},weight:1}]}}},{effect:{type:\"minecraft:replace_block\",block_state:{type:\"minecraft:randomized_int_state_provider\",property:\"age\",values:1,source:{type:\"minecraft:rotated_block_provider\",state:{Name:\"minecraft:oak_log\"}}}}}]}",
+		&mut cx,
+	);
+	let simple = at(&up, &["minecraft:location_changed", "0", "effect", "block_state"]);
+	assert_eq!(text(&simple, &["type"]), "minecraft:simple");
+	assert_eq!(text(&simple, &["state", "id"]), "minecraft:frosted_ice");
+	assert_eq!(text(&simple, &["state", "properties", "age"]), "0");
+	assert!(at(&simple, &["state"]).field("Name").is_none());
+	let weighted = at(&up, &["minecraft:location_changed", "1", "effect", "block_state"]);
+	assert_eq!(text(&weighted, &["type"]), "minecraft:weighted");
+	assert_eq!(text(&weighted, &["entries", "0", "data", "id"]), "minecraft:stone");
+	let randomized = at(&up, &["minecraft:location_changed", "2", "effect", "block_state"]);
+	assert_eq!(text(&randomized, &["type"]), "minecraft:randomized_int");
+	assert_eq!(text(&randomized, &["source", "type"]), "minecraft:rotated");
+	assert_eq!(text(&randomized, &["source", "state", "id"]), "minecraft:oak_log");
+
+	let down = enchantment_effects(
+		Root::ConfigurationToClient,
+		Version::V26_3,
+		Version::V26_2,
+		"{\"minecraft:location_changed\":[{effect:{type:\"minecraft:replace_disk\",radius:1,height:1,block_state:\"test:provider\"}},{effect:{type:\"minecraft:replace_block\",block_state:{type:\"minecraft:random_block\",blocks:\"#minecraft:logs\"}}}]}",
+		&mut cx,
+	);
+	for i in ["0", "1"] {
+		let provider = at(&down, &["minecraft:location_changed", i, "effect", "block_state"]);
+		assert_eq!(text(&provider, &["type"]), "minecraft:simple_state_provider");
+		assert_eq!(text(&provider, &["state", "Name"]), "minecraft:dirt");
+	}
 }
 
 fn sherd_list(ids: &[&str]) -> Payload {

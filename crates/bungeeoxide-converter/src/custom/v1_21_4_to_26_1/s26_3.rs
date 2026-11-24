@@ -1307,7 +1307,94 @@ fn always_true(tag: &mut Payload) {
 	tag.put("terms", Payload::List(bungeeoxide_nbt::List::of(vec![])));
 }
 
+const STATE_PROVIDER_EFFECTS: &[&str] = &["replace_disk", "replace_block"];
+
+fn state_provider_effect(tag: &Payload) -> bool {
+	tag.field("block_state").is_some()
+		&& tag
+			.field("type")
+			.and_then(Payload::as_str)
+			.is_some_and(|t| STATE_PROVIDER_EFFECTS.contains(&short(t)))
+}
+
+fn each_listed(list: &mut Payload, f: fn(&mut Payload)) {
+	for c in list.compounds_mut().into_iter().flatten() {
+		let mut item = Payload::Compound(std::mem::take(c));
+		f(&mut item);
+		if let Payload::Compound(back) = item {
+			*c = back;
+		}
+	}
+}
+
+fn block_state_up(state: Payload) -> Payload {
+	let mut state = state;
+	rename(&mut state, "Name", "id");
+	rename(&mut state, "Properties", "properties");
+	state
+}
+
+fn block_states_up(list: Payload) -> Payload {
+	let mut list = list;
+	each_listed(&mut list, |s| {
+		rename(s, "Name", "id");
+		rename(s, "Properties", "properties");
+	});
+	list
+}
+
+fn state_provider_up(provider: Payload) -> Payload {
+	let Some(kind) = provider.field("type").and_then(Payload::as_str).map(|t| short(t).to_owned()) else {
+		return block_state_up(provider);
+	};
+	let kind = match kind.as_str() {
+		"randomized_int_state_provider" => "randomized_int",
+		"rotated_block_provider" => "rotated",
+		"rule_based_state_provider" => "rule_based",
+		"simple_state_provider" => "simple",
+		"weighted_state_provider" => "weighted",
+		k => k.strip_suffix("_provider").unwrap_or(k),
+	}
+	.to_owned();
+	let mut p = provider;
+	p.put("type", Payload::String(format!("minecraft:{kind}")));
+	match kind.as_str() {
+		"simple" | "rotated" => map_field(&mut p, "state", "state", block_state_up),
+		"weighted" => {
+			if let Some(entries) = p.field_mut("entries") {
+				each_listed(entries, |e| map_field(e, "data", "data", block_state_up));
+			}
+		}
+		"noise_threshold" => {
+			map_field(&mut p, "default_state", "default_state", block_state_up);
+			map_field(&mut p, "low_states", "low_states", block_states_up);
+			map_field(&mut p, "high_states", "high_states", block_states_up);
+		}
+		"noise" | "dual_noise" => map_field(&mut p, "states", "states", block_states_up),
+		"randomized_int" => map_field(&mut p, "source", "source", state_provider_up),
+		"rule_based" => {
+			map_field(&mut p, "fallback", "fallback", state_provider_up);
+			p.put("rules", Payload::List(bungeeoxide_nbt::List::of(vec![])));
+		}
+		_ => {}
+	}
+	p
+}
+
+fn dirt_provider() -> Payload {
+	let mut state = Payload::Compound(vec![]);
+	state.put("Name", Payload::from("minecraft:dirt"));
+	let mut provider = Payload::Compound(vec![]);
+	provider.put("type", Payload::from("minecraft:simple_state_provider"));
+	provider.put("state", state);
+	provider
+}
+
 fn term_up(tag: &mut Payload) {
+	if state_provider_effect(tag) {
+		map_field(tag, "block_state", "block_state", state_provider_up);
+		return;
+	}
 	let Some(condition) = tag.take("condition") else {
 		return;
 	};
@@ -1352,6 +1439,13 @@ fn term_up(tag: &mut Payload) {
 }
 
 fn term_down(tag: &mut Payload) {
+	if state_provider_effect(tag) {
+		tag.put("block_state", dirt_provider());
+		return;
+	}
+	if tag.field("effects").is_some() && tag.field("terms").is_none() {
+		return;
+	}
 	let kind = match tag.field("type").and_then(Payload::as_str) {
 		Some(t) if CONDITIONS.contains(&short(t)) => short(t).to_owned(),
 		_ => return,
@@ -1381,9 +1475,20 @@ fn term_down(tag: &mut Payload) {
 			}
 		}
 		"match_block" => {
-			tag.put("condition", Payload::from("minecraft:block_state_property"));
-			rename(tag, "blocks", "block");
-			rename(tag, "state", "properties");
+			let single = matches!(tag.field("blocks"), Some(Payload::String(b)) if !b.starts_with('#'));
+			if single {
+				tag.put("condition", Payload::from("minecraft:block_state_property"));
+				rename(tag, "blocks", "block");
+				rename(tag, "state", "properties");
+			} else {
+				always_true(tag);
+			}
+		}
+		"all_of" | "any_of" => {
+			tag.put("condition", condition);
+			if let Some(Payload::Compound(_)) = tag.field("terms") {
+				map_field(tag, "terms", "terms", |t| Payload::List(bungeeoxide_nbt::List::of(vec![t])));
+			}
 		}
 		_ => tag.put("condition", condition),
 	}
