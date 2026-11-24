@@ -1215,6 +1215,93 @@ fn new_map_decorations_become_target_x() {
 	assert_eq!(kind("x"), Some("minecraft:red_x"));
 }
 
+fn snbt(s: &str) -> Payload {
+	bungeeoxide_nbt::snbt::parse(s).unwrap_or_else(|| panic!("bad snbt {s}"))
+}
+
+fn at(p: &Payload, path: &[&str]) -> Payload {
+	let mut cur = p.clone();
+	for k in path {
+		cur = match k.parse::<usize>() {
+			Ok(i) => cur.values().get(i).cloned(),
+			Err(_) => cur.field(k).cloned(),
+		}
+		.unwrap_or_else(|| panic!("{p:?} has no {path:?}"));
+	}
+	cur
+}
+
+fn text(p: &Payload, path: &[&str]) -> String {
+	at(p, path).as_str().unwrap_or_default().to_owned()
+}
+
+fn enchantment_terms(root: Root, from: Version, to: Version, terms: &str, cx: &mut Session) -> Payload {
+	let entry = Tag::new(snbt(&format!(
+		"{{description:\"x\",supported_items:\"#minecraft:swords\",weight:1,max_level:1,min_cost:{{base:1,per_level_above_first:1}},max_cost:{{base:1,per_level_above_first:1}},anvil_cost:1,slots:[\"any\"],effects:{{\"minecraft:damage\":[{{effect:{{type:\"minecraft:add\",value:1.0f}},requirements:{terms}}}]}}}}"
+	)));
+	let packet = y::configuration_to_client_packet::Ty::RegistryData(y::configuration_to_client_packet_registry_data::Ty {
+		id: "minecraft:enchantment".into(),
+		entries: vec![y::configuration_to_client_packet_registry_data_entries_items::Ty {
+			key: "test:lucky".into(),
+			value: Some(entry),
+		}],
+	});
+	let encoded = encode(&packet, y::configuration_to_client_packet::serialize);
+	let out = convert(root, from, to, &encoded, cx).unwrap();
+	let [bytes] = out.as_slice() else {
+		panic!("{} packets", out.len())
+	};
+	let y::configuration_to_client_packet::Ty::RegistryData(r) = decode(bytes, y::configuration_to_client_packet::deserialize) else {
+		panic!()
+	};
+	let value = r.entries[0].value.as_ref().unwrap().value.clone();
+	at(&value, &["effects", "minecraft:damage", "0", "requirements"]).clone()
+}
+
+#[test]
+fn enchantment_number_providers_split_and_merge() {
+	let mut cx = Session::new();
+	let up = enchantment_terms(
+		Root::ConfigurationToClient,
+		Version::V26_2,
+		Version::V26_3,
+		"{condition:\"minecraft:all_of\",terms:[{condition:\"minecraft:random_chance\",chance:{min:0.1f,max:{type:\"minecraft:binomial\",n:3,p:0.5f}}},{condition:\"minecraft:value_check\",value:2.6f,range:{min:1.4f,max:{type:\"minecraft:score\",target:\"this\",score:\"s\"}}},{condition:\"minecraft:time_check\",value:{min:2.2f,max:3},period:24000L}]}",
+		&mut cx,
+	);
+	let chance = at(&up, &["terms", "0", "chance"]);
+	assert_eq!(text(&chance, &["type"]), "minecraft:uniform");
+	assert_eq!(text(&chance, &["max", "type"]), "minecraft:from_int");
+	assert_eq!(at(&chance, &["max", "input", "n"]), Payload::Int(3));
+	let check = at(&up, &["terms", "1"]);
+	assert_eq!(text(&check, &["type"]), "minecraft:int_value_check");
+	assert_eq!(at(&check, &["value"]), Payload::Int(3));
+	assert_eq!(at(&check, &["test", "min"]), Payload::Int(1));
+	assert_eq!(text(&check, &["test", "max", "type"]), "minecraft:score");
+	let time = at(&up, &["terms", "2"]);
+	assert_eq!((at(&time, &["value", "min"]), at(&time, &["value", "max"])), (Payload::Int(2), Payload::Int(3)));
+
+	let down = enchantment_terms(
+		Root::ConfigurationToClient,
+		Version::V26_3,
+		Version::V26_2,
+		"{type:\"minecraft:all_of\",terms:[{type:\"minecraft:int_value_check\",value:{type:\"minecraft:from_float\",input:{type:\"minecraft:round\",input:{type:\"minecraft:uniform\",min:1,max:4}}},test:{type:\"minecraft:constant\",value:2}},{type:\"minecraft:random_chance\",chance:\"test:provider\"},{type:\"minecraft:random_chance\",chance:{type:\"minecraft:add\",inputs:[1,2]}}]}",
+		&mut cx,
+	);
+	let check = at(&down, &["terms", "0"]);
+	assert_eq!(text(&check, &["condition"]), "minecraft:value_check");
+	assert_eq!(text(&check, &["value", "type"]), "minecraft:uniform");
+	assert_eq!(text(&check, &["range", "min", "type"]), "minecraft:constant");
+	assert_eq!(at(&check, &["range", "max", "value"]), Payload::Int(2));
+	let reference = at(&down, &["terms", "1"]);
+	assert_eq!(text(&reference, &["condition"]), "minecraft:all_of");
+	assert!(at(&reference, &["terms"]).values().is_empty());
+	let sum = at(&down, &["terms", "2", "chance"]);
+	assert_eq!(text(&sum, &["type"]), "minecraft:sum");
+	assert_eq!(at(&sum, &["summands", "0", "value"]), Payload::Int(1));
+	assert_eq!(text(&sum, &["summands", "1", "type"]), "minecraft:constant");
+	assert_eq!(at(&sum, &["summands", "1", "value"]), Payload::Int(2));
+}
+
 fn sherd_list(ids: &[&str]) -> Payload {
 	let mut pot = Payload::Compound(vec![]);
 	pot.put(

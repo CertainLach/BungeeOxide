@@ -1096,6 +1096,7 @@ const CONDITIONS: &[&str] = &[
 	"match_block",
 	"match_tool",
 	"int_value_check",
+	"float_value_check",
 	"random_chance",
 	"random_chance_with_enchanted_bonus",
 	"reference",
@@ -1116,6 +1117,196 @@ fn rename(tag: &mut Payload, from: &str, to: &str) {
 	}
 }
 
+fn map_field(tag: &mut Payload, from: &str, to: &str, f: fn(Payload) -> Payload) {
+	if let Some(v) = tag.take(from) {
+		tag.put(to, f(v));
+	}
+}
+
+fn try_field(tag: &mut Payload, from: &str, to: &str, f: fn(Payload) -> Option<Payload>) -> bool {
+	let Some(v) = tag.take(from) else {
+		return true;
+	};
+	match f(v) {
+		Some(v) => {
+			tag.put(to, v);
+			true
+		}
+		None => false,
+	}
+}
+
+fn provider_type(p: &Payload, default: &str) -> String {
+	short(p.field("type").and_then(Payload::as_str).unwrap_or(default)).to_owned()
+}
+
+fn unary(kind: &str, input: Payload) -> Payload {
+	let mut p = Payload::Compound(vec![]);
+	p.put("type", Payload::String(format!("minecraft:{kind}")));
+	p.put("input", input);
+	p
+}
+
+fn rounded(p: &Payload) -> Option<Payload> {
+	match p {
+		Payload::Int(_) => Some(p.clone()),
+		p => p.as_f64().map(|v| Payload::Int((v as f32 + 0.5).floor() as i32)),
+	}
+}
+
+fn int_provider(p: Payload) -> Payload {
+	if let Some(n) = rounded(&p) {
+		return n;
+	}
+	let mut p = p;
+	match provider_type(&p, "").as_str() {
+		"binomial" => {
+			map_field(&mut p, "n", "n", int_provider);
+			map_field(&mut p, "p", "p", float_provider);
+			p
+		}
+		"score" if p.field("scale").and_then(Payload::as_f64).unwrap_or(1.0) == 1.0 => {
+			p.take("scale");
+			p
+		}
+		_ => unary("from_float", unary("round", float_provider(p))),
+	}
+}
+
+fn float_provider(p: Payload) -> Payload {
+	let Payload::Compound(_) = p else {
+		return p;
+	};
+	let mut p = p;
+	match provider_type(&p, "uniform").as_str() {
+		"uniform" => {
+			p.put("type", Payload::from("minecraft:uniform"));
+			map_field(&mut p, "min", "min", float_provider);
+			map_field(&mut p, "max", "max", float_provider);
+			p
+		}
+		"sum" => {
+			p.put("type", Payload::from("minecraft:add"));
+			map_field(&mut p, "summands", "inputs", |s| {
+				Payload::List(bungeeoxide_nbt::List::of(
+					s.values().into_iter().map(float_compound).collect(),
+				))
+			});
+			p
+		}
+		"binomial" => unary("from_int", int_provider(p)),
+		"score" => match p.take("scale") {
+			None => unary("from_int", p),
+			Some(scale) => {
+				let mut product = Payload::Compound(vec![]);
+				product.put("type", Payload::from("minecraft:mul"));
+				product.put(
+					"inputs",
+					Payload::List(bungeeoxide_nbt::List::of(vec![
+						unary("from_int", p),
+						float_compound(scale),
+					])),
+				);
+				product
+			}
+		},
+		_ => p,
+	}
+}
+
+fn constant(value: Payload) -> Payload {
+	let mut c = Payload::Compound(vec![]);
+	c.put("type", Payload::from("minecraft:constant"));
+	c.put("value", value);
+	c
+}
+
+fn float_compound(p: Payload) -> Payload {
+	match float_provider(p) {
+		c @ Payload::Compound(_) => c,
+		v => constant(v),
+	}
+}
+
+fn int_range_up(range: Payload) -> Payload {
+	let mut range = range;
+	if let Payload::Compound(_) = range {
+		map_field(&mut range, "min", "min", int_provider);
+		map_field(&mut range, "max", "max", int_provider);
+	}
+	range
+}
+
+fn number_provider(p: Payload) -> Option<Payload> {
+	if p.as_f64().is_some() {
+		return Some(p);
+	}
+	let Payload::Compound(_) = p else {
+		return None;
+	};
+	let mut p = p;
+	match provider_type(&p, "").as_str() {
+		"constant" | "enchantment_level" | "environment_attribute" => Some(p),
+		"storage" | "score" => {
+			p.take("fallback");
+			Some(p)
+		}
+		"uniform" => (try_field(&mut p, "min", "min", number_provider)
+			&& try_field(&mut p, "max", "max", number_provider))
+		.then_some(p),
+		"binomial" => (try_field(&mut p, "n", "n", number_provider)
+			&& try_field(&mut p, "p", "p", number_provider))
+		.then_some(p),
+		"add" => {
+			p.put("type", Payload::from("minecraft:sum"));
+			try_field(&mut p, "inputs", "summands", number_providers).then_some(p)
+		}
+		"from_int" | "from_float" | "round" => p.take("input").and_then(number_provider),
+		_ => None,
+	}
+}
+
+fn number_providers(list: Payload) -> Option<Payload> {
+	let items = match list {
+		Payload::List(_) => list.values(),
+		single => vec![single],
+	};
+	let mut out = Vec::new();
+	for item in items {
+		out.push(match number_provider(item)? {
+			c @ Payload::Compound(_) => c,
+			v => constant(v),
+		});
+	}
+	Some(Payload::List(bungeeoxide_nbt::List::of(out)))
+}
+
+fn int_range_down(range: Payload) -> Option<Payload> {
+	if let Some(n) = rounded(&range) {
+		return Some(n);
+	}
+	let Payload::Compound(_) = range else {
+		return None;
+	};
+	let mut range = range;
+	if range.field("type").is_some() {
+		let value = number_provider(range)?;
+		let mut exact = Payload::Compound(vec![]);
+		exact.put("min", value.clone());
+		exact.put("max", value);
+		return Some(exact);
+	}
+	(try_field(&mut range, "min", "min", number_provider)
+		&& try_field(&mut range, "max", "max", number_provider))
+	.then_some(range)
+}
+
+fn always_true(tag: &mut Payload) {
+	*tag = Payload::Compound(vec![]);
+	tag.put("condition", Payload::from("minecraft:all_of"));
+	tag.put("terms", Payload::List(bungeeoxide_nbt::List::of(vec![])));
+}
+
 fn term_up(tag: &mut Payload) {
 	let Some(condition) = tag.take("condition") else {
 		return;
@@ -1127,7 +1318,16 @@ fn term_up(tag: &mut Payload) {
 	match kind.as_str() {
 		"value_check" => {
 			tag.put("type", Payload::from("minecraft:int_value_check"));
-			rename(tag, "range", "test");
+			map_field(tag, "value", "value", int_provider);
+			map_field(tag, "range", "test", int_range_up);
+		}
+		"time_check" => {
+			tag.put("type", condition);
+			map_field(tag, "value", "value", int_range_up);
+		}
+		"random_chance" => {
+			tag.put("type", condition);
+			map_field(tag, "chance", "chance", float_provider);
 		}
 		"block_state_property" => {
 			tag.put("type", Payload::from("minecraft:match_block"));
@@ -1160,9 +1360,25 @@ fn term_down(tag: &mut Payload) {
 		return;
 	};
 	match kind.as_str() {
-		"int_value_check" => {
+		"int_value_check" | "float_value_check" => {
 			tag.put("condition", Payload::from("minecraft:value_check"));
-			rename(tag, "test", "range");
+			if !try_field(tag, "value", "value", number_provider)
+				|| !try_field(tag, "test", "range", int_range_down)
+			{
+				always_true(tag);
+			}
+		}
+		"time_check" => {
+			tag.put("condition", condition);
+			if !try_field(tag, "value", "value", int_range_down) {
+				always_true(tag);
+			}
+		}
+		"random_chance" => {
+			tag.put("condition", condition);
+			if !try_field(tag, "chance", "chance", number_provider) {
+				always_true(tag);
+			}
 		}
 		"match_block" => {
 			tag.put("condition", Payload::from("minecraft:block_state_property"));
