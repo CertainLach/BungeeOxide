@@ -1,0 +1,24 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_info/1/1/type/1/type/1/4",
+		"value": {
+			"name": "listed",
+			"type": [
+				"switch",
+				{
+					"compareTo": "../action/update_listed",
+					"fields": {
+						"true": "varint"
+					},
+					"default": "void"
+				}
+			]
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_info/1/1/type/1/type/1/4/type/1/fields/true",
+		"value": "bool"
+	}
+]

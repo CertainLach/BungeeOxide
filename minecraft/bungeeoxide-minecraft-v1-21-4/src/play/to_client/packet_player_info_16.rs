@@ -8,13 +8,13 @@ pub struct Args<'a> {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketPlayerInfo16 {
-	True(::bungeeoxide_minecraft_root::Varint),
+	True(::bungeeoxide_minecraft_root::Bool),
 	Default(::bungeeoxide_minecraft_root::Bool),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -22,14 +22,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.action_update_listed;
 	if *__tag == true {
-		return Ok(Ty::True(::bungeeoxide_minecraft_root::varint::deserialize(input)?));
+		return Ok(Ty::True(::bungeeoxide_minecraft_root::bool::deserialize(input)?));
 	}
 	Ok(Ty::Default(*__tag))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

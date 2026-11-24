@@ -809,7 +809,7 @@ fn player_info_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 			}),
 			chat_session: Session::True(None),
 			gamemode: Gamemode::True(0),
-			listed: Listed::True(0),
+			listed: Listed::True(false),
 			latency: Latency::True(0),
 			display_name: Name::True(m.display.clone()),
 			list_priority: Priority::True(1000),

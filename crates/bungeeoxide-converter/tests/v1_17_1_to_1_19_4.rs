@@ -859,7 +859,7 @@ mod chain {
 		));
 		assert!(matches!(
 			e.listed,
-			v1_19_4::play_to_client_packet_player_info_data_items_listed::Ty::True(1)
+			v1_19_4::play_to_client_packet_player_info_data_items_listed::Ty::True(true)
 		));
 		let remove = old::Ty::PlayerInfo(v1_17_1::play_to_client_packet_player_info::Ty {
 			action: v1_17_1::play_to_client_packet_player_info_action::Ty::RemovePlayer,

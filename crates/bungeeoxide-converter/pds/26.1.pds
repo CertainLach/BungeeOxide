@@ -4258,7 +4258,7 @@ namespace(play) {
 				};
 
 				field(listed) => union(tag: ../../../action/update_listed) {
-					variant(true, match: true) => varint;
+					variant(true, match: true) => bool;
 
 					default => void;
 				};

@@ -456,7 +456,7 @@ pub fn caves_player_info_1_19_3(p: Info192, _cx: &mut Session) -> Result<Vec<Cli
 					});
 					e.chat_session = Chat::True(None);
 					e.gamemode = Mode::True(a.gamemode);
-					e.listed = Listed::True(1);
+					e.listed = Listed::True(true);
 					e.latency = Latency::True(a.ping);
 					e.display_name = Name::True(a.display_name);
 				}

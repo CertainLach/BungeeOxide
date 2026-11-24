@@ -2013,7 +2013,7 @@ fn mannequins_get_a_hidden_player_entry_before_the_spawn() {
 	};
 	assert!(info.action.add_player);
 	assert_eq!(entry.uuid, MANNEQUIN);
-	assert!(matches!(entry.listed, Listed::True(0)));
+	assert!(matches!(entry.listed, Listed::True(false)));
 	let Player::True(profile) = &entry.player else {
 		panic!("{entry:?}")
 	};
