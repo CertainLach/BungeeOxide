@@ -69,14 +69,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::FrogVariant(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::PigVariant(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::ChickenVariant(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::OptionalGlobalPos(__v) => super::option_78::serialize(__v, output),
+		Ty::OptionalGlobalPos(__v) => super::option_81::serialize(__v, output),
 		Ty::Float(__v) => ::bungeeoxide_minecraft_root::f32::serialize(__v, output),
 		Ty::PaintingVariant(__v) => super::entity_metadata_entry_74::serialize(__v, output),
 		Ty::SnifferState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::ArmadilloState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
 		Ty::OptionalComponent(__v) => {
 			::bungeeoxide_minecraft_root::option_1::serialize(__v, output)
@@ -198,7 +198,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if (__tag.clone() == 29_i32) {
-		return Ok(Ty::OptionalGlobalPos(super::option_78::deserialize(input)?));
+		return Ok(Ty::OptionalGlobalPos(super::option_81::deserialize(input)?));
 	}
 	if (__tag.clone() == 3_i32) {
 		return Ok(Ty::Float(::bungeeoxide_minecraft_root::f32::deserialize(
@@ -232,7 +232,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::String(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 5_i32) {
@@ -285,14 +285,14 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::FrogVariant(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::PigVariant(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::ChickenVariant(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-			Ty::OptionalGlobalPos(__v) => super::option_78::size_of(__v),
+			Ty::OptionalGlobalPos(__v) => super::option_81::size_of(__v),
 			Ty::Float(__v) => ::bungeeoxide_minecraft_root::f32::size_of(__v),
 			Ty::PaintingVariant(__v) => super::entity_metadata_entry_74::size_of(__v),
 			Ty::SnifferState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::ArmadilloState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
 			Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::OptionalComponent(__v) => ::bungeeoxide_minecraft_root::option_1::size_of(__v),
 			Ty::ItemStack(__v) => super::slot::size_of(__v),

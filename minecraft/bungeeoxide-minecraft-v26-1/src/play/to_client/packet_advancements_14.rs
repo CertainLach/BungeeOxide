@@ -7,21 +7,21 @@ pub struct PacketAdvancements14 {
 	pub value: Vec<super::PacketAdvancements13>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.key, output)?;
-	super::super::super::array::inline_376::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.key, output)?;
+	super::super::super::array::inline_385::serialize(&_0.value, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_key = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_value = super::super::super::array::inline_376::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_value = super::super::super::array::inline_385::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.key)
-		+ super::super::super::array::inline_376::size_of(&_0.value)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.key)
+		+ super::super::super::array::inline_385::size_of(&_0.value)
 }
 pub type Ty = PacketAdvancements14;

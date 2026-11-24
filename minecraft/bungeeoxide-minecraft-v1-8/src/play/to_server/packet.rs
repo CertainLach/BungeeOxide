@@ -35,7 +35,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::UseEntity(__v) => super::packet_use_entity::serialize(__v, output),
 		Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
 		Ty::Position(__v) => super::packet_position::serialize(__v, output),
@@ -88,7 +88,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 1_i32) {
 		return Ok(Ty::Chat(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 2_i32) {
@@ -213,7 +213,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::UseEntity(__v) => super::packet_use_entity::size_of(__v),
 			Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
 			Ty::Position(__v) => super::packet_position::size_of(__v),

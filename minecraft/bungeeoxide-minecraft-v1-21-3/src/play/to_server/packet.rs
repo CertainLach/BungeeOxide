@@ -92,7 +92,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
         }
         Ty::ChatCommand(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::ChatCommandSigned(__v) => {
             ::bungeeoxide_minecraft_v1_20_5::play::to_server::packet_chat_command_signed::serialize(__v, output)
@@ -209,7 +209,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
         }
         Ty::NameItem(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::ResourcePackReceive(__v) => {
             ::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_resource_pack_receive::serialize(__v, output)
@@ -294,7 +294,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 5_i32) {
 		return Ok(Ty::ChatCommand(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 6_i32) {
@@ -491,7 +491,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 44_i32) {
 		return Ok(Ty::NameItem(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 45_i32) {
@@ -572,7 +572,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::SelectBundleItem(__v) => super::packet_select_bundle_item::size_of(__v),
         Ty::SetDifficulty(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_set_difficulty::size_of(__v),
         Ty::MessageAcknowledgement(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-        Ty::ChatCommand(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::ChatCommand(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::ChatCommandSigned(__v) => ::bungeeoxide_minecraft_v1_20_5::play::to_server::packet_chat_command_signed::size_of(__v),
         Ty::ChatMessage(__v) => ::bungeeoxide_minecraft_v1_19_3::play::to_server::packet_chat_message::size_of(__v),
         Ty::ChatSessionUpdate(__v) => ::bungeeoxide_minecraft_v1_20_5::play::to_server::packet_chat_session_update::size_of(__v),
@@ -611,7 +611,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
         Ty::RecipeBook(__v) => ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::size_of(__v),
         Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_resource_pack_receive::size_of(__v),
         Ty::AdvancementTab(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::size_of(__v),
         Ty::SelectTrade(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),

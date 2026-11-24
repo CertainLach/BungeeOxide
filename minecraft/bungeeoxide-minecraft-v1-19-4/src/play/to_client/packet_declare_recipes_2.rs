@@ -14,13 +14,13 @@ pub struct PacketDeclareRecipes2 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.group, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.category, output)?;
-	::bungeeoxide_minecraft_v1_13_2::array::sized_468::check_count(&_0.ingredients, {
+	::bungeeoxide_minecraft_v1_13_2::array::sized_503::check_count(&_0.ingredients, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.width;
 		_0
 	})?;
-	::bungeeoxide_minecraft_v1_13_2::array::sized_468::serialize(&_0.ingredients, output)?;
+	::bungeeoxide_minecraft_v1_13_2::array::sized_503::serialize(&_0.ingredients, output)?;
 	::bungeeoxide_minecraft_v1_13_2::slot::serialize(&_0.result, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_notification, output)?;
 	Ok(())
@@ -29,11 +29,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_category = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ingredients = ::bungeeoxide_minecraft_v1_13_2::array::sized_468::deserialize(
+	let f_ingredients = ::bungeeoxide_minecraft_v1_13_2::array::sized_503::deserialize(
 		input,
-		::bungeeoxide_minecraft_v1_13_2::array::sized_468::Args {
+		::bungeeoxide_minecraft_v1_13_2::array::sized_503::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_width;
 				_0
@@ -59,9 +59,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.group)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.group)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.category)
-		+ ::bungeeoxide_minecraft_v1_13_2::array::sized_468::size_of(&_0.ingredients)
+		+ ::bungeeoxide_minecraft_v1_13_2::array::sized_503::size_of(&_0.ingredients)
 		+ ::bungeeoxide_minecraft_v1_13_2::slot::size_of(&_0.result)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_notification)
 }

@@ -28,8 +28,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.previous_game_mode, output)?;
 	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.world_names, output)?;
 	::bungeeoxide_minecraft_root::nbt::serialize(&_0.dimension_codec, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.world_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.world_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.world_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.world_name, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.max_players, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.view_distance, output)?;
@@ -38,7 +38,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.enable_respawn_screen, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_debug, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_flat, output)?;
-	super::super::super::option_36::serialize(&_0.death, output)?;
+	super::super::super::option_39::serialize(&_0.death, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -49,8 +49,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_previousGameMode = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_worldNames = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_dimensionCodec = ::bungeeoxide_minecraft_root::nbt::deserialize(input)?;
-	let f_worldType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_worldName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_worldType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_worldName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_maxPlayers = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
@@ -59,7 +59,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_enableRespawnScreen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_isDebug = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_isFlat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_death = super::super::super::option_36::deserialize(input)?;
+	let f_death = super::super::super::option_39::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		is_hardcore: f_isHardcore,
@@ -87,8 +87,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.previous_game_mode)
 		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.world_names)
 		+ ::bungeeoxide_minecraft_root::nbt::size_of(&_0.dimension_codec)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.world_type)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.world_name)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.world_type)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.world_name)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.max_players)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.view_distance)
@@ -97,6 +97,6 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.enable_respawn_screen)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_debug)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_flat)
-		+ super::super::super::option_36::size_of(&_0.death)
+		+ super::super::super::option_39::size_of(&_0.death)
 }
 pub type Ty = PacketLogin;

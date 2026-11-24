@@ -3,5 +3,5 @@ pub use self::packet::Ty as Packet;
 pub use self::packet_ping::Ty as PacketPing;
 pub use self::packet_server_info::Ty as PacketServerInfo;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_ping;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_server_info;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_server_info;
 pub use ::bungeeoxide_minecraft_v1_7::status::to_client::packet;

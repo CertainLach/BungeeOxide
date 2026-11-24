@@ -3,41 +3,41 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTags0<'i> {
-	pub tag_type: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
-	pub tags: ::bungeeoxide_minecraft_v1_14::view::array::Inline150<'i>,
+	pub tag_type: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub tags: ::bungeeoxide_minecraft_v1_14::view::array::Inline159<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.tag_type, output)?;
-	::bungeeoxide_minecraft_v1_14::view::array::inline_150::serialize(&_0.tags, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.tag_type, output)?;
+	::bungeeoxide_minecraft_v1_14::view::array::inline_159::serialize(&_0.tags, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_tagType = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
-	let f_tags = ::bungeeoxide_minecraft_v1_14::view::array::inline_150::deserialize(input)?;
+	let f_tagType = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_tags = ::bungeeoxide_minecraft_v1_14::view::array::inline_159::deserialize(input)?;
 	Ok(Ty {
 		tag_type: f_tagType,
 		tags: f_tags,
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.tag_type)
-		+ ::bungeeoxide_minecraft_v1_14::view::array::inline_150::size_of(&_0.tags)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.tag_type)
+		+ ::bungeeoxide_minecraft_v1_14::view::array::inline_159::size_of(&_0.tags)
 }
 pub fn view<'i>(
 	_0: &'i super::super::super::super::configuration::to_client::PacketTags0,
 ) -> Ty<'i> {
 	Ty {
-		tag_type: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.tag_type),
-		tags: ::bungeeoxide_minecraft_v1_14::view::array::inline_150::view(&_0.tags),
+		tag_type: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.tag_type),
+		tags: ::bungeeoxide_minecraft_v1_14::view::array::inline_159::view(&_0.tags),
 	}
 }
 pub fn into_view<'i>(
 	_0: &'i mut super::super::super::super::configuration::to_client::PacketTags0,
 ) -> Ty<'i> {
 	Ty {
-		tag_type: ::bungeeoxide_minecraft_root::view::pstring_109::view(&mut _0.tag_type),
-		tags: ::bungeeoxide_minecraft_v1_14::view::array::inline_150::into_view(&mut _0.tags),
+		tag_type: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.tag_type),
+		tags: ::bungeeoxide_minecraft_v1_14::view::array::inline_159::into_view(&mut _0.tags),
 	}
 }
 pub type Ty<'i> = PacketTags0<'i>;

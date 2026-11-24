@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_always_eat, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.seconds_to_eat, output)?;
 	super::slot::serialize_guarded(&_0.using_converts_to, output)?;
-	super::array::inline_219::serialize(&_0.effects, output)?;
+	super::array::inline_228::serialize(&_0.effects, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_canAlwaysEat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_secondsToEat = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_usingConvertsTo = super::slot::deserialize_guarded(input)?;
-	let f_effects = super::array::inline_219::deserialize(input)?;
+	let f_effects = super::array::inline_228::deserialize(input)?;
 	Ok(Ty {
 		nutrition: f_nutrition,
 		saturation_modifier: f_saturationModifier,
@@ -42,6 +42,6 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_always_eat)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.seconds_to_eat)
 		+ super::slot::size_of(&_0.using_converts_to)
-		+ super::array::inline_219::size_of(&_0.effects)
+		+ super::array::inline_228::size_of(&_0.effects)
 }
 pub type Ty = SlotComponent13;

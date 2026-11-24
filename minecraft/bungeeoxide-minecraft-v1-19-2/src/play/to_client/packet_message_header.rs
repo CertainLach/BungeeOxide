@@ -9,7 +9,7 @@ pub struct PacketMessageHeader {
 	pub message_hash: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::option_102::serialize(&_0.previous_signature, output)?;
+	::bungeeoxide_minecraft_root::option_115::serialize(&_0.previous_signature, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.sender_uuid, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.signature, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.message_hash, output)?;
@@ -17,7 +17,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_previousSignature = ::bungeeoxide_minecraft_root::option_102::deserialize(input)?;
+	let f_previousSignature = ::bungeeoxide_minecraft_root::option_115::deserialize(input)?;
 	let f_senderUuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_messageHash = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::option_102::size_of(&_0.previous_signature)
+	0 + ::bungeeoxide_minecraft_root::option_115::size_of(&_0.previous_signature)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.sender_uuid)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.signature)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.message_hash)

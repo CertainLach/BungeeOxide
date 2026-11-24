@@ -13,16 +13,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_450::check_count(&_0.components, {
+	super::array::sized_482::check_count(&_0.components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.added_component_count;
 		_0
 	})?;
-	super::array::sized_450::serialize(&_0.components, output)?;
-	::bungeeoxide_minecraft_v1_21_5::array::sized_448::check_count(&_0.remove_components, {
+	super::array::sized_482::serialize(&_0.components, output)?;
+	::bungeeoxide_minecraft_v1_21_5::array::sized_480::check_count(&_0.remove_components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.removed_component_count;
 		_0
 	})?;
-	::bungeeoxide_minecraft_v1_21_5::array::sized_448::serialize(&_0.remove_components, output)?;
+	::bungeeoxide_minecraft_v1_21_5::array::sized_480::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -30,18 +30,18 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_450::deserialize(
+	let f_components = super::array::sized_482::deserialize(
 		input,
-		super::array::sized_450::Args {
+		super::array::sized_482::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_addedComponentCount;
 				_0
 			},
 		},
 	)?;
-	let f_removeComponents = ::bungeeoxide_minecraft_v1_21_5::array::sized_448::deserialize(
+	let f_removeComponents = ::bungeeoxide_minecraft_v1_21_5::array::sized_480::deserialize(
 		input,
-		::bungeeoxide_minecraft_v1_21_5::array::sized_448::Args {
+		::bungeeoxide_minecraft_v1_21_5::array::sized_480::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_removedComponentCount;
 				_0
@@ -60,7 +60,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_450::size_of(&_0.components)
-		+ ::bungeeoxide_minecraft_v1_21_5::array::sized_448::size_of(&_0.remove_components)
+		+ super::array::sized_482::size_of(&_0.components)
+		+ ::bungeeoxide_minecraft_v1_21_5::array::sized_480::size_of(&_0.remove_components)
 }
 pub type Ty = Slot7;

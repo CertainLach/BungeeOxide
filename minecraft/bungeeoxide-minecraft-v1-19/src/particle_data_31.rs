@@ -8,7 +8,7 @@ pub struct ParticleData31 {
 	pub ticks: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.position_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.position_type, output)?;
 	super::particle_data_30::debug_assert_tag(&_0.destination, {
 		let _0: &String = &_0.position_type;
 		_0
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_positionType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_positionType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_destination = super::particle_data_30::deserialize(
 		input,
 		super::particle_data_30::Args {
@@ -37,7 +37,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.position_type)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.position_type)
 		+ super::particle_data_30::size_of(&_0.destination)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.ticks)
 }

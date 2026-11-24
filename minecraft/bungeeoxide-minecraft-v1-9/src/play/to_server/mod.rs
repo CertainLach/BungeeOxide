@@ -3,7 +3,7 @@ pub mod packet;
 pub use ::bungeeoxide_minecraft_v1_6_1::play::to_server::packet_abilities;
 pub use ::bungeeoxide_minecraft_v1_8::play::to_server::packet_block_dig;
 pub mod packet_block_place;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_chat;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat;
 pub use ::bungeeoxide_minecraft_root::u8 as packet_close_window;
 pub use ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item;
 pub use ::bungeeoxide_minecraft_v1_8::play::to_server::packet_client_command;

@@ -59,6 +59,7 @@ pub use ::bungeeoxide_minecraft_v1_9_4 as v1_9_4;
 pub use ::bungeeoxide_minecraft_v26_1 as v26_1;
 pub use ::bungeeoxide_minecraft_v26_2 as v26_2;
 pub use ::bungeeoxide_minecraft_v26_3 as v26_3;
+pub use ::bungeeoxide_minecraft_v26_4_snapshot_10 as v26_4_snapshot_10;
 pub mod view {
 	pub use ::bungeeoxide_minecraft_root::view::*;
 	pub use ::bungeeoxide_minecraft_v1_12::view as v1_12;
@@ -84,4 +85,5 @@ pub mod view {
 	pub use ::bungeeoxide_minecraft_v26_1::view as v26_1;
 	pub use ::bungeeoxide_minecraft_v26_2::view as v26_2;
 	pub use ::bungeeoxide_minecraft_v26_3::view as v26_3;
+	pub use ::bungeeoxide_minecraft_v26_4_snapshot_10::view as v26_4_snapshot_10;
 }

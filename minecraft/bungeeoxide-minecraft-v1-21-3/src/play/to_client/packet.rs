@@ -160,7 +160,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_7::play::to_client::packet_animation::serialize(__v, output)
         }
         Ty::Statistics(__v) => {
-            ::bungeeoxide_minecraft_v1_13::array::inline_140::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_13::array::inline_149::serialize(__v, output)
         }
         Ty::AcknowledgePlayerDigging(__v) => {
             ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
@@ -190,7 +190,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_20_2::play::to_client::packet_chunk_batch_start::serialize(__v, output)
         }
         Ty::ChunkBiomes(__v) => {
-            ::bungeeoxide_minecraft_v1_20_5::array::inline_210::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_20_5::array::inline_219::serialize(__v, output)
         }
         Ty::ClearTitles(__v) => {
             ::bungeeoxide_minecraft_root::bool::serialize(__v, output)
@@ -214,7 +214,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             super::packet_set_slot::serialize(__v, output)
         }
         Ty::CookieRequest(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::SetCooldown(__v) => {
             super::packet_set_cooldown::serialize(__v, output)
@@ -355,13 +355,13 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             super::packet_recipe_book_add::serialize(__v, output)
         }
         Ty::RecipeBookRemove(__v) => {
-            ::bungeeoxide_minecraft_root::array::inline_128::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::array::inline_137::serialize(__v, output)
         }
         Ty::RecipeBookSettings(__v) => {
             super::packet_recipe_book_settings::serialize(__v, output)
         }
         Ty::EntityDestroy(__v) => {
-            ::bungeeoxide_minecraft_root::array::inline_128::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::array::inline_137::serialize(__v, output)
         }
         Ty::RemoveEntityEffect(__v) => {
             ::bungeeoxide_minecraft_v1_18_2::play::to_client::packet_remove_entity_effect::serialize(__v, output)
@@ -529,16 +529,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             super::packet_declare_recipes::serialize(__v, output)
         }
         Ty::Tags(__v) => {
-            ::bungeeoxide_minecraft_v1_17::array::inline_156::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_17::array::inline_165::serialize(__v, output)
         }
         Ty::SetProjectilePower(__v) => {
             ::bungeeoxide_minecraft_v1_21_1::play::to_client::packet_set_projectile_power::serialize(__v, output)
         }
         Ty::CustomReportDetails(__v) => {
-            ::bungeeoxide_minecraft_v1_21_1::array::inline_227::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_21_1::array::inline_236::serialize(__v, output)
         }
         Ty::ServerLinks(__v) => {
-            ::bungeeoxide_minecraft_v1_21_1::array::inline_228::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_21_1::array::inline_237::serialize(__v, output)
         }
         Ty::Default(_) => Ok(()),
     }
@@ -567,7 +567,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::Statistics(
-			::bungeeoxide_minecraft_v1_13::array::inline_140::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_13::array::inline_149::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 5_i32) {
@@ -619,7 +619,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 14_i32) {
 		return Ok(Ty::ChunkBiomes(
-			::bungeeoxide_minecraft_v1_20_5::array::inline_210::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_20_5::array::inline_219::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 15_i32) {
@@ -661,7 +661,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 22_i32) {
 		return Ok(Ty::CookieRequest(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 23_i32) {
@@ -916,7 +916,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 69_i32) {
 		return Ok(Ty::RecipeBookRemove(
-			::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 70_i32) {
@@ -926,7 +926,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 71_i32) {
 		return Ok(Ty::EntityDestroy(
-			::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 72_i32) {
@@ -1206,7 +1206,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 127_i32) {
 		return Ok(Ty::Tags(
-			::bungeeoxide_minecraft_v1_17::array::inline_156::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_17::array::inline_165::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 128_i32) {
@@ -1214,12 +1214,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 129_i32) {
 		return Ok(Ty::CustomReportDetails(
-			::bungeeoxide_minecraft_v1_21_1::array::inline_227::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_21_1::array::inline_236::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 130_i32) {
 		return Ok(Ty::ServerLinks(
-			::bungeeoxide_minecraft_v1_21_1::array::inline_228::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_21_1::array::inline_237::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -1230,7 +1230,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::SpawnEntity(__v) => ::bungeeoxide_minecraft_v1_19::play::to_client::packet_spawn_entity::size_of(__v),
         Ty::SpawnEntityExperienceOrb(__v) => ::bungeeoxide_minecraft_v1_9::play::to_client::packet_spawn_entity_experience_orb::size_of(__v),
         Ty::Animation(__v) => ::bungeeoxide_minecraft_v1_7::play::to_client::packet_animation::size_of(__v),
-        Ty::Statistics(__v) => ::bungeeoxide_minecraft_v1_13::array::inline_140::size_of(__v),
+        Ty::Statistics(__v) => ::bungeeoxide_minecraft_v1_13::array::inline_149::size_of(__v),
         Ty::AcknowledgePlayerDigging(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
         Ty::BlockBreakAnimation(__v) => ::bungeeoxide_minecraft_v1_14::play::to_client::packet_block_break_animation::size_of(__v),
         Ty::TileEntityData(__v) => ::bungeeoxide_minecraft_v1_20_2::play::to_client::packet_tile_entity_data::size_of(__v),
@@ -1240,7 +1240,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::Difficulty(__v) => ::bungeeoxide_minecraft_v1_14::play::to_client::packet_difficulty::size_of(__v),
         Ty::ChunkBatchFinished(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
         Ty::ChunkBatchStart(__v) => ::bungeeoxide_minecraft_v1_20_2::play::to_client::packet_chunk_batch_start::size_of(__v),
-        Ty::ChunkBiomes(__v) => ::bungeeoxide_minecraft_v1_20_5::array::inline_210::size_of(__v),
+        Ty::ChunkBiomes(__v) => ::bungeeoxide_minecraft_v1_20_5::array::inline_219::size_of(__v),
         Ty::ClearTitles(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
         Ty::TabComplete(__v) => ::bungeeoxide_minecraft_v1_20_3::play::to_client::packet_tab_complete::size_of(__v),
         Ty::DeclareCommands(__v) => ::bungeeoxide_minecraft_v1_20_5::play::to_client::packet_declare_commands::size_of(__v),
@@ -1248,7 +1248,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::WindowItems(__v) => super::packet_window_items::size_of(__v),
         Ty::CraftProgressBar(__v) => super::packet_craft_progress_bar::size_of(__v),
         Ty::SetSlot(__v) => super::packet_set_slot::size_of(__v),
-        Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::SetCooldown(__v) => super::packet_set_cooldown::size_of(__v),
         Ty::ChatSuggestions(__v) => ::bungeeoxide_minecraft_v1_19_2::play::to_client::packet_chat_suggestions::size_of(__v),
         Ty::CustomPayload(__v) => ::bungeeoxide_minecraft_v1_8::play::to_client::packet_custom_payload::size_of(__v),
@@ -1295,9 +1295,9 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::Position(__v) => super::packet_position::size_of(__v),
         Ty::PlayerRotation(__v) => super::packet_player_rotation::size_of(__v),
         Ty::RecipeBookAdd(__v) => super::packet_recipe_book_add::size_of(__v),
-        Ty::RecipeBookRemove(__v) => ::bungeeoxide_minecraft_root::array::inline_128::size_of(__v),
+        Ty::RecipeBookRemove(__v) => ::bungeeoxide_minecraft_root::array::inline_137::size_of(__v),
         Ty::RecipeBookSettings(__v) => super::packet_recipe_book_settings::size_of(__v),
-        Ty::EntityDestroy(__v) => ::bungeeoxide_minecraft_root::array::inline_128::size_of(__v),
+        Ty::EntityDestroy(__v) => ::bungeeoxide_minecraft_root::array::inline_137::size_of(__v),
         Ty::RemoveEntityEffect(__v) => ::bungeeoxide_minecraft_v1_18_2::play::to_client::packet_remove_entity_effect::size_of(__v),
         Ty::ResetScore(__v) => ::bungeeoxide_minecraft_v1_20_3::play::to_client::packet_reset_score::size_of(__v),
         Ty::RemoveResourcePack(__v) => ::bungeeoxide_minecraft_root::option_0::size_of(__v),
@@ -1353,10 +1353,10 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::EntityUpdateAttributes(__v) => super::packet_entity_update_attributes::size_of(__v),
         Ty::EntityEffect(__v) => ::bungeeoxide_minecraft_v1_20_5::play::to_client::packet_entity_effect::size_of(__v),
         Ty::DeclareRecipes(__v) => super::packet_declare_recipes::size_of(__v),
-        Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_17::array::inline_156::size_of(__v),
+        Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_17::array::inline_165::size_of(__v),
         Ty::SetProjectilePower(__v) => ::bungeeoxide_minecraft_v1_21_1::play::to_client::packet_set_projectile_power::size_of(__v),
-        Ty::CustomReportDetails(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_227::size_of(__v),
-        Ty::ServerLinks(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_228::size_of(__v),
+        Ty::CustomReportDetails(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_236::size_of(__v),
+        Ty::ServerLinks(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_237::size_of(__v),
         Ty::Default(_) => 0,
     }
 }

@@ -4,4 +4,4 @@ pub mod packet_encryption_begin;
 pub use self::packet::Packet;
 pub use self::packet_encryption_begin::PacketEncryptionBegin;
 pub use self::packet_login_start::Ty as PacketLoginStart;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_login_start;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_login_start;

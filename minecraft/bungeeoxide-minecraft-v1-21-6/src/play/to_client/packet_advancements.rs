@@ -11,18 +11,18 @@ pub struct PacketAdvancements {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reset, output)?;
-	super::super::super::array::inline_325::serialize(&_0.advancement_mapping, output)?;
+	super::super::super::array::inline_334::serialize(&_0.advancement_mapping, output)?;
 	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.identifiers, output)?;
-	super::super::super::array::inline_327::serialize(&_0.progress_mapping, output)?;
+	super::super::super::array::inline_336::serialize(&_0.progress_mapping, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_advancements, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_reset = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_advancementMapping = super::super::super::array::inline_325::deserialize(input)?;
+	let f_advancementMapping = super::super::super::array::inline_334::deserialize(input)?;
 	let f_identifiers = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
-	let f_progressMapping = super::super::super::array::inline_327::deserialize(input)?;
+	let f_progressMapping = super::super::super::array::inline_336::deserialize(input)?;
 	let f_showAdvancements = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		reset: f_reset,
@@ -34,9 +34,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::bool::size_of(&_0.reset)
-		+ super::super::super::array::inline_325::size_of(&_0.advancement_mapping)
+		+ super::super::super::array::inline_334::size_of(&_0.advancement_mapping)
 		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.identifiers)
-		+ super::super::super::array::inline_327::size_of(&_0.progress_mapping)
+		+ super::super::super::array::inline_336::size_of(&_0.progress_mapping)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_advancements)
 }
 pub type Ty = PacketAdvancements;

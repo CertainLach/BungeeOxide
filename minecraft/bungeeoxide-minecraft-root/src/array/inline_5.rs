@@ -8,7 +8,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::pstring_109::serialize(e, output)?;
+		super::super::pstring_123::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -19,14 +19,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::pstring_109::deserialize(input)?);
+		out.push(super::super::pstring_123::deserialize(input)?);
 	}
 	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = super::super::i16::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::pstring_109::size_of(e);
+		n += super::super::pstring_123::size_of(e);
 	}
 	n
 }

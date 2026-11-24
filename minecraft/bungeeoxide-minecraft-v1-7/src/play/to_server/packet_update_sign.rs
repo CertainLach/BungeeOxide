@@ -11,19 +11,19 @@ pub struct PacketUpdateSign {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_0_1::position_isi::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.text1, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.text2, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.text3, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.text4, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text1, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text2, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text3, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text4, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(14)?;
 	let f_location = ::bungeeoxide_minecraft_v1_0_1::position_isi::deserialize(input)?;
-	let f_text1 = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_text2 = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_text3 = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_text4 = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_text1 = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text2 = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text3 = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text4 = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	Ok(Ty {
 		location: f_location,
 		text1: f_text1,
@@ -34,9 +34,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_0_1::position_isi::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.text1)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.text2)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.text3)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.text4)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text1)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text2)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text3)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text4)
 }
 pub type Ty = PacketUpdateSign;

@@ -10,8 +10,8 @@ pub struct PacketPlayerInfo5 {
 	pub display_name: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
-	super::super::super::array::inline_360::serialize(&_0.properties, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	super::super::super::array::inline_369::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.ping, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.display_name, output)?;
@@ -19,8 +19,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_360::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_369::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_ping = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_displayName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
@@ -33,8 +33,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
-		+ super::super::super::array::inline_360::size_of(&_0.properties)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ super::super::super::array::inline_369::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.ping)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.display_name)

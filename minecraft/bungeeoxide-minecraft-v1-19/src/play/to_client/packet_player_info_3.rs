@@ -11,22 +11,22 @@ pub struct PacketPlayerInfo3 {
 	pub crypto: Option<super::PacketPlayerInfo2>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
-	super::super::super::array::inline_160::serialize(&_0.properties, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	super::super::super::array::inline_169::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.ping, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.display_name, output)?;
-	super::super::super::option_37::serialize(&_0.crypto, output)?;
+	super::super::super::option_40::serialize(&_0.crypto, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_160::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_169::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_ping = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_displayName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_crypto = super::super::super::option_37::deserialize(input)?;
+	let f_crypto = super::super::super::option_40::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		properties: f_properties,
@@ -37,11 +37,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
-		+ super::super::super::array::inline_160::size_of(&_0.properties)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ super::super::super::array::inline_169::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.ping)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.display_name)
-		+ super::super::super::option_37::size_of(&_0.crypto)
+		+ super::super::super::option_40::size_of(&_0.crypto)
 }
 pub type Ty = PacketPlayerInfo3;

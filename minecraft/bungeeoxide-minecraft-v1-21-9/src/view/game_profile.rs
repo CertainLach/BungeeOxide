@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameProfile<'i> {
 	pub uuid: ::bungeeoxide_minecraft_root::Uuid,
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub properties: super::array::Inline92<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
 	super::array::inline_92::serialize(&_0.properties, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_properties = super::array::inline_92::deserialize(input)?;
 	Ok(Ty {
 		uuid: f_uuid,
@@ -26,13 +26,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
-		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
 		+ super::array::inline_92::size_of(&_0.properties)
 }
 pub fn view<'i>(_0: &'i super::super::GameProfile) -> Ty<'i> {
 	Ty {
 		uuid: ::core::clone::Clone::clone(&_0.uuid),
-		name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
 		properties: super::array::inline_92::view(&_0.properties),
 	}
 }

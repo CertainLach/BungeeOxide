@@ -44,13 +44,13 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::serialize(__v, output)
         }
         Ty::SelectKnownPacks(__v) => {
-            ::bungeeoxide_minecraft_v1_20_5::array::inline_206::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_20_5::array::inline_215::serialize(__v, output)
         }
         Ty::CustomReportDetails(__v) => {
-            ::bungeeoxide_minecraft_v1_21_1::array::inline_227::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_21_1::array::inline_236::serialize(__v, output)
         }
         Ty::ServerLinks(__v) => {
-            ::bungeeoxide_minecraft_v1_21_1::array::inline_228::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_21_1::array::inline_237::serialize(__v, output)
         }
         Ty::Default(_) => Ok(()),
     }
@@ -90,17 +90,17 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 7_i32) {
 		return Ok(Ty::SelectKnownPacks(
-			::bungeeoxide_minecraft_v1_20_5::array::inline_206::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_20_5::array::inline_215::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 8_i32) {
 		return Ok(Ty::CustomReportDetails(
-			::bungeeoxide_minecraft_v1_21_1::array::inline_227::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_21_1::array::inline_236::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 9_i32) {
 		return Ok(Ty::ServerLinks(
-			::bungeeoxide_minecraft_v1_21_1::array::inline_228::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_21_1::array::inline_237::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -114,9 +114,9 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::size_of(__v),
         Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
         Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::size_of(__v),
-        Ty::SelectKnownPacks(__v) => ::bungeeoxide_minecraft_v1_20_5::array::inline_206::size_of(__v),
-        Ty::CustomReportDetails(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_227::size_of(__v),
-        Ty::ServerLinks(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_228::size_of(__v),
+        Ty::SelectKnownPacks(__v) => ::bungeeoxide_minecraft_v1_20_5::array::inline_215::size_of(__v),
+        Ty::CustomReportDetails(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_236::size_of(__v),
+        Ty::ServerLinks(__v) => ::bungeeoxide_minecraft_v1_21_1::array::inline_237::size_of(__v),
         Ty::Default(_) => 0,
     }
 }

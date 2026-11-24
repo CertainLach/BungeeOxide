@@ -9,14 +9,14 @@ pub struct PacketServerData {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.motd, output)?;
-	::bungeeoxide_minecraft_root::option_102::serialize(&_0.icon_bytes, output)?;
+	::bungeeoxide_minecraft_root::option_115::serialize(&_0.icon_bytes, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.enforces_secure_chat, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_motd = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
-	let f_iconBytes = ::bungeeoxide_minecraft_root::option_102::deserialize(input)?;
+	let f_iconBytes = ::bungeeoxide_minecraft_root::option_115::deserialize(input)?;
 	let f_enforcesSecureChat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		motd: f_motd,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.motd)
-		+ ::bungeeoxide_minecraft_root::option_102::size_of(&_0.icon_bytes)
+		+ ::bungeeoxide_minecraft_root::option_115::size_of(&_0.icon_bytes)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.enforces_secure_chat)
 }
 pub type Ty = PacketServerData;

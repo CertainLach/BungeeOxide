@@ -3,13 +3,13 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketTrackedWaypoint28<'i> {
-	False(::bungeeoxide_minecraft_root::view::Pstring109<'i>),
+	False(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
 	True(::bungeeoxide_minecraft_root::Uuid),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::False(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::serialize(__v, output),
+		Ty::False(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
 		Ty::True(__v) => ::bungeeoxide_minecraft_root::uuid::serialize(__v, output),
 	}
 }
@@ -19,7 +19,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let __tag = &__tagv;
 	if (__tag.clone() == false) {
 		return Ok(Ty::False(
-			::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == true) {
@@ -32,7 +32,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::bool::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::False(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::size_of(__v),
+			Ty::False(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
 			Ty::True(__v) => ::bungeeoxide_minecraft_root::uuid::size_of(__v),
 		}
 }
@@ -53,7 +53,7 @@ pub fn view<'i>(
 ) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::play::to_client::PacketTrackedWaypoint28::False(__v) => {
-			Ty::False(::bungeeoxide_minecraft_root::view::pstring_109::view(__v))
+			Ty::False(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
 		}
 		super::super::super::super::play::to_client::PacketTrackedWaypoint28::True(__v) => {
 			Ty::True(::core::clone::Clone::clone(__v))

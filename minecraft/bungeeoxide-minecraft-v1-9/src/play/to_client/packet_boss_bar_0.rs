@@ -10,7 +10,7 @@ pub struct PacketBossBar0 {
 	pub flags: ::bungeeoxide_minecraft_root::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.title, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.title, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.health, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.color, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.dividers, output)?;
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(8)?;
-	let f_title = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_title = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_health = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_color = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_dividers = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.title)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.title)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.health)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.color)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.dividers)

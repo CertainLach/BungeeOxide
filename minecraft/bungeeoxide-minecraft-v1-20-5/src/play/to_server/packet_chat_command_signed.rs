@@ -11,10 +11,10 @@ pub struct PacketChatCommandSigned {
 	pub acknowledged: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_216::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_225::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.message_count, output)?;
 	::bungeeoxide_minecraft_root::buffer::sized::check_count(
 		&_0.acknowledged,
@@ -25,10 +25,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(19)?;
-	let f_command = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_216::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_225::deserialize(input)?;
 	let f_messageCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_acknowledged = ::bungeeoxide_minecraft_root::buffer::sized::deserialize(
 		input,
@@ -46,10 +46,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.command)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_216::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_225::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.message_count)
 		+ ::bungeeoxide_minecraft_root::buffer::sized::size_of(&_0.acknowledged)
 }

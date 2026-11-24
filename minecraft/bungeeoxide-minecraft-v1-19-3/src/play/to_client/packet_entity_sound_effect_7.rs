@@ -7,13 +7,13 @@ pub struct PacketEntitySoundEffect7 {
 	pub range: Option<::bungeeoxide_minecraft_root::F32>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.resource, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.resource, output)?;
 	::bungeeoxide_minecraft_root::option_4::serialize(&_0.range, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_resource = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_resource = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_range = ::bungeeoxide_minecraft_root::option_4::deserialize(input)?;
 	Ok(Ty {
 		resource: f_resource,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.resource)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.resource)
 		+ ::bungeeoxide_minecraft_root::option_4::size_of(&_0.range)
 }
 pub type Ty = PacketEntitySoundEffect7;

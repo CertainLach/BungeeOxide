@@ -16,7 +16,7 @@ pub enum Packet<'i> {
 	ResourcePackReceive(
 		::bungeeoxide_minecraft_v1_20_3::configuration::to_server::PacketResourcePackReceive,
 	),
-	SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::Inline206<'i>),
+	SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::Inline215<'i>),
 	CustomClickAction(::bungeeoxide_minecraft_v1_21_6::view::PacketCommonCustomClickAction<'i>),
 	AcceptCodeOfConduct(
 		super::super::super::super::configuration::to_server::PacketAcceptCodeOfConduct,
@@ -48,7 +48,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::serialize(__v, output)
         }
         Ty::SelectKnownPacks(__v) => {
-            ::bungeeoxide_minecraft_v1_20_5::view::array::inline_206::serialize(__v, output)
+            ::bungeeoxide_minecraft_v1_20_5::view::array::inline_215::serialize(__v, output)
         }
         Ty::CustomClickAction(__v) => {
             ::bungeeoxide_minecraft_v1_21_6::view::packet_common_custom_click_action::serialize(__v, output)
@@ -96,7 +96,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if (__tag.clone() == 7_i32) {
 		return Ok(Ty::SelectKnownPacks(
-			::bungeeoxide_minecraft_v1_20_5::view::array::inline_206::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_20_5::view::array::inline_215::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 8_i32) {
@@ -120,7 +120,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
         Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::size_of(__v),
         Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
         Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::size_of(__v),
-        Ty::SelectKnownPacks(__v) => ::bungeeoxide_minecraft_v1_20_5::view::array::inline_206::size_of(__v),
+        Ty::SelectKnownPacks(__v) => ::bungeeoxide_minecraft_v1_20_5::view::array::inline_215::size_of(__v),
         Ty::CustomClickAction(__v) => ::bungeeoxide_minecraft_v1_21_6::view::packet_common_custom_click_action::size_of(__v),
         Ty::AcceptCodeOfConduct(__v) => super::super::super::super::configuration::to_server::packet_accept_code_of_conduct::size_of(__v),
         Ty::Default(_) => 0,
@@ -165,7 +165,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_server::Pa
         super::super::super::super::configuration::to_server::Packet::KeepAlive(__v) => Ty::KeepAlive(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::Pong(__v) => Ty::Pong(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::ResourcePackReceive(__v) => Ty::ResourcePackReceive(::core::clone::Clone::clone(__v)),
-        super::super::super::super::configuration::to_server::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::inline_206::view(__v)),
+        super::super::super::super::configuration::to_server::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::inline_215::view(__v)),
         super::super::super::super::configuration::to_server::Packet::CustomClickAction(__v) => Ty::CustomClickAction(::bungeeoxide_minecraft_v1_21_6::view::packet_common_custom_click_action::view(__v)),
         super::super::super::super::configuration::to_server::Packet::AcceptCodeOfConduct(__v) => Ty::AcceptCodeOfConduct(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),
@@ -182,7 +182,7 @@ pub fn into_view<'i>(
         super::super::super::super::configuration::to_server::Packet::KeepAlive(__v) => Ty::KeepAlive(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::Pong(__v) => Ty::Pong(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::ResourcePackReceive(__v) => Ty::ResourcePackReceive(::bungeeoxide_minecraft_v1_20_3::view::configuration::to_server::packet_resource_pack_receive::into_view(__v)),
-        super::super::super::super::configuration::to_server::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::inline_206::view(__v)),
+        super::super::super::super::configuration::to_server::Packet::SelectKnownPacks(__v) => Ty::SelectKnownPacks(::bungeeoxide_minecraft_v1_20_5::view::array::inline_215::view(__v)),
         super::super::super::super::configuration::to_server::Packet::CustomClickAction(__v) => Ty::CustomClickAction(::bungeeoxide_minecraft_v1_21_6::view::packet_common_custom_click_action::into_view(__v)),
         super::super::super::super::configuration::to_server::Packet::AcceptCodeOfConduct(__v) => Ty::AcceptCodeOfConduct(::core::clone::Clone::clone(__v)),
         super::super::super::super::configuration::to_server::Packet::Default(__t) => Ty::Default(::core::clone::Clone::clone(__t)),

@@ -66,6 +66,6 @@ pub use self::slot::Ty as Slot;
 pub use self::string::Ty as String;
 pub use self::tags::Ty as Tags;
 pub use self::vec3i16::Ty as Vec3i16;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as string;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as string;
 pub use ::bungeeoxide_minecraft_v1_0_1::vec3i16;
-pub use ::bungeeoxide_minecraft_v1_14::array::inline_150 as tags;
+pub use ::bungeeoxide_minecraft_v1_14::array::inline_159 as tags;

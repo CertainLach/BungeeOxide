@@ -10,17 +10,17 @@ pub struct PacketAdvancements {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reset, output)?;
-	super::super::super::array::inline_175::serialize(&_0.advancement_mapping, output)?;
+	super::super::super::array::inline_184::serialize(&_0.advancement_mapping, output)?;
 	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.identifiers, output)?;
-	super::super::super::array::inline_177::serialize(&_0.progress_mapping, output)?;
+	super::super::super::array::inline_186::serialize(&_0.progress_mapping, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_reset = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_advancementMapping = super::super::super::array::inline_175::deserialize(input)?;
+	let f_advancementMapping = super::super::super::array::inline_184::deserialize(input)?;
 	let f_identifiers = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
-	let f_progressMapping = super::super::super::array::inline_177::deserialize(input)?;
+	let f_progressMapping = super::super::super::array::inline_186::deserialize(input)?;
 	Ok(Ty {
 		reset: f_reset,
 		advancement_mapping: f_advancementMapping,
@@ -30,8 +30,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::bool::size_of(&_0.reset)
-		+ super::super::super::array::inline_175::size_of(&_0.advancement_mapping)
+		+ super::super::super::array::inline_184::size_of(&_0.advancement_mapping)
 		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.identifiers)
-		+ super::super::super::array::inline_177::size_of(&_0.progress_mapping)
+		+ super::super::super::array::inline_186::size_of(&_0.progress_mapping)
 }
 pub type Ty = PacketAdvancements;

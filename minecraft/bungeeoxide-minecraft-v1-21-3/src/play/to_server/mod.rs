@@ -7,7 +7,7 @@ pub use ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab;
 pub use ::bungeeoxide_minecraft_v1_19::play::to_server::packet_block_dig;
 pub mod packet_block_place;
 pub use ::bungeeoxide_minecraft_root::f32 as packet_chunk_batch_received;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_chat_command;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat_command;
 pub use ::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_server::packet_chat_message;
 pub use ::bungeeoxide_minecraft_v1_20_2::play::to_server::packet_configuration_acknowledged;
@@ -25,7 +25,7 @@ pub use ::bungeeoxide_minecraft_v1_16::play::to_server::packet_generate_structur
 pub use ::bungeeoxide_minecraft_v1_9::play::to_server::packet_entity_action;
 pub mod packet_look;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_ping_request;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_name_item;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_name_item;
 pub use ::bungeeoxide_minecraft_root::varint as packet_message_acknowledgement;
 pub use ::bungeeoxide_minecraft_root::varint as packet_pick_item;
 pub mod packet_player_input;

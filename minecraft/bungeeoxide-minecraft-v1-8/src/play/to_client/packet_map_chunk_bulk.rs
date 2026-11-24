@@ -9,14 +9,14 @@ pub struct PacketMapChunkBulk {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.sky_light_sent, output)?;
-	super::super::super::array::inline_358::serialize(&_0.meta, output)?;
+	super::super::super::array::inline_367::serialize(&_0.meta, output)?;
 	::bungeeoxide_minecraft_root::rest_buffer::serialize(&_0.data, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_skyLightSent = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_meta = super::super::super::array::inline_358::deserialize(input)?;
+	let f_meta = super::super::super::array::inline_367::deserialize(input)?;
 	let f_data = ::bungeeoxide_minecraft_root::rest_buffer::deserialize(input)?;
 	Ok(Ty {
 		sky_light_sent: f_skyLightSent,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::bool::size_of(&_0.sky_light_sent)
-		+ super::super::super::array::inline_358::size_of(&_0.meta)
+		+ super::super::super::array::inline_367::size_of(&_0.meta)
 		+ ::bungeeoxide_minecraft_root::rest_buffer::size_of(&_0.data)
 }
 pub type Ty = PacketMapChunkBulk;

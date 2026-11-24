@@ -4,13 +4,13 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateCommandBlock<'i> {
 	pub location: super::super::super::super::Position,
-	pub command: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub command: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub mode: ::bungeeoxide_minecraft_root::Varint,
 	pub flags: ::bungeeoxide_minecraft_root::U8,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::super::super::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.flags, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(11)?;
 	let f_location = super::super::super::super::position::deserialize(input)?;
-	let f_command = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_flags = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	Ok(Ty {
@@ -30,7 +30,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + super::super::super::super::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.command)
+		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.flags)
 }
@@ -39,7 +39,7 @@ pub fn view<'i>(
 ) -> Ty<'i> {
 	Ty {
 		location: ::core::clone::Clone::clone(&_0.location),
-		command: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.command),
+		command: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.command),
 		mode: ::core::clone::Clone::clone(&_0.mode),
 		flags: ::core::clone::Clone::clone(&_0.flags),
 	}

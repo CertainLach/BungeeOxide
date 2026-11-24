@@ -9,7 +9,7 @@ pub struct PacketScoreboardScore {
 	pub value: super::PacketScoreboardScore10,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.item_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.item_name, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(
 		&{
 			let _0: &super::PacketScoreboardScore10 = &_0.value;
@@ -20,15 +20,15 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		},
 		output,
 	)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.score_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.score_name, output)?;
 	super::packet_scoreboard_score_10::serialize(&_0.value, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_itemName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_itemName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_action = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_value = super::packet_scoreboard_score_10::deserialize(
 		input,
 		super::packet_scoreboard_score_10::Args {
@@ -56,14 +56,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.item_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.item_name)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&{
 			let _0: &super::PacketScoreboardScore10 = &_0.value;
 			let __v1: ::bungeeoxide_minecraft_root::Varint =
 				super::packet_scoreboard_score_10::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()
-		}) + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.score_name)
+		}) + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.score_name)
 		+ super::packet_scoreboard_score_10::size_of(&_0.value)
 }
 pub type Ty = PacketScoreboardScore;

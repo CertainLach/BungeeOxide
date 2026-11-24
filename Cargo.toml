@@ -78,6 +78,7 @@ bungeeoxide-minecraft-v1-9-4 = { version = "0.1.2", path = "minecraft/bungeeoxid
 bungeeoxide-minecraft-v26-1 = { version = "0.1.2", path = "minecraft/bungeeoxide-minecraft-v26-1" }
 bungeeoxide-minecraft-v26-2 = { version = "0.1.0", path = "minecraft/bungeeoxide-minecraft-v26-2" }
 bungeeoxide-minecraft-v26-3 = { version = "0.1.0", path = "minecraft/bungeeoxide-minecraft-v26-3" }
+bungeeoxide-minecraft-v26-4-snapshot-10 = { version = "0.1.0", path = "minecraft/bungeeoxide-minecraft-v26-4-snapshot-10" }
 bungeeoxide-pds-natives = { version = "0.1.2", path = "crates/bungeeoxide-pds-natives" }
 bungeeoxide-authlib = { version = "0.1.2", path = "crates/bungeeoxide-authlib" }
 bungeeoxide-converter = { version = "0.1.2", path = "crates/bungeeoxide-converter" }

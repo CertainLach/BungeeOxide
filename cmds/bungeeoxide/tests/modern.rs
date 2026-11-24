@@ -773,7 +773,7 @@ async fn the_server_list_shows_a_modern_backend_to_every_era() -> Result<()> {
 		new["version"]["name"]
 			.as_str()
 			.unwrap()
-			.contains("1.0.1-26.3"),
+			.contains("1.0.1-26.4-snapshot-10"),
 		"{new}"
 	);
 	assert_eq!(

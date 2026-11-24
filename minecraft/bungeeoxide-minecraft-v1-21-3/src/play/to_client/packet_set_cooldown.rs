@@ -7,13 +7,13 @@ pub struct PacketSetCooldown {
 	pub cooldown_ticks: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.cooldown_group, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.cooldown_group, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.cooldown_ticks, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_cooldownGroup = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_cooldownGroup = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_cooldownTicks = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		cooldown_group: f_cooldownGroup,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.cooldown_group)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.cooldown_group)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.cooldown_ticks)
 }
 pub type Ty = PacketSetCooldown;

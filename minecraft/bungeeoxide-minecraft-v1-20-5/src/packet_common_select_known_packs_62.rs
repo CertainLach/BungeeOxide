@@ -8,16 +8,16 @@ pub struct PacketCommonSelectKnownPacks62 {
 	pub version: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.namespace, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.id, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.version, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.namespace, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.version, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_namespace = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_id = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_version = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_namespace = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_version = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	Ok(Ty {
 		namespace: f_namespace,
 		id: f_id,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.namespace)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.id)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.version)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.namespace)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.id)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.version)
 }
 pub type Ty = PacketCommonSelectKnownPacks62;

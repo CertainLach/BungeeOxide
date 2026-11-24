@@ -3,7 +3,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonSettings<'i> {
-	pub locale: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub locale: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub view_distance: ::bungeeoxide_minecraft_root::I8,
 	pub chat_flags: ::bungeeoxide_minecraft_root::Varint,
 	pub chat_colors: ::bungeeoxide_minecraft_root::Bool,
@@ -14,7 +14,7 @@ pub struct PacketCommonSettings<'i> {
 	pub particle_status: super::super::PacketCommonSettings47,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.locale, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.locale, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.view_distance, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.chat_flags, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.chat_colors, output)?;
@@ -27,7 +27,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(9)?;
-	let f_locale = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_locale = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_chatFlags = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_chatColors = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -49,7 +49,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.locale)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.locale)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.view_distance)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.chat_flags)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.chat_colors)
@@ -61,7 +61,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonSettings) -> Ty<'i> {
 	Ty {
-		locale: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.locale),
+		locale: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.locale),
 		view_distance: ::core::clone::Clone::clone(&_0.view_distance),
 		chat_flags: ::core::clone::Clone::clone(&_0.chat_flags),
 		chat_colors: ::core::clone::Clone::clone(&_0.chat_colors),

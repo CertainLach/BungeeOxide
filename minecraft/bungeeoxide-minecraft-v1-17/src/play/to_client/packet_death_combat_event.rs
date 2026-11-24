@@ -10,14 +10,14 @@ pub struct PacketDeathCombatEvent {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.player_id, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.entity_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
 	let f_playerId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	Ok(Ty {
 		player_id: f_playerId,
 		entity_id: f_entityId,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.player_id)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.entity_id)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.message)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
 }
 pub type Ty = PacketDeathCombatEvent;

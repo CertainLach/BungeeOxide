@@ -8,14 +8,14 @@ pub struct PacketEncryptionBegin {
 	pub verify_token: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.server_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.server_id, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_0::serialize(&_0.public_key, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_0::serialize(&_0.verify_token, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
-	let f_serverId = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_serverId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_publicKey = ::bungeeoxide_minecraft_root::buffer::inline_0::deserialize(input)?;
 	let f_verifyToken = ::bungeeoxide_minecraft_root::buffer::inline_0::deserialize(input)?;
 	Ok(Ty {
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.server_id)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.server_id)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_0::size_of(&_0.public_key)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_0::size_of(&_0.verify_token)
 }

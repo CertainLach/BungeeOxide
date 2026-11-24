@@ -8,13 +8,13 @@ pub struct SlotComponent12 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.hide_tooltip, output)?;
-	::bungeeoxide_minecraft_root::array::inline_128::serialize(&_0.hidden_components, output)?;
+	::bungeeoxide_minecraft_root::array::inline_137::serialize(&_0.hidden_components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_hideTooltip = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_hiddenComponents = ::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?;
+	let f_hiddenComponents = ::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?;
 	Ok(Ty {
 		hide_tooltip: f_hideTooltip,
 		hidden_components: f_hiddenComponents,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::bool::size_of(&_0.hide_tooltip)
-		+ ::bungeeoxide_minecraft_root::array::inline_128::size_of(&_0.hidden_components)
+		+ ::bungeeoxide_minecraft_root::array::inline_137::size_of(&_0.hidden_components)
 }
 pub type Ty = SlotComponent12;

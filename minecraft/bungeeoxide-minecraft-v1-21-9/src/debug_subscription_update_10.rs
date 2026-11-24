@@ -7,13 +7,13 @@ pub struct DebugSubscriptionUpdate10 {
 	pub jump_target: Option<::bungeeoxide_minecraft_v1_14::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::option_29::serialize(&_0.attack_target, output)?;
+	::bungeeoxide_minecraft_root::option_32::serialize(&_0.attack_target, output)?;
 	::bungeeoxide_minecraft_v1_14::option_10::serialize(&_0.jump_target, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_attackTarget = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_attackTarget = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
 	let f_jumpTarget = ::bungeeoxide_minecraft_v1_14::option_10::deserialize(input)?;
 	Ok(Ty {
 		attack_target: f_attackTarget,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::option_29::size_of(&_0.attack_target)
+	0 + ::bungeeoxide_minecraft_root::option_32::size_of(&_0.attack_target)
 		+ ::bungeeoxide_minecraft_v1_14::option_10::size_of(&_0.jump_target)
 }
 pub type Ty = DebugSubscriptionUpdate10;

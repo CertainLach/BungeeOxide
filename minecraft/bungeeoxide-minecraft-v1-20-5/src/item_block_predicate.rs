@@ -8,15 +8,15 @@ pub struct ItemBlockPredicate {
 	pub nbt: ::bungeeoxide_minecraft_root::AnonOptionalNbt,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::option_53::serialize(&_0.block_set, output)?;
-	super::option_105::serialize(&_0.properties, output)?;
+	super::option_56::serialize(&_0.block_set, output)?;
+	super::option_118::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::anon_optional_nbt::serialize(&_0.nbt, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_blockSet = super::option_53::deserialize(input)?;
-	let f_properties = super::option_105::deserialize(input)?;
+	let f_blockSet = super::option_56::deserialize(input)?;
+	let f_properties = super::option_118::deserialize(input)?;
 	let f_nbt = ::bungeeoxide_minecraft_root::anon_optional_nbt::deserialize(input)?;
 	Ok(Ty {
 		block_set: f_blockSet,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::option_53::size_of(&_0.block_set)
-		+ super::option_105::size_of(&_0.properties)
+	0 + super::option_56::size_of(&_0.block_set)
+		+ super::option_118::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::anon_optional_nbt::size_of(&_0.nbt)
 }
 pub type Ty = ItemBlockPredicate;

@@ -3,20 +3,20 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GameProfileProperty<'i> {
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
-	pub value: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub value: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub signature: ::bungeeoxide_minecraft_root::view::Option21<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.value, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.signature, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
-	let f_value = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_value = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -25,14 +25,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.value)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.value)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.signature)
 }
 pub fn view<'i>(_0: &'i super::super::GameProfileProperty) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.name),
-		value: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.value),
+		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
+		value: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.value),
 		signature: ::bungeeoxide_minecraft_root::view::option_21::view(&_0.signature),
 	}
 }

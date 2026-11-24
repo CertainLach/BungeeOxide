@@ -62,7 +62,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_13::play::to_server::packet_query_block_nbt::serialize(__v, output)
         }
         Ty::Chat(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::ClientCommand(__v) => {
             ::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::serialize(__v, output)
@@ -140,7 +140,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_13::play::to_server::packet_crafting_book_data::serialize(__v, output)
         }
         Ty::NameItem(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::ResourcePackReceive(__v) => {
             ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
@@ -205,7 +205,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 2_i32) {
 		return Ok(Ty::Chat(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 3_i32) {
@@ -351,7 +351,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 28_i32) {
 		return Ok(Ty::NameItem(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 29_i32) {
@@ -428,7 +428,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0)) + match _0 {
         Ty::TeleportConfirm(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
         Ty::QueryBlockNbt(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_query_block_nbt::size_of(__v),
-        Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::ClientCommand(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::size_of(__v),
         Ty::Settings(__v) => ::bungeeoxide_minecraft_v1_9::play::to_server::packet_settings::size_of(__v),
         Ty::TabComplete(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_tab_complete::size_of(__v),
@@ -454,7 +454,7 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::EntityAction(__v) => ::bungeeoxide_minecraft_v1_9::play::to_server::packet_entity_action::size_of(__v),
         Ty::SteerVehicle(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_steer_vehicle::size_of(__v),
         Ty::CraftingBookData(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_crafting_book_data::size_of(__v),
-        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
         Ty::AdvancementTab(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::size_of(__v),
         Ty::SelectTrade(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),

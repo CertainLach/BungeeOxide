@@ -21,7 +21,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::AnyFuel => Ok(()),
 		Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::ItemStack(__v) => super::super::super::slot::serialize(__v, output),
-		Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::SmithingTrim(__v) => super::slot_display_5::serialize(__v, output),
 		Ty::WithRemainder(__v) => super::slot_display_6::serialize(__v, output),
 		Ty::Composite(__v) => super::super::super::array::inline_89::serialize(__v, output),
@@ -50,7 +50,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::Tag(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 5_i32) {
@@ -77,7 +77,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::AnyFuel => 0,
 			Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::ItemStack(__v) => super::super::super::slot::size_of(__v),
-			Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::SmithingTrim(__v) => super::slot_display_5::size_of(__v),
 			Ty::WithRemainder(__v) => super::slot_display_6::size_of(__v),
 			Ty::Composite(__v) => super::super::super::array::inline_89::size_of(__v),

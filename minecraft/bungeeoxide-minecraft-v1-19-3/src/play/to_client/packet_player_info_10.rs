@@ -11,14 +11,14 @@ pub enum PacketPlayerInfo10 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::True(__v) => super::super::super::option_44::serialize(__v, output),
+		Ty::True(__v) => super::super::super::option_47::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.action_initialize_chat;
 	if (__tag.clone() == true) {
-		return Ok(Ty::True(super::super::super::option_44::deserialize(
+		return Ok(Ty::True(super::super::super::option_47::deserialize(
 			input,
 		)?));
 	}
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + match _0 {
-		Ty::True(__v) => super::super::super::option_44::size_of(__v),
+		Ty::True(__v) => super::super::super::option_47::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

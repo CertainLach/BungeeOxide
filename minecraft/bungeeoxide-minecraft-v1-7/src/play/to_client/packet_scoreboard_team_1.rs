@@ -10,18 +10,18 @@ pub struct PacketScoreboardTeam1 {
 	pub players: Vec<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.prefix, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.suffix, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.prefix, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.suffix, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.friendly_fire, output)?;
 	::bungeeoxide_minecraft_root::array::inline_5::serialize(&_0.players, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_prefix = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_suffix = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_prefix = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_suffix = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_friendlyFire = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_players = ::bungeeoxide_minecraft_root::array::inline_5::deserialize(input)?;
 	Ok(Ty {
@@ -33,9 +33,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.prefix)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.suffix)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.prefix)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.suffix)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.friendly_fire)
 		+ ::bungeeoxide_minecraft_root::array::inline_5::size_of(&_0.players)
 }

@@ -3,9 +3,8 @@ use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
 	pub count: &'a ::bungeeoxide_minecraft_root::Varint,
-	pub height: &'a ::bungeeoxide_minecraft_root::Varint,
 }
-pub type Ty = Vec<Vec<Vec<super::super::Slot>>>;
+pub type Ty = Vec<Vec<super::super::Slot>>;
 pub fn check_count(_0: &Ty, count: &::bungeeoxide_minecraft_root::Varint) -> Result<()> {
 	if usize::try_from(*count).ok() != Some(_0.len()) {
 		return Err(Error::InvalidValue);
@@ -14,30 +13,23 @@ pub fn check_count(_0: &Ty, count: &::bungeeoxide_minecraft_root::Varint) -> Res
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	for e in _0.iter() {
-		super::sized_433::serialize(e, output)?;
+		super::inline_37::serialize(e, output)?;
 	}
 	Ok(())
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
+	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::sized_433::deserialize(
-			input,
-			super::sized_433::Args {
-				count: {
-					let _0 = args.height;
-					_0
-				},
-			},
-		)?);
+		out.push(super::inline_37::deserialize(input)?);
 	}
 	Ok(out)
 }
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = 0;
 	for e in _0.iter() {
-		n += super::sized_433::size_of(e);
+		n += super::inline_37::size_of(e);
 	}
 	n
 }

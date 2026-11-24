@@ -7,21 +7,21 @@ pub struct PacketTrackedWaypoint30 {
 	pub color: Option<super::PacketTrackedWaypoint29>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.style, output)?;
-	super::super::super::option_80::serialize(&_0.color, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.style, output)?;
+	super::super::super::option_83::serialize(&_0.color, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_style = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_color = super::super::super::option_80::deserialize(input)?;
+	let f_style = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_color = super::super::super::option_83::deserialize(input)?;
 	Ok(Ty {
 		style: f_style,
 		color: f_color,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.style)
-		+ super::super::super::option_80::size_of(&_0.color)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.style)
+		+ super::super::super::option_83::size_of(&_0.color)
 }
 pub type Ty = PacketTrackedWaypoint30;

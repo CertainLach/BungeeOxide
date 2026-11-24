@@ -252,6 +252,7 @@ dependencies = [
  "bungeeoxide-minecraft-v26-1",
  "bungeeoxide-minecraft-v26-2",
  "bungeeoxide-minecraft-v26-3",
+ "bungeeoxide-minecraft-v26-4-snapshot-10",
 ]
 
 [[package]]
@@ -1628,6 +1629,47 @@ dependencies = [
  "bungeeoxide-minecraft-v1-9",
  "bungeeoxide-minecraft-v26-1",
  "bungeeoxide-minecraft-v26-2",
+ "bungeeoxide-pds-natives",
+ "pds-bytes-runtime",
+]
+
+[[package]]
+name = "bungeeoxide-minecraft-v26-4-snapshot-10"
+version = "0.1.0"
+dependencies = [
+ "bungeeoxide-minecraft-root",
+ "bungeeoxide-minecraft-v1-0-1",
+ "bungeeoxide-minecraft-v1-11",
+ "bungeeoxide-minecraft-v1-12",
+ "bungeeoxide-minecraft-v1-13",
+ "bungeeoxide-minecraft-v1-14",
+ "bungeeoxide-minecraft-v1-16",
+ "bungeeoxide-minecraft-v1-16-2",
+ "bungeeoxide-minecraft-v1-17",
+ "bungeeoxide-minecraft-v1-17-1",
+ "bungeeoxide-minecraft-v1-18-2",
+ "bungeeoxide-minecraft-v1-19",
+ "bungeeoxide-minecraft-v1-19-2",
+ "bungeeoxide-minecraft-v1-19-3",
+ "bungeeoxide-minecraft-v1-19-4",
+ "bungeeoxide-minecraft-v1-20",
+ "bungeeoxide-minecraft-v1-20-2",
+ "bungeeoxide-minecraft-v1-20-3",
+ "bungeeoxide-minecraft-v1-20-5",
+ "bungeeoxide-minecraft-v1-21-1",
+ "bungeeoxide-minecraft-v1-21-11",
+ "bungeeoxide-minecraft-v1-21-3",
+ "bungeeoxide-minecraft-v1-21-4",
+ "bungeeoxide-minecraft-v1-21-5",
+ "bungeeoxide-minecraft-v1-21-6",
+ "bungeeoxide-minecraft-v1-21-9",
+ "bungeeoxide-minecraft-v1-6-1",
+ "bungeeoxide-minecraft-v1-7",
+ "bungeeoxide-minecraft-v1-8",
+ "bungeeoxide-minecraft-v1-9",
+ "bungeeoxide-minecraft-v26-1",
+ "bungeeoxide-minecraft-v26-2",
+ "bungeeoxide-minecraft-v26-3",
  "bungeeoxide-pds-natives",
  "pds-bytes-runtime",
 ]

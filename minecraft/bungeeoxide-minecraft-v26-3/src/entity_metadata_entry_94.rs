@@ -100,7 +100,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
 		}
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
 		Ty::ResolvableProfile(__v) => {
 			::bungeeoxide_minecraft_v1_21_9::resolvable_profile::serialize(__v, output)
@@ -289,7 +289,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::String(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 40_i32) {
@@ -378,7 +378,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_root::varint::size_of(__v)
 			}
 			Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
 			Ty::ResolvableProfile(__v) => {
 				::bungeeoxide_minecraft_v1_21_9::resolvable_profile::size_of(__v)

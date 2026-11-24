@@ -13,11 +13,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::False => Ok(()),
 		Ty::True(__v) => {
-			::bungeeoxide_minecraft_root::array::sized_430::check_count(
+			::bungeeoxide_minecraft_root::array::sized_462::check_count(
 				__v,
 				&(1024).try_into().expect("constant fits"),
 			)?;
-			::bungeeoxide_minecraft_root::array::sized_430::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::sized_462::serialize(__v, output)
 		}
 	}
 }
@@ -28,9 +28,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == true) {
 		return Ok(Ty::True(
-			::bungeeoxide_minecraft_root::array::sized_430::deserialize(
+			::bungeeoxide_minecraft_root::array::sized_462::deserialize(
 				input,
-				::bungeeoxide_minecraft_root::array::sized_430::Args {
+				::bungeeoxide_minecraft_root::array::sized_462::Args {
 					count: &(1024).try_into().expect("constant fits"),
 				},
 			)?,
@@ -41,7 +41,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + match _0 {
 		Ty::False => 0,
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::sized_430::size_of(__v),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::sized_462::size_of(__v),
 	}
 }
 pub fn name(_0: &Ty) -> &'static str {

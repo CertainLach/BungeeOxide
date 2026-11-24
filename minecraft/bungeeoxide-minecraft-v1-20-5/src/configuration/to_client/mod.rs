@@ -20,4 +20,4 @@ pub use self::packet_registry_data::PacketRegistryData;
 pub use self::packet_registry_data_0::PacketRegistryData0;
 pub use self::packet_reset_chat::PacketResetChat;
 pub use self::packet_tags::Ty as PacketTags;
-pub use ::bungeeoxide_minecraft_v1_20_2::array::inline_179 as packet_tags;
+pub use ::bungeeoxide_minecraft_v1_20_2::array::inline_188 as packet_tags;

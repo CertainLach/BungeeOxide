@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketStopSound<'i> {
 	V1(::bungeeoxide_minecraft_root::Varint),
-	V2(::bungeeoxide_minecraft_root::view::Pstring109<'i>),
+	V2(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
 	V3(super::PacketStopSound18<'i>),
 	Default(::bungeeoxide_minecraft_root::I8),
 }
@@ -12,7 +12,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::V1(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::V2(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::serialize(__v, output),
+		Ty::V2(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
 		Ty::V3(__v) => super::packet_stop_sound_18::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
@@ -28,7 +28,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if (__tag.clone() == 2_i8) {
 		return Ok(Ty::V2(
-			::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 3_i8) {
@@ -40,7 +40,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::i8::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::V1(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-			Ty::V2(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::size_of(__v),
+			Ty::V2(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
 			Ty::V3(__v) => super::packet_stop_sound_18::size_of(__v),
 			Ty::Default(_) => 0,
 		}
@@ -67,7 +67,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketStopS
 			Ty::V1(::core::clone::Clone::clone(__v))
 		}
 		super::super::super::super::play::to_client::PacketStopSound::V2(__v) => {
-			Ty::V2(::bungeeoxide_minecraft_root::view::pstring_109::view(__v))
+			Ty::V2(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
 		}
 		super::super::super::super::play::to_client::PacketStopSound::V3(__v) => {
 			Ty::V3(super::packet_stop_sound_18::view(__v))

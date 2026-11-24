@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::Named(v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_root::pstring_109::serialize(v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(v, output)
 		}
 		Ty::Ids(ids) => {
 			::bungeeoxide_minecraft_root::varint::serialize(
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		.try_into()
 		.map_err(|_| Error::InvalidValue)?;
 	Ok(if n == 0 {
-		Ty::Named(::bungeeoxide_minecraft_root::pstring_109::deserialize(
+		Ty::Named(::bungeeoxide_minecraft_root::pstring_123::deserialize(
 			input,
 		)?)
 	} else {
@@ -44,7 +44,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
-		Ty::Named(v) => 1 + ::bungeeoxide_minecraft_root::pstring_109::size_of(v),
+		Ty::Named(v) => 1 + ::bungeeoxide_minecraft_root::pstring_123::size_of(v),
 		Ty::Ids(ids) => {
 			let mut n = ::bungeeoxide_minecraft_root::varint::size_of(
 				&(ids.len() + 1).try_into().unwrap_or_default(),

@@ -2,7 +2,7 @@
 pub mod packet;
 pub use ::bungeeoxide_minecraft_v1_6_1::play::to_server::packet_abilities;
 pub mod packet_advancement_tab;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_chat;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat;
 pub use ::bungeeoxide_minecraft_root::varint as packet_arm_animation;
 pub use ::bungeeoxide_minecraft_v1_11::play::to_server::packet_block_place;
 pub use ::bungeeoxide_minecraft_v1_8::play::to_server::packet_block_dig;

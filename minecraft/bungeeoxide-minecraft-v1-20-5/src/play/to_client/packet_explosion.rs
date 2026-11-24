@@ -21,7 +21,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.y, output)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.z, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.radius, output)?;
-	super::super::super::array::inline_214::serialize(&_0.affected_block_offsets, output)?;
+	super::super::super::array::inline_223::serialize(&_0.affected_block_offsets, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.player_motion_x, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.player_motion_y, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.player_motion_z, output)?;
@@ -37,7 +37,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_y = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
 	let f_z = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
 	let f_radius = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_affectedBlockOffsets = super::super::super::array::inline_214::deserialize(input)?;
+	let f_affectedBlockOffsets = super::super::super::array::inline_223::deserialize(input)?;
 	let f_playerMotionX = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_playerMotionY = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_playerMotionZ = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
@@ -65,7 +65,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.y)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.z)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.radius)
-		+ super::super::super::array::inline_214::size_of(&_0.affected_block_offsets)
+		+ super::super::super::array::inline_223::size_of(&_0.affected_block_offsets)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.player_motion_x)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.player_motion_y)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.player_motion_z)

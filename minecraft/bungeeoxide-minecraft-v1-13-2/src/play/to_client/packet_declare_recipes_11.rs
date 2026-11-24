@@ -10,7 +10,7 @@ pub struct PacketDeclareRecipes11 {
 	pub cook_time: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.group, output)?;
 	super::super::super::array::inline_37::serialize(&_0.ingredient, output)?;
 	super::super::super::slot::serialize(&_0.result, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.experience, output)?;
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(8)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_ingredient = super::super::super::array::inline_37::deserialize(input)?;
 	let f_result = super::super::super::slot::deserialize(input)?;
 	let f_experience = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.group)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.group)
 		+ super::super::super::array::inline_37::size_of(&_0.ingredient)
 		+ super::super::super::slot::size_of(&_0.result)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.experience)

@@ -11,14 +11,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::serialize(&(id + 1), output),
 		Ty::Inline(v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_root::pstring_109::serialize(v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(v, output)
 		}
 	}
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let n = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(if n == 0 {
-		Ty::Inline(::bungeeoxide_minecraft_root::pstring_109::deserialize(
+		Ty::Inline(::bungeeoxide_minecraft_root::pstring_123::deserialize(
 			input,
 		)?)
 	} else {
@@ -30,7 +30,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::size_of(&(id + 1)),
 		Ty::Inline(v) => {
 			::bungeeoxide_minecraft_root::varint::size_of(&0)
-				+ ::bungeeoxide_minecraft_root::pstring_109::size_of(v)
+				+ ::bungeeoxide_minecraft_root::pstring_123::size_of(v)
 		}
 	}
 }

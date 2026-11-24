@@ -17,7 +17,7 @@ pub struct PacketTradeList21 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::packet_trade_list_18::serialize(&_0.input_item1, output)?;
 	super::super::super::slot::serialize_guarded(&_0.output_item, output)?;
-	super::super::super::option_57::serialize(&_0.input_item2, output)?;
+	super::super::super::option_60::serialize(&_0.input_item2, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.trade_disabled, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.nb_trade_uses, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.maximum_nb_trade_uses, output)?;
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(30)?;
 	let f_inputItem1 = super::packet_trade_list_18::deserialize(input)?;
 	let f_outputItem = super::super::super::slot::deserialize_guarded(input)?;
-	let f_inputItem2 = super::super::super::option_57::deserialize(input)?;
+	let f_inputItem2 = super::super::super::option_60::deserialize(input)?;
 	let f_tradeDisabled = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_nbTradeUses = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_maximumNbTradeUses = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
@@ -55,7 +55,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + super::packet_trade_list_18::size_of(&_0.input_item1)
 		+ super::super::super::slot::size_of(&_0.output_item)
-		+ super::super::super::option_57::size_of(&_0.input_item2)
+		+ super::super::super::option_60::size_of(&_0.input_item2)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.trade_disabled)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.nb_trade_uses)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.maximum_nb_trade_uses)

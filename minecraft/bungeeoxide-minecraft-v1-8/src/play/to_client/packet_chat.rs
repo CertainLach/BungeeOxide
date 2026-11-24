@@ -7,13 +7,13 @@ pub struct PacketChat {
 	pub position: ::bungeeoxide_minecraft_root::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.position, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_position = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	Ok(Ty {
 		message: f_message,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.message)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.position)
 }
 pub type Ty = PacketChat;

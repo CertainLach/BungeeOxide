@@ -4,17 +4,17 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardDisplayObjective<'i> {
 	pub position: ::bungeeoxide_minecraft_root::Varint,
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.position, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_position = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	Ok(Ty {
 		position: f_position,
 		name: f_name,
@@ -22,14 +22,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.position)
-		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
 }
 pub fn view<'i>(
 	_0: &'i super::super::super::super::play::to_client::PacketScoreboardDisplayObjective,
 ) -> Ty<'i> {
 	Ty {
 		position: ::core::clone::Clone::clone(&_0.position),
-		name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
 	}
 }
 pub type Ty<'i> = PacketScoreboardDisplayObjective<'i>;

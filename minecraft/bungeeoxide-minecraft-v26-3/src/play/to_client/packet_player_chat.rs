@@ -22,10 +22,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.sender_uuid, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.index, output)?;
 	::bungeeoxide_minecraft_root::option_3::serialize(&_0.signature, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.plain_message, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.plain_message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	::bungeeoxide_minecraft_v1_19_3::array::inline_171::serialize(&_0.previous_messages, output)?;
+	::bungeeoxide_minecraft_v1_19_3::array::inline_180::serialize(&_0.previous_messages, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.unsigned_chat_content, output)?;
 	super::packet_player_chat_16::serialize(&_0.filter_type_mask, output)?;
 	::bungeeoxide_minecraft_v1_21_1::play::to_client::chat_types_holder::serialize(
@@ -41,11 +41,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_senderUuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_index = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::option_3::deserialize(input)?;
-	let f_plainMessage = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_plainMessage = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_previousMessages =
-		::bungeeoxide_minecraft_v1_19_3::array::inline_171::deserialize(input)?;
+		::bungeeoxide_minecraft_v1_19_3::array::inline_180::deserialize(input)?;
 	let f_unsignedChatContent = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	let f_filterTypeMask = super::packet_player_chat_16::deserialize(input)?;
 	let f_type =
@@ -73,10 +73,10 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.sender_uuid)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.index)
 		+ ::bungeeoxide_minecraft_root::option_3::size_of(&_0.signature)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.plain_message)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.plain_message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ ::bungeeoxide_minecraft_v1_19_3::array::inline_171::size_of(&_0.previous_messages)
+		+ ::bungeeoxide_minecraft_v1_19_3::array::inline_180::size_of(&_0.previous_messages)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.unsigned_chat_content)
 		+ super::packet_player_chat_16::size_of(&_0.filter_type_mask)
 		+ ::bungeeoxide_minecraft_v1_21_1::play::to_client::chat_types_holder::size_of(&_0.r#type)

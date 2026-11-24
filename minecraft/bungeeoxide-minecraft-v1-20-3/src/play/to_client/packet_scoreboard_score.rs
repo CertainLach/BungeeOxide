@@ -11,11 +11,11 @@ pub struct PacketScoreboardScore {
 	pub styling: super::PacketScoreboardScore31,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.item_name, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.score_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.item_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.score_name, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.value, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.display_name, output)?;
-	::bungeeoxide_minecraft_root::option_29::serialize(
+	::bungeeoxide_minecraft_root::option_32::serialize(
 		&{
 			let _0: &super::PacketScoreboardScore31 = &_0.styling;
 			let __v1: Option<::bungeeoxide_minecraft_root::Varint> =
@@ -30,11 +30,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
-	let f_itemName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_itemName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_display_name = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
-	let f_number_format = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_number_format = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
 	let f_styling = super::packet_scoreboard_score_31::deserialize(
 		input,
 		super::packet_scoreboard_score_31::Args {
@@ -64,11 +64,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.item_name)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.score_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.item_name)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.score_name)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.value)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.display_name)
-		+ ::bungeeoxide_minecraft_root::option_29::size_of(&{
+		+ ::bungeeoxide_minecraft_root::option_32::size_of(&{
 			let _0: &super::PacketScoreboardScore31 = &_0.styling;
 			let __v1: Option<::bungeeoxide_minecraft_root::Varint> =
 				super::packet_scoreboard_score_31::virtual_tag(_0);

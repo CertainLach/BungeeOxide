@@ -5,14 +5,14 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketEntityUpdateAttributes17<'i> {
 	pub key: super::super::super::super::play::to_client::PacketEntityUpdateAttributes15,
 	pub value: ::bungeeoxide_minecraft_root::F64,
-	pub modifiers: super::super::super::array::Inline400<'i>,
+	pub modifiers: super::super::super::array::Inline409<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::super::super::play::to_client::packet_entity_update_attributes_15::serialize(
 		&_0.key, output,
 	)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
-	super::super::super::array::inline_400::serialize(&_0.modifiers, output)?;
+	super::super::super::array::inline_409::serialize(&_0.modifiers, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
         input,
     )?;
 	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
-	let f_modifiers = super::super::super::array::inline_400::deserialize(input)?;
+	let f_modifiers = super::super::super::array::inline_409::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
@@ -32,7 +32,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + super::super::super::super::play::to_client::packet_entity_update_attributes_15::size_of(
 		&_0.key,
 	) + ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
-		+ super::super::super::array::inline_400::size_of(&_0.modifiers)
+		+ super::super::super::array::inline_409::size_of(&_0.modifiers)
 }
 pub fn view<'i>(
 	_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes17,
@@ -40,7 +40,7 @@ pub fn view<'i>(
 	Ty {
 		key: ::core::clone::Clone::clone(&_0.key),
 		value: ::core::clone::Clone::clone(&_0.value),
-		modifiers: super::super::super::array::inline_400::view(&_0.modifiers),
+		modifiers: super::super::super::array::inline_409::view(&_0.modifiers),
 	}
 }
 pub type Ty<'i> = PacketEntityUpdateAttributes17<'i>;

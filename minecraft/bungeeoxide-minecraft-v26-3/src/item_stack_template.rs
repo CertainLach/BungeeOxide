@@ -15,16 +15,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_458::check_count(&_0.components, {
+	super::array::sized_490::check_count(&_0.components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.added_component_count;
 		_0
 	})?;
-	super::array::sized_458::serialize(&_0.components, output)?;
-	super::array::sized_459::check_count(&_0.remove_components, {
+	super::array::sized_490::serialize(&_0.components, output)?;
+	super::array::sized_491::check_count(&_0.remove_components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.removed_component_count;
 		_0
 	})?;
-	super::array::sized_459::serialize(&_0.remove_components, output)?;
+	super::array::sized_491::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -33,18 +33,18 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_458::deserialize(
+	let f_components = super::array::sized_490::deserialize(
 		input,
-		super::array::sized_458::Args {
+		super::array::sized_490::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_addedComponentCount;
 				_0
 			},
 		},
 	)?;
-	let f_removeComponents = super::array::sized_459::deserialize(
+	let f_removeComponents = super::array::sized_491::deserialize(
 		input,
-		super::array::sized_459::Args {
+		super::array::sized_491::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_removedComponentCount;
 				_0
@@ -65,7 +65,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_458::size_of(&_0.components)
-		+ super::array::sized_459::size_of(&_0.remove_components)
+		+ super::array::sized_490::size_of(&_0.components)
+		+ super::array::sized_491::size_of(&_0.remove_components)
 }
 pub type Ty = ItemStackTemplate;

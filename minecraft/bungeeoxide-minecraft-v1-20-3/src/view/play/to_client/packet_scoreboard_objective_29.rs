@@ -2,13 +2,13 @@
 use crate::pds::{Input, Output, Result};
 
 pub struct Args<'a> {
-	pub number_format: &'a ::bungeeoxide_minecraft_root::Option29,
+	pub number_format: &'a ::bungeeoxide_minecraft_root::Option32,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketScoreboardObjective29<'i> {
 	V1(::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>),
 	V2(::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>),
-	Default(::bungeeoxide_minecraft_root::Option29),
+	Default(::bungeeoxide_minecraft_root::Option32),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
@@ -45,7 +45,7 @@ pub fn name<'i>(_0: &Ty<'i>) -> &'static str {
 		Ty::Default(..) => "default",
 	}
 }
-pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &::bungeeoxide_minecraft_root::Option29) {
+pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &::bungeeoxide_minecraft_root::Option32) {
 	debug_assert!(
 		match _0 {
 			Ty::V1(_) => (__tag.clone() == Some(1_i32)),
@@ -55,7 +55,7 @@ pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &::bungeeoxide_minecraft_root::O
 		"union variant does not match its external tag",
 	);
 }
-pub fn virtual_tag<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Option29 {
+pub fn virtual_tag<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Option32 {
 	match _0 {
 		Ty::V1(_) => Some(1_i32),
 		Ty::V2(_) => Some(2_i32),

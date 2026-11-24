@@ -11,7 +11,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::Linear(__v) => super::packet_sync_entity_position_19::serialize(__v, output),
-		Ty::Stepped(__v) => super::super::super::array::inline_422::serialize(__v, output),
+		Ty::Stepped(__v) => super::super::super::array::inline_431::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 1_i32) {
 		return Ok(Ty::Stepped(
-			super::super::super::array::inline_422::deserialize(input)?,
+			super::super::super::array::inline_431::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -35,7 +35,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::Linear(__v) => super::packet_sync_entity_position_19::size_of(__v),
-			Ty::Stepped(__v) => super::super::super::array::inline_422::size_of(__v),
+			Ty::Stepped(__v) => super::super::super::array::inline_431::size_of(__v),
 			Ty::Default(_) => 0,
 		}
 }

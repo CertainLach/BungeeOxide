@@ -7,13 +7,13 @@ pub struct PacketRecipeBookAdd {
 	pub replace: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_353::serialize(&_0.entries, output)?;
+	super::super::super::array::inline_362::serialize(&_0.entries, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.replace, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_entries = super::super::super::array::inline_353::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_362::deserialize(input)?;
 	let f_replace = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		entries: f_entries,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::super::super::array::inline_353::size_of(&_0.entries)
+	0 + super::super::super::array::inline_362::size_of(&_0.entries)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.replace)
 }
 pub type Ty = PacketRecipeBookAdd;

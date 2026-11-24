@@ -1,8 +1,8 @@
 use std::borrow::Cow;
 use std::ops::Range;
 
-use bungeeoxide_converter::minecraft::v26_3::play::to_client::packet as owned;
-use bungeeoxide_converter::minecraft::view::v26_3::play::to_client::packet as view;
+use bungeeoxide_converter::minecraft::v26_4_snapshot_10::play::to_client::packet as owned;
+use bungeeoxide_converter::minecraft::view::v26_4_snapshot_10::play::to_client::packet as view;
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Version;
 use bungeeoxide_converter::{convert, Root, Session};
@@ -53,7 +53,7 @@ fn capture() -> Vec<Vec<u8>> {
 
 #[test]
 fn latest_views_match_owned_packets() {
-	let (from, to) = (Version::V1_8, Version::V26_3);
+	let (from, to) = (Version::V1_8, Version::V26_4_snapshot_10);
 	let mut cx = Session::new();
 	let mut checked = 0;
 	let mut chunks = 0;

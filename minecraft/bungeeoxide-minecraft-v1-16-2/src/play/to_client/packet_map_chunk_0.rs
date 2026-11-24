@@ -12,7 +12,7 @@ pub enum PacketMapChunk0 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::False => Ok(()),
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::inline_128::serialize(__v, output),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::inline_137::serialize(__v, output),
 	}
 }
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == true) {
 		return Ok(Ty::True(
-			::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?,
 		));
 	}
 	Err(Error::InvalidValue)
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + match _0 {
 		Ty::False => 0,
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::inline_128::size_of(__v),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::array::inline_137::size_of(__v),
 	}
 }
 pub fn name(_0: &Ty) -> &'static str {

@@ -4,21 +4,21 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub enum ContextProviderHolder<'i> {
 	Id(::bungeeoxide_minecraft_root::Varint),
-	Inline(::bungeeoxide_minecraft_root::view::Pstring109<'i>),
+	Inline(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::serialize(&(id + 1), output),
 		Ty::Inline(v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_root::view::pstring_109::serialize(v, output)
+			::bungeeoxide_minecraft_root::view::pstring_123::serialize(v, output)
 		}
 	}
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let n = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(if n == 0 {
-		Ty::Inline(::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?)
+		Ty::Inline(::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?)
 	} else {
 		Ty::Id(n - 1)
 	})
@@ -28,7 +28,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::size_of(&(id + 1)),
 		Ty::Inline(v) => {
 			::bungeeoxide_minecraft_root::varint::size_of(&0)
-				+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(v)
+				+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(v)
 		}
 	}
 }
@@ -36,7 +36,7 @@ pub fn view<'i>(_0: &'i super::super::ContextProviderHolder) -> Ty<'i> {
 	match _0 {
 		super::super::ContextProviderHolder::Id(id) => Ty::Id(*id),
 		super::super::ContextProviderHolder::Inline(v) => {
-			Ty::Inline(::bungeeoxide_minecraft_root::view::pstring_109::view(v))
+			Ty::Inline(::bungeeoxide_minecraft_root::view::pstring_123::view(v))
 		}
 	}
 }

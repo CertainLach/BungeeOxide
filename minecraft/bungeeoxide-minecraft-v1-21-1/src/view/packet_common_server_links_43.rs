@@ -4,17 +4,17 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonServerLinks43<'i> {
 	pub has_known_type: super::PacketCommonServerLinks42<'i>,
-	pub link: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub link: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::packet_common_server_links_42::serialize(&_0.has_known_type, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.link, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.link, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_hasKnownType = super::packet_common_server_links_42::deserialize(input)?;
-	let f_link = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_link = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	Ok(Ty {
 		has_known_type: f_hasKnownType,
 		link: f_link,
@@ -22,18 +22,18 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + super::packet_common_server_links_42::size_of(&_0.has_known_type)
-		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.link)
+		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.link)
 }
 pub fn view<'i>(_0: &'i super::super::PacketCommonServerLinks43) -> Ty<'i> {
 	Ty {
 		has_known_type: super::packet_common_server_links_42::view(&_0.has_known_type),
-		link: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.link),
+		link: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.link),
 	}
 }
 pub fn into_view<'i>(_0: &'i mut super::super::PacketCommonServerLinks43) -> Ty<'i> {
 	Ty {
 		has_known_type: super::packet_common_server_links_42::into_view(&mut _0.has_known_type),
-		link: ::bungeeoxide_minecraft_root::view::pstring_109::view(&mut _0.link),
+		link: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.link),
 	}
 }
 pub type Ty<'i> = PacketCommonServerLinks43<'i>;

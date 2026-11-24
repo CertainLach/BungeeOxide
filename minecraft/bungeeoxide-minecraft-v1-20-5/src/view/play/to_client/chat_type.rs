@@ -3,19 +3,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ChatType<'i> {
-	pub translation_key: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub translation_key: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub parameters: super::super::super::super::array::Inline59,
 	pub style: ::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.translation_key, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.translation_key, output)?;
 	super::super::super::super::array::inline_59::serialize(&_0.parameters, output)?;
 	::bungeeoxide_minecraft_root::view::anonymous_nbt::serialize(&_0.style, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_translationKey = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_translationKey = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_parameters = super::super::super::super::array::inline_59::deserialize(input)?;
 	let f_style = ::bungeeoxide_minecraft_root::view::anonymous_nbt::deserialize(input)?;
 	Ok(Ty {
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.translation_key)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.translation_key)
 		+ super::super::super::super::array::inline_59::size_of(&_0.parameters)
 		+ ::bungeeoxide_minecraft_root::view::anonymous_nbt::size_of(&_0.style)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::ChatType) -> Ty<'i> {
 	Ty {
-		translation_key: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.translation_key),
+		translation_key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.translation_key),
 		parameters: ::core::clone::Clone::clone(&_0.parameters),
 		style: ::bungeeoxide_minecraft_root::view::anonymous_nbt::view(&_0.style),
 	}
 }
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::ChatType) -> Ty<'i> {
 	Ty {
-		translation_key: ::bungeeoxide_minecraft_root::view::pstring_109::view(
+		translation_key: ::bungeeoxide_minecraft_root::view::pstring_123::view(
 			&mut _0.translation_key,
 		),
 		parameters: ::core::mem::take(&mut _0.parameters),

@@ -13,16 +13,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_457::check_count(&_0.components, {
+	super::array::sized_489::check_count(&_0.components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.added_component_count;
 		_0
 	})?;
-	super::array::sized_457::serialize(&_0.components, output)?;
-	super::array::sized_456::check_count(&_0.remove_components, {
+	super::array::sized_489::serialize(&_0.components, output)?;
+	super::array::sized_488::check_count(&_0.remove_components, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.removed_component_count;
 		_0
 	})?;
-	super::array::sized_456::serialize(&_0.remove_components, output)?;
+	super::array::sized_488::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -30,18 +30,18 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_457::deserialize(
+	let f_components = super::array::sized_489::deserialize(
 		input,
-		super::array::sized_457::Args {
+		super::array::sized_489::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_addedComponentCount;
 				_0
 			},
 		},
 	)?;
-	let f_removeComponents = super::array::sized_456::deserialize(
+	let f_removeComponents = super::array::sized_488::deserialize(
 		input,
-		super::array::sized_456::Args {
+		super::array::sized_488::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_removedComponentCount;
 				_0
@@ -60,7 +60,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_457::size_of(&_0.components)
-		+ super::array::sized_456::size_of(&_0.remove_components)
+		+ super::array::sized_489::size_of(&_0.components)
+		+ super::array::sized_488::size_of(&_0.remove_components)
 }
 pub type Ty = UntrustedSlot56;

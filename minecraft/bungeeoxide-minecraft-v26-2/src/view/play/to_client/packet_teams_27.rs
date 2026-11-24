@@ -8,7 +8,7 @@ pub struct PacketTeams27<'i> {
 	pub suffix: ::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>,
 	pub name_tag_visibility: super::super::super::super::play::to_client::PacketTeams24,
 	pub collision_rule: super::super::super::super::play::to_client::PacketTeams25,
-	pub formatting: ::bungeeoxide_minecraft_root::Option29,
+	pub formatting: ::bungeeoxide_minecraft_root::Option32,
 	pub flags: super::super::super::super::play::to_client::PacketTeams26,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -23,7 +23,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		&_0.collision_rule,
 		output,
 	)?;
-	::bungeeoxide_minecraft_root::option_29::serialize(&_0.formatting, output)?;
+	::bungeeoxide_minecraft_root::option_32::serialize(&_0.formatting, output)?;
 	super::super::super::super::play::to_client::packet_teams_26::serialize(&_0.flags, output)?;
 	Ok(())
 }
@@ -36,7 +36,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		super::super::super::super::play::to_client::packet_teams_24::deserialize(input)?;
 	let f_collisionRule =
 		super::super::super::super::play::to_client::packet_teams_25::deserialize(input)?;
-	let f_formatting = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_formatting = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
 	let f_flags = super::super::super::super::play::to_client::packet_teams_26::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -55,7 +55,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ super::super::super::super::play::to_client::packet_teams_24::size_of(
 			&_0.name_tag_visibility,
 		) + super::super::super::super::play::to_client::packet_teams_25::size_of(&_0.collision_rule)
-		+ ::bungeeoxide_minecraft_root::option_29::size_of(&_0.formatting)
+		+ ::bungeeoxide_minecraft_root::option_32::size_of(&_0.formatting)
 		+ super::super::super::super::play::to_client::packet_teams_26::size_of(&_0.flags)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTeams27) -> Ty<'i> {

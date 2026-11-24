@@ -30,7 +30,7 @@ pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_explosion;
 pub mod packet_game_state_change;
 pub mod packet_game_state_change_1;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_held_item_slot;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_kick_disconnect;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_kick_disconnect;
 pub mod packet_login;
 pub mod packet_map;
 pub mod packet_map_1;
@@ -75,7 +75,7 @@ pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_spawn_entity_exper
 pub mod packet_spawn_entity_living;
 pub mod packet_spawn_entity_painting;
 pub use ::bungeeoxide_minecraft_root::array::inline_100 as packet_tab_complete;
-pub use ::bungeeoxide_minecraft_v1_7::array::inline_356 as packet_statistics;
+pub use ::bungeeoxide_minecraft_v1_7::array::inline_365 as packet_statistics;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_spawn_entity_weather;
 pub mod packet_tile_entity_data;
 pub mod packet_title;

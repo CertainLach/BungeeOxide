@@ -8,13 +8,13 @@ pub struct PacketEntityUpdateAttributes {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	super::super::super::array::inline_234::serialize(&_0.properties, output)?;
+	super::super::super::array::inline_243::serialize(&_0.properties, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_234::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_243::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		properties: f_properties,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ super::super::super::array::inline_234::size_of(&_0.properties)
+		+ super::super::super::array::inline_243::size_of(&_0.properties)
 }
 pub type Ty = PacketEntityUpdateAttributes;

@@ -13,7 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		&(((&{
 			let _0: &Vec<super::PacketMapChunkBulk1> = &_0.meta;
 			let __v1: ::bungeeoxide_minecraft_root::Varint =
-				super::super::super::array::sized_475::virtual_size(_0);
+				super::super::super::array::sized_510::virtual_size(_0);
 			let _0 = &__v1;
 			_0.clone()
 		})
@@ -32,7 +32,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	::bungeeoxide_minecraft_root::buffer::sized::serialize(&_0.compressed_chunk_data, output)?;
-	super::super::super::array::sized_475::serialize(&_0.meta, output)?;
+	super::super::super::array::sized_510::serialize(&_0.meta, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -48,9 +48,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			},
 		},
 	)?;
-	let f_meta = super::super::super::array::sized_475::deserialize(
+	let f_meta = super::super::super::array::sized_510::deserialize(
 		input,
-		super::super::super::array::sized_475::Args {
+		super::super::super::array::sized_510::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::I16 = &f_chunkColumnCount;
 				_0
@@ -62,7 +62,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			== &(((&{
 				let _0: &Vec<super::PacketMapChunkBulk1> = &f_meta;
 				let __v1: ::bungeeoxide_minecraft_root::Varint =
-					super::super::super::array::sized_475::virtual_size(_0);
+					super::super::super::array::sized_510::virtual_size(_0);
 				let _0 = &__v1;
 				_0.clone()
 			})
@@ -91,7 +91,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		&(((&{
 			let _0: &Vec<super::PacketMapChunkBulk1> = &_0.meta;
 			let __v1: ::bungeeoxide_minecraft_root::Varint =
-				super::super::super::array::sized_475::virtual_size(_0);
+				super::super::super::array::sized_510::virtual_size(_0);
 			let _0 = &__v1;
 			_0.clone()
 		})
@@ -106,6 +106,6 @@ pub fn size_of(_0: &Ty) -> usize {
 		})
 			.clone()) as ::bungeeoxide_minecraft_root::I32),
 	) + ::bungeeoxide_minecraft_root::buffer::sized::size_of(&_0.compressed_chunk_data)
-		+ super::super::super::array::sized_475::size_of(&_0.meta)
+		+ super::super::super::array::sized_510::size_of(&_0.meta)
 }
 pub type Ty = PacketMapChunkBulk;

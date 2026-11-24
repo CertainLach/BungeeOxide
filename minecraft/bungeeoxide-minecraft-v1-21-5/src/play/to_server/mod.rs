@@ -2,7 +2,7 @@
 pub use ::bungeeoxide_minecraft_v1_21_3::play::to_server::movement_flags;
 pub mod packet;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_abilities;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_chat_command;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat_command;
 pub use ::bungeeoxide_minecraft_root::varint as packet_arm_animation;
 pub use ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab;
 pub use ::bungeeoxide_minecraft_v1_19::play::to_server::packet_block_dig;
@@ -16,7 +16,7 @@ pub use ::bungeeoxide_minecraft_root::i16 as packet_held_item_slot;
 pub use ::bungeeoxide_minecraft_root::i32 as packet_pong;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_keep_alive;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_ping_request;
-pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_name_item;
+pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_name_item;
 pub use ::bungeeoxide_minecraft_root::varint as packet_close_window;
 pub use ::bungeeoxide_minecraft_root::varint as packet_debug_sample_subscription;
 pub use ::bungeeoxide_minecraft_root::varint as packet_displayed_recipe;

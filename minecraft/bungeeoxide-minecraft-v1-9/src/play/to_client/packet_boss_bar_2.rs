@@ -15,7 +15,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::V0(__v) => super::packet_boss_bar_0::serialize(__v, output),
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::f32::serialize(__v, output),
-		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::V4(__v) => super::packet_boss_bar_1::serialize(__v, output),
 		Ty::V5(__v) => ::bungeeoxide_minecraft_root::u8::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 3_i32) {
 		return Ok(Ty::V3(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 4_i32) {
@@ -53,7 +53,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ match _0 {
 			Ty::V0(__v) => super::packet_boss_bar_0::size_of(__v),
 			Ty::V2(__v) => ::bungeeoxide_minecraft_root::f32::size_of(__v),
-			Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::V4(__v) => super::packet_boss_bar_1::size_of(__v),
 			Ty::V5(__v) => ::bungeeoxide_minecraft_root::u8::size_of(__v),
 			Ty::Default(_) => 0,

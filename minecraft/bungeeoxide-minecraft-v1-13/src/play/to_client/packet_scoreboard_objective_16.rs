@@ -7,13 +7,13 @@ pub struct PacketScoreboardObjective16 {
 	pub r#type: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.display_text, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.display_text, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_displayText = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_displayText = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		display_text: f_displayText,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.display_text)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.display_text)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
 }
 pub type Ty = PacketScoreboardObjective16;

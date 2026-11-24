@@ -17,7 +17,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.suffix, output)?;
 	super::packet_teams_24::serialize(&_0.name_tag_visibility, output)?;
 	super::packet_teams_25::serialize(&_0.collision_rule, output)?;
-	::bungeeoxide_minecraft_root::option_29::serialize(&_0.formatting, output)?;
+	::bungeeoxide_minecraft_root::option_32::serialize(&_0.formatting, output)?;
 	super::packet_teams_26::serialize(&_0.flags, output)?;
 	Ok(())
 }
@@ -28,7 +28,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_suffix = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	let f_nameTagVisibility = super::packet_teams_24::deserialize(input)?;
 	let f_collisionRule = super::packet_teams_25::deserialize(input)?;
-	let f_formatting = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_formatting = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
 	let f_flags = super::packet_teams_26::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -46,7 +46,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.suffix)
 		+ super::packet_teams_24::size_of(&_0.name_tag_visibility)
 		+ super::packet_teams_25::size_of(&_0.collision_rule)
-		+ ::bungeeoxide_minecraft_root::option_29::size_of(&_0.formatting)
+		+ ::bungeeoxide_minecraft_root::option_32::size_of(&_0.formatting)
 		+ super::packet_teams_26::size_of(&_0.flags)
 }
 pub type Ty = PacketTeams27;

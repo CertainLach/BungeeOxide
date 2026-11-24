@@ -9,7 +9,7 @@ pub struct SlotComponent20 {
 	pub custom_name: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::option_29::serialize(&_0.potion_id, output)?;
+	::bungeeoxide_minecraft_root::option_32::serialize(&_0.potion_id, output)?;
 	::bungeeoxide_minecraft_root::option_5::serialize(&_0.custom_color, output)?;
 	super::array::inline_53::serialize(&_0.custom_effects, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.custom_name, output)?;
@@ -17,7 +17,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_potionId = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_potionId = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
 	let f_customColor = ::bungeeoxide_minecraft_root::option_5::deserialize(input)?;
 	let f_customEffects = super::array::inline_53::deserialize(input)?;
 	let f_customName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::option_29::size_of(&_0.potion_id)
+	0 + ::bungeeoxide_minecraft_root::option_32::size_of(&_0.potion_id)
 		+ ::bungeeoxide_minecraft_root::option_5::size_of(&_0.custom_color)
 		+ super::array::inline_53::size_of(&_0.custom_effects)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.custom_name)

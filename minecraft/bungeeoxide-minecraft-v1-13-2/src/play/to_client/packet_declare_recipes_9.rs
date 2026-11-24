@@ -12,12 +12,12 @@ pub struct PacketDeclareRecipes9 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.group, output)?;
-	super::super::super::array::sized_464::check_count(&_0.ingredients, {
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.group, output)?;
+	super::super::super::array::sized_499::check_count(&_0.ingredients, {
 		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.width;
 		_0
 	})?;
-	super::super::super::array::sized_464::serialize(&_0.ingredients, output)?;
+	super::super::super::array::sized_499::serialize(&_0.ingredients, output)?;
 	super::super::super::slot::serialize(&_0.result, output)?;
 	Ok(())
 }
@@ -25,10 +25,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
-	let f_ingredients = super::super::super::array::sized_464::deserialize(
+	let f_group = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_ingredients = super::super::super::array::sized_499::deserialize(
 		input,
-		super::super::super::array::sized_464::Args {
+		super::super::super::array::sized_499::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_width;
 				_0
@@ -51,8 +51,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
-		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.group)
-		+ super::super::super::array::sized_464::size_of(&_0.ingredients)
+		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.group)
+		+ super::super::super::array::sized_499::size_of(&_0.ingredients)
 		+ super::super::super::slot::size_of(&_0.result)
 }
 pub type Ty = PacketDeclareRecipes9;

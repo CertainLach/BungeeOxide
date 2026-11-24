@@ -7,13 +7,13 @@ pub struct PacketTabComplete31 {
 	pub tooltip: Option<::bungeeoxide_minecraft_root::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.r#match, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.r#match, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.tooltip, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_match = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_match = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_tooltip = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	Ok(Ty {
 		r#match: f_match,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.r#match)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.r#match)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.tooltip)
 }
 pub type Ty = PacketTabComplete31;

@@ -10,19 +10,19 @@ pub struct PacketChatCommand {
 	pub signed_preview: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_162::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_171::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.signed_preview, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(19)?;
-	let f_command = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_162::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_171::deserialize(input)?;
 	let f_signedPreview = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		command: f_command,
@@ -33,10 +33,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.command)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_162::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_171::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.signed_preview)
 }
 pub type Ty = PacketChatCommand;

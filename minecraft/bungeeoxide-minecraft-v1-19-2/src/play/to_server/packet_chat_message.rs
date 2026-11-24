@@ -12,24 +12,24 @@ pub struct PacketChatMessage {
 	pub last_rejected_message: Option<super::PacketChatMessage1>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.signature, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.signed_preview, output)?;
-	super::super::super::array::inline_165::serialize(&_0.previous_messages, output)?;
-	super::super::super::option_42::serialize(&_0.last_rejected_message, output)?;
+	super::super::super::array::inline_174::serialize(&_0.previous_messages, output)?;
+	super::super::super::option_45::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(21)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_signedPreview = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_165::deserialize(input)?;
-	let f_lastRejectedMessage = super::super::super::option_42::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_174::deserialize(input)?;
+	let f_lastRejectedMessage = super::super::super::option_45::deserialize(input)?;
 	Ok(Ty {
 		message: f_message,
 		timestamp: f_timestamp,
@@ -41,12 +41,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.message)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.signature)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.signed_preview)
-		+ super::super::super::array::inline_165::size_of(&_0.previous_messages)
-		+ super::super::super::option_42::size_of(&_0.last_rejected_message)
+		+ super::super::super::array::inline_174::size_of(&_0.previous_messages)
+		+ super::super::super::option_45::size_of(&_0.last_rejected_message)
 }
 pub type Ty = PacketChatMessage;

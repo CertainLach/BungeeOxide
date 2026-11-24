@@ -9,31 +9,31 @@ pub struct SlotComponent15 {
 	pub has_glowing_text: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::array::sized_429::check_count(
+	::bungeeoxide_minecraft_root::array::sized_461::check_count(
 		&_0.messages,
 		&(4).try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::array::sized_429::serialize(&_0.messages, output)?;
-	::bungeeoxide_minecraft_root::array::sized_429::check_count(
+	::bungeeoxide_minecraft_root::array::sized_461::serialize(&_0.messages, output)?;
+	::bungeeoxide_minecraft_root::array::sized_461::check_count(
 		&_0.filtered_messages,
 		&(4).try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::array::sized_429::serialize(&_0.filtered_messages, output)?;
+	::bungeeoxide_minecraft_root::array::sized_461::serialize(&_0.filtered_messages, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.color, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.has_glowing_text, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_messages = ::bungeeoxide_minecraft_root::array::sized_429::deserialize(
+	let f_messages = ::bungeeoxide_minecraft_root::array::sized_461::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_429::Args {
+		::bungeeoxide_minecraft_root::array::sized_461::Args {
 			count: &(4).try_into().expect("constant fits"),
 		},
 	)?;
-	let f_filteredMessages = ::bungeeoxide_minecraft_root::array::sized_429::deserialize(
+	let f_filteredMessages = ::bungeeoxide_minecraft_root::array::sized_461::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_429::Args {
+		::bungeeoxide_minecraft_root::array::sized_461::Args {
 			count: &(4).try_into().expect("constant fits"),
 		},
 	)?;
@@ -47,8 +47,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::array::sized_429::size_of(&_0.messages)
-		+ ::bungeeoxide_minecraft_root::array::sized_429::size_of(&_0.filtered_messages)
+	0 + ::bungeeoxide_minecraft_root::array::sized_461::size_of(&_0.messages)
+		+ ::bungeeoxide_minecraft_root::array::sized_461::size_of(&_0.filtered_messages)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.color)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.has_glowing_text)
 }

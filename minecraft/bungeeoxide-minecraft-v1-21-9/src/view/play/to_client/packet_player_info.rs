@@ -4,22 +4,22 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo<'i> {
 	pub action: super::super::super::super::play::to_client::PacketPlayerInfo13,
-	pub data: super::super::super::array::Inline352<'i>,
+	pub data: super::super::super::array::Inline361<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::super::super::play::to_client::packet_player_info_13::serialize(
 		&_0.action, output,
 	)?;
-	super::super::super::array::inline_352::serialize(&_0.data, output)?;
+	super::super::super::array::inline_361::serialize(&_0.data, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_action =
 		super::super::super::super::play::to_client::packet_player_info_13::deserialize(input)?;
-	let f_data = super::super::super::array::inline_352::deserialize(
+	let f_data = super::super::super::array::inline_361::deserialize(
 		input,
-		super::super::super::array::inline_352::Args {
+		super::super::super::array::inline_361::Args {
 			action_add_player: {
 				let _0: &super::super::super::super::play::to_client::PacketPlayerInfo13 =
 					&f_action;
@@ -77,12 +77,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + super::super::super::super::play::to_client::packet_player_info_13::size_of(&_0.action)
-		+ super::super::super::array::inline_352::size_of(&_0.data)
+		+ super::super::super::array::inline_361::size_of(&_0.data)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerInfo) -> Ty<'i> {
 	Ty {
 		action: ::core::clone::Clone::clone(&_0.action),
-		data: super::super::super::array::inline_352::view(&_0.data),
+		data: super::super::super::array::inline_361::view(&_0.data),
 	}
 }
 pub fn into_view<'i>(
@@ -90,7 +90,7 @@ pub fn into_view<'i>(
 ) -> Ty<'i> {
 	Ty {
 		action: ::core::clone::Clone::clone(&mut _0.action),
-		data: super::super::super::array::inline_352::into_view(&mut _0.data),
+		data: super::super::super::array::inline_361::into_view(&mut _0.data),
 	}
 }
 pub type Ty<'i> = PacketPlayerInfo<'i>;

@@ -184,10 +184,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
             ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::serialize(__v, output)
         }
         Ty::DisplayedRecipe(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::NameItem(__v) => {
-            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+            ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
         }
         Ty::ResourcePackReceive(__v) => {
             super::packet_resource_pack_receive::serialize(__v, output)
@@ -457,12 +457,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 38_i32) {
 		return Ok(Ty::DisplayedRecipe(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 39_i32) {
 		return Ok(Ty::NameItem(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 40_i32) {
@@ -578,8 +578,8 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::SteerVehicle(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_steer_vehicle::size_of(__v),
         Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
         Ty::RecipeBook(__v) => ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::size_of(__v),
-        Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
-        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
         Ty::ResourcePackReceive(__v) => super::packet_resource_pack_receive::size_of(__v),
         Ty::AdvancementTab(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::size_of(__v),
         Ty::SelectTrade(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),

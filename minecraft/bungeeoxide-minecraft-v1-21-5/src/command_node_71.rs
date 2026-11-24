@@ -102,19 +102,19 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::MinecraftGamemode => Ok(()),
 		Ty::MinecraftTime(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
 		Ty::MinecraftResourceOrTag(__v) => {
-			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
 		}
 		Ty::MinecraftResourceOrTagKey(__v) => {
-			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
 		}
 		Ty::MinecraftResource(__v) => {
-			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
 		}
 		Ty::MinecraftResourceKey(__v) => {
-			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
 		}
 		Ty::MinecraftResourceSelector(__v) => {
-			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
 		}
 		Ty::MinecraftTemplateMirror => Ok(()),
 		Ty::MinecraftTemplateRotation => Ok(()),
@@ -263,27 +263,27 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 43_i32) {
 		return Ok(Ty::MinecraftResourceOrTag(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 44_i32) {
 		return Ok(Ty::MinecraftResourceOrTagKey(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 45_i32) {
 		return Ok(Ty::MinecraftResource(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 46_i32) {
 		return Ok(Ty::MinecraftResourceKey(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 47_i32) {
 		return Ok(Ty::MinecraftResourceSelector(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 48_i32) {
@@ -370,17 +370,17 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::MinecraftGamemode => 0,
 			Ty::MinecraftTime(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 			Ty::MinecraftResourceOrTag(__v) => {
-				::bungeeoxide_minecraft_root::pstring_109::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
 			}
 			Ty::MinecraftResourceOrTagKey(__v) => {
-				::bungeeoxide_minecraft_root::pstring_109::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
 			}
-			Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+			Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 			Ty::MinecraftResourceKey(__v) => {
-				::bungeeoxide_minecraft_root::pstring_109::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
 			}
 			Ty::MinecraftResourceSelector(__v) => {
-				::bungeeoxide_minecraft_root::pstring_109::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
 			}
 			Ty::MinecraftTemplateMirror => 0,
 			Ty::MinecraftTemplateRotation => 0,

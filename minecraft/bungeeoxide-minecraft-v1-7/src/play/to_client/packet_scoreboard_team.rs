@@ -7,13 +7,13 @@ pub struct PacketScoreboardTeam {
 	pub mode: super::PacketScoreboardTeam3,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.team, output)?;
+	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.team, output)?;
 	super::packet_scoreboard_team_3::serialize(&_0.mode, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_team = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_team = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_mode = super::packet_scoreboard_team_3::deserialize(input)?;
 	Ok(Ty {
 		team: f_team,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.team)
+	0 + ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.team)
 		+ super::packet_scoreboard_team_3::size_of(&_0.mode)
 }
 pub type Ty = PacketScoreboardTeam;

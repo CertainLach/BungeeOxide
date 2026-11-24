@@ -71,7 +71,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
 		Ty::Rotations(__v) => super::entity_metadata_item_30::serialize(__v, output),
 		Ty::SnifferState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
 		Ty::VillagerData(__v) => super::entity_metadata_item_31::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
@@ -204,7 +204,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == super::EntityMetadata28::String) {
 		return Ok(Ty::String(
-			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == super::EntityMetadata28::Vector3) {
@@ -246,7 +246,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
 		Ty::Rotations(__v) => super::entity_metadata_item_30::size_of(__v),
 		Ty::SnifferState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
 		Ty::VillagerData(__v) => super::entity_metadata_item_31::size_of(__v),
 		Ty::Default(_) => 0,
