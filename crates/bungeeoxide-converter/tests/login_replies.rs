@@ -1,7 +1,7 @@
-use bungeeoxide_converter::gen::convert::{convert, packet_name, v26_1, Root};
-use bungeeoxide_converter::pds::Output;
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{Root, convert, packet_name, v26_1};
+use bungeeoxide_converter::pds::Output;
 
 fn encode(p: &v26_1::login_to_client_packet::Ty) -> Vec<u8> {
 	let mut o = Output::new();

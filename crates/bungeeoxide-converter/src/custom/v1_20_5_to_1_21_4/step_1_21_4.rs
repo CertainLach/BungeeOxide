@@ -1,6 +1,6 @@
 use super::step_1_21_3::{block_set, chunk, records};
 use super::*;
-use crate::gen::convert::{v1_21_3 as b, v1_21_4 as c};
+use crate::generated::convert::{v1_21_3 as b, v1_21_4 as c};
 
 const FROM: Version = Version::V1_21_3;
 const TO: Version = Version::V1_21_4;

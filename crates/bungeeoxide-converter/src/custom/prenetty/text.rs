@@ -1,4 +1,4 @@
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 pub fn rename_key(text: &str, from: &str, to: &str) -> String {
 	fn walk(value: &mut Value, from: &str, to: &str) {

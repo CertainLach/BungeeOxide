@@ -1,14 +1,14 @@
 use super::common::{
-	self, block, block_state, decode, encode, item, meta_key, name_id, particle_id, particle_name,
-	read_varint, varint, BLOCK_PARTICLES,
+	self, BLOCK_PARTICLES, block, block_state, decode, encode, item, meta_key, name_id,
+	particle_id, particle_name, read_varint, varint,
 };
 use super::items::{self, non_empty, to_components, to_legacy};
 use super::step_1_20::{optional_state, record, spawn_object_data, tag_entries, world_event_data};
-use crate::gen::convert::{v1_20_3 as old, v1_20_5 as new};
-use crate::gen::convert::{Root, Version};
-use crate::pds::convert::{unconvertible, Error, Result};
-use crate::registry;
 use crate::Session;
+use crate::generated::convert::{Root, Version};
+use crate::generated::convert::{v1_20_3 as old, v1_20_5 as new};
+use crate::pds::convert::{Error, Result, unconvertible};
+use crate::registry;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload, Tag};
 
 const OLD: Version = Version::V1_20_3;
@@ -179,21 +179,21 @@ pub fn trails_sound_1_20_5_to_1_20_3(
 pub fn trails_wolf_variant_1_20_5_to_1_21_1(
 	id: i32,
 	_cx: &mut Session,
-) -> Result<crate::gen::convert::v1_21_1::entity_metadata_entry_value::Ty> {
-	use crate::gen::convert::v1_21_1 as next;
+) -> Result<crate::generated::convert::v1_21_1::entity_metadata_entry_value::Ty> {
+	use crate::generated::convert::v1_21_1 as next;
 	Ok(next::entity_metadata_entry_value::Ty::WolfVariant(
 		next::entity_metadata_entry_value_wolf_variant::Ty::Id(id),
 	))
 }
 
 pub fn trails_wolf_variant_1_21_1_to_1_20_5(
-	v: crate::gen::convert::v1_21_1::entity_metadata_entry_value_wolf_variant::Ty,
+	v: crate::generated::convert::v1_21_1::entity_metadata_entry_value_wolf_variant::Ty,
 	_cx: &mut Session,
 ) -> Result<new::entity_metadata_entry_value::Ty> {
 	match v {
-		crate::gen::convert::v1_21_1::entity_metadata_entry_value_wolf_variant::Ty::Id(id) => {
-			Ok(new::entity_metadata_entry_value::Ty::WolfVariant(id))
-		}
+		crate::generated::convert::v1_21_1::entity_metadata_entry_value_wolf_variant::Ty::Id(
+			id,
+		) => Ok(new::entity_metadata_entry_value::Ty::WolfVariant(id)),
 		_ => Err(Error::Dropped),
 	}
 }
@@ -1445,7 +1445,7 @@ arm!(
 );
 
 macro_rules! spawn_entity {
-	($name:ident, $root:ty, $src:ident, $from:expr, $to:expr) => {
+	($name:ident, $root:ty, $src:ident, $from:expr_2021, $to:expr_2021) => {
 		arm!(
 			$name,
 			$root,

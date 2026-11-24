@@ -2,7 +2,7 @@
 name = "bungeeoxide-convert-world"
 description = "Converts Minecraft worlds saved by 1.0 and later to the latest supported version"
 version = "0.1.2"
-edition = "2021"
+edition = "2024"
 license.workspace = true
 
 [dependencies]

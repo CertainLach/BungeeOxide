@@ -1,8 +1,10 @@
-use bungeeoxide_converter::gen::convert::{convert, inspect, v1_20_5 as a, v1_21_4 as d, Root};
-use bungeeoxide_converter::pds::{Input, Output};
-use bungeeoxide_converter::registry::{blocks, names};
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{
+	Root, convert, inspect, v1_20_5 as a, v1_21_4 as d,
+};
+use bungeeoxide_converter::pds::{Input, Output};
+use bungeeoxide_converter::registry::{blocks, names};
 
 fn run<A, B>(
 	root: Root,
@@ -90,7 +92,7 @@ fn item_a(name: &str, components: Vec<a::slot_component::Ty>) -> a::slot::Ty {
 	)
 }
 
-fn tag(entries: Vec<bungeeoxide_nbt::Entry>) -> bungeeoxide_nbt::gen::tag::Ty {
+fn tag(entries: Vec<bungeeoxide_nbt::Entry>) -> bungeeoxide_nbt::generated::tag::Ty {
 	bungeeoxide_nbt::Tag::new(entries)
 }
 
@@ -105,7 +107,7 @@ fn configuration_adds_required_registries() {
 				key: "minecraft:arrow".to_owned(),
 				value: Some(tag(vec![bungeeoxide_nbt::Entry::new(
 					"message_id",
-					bungeeoxide_nbt::gen::payload::Ty::String("arrow".to_owned()),
+					bungeeoxide_nbt::generated::payload::Ty::String("arrow".to_owned()),
 				)])),
 			},
 		],
@@ -148,7 +150,7 @@ fn configuration_adds_required_registries() {
 	let damage = find("minecraft:damage_type");
 	assert_eq!(damage.entries[0].key, "minecraft:arrow");
 	assert!(
-		matches!(&damage.entries[0].value, Some(t) if matches!(&t.value, bungeeoxide_nbt::gen::payload::Ty::Compound(e) if e.len() == 1))
+		matches!(&damage.entries[0].value, Some(t) if matches!(&t.value, bungeeoxide_nbt::generated::payload::Ty::Compound(e) if e.len() == 1))
 	);
 	for key in [
 		"minecraft:campfire",
@@ -168,18 +170,21 @@ fn configuration_adds_required_registries() {
 		.iter()
 		.find(|e| e.key == "minecraft:badlands")
 		.unwrap();
-	let bungeeoxide_nbt::gen::payload::Ty::Compound(biome) =
+	let bungeeoxide_nbt::generated::payload::Ty::Compound(biome) =
 		&badlands.value.as_ref().unwrap().value
 	else {
 		panic!()
 	};
 	let effects = biome.iter().find(|e| e.name == "effects").unwrap();
-	let bungeeoxide_nbt::gen::payload::Ty::Compound(effects) = &effects.value else {
+	let bungeeoxide_nbt::generated::payload::Ty::Compound(effects) = &effects.value else {
 		panic!()
 	};
 	let music = effects.iter().find(|e| e.name == "music").unwrap();
 	assert!(
-		matches!(music.value, bungeeoxide_nbt::gen::payload::Ty::List(_)),
+		matches!(
+			music.value,
+			bungeeoxide_nbt::generated::payload::Ty::List(_)
+		),
 		"1.21.4 music is a weighted list"
 	);
 	let again = config(
@@ -245,10 +250,12 @@ fn tags_get_remapped_and_completed() {
 			id(Version::V1_21_4, "enchantments", "vanishing_curse")
 		]
 	);
-	assert!(enchantments
-		.tags
-		.iter()
-		.any(|t| t.tag_name == "minecraft:exclusive_set/armor"));
+	assert!(
+		enchantments
+			.tags
+			.iter()
+			.any(|t| t.tag_name == "minecraft:exclusive_set/armor")
+	);
 }
 
 #[test]
@@ -1516,20 +1523,22 @@ fn config_down(
 	)
 }
 
-fn text(name: &str, value: &str) -> bungeeoxide_nbt::gen::entry::Ty {
-	bungeeoxide_nbt::gen::entry::Ty::new(
+fn text(name: &str, value: &str) -> bungeeoxide_nbt::generated::entry::Ty {
+	bungeeoxide_nbt::generated::entry::Ty::new(
 		name.to_owned(),
-		bungeeoxide_nbt::gen::payload::Ty::String(value.to_owned()),
+		bungeeoxide_nbt::generated::payload::Ty::String(value.to_owned()),
 	)
 }
 
-fn string_tag(value: &str) -> bungeeoxide_nbt::gen::tag::Ty {
-	bungeeoxide_nbt::gen::tag::Ty::new(bungeeoxide_nbt::gen::payload::Ty::String(value.to_owned()))
+fn string_tag(value: &str) -> bungeeoxide_nbt::generated::tag::Ty {
+	bungeeoxide_nbt::generated::tag::Ty::new(bungeeoxide_nbt::generated::payload::Ty::String(
+		value.to_owned(),
+	))
 }
 
 fn compound(tag: &bungeeoxide_nbt::Tag) -> &[bungeeoxide_nbt::Entry] {
 	match &tag.value {
-		bungeeoxide_nbt::gen::payload::Ty::Compound(e) => e,
+		bungeeoxide_nbt::generated::payload::Ty::Compound(e) => e,
 		other => panic!("{other:?}"),
 	}
 }
@@ -1537,7 +1546,7 @@ fn compound(tag: &bungeeoxide_nbt::Tag) -> &[bungeeoxide_nbt::Entry] {
 fn field<'a>(
 	entries: &'a [bungeeoxide_nbt::Entry],
 	name: &str,
-) -> &'a bungeeoxide_nbt::gen::payload::Ty {
+) -> &'a bungeeoxide_nbt::generated::payload::Ty {
 	&entries
 		.iter()
 		.find(|e| e.name == name)
@@ -1636,46 +1645,46 @@ fn registries_rebuilt_from_server_going_down() {
 	);
 	assert!(matches!(
 		field(fields, "item_model_index"),
-		bungeeoxide_nbt::gen::payload::Ty::Float(_)
+		bungeeoxide_nbt::generated::payload::Ty::Float(_)
 	));
-	let music = bungeeoxide_nbt::gen::entry::Ty::new(
+	let music = bungeeoxide_nbt::generated::entry::Ty::new(
 		"music",
-		bungeeoxide_nbt::gen::payload::Ty::List(bungeeoxide_nbt::gen::list::Ty::new(
-			bungeeoxide_nbt::gen::list_0::Ty::Compound(vec![vec![
-				bungeeoxide_nbt::gen::entry::Ty::new(
+		bungeeoxide_nbt::generated::payload::Ty::List(bungeeoxide_nbt::generated::list::Ty::new(
+			bungeeoxide_nbt::generated::list_0::Ty::Compound(vec![vec![
+				bungeeoxide_nbt::generated::entry::Ty::new(
 					"data",
-					bungeeoxide_nbt::gen::payload::Ty::Compound(vec![text(
+					bungeeoxide_nbt::generated::payload::Ty::Compound(vec![text(
 						"sound",
 						"minecraft:music.game",
 					)]),
 				),
-				bungeeoxide_nbt::gen::entry::Ty::new(
+				bungeeoxide_nbt::generated::entry::Ty::new(
 					"weight",
-					bungeeoxide_nbt::gen::payload::Ty::Int(1),
+					bungeeoxide_nbt::generated::payload::Ty::Int(1),
 				),
 			]]),
 		)),
 	);
-	let dust = bungeeoxide_nbt::gen::entry::Ty::new(
+	let dust = bungeeoxide_nbt::generated::entry::Ty::new(
 		"particle",
-		bungeeoxide_nbt::gen::payload::Ty::Compound(vec![bungeeoxide_nbt::Entry::new(
+		bungeeoxide_nbt::generated::payload::Ty::Compound(vec![bungeeoxide_nbt::Entry::new(
 			"options",
-			bungeeoxide_nbt::gen::payload::Ty::Compound(vec![
+			bungeeoxide_nbt::generated::payload::Ty::Compound(vec![
 				text("type", "minecraft:dust"),
-				bungeeoxide_nbt::gen::entry::Ty::new(
+				bungeeoxide_nbt::generated::entry::Ty::new(
 					"color",
-					bungeeoxide_nbt::gen::payload::Ty::Int(0xff0000),
+					bungeeoxide_nbt::generated::payload::Ty::Int(0xff0000),
 				),
-				bungeeoxide_nbt::gen::entry::Ty::new(
+				bungeeoxide_nbt::generated::entry::Ty::new(
 					"scale",
-					bungeeoxide_nbt::gen::payload::Ty::Float(1.0),
+					bungeeoxide_nbt::generated::payload::Ty::Float(1.0),
 				),
 			]),
 		)]),
 	);
-	let effects = bungeeoxide_nbt::gen::entry::Ty::new(
+	let effects = bungeeoxide_nbt::generated::entry::Ty::new(
 		"effects",
-		bungeeoxide_nbt::gen::payload::Ty::Compound(vec![music, dust]),
+		bungeeoxide_nbt::generated::payload::Ty::Compound(vec![music, dust]),
 	);
 	let out = config_down(
 		&registry(
@@ -1687,23 +1696,25 @@ fn registries_rebuilt_from_server_going_down() {
 	let [P::RegistryData(r)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let bungeeoxide_nbt::gen::payload::Ty::Compound(effects) =
+	let bungeeoxide_nbt::generated::payload::Ty::Compound(effects) =
 		field(compound(r.entries[0].value.as_ref().unwrap()), "effects")
 	else {
 		panic!()
 	};
 	assert!(
-		matches!(field(effects, "music"), bungeeoxide_nbt::gen::payload::Ty::Compound(m) if m.len() == 1),
+		matches!(field(effects, "music"), bungeeoxide_nbt::generated::payload::Ty::Compound(m) if m.len() == 1),
 		"music unwrapped"
 	);
-	let bungeeoxide_nbt::gen::payload::Ty::Compound(particle) = field(effects, "particle") else {
+	let bungeeoxide_nbt::generated::payload::Ty::Compound(particle) = field(effects, "particle")
+	else {
 		panic!()
 	};
-	let bungeeoxide_nbt::gen::payload::Ty::Compound(options) = field(particle, "options") else {
+	let bungeeoxide_nbt::generated::payload::Ty::Compound(options) = field(particle, "options")
+	else {
 		panic!()
 	};
 	assert!(
-		matches!(field(options, "color"), bungeeoxide_nbt::gen::payload::Ty::List(bungeeoxide_nbt::gen::list::Ty { items: bungeeoxide_nbt::gen::list_0::Ty::Float(c), .. }) if c == &[1.0, 0.0, 0.0]),
+		matches!(field(options, "color"), bungeeoxide_nbt::generated::payload::Ty::List(bungeeoxide_nbt::generated::list::Ty { items: bungeeoxide_nbt::generated::list_0::Ty::Float(c), .. }) if c == &[1.0, 0.0, 0.0]),
 		"dust color is a float list again"
 	);
 
@@ -2054,8 +2065,8 @@ fn world_and_recipes_going_down() {
 		field(content, "color"),
 		&bungeeoxide_nbt::Payload::String("red".to_owned())
 	);
-	let bungeeoxide_nbt::gen::payload::Ty::List(bungeeoxide_nbt::gen::list::Ty {
-		items: bungeeoxide_nbt::gen::list_0::Ty::Compound(with),
+	let bungeeoxide_nbt::generated::payload::Ty::List(bungeeoxide_nbt::generated::list::Ty {
+		items: bungeeoxide_nbt::generated::list_0::Ty::Compound(with),
 		..
 	}) = field(content, "with")
 	else {

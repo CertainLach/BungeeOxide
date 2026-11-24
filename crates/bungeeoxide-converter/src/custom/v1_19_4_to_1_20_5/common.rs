@@ -1,8 +1,8 @@
-use crate::gen::convert::{Root, Version};
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::Session;
+use crate::generated::convert::{Root, Version};
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::pds::{Input, Output};
 use crate::registry::{self, renames};
-use crate::Session;
 use std::collections::{HashMap, HashSet};
 use std::sync::{Mutex, OnceLock};
 
@@ -14,8 +14,9 @@ pub struct State {
 	pub dimensions: Vec<String>,
 	pub secure_chat: Option<bool>,
 	pub pending: Vec<bungeeoxide_nbt::Entry>,
-	pub tags:
-		Option<Vec<crate::gen::convert::v1_20_2::configuration_to_client_packet_tags_items::Ty>>,
+	pub tags: Option<
+		Vec<crate::generated::convert::v1_20_2::configuration_to_client_packet_tags_items::Ty>,
+	>,
 	pub features: Option<Vec<String>>,
 	pub payloads: Vec<(String, Vec<u8>)>,
 	pub resource_pack: Option<(String, String, bool, Option<String>)>,

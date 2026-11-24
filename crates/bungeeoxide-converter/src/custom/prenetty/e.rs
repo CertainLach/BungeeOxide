@@ -3,9 +3,9 @@ use super::ids;
 use super::tables::{SOUNDS_1_4_2, SOUNDS_1_6_1, SOUNDS_1_7, STATS_1_7};
 use super::text;
 use super::{falling_block, item_id, state, world_event_data};
-use crate::gen::convert::{v1_6_4, v1_7, Root, Version};
-use crate::pds::convert::Result;
+use crate::generated::convert::{Root, Version, v1_6_4, v1_7};
 use crate::pds::Output;
+use crate::pds::convert::Result;
 use crate::session::Session;
 
 type Client164 = v1_6_4::play_to_client_packet::Ty;
@@ -68,7 +68,7 @@ pub fn prenetty_tab_complete_server_1_6_4(
 }
 
 macro_rules! sounds {
-	($up:ident, $down:ident, $old:ident, $new:ident, $table:expr) => {
+	($up:ident, $down:ident, $old:ident, $new:ident, $table:expr_2021) => {
 		pub fn $up(
 			mut p: $old::play_to_client_packet_named_sound_effect::Ty,
 			_cx: &mut Session,
@@ -97,7 +97,7 @@ macro_rules! sounds {
 	};
 }
 
-use crate::gen::convert::{v1_3_2, v1_4_2, v1_5_2, v1_6_1};
+use crate::generated::convert::{v1_3_2, v1_4_2, v1_5_2, v1_6_1};
 
 sounds!(
 	prenetty_sound_1_4_2,

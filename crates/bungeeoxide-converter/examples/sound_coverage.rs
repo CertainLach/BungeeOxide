@@ -1,10 +1,10 @@
 use std::collections::BTreeMap;
 
-use bungeeoxide_converter::gen::convert::{convert, packet_name, v1_8, v26_1, Root, Version};
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, Version, convert, packet_name, v1_8, v26_1};
 use bungeeoxide_converter::pds::Input;
 use bungeeoxide_converter::pds::Output;
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
 
 fn main() {
 	let to = std::env::args()

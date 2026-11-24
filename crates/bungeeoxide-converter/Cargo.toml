@@ -2,7 +2,7 @@
 name = "bungeeoxide-converter"
 description = "Converts Minecraft packets, chunks and worlds between versions 1.0.1 and 26.1"
 version = "0.1.2"
-edition = "2021"
+edition = "2024"
 license.workspace = true
 
 [dependencies]

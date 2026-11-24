@@ -79,7 +79,7 @@ macro_rules! untrusted_step {
 			let out = super::shared::via_step(
 				$from,
 				$to,
-				crate::gen::convert::Root::PlayToClient,
+				crate::generated::convert::Root::PlayToClient,
 				&packet,
 				$a::play_to_client_packet::serialize,
 				$b::play_to_client_packet::deserialize,
@@ -122,7 +122,7 @@ macro_rules! exact_matchers {
 			let out = super::shared::via_step(
 				$from,
 				$to,
-				crate::gen::convert::Root::PlayToClient,
+				crate::generated::convert::Root::PlayToClient,
 				&$a::play_to_client_packet::Ty::SetCursorItem(slot),
 				$a::play_to_client_packet::serialize,
 				$b::play_to_client_packet::deserialize,
@@ -143,8 +143,8 @@ macro_rules! exact_matchers {
 
 pub(crate) use exact_matchers;
 
-use crate::gen::convert::{
-	v1_21_11, v1_21_5, v1_21_6, v1_21_8, v1_21_9, v26_1, v26_2, v26_3, v26_4_snapshot_10,
+use crate::generated::convert::{
+	v1_21_5, v1_21_6, v1_21_8, v1_21_9, v1_21_11, v26_1, v26_2, v26_3, v26_4_snapshot_10,
 };
 
 untrusted!(v1_21_5, late_to_slot_1_21_5, late_to_untrusted_1_21_5);

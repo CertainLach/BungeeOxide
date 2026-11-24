@@ -2,11 +2,11 @@ use std::collections::{HashMap, VecDeque};
 
 use super::chunk::{self, Shape};
 use super::ids;
-use crate::custom::chunks::{legacy_column, legacy_data, Column};
+use crate::custom::chunks::{Column, legacy_column, legacy_data};
 use crate::custom::window::{Dialect, Emit, Teleport, Window};
-use crate::gen::convert::{v1_1, v1_2_3, Root, Version};
-use crate::pds::convert::{Error, Result};
+use crate::generated::convert::{Root, Version, v1_1, v1_2_3};
 use crate::pds::Output;
+use crate::pds::convert::{Error, Result};
 use crate::session::Session;
 
 type Client11 = v1_1::play_to_client_packet::Ty;

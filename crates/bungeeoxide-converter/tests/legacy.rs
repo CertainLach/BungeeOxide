@@ -1,7 +1,7 @@
-use bungeeoxide_converter::gen::convert::{step, v1_7, v1_8, Root};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{Root, step, v1_7, v1_8};
+use bungeeoxide_converter::pds::{Input, Output};
 
 type C7 = v1_7::play_to_client_packet::Ty;
 type C8 = v1_8::play_to_client_packet::Ty;
@@ -151,15 +151,17 @@ fn login_and_join() {
 	let login = v1_8::login_to_client_packet::Ty::Compress(256);
 	let mut o = Output::new();
 	v1_8::login_to_client_packet::serialize(&login, &mut o).unwrap();
-	assert!(step(
-		Root::LoginToClient,
-		Version::V1_8,
-		Version::V1_7,
-		&o.into_inner(),
-		&mut cx
-	)
-	.unwrap()
-	.is_empty());
+	assert!(
+		step(
+			Root::LoginToClient,
+			Version::V1_8,
+			Version::V1_7,
+			&o.into_inner(),
+			&mut cx
+		)
+		.unwrap()
+		.is_empty()
+	);
 	let join = C8::Login(v1_8::play_to_client_packet_login::Ty {
 		entity_id: 7,
 		game_mode: 1,

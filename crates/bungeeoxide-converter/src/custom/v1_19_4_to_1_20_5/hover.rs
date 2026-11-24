@@ -1,8 +1,8 @@
 use super::common::translate;
-use crate::gen::convert::Version;
-use crate::pds::convert::Result;
 use crate::Session;
-use bungeeoxide_nbt::{snbt, CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload, Tag};
+use crate::generated::convert::Version;
+use crate::pds::convert::Result;
+use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload, Tag, snbt};
 
 const OLD: Version = Version::V1_20_3;
 const NEW: Version = Version::V1_20_5;

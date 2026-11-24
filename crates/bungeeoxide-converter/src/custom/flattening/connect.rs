@@ -943,11 +943,7 @@ fn prop(state: u32, name: &str) -> Option<&'static str> {
 }
 
 fn bool_str(b: bool) -> &'static str {
-	if b {
-		"true"
-	} else {
-		"false"
-	}
+	if b { "true" } else { "false" }
 }
 
 fn same_block(a: u32, b: u32) -> bool {

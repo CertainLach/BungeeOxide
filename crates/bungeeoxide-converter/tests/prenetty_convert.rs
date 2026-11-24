@@ -1,8 +1,8 @@
 use bungeeoxide_converter::Version;
 use std::io::{Read, Write};
 
-use bungeeoxide_converter::gen::convert::{convert, inspect, Root};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, convert, inspect};
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
 
@@ -478,14 +478,16 @@ fn respawning_uses_the_right_packet_per_release() {
 	);
 	assert_eq!(up, vec![command]);
 	let spawn = w(0xcd).i8(0).0;
-	assert!(run(
-		Root::PlayToServer,
-		Version::V1_6_4,
-		Version::V1_7,
-		&spawn,
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		run(
+			Root::PlayToServer,
+			Version::V1_6_4,
+			Version::V1_7,
+			&spawn,
+			&mut cx
+		)
+		.is_empty()
+	);
 }
 
 fn login_1_6_4(entity: i32) -> Vec<u8> {
@@ -606,22 +608,26 @@ fn only_players_swing_sleep_and_wake_on_1_0() {
 		);
 	}
 	assert_eq!(to_old(&swing(5, 2), &mut cx), vec![swing(5, 2)]);
-	assert!(run(
-		Root::PlayToClient,
-		Version::V1_6_4,
-		Version::V1_1,
-		&swing(5, 1),
-		&mut cx
-	)
-	.is_empty());
-	assert!(run(
-		Root::PlayToClient,
-		Version::V1_6_4,
-		Version::V1_3_2,
-		&swing(5, 1),
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		run(
+			Root::PlayToClient,
+			Version::V1_6_4,
+			Version::V1_1,
+			&swing(5, 1),
+			&mut cx
+		)
+		.is_empty()
+	);
+	assert!(
+		run(
+			Root::PlayToClient,
+			Version::V1_6_4,
+			Version::V1_3_2,
+			&swing(5, 1),
+			&mut cx
+		)
+		.is_empty()
+	);
 	assert_eq!(
 		run(
 			Root::PlayToClient,

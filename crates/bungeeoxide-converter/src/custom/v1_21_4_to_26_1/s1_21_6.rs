@@ -3,9 +3,9 @@ use super::rules::{blocks, entities, items, statistics, tags};
 use super::shared::{self, same_bytes, text_down};
 use super::slots::{self, exact_matchers, untrusted_step};
 use super::text;
-use crate::gen::convert::{v1_21_5 as a, v1_21_6 as b, Version};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{Version, v1_21_5 as a, v1_21_6 as b};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::Payload;
 
 remaps!(Version::V1_21_5 => Version::V1_21_6 { late_sound_up_1_21_6: a::item_sound_holder::Ty = remap::sound; });

@@ -2,7 +2,7 @@ use ::bungeeoxide_nbt::{CompoundExt, Entry, List, ListItems as Items, Payload, P
 
 use super::meta::Slot;
 use super::*;
-use crate::gen::convert::{v1_17 as old, v1_17_1 as new};
+use crate::generated::convert::{v1_17 as old, v1_17_1 as new};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
@@ -142,7 +142,7 @@ pub fn nether_edit_book_1_17(
 		tag.push(Entry::new("author", P::String(String::new())));
 	}
 	Ok(old::play_to_server_packet_edit_book::Ty {
-		new_book: Slot::True(crate::gen::convert::v1_17::slot_true::Ty {
+		new_book: Slot::True(crate::generated::convert::v1_17::slot_true::Ty {
 			item_id: id as i32,
 			item_count: 1,
 			nbt_data: Some(Entry::new("", tag)),

@@ -1,8 +1,8 @@
 use bungeeoxide_converter::Version;
 use std::time::{Duration, Instant};
 
-use bungeeoxide_converter::gen::convert::{convert, inspect, step, Root};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, convert, inspect, step};
 
 fn chain(
 	from: Version,

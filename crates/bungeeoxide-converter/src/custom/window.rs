@@ -3,9 +3,9 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 use bungeeoxide_nbt::Payload;
 
 use super::chunks::{
-	Biomes, BlockEntity, Column, Heightmap, Light, Nibbles, Section, BLOCKS, NIBBLES,
+	BLOCKS, Biomes, BlockEntity, Column, Heightmap, Light, NIBBLES, Nibbles, Section,
 };
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 const LAYER: usize = 256;
 const LIGHT: usize = 18;
@@ -810,7 +810,7 @@ impl<D: Dialect> Window<D> {
 		Some(col)
 	}
 
-	fn around(&self) -> impl Fn(&(i32, i32)) -> i32 {
+	fn around(&self) -> impl Fn(&(i32, i32)) -> i32 + use<D> {
 		let at = (
 			(self.player.0 / 16.0).floor() as i32,
 			(self.player.2 / 16.0).floor() as i32,

@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 pub(super) const SUBSTITUTES: &[(Version, &str, &str, &str)] = &[
 	(Version::V1_15_2, "blocks", "nether_gold_ore", "gold_ore"),

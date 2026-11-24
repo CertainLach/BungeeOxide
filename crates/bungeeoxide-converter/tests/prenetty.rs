@@ -58,7 +58,7 @@ impl W {
 }
 
 macro_rules! round_trip {
-	($($root:ident)::+, $bytes:expr) => {{
+	($($root:ident)::+, $bytes:expr_2021) => {{
 		use minecraft::$($root)::+ as root;
 		let bytes: Vec<u8> = $bytes.0;
 		let mut input = Input::new(&bytes);
@@ -73,23 +73,23 @@ macro_rules! round_trip {
 }
 
 macro_rules! expect {
-	($($seg:ident)::+, $bytes:expr) => {
+	($($seg:ident)::+, $bytes:expr_2021) => {
 		expect!(@split [] $($seg)+ ; $bytes)
 	};
-	(@split [$($root:ident)*] $arm:ident ; $bytes:expr) => {{
+	(@split [$($root:ident)*] $arm:ident ; $bytes:expr_2021) => {{
 		use minecraft::$($root)::* as root;
 		match round_trip!($($root)::*, $bytes) {
 			root::Ty::$arm(p) => p,
 			p => panic!("expected {}, got {p:?}", stringify!($arm)),
 		}
 	}};
-	(@split [$($root:ident)*] $head:ident $($rest:ident)+ ; $bytes:expr) => {
+	(@split [$($root:ident)*] $head:ident $($rest:ident)+ ; $bytes:expr_2021) => {
 		expect!(@split [$($root)* $head] $($rest)+ ; $bytes)
 	};
 }
 
 macro_rules! absent {
-	($($root:ident)::+, $($id:expr),+) => {{
+	($($root:ident)::+, $($id:expr_2021),+) => {{
 		use minecraft::$($root)::+ as root;
 		$(
 			let bytes = [$id];
@@ -239,7 +239,7 @@ legacy_slots!(
 );
 
 macro_rules! login_1_3 {
-	($name:ident, $($client:ident)::+, $($server:ident)::+, $protocol:expr) => {
+	($name:ident, $($client:ident)::+, $($server:ident)::+, $protocol:expr_2021) => {
 		#[test]
 		fn $name() {
 			let login = expect!(
@@ -384,7 +384,7 @@ login_1_3!(
 );
 
 macro_rules! chunks_1_3 {
-	($name:ident, $($client:ident)::+, $bulk_meta:expr) => {
+	($name:ident, $($client:ident)::+, $bulk_meta:expr_2021) => {
 		#[test]
 		fn $name() {
 			let chunk = expect!(
@@ -569,8 +569,10 @@ fn metadata_without_nbt_1_4_2() {
 			.u8(0x7f)
 	)
 	.metadata;
-	assert!(debug(&m[0].value)
-		.starts_with("V5(Default(264, EntityMetadataItem2 { item_count: 1, item_damage: 0 })"));
+	assert!(
+		debug(&m[0].value)
+			.starts_with("V5(Default(264, EntityMetadataItem2 { item_count: 1, item_damage: 0 })")
+	);
 	assert_eq!(debug(&m[1].value), "V5(_1)");
 	let map = expect!(
 		v1_4_2::play::to_client::packet::Map,

@@ -3,11 +3,11 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::users::User;
-use bungeeoxide::{decode, encode, next, serve, Config, Conn};
-use bungeeoxide_converter::gen::convert::v1_8::{
+use bungeeoxide::{Config, Conn, decode, encode, next, serve};
+use bungeeoxide_converter::generated::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_success,
 	login_to_server_packet as login_s, play_to_client_packet as play_c, play_to_client_packet_chat,

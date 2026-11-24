@@ -1,11 +1,11 @@
-use bungeeoxide_converter::gen::convert::{
-	convert, v1_21_5, v26_1 as x, v26_2 as y, v26_3 as z, Root,
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{
+	Root, convert, v1_21_5, v26_1 as x, v26_2 as y, v26_3 as z,
 };
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::pds_native::pds_entityDelta::{Delta, Step, Ty as EntityDelta};
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
-use bungeeoxide_converter::Version;
 use bungeeoxide_nbt::{Payload, Tag};
 
 fn encode<T>(v: &T, ser: fn(&T, &mut Output) -> bungeeoxide_converter::pds::Result<()>) -> Vec<u8> {
@@ -142,8 +142,10 @@ fn stepped_moves_sum_without_overflowing() {
 		),
 		&mut cx,
 	);
-	let [y::play_to_client_packet::Ty::EntityMoveLook(first), y::play_to_client_packet::Ty::RelEntityMove(second)] =
-		out.as_slice()
+	let [
+		y::play_to_client_packet::Ty::EntityMoveLook(first),
+		y::play_to_client_packet::Ty::RelEntityMove(second),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -564,8 +566,10 @@ fn teleport_confirm_waits_for_the_position() {
 		y::play_to_server_packet::deserialize,
 		&mut cx,
 	);
-	let [y::play_to_server_packet::Ty::TeleportConfirm(7), y::play_to_server_packet::Ty::PositionLook(p)] =
-		back.as_slice()
+	let [
+		y::play_to_server_packet::Ty::TeleportConfirm(7),
+		y::play_to_server_packet::Ty::PositionLook(p),
+	] = back.as_slice()
 	else {
 		panic!("{back:?}")
 	};
@@ -747,7 +751,10 @@ fn up_26_2(p: &x::play_to_client_packet::Ty, cx: &mut Session) -> y::play_to_cli
 	p
 }
 
-fn server_down_26_1(p: &y::play_to_server_packet::Ty, cx: &mut Session) -> x::play_to_server_packet::Ty {
+fn server_down_26_1(
+	p: &y::play_to_server_packet::Ty,
+	cx: &mut Session,
+) -> x::play_to_server_packet::Ty {
 	let out = run(
 		Root::PlayToServer,
 		Version::V26_2,
@@ -810,20 +817,23 @@ fn entity_id_zero_becomes_the_fake_id_for_26_2_clients() {
 		panic!()
 	};
 	assert_eq!((s.entity_id, s.object_data), (fake, fake));
-	let y::play_to_client_packet::Ty::SpawnEntity(s) = up_26_2(&spawn_26_1(9, "fireball", 0), &mut cx)
+	let y::play_to_client_packet::Ty::SpawnEntity(s) =
+		up_26_2(&spawn_26_1(9, "fireball", 0), &mut cx)
 	else {
 		panic!()
 	};
 	assert_eq!((s.entity_id, s.object_data), (9, fake));
-	let y::play_to_client_packet::Ty::SpawnEntity(s) = up_26_2(&spawn_26_1(10, "item_frame", 0), &mut cx)
+	let y::play_to_client_packet::Ty::SpawnEntity(s) =
+		up_26_2(&spawn_26_1(10, "item_frame", 0), &mut cx)
 	else {
 		panic!()
 	};
 	assert_eq!((s.entity_id, s.object_data), (10, 0));
 
-	let y::play_to_client_packet::Ty::EntityDestroy(ids) =
-		up_26_2(&x::play_to_client_packet::Ty::EntityDestroy(vec![3, 0]), &mut cx)
-	else {
+	let y::play_to_client_packet::Ty::EntityDestroy(ids) = up_26_2(
+		&x::play_to_client_packet::Ty::EntityDestroy(vec![3, 0]),
+		&mut cx,
+	) else {
 		panic!()
 	};
 	assert_eq!(ids, [3, fake]);
@@ -881,27 +891,29 @@ fn entity_id_zero_becomes_the_fake_id_for_26_2_clients() {
 	));
 
 	let y::play_to_client_packet::Ty::WorldParticles(p) = up_26_2(
-		&x::play_to_client_packet::Ty::WorldParticles(x::play_to_client_packet_world_particles::Ty {
-			long_distance: false,
-			always_show: false,
-			x: 0.0,
-			y: 0.0,
-			z: 0.0,
-			offset_x: 0.0,
-			offset_y: 0.0,
-			offset_z: 0.0,
-			velocity_offset: 0.0,
-			amount: 1,
-			particle: x::particle::Ty::Vibration(x::particle_vibration::Ty {
-				position: x::particle_vibration_position::Ty::Entity(
-					x::particle_vibration_position_entity::Ty {
-						entity_id: 0,
-						entity_eye_height: 1.5,
-					},
-				),
-				ticks: 20,
-			}),
-		}),
+		&x::play_to_client_packet::Ty::WorldParticles(
+			x::play_to_client_packet_world_particles::Ty {
+				long_distance: false,
+				always_show: false,
+				x: 0.0,
+				y: 0.0,
+				z: 0.0,
+				offset_x: 0.0,
+				offset_y: 0.0,
+				offset_z: 0.0,
+				velocity_offset: 0.0,
+				amount: 1,
+				particle: x::particle::Ty::Vibration(x::particle_vibration::Ty {
+					position: x::particle_vibration_position::Ty::Entity(
+						x::particle_vibration_position_entity::Ty {
+							entity_id: 0,
+							entity_eye_height: 1.5,
+						},
+					),
+					ticks: 20,
+				}),
+			},
+		),
 		&mut cx,
 	) else {
 		panic!()
@@ -953,10 +965,13 @@ fn zero_meaning_none_stays_zero() {
 		else {
 			panic!()
 		};
-		assert!(matches!(
-			m.metadata.as_slice(),
-			[y::entity_metadata_entry::Ty { key: 19, value: y::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v) }] if *v == expected
-		), "{m:?}");
+		assert!(
+			matches!(
+				m.metadata.as_slice(),
+				[y::entity_metadata_entry::Ty { key: 19, value: y::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v) }] if *v == expected
+			),
+			"{m:?}"
+		);
 	}
 
 	up_26_2(&spawn_26_1(8, "firework_rocket", 0), &mut cx);
@@ -979,7 +994,10 @@ fn zero_meaning_none_stays_zero() {
 	};
 	assert!(matches!(
 		m.metadata.as_slice(),
-		[y::entity_metadata_entry::Ty { value: y::entity_metadata_entry_value::Ty::Int(0), .. }]
+		[y::entity_metadata_entry::Ty {
+			value: y::entity_metadata_entry_value::Ty::Int(0),
+			..
+		}]
 	));
 
 	let y::play_to_client_packet::Ty::EntityMetadata(m) = up_26_2(
@@ -998,9 +1016,18 @@ fn fake_id_goes_back_to_zero_for_the_server() {
 	use x::play_to_server_packet::Ty as X;
 	use y::play_to_server_packet::Ty as Y;
 
-	assert!(matches!(server_down_26_1(&Y::Attack(fake), &mut cx), X::Attack(0)));
-	assert!(matches!(server_down_26_1(&Y::Attack(5), &mut cx), X::Attack(5)));
-	assert!(matches!(server_down_26_1(&Y::Attack(-1), &mut cx), X::Attack(-1)));
+	assert!(matches!(
+		server_down_26_1(&Y::Attack(fake), &mut cx),
+		X::Attack(0)
+	));
+	assert!(matches!(
+		server_down_26_1(&Y::Attack(5), &mut cx),
+		X::Attack(5)
+	));
+	assert!(matches!(
+		server_down_26_1(&Y::Attack(-1), &mut cx),
+		X::Attack(-1)
+	));
 	assert!(matches!(
 		server_down_26_1(&Y::SpectatorAction(fake + 1), &mut cx),
 		X::SpectateEntity(0)
@@ -1049,11 +1076,13 @@ fn fake_id_goes_back_to_zero_for_the_server() {
 	};
 	assert_eq!((q.transaction_id, q.entity_id), (3, 0));
 	let X::UpdateCommandBlockMinecart(m) = server_down_26_1(
-		&Y::UpdateCommandBlockMinecart(y::play_to_server_packet_update_command_block_minecart::Ty {
-			entity_id: fake,
-			command: "say hi".into(),
-			track_output: false,
-		}),
+		&Y::UpdateCommandBlockMinecart(
+			y::play_to_server_packet_update_command_block_minecart::Ty {
+				entity_id: fake,
+				command: "say hi".into(),
+				track_output: false,
+			},
+		),
 		&mut cx,
 	) else {
 		panic!()
@@ -1090,13 +1119,15 @@ fn fake_id_survives_the_26_3_step() {
 	};
 	assert_eq!(m.entity_id, fake);
 	let out = to_26_3(
-		&x::play_to_client_packet::Ty::RelEntityMove(x::play_to_client_packet_rel_entity_move::Ty {
-			entity_id: 0,
-			d_x: 1,
-			d_y: 2,
-			d_z: 3,
-			on_ground: true,
-		}),
+		&x::play_to_client_packet::Ty::RelEntityMove(
+			x::play_to_client_packet_rel_entity_move::Ty {
+				entity_id: 0,
+				d_x: 1,
+				d_y: 2,
+				d_z: 3,
+				on_ground: true,
+			},
+		),
 		&mut cx,
 	);
 	let [z::play_to_client_packet::Ty::RelEntityMove(r)] = out.as_slice() else {
@@ -1112,7 +1143,10 @@ fn fake_id_survives_the_26_3_step() {
 		x::play_to_server_packet::deserialize,
 		&mut cx,
 	);
-	assert!(matches!(back.as_slice(), [x::play_to_server_packet::Ty::Attack(0)]));
+	assert!(matches!(
+		back.as_slice(),
+		[x::play_to_server_packet::Ty::Attack(0)]
+	));
 }
 
 #[test]
@@ -1123,7 +1157,10 @@ fn brewing_stands_get_their_totals() {
 		inventory_type: kind,
 		window_title: Tag::new(Payload::String("Brewing Stand".into())),
 	};
-	let out = up(&y::play_to_client_packet::Ty::OpenWindow(open(3, 11)), &mut cx);
+	let out = up(
+		&y::play_to_client_packet::Ty::OpenWindow(open(3, 11)),
+		&mut cx,
+	);
 	let totals: Vec<(i32, i16, i16)> = out[1..]
 		.iter()
 		.map(|p| match p {
@@ -1133,23 +1170,37 @@ fn brewing_stands_get_their_totals() {
 		.collect();
 	assert!(matches!(&out[0], z::play_to_client_packet::Ty::OpenWindow(w) if w.window_id == 3));
 	assert_eq!(totals, [(3, 2, 400), (3, 3, 20)]);
-	let out = up(&y::play_to_client_packet::Ty::OpenWindow(open(4, 14)), &mut cx);
-	assert!(matches!(out.as_slice(), [z::play_to_client_packet::Ty::OpenWindow(_)]));
+	let out = up(
+		&y::play_to_client_packet::Ty::OpenWindow(open(4, 14)),
+		&mut cx,
+	);
+	assert!(matches!(
+		out.as_slice(),
+		[z::play_to_client_packet::Ty::OpenWindow(_)]
+	));
 
 	let bar = |id, property| {
-		z::play_to_client_packet::Ty::CraftProgressBar(z::play_to_client_packet_craft_progress_bar::Ty {
-			window_id: id,
-			property,
-			value: 7,
-		})
+		z::play_to_client_packet::Ty::CraftProgressBar(
+			z::play_to_client_packet_craft_progress_bar::Ty {
+				window_id: id,
+				property,
+				value: 7,
+			},
+		)
 	};
-	down(&z::play_to_client_packet::Ty::OpenWindow(open(5, 11)), &mut cx);
+	down(
+		&z::play_to_client_packet::Ty::OpenWindow(open(5, 11)),
+		&mut cx,
+	);
 	let kept: Vec<usize> = [bar(5, 0), bar(5, 1), bar(5, 2), bar(5, 3)]
 		.iter()
 		.map(|p| down(p, &mut cx).len())
 		.collect();
 	assert_eq!(kept, [1, 1, 0, 0]);
-	down(&z::play_to_client_packet::Ty::OpenWindow(open(6, 14)), &mut cx);
+	down(
+		&z::play_to_client_packet::Ty::OpenWindow(open(6, 14)),
+		&mut cx,
+	);
 	assert_eq!(down(&bar(6, 2), &mut cx).len(), 1);
 }
 
@@ -1204,13 +1255,19 @@ fn new_map_decorations_become_target_x() {
 		)),
 		&mut cx,
 	);
-	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = out.as_slice() else {
+	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	let [y::slot_component::Ty::MapDecorations(t)] = d.components.as_slice() else {
 		panic!("{d:?}")
 	};
-	let kind = |name: &str| t.value.field(name).and_then(|p| p.field("type")).and_then(Payload::as_str);
+	let kind = |name: &str| {
+		t.value
+			.field(name)
+			.and_then(|p| p.field("type"))
+			.and_then(Payload::as_str)
+	};
 	assert_eq!(kind("camp"), Some("minecraft:target_x"));
 	assert_eq!(kind("x"), Some("minecraft:red_x"));
 }
@@ -1235,34 +1292,54 @@ fn text(p: &Payload, path: &[&str]) -> String {
 	at(p, path).as_str().unwrap_or_default().to_owned()
 }
 
-fn enchantment_terms(root: Root, from: Version, to: Version, terms: &str, cx: &mut Session) -> Payload {
+fn enchantment_terms(
+	root: Root,
+	from: Version,
+	to: Version,
+	terms: &str,
+	cx: &mut Session,
+) -> Payload {
 	let effects = enchantment_effects(
 		root,
 		from,
 		to,
-		&format!("{{\"minecraft:damage\":[{{effect:{{type:\"minecraft:add\",value:1.0f}},requirements:{terms}}}]}}"),
+		&format!(
+			"{{\"minecraft:damage\":[{{effect:{{type:\"minecraft:add\",value:1.0f}},requirements:{terms}}}]}}"
+		),
 		cx,
 	);
 	at(&effects, &["minecraft:damage", "0", "requirements"])
 }
 
-fn enchantment_effects(root: Root, from: Version, to: Version, effects: &str, cx: &mut Session) -> Payload {
+fn enchantment_effects(
+	root: Root,
+	from: Version,
+	to: Version,
+	effects: &str,
+	cx: &mut Session,
+) -> Payload {
 	let entry = Tag::new(snbt(&format!(
 		"{{description:\"x\",supported_items:\"#minecraft:swords\",weight:1,max_level:1,min_cost:{{base:1,per_level_above_first:1}},max_cost:{{base:1,per_level_above_first:1}},anvil_cost:1,slots:[\"any\"],effects:{effects}}}"
 	)));
-	let packet = y::configuration_to_client_packet::Ty::RegistryData(y::configuration_to_client_packet_registry_data::Ty {
-		id: "minecraft:enchantment".into(),
-		entries: vec![y::configuration_to_client_packet_registry_data_entries_items::Ty {
-			key: "test:lucky".into(),
-			value: Some(entry),
-		}],
-	});
+	let packet = y::configuration_to_client_packet::Ty::RegistryData(
+		y::configuration_to_client_packet_registry_data::Ty {
+			id: "minecraft:enchantment".into(),
+			entries: vec![
+				y::configuration_to_client_packet_registry_data_entries_items::Ty {
+					key: "test:lucky".into(),
+					value: Some(entry),
+				},
+			],
+		},
+	);
 	let encoded = encode(&packet, y::configuration_to_client_packet::serialize);
 	let out = convert(root, from, to, &encoded, cx).unwrap();
 	let [bytes] = out.as_slice() else {
 		panic!("{} packets", out.len())
 	};
-	let y::configuration_to_client_packet::Ty::RegistryData(r) = decode(bytes, y::configuration_to_client_packet::deserialize) else {
+	let y::configuration_to_client_packet::Ty::RegistryData(r) =
+		decode(bytes, y::configuration_to_client_packet::deserialize)
+	else {
 		panic!()
 	};
 	let value = r.entries[0].value.as_ref().unwrap().value.clone();
@@ -1289,7 +1366,10 @@ fn enchantment_number_providers_split_and_merge() {
 	assert_eq!(at(&check, &["test", "min"]), Payload::Int(1));
 	assert_eq!(text(&check, &["test", "max", "type"]), "minecraft:score");
 	let time = at(&up, &["terms", "2"]);
-	assert_eq!((at(&time, &["value", "min"]), at(&time, &["value", "max"])), (Payload::Int(2), Payload::Int(3)));
+	assert_eq!(
+		(at(&time, &["value", "min"]), at(&time, &["value", "max"])),
+		(Payload::Int(2), Payload::Int(3))
+	);
 
 	let down = enchantment_terms(
 		Root::ConfigurationToClient,
@@ -1301,7 +1381,10 @@ fn enchantment_number_providers_split_and_merge() {
 	let check = at(&down, &["terms", "0"]);
 	assert_eq!(text(&check, &["condition"]), "minecraft:value_check");
 	assert_eq!(text(&check, &["value", "type"]), "minecraft:uniform");
-	assert_eq!(text(&check, &["range", "min", "type"]), "minecraft:constant");
+	assert_eq!(
+		text(&check, &["range", "min", "type"]),
+		"minecraft:constant"
+	);
 	assert_eq!(at(&check, &["range", "max", "value"]), Payload::Int(2));
 	let reference = at(&down, &["terms", "1"]);
 	assert_eq!(text(&reference, &["condition"]), "minecraft:all_of");
@@ -1327,7 +1410,10 @@ fn enchantment_terms_inline_and_match_block_go_down() {
 	let inner = at(&down, &["terms", "0"]);
 	assert_eq!(text(&inner, &["condition"]), "minecraft:all_of");
 	let single = at(&inner, &["terms", "0"]);
-	assert_eq!(text(&single, &["condition"]), "minecraft:block_state_property");
+	assert_eq!(
+		text(&single, &["condition"]),
+		"minecraft:block_state_property"
+	);
 	assert_eq!(text(&single, &["block"]), "minecraft:stone");
 	assert_eq!(text(&single, &["properties", "axis"]), "y");
 	for i in ["1", "2"] {
@@ -1358,18 +1444,33 @@ fn enchantment_block_state_providers() {
 		"{\"minecraft:location_changed\":[{effect:{type:\"minecraft:replace_disk\",radius:1,height:1,block_state:{type:\"minecraft:simple_state_provider\",state:{Name:\"minecraft:frosted_ice\",Properties:{age:\"0\"}}}}},{effect:{type:\"minecraft:replace_block\",block_state:{type:\"minecraft:weighted_state_provider\",entries:[{data:{Name:\"minecraft:stone\"},weight:1}]}}},{effect:{type:\"minecraft:replace_block\",block_state:{type:\"minecraft:randomized_int_state_provider\",property:\"age\",values:1,source:{type:\"minecraft:rotated_block_provider\",state:{Name:\"minecraft:oak_log\"}}}}}]}",
 		&mut cx,
 	);
-	let simple = at(&up, &["minecraft:location_changed", "0", "effect", "block_state"]);
+	let simple = at(
+		&up,
+		&["minecraft:location_changed", "0", "effect", "block_state"],
+	);
 	assert_eq!(text(&simple, &["type"]), "minecraft:simple");
 	assert_eq!(text(&simple, &["state", "id"]), "minecraft:frosted_ice");
 	assert_eq!(text(&simple, &["state", "properties", "age"]), "0");
 	assert!(at(&simple, &["state"]).field("Name").is_none());
-	let weighted = at(&up, &["minecraft:location_changed", "1", "effect", "block_state"]);
+	let weighted = at(
+		&up,
+		&["minecraft:location_changed", "1", "effect", "block_state"],
+	);
 	assert_eq!(text(&weighted, &["type"]), "minecraft:weighted");
-	assert_eq!(text(&weighted, &["entries", "0", "data", "id"]), "minecraft:stone");
-	let randomized = at(&up, &["minecraft:location_changed", "2", "effect", "block_state"]);
+	assert_eq!(
+		text(&weighted, &["entries", "0", "data", "id"]),
+		"minecraft:stone"
+	);
+	let randomized = at(
+		&up,
+		&["minecraft:location_changed", "2", "effect", "block_state"],
+	);
 	assert_eq!(text(&randomized, &["type"]), "minecraft:randomized_int");
 	assert_eq!(text(&randomized, &["source", "type"]), "minecraft:rotated");
-	assert_eq!(text(&randomized, &["source", "state", "id"]), "minecraft:oak_log");
+	assert_eq!(
+		text(&randomized, &["source", "state", "id"]),
+		"minecraft:oak_log"
+	);
 
 	let down = enchantment_effects(
 		Root::ConfigurationToClient,
@@ -1379,8 +1480,14 @@ fn enchantment_block_state_providers() {
 		&mut cx,
 	);
 	for i in ["0", "1"] {
-		let provider = at(&down, &["minecraft:location_changed", i, "effect", "block_state"]);
-		assert_eq!(text(&provider, &["type"]), "minecraft:simple_state_provider");
+		let provider = at(
+			&down,
+			&["minecraft:location_changed", i, "effect", "block_state"],
+		);
+		assert_eq!(
+			text(&provider, &["type"]),
+			"minecraft:simple_state_provider"
+		);
 		assert_eq!(text(&provider, &["state", "Name"]), "minecraft:dirt");
 	}
 }
@@ -1428,8 +1535,15 @@ fn pot_sherds_become_sides_and_back() {
 		action: 0,
 		nbt_data: Some(Tag::new(nbt)),
 	};
-	let pot = sherd_list(&["minecraft:angler_pottery_sherd", "minecraft:brick", "minecraft:skull_pottery_sherd"]);
-	let out = up(&y::play_to_client_packet::Ty::TileEntityData(tile(pot)), &mut cx);
+	let pot = sherd_list(&[
+		"minecraft:angler_pottery_sherd",
+		"minecraft:brick",
+		"minecraft:skull_pottery_sherd",
+	]);
+	let out = up(
+		&y::play_to_client_packet::Ty::TileEntityData(tile(pot)),
+		&mut cx,
+	);
 	let [z::play_to_client_packet::Ty::TileEntityData(t)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
@@ -1464,24 +1578,34 @@ fn pot_sherds_become_sides_and_back() {
 				item_id: id(Version::V26_2, "items", "decorated_pot"),
 				added_component_count: 1,
 				removed_component_count: 0,
-				components: vec![y::slot_component::Ty::BlockEntityData(y::slot_component_block_entity_data::Ty {
-					r#type: 0,
-					data: Tag::new(nbt),
-				})],
+				components: vec![y::slot_component::Ty::BlockEntityData(
+					y::slot_component_block_entity_data::Ty {
+						r#type: 0,
+						data: Tag::new(nbt),
+					},
+				)],
 				remove_components: vec![],
 			},
 		))
 	};
-	let out = up(&pot_item(sherd_list(&["minecraft:arms_up_pottery_sherd"])), &mut cx);
-	let [z::play_to_client_packet::Ty::SetCursorItem(z::slot::Ty::Default(_, d))] = out.as_slice() else {
+	let out = up(
+		&pot_item(sherd_list(&["minecraft:arms_up_pottery_sherd"])),
+		&mut cx,
+	);
+	let [z::play_to_client_packet::Ty::SetCursorItem(z::slot::Ty::Default(_, d))] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	let [z::slot_component::Ty::BlockEntityData(e)] = d.components.as_slice() else {
 		panic!("{d:?}")
 	};
-	assert_eq!(sides_of(&e.data.value)[0], "minecraft:arms_up_pottery_sherd");
+	assert_eq!(
+		sides_of(&e.data.value)[0],
+		"minecraft:arms_up_pottery_sherd"
+	);
 	let back = down(&out[0], &mut cx);
-	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = back.as_slice() else {
+	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = back.as_slice()
+	else {
 		panic!("{back:?}")
 	};
 	let [y::slot_component::Ty::BlockEntityData(e)] = d.components.as_slice() else {
@@ -1492,7 +1616,9 @@ fn pot_sherds_become_sides_and_back() {
 
 #[test]
 fn pot_sherds_in_chunks() {
-	use bungeeoxide_converter::custom::chunks::{decode as decode_chunk, encode_chunk, BlockEntity, Column, Light, Packet, Section};
+	use bungeeoxide_converter::custom::chunks::{
+		BlockEntity, Column, Light, Packet, Section, decode as decode_chunk, encode_chunk,
+	};
 	let mut cx = Session::new();
 	let mut col = Column::new(0, 0, true, Version::V26_2);
 	col.sections = (0..24).map(|_| Some(Section::filled(0, Some(0)))).collect();
@@ -1507,7 +1633,16 @@ fn pot_sherds_in_chunks() {
 	}];
 	let mut converted = Vec::new();
 	for bytes in encode_chunk(Version::V26_2, &col).unwrap() {
-		converted.extend(convert(Root::PlayToClient, Version::V26_2, Version::V26_3, &bytes, &mut cx).unwrap());
+		converted.extend(
+			convert(
+				Root::PlayToClient,
+				Version::V26_2,
+				Version::V26_3,
+				&bytes,
+				&mut cx,
+			)
+			.unwrap(),
+		);
 	}
 	let entities: Vec<BlockEntity> = converted
 		.iter()
@@ -1520,10 +1655,22 @@ fn pot_sherds_in_chunks() {
 	let [e] = entities.as_slice() else {
 		panic!("{entities:?}")
 	};
-	assert_eq!(sides_of(&e.nbt.as_ref().unwrap().value)[0], "minecraft:heart_pottery_sherd");
+	assert_eq!(
+		sides_of(&e.nbt.as_ref().unwrap().value)[0],
+		"minecraft:heart_pottery_sherd"
+	);
 	let mut back = Vec::new();
 	for bytes in &converted {
-		back.extend(convert(Root::PlayToClient, Version::V26_3, Version::V26_2, bytes, &mut cx).unwrap());
+		back.extend(
+			convert(
+				Root::PlayToClient,
+				Version::V26_3,
+				Version::V26_2,
+				bytes,
+				&mut cx,
+			)
+			.unwrap(),
+		);
 	}
 	let entities: Vec<BlockEntity> = back
 		.iter()
@@ -1533,5 +1680,8 @@ fn pot_sherds_in_chunks() {
 		})
 		.flatten()
 		.collect();
-	assert_eq!(list_of(&entities[0].nbt.as_ref().unwrap().value)[0], "minecraft:heart_pottery_sherd");
+	assert_eq!(
+		list_of(&entities[0].nbt.as_ref().unwrap().value)[0],
+		"minecraft:heart_pottery_sherd"
+	);
 }

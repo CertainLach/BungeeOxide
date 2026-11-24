@@ -1,10 +1,10 @@
 use super::c::{blocks, remap_bulk};
 use super::ids;
 use super::text;
-use super::{falling_block, item_id, state, Kind};
-use crate::gen::convert::{v1_5_2, v1_6_1, v1_6_2, Root, Version};
-use crate::pds::convert::Result;
+use super::{Kind, falling_block, item_id, state};
+use crate::generated::convert::{Root, Version, v1_5_2, v1_6_1, v1_6_2};
 use crate::pds::Output;
+use crate::pds::convert::Result;
 use crate::session::Session;
 
 type Client152 = v1_5_2::play_to_client_packet::Ty;

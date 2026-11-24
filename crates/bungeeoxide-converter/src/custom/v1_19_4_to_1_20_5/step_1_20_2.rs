@@ -1,11 +1,11 @@
-use super::common::{self, block_state, decode, encode, meta_key, ParticleMap};
+use super::common::{self, ParticleMap, block_state, decode, encode, meta_key};
 use super::step_1_20::{
 	entity_sound, optional_state, record, sound_holder, spawn_object_data, world_event_data,
 };
-use crate::gen::convert::{v1_20 as old, v1_20_2 as new};
-use crate::gen::convert::{Root, Version};
-use crate::pds::convert::{unconvertible, Error, Result};
 use crate::Session;
+use crate::generated::convert::{Root, Version};
+use crate::generated::convert::{v1_20 as old, v1_20_2 as new};
+use crate::pds::convert::{Error, Result, unconvertible};
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload, Tag};
 
 const OLD: Version = Version::V1_20;
@@ -91,11 +91,7 @@ fn effects(c: &mut Vec<Entry>, up: bool) {
 				e.push(Entry::new("Id", Payload::Int(id)));
 			}
 			for (a, b) in EFFECT_RENAMES {
-				if up {
-					e.rename(a, b)
-				} else {
-					e.rename(b, a)
-				}
+				if up { e.rename(a, b) } else { e.rename(b, a) }
 			}
 			Payload::Compound(e)
 		})
@@ -155,7 +151,7 @@ fn slot_bytes_down(b: &[u8]) -> Result<Vec<u8>> {
 }
 
 macro_rules! particle {
-	($name:ident, $src:ident, $dst:ident, $from:expr, $to:expr, $item:expr) => {
+	($name:ident, $src:ident, $dst:ident, $from:expr_2021, $to:expr_2021, $item:expr_2021) => {
 		fn $name(v: $src::particle::Ty) -> Result<$dst::particle::Ty> {
 			let bytes = encode(&v, $src::particle::serialize)?;
 			let (id, payload) = common::read_varint(&bytes)?;
@@ -180,7 +176,7 @@ particle!(particle_1_20_to_1_20_2, old, new, OLD, NEW, slot_bytes_up);
 particle!(particle_1_20_2_to_1_20, new, old, NEW, OLD, slot_bytes_down);
 
 macro_rules! metadata {
-	($name:ident, $src:ident, $dst:ident, $from:expr, $to:expr, $particle:ident, $slot:ident, $nbt:expr) => {
+	($name:ident, $src:ident, $dst:ident, $from:expr_2021, $to:expr_2021, $particle:ident, $slot:ident, $nbt:expr_2021) => {
 		fn $name(
 			entity: i32,
 			v: $src::entity_metadata::Ty,
@@ -642,7 +638,7 @@ arm!(
 );
 
 macro_rules! world_particles {
-	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr, $to:expr, $item:expr) => {
+	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr_2021, $to:expr_2021, $item:expr_2021) => {
 		arm!(
 			$name,
 			$root,

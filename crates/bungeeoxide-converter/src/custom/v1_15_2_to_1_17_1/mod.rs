@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 
-use crate::gen::convert::Version;
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::generated::convert::Version;
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::registry;
 use crate::session::Session;
 
@@ -291,10 +291,10 @@ fn codec(version: Version) -> Result<::bungeeoxide_nbt::Entry> {
 	}
 }
 
-type Tag = crate::gen::convert::v1_16::play_to_client_packet_tags_block_tags_items::Ty;
-type SpawnObject = crate::gen::convert::v1_16::play_to_client_packet_spawn_entity::Ty;
-type SpawnMob = crate::gen::convert::v1_16::play_to_client_packet_spawn_entity_living::Ty;
-type Stat = crate::gen::convert::v1_16::play_to_client_packet_statistics_items::Ty;
+type Tag = crate::generated::convert::v1_16::play_to_client_packet_tags_block_tags_items::Ty;
+type SpawnObject = crate::generated::convert::v1_16::play_to_client_packet_spawn_entity::Ty;
+type SpawnMob = crate::generated::convert::v1_16::play_to_client_packet_spawn_entity_living::Ty;
+type Stat = crate::generated::convert::v1_16::play_to_client_packet_statistics_items::Ty;
 
 fn strip(name: &str) -> &str {
 	name.strip_prefix("minecraft:").unwrap_or(name)
@@ -407,14 +407,15 @@ fn statistics(list: Vec<Stat>, from: Version, to: Version) -> Vec<Stat> {
 		.collect()
 }
 
-type BlockChange = crate::gen::convert::v1_16::play_to_client_packet_block_change::Ty;
-type Digging = crate::gen::convert::v1_16::play_to_client_packet_acknowledge_player_digging::Ty;
-type BlockAction = crate::gen::convert::v1_16::play_to_client_packet_block_action::Ty;
-type WorldEvent = crate::gen::convert::v1_16::play_to_client_packet_world_event::Ty;
-type Sound = crate::gen::convert::v1_16::play_to_client_packet_sound_effect::Ty;
-type EntitySound = crate::gen::convert::v1_16::play_to_client_packet_entity_sound_effect::Ty;
-type Cooldown = crate::gen::convert::v1_16::play_to_client_packet_set_cooldown::Ty;
-type Tags = crate::gen::convert::v1_16::play_to_client_packet_tags::Ty;
+type BlockChange = crate::generated::convert::v1_16::play_to_client_packet_block_change::Ty;
+type Digging =
+	crate::generated::convert::v1_16::play_to_client_packet_acknowledge_player_digging::Ty;
+type BlockAction = crate::generated::convert::v1_16::play_to_client_packet_block_action::Ty;
+type WorldEvent = crate::generated::convert::v1_16::play_to_client_packet_world_event::Ty;
+type Sound = crate::generated::convert::v1_16::play_to_client_packet_sound_effect::Ty;
+type EntitySound = crate::generated::convert::v1_16::play_to_client_packet_entity_sound_effect::Ty;
+type Cooldown = crate::generated::convert::v1_16::play_to_client_packet_set_cooldown::Ty;
+type Tags = crate::generated::convert::v1_16::play_to_client_packet_tags::Ty;
 
 fn block_change(mut v: BlockChange, from: Version, to: Version) -> BlockChange {
 	v.r#type = state(from, to, v.r#type);

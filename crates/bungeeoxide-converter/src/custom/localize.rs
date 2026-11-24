@@ -1,10 +1,10 @@
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload, Tag};
 use serde_json::{Map, Value};
 
-use crate::gen::convert::Version;
-use crate::languages::{self, pieces, Languages, Piece};
-use crate::pds::convert::Result;
 use crate::Session;
+use crate::generated::convert::Version;
+use crate::languages::{self, Languages, Piece, pieces};
+use crate::pds::convert::Result;
 
 const KEY: &str = "\"translate\"";
 
@@ -372,11 +372,13 @@ pub(super) fn component(p: Payload) -> Vec<Entry> {
 
 fn plain_text(c: &mut [Entry]) -> Option<&mut String> {
 	match c {
-		[Entry {
-			name,
-			value: Payload::String(s),
-			..
-		}] if name == "text" => Some(s),
+		[
+			Entry {
+				name,
+				value: Payload::String(s),
+				..
+			},
+		] if name == "text" => Some(s),
 		_ => None,
 	}
 }

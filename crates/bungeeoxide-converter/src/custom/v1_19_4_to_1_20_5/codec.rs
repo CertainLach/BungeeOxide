@@ -1,5 +1,5 @@
-use crate::gen::convert::Version;
-use crate::pds::convert::{unconvertible, Result};
+use crate::generated::convert::Version;
+use crate::pds::convert::{Result, unconvertible};
 use bungeeoxide_nbt::Tag;
 use serde_json::Value;
 

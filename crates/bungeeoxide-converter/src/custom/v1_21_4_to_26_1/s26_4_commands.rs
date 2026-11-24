@@ -1,6 +1,6 @@
-use crate::gen::convert::{v26_3 as a, v26_4_snapshot_10 as b};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{v26_3 as a, v26_4_snapshot_10 as b};
+use crate::pds::convert::{Error, Result};
 
 type Old = a::command_node_extra_node_data_v2_properties::Ty;
 type New = b::command_node_extra_node_data_v2_properties::Ty;
@@ -52,7 +52,7 @@ pub fn late_parser_resource_or_tag_key_up_26_4(registry: String, _cx: &mut Sessi
 }
 
 macro_rules! context_sets {
-	($($up:ident, $down:ident, $arm:ident, $set:expr;)*) => {
+	($($up:ident, $down:ident, $arm:ident, $set:expr_2021;)*) => {
 		$(
 			pub fn $up(_v: (), _cx: &mut Session) -> Result<New> {
 				Ok(New::$arm($set))

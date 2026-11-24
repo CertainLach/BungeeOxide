@@ -4,8 +4,8 @@ use std::sync::{Mutex, OnceLock};
 use ::bungeeoxide_nbt::Entry;
 use ::bungeeoxide_nbt::Payload as P;
 
-use crate::gen::convert::Version;
-use crate::pds::convert::{unconvertible, Result};
+use crate::generated::convert::Version;
+use crate::pds::convert::{Result, unconvertible};
 use crate::registry;
 
 pub(super) const BLOCKS: usize = 4096;

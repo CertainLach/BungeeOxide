@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 pub const SOUNDS: &[(Version, &str, &str)] = &[
 	(Version::V1_8, "ambient.cave", "ambient.cave.cave"),
 	(Version::V1_8, "block.anvil.break", "dig.stone"),

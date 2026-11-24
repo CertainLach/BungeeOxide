@@ -1,7 +1,7 @@
 use super::common::{decode, effect_by_key, effect_name, item};
 use super::text;
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_20_2 as legacy, v1_20_5 as new};
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_20_2 as legacy, v1_20_5 as new};
 use crate::registry;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload, Tag};
 use std::sync::OnceLock;

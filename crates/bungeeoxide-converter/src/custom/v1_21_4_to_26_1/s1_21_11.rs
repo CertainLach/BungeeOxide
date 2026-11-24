@@ -5,9 +5,9 @@ use super::rules::{entities, hidden, items, statistics, tags};
 use super::shared::{self, meta};
 use super::slots::{self, exact_matchers, untrusted_step};
 use super::util::{encode, read_varint};
-use crate::gen::convert::{v1_21_11 as b, v1_21_5, v1_21_9 as a, Version};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{Version, v1_21_5, v1_21_9 as a, v1_21_11 as b};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{CompoundExt, Entry, List, ListItems, Payload};
 
 remaps!(Version::V1_21_9 => Version::V1_21_11 { late_sound_up_1_21_11: a::item_sound_holder::Ty = remap::sound; });

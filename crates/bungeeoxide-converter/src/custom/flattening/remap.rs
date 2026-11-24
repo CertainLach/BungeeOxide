@@ -4,7 +4,7 @@ use super::blocks::{
 use super::entities::forget_later;
 use super::items::slot_earlier;
 use super::text::legacy_title;
-use crate::gen::convert::{v1_13 as b, v1_13_1 as c};
+use crate::generated::convert::{v1_13 as b, v1_13_1 as c};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
@@ -116,11 +116,7 @@ pub fn flattening_tag_ids_1_13(
 }
 
 fn fog(flags: u8) -> u8 {
-	if flags & 2 != 0 {
-		flags | 4
-	} else {
-		flags
-	}
+	if flags & 2 != 0 { flags | 4 } else { flags }
 }
 
 pub fn flattening_boss_bar_flags_1_13_1(
@@ -131,11 +127,7 @@ pub fn flattening_boss_bar_flags_1_13_1(
 }
 
 fn dragon(flags: u8) -> u8 {
-	if flags & 4 != 0 {
-		flags | 2
-	} else {
-		flags
-	}
+	if flags & 4 != 0 { flags | 2 } else { flags }
 }
 
 pub fn flattening_boss_bar_flags_1_13(

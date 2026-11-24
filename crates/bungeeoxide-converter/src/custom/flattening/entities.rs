@@ -4,7 +4,7 @@ use super::blocks::{packed_of_state, state_earlier, state_later, state_of_packed
 use super::items::{slot_down, slot_earlier, slot_later, slot_up};
 use super::text::{json_to_legacy, legacy_to_json};
 use super::world::{particle_data_down, particle_data_earlier, particle_data_later, particle_up};
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b};
+use crate::generated::convert::{v1_12_2 as a, v1_13 as b};
 use crate::pds::convert::{Error, Result};
 use crate::session::Session;
 

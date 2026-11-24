@@ -6,7 +6,7 @@ use super::chunk::{self, F1_16, F1_16_2};
 use super::meta::{self, Meta, Slot};
 use super::tag_data::NEW_TAGS_1_16_2;
 use super::*;
-use crate::gen::convert::{v1_16 as t16, v1_16_1 as old, v1_16_2 as new};
+use crate::generated::convert::{v1_16 as t16, v1_16_1 as old, v1_16_2 as new};
 use crate::pds::convert::Result;
 use crate::session::Session;
 

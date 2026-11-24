@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 fn item_once(id: i16, meta: i16, to: Version) -> Option<(i16, i16)> {
 	use Version::*;

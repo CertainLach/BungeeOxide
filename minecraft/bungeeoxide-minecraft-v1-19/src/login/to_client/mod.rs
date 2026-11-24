@@ -2,8 +2,8 @@
 pub mod packet;
 pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_disconnect;
 pub use ::bungeeoxide_minecraft_root::varint as packet_compress;
-pub use ::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request;
 pub use ::bungeeoxide_minecraft_v1_8::login::to_client::packet_encryption_begin;
+pub use ::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request;
 pub mod packet_success;
 pub mod packet_success_0;
 pub use self::packet::Packet;

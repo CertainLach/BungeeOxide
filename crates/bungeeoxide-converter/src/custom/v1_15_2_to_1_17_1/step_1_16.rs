@@ -5,7 +5,7 @@ use super::chunk::{self, F1_15_2, F1_16};
 use super::meta::{self, Meta, Slot};
 use super::tag_data::NEW_TAGS_1_16;
 use super::*;
-use crate::gen::convert::{v1_15_2 as old, v1_16 as new};
+use crate::generated::convert::{v1_15_2 as old, v1_16 as new};
 use crate::pds::convert::Result;
 use crate::session::Session;
 

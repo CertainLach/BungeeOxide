@@ -1,8 +1,8 @@
 use super::c::meta_1_3_2;
 use super::d::kind;
-use super::{old_meta_item, state, text, Kind};
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_0_1, v1_1, v1_2_3, v1_3_2, v1_4_2, v1_5_2, v1_6_4, v1_7};
+use super::{Kind, old_meta_item, state, text};
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_0_1, v1_1, v1_2_3, v1_3_2, v1_4_2, v1_5_2, v1_6_4, v1_7};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
@@ -57,7 +57,7 @@ fn effect_exists(id: i8, to: Version) -> bool {
 }
 
 macro_rules! effects {
-	($to:expr, $m:ident, $effect:ident, $remove:ident) => {
+	($to:expr_2021, $m:ident, $effect:ident, $remove:ident) => {
 		pub fn $effect(
 			p: $m::play_to_client_packet_entity_effect::Ty,
 			_cx: &mut Session,

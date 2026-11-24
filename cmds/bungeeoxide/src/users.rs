@@ -3,9 +3,9 @@ use std::os::unix::fs::PermissionsExt as _;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_authlib::accounts::{default_prism_file, home, Account, Source};
-use bungeeoxide_authlib::{hyphenated, parse_uuid, Endpoints, Secret};
+use anyhow::{Context as _, Result, anyhow, bail};
+use bungeeoxide_authlib::accounts::{Account, Source, default_prism_file, home};
+use bungeeoxide_authlib::{Endpoints, Secret, hyphenated, parse_uuid};
 use serde::Deserialize;
 use tracing::warn;
 
@@ -231,9 +231,11 @@ mod tests {
 		assert_eq!(steve.uuid, Some(0x853c80ef3c3749fdaa49938b674adae6));
 		assert!(steve.downstream && steve.allow_goto);
 		assert_eq!(steve.upstream.as_ref().unwrap().label, "Notch");
-		assert!(steve
-			.admit(Some(0x853c80ef3c3749fdaa49938b674adae6))
-			.is_ok());
+		assert!(
+			steve
+				.admit(Some(0x853c80ef3c3749fdaa49938b674adae6))
+				.is_ok()
+		);
 		assert!(steve.admit(Some(1)).is_err());
 		assert!(steve.admit(None).is_err());
 		let alex = find(&parsed.users, "Alex");

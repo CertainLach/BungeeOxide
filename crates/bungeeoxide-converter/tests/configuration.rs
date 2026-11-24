@@ -1,6 +1,6 @@
-use bungeeoxide_converter::gen::convert::packet_name;
+use bungeeoxide_converter::generated::convert::packet_name;
 use bungeeoxide_converter::{
-	configuration_packets, convert, Root, Session, Version, CONFIGURATION,
+	CONFIGURATION, Root, Session, Version, configuration_packets, convert,
 };
 
 fn references(data: &[u8]) -> Vec<String> {

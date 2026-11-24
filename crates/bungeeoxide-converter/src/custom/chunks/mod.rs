@@ -8,14 +8,14 @@ mod tables;
 pub(crate) use formats::padding;
 pub use model::*;
 pub use packets::{
-	decode, decode_in, encode_bulk, encode_chunk, encode_light, encode_unload, ids, Ids, Packet,
+	Ids, Packet, decode, decode_in, encode_bulk, encode_chunk, encode_light, encode_unload, ids,
 };
 pub use tables::{composed, probe, probe_column, settle, step_table};
 
-use crate::gen::convert::Version;
-use crate::gen::convert::{step, Carrier, Root};
-use crate::pds::convert::Result;
 use crate::Session;
+use crate::generated::convert::Version;
+use crate::generated::convert::{Carrier, Root, step};
+use crate::pds::convert::Result;
 
 pub enum Virtual {
 	Chunk(Box<Column>),
@@ -64,7 +64,7 @@ pub(crate) fn deliver(
 	let (to, packets) = match target {
 		Some(to) if to != version => (
 			to,
-			crate::gen::convert::carry(root, version, to, vec![Carrier::Virtual(model)], cx),
+			crate::generated::convert::carry(root, version, to, vec![Carrier::Virtual(model)], cx),
 		),
 		_ => (version, virtual_finish(root, version, model, cx)),
 	};

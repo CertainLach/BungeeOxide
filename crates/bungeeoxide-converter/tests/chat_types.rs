@@ -1,11 +1,11 @@
-use bungeeoxide_converter::gen::convert::{
-	convert, v1_12_2, v1_18_2, v1_19, v1_19_2, v1_19_4, v1_8, Root, Version,
+use bungeeoxide_converter::generated::convert::{
+	Root, Version, convert, v1_8, v1_12_2, v1_18_2, v1_19, v1_19_2, v1_19_4,
 };
-use bungeeoxide_converter::languages::{self, pieces, Languages, Piece};
+use bungeeoxide_converter::languages::{self, Languages, Piece, pieces};
 use bungeeoxide_converter::pds::{Input, Output};
-use bungeeoxide_converter::{registry, Session};
+use bungeeoxide_converter::{Session, registry};
 use bungeeoxide_nbt::{CompoundVecExt, Entry, List, ListItems, Payload};
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 const OLD: &[(&str, &str)] = &[
 	("chat.type.text", "<%s> %s"),

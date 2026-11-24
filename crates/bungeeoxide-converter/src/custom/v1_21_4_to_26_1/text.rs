@@ -1,4 +1,4 @@
-use bungeeoxide_nbt::{snbt, CompoundExt, Entry, List, ListItems, Payload, Tag};
+use bungeeoxide_nbt::{CompoundExt, Entry, List, ListItems, Payload, Tag, snbt};
 use serde_json::Value;
 
 fn map_list(items: ListItems, f: fn(Payload) -> Payload) -> ListItems {
@@ -43,7 +43,7 @@ fn click(mut event: Payload) -> Option<Payload> {
 		("url", Some(Payload::String(s)))
 			if !(s.starts_with("http://") || s.starts_with("https://")) =>
 		{
-			return None
+			return None;
 		}
 		("command", Some(Payload::String(s))) => {
 			let clean: String = s

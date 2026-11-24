@@ -1,12 +1,12 @@
 use std::sync::OnceLock;
 
-use super::formats::{domain, format, Format};
-use super::model::{Biomes, Column, Light, Section, BLOCKS};
-use super::packets::{decode, encode_chunk, Packet};
-use crate::gen::convert::{step, Root, Version};
+use super::formats::{Format, domain, format};
+use super::model::{BLOCKS, Biomes, Column, Light, Section};
+use super::packets::{Packet, decode, encode_chunk};
+use crate::Session;
+use crate::generated::convert::{Root, Version, step};
 use crate::registry;
 use crate::version_range;
-use crate::Session;
 
 type Cache = OnceLock<Vec<OnceLock<Box<[u32]>>>>;
 

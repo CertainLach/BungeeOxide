@@ -1,16 +1,16 @@
 use super::common::{
-	self, block, block_state, decode, encode, item, name_id, particle_id, sound_named, varint,
-	ParticleMap, Sound,
+	self, ParticleMap, Sound, block, block_state, decode, encode, item, name_id, particle_id,
+	sound_named, varint,
 };
 use super::step_1_20::{
 	entity_sound, optional_state, record, remap_tags, sound_holder, spawn_object_data, tag_entries,
 	world_event_data,
 };
 use super::text;
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_20_2 as old, v1_20_3 as new};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_20_2 as old, v1_20_3 as new};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{CompoundExt, Tag};
 
 const OLD: Version = Version::V1_20_2;
@@ -132,11 +132,17 @@ pub fn trails_metadata_1_20_2_to_1_20_3(
 					Err(e) => return Err(e),
 				}
 			}
-			V::Component(s) => encode(&text::to_nbt(&s), bungeeoxide_nbt::gen::tag::serialize)?,
+			V::Component(s) => encode(
+				&text::to_nbt(&s),
+				bungeeoxide_nbt::generated::tag::serialize,
+			)?,
 			V::OptionalComponent(s) => match s {
 				Some(s) => [
 					vec![1],
-					encode(&text::to_nbt(&s), bungeeoxide_nbt::gen::tag::serialize)?,
+					encode(
+						&text::to_nbt(&s),
+						bungeeoxide_nbt::generated::tag::serialize,
+					)?,
 				]
 				.concat(),
 				None => vec![0],
@@ -205,7 +211,7 @@ pub fn trails_metadata_1_20_3_to_1_20_2(
 }
 
 macro_rules! world_particles {
-	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr, $to:expr) => {
+	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr_2021, $to:expr_2021) => {
 		arm!(
 			$name,
 			$root,
@@ -697,7 +703,7 @@ arm!(
 );
 
 macro_rules! spawn_entity {
-	($name:ident, $root:ty, $src:ident, $from:expr, $to:expr) => {
+	($name:ident, $root:ty, $src:ident, $from:expr_2021, $to:expr_2021) => {
 		arm!(
 			$name,
 			$root,

@@ -5,11 +5,11 @@ use std::path::Path;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use bungeeoxide::codec::{Cipher, Codec};
-use bungeeoxide::{decode, encode, next, serve, users, Config, Conn};
+use bungeeoxide::{Config, Conn, decode, encode, next, serve, users};
 use bungeeoxide_authlib::{hyphenated, server_hash};
-use bungeeoxide_converter::gen::convert::v1_8::{
+use bungeeoxide_converter::generated::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
 	login_to_client_packet_success, login_to_server_packet as login_s,

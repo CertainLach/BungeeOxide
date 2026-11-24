@@ -1,6 +1,6 @@
 use super::items;
-use crate::gen::convert::{v1_8, v1_9, Version};
-use crate::pds::convert::{unconvertible, Result};
+use crate::generated::convert::{Version, v1_8, v1_9};
+use crate::pds::convert::{Result, unconvertible};
 use crate::session::Session;
 
 type C8 = v1_8::play_to_client_packet::Ty;

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use super::{ceil_log2, read_varint, take, unconvertible, write_varint, Result, V};
+use super::{Result, V, ceil_log2, read_varint, take, unconvertible, write_varint};
 use crate::custom::chunks::padding;
 
 pub(super) const BLOCKS: usize = 4096;

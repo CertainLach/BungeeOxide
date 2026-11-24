@@ -4,10 +4,10 @@ use bungeeoxide_nbt::{CompoundExt, Entry, List, ListItems, Payload, Tag};
 use serde_json::{Map, Value};
 
 use super::localize::{component, localize};
-use crate::gen::convert::Version;
+use crate::Session;
+use crate::generated::convert::Version;
 use crate::pds::convert::Result;
 use crate::registry;
-use crate::Session;
 
 #[derive(Clone, Copy, PartialEq)]
 pub enum Parameter {

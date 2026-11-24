@@ -8,8 +8,8 @@ pub use sounds::*;
 
 use std::collections::{HashMap, VecDeque};
 
-use crate::gen::convert::{
-	v1_10, v1_11, v1_12, v1_12_1, v1_12_2, v1_8, v1_9, v1_9_2, v1_9_4, Version,
+use crate::generated::convert::{
+	Version, v1_8, v1_9, v1_9_2, v1_9_4, v1_10, v1_11, v1_12, v1_12_1, v1_12_2,
 };
 use crate::pds::convert::Result;
 use crate::session::{Kind, Session};
@@ -744,8 +744,8 @@ pub fn legacy_down_world_particles_1_8(
 fn particles_before_1_10(
 	p: v1_10::play_to_client_packet_world_particles::Ty,
 ) -> Option<v1_8::play_to_client_packet_world_particles::Ty> {
-	use v1_10::play_to_client_packet_world_particles_data::Ty as D10;
 	use v1_8::play_to_client_packet_world_particles_data::Ty as D8;
+	use v1_10::play_to_client_packet_world_particles_data::Ty as D10;
 	let data = match p.data {
 		D10::V36(d) => D8::V36(d),
 		D10::V37(d) => D8::V37(d),

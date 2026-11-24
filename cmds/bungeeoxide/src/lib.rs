@@ -2,9 +2,9 @@ use bungeeoxide_converter::Version;
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use bungeeoxide_authlib::Endpoints;
-use bungeeoxide_converter::gen::convert::v26_3::{
+use bungeeoxide_converter::generated::convert::v26_3::{
 	configuration_to_client_packet as config_c, configuration_to_server_packet as config_s,
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
@@ -15,10 +15,10 @@ use bungeeoxide_converter::gen::convert::v26_3::{
 	play_to_client_spawn_info, play_to_server_packet as play_s,
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 };
-use bungeeoxide_converter::gen::convert::{packet_name, v1_20_2};
+use bungeeoxide_converter::generated::convert::{packet_name, v1_20_2};
 use bungeeoxide_converter::pds::{self, Input, Output};
 use bungeeoxide_converter::{
-	convert, reachable, version_of, Root, Session, CONFIGURATION, PROTOCOLS, STACK_BUDGET,
+	CONFIGURATION, PROTOCOLS, Root, STACK_BUDGET, Session, convert, reachable, version_of,
 };
 use futures::{SinkExt, StreamExt};
 use serde_json::Value;
@@ -34,7 +34,7 @@ pub mod signing;
 pub mod status;
 pub mod users;
 
-use codec::{read_varint, Codec};
+use codec::{Codec, read_varint};
 
 pub type Conn = Framed<TcpStream, Codec>;
 
@@ -473,7 +473,7 @@ impl Proxy {
 				}
 				Some(Common::Request(key)) => self.answer_cookie(reply, key).await?,
 				Some(Common::Transfer(t)) => {
-					return Ok(Caught::Transfer(join_target(&t.host, t.port)))
+					return Ok(Caught::Transfer(join_target(&t.host, t.port)));
 				}
 				None => {}
 			}
@@ -1133,7 +1133,7 @@ mod tests {
 			dimension,
 			name: name.to_owned(),
 			hashed_seed: 5,
-			gamemode: bungeeoxide_converter::gen::convert::v26_3::play_to_client_spawn_info_gamemode::Ty::Creative,
+			gamemode: bungeeoxide_converter::generated::convert::v26_3::play_to_client_spawn_info_gamemode::Ty::Creative,
 			previous_gamemode: 255,
 			is_debug: false,
 			is_flat: true,
@@ -1247,7 +1247,7 @@ mod tests {
 
 	#[test]
 	fn old_clients_see_the_dimension_change_twice() {
-		use bungeeoxide_converter::gen::convert::{v1_0_1, v1_12_2, v1_16, v1_20_3, v1_8};
+		use bungeeoxide_converter::generated::convert::{v1_0_1, v1_8, v1_12_2, v1_16, v1_20_3};
 		let overworld = login(world(0, "minecraft:overworld"));
 		let nether = login(world(3, "minecraft:the_nether"));
 		let dims = |l: &play_to_client_packet_login::Ty, v: Version| -> Vec<String> {
@@ -1318,7 +1318,7 @@ mod tests {
 		.unwrap();
 		let plain = encode(
 			&play_s::Ty::ChatMessage(
-				bungeeoxide_converter::gen::convert::v26_3::play_to_server_packet_chat_message::Ty {
+				bungeeoxide_converter::generated::convert::v26_3::play_to_server_packet_chat_message::Ty {
 					message: "/proxy-goto".to_owned(),
 					timestamp: 0,
 					salt: 0,

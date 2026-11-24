@@ -9,7 +9,7 @@
 	clippy::all
 )]
 
-pub mod gen;
+pub mod generated;
 pub mod gzip;
 pub mod json;
 pub mod natives;
@@ -22,11 +22,11 @@ pub mod pds {
 
 pub use value::{CompoundExt, CompoundVecExt};
 
-pub use gen::{Compound, Entry, List, List0 as ListItems, Payload, Tag};
+pub use generated::{Compound, Entry, List, List0 as ListItems, Payload, Tag};
 
 #[cfg(test)]
 mod tests {
-	use crate::gen::tag;
+	use crate::generated::tag;
 	use crate::pds::{Input, Output};
 	use crate::pds_native::pds_string;
 	use crate::{Entry, ListItems, Payload, Tag};
@@ -52,18 +52,22 @@ mod tests {
 		let Payload::Compound(entries) = &tag.value else {
 			panic!("{tag:?}")
 		};
-		let [Entry {
-			name: text,
-			value: Payload::String(hi),
-			..
-		}, Entry {
-			name: extra,
-			value: Payload::List(list),
-			..
-		}, Entry {
-			value: Payload::IntArray(ints),
-			..
-		}] = entries.as_slice()
+		let [
+			Entry {
+				name: text,
+				value: Payload::String(hi),
+				..
+			},
+			Entry {
+				name: extra,
+				value: Payload::List(list),
+				..
+			},
+			Entry {
+				value: Payload::IntArray(ints),
+				..
+			},
+		] = entries.as_slice()
 		else {
 			panic!("{entries:?}")
 		};
@@ -82,7 +86,7 @@ mod tests {
 
 	#[test]
 	fn deep_nesting_fails_past_stack_budget() {
-		use crate::pds::{stack, Error};
+		use crate::pds::{Error, stack};
 		let nested = |depth: usize| {
 			let mut bytes = vec![9];
 			for _ in 0..depth {
@@ -105,14 +109,16 @@ mod tests {
 		let bytes = pds_string::encode(s);
 		assert_eq!(
 			bytes,
-			[0x61, 0xc0, 0x80, 0xc3, 0xa9, 0xed, 0xa0, 0xbd, 0xed, 0xb8, 0x80]
+			[
+				0x61, 0xc0, 0x80, 0xc3, 0xa9, 0xed, 0xa0, 0xbd, 0xed, 0xb8, 0x80
+			]
 		);
 		assert_eq!(pds_string::decode(&bytes).unwrap(), s);
 	}
 
 	#[test]
 	fn views_borrow_strings_and_byte_arrays() {
-		use crate::gen::view::{payload, tag};
+		use crate::generated::view::{payload, tag};
 		use std::borrow::Cow;
 		let bytes = [
 			10, 8, 0, 4, b't', b'e', b'x', b't', 0, 2, b'h', b'i', 7, 0, 1, b'b', 0, 0, 0, 2, 5,
@@ -150,7 +156,7 @@ mod tests {
 
 	#[test]
 	fn into_view_takes_arrays_and_borrows_strings() {
-		use crate::gen::view::{payload, tag};
+		use crate::generated::view::{payload, tag};
 		use std::borrow::Cow;
 		let bytes = [
 			10, 12, 0, 1, b'l', 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 8, 0,
@@ -180,8 +186,8 @@ mod tests {
 
 	#[test]
 	fn views_keep_the_stack_guard() {
-		use crate::gen::view::tag;
-		use crate::pds::{stack, Error};
+		use crate::generated::view::tag;
+		use crate::pds::{Error, stack};
 		let mut bytes = vec![9];
 		for _ in 0..1 << 20 {
 			bytes.extend([9, 0, 0, 0, 1]);

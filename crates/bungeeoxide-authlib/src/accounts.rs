@@ -5,12 +5,12 @@ use std::os::unix::fs::{OpenOptionsExt as _, PermissionsExt as _};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tracing::{info, warn};
 
-use crate::{now_millis, now_secs, parse_uuid, Endpoints, Joined, PlayerKeys, Secret};
+use crate::{Endpoints, Joined, PlayerKeys, Secret, now_millis, now_secs, parse_uuid};
 
 const MARGIN_SECS: i64 = 120;
 
@@ -261,7 +261,10 @@ impl Account {
 			);
 		}
 		if refresh_tokens.is_empty() {
-			bail!("{}'s Minecraft token has expired and there is no refresh token, log in with the launcher again", account.name);
+			bail!(
+				"{}'s Minecraft token has expired and there is no refresh token, log in with the launcher again",
+				account.name
+			);
 		}
 		let mut failure = None;
 		for (refresh_token, client_id) in refresh_tokens {

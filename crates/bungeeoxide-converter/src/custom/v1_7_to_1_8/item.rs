@@ -3,7 +3,7 @@ use std::sync::OnceLock;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload};
 
 use super::text;
-use crate::gen::convert::{v1_7, v1_8, Version};
+use crate::generated::convert::{Version, v1_7, v1_8};
 use crate::pds::convert::{Error, Result};
 use crate::registry;
 use crate::session::Session;

@@ -1,5 +1,5 @@
 pub use pds_bytes_runtime::natives::{
-	pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u8, pds_void,
+	pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_void,
 };
 
 pub mod pds_string {

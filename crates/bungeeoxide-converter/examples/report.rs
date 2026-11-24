@@ -1,8 +1,8 @@
 use bungeeoxide_converter::Version;
 use std::collections::BTreeMap;
 
-use bungeeoxide_converter::gen::convert::{inspect, step, Root};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, inspect, step};
 
 fn main() -> anyhow::Result<()> {
 	let mut args = std::env::args().skip(1);

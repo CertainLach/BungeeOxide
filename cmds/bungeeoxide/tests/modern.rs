@@ -3,14 +3,15 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::legacy::string16;
 use bungeeoxide::users::User;
-use bungeeoxide::{decode, encode, next, protocol_of, serve, text_tag, Config, Conn};
-use bungeeoxide_converter::gen::convert::packet_name;
-use bungeeoxide_converter::gen::convert::v1_8;
-use bungeeoxide_converter::gen::convert::v26_1::{
+use bungeeoxide::{Config, Conn, decode, encode, next, protocol_of, serve, text_tag};
+use bungeeoxide_converter::Root;
+use bungeeoxide_converter::generated::convert::packet_name;
+use bungeeoxide_converter::generated::convert::v1_8;
+use bungeeoxide_converter::generated::convert::v26_1::{
 	configuration_to_client_packet as config_c,
 	configuration_to_client_packet_finish_configuration,
 	configuration_to_server_packet as config_s,
@@ -25,7 +26,6 @@ use bungeeoxide_converter::gen::convert::v26_1::{
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use bungeeoxide_converter::Root;
 use futures::SinkExt;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream};
@@ -648,9 +648,11 @@ async fn old_clients_switch_between_modern_servers() -> Result<()> {
 		["login -1", "respawn 0", "respawn -1"]
 	);
 	say_1_8(&mut conn, "ask test:config").await?;
-	assert!(chat_1_8(&mut conn)
-		.await?
-		.contains("b: play cookie test:config = b"));
+	assert!(
+		chat_1_8(&mut conn)
+			.await?
+			.contains("b: play cookie test:config = b")
+	);
 	say_1_8(&mut conn, &format!("/proxy-goto {a} 26.1")).await?;
 	assert_eq!(
 		events(&mut a_events, 4).await,

@@ -6,9 +6,9 @@ use super::shared::{self, meta};
 use super::slots::{self, exact_matchers, untrusted_step};
 use super::tags::Derived;
 use super::util::{encode, read_varint};
-use crate::gen::convert::{v26_1 as a, v26_2 as b, Version};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{Version, v26_1 as a, v26_2 as b};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{Payload, Tag};
 use std::collections::HashSet;
 
@@ -290,15 +290,13 @@ fn random_fake_id() -> i32 {
 }
 
 fn fake_id(cx: &mut Session) -> i32 {
-	*cx.state::<FakeEntity>().id.get_or_insert_with(random_fake_id)
+	*cx.state::<FakeEntity>()
+		.id
+		.get_or_insert_with(random_fake_id)
 }
 
 fn fake(cx: &mut Session, id: i32) -> i32 {
-	if id == 0 {
-		fake_id(cx)
-	} else {
-		id
-	}
+	if id == 0 { fake_id(cx) } else { id }
 }
 
 fn real(cx: &mut Session, id: i32) -> i32 {

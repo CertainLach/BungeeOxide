@@ -1,23 +1,23 @@
 use bungeeoxide_converter::Version;
 use std::sync::Arc;
 
-use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_converter::gen::convert::v26_3::{
+use anyhow::{Context as _, Result, anyhow, bail};
+use bungeeoxide_converter::Root;
+use bungeeoxide_converter::generated::convert::v26_3::{
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin as begin,
 	login_to_client_packet_success as success, login_to_server_packet as login_s,
 	login_to_server_packet_encryption_begin as response, login_to_server_packet_login_start,
 };
-use bungeeoxide_converter::gen::convert::{v1_19, v1_19_2};
-use bungeeoxide_converter::Root;
+use bungeeoxide_converter::generated::convert::{v1_19, v1_19_2};
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tracing::{info, warn};
 
 use crate::codec::Cipher;
 use crate::signing::Chat;
-use crate::{decode, encode, legacy, next, Proxy, PIVOT};
+use crate::{PIVOT, Proxy, decode, encode, legacy, next};
 use bungeeoxide_authlib::accounts::{Account, Credentials};
-use bungeeoxide_authlib::{self as auth, offline_uuid_bits, Endpoints, GameProfile, PlayerKeys};
+use bungeeoxide_authlib::{self as auth, Endpoints, GameProfile, PlayerKeys, offline_uuid_bits};
 
 #[derive(Default)]
 pub struct Online {
@@ -271,7 +271,9 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 	let secret: [u8; 16] = rand::random();
 	if request.should_authenticate {
 		let Some(account) = p.online.account.clone() else {
-			bail!("the server is in online mode, give {username} an upstream account in --users or set online-mode=false");
+			bail!(
+				"the server is in online mode, give {username} an upstream account in --users or set online-mode=false"
+			);
 		};
 		let credentials = p
 			.online
@@ -338,7 +340,7 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 mod tests {
 	use super::*;
 	use crate::decode;
-	use bungeeoxide_converter::{convert, Session};
+	use bungeeoxide_converter::{Session, convert};
 
 	#[test]
 	fn verify_token_responses_reach_signing_versions_unsigned() {

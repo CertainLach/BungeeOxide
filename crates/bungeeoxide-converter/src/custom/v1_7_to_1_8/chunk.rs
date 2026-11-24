@@ -1,12 +1,12 @@
 use std::io::{Read, Write};
 
+use flate2::Compression;
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
-use flate2::Compression;
 
 use super::item::state_1_7;
-use crate::gen::convert::{v1_7, v1_8};
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::generated::convert::{v1_7, v1_8};
+use crate::pds::convert::{Error, Result, unconvertible};
 
 const BLOCKS: usize = 4096;
 const HALF: usize = 2048;

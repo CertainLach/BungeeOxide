@@ -3,7 +3,7 @@ use std::io;
 use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 pub struct Languages {
 	folders: Vec<Option<u32>>,

@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod anon_optional_nbt;
@@ -69,35 +69,35 @@ pub use self::compressed_nbt::Ty as CompressedNbt;
 pub use self::entity_delta::Ty as EntityDelta;
 pub use self::f32::Ty as F32;
 pub use self::f64::Ty as F64;
+pub use self::i8::Ty as I8;
 pub use self::i16::Ty as I16;
 pub use self::i32::Ty as I32;
 pub use self::i64::Ty as I64;
-pub use self::i8::Ty as I8;
 pub use self::legacy_slot::Ty as LegacySlot;
 pub use self::lp_vec3::Ty as LpVec3;
 pub use self::nbt::Ty as Nbt;
 pub use self::option_0::Ty as Option0;
 pub use self::option_1::Ty as Option1;
-pub use self::option_115::Ty as Option115;
 pub use self::option_2::Ty as Option2;
-pub use self::option_20::Ty as Option20;
-pub use self::option_21::Ty as Option21;
 pub use self::option_3::Ty as Option3;
-pub use self::option_32::Ty as Option32;
-pub use self::option_33::Ty as Option33;
 pub use self::option_4::Ty as Option4;
 pub use self::option_5::Ty as Option5;
 pub use self::option_6::Ty as Option6;
 pub use self::option_7::Ty as Option7;
 pub use self::option_8::Ty as Option8;
+pub use self::option_20::Ty as Option20;
+pub use self::option_21::Ty as Option21;
+pub use self::option_32::Ty as Option32;
+pub use self::option_33::Ty as Option33;
+pub use self::option_115::Ty as Option115;
 pub use self::optional_nbt::Ty as OptionalNbt;
 pub use self::pstring_123::Ty as Pstring123;
 pub use self::rest_buffer::Ty as RestBuffer;
 pub use self::string16::Ty as String16;
+pub use self::u8::Ty as U8;
 pub use self::u16::Ty as U16;
 pub use self::u32::Ty as U32;
 pub use self::u64::Ty as U64;
-pub use self::u8::Ty as U8;
 pub use self::uuid::Ty as Uuid;
 pub use self::varint::Ty as Varint;
 pub use self::varlong::Ty as Varlong;

@@ -4,9 +4,9 @@ use std::process::{Command, Stdio};
 use std::thread;
 use std::time::Duration;
 
-use bungeeoxide_minecraft_v1_21_11 as gen;
-use flate2::write::ZlibEncoder;
+use bungeeoxide_minecraft_v1_21_11 as generated;
 use flate2::Compression;
+use flate2::write::ZlibEncoder;
 use pds_bytes_runtime::{self as pds, Output};
 
 const THRESHOLD: usize = 64;
@@ -63,13 +63,13 @@ fn fake_server(listener: TcpListener) {
 	let mut r = BufReader::new(s.try_clone().unwrap());
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	use gen::login::to_client::packet as login;
+	use generated::login::to_client::packet as login;
 	s.write_all(&frame(
 		&ser(&login::Ty::Compress(THRESHOLD as i32), login::serialize),
 		false,
 	))
 	.unwrap();
-	let success = login::Ty::Success(gen::login::to_client::PacketSuccess {
+	let success = login::Ty::Success(generated::login::to_client::PacketSuccess {
 		uuid: 0x1234,
 		username: "pds".to_owned(),
 		properties: vec![],
@@ -77,20 +77,21 @@ fn fake_server(listener: TcpListener) {
 	s.write_all(&frame(&ser(&success, login::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
-	use gen::configuration::to_client::packet as config;
-	let brand = config::Ty::CustomPayload(gen::configuration::to_client::PacketCustomPayload {
-		channel: "minecraft:brand".to_owned(),
-		data: vec![7; 300],
-	});
+	use generated::configuration::to_client::packet as config;
+	let brand =
+		config::Ty::CustomPayload(generated::configuration::to_client::PacketCustomPayload {
+			channel: "minecraft:brand".to_owned(),
+			data: vec![7; 300],
+		});
 	s.write_all(&frame(&ser(&brand, config::serialize), true))
 		.unwrap();
 	let finish = config::Ty::FinishConfiguration(
-		gen::configuration::to_client::PacketFinishConfiguration {},
+		generated::configuration::to_client::PacketFinishConfiguration {},
 	);
 	s.write_all(&frame(&ser(&finish, config::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
-	use gen::play::to_client::packet as play;
+	use generated::play::to_client::packet as play;
 	s.write_all(&frame(
 		&ser(&play::Ty::KeepAlive(42), play::serialize),
 		true,
@@ -103,8 +104,8 @@ fn fake_server(listener: TcpListener) {
 fn fake_client(port: u16) {
 	let mut c = TcpStream::connect(("127.0.0.1", port)).unwrap();
 	let mut r = BufReader::new(c.try_clone().unwrap());
-	use gen::handshaking::to_server::packet as hs;
-	let handshake = hs::Ty::SetProtocol(gen::handshaking::to_server::PacketSetProtocol {
+	use generated::handshaking::to_server::packet as hs;
+	let handshake = hs::Ty::SetProtocol(generated::handshaking::to_server::PacketSetProtocol {
 		protocol_version: 774,
 		server_host: "localhost".to_owned(),
 		server_port: 25565,
@@ -112,8 +113,8 @@ fn fake_client(port: u16) {
 	});
 	c.write_all(&frame(&ser(&handshake, hs::serialize), false))
 		.unwrap();
-	use gen::login::to_server::packet as login;
-	let start = login::Ty::LoginStart(gen::login::to_server::PacketLoginStart {
+	use generated::login::to_server::packet as login;
+	let start = login::Ty::LoginStart(generated::login::to_server::PacketLoginStart {
 		username: "pds".to_owned(),
 		player_uuid: 0x1234,
 	});
@@ -121,14 +122,14 @@ fn fake_client(port: u16) {
 		.unwrap();
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	let ack = login::Ty::LoginAcknowledged(gen::login::to_server::PacketLoginAcknowledged {});
+	let ack = login::Ty::LoginAcknowledged(generated::login::to_server::PacketLoginAcknowledged {});
 	c.write_all(&frame(&ser(&ack, login::serialize), true))
 		.unwrap();
 	skip_frame(&mut r);
 	skip_frame(&mut r);
-	use gen::configuration::to_server::packet as config;
+	use generated::configuration::to_server::packet as config;
 	let finish = config::Ty::FinishConfiguration(
-		gen::configuration::to_server::PacketFinishConfiguration {},
+		generated::configuration::to_server::PacketFinishConfiguration {},
 	);
 	c.write_all(&frame(&ser(&finish, config::serialize), true))
 		.unwrap();

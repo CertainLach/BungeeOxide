@@ -4,8 +4,8 @@ minecraft: nbt
 	pds2 compile protocol.pds typescript --to ts/minecraft-protocol/gen
 
 nbt:
-	rm -rf crates/bungeeoxide-nbt/src/gen ts/nbt/gen
-	pds2 compile crates/bungeeoxide-nbt/nbt.pds rust --to crates/bungeeoxide-nbt/src/gen --view ''
+	rm -rf crates/bungeeoxide-nbt/src/generated ts/nbt/gen
+	pds2 compile crates/bungeeoxide-nbt/nbt.pds rust --to crates/bungeeoxide-nbt/src/generated --view ''
 	pds2 compile crates/bungeeoxide-nbt/nbt.pds typescript --to ts/nbt/gen
 
 mcdata := "target/minecraft-data"

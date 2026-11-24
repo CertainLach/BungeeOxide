@@ -1,14 +1,14 @@
 use super::chunk::{self, Old, Shape};
 use super::heights;
 use super::ids;
-use super::{entities, item_id, legacy_slot, old_meta_item, Kind, OldMetaItem};
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_0_1, v1_1, v1_2_3};
+use super::{Kind, OldMetaItem, entities, item_id, legacy_slot, old_meta_item};
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_0_1, v1_1, v1_2_3};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
 macro_rules! legacy_items {
-	($to:expr, $m:ident, $meta:ident, $equip:ident, $named:ident, $item:ident) => {
+	($to:expr_2021, $m:ident, $meta:ident, $equip:ident, $named:ident, $item:ident) => {
 		pub fn $meta(v: OldMetaItem, _cx: &mut Session) -> Result<OldMetaItem> {
 			Ok(old_meta_item(v, $to))
 		}
@@ -53,7 +53,7 @@ macro_rules! legacy_items {
 }
 
 macro_rules! legacy_windows {
-	($to:expr, $m:ident, $set_slot:ident, $items:ident, $creative:ident, $creative_server:ident, $click:ident, $place:ident) => {
+	($to:expr_2021, $m:ident, $set_slot:ident, $items:ident, $creative:ident, $creative_server:ident, $click:ident, $place:ident) => {
 		pub fn $set_slot(
 			mut p: $m::play_to_client_packet_set_slot::Ty,
 			_cx: &mut Session,

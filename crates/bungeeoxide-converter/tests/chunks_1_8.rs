@@ -1,6 +1,6 @@
-use bungeeoxide_converter::gen::convert::packet_name;
 use bungeeoxide_converter::Version;
-use bungeeoxide_converter::{convert, Root, Session};
+use bungeeoxide_converter::generated::convert::packet_name;
+use bungeeoxide_converter::{Root, Session, convert};
 
 fn dump() -> Vec<Vec<u8>> {
 	let bytes = std::fs::read(concat!(

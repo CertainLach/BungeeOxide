@@ -324,11 +324,15 @@ pub mod pds_entityDelta {
 }
 
 pub mod pds_vecDelta {
-	use super::*;
 	pub use super::pds_entityDelta::Step;
+	use super::*;
 	#[derive(Debug, Clone, PartialEq, Eq)]
 	pub enum Delta {
-		Linear { dX: i16, dY: i16, dZ: i16 },
+		Linear {
+			dX: i16,
+			dY: i16,
+			dZ: i16,
+		},
 		Stepped {
 			startImmediately: bool,
 			steps: Vec<Step>,

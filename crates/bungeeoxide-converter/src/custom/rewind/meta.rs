@@ -1,5 +1,5 @@
 use super::items;
-use crate::gen::convert::{v1_12, v1_8, v1_9, Version};
+use crate::generated::convert::{Version, v1_8, v1_9, v1_12};
 use crate::session::Kind;
 
 pub(super) type M9 = v1_9::entity_metadata_item::Ty;

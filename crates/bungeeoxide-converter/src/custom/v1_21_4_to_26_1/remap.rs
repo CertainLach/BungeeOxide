@@ -1,6 +1,6 @@
 use super::util::remap;
-use crate::gen::convert::v1_21_5::{id_set, item_sound_event, item_sound_holder};
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
+use crate::generated::convert::v1_21_5::{id_set, item_sound_event, item_sound_holder};
 use crate::pds::convert::{Error, Result};
 use crate::registry;
 

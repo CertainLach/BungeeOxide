@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod armor_trim_material;
@@ -208,8 +208,6 @@ pub use self::item_sound_holder::Ty as ItemSoundHolder;
 pub use self::item_written_book_page::ItemWrittenBookPage;
 pub use self::minecraft_simple_recipe_format::Ty as MinecraftSimpleRecipeFormat;
 pub use self::minecraft_smelting_format::MinecraftSmeltingFormat;
-pub use self::option_118::Ty as Option118;
-pub use self::option_119::Ty as Option119;
 pub use self::option_13::Ty as Option13;
 pub use self::option_14::Ty as Option14;
 pub use self::option_56::Ty as Option56;
@@ -217,6 +215,8 @@ pub use self::option_57::Ty as Option57;
 pub use self::option_58::Ty as Option58;
 pub use self::option_59::Ty as Option59;
 pub use self::option_60::Ty as Option60;
+pub use self::option_118::Ty as Option118;
+pub use self::option_119::Ty as Option119;
 pub use self::optvarint::Ty as Optvarint;
 pub use self::packed_chunk_pos::Ty as PackedChunkPos;
 pub use self::packet_common_add_resource_pack::PacketCommonAddResourcePack;
@@ -236,6 +236,9 @@ pub use self::previous_messages::Ty as PreviousMessages;
 pub use self::slot::Slot;
 pub use self::slot_7::Slot7;
 pub use self::slot_component::SlotComponent;
+pub use self::slot_component_7::SlotComponent7;
+pub use self::slot_component_8::SlotComponent8;
+pub use self::slot_component_9::SlotComponent9;
 pub use self::slot_component_10::SlotComponent10;
 pub use self::slot_component_11::SlotComponent11;
 pub use self::slot_component_12::SlotComponent12;
@@ -263,9 +266,6 @@ pub use self::slot_component_33::SlotComponent33;
 pub use self::slot_component_34::SlotComponent34;
 pub use self::slot_component_35::SlotComponent35;
 pub use self::slot_component_36::SlotComponent36;
-pub use self::slot_component_7::SlotComponent7;
-pub use self::slot_component_8::SlotComponent8;
-pub use self::slot_component_9::SlotComponent9;
 pub use self::slot_component_type::SlotComponentType;
 pub use self::sound_source::Ty as SoundSource;
 pub use self::string::Ty as String;

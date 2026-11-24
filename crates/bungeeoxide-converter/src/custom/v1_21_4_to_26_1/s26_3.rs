@@ -6,11 +6,11 @@ use super::shared;
 use super::slots::{self, exact_matchers, untrusted_step};
 use super::tags::Derived;
 use super::util::{decode, encode, read_varint, recode};
+use crate::Session;
 use crate::custom::chunks::bits::{bitset_bytes, bitset_longs};
-use crate::gen::convert::{v26_2 as a, v26_3 as b, Version};
+use crate::generated::convert::{Version, v26_2 as a, v26_3 as b};
 use crate::pds::convert::{Error, Result};
 use crate::pds_native::pds_entityDelta::{Delta, Step, Ty as EntityDelta};
-use crate::Session;
 use bungeeoxide_nbt::{Payload, Tag};
 use std::collections::HashSet;
 
@@ -522,7 +522,11 @@ pub fn sherds_up(nbt: &mut Payload) {
 		.collect();
 	let mut sides = Payload::Compound(Vec::new());
 	for (i, side) in POT_SIDES.iter().enumerate() {
-		let id = ids.get(i).cloned().flatten().unwrap_or_else(|| BRICK.to_owned());
+		let id = ids
+			.get(i)
+			.cloned()
+			.flatten()
+			.unwrap_or_else(|| BRICK.to_owned());
 		let mut item = Payload::Compound(Vec::new());
 		item.put("id", Payload::String(id));
 		sides.put(side, item);
@@ -537,7 +541,10 @@ pub fn sherds_down(nbt: &mut Payload) {
 	let ids: Vec<Payload> = POT_SIDES
 		.iter()
 		.map(|side| {
-			let id = sides.field(side).and_then(|s| s.field("id")).and_then(Payload::as_str);
+			let id = sides
+				.field(side)
+				.and_then(|s| s.field("id"))
+				.and_then(Payload::as_str);
 			Payload::String(id.unwrap_or(BRICK).to_owned())
 		})
 		.collect();
@@ -643,11 +650,13 @@ pub fn late_open_window_up_26_3(
 	_cx: &mut Session,
 ) -> Result<Vec<b::play_to_client_packet::Ty>> {
 	let total = |property, value| {
-		b::play_to_client_packet::Ty::CraftProgressBar(b::play_to_client_packet_craft_progress_bar::Ty {
-			window_id: v.window_id,
-			property,
-			value,
-		})
+		b::play_to_client_packet::Ty::CraftProgressBar(
+			b::play_to_client_packet_craft_progress_bar::Ty {
+				window_id: v.window_id,
+				property,
+				value,
+			},
+		)
 	};
 	let mut out = Vec::new();
 	if v.inventory_type == BREWING_STAND_MENU {
@@ -1150,7 +1159,9 @@ fn unary(kind: &str, input: Payload) -> Payload {
 fn rounded(p: &Payload) -> Option<Payload> {
 	match p {
 		Payload::Int(_) => Some(p.clone()),
-		p => p.as_f64().map(|v| Payload::Int((v as f32 + 0.5).floor() as i32)),
+		p => p
+			.as_f64()
+			.map(|v| Payload::Int((v as f32 + 0.5).floor() as i32)),
 	}
 }
 
@@ -1344,7 +1355,11 @@ fn block_states_up(list: Payload) -> Payload {
 }
 
 fn state_provider_up(provider: Payload) -> Payload {
-	let Some(kind) = provider.field("type").and_then(Payload::as_str).map(|t| short(t).to_owned()) else {
+	let Some(kind) = provider
+		.field("type")
+		.and_then(Payload::as_str)
+		.map(|t| short(t).to_owned())
+	else {
 		return block_state_up(provider);
 	};
 	let kind = match kind.as_str() {
@@ -1475,7 +1490,8 @@ fn term_down(tag: &mut Payload) {
 			}
 		}
 		"match_block" => {
-			let single = matches!(tag.field("blocks"), Some(Payload::String(b)) if !b.starts_with('#'));
+			let single =
+				matches!(tag.field("blocks"), Some(Payload::String(b)) if !b.starts_with('#'));
 			if single {
 				tag.put("condition", Payload::from("minecraft:block_state_property"));
 				rename(tag, "blocks", "block");
@@ -1487,7 +1503,9 @@ fn term_down(tag: &mut Payload) {
 		"all_of" | "any_of" => {
 			tag.put("condition", condition);
 			if let Some(Payload::Compound(_)) = tag.field("terms") {
-				map_field(tag, "terms", "terms", |t| Payload::List(bungeeoxide_nbt::List::of(vec![t])));
+				map_field(tag, "terms", "terms", |t| {
+					Payload::List(bungeeoxide_nbt::List::of(vec![t]))
+				});
 			}
 		}
 		_ => tag.put("condition", condition),

@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use crate::pds::convert::{Error, Result};
 use crate::pds::{Input, Output};
 use crate::registry;

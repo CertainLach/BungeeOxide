@@ -1,8 +1,8 @@
-use super::common::{self, block, block_state, encode, item, name_id, sound, ParticleMap, Sound};
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_19_4 as old, v1_20 as new};
-use crate::pds::convert::{Error, Result};
+use super::common::{self, ParticleMap, Sound, block, block_state, encode, item, name_id, sound};
 use crate::Session;
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_19_4 as old, v1_20 as new};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload};
 
 const OLD: Version = Version::V1_19_4;
@@ -145,7 +145,7 @@ fn display_rotation(cx: &mut Session, version: Version, entity: i32) -> Option<(
 }
 
 macro_rules! metadata {
-	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr, $to:expr, $particle:ident) => {
+	($name:ident, $root:ty, $src:ident, $dst:ident, $from:expr_2021, $to:expr_2021, $particle:ident) => {
 		arm!(
 			$name,
 			$root,

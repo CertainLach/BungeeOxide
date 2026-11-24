@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 
-use bungeeoxide::{serve, users, Config};
+use bungeeoxide::{Config, serve, users};
 use bungeeoxide_converter::Version;
 use clap::Parser;
 use tokio::net::TcpListener;

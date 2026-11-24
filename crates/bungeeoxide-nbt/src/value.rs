@@ -489,7 +489,7 @@ impl CompoundVecExt for Vec<Entry> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::gen::{entry, list, tag};
+	use crate::generated::{entry, list, tag};
 	use crate::pds::Output;
 
 	fn type_byte<T>(v: &T, ser: fn(&T, &mut Output) -> crate::pds::Result<()>) -> u8 {
@@ -525,10 +525,16 @@ mod tests {
 		];
 		for (value, kind) in cases {
 			assert_eq!(type_byte(&Tag::new(value.clone()), tag::serialize), kind);
-			assert_eq!(type_byte(&Entry::new("x", value.clone()), entry::serialize), kind);
+			assert_eq!(
+				type_byte(&Entry::new("x", value.clone()), entry::serialize),
+				kind
+			);
 			assert_eq!(value.kind(), kind);
 		}
-		assert_eq!(type_byte(&List::new(ListItems::Compound(vec![])), list::serialize), 10);
+		assert_eq!(
+			type_byte(&List::new(ListItems::Compound(vec![])), list::serialize),
+			10
+		);
 		assert_eq!(type_byte(&List::of(vec![]), list::serialize), 0);
 		assert_eq!(
 			List::of(vec![Payload::String("a".into()), 1i32.into(), "b".into()]),

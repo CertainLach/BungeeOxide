@@ -2,13 +2,13 @@ use bungeeoxide_converter::Version;
 use std::sync::OnceLock;
 use std::time::Duration;
 
+use aes::Aes128;
 use aes::cipher::generic_array::GenericArray;
 use aes::cipher::{BlockEncrypt, KeyInit};
-use aes::Aes128;
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use bungeeoxide_converter::minecraft;
 use bungeeoxide_converter::pds::{self, Input};
-use bungeeoxide_converter::{legacy_version_of, reachable, Root, LEGACY_PROTOCOLS, STACK_BUDGET};
+use bungeeoxide_converter::{LEGACY_PROTOCOLS, Root, STACK_BUDGET, legacy_version_of, reachable};
 use bytes::BytesMut;
 use futures::SinkExt;
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
@@ -19,7 +19,7 @@ use tokio_util::codec::Framed;
 
 use crate::codec::Codec;
 use crate::status::{self, Upstream};
-use crate::{join_upstream, next, relay, Config, Conn, Proxy};
+use crate::{Config, Conn, Proxy, join_upstream, next, relay};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Frame {

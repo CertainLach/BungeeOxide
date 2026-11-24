@@ -3,20 +3,20 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use bungeeoxide::codec::Codec;
-use bungeeoxide::legacy::{string16, Cfb8, Legacy};
+use bungeeoxide::legacy::{Cfb8, Legacy, string16};
 use bungeeoxide::users::User;
-use bungeeoxide::{decode, encode, next, serve, Config, Conn};
-use bungeeoxide_converter::gen::convert::packet_name;
-use bungeeoxide_converter::gen::convert::v1_8::{
+use bungeeoxide::{Config, Conn, decode, encode, next, serve};
+use bungeeoxide_converter::Root;
+use bungeeoxide_converter::generated::convert::packet_name;
+use bungeeoxide_converter::generated::convert::v1_8::{
 	handshaking_to_server_packet as handshake, login_to_client_packet as login_c,
 	login_to_client_packet_success, login_to_server_packet as login_s,
 	play_to_client_packet as play_c, play_to_client_packet_chat, play_to_client_packet_login,
 	play_to_server_packet as play_s, status_to_client_packet as status_c,
 	status_to_server_packet as status_s,
 };
-use bungeeoxide_converter::Root;
 use futures::SinkExt;
 use rsa::pkcs8::DecodePublicKey;
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
@@ -447,9 +447,11 @@ async fn probes_tell_netty_and_pre_netty_servers_apart() -> Result<()> {
 		bungeeoxide::status::probe(&old, modern).await?,
 		Version::V1_6_4
 	);
-	assert!(bungeeoxide::status::probe("127.0.0.1:1", modern)
-		.await
-		.is_err());
+	assert!(
+		bungeeoxide::status::probe("127.0.0.1:1", modern)
+			.await
+			.is_err()
+	);
 	Ok(())
 }
 
@@ -461,9 +463,11 @@ async fn server_list_pings_fall_back_to_the_motd() -> Result<()> {
 		ping(proxy, &[0xfe, 0x01]).await?,
 		"\u{a7}1\x0078\x00pds2 bridge 1.0.1-1.6.4\x00test bridge\x000\x000"
 	);
-	assert!(ping(proxy, &ping_host(74))
-		.await?
-		.starts_with("\u{a7}1\x0074\x00"));
+	assert!(
+		ping(proxy, &ping_host(74))
+			.await?
+			.starts_with("\u{a7}1\x0074\x00")
+	);
 	Ok(())
 }
 

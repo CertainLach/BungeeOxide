@@ -6,11 +6,11 @@ use serde_json::Value;
 
 use super::chat_types::{ChatType, Decoration, Parameter};
 use super::localize::localize;
-use crate::gen::convert::{v1_21_1, Root, Version};
+use crate::Session;
+use crate::generated::convert::{Root, Version, v1_21_1};
 use crate::pds::convert::{Error, Result};
 use crate::pds::{Input, Output};
 use crate::registry;
-use crate::Session;
 
 mod chunk;
 mod step_1_21_1;
@@ -491,7 +491,7 @@ fn carry<A, B, T>(
 ) -> Result<T> {
 	let mut out = Output::new();
 	ser(packet, &mut out).map_err(encoding)?;
-	for bytes in crate::gen::convert::step(root, from, to, &out.into_inner(), cx)? {
+	for bytes in crate::generated::convert::step(root, from, to, &out.into_inner(), cx)? {
 		if let Some(v) = pick(de(&mut Input::new(&bytes)).map_err(encoding)?) {
 			return Ok(v);
 		}

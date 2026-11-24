@@ -1,7 +1,7 @@
 use super::components;
 use super::remap;
 use super::util::{decode, write_varint};
-use crate::gen::convert::{v1_21_5 as b, Version};
+use crate::generated::convert::{Version, v1_21_5 as b};
 use bungeeoxide_nbt::Payload;
 use std::collections::HashMap;
 use std::sync::LazyLock;

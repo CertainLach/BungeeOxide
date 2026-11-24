@@ -1,9 +1,9 @@
-use crate::gen::entry;
-use crate::pds::{Input, Output};
 use crate::Entry;
+use crate::generated::entry;
+use crate::pds::{Input, Output};
+use flate2::Compression;
 use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
-use flate2::Compression;
 use std::fmt;
 use std::io::{self, Read, Write};
 

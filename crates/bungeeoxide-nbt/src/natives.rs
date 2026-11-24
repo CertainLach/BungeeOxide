@@ -1,9 +1,9 @@
 pub mod pds_nbt {
-	pub use crate::gen::entry::*;
+	pub use crate::generated::entry::*;
 }
 
 pub mod pds_optionalNbt {
-	use crate::gen::entry;
+	use crate::generated::entry;
 	use crate::pds::{Input, Output, Result};
 
 	pub type Ty = Option<entry::Ty>;
@@ -32,11 +32,11 @@ pub mod pds_optionalNbt {
 }
 
 pub mod pds_anonymousNbt {
-	pub use crate::gen::tag::*;
+	pub use crate::generated::tag::*;
 }
 
 pub mod pds_anonOptionalNbt {
-	use crate::gen::tag;
+	use crate::generated::tag;
 	use crate::pds::{Input, Output, Result};
 
 	pub type Ty = Option<tag::Ty>;
@@ -98,7 +98,7 @@ pub mod view {
 	macro_rules! optional {
 		($name:ident, $inner:ident) => {
 			pub mod $name {
-				use crate::gen::view::$inner;
+				use crate::generated::view::$inner;
 				use crate::pds::{Input, Output, Result};
 
 				pub type Ty<'i> = Option<$inner::Ty<'i>>;
@@ -137,11 +137,11 @@ pub mod view {
 	}
 
 	pub mod pds_nbt {
-		pub use crate::gen::view::entry::*;
+		pub use crate::generated::view::entry::*;
 	}
 
 	pub mod pds_anonymousNbt {
-		pub use crate::gen::view::tag::*;
+		pub use crate::generated::view::tag::*;
 	}
 
 	optional!(pds_optionalNbt, entry);

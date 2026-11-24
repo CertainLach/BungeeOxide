@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 pub const BLOCKS: &[(Version, &str, &str)] = &[
 	(Version::V1_14, "sign", "oak_sign"),
 	(Version::V1_14, "wall_sign", "oak_wall_sign"),

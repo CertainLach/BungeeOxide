@@ -3,7 +3,7 @@ use std::sync::OnceLock;
 
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, Payload};
 
-use crate::gen::convert::{v1_8, Version};
+use crate::generated::convert::{Version, v1_8};
 use crate::registry;
 
 pub(super) type Slot = v1_8::slot::Ty;

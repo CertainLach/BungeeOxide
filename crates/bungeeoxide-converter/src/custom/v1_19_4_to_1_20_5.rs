@@ -1,5 +1,5 @@
 macro_rules! arm {
-	($name:ident, $root:ty, $arm:ident, $src:ty, |mut $p:ident, $cx:ident| $body:expr) => {
+	($name:ident, $root:ty, $arm:ident, $src:ty, |mut $p:ident, $cx:ident| $body:expr_2021) => {
 		pub fn $name(
 			mut $p: $src,
 			$cx: &mut crate::Session,
@@ -7,7 +7,7 @@ macro_rules! arm {
 			Ok(vec![<$root>::$arm($body)])
 		}
 	};
-	($name:ident, $root:ty, $arm:ident, $src:ty, |$p:ident, $cx:ident| $body:expr) => {
+	($name:ident, $root:ty, $arm:ident, $src:ty, |$p:ident, $cx:ident| $body:expr_2021) => {
 		pub fn $name(
 			$p: $src,
 			$cx: &mut crate::Session,

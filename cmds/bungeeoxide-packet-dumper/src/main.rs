@@ -8,7 +8,7 @@ use std::sync::atomic::{AtomicBool, AtomicI32, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 
-use bungeeoxide_minecraft_v1_21_11 as gen;
+use bungeeoxide_minecraft_v1_21_11 as generated;
 use clap::Parser;
 use flate2::read::ZlibDecoder;
 use pds_bytes_runtime::{self as pds, Input, Output};
@@ -197,7 +197,7 @@ fn check<T: Debug>(
 					name: unknown(),
 					outcome: Outcome::Panic,
 				},
-			)
+			);
 		}
 		Ok(Err(e)) => {
 			return (
@@ -212,7 +212,7 @@ fn check<T: Debug>(
 					name: unknown(),
 					outcome: Outcome::Error,
 				},
-			)
+			);
 		}
 		Ok(Ok(v)) => v,
 	};
@@ -264,7 +264,7 @@ fn check<T: Debug>(
 }
 
 macro_rules! check {
-	($m:ident, $data:expr, $opts:expr) => {
+	($m:ident, $data:expr_2021, $opts:expr_2021) => {
 		check($data, $m::deserialize, $m::serialize, $m::size_of, $opts)
 	};
 }
@@ -273,7 +273,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 	let mut fx = Effect::default();
 	let report = match (dir, state) {
 		(Dir::C2s, State::Handshaking) => {
-			use gen::handshaking::to_server::packet as p;
+			use generated::handshaking::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::SetProtocol(h)) = v {
 				let next = if h.next_state == 1 {
@@ -287,19 +287,19 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::S2c, State::Handshaking) => {
-			use gen::handshaking::to_client::packet as p;
+			use generated::handshaking::to_client::packet as p;
 			check!(p, data, opts).1
 		}
 		(Dir::C2s, State::Status) => {
-			use gen::status::to_server::packet as p;
+			use generated::status::to_server::packet as p;
 			check!(p, data, opts).1
 		}
 		(Dir::S2c, State::Status) => {
-			use gen::status::to_client::packet as p;
+			use generated::status::to_client::packet as p;
 			check!(p, data, opts).1
 		}
 		(Dir::C2s, State::Login) => {
-			use gen::login::to_server::packet as p;
+			use generated::login::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::LoginAcknowledged(_)) = v {
 				fx.c2s = Some(State::Configuration);
@@ -307,7 +307,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::S2c, State::Login) => {
-			use gen::login::to_client::packet as p;
+			use generated::login::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
 			match v {
 				Some(p::Ty::Success(_)) => fx.s2c = Some(State::Configuration),
@@ -318,7 +318,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::C2s, State::Configuration) => {
-			use gen::configuration::to_server::packet as p;
+			use generated::configuration::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::FinishConfiguration(_)) = v {
 				fx.c2s = Some(State::Play);
@@ -326,7 +326,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::S2c, State::Configuration) => {
-			use gen::configuration::to_client::packet as p;
+			use generated::configuration::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::FinishConfiguration(_)) = v {
 				fx.s2c = Some(State::Play);
@@ -334,7 +334,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::C2s, State::Play) => {
-			use gen::play::to_server::packet as p;
+			use generated::play::to_server::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::ConfigurationAcknowledged(_)) = v {
 				fx.c2s = Some(State::Configuration);
@@ -342,7 +342,7 @@ fn inspect(dir: Dir, state: State, data: &[u8], opts: &Opts) -> (Report, Effect)
 			r
 		}
 		(Dir::S2c, State::Play) => {
-			use gen::play::to_client::packet as p;
+			use generated::play::to_client::packet as p;
 			let (v, r) = check!(p, data, opts);
 			if let Some(p::Ty::StartConfiguration(_)) = v {
 				fx.s2c = Some(State::Configuration);

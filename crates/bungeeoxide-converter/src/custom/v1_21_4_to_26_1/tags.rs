@@ -1,10 +1,10 @@
 use super::util::remap;
-use crate::gen::convert::v1_21_5::configuration_to_client_packet_tags_items_tags_items as tag;
-use crate::gen::convert::v1_21_5::{
+use crate::generated::convert::Version;
+use crate::generated::convert::v1_21_5::configuration_to_client_packet_tags_items_tags_items as tag;
+use crate::generated::convert::v1_21_5::{
 	configuration_to_client_packet_tags_items as config_tags,
 	play_to_client_packet_tags_items as play_tags,
 };
-use crate::gen::convert::Version;
 
 fn kind(registry: &str) -> Option<&'static str> {
 	match registry.strip_prefix("minecraft:").unwrap_or(registry) {

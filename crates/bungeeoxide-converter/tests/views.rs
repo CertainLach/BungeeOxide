@@ -1,12 +1,12 @@
 use std::borrow::Cow;
 use std::ops::Range;
 
+use bungeeoxide_converter::Version;
 use bungeeoxide_converter::minecraft::v26_4_snapshot_10::play::to_client::packet as owned;
 use bungeeoxide_converter::minecraft::view::v26_4_snapshot_10::play::to_client::packet as view;
 use bungeeoxide_converter::pds::{Input, Output};
-use bungeeoxide_converter::Version;
-use bungeeoxide_converter::{convert, Root, Session};
-use bungeeoxide_nbt::gen::view::{list_0 as items, payload};
+use bungeeoxide_converter::{Root, Session, convert};
+use bungeeoxide_nbt::generated::view::{list_0 as items, payload};
 
 fn borrowed_strings(p: &payload::Ty, within: &Range<*const u8>) -> usize {
 	let check = |s: &Cow<str>| match s {

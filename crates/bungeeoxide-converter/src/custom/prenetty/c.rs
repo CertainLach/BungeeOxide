@@ -1,16 +1,16 @@
 use super::chunk::{self, Shape};
 use super::ids;
 use super::{
-	entities, falling_block, item_id, mid_meta_item, old_meta_item, slot, state, world_event_data,
-	Kind, MidMetaItem, OldMetaItem, Pending, Slot,
+	Kind, MidMetaItem, OldMetaItem, Pending, Slot, entities, falling_block, item_id, mid_meta_item,
+	old_meta_item, slot, state, world_event_data,
 };
-use crate::gen::convert::Version;
-use crate::gen::convert::{v1_3_2, v1_4_2, v1_4_5, v1_4_7, v1_5_1};
+use crate::generated::convert::Version;
+use crate::generated::convert::{v1_3_2, v1_4_2, v1_4_5, v1_4_7, v1_5_1};
 use crate::pds::convert::Result;
 use crate::session::Session;
 
 macro_rules! slot_down {
-	($name:ident, $to:expr) => {
+	($name:ident, $to:expr_2021) => {
 		pub fn $name(v: Slot, _cx: &mut Session) -> Result<Slot> {
 			Ok(slot(v, $to))
 		}
@@ -25,7 +25,7 @@ slot_down!(prenetty_slot_down_1_5_2, Version::V1_5_2);
 slot_down!(prenetty_slot_down_1_6_4, Version::V1_6_4);
 
 macro_rules! blocks {
-	($to:expr, $m:ident, $block_change:ident, $multi:ident, $map_chunk:ident, $world_event:ident) => {
+	($to:expr_2021, $m:ident, $block_change:ident, $multi:ident, $map_chunk:ident, $world_event:ident) => {
 		pub fn $block_change(
 			mut p: $m::play_to_client_packet_block_change::Ty,
 			_cx: &mut Session,
@@ -73,7 +73,7 @@ macro_rules! blocks {
 pub(super) use blocks;
 
 macro_rules! named {
-	($named:ident, $m:ident, $to:expr) => {
+	($named:ident, $m:ident, $to:expr_2021) => {
 		pub fn $named(
 			mut p: $m::play_to_client_packet_named_entity_spawn::Ty,
 			_cx: &mut Session,

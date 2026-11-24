@@ -2,15 +2,15 @@ use bungeeoxide_converter::Version;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
-use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_converter::gen::convert::v26_3::{
+use anyhow::{Context as _, Result, anyhow, bail};
+use bungeeoxide_converter::generated::convert::v26_3::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,
 };
-use bungeeoxide_converter::{legacy_version_of, version_of, Session};
+use bungeeoxide_converter::{Session, legacy_version_of, version_of};
 use futures::SinkExt;
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value, json};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
@@ -19,7 +19,7 @@ use tracing::{info, warn};
 
 use crate::codec::Codec;
 use crate::{
-	client_version, decode, encode, legacy, next, protocol_of, reach, split_target, Config, PIVOT,
+	Config, PIVOT, client_version, decode, encode, legacy, next, protocol_of, reach, split_target,
 };
 
 const TIMEOUT: Duration = Duration::from_secs(3);

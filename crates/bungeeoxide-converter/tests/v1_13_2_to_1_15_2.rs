@@ -1,12 +1,12 @@
-use bungeeoxide_converter::gen::convert::Version::{self, *};
-use bungeeoxide_converter::gen::convert::{convert, v1_13_2, v1_14, v1_15_2, Root};
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::Version::{self, *};
+use bungeeoxide_converter::generated::convert::{Root, convert, v1_13_2, v1_14, v1_15_2};
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
-use bungeeoxide_nbt::gen::entry::Ty as Nbt;
-use bungeeoxide_nbt::gen::list::Ty as NbtList;
-use bungeeoxide_nbt::gen::list_0::Ty as NbtItems;
-use bungeeoxide_nbt::gen::payload::Ty as Tag;
+use bungeeoxide_nbt::generated::entry::Ty as Nbt;
+use bungeeoxide_nbt::generated::list::Ty as NbtList;
+use bungeeoxide_nbt::generated::list_0::Ty as NbtItems;
+use bungeeoxide_nbt::generated::payload::Ty as Tag;
 use v1_13_2::play_to_client_packet::Ty as C13;
 use v1_14::play_to_client_packet::Ty as C14;
 use v1_15_2::play_to_client_packet::Ty as C15;
@@ -311,7 +311,12 @@ fn login_adds_view_distance_and_difficulty() {
 		reduced_debug_info: true,
 	});
 	let out = to14(&packet, &mut Session::new());
-	let [C14::Login(l), C14::UpdateViewDistance(64), C14::Difficulty(d)] = out.as_slice() else {
+	let [
+		C14::Login(l),
+		C14::UpdateViewDistance(64),
+		C14::Difficulty(d),
+	] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
@@ -331,7 +336,12 @@ fn login_adds_view_distance_and_difficulty() {
 		) && !d.difficulty_locked
 	);
 	let out = to15(&packet, &mut Session::new());
-	let [C15::Login(l), C15::UpdateViewDistance(64), C15::Difficulty(_)] = out.as_slice() else {
+	let [
+		C15::Login(l),
+		C15::UpdateViewDistance(64),
+		C15::Difficulty(_),
+	] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
@@ -351,8 +361,11 @@ fn chunk_moves_light_out_and_computes_heightmaps() {
 	login(&mut cx);
 	let column = column_1_13_2();
 	let out = to14(&chunk_1_13_2(&column), &mut cx);
-	let [C14::UpdateViewPosition(v), C14::UpdateLight(light), C14::MapChunk(chunk)] =
-		out.as_slice()
+	let [
+		C14::UpdateViewPosition(v),
+		C14::UpdateLight(light),
+		C14::MapChunk(chunk),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -453,7 +466,11 @@ fn chunk_reaches_1_15_2_with_biome_volume() {
 	login(&mut cx);
 	let column = column_1_13_2();
 	let out = to15(&chunk_1_13_2(&column), &mut cx);
-	let [C15::UpdateViewPosition(_), C15::UpdateLight(_), C15::MapChunk(chunk)] = out.as_slice()
+	let [
+		C15::UpdateViewPosition(_),
+		C15::UpdateLight(_),
+		C15::MapChunk(chunk),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -984,7 +1001,12 @@ fn view_position_follows_the_player() {
 	.unwrap();
 	assert_eq!(sent.len(), 1);
 	let out = to15(&chunk_1_13_2(&column_1_13_2()), &mut cx);
-	let [C15::UpdateViewPosition(v), C15::UpdateLight(_), C15::MapChunk(_)] = out.as_slice() else {
+	let [
+		C15::UpdateViewPosition(v),
+		C15::UpdateLight(_),
+		C15::MapChunk(_),
+	] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	assert_eq!((v.chunk_x, v.chunk_z), (8, -13));
@@ -998,7 +1020,12 @@ fn view_position_follows_the_player() {
 	};
 	far.x = 300;
 	let out = to15(&C13::MapChunk(far), &mut cx);
-	let [C15::UpdateViewPosition(v), C15::UpdateLight(_), C15::MapChunk(_)] = out.as_slice() else {
+	let [
+		C15::UpdateViewPosition(v),
+		C15::UpdateLight(_),
+		C15::MapChunk(_),
+	] = out.as_slice()
+	else {
 		panic!("{out:?}")
 	};
 	assert_eq!(
@@ -1190,8 +1217,10 @@ fn select_trade_forces_an_inventory_resync() {
 		.iter()
 		.map(|b| v1_13_2::play_to_server_packet::deserialize(&mut Input::new(b)).unwrap())
 		.collect();
-	let [v1_13_2::play_to_server_packet::Ty::SelectTrade(2), v1_13_2::play_to_server_packet::Ty::WindowClick(c)] =
-		packets.as_slice()
+	let [
+		v1_13_2::play_to_server_packet::Ty::SelectTrade(2),
+		v1_13_2::play_to_server_packet::Ty::WindowClick(c),
+	] = packets.as_slice()
 	else {
 		panic!("{packets:?}")
 	};
@@ -1456,7 +1485,10 @@ fn json_lore_becomes_legacy_text() {
 fn newer_blocks_windows_and_commands_degrade() {
 	let mut cx = Session::new();
 	login15(&mut cx, true);
-	let wall = state(V1_15_2, "minecraft:andesite_wall[east=true,north=false,south=false,up=true,waterlogged=false,west=true]");
+	let wall = state(
+		V1_15_2,
+		"minecraft:andesite_wall[east=true,north=false,south=false,up=true,waterlogged=false,west=true]",
+	);
 	let out = down(
 		&C15::BlockChange(v1_15_2::play_to_client_packet_block_change::Ty {
 			location: v1_15_2::position::Ty { x: 1, y: 2, z: 3 },

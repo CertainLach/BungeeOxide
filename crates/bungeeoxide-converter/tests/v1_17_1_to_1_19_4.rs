@@ -1,6 +1,6 @@
-use bungeeoxide_converter::gen::convert::{convert, v1_17_1, v1_18, Root, Version};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, Version, convert, v1_17_1, v1_18};
+use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_nbt::{Entry, Payload};
 
 fn varint(out: &mut Vec<u8>, v: i32) {
@@ -177,10 +177,12 @@ mod s1_18 {
 			let biomes = read_container(d, &mut at, 64, 1, 3);
 			if s == 1 {
 				assert_eq!(count, 4096);
-				assert!(blocks
-					.iter()
-					.enumerate()
-					.all(|(i, b)| *b == (i % 3 == 0) as u32));
+				assert!(
+					blocks
+						.iter()
+						.enumerate()
+						.all(|(i, b)| *b == (i % 3 == 0) as u32)
+				);
 			} else {
 				assert_eq!(count, 0);
 				assert!(blocks.iter().all(|b| *b == 0));
@@ -248,18 +250,20 @@ mod s1_18 {
 		let Payload::Compound(be) = &m.block_entities[0].value else {
 			panic!()
 		};
-		assert!(be
-			.iter()
-			.any(|e| e.name == "x" && e.value == Payload::Int(19)));
-		assert!(be
-			.iter()
-			.any(|e| e.name == "id" && e.value == Payload::String("minecraft:chest".into())));
+		assert!(
+			be.iter()
+				.any(|e| e.name == "x" && e.value == Payload::Int(19))
+		);
+		assert!(
+			be.iter()
+				.any(|e| e.name == "id" && e.value == Payload::String("minecraft:chest".into()))
+		);
 	}
 }
 
 mod chain {
 	use super::*;
-	use bungeeoxide_converter::gen::convert::{v1_19_2, v1_19_4, Version};
+	use bungeeoxide_converter::generated::convert::{Version, v1_19_2, v1_19_4};
 	use bungeeoxide_converter::registry;
 	use bungeeoxide_nbt::{List, ListItems};
 	use v1_17_1::play_to_client_packet as old;
@@ -1099,7 +1103,7 @@ mod chain {
 
 	#[test]
 	fn vibrations_follow_the_patched_layout() {
-		use bungeeoxide_converter::gen::convert::v1_19_3;
+		use bungeeoxide_converter::generated::convert::v1_19_3;
 		use v1_17_1::particle_data_v37_destination::Ty as Old;
 		use v1_19_3::particle_data_v40_destination::Ty as New;
 		let mut cx = Session::new();
@@ -1158,7 +1162,7 @@ mod chain {
 
 	#[test]
 	fn cats_get_their_variant_type_in_1_19() {
-		use bungeeoxide_converter::gen::convert::v1_19;
+		use bungeeoxide_converter::generated::convert::v1_19;
 		let mut cx = Session::new();
 		let cat =
 			old::Ty::SpawnEntityLiving(v1_17_1::play_to_client_packet_spawn_entity_living::Ty {
@@ -1413,7 +1417,7 @@ mod chain {
 
 mod padded_chunks {
 	use super::*;
-	use bungeeoxide_converter::gen::convert::{v1_12_2, v1_18_2, v1_19_2, v1_8};
+	use bungeeoxide_converter::generated::convert::{v1_8, v1_12_2, v1_18_2, v1_19_2};
 	use bungeeoxide_converter::registry;
 	use serde_json::Value;
 

@@ -5,7 +5,7 @@ mod files;
 pub mod renames;
 mod sounds;
 
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 pub fn file(path: &str) -> Option<&'static str> {
 	files::FILES

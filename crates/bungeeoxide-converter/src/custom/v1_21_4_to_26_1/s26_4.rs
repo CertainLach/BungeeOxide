@@ -6,11 +6,11 @@ use super::slots::{self, exact_matchers, untrusted_step};
 use super::tags::Derived;
 use super::util::{encode, lp_vec3, read_lp_vec3, read_varint};
 use super::world;
-use crate::gen::convert::v1_21_5::configuration_to_client_packet_tags_items_tags_items as tag;
-use crate::gen::convert::{v26_3 as a, v26_4_snapshot_10 as b, Root, Version};
+use crate::Session;
+use crate::generated::convert::v1_21_5::configuration_to_client_packet_tags_items_tags_items as tag;
+use crate::generated::convert::{Root, Version, v26_3 as a, v26_4_snapshot_10 as b};
 use crate::pds::convert::{Error, Result};
 use crate::pds_native::{pds_entityDelta, pds_vecDelta};
-use crate::Session;
 use bungeeoxide_nbt::{Payload, Tag};
 use std::collections::{HashMap, HashSet};
 

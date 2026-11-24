@@ -1,13 +1,13 @@
-use bungeeoxide_converter::gen::convert::{convert, Root};
-use bungeeoxide_converter::gen::convert::{v1_12_2, v1_8};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
-use v1_12_2::{play_to_client_packet as newest, play_to_server_packet as newest_server};
+use bungeeoxide_converter::generated::convert::{Root, convert};
+use bungeeoxide_converter::generated::convert::{v1_8, v1_12_2};
+use bungeeoxide_converter::pds::{Input, Output};
 use v1_8::{
 	play_to_client_packet as oldest, play_to_client_packet_map_chunk as chunk_1_8,
 	play_to_server_packet as oldest_server,
 };
+use v1_12_2::{play_to_client_packet as newest, play_to_server_packet as newest_server};
 
 fn encode_1_8(p: &oldest::Ty) -> Vec<u8> {
 	let mut o = Output::new();

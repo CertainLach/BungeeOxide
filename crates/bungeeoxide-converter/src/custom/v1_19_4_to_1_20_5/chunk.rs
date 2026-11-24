@@ -1,6 +1,6 @@
 use crate::custom::chunks::padding;
-use crate::gen::convert::Version;
-use crate::pds::convert::{unconvertible, Result};
+use crate::generated::convert::Version;
+use crate::pds::convert::{Result, unconvertible};
 
 pub struct Reader<'a> {
 	data: &'a [u8],

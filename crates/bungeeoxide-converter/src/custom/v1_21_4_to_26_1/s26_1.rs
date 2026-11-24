@@ -5,9 +5,9 @@ use super::rules::{blocks, hidden, items, statistics};
 use super::shared::{self, meta};
 use super::slots::{self, exact_matchers, untrusted_step};
 use super::util::{encode, read_lp_vec3, read_varint, recode};
-use crate::gen::convert::{v1_21_11 as a, v26_1 as b, Root, Version};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{Root, Version, v1_21_11 as a, v26_1 as b};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{Entry, Payload, Tag};
 use std::collections::{HashMap, HashSet};
 

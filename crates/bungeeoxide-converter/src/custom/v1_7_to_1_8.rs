@@ -5,7 +5,7 @@ pub(super) mod text;
 
 use std::collections::{HashMap, HashSet};
 
-use crate::gen::convert::{v1_7, v1_8};
+use crate::generated::convert::{v1_7, v1_8};
 use crate::pds::convert::{Error, Result};
 use crate::pds::{Input, Output};
 use crate::session::{Kind, Session};

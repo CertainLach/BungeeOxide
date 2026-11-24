@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use bungeeoxide_converter::{world, Version};
+use bungeeoxide_converter::{Version, world};
 use clap::Parser;
 
 /// Convert a Minecraft world to the latest supported version

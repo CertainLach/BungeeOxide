@@ -1,5 +1,5 @@
-use crate::gen::convert::Version;
 use crate::Session;
+use crate::generated::convert::Version;
 use std::collections::HashMap;
 
 #[derive(Default)]

@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub use ::bungeeoxide_minecraft_root::buffer::inline_3 as byte_array;
@@ -28,8 +28,8 @@ pub mod login;
 pub use ::bungeeoxide_minecraft_v1_13::particle;
 pub use ::bungeeoxide_minecraft_v1_13::particle_data;
 pub mod play;
-pub use ::bungeeoxide_minecraft_v1_13::slot;
 pub use ::bungeeoxide_minecraft_v1_8::position;
+pub use ::bungeeoxide_minecraft_v1_13::slot;
 pub mod status;
 pub use self::byte_array::Ty as ByteArray;
 pub use self::command_node::Ty as CommandNode;

@@ -1,6 +1,6 @@
 use super::util::{bits_for, read_varint, write_varint};
 use crate::custom::chunks::{expand_cells, sample_cells};
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use crate::pds::convert::{Error, Result};
 
 #[derive(Clone, Copy)]

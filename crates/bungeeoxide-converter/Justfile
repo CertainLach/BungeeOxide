@@ -2,7 +2,7 @@ mcdata := "../../target/minecraft-data"
 languages := "../../target/minecraft-languages"
 pds2 := "pds2"
 crates := "../../minecraft"
-split := "--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs --crate-dependency bungeeoxide-pds-natives --crate-dependency pds-bytes-runtime --module convert=src/gen/convert.rs"
+split := "--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs --crate-dependency bungeeoxide-pds-natives --crate-dependency pds-bytes-runtime --module convert=src/generated/convert.rs"
 
 gen:
 	#!/usr/bin/env bash

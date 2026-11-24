@@ -1,8 +1,8 @@
-use bungeeoxide_converter::gen::convert::{convert, Root, Version};
-use bungeeoxide_converter::gen::convert::{v1_12_2 as a, v1_13 as b, v1_13_2 as d};
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, Version, convert};
+use bungeeoxide_converter::generated::convert::{v1_12_2 as a, v1_13 as b, v1_13_2 as d};
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
 use bungeeoxide_nbt::{Entry, List, ListItems, Payload};
 
 type Client12 = a::play_to_client_packet::Ty;
@@ -283,8 +283,10 @@ fn chunks_and_block_changes_reach_1_13_2() {
 	let [Client132::BlockChange(c)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	assert!(describe(Version::V1_13_2, c.r#type as u32)
-		.starts_with("minecraft:oak_door[facing=west,half=lower"));
+	assert!(
+		describe(Version::V1_13_2, c.r#type as u32)
+			.starts_with("minecraft:oak_door[facing=west,half=lower")
+	);
 }
 
 fn column(x: i32, z: i32, blocks: &[(usize, usize, usize, u32)]) -> Client12 {
@@ -468,8 +470,11 @@ fn items_flatten_and_come_back() {
 		panic!("{out:?}")
 	};
 	let names = registry::names(Version::V1_13_2, "items").unwrap();
-	let [d::slot::Ty::True(blade), d::slot::Ty::False, d::slot::Ty::True(wool)] =
-		w.items.as_slice()
+	let [
+		d::slot::Ty::True(blade),
+		d::slot::Ty::False,
+		d::slot::Ty::True(wool),
+	] = w.items.as_slice()
 	else {
 		panic!("{w:?}")
 	};
@@ -640,7 +645,11 @@ fn login_sends_commands_and_fluid_tags() {
 		reduced_debug_info: false,
 	});
 	let out = to_1_13_2(login, &mut Session::new());
-	let [Client132::Login(_), Client132::DeclareCommands(c), Client132::Tags(t)] = out.as_slice()
+	let [
+		Client132::Login(_),
+		Client132::DeclareCommands(c),
+		Client132::Tags(t),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -914,8 +923,11 @@ fn block_entity(action: u8, entries: Vec<Entry>) -> Client132 {
 fn flower_pots_get_block_entities_on_1_12_2() {
 	let mut cx = Session::new();
 	let out = place("minecraft:potted_blue_orchid", &mut cx);
-	let [Client12::BlockChange(clear), Client12::BlockChange(pot), Client12::TileEntityData(te)] =
-		out.as_slice()
+	let [
+		Client12::BlockChange(clear),
+		Client12::BlockChange(pot),
+		Client12::TileEntityData(te),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -1049,14 +1061,16 @@ fn note_blocks_and_block_entities_use_stored_states() {
 		get(spawn, "id"),
 		Some(&Payload::String("minecraft:villager_golem".to_owned()))
 	);
-	assert!(to_1_12_2(
-		block_entity(
-			5,
-			vec![named("id", Payload::String("minecraft:conduit".to_owned()))]
-		),
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		to_1_12_2(
+			block_entity(
+				5,
+				vec![named("id", Payload::String("minecraft:conduit".to_owned()))]
+			),
+			&mut cx
+		)
+		.is_empty()
+	);
 }
 
 #[test]
@@ -1096,8 +1110,11 @@ fn items_reach_1_12_2_clients() {
 	let [Client12::WindowItems(w)] = out.as_slice() else {
 		panic!("{out:?}")
 	};
-	let [a::slot::Ty::Default(276, sword), a::slot::Ty::Default(35, wool), a::slot::Ty::_1] =
-		w.items.as_slice()
+	let [
+		a::slot::Ty::Default(276, sword),
+		a::slot::Ty::Default(35, wool),
+		a::slot::Ty::_1,
+	] = w.items.as_slice()
 	else {
 		panic!("{w:?}")
 	};

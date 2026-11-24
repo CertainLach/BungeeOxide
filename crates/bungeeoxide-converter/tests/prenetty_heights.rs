@@ -1,12 +1,12 @@
 use std::io::Read;
 
-use bungeeoxide_converter::custom::chunks::{
-	encode_chunk, Biomes, Column, Light, Nibbles, Section,
-};
-use bungeeoxide_converter::gen::convert::{convert, v1_0_1, v1_8, Root};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_converter::custom::chunks::{
+	Biomes, Column, Light, Nibbles, Section, encode_chunk,
+};
+use bungeeoxide_converter::generated::convert::{Root, convert, v1_0_1, v1_8};
+use bungeeoxide_converter::pds::{Input, Output};
 use flate2::read::ZlibDecoder;
 
 type C8 = v1_8::play_to_client_packet::Ty;
@@ -207,9 +207,10 @@ fn old_clients_see_128_high_windows_of_256_high_worlds() {
 	);
 	let (sent, back) = up(walk(72.0), &mut cx);
 	assert_eq!(server_y(&sent), 200.0);
-	assert!(back
-		.iter()
-		.any(|p| matches!(p, C0::MapChunk(c) if c.x == 64)));
+	assert!(
+		back.iter()
+			.any(|p| matches!(p, C0::MapChunk(c) if c.x == 64))
+	);
 
 	let C0::BlockChange(b) = one(down(block(3, 210, 4, 41), &mut cx)) else {
 		panic!()

@@ -1,12 +1,12 @@
 use std::io::{self, Read, Write};
 
 use bytes::{Buf, BufMut, BytesMut};
+use flate2::Compression;
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
-use flate2::Compression;
 use tokio_util::codec::{Decoder, Encoder};
 
-use crate::legacy::{handshake_len, packet_len, Cfb8, Frame, Legacy};
+use crate::legacy::{Cfb8, Frame, Legacy, handshake_len, packet_len};
 
 const MAX_FRAME: usize = (1 << 21) - 1;
 const MAX_PACKET: usize = 1 << 23;

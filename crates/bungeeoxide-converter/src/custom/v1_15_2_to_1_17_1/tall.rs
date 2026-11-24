@@ -3,11 +3,11 @@ use std::sync::OnceLock;
 use super::chunk;
 use super::meta::Pos;
 use crate::custom::chunks::{
-	decode, encode_chunk, encode_light, settle, Column, Heightmap, Packet, Virtual,
+	Column, Heightmap, Packet, Virtual, decode, encode_chunk, encode_light, settle,
 };
 use crate::custom::window::{Dialect, Emit, Window};
-use crate::gen::convert::{v1_16_2, v1_17, Carrier, Root, Version};
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::generated::convert::{Carrier, Root, Version, v1_16_2, v1_17};
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::pds::{Input, Output};
 use crate::session::Session;
 

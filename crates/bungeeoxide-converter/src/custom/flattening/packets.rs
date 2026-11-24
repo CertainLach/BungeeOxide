@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use super::blocks::{
-	new_blocks, new_items, old_blocks, old_items, raw_of_state, state_of_raw, FLAT, OLD,
+	FLAT, OLD, new_blocks, new_items, old_blocks, old_items, raw_of_state, state_of_raw,
 };
 use super::chunk::reset_world;
 use super::entities::forget_flat;
@@ -9,11 +9,11 @@ use super::items::{legacy_of_item, slot_down, slot_up, trader_down, trader_up};
 use super::text::{
 	color_ordinal, json_to_legacy, last_color, legacy_to_json, strip_colors, truncate_legacy,
 };
-use super::wire::{put as put_value, put_string, put_varint, Reader};
+use super::wire::{Reader, put as put_value, put_string, put_varint};
 use super::world::{item_of_legacy, sound_name_down};
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b, Root};
-use crate::pds::convert::{Error, Result};
+use crate::generated::convert::{Root, v1_12_2 as a, v1_13 as b};
 use crate::pds::Output;
+use crate::pds::convert::{Error, Result};
 use crate::session::Session;
 
 type Client12 = a::play_to_client_packet::Ty;
@@ -40,7 +40,7 @@ struct Legacy {
 fn send<T>(
 	cx: &mut Session,
 	root: Root,
-	version: crate::gen::convert::Version,
+	version: crate::generated::convert::Version,
 	packet: &T,
 	f: fn(&T, &mut Output) -> crate::pds::Result<()>,
 ) {
@@ -1280,7 +1280,7 @@ pub fn flattening_custom_payload_1_13(
 					channel: "minecraft:trader_list".to_owned(),
 					data: trader_up(&p.data)?,
 				},
-			)])
+			)]);
 		}
 		_ => {}
 	}

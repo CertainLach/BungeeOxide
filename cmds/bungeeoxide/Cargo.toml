@@ -2,7 +2,7 @@
 name = "bungeeoxide"
 description = "Minecraft proxy that lets clients of versions 1.0.1 to 26.1 play on a server of another version"
 version = "0.1.2"
-edition = "2021"
+edition = "2024"
 license.workspace = true
 
 [dependencies]

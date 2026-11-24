@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 const C1_21_4: &[&str] = &[
 	"custom_data",
 	"max_stack_size",

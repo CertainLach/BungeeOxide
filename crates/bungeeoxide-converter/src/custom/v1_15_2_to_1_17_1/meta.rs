@@ -1,7 +1,7 @@
 use ::bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, Payload, Payload as P};
 
 use super::{item, remap, state, substitute};
-use crate::gen::convert::{v1_15_2, v1_16, v1_17, Version};
+use crate::generated::convert::{Version, v1_15_2, v1_16, v1_17};
 use crate::registry;
 
 pub(super) type Slot = v1_16::slot::Ty;
@@ -162,7 +162,7 @@ fn adapt(name: &str, data: PData) -> Option<PData> {
 		| ("item", d @ PData::Item(_))
 		| ("vibration", d @ PData::Vibration(_)) => d,
 		("dust" | "dust_color_transition" | "block" | "falling_dust" | "item" | "vibration", _) => {
-			return None
+			return None;
 		}
 		_ => PData::None,
 	})
@@ -275,7 +275,17 @@ pub(super) fn data_17(p: Particle) -> Option<v1_17::particle_data::Ty> {
 		}),
 		(
 			16,
-			PData::Transition([from_red, from_green, from_blue, scale, to_red, to_green, to_blue]),
+			PData::Transition(
+				[
+					from_red,
+					from_green,
+					from_blue,
+					scale,
+					to_red,
+					to_green,
+					to_blue,
+				],
+			),
 		) => D::V16(v1_17::particle_data_v16::Ty {
 			from_red,
 			from_green,

@@ -2,6 +2,6 @@
 pub mod inline_181;
 pub mod inline_182;
 pub mod inline_42;
+pub use self::inline_42::Ty as Inline42;
 pub use self::inline_181::Ty as Inline181;
 pub use self::inline_182::Ty as Inline182;
-pub use self::inline_42::Ty as Inline42;

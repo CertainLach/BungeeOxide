@@ -249,7 +249,7 @@ fn skip(version: V, kind: Kind, data: &[u8], at: &mut usize) -> Result<()> {
 				*at += 16
 			}
 		}
-		Nbt => skip_with(data, at, bungeeoxide_nbt::gen::entry::deserialize)?,
+		Nbt => skip_with(data, at, bungeeoxide_nbt::generated::entry::deserialize)?,
 		Particle => *at += particle_len(version, &data[*at..])?,
 		Villager => {
 			for _ in 0..3 {
@@ -315,7 +315,7 @@ pub(super) fn write(version: V, list: &[Meta]) -> Vec<u8> {
 fn remap(from: V, to: V, m: Meta) -> Result<Option<Meta>> {
 	let value = match m.kind {
 		OptGlobalPos if unpatched(from) != unpatched(to) && m.value.first() != Some(&0) => {
-			return Ok(None)
+			return Ok(None);
 		}
 		Item => {
 			let v = decode(&m.value, v1_13_2::slot::deserialize)?;

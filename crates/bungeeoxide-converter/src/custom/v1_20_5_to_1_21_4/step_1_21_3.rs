@@ -1,6 +1,6 @@
-use super::step_1_21_1::{attribute, ATTRIBUTES_1_21_1};
+use super::step_1_21_1::{ATTRIBUTES_1_21_1, attribute};
 use super::*;
-use crate::gen::convert::{v1_21_1 as a, v1_21_3 as b};
+use crate::generated::convert::{v1_21_1 as a, v1_21_3 as b};
 
 const FROM: Version = Version::V1_21_1;
 const TO: Version = Version::V1_21_3;
@@ -1106,11 +1106,7 @@ pub fn tricky_respawn_1_21_3(
 }
 
 fn block_entity_up(id: i32) -> i32 {
-	if id >= CREAKING_HEART {
-		id + 1
-	} else {
-		id
-	}
+	if id >= CREAKING_HEART { id + 1 } else { id }
 }
 
 fn block_entity_down(id: i32) -> Result<i32> {

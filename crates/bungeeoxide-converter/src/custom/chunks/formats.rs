@@ -1,17 +1,17 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use crate::version_range;
 use std::io::{Read, Write};
 use std::sync::OnceLock;
 
+use flate2::Compression;
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
-use flate2::Compression;
 
-use super::bits::{bits_for, long_count, pack, palette, put_longs, put_varint, unpack, Reader};
+use super::bits::{Reader, bits_for, long_count, pack, palette, put_longs, put_varint, unpack};
 use super::model::{
-	expand_cells, sample_cells, Biomes, Column, Light, Nibbles, Section, BLOCKS, CELLS, NIBBLES,
+	BLOCKS, Biomes, CELLS, Column, Light, NIBBLES, Nibbles, Section, expand_cells, sample_cells,
 };
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::registry;
 
 const MAX_STATE: u32 = 1 << 20;
@@ -71,11 +71,7 @@ fn air(version: Version) -> &'static [u32] {
 			.iter()
 			.filter_map(|n| b?.block(n).map(|x| x.default))
 			.collect();
-		if out.is_empty() {
-			vec![0]
-		} else {
-			out
-		}
+		if out.is_empty() { vec![0] } else { out }
 	})
 }
 

@@ -1,4 +1,4 @@
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use crate::pds::convert::Result;
 use crate::registry;
 use bungeeoxide_nbt::Tag;

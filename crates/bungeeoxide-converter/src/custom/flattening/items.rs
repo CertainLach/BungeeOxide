@@ -4,12 +4,12 @@ use std::sync::OnceLock;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload};
 
 use super::blocks::{
-	item_earlier, item_later, new_blocks, new_items, old_blocks, raw_of_state, state_of_raw, OLD,
+	OLD, item_earlier, item_later, new_blocks, new_items, old_blocks, raw_of_state, state_of_raw,
 };
 use super::nbtx::{self, children, root};
 use super::text::{json_to_legacy, legacy_to_json};
-use super::wire::{put as put_value, Reader};
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b, v1_13_1 as c, v1_13_2 as d};
+use super::wire::{Reader, put as put_value};
+use crate::generated::convert::{v1_12_2 as a, v1_13 as b, v1_13_1 as c, v1_13_2 as d};
 use crate::pds::convert::Result;
 use crate::registry;
 use crate::session::Session;

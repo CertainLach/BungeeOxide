@@ -5,9 +5,9 @@ use super::slots::{self, exact_matchers, untrusted_step};
 use super::text;
 use super::util::{lp_vec3, read_lp_vec3};
 use super::world;
-use crate::gen::convert::{v1_21_8 as a, v1_21_9 as b, Version};
-use crate::pds::convert::{Error, Result};
 use crate::Session;
+use crate::generated::convert::{Version, v1_21_8 as a, v1_21_9 as b};
+use crate::pds::convert::{Error, Result};
 use bungeeoxide_nbt::{Entry, Payload, Tag};
 use std::collections::HashMap;
 
@@ -142,11 +142,7 @@ const BLOCK_ENTITIES: &[&str] = &[
 ];
 
 fn block_entity_up(v: i32) -> i32 {
-	if v >= 40 {
-		v + 1
-	} else {
-		v
-	}
+	if v >= 40 { v + 1 } else { v }
 }
 
 fn block_entity_down(v: i32) -> Result<i32> {
@@ -667,7 +663,7 @@ pub fn late_code_of_conduct_down_1_21_8(
 	);
 	let data = super::util::encode(&accept, b::configuration_to_server_packet::serialize)?;
 	cx.send(
-		crate::gen::convert::Root::ConfigurationToServer,
+		crate::generated::convert::Root::ConfigurationToServer,
 		Version::V1_21_9,
 		data,
 	);
@@ -825,37 +821,44 @@ fn player_info_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 fn team_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 	a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
 		team: m.name.clone(),
-		mode: a::play_to_client_packet_teams_mode::Ty::Add(a::play_to_client_packet_teams_mode_add::Ty {
-			name: label(m),
-			flags: a::play_to_client_packet_teams_mode_add_flags::Ty {
-				friendly_fire: false,
-				see_friendly_invisible: false,
+		mode: a::play_to_client_packet_teams_mode::Ty::Add(
+			a::play_to_client_packet_teams_mode_add::Ty {
+				name: label(m),
+				flags: a::play_to_client_packet_teams_mode_add_flags::Ty {
+					friendly_fire: false,
+					see_friendly_invisible: false,
+				},
+				name_tag_visibility:
+					a::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Always,
+				collision_rule: a::play_to_client_packet_teams_mode_add_collision_rule::Ty::Always,
+				formatting: 21,
+				prefix: label(m),
+				suffix: empty_text(),
+				players: vec![m.name.clone()],
 			},
-			name_tag_visibility: a::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Always,
-			collision_rule: a::play_to_client_packet_teams_mode_add_collision_rule::Ty::Always,
-			formatting: 21,
-			prefix: label(m),
-			suffix: empty_text(),
-			players: vec![m.name.clone()],
-		}),
+		),
 	})
 }
 
 fn team_change(m: &Mannequin) -> a::play_to_client_packet::Ty {
 	a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
 		team: m.name.clone(),
-		mode: a::play_to_client_packet_teams_mode::Ty::Change(a::play_to_client_packet_teams_mode_change::Ty {
-			name: label(m),
-			flags: a::play_to_client_packet_teams_mode_change_flags::Ty {
-				friendly_fire: false,
-				see_friendly_invisible: false,
+		mode: a::play_to_client_packet_teams_mode::Ty::Change(
+			a::play_to_client_packet_teams_mode_change::Ty {
+				name: label(m),
+				flags: a::play_to_client_packet_teams_mode_change_flags::Ty {
+					friendly_fire: false,
+					see_friendly_invisible: false,
+				},
+				name_tag_visibility:
+					a::play_to_client_packet_teams_mode_change_name_tag_visibility::Ty::Always,
+				collision_rule:
+					a::play_to_client_packet_teams_mode_change_collision_rule::Ty::Always,
+				formatting: 21,
+				prefix: label(m),
+				suffix: empty_text(),
 			},
-			name_tag_visibility: a::play_to_client_packet_teams_mode_change_name_tag_visibility::Ty::Always,
-			collision_rule: a::play_to_client_packet_teams_mode_change_collision_rule::Ty::Always,
-			formatting: 21,
-			prefix: label(m),
-			suffix: empty_text(),
-		}),
+		),
 	})
 }
 
@@ -926,13 +929,21 @@ fn player_spawn(id: i32, m: &Mannequin) -> Result<a::play_to_client_packet::Ty> 
 
 fn queue_old(cx: &mut Session, p: &a::play_to_client_packet::Ty) -> Result<()> {
 	let data = super::util::encode(p, a::play_to_client_packet::serialize)?;
-	cx.send(crate::gen::convert::Root::PlayToClient, Version::V1_21_8, data);
+	cx.send(
+		crate::generated::convert::Root::PlayToClient,
+		Version::V1_21_8,
+		data,
+	);
 	Ok(())
 }
 
 fn queue_new(cx: &mut Session, p: &b::play_to_client_packet::Ty) -> Result<()> {
 	let data = super::util::encode(p, b::play_to_client_packet::serialize)?;
-	cx.send(crate::gen::convert::Root::PlayToClient, Version::V1_21_9, data);
+	cx.send(
+		crate::generated::convert::Root::PlayToClient,
+		Version::V1_21_9,
+		data,
+	);
 	Ok(())
 }
 
@@ -1022,28 +1033,34 @@ fn respawn_mannequin(cx: &mut Session, id: i32) -> Result<()> {
 	if !m.metadata.is_empty() {
 		queue_new(
 			cx,
-			&b::play_to_client_packet::Ty::EntityMetadata(b::play_to_client_packet_entity_metadata::Ty {
-				entity_id: id,
-				metadata: m.metadata.clone(),
-			}),
+			&b::play_to_client_packet::Ty::EntityMetadata(
+				b::play_to_client_packet_entity_metadata::Ty {
+					entity_id: id,
+					metadata: m.metadata.clone(),
+				},
+			),
 		)?;
 	}
 	if !m.passengers.is_empty() {
 		queue_old(
 			cx,
-			&a::play_to_client_packet::Ty::SetPassengers(a::play_to_client_packet_set_passengers::Ty {
-				entity_id: id,
-				passengers: m.passengers.clone(),
-			}),
+			&a::play_to_client_packet::Ty::SetPassengers(
+				a::play_to_client_packet_set_passengers::Ty {
+					entity_id: id,
+					passengers: m.passengers.clone(),
+				},
+			),
 		)?;
 	}
 	if !m.equipment.is_empty() {
 		queue_new(
 			cx,
-			&b::play_to_client_packet::Ty::EntityEquipment(b::play_to_client_packet_entity_equipment::Ty {
-				entity_id: id,
-				equipments: m.equipment.clone(),
-			}),
+			&b::play_to_client_packet::Ty::EntityEquipment(
+				b::play_to_client_packet_entity_equipment::Ty {
+					entity_id: id,
+					equipments: m.equipment.clone(),
+				},
+			),
 		)?;
 	}
 	if !bundling {
@@ -1074,7 +1091,8 @@ pub fn late_spawn_entity_down_1_21_8(
 	if let Some(stale) = mannequins(cx).by_id.remove(&p.entity_id) {
 		out.extend(forget(&stale));
 	}
-	let kind = crate::registry::names(Version::V1_21_9, "entities").and_then(|n| n.name(p.r#type.max(0) as u32));
+	let kind = crate::registry::names(Version::V1_21_9, "entities")
+		.and_then(|n| n.name(p.r#type.max(0) as u32));
 	if kind == Some("mannequin") {
 		let m = Mannequin {
 			uuid: p.object_uuid,
@@ -1164,8 +1182,16 @@ pub fn late_teleport_entity_down_1_21_8(
 		m.x = if r.x { m.x + p.x } else { p.x };
 		m.y = if r.y { m.y + p.y } else { p.y };
 		m.z = if r.z { m.z + p.z } else { p.z };
-		m.yaw = if r.yaw { m.yaw.wrapping_add(angle(p.yaw)) } else { angle(p.yaw) };
-		m.pitch = if r.pitch { m.pitch.wrapping_add(angle(p.pitch)) } else { angle(p.pitch) };
+		m.yaw = if r.yaw {
+			m.yaw.wrapping_add(angle(p.yaw))
+		} else {
+			angle(p.yaw)
+		};
+		m.pitch = if r.pitch {
+			m.pitch.wrapping_add(angle(p.pitch))
+		} else {
+			angle(p.pitch)
+		};
 	}))
 }
 
@@ -1206,7 +1232,9 @@ pub fn late_look_entity_down_1_21_8(
 	p: &b::play_to_client_packet_entity_look::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	Ok(track(cx, p.entity_id, |m| (m.yaw, m.pitch) = (p.yaw, p.pitch)))
+	Ok(track(cx, p.entity_id, |m| {
+		(m.yaw, m.pitch) = (p.yaw, p.pitch)
+	}))
 }
 
 pub fn late_head_rotation_entity_down_1_21_8(
@@ -1220,7 +1248,9 @@ pub fn late_passengers_entity_down_1_21_8(
 	p: &b::play_to_client_packet_set_passengers::Ty,
 	cx: &mut Session,
 ) -> Result<i32> {
-	Ok(track(cx, p.entity_id, |m| m.passengers = p.passengers.clone()))
+	Ok(track(cx, p.entity_id, |m| {
+		m.passengers = p.passengers.clone()
+	}))
 }
 
 pub fn late_equipment_entity_down_1_21_8(

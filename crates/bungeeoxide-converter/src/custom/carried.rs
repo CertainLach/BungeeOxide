@@ -1,1 +1,1 @@
-pub use super::chunks::{virtual_finish, virtual_start, virtual_step, virtual_wire, Virtual};
+pub use super::chunks::{Virtual, virtual_finish, virtual_start, virtual_step, virtual_wire};

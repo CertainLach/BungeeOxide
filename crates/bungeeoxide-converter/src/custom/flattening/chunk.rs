@@ -4,15 +4,15 @@ use std::sync::OnceLock;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, Payload};
 
 use super::blocks::{
-	block_of_legacy, earlier_states, later_states, legacy_of_block, new_blocks, old_blocks,
-	old_items, raw_of_state, state_of_raw, DYES,
+	DYES, block_of_legacy, earlier_states, later_states, legacy_of_block, new_blocks, old_blocks,
+	old_items, raw_of_state, state_of_raw,
 };
 use super::connect::{self, Columns};
 use super::nbtx::{children, invert_colors, root};
 use super::text::legacy_to_json;
-use super::wire::{put_varint, Reader};
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b, v1_13_1 as c};
-use crate::pds::convert::{unconvertible, Result};
+use super::wire::{Reader, put_varint};
+use crate::generated::convert::{v1_12_2 as a, v1_13 as b, v1_13_1 as c};
+use crate::pds::convert::{Result, unconvertible};
 use crate::registry;
 use crate::session::Session;
 

@@ -1,5 +1,5 @@
-use crate::gen::convert::{v1_10, v1_11, v1_8, v1_9, v1_9_2, v1_9_4};
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::generated::convert::{v1_8, v1_9, v1_9_2, v1_9_4, v1_10, v1_11};
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::session::{Kind, Session};
 
 type Meta8 = v1_8::entity_metadata_item::Ty;
@@ -404,7 +404,7 @@ pub fn update_sign_1_9_4(
 	p: v1_9_2::play_to_client_packet_update_sign::Ty,
 	_cx: &mut Session,
 ) -> Result<Vec<Client94>> {
-	use bungeeoxide_nbt::gen::payload::Ty as P;
+	use bungeeoxide_nbt::generated::payload::Ty as P;
 	let loc = &p.location;
 	let compound = vec![
 		bungeeoxide_nbt::Entry::new("id", P::String("Sign".to_owned())),

@@ -4,19 +4,19 @@ use std::io::Read;
 use std::sync::{Arc, Mutex, MutexGuard};
 use std::time::{Duration, Instant};
 
-use anyhow::{anyhow, bail, Context as _, Result};
+use anyhow::{Context as _, Result, anyhow, bail};
 use bungeeoxide::codec::Codec;
-use bungeeoxide::legacy::{login_request, string16, Legacy};
+use bungeeoxide::legacy::{Legacy, login_request, string16};
 use bungeeoxide::{decode, encode, next};
-use bungeeoxide_converter::gen::convert::{packet_name, v1_0_1};
+use bungeeoxide_converter::generated::convert::{packet_name, v1_0_1};
 use bungeeoxide_converter::{Root, Version};
 use flate2::read::ZlibDecoder;
 use futures::{SinkExt, StreamExt};
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value, json};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
-use tokio::sync::{mpsc, Notify};
-use tokio::time::{sleep, MissedTickBehavior};
+use tokio::sync::{Notify, mpsc};
+use tokio::time::{MissedTickBehavior, sleep};
 use tokio_util::codec::Framed;
 
 use v1_0_1::play_to_client_packet::Ty as C;

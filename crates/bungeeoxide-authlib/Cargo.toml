@@ -2,7 +2,7 @@
 name = "bungeeoxide-authlib"
 description = "Minecraft account authentication: Microsoft and launcher logins, session server joins and checks, chat signing keys"
 version = "0.1.2"
-edition = "2021"
+edition = "2024"
 license.workspace = true
 
 [dependencies]

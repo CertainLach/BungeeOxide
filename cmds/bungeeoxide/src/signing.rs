@@ -1,14 +1,14 @@
 use std::sync::Arc;
 
-use anyhow::{anyhow, bail, Result};
-use bungeeoxide_converter::gen::convert::{packet_name, v26_3};
-use bungeeoxide_converter::{convert, Root, Session};
+use anyhow::{Result, anyhow, bail};
+use bungeeoxide_converter::generated::convert::{packet_name, v26_3};
+use bungeeoxide_converter::{Root, Session, convert};
 use sha2::{Digest, Sha256};
 use tracing::warn;
 
 use crate::codec::{read_varint, write_varint};
 use crate::decode;
-use bungeeoxide_authlib::{now_millis, PlayerKeys};
+use bungeeoxide_authlib::{PlayerKeys, now_millis};
 use bungeeoxide_converter::Version;
 
 const ACK_AFTER: i32 = 64;
@@ -621,7 +621,7 @@ pub struct Tree {
 
 impl Tree {
 	fn from_packet(sv: Version, data: &[u8]) -> Result<Self> {
-		use v26_3::play_to_client_packet::{deserialize, Ty};
+		use v26_3::play_to_client_packet::{Ty, deserialize};
 		let anchor = Version::V26_3;
 		let packets = if sv == anchor {
 			vec![data.to_vec()]
@@ -822,8 +822,8 @@ fn token(text: &str) -> usize {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use rsa::pkcs8::DecodePrivateKey;
 	use rsa::RsaPrivateKey;
+	use rsa::pkcs8::DecodePrivateKey;
 
 	const SENDER: u128 = 0x069a79f444e94726a5befca90e38aaf5;
 	const SESSION: u128 = 0x853c80ef3c3749fdaa49938b674adae6;

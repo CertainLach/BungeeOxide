@@ -1,12 +1,12 @@
 use bungeeoxide_converter::Version;
 use std::collections::BTreeMap;
 
-use bungeeoxide_converter::gen::convert::{convert, Root};
-use bungeeoxide_converter::gen::convert::{
-	v1_12_2::play_to_client_packet as newest, v1_8::play_to_client_packet as oldest,
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, convert};
+use bungeeoxide_converter::generated::convert::{
+	v1_8::play_to_client_packet as oldest, v1_12_2::play_to_client_packet as newest,
 };
 use bungeeoxide_converter::pds::Input;
-use bungeeoxide_converter::Session;
 
 fn kind(p: &impl std::fmt::Debug) -> String {
 	let name = format!("{p:?}");

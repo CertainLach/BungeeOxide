@@ -1,9 +1,9 @@
 use super::util::{decode, encode};
 use super::world;
-use crate::gen::convert::v1_21_5::configuration_to_client_packet_registry_data as registry_data;
-use crate::gen::convert::{step, Root, Version};
-use crate::pds::convert::{unconvertible, Error, Result};
 use crate::Session;
+use crate::generated::convert::v1_21_5::configuration_to_client_packet_registry_data as registry_data;
+use crate::generated::convert::{Root, Version, step};
+use crate::pds::convert::{Error, Result, unconvertible};
 use bungeeoxide_nbt::Payload;
 
 #[derive(Default)]
@@ -94,7 +94,7 @@ pub fn registry(
 		id: format!("minecraft:{id}"),
 		entries: entries
 			.into_iter()
-			.map(|(key, value)| crate::gen::convert::v1_21_5::configuration_to_client_packet_registry_data_entries_items::Ty { key, value })
+			.map(|(key, value)| crate::generated::convert::v1_21_5::configuration_to_client_packet_registry_data_entries_items::Ty { key, value })
 			.collect(),
 	}
 }

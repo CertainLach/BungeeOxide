@@ -1,6 +1,6 @@
 use super::chunk::{self, Section};
 use super::*;
-use crate::gen::convert::{v1_18, v1_18_2};
+use crate::generated::convert::{v1_18, v1_18_2};
 
 type Client17 = v1_17_1::play_to_client_packet::Ty;
 type Client18 = v1_18::play_to_client_packet::Ty;

@@ -1,5 +1,5 @@
 use super::*;
-use crate::gen::convert::{v1_20_5 as a, v1_21_1 as b};
+use crate::generated::convert::{v1_20_5 as a, v1_21_1 as b};
 
 const FROM: Version = Version::V1_20_5;
 const TO: Version = Version::V1_21_1;
@@ -409,7 +409,7 @@ fn tags_up(registry: &str, tags: &mut Vec<TagList>) {
 }
 
 macro_rules! tag_groups {
-	($groups:expr, $ty:ident, $registries:expr) => {{
+	($groups:expr_2021, $ty:ident, $registries:expr_2021) => {{
 		let mut groups = $groups;
 		for g in &mut groups {
 			tags_up(&g.tag_type, &mut g.tags);

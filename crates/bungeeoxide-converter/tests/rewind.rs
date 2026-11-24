@@ -1,6 +1,6 @@
-use bungeeoxide_converter::gen::convert::{convert, v1_12_2, v1_8, Root, Version};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, Version, convert, v1_8, v1_12_2};
+use bungeeoxide_converter::pds::{Input, Output};
 
 type C8 = v1_8::play_to_client_packet::Ty;
 type C12 = v1_12_2::play_to_client_packet::Ty;
@@ -234,15 +234,17 @@ fn inventory_drops_the_offhand_and_maps_new_items() {
 		panic!("{:?}", w.items[36])
 	};
 	assert_eq!(clay.item_damage, 5);
-	assert!(down(
-		C12::SetSlot(v1_12_2::play_to_client_packet_set_slot::Ty {
-			window_id: 0,
-			slot: 45,
-			item: stack(1, 0)
-		}),
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		down(
+			C12::SetSlot(v1_12_2::play_to_client_packet_set_slot::Ty {
+				window_id: 0,
+				slot: 45,
+				item: stack(1, 0)
+			}),
+			&mut cx
+		)
+		.is_empty()
+	);
 	let click = S8::WindowClick(v1_8::play_to_server_packet_window_click::Ty {
 		window_id: 0,
 		slot: 36,
@@ -289,11 +291,13 @@ fn teleports_are_confirmed_and_swings_follow_attacks() {
 		),
 		"{out:?}"
 	);
-	assert!(up(
-		S8::ArmAnimation(v1_8::play_to_server_packet_arm_animation::Ty {}),
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		up(
+			S8::ArmAnimation(v1_8::play_to_server_packet_arm_animation::Ty {}),
+			&mut cx
+		)
+		.is_empty()
+	);
 	let attack = up(
 		S8::UseEntity(v1_8::play_to_server_packet_use_entity::Ty {
 			target: 3,

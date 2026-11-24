@@ -280,7 +280,7 @@ macro_rules! statistics {
 }
 
 macro_rules! tags {
-	($a:ident => $b:ident, $from:path => $to:path, $renames:expr, { config: $config:ident, play: $play:ident }) => {
+	($a:ident => $b:ident, $from:path => $to:path, $renames:expr_2021, { config: $config:ident, play: $play:ident }) => {
 		pub fn $config(
 			v: Vec<$a::configuration_to_client_packet_tags_items::Ty>,
 			_cx: &mut crate::Session,

@@ -147,14 +147,10 @@ pub fn sample_cells<T: Copy + PartialEq>(blocks: &[T]) -> Vec<T> {
 				.iter()
 				.copied()
 				.fold(start.unwrap_or((center, 0)), |best, c| {
-					if c.1 > best.1 {
-						c
-					} else {
-						best
-					}
+					if c.1 > best.1 { c } else { best }
 				})
 				.0
 		})
 		.collect()
 }
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;

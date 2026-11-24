@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::OnceLock;
 
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use crate::registry::{self, Blocks, Names};
 
 pub(super) const OLD: Version = Version::V1_12_2;

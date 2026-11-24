@@ -3,21 +3,21 @@ use std::fmt;
 use std::fs;
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
-use bungeeoxide_nbt::gen::entry;
+use bungeeoxide_nbt::generated::entry;
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, Payload};
+use flate2::Compression;
 use flate2::read::{GzDecoder, ZlibDecoder};
 use flate2::write::ZlibEncoder;
-use flate2::Compression;
 
+use crate::STACK_BUDGET;
 use crate::custom::chunks::bits::{bits_for, pack, unpack};
 use crate::custom::chunks::composed;
-use crate::gen::convert::Version;
-use crate::pds::{stack, Input, Output};
+use crate::generated::convert::Version;
+use crate::pds::{Input, Output, stack};
 use crate::registry::{self, Blocks};
-use crate::STACK_BUDGET;
 
 const SECTOR: usize = 4096;
 const SLOTS: usize = 1024;
@@ -136,17 +136,19 @@ pub fn convert_world(src: &Path, dst: &Path) -> Result<Report> {
 	let threads = std::thread::available_parallelism().map_or(4, |n| n.get());
 	std::thread::scope(|s| {
 		for _ in 0..threads.min(jobs.len()) {
-			s.spawn(|| loop {
-				let i = next.fetch_add(1, Ordering::Relaxed);
-				let Some((source, target)) = jobs.get(i) else {
-					break;
-				};
-				match region(source, target) {
-					Ok(r) => total.lock().expect("report lock").add(r),
-					Err(e) => {
-						failure.lock().expect("failure lock").get_or_insert(e);
-						next.store(jobs.len(), Ordering::Relaxed);
+			s.spawn(|| {
+				loop {
+					let i = next.fetch_add(1, Ordering::Relaxed);
+					let Some((source, target)) = jobs.get(i) else {
 						break;
+					};
+					match region(source, target) {
+						Ok(r) => total.lock().expect("report lock").add(r),
+						Err(e) => {
+							failure.lock().expect("failure lock").get_or_insert(e);
+							next.store(jobs.len(), Ordering::Relaxed);
+							break;
+						}
 					}
 				}
 			});
@@ -515,7 +517,7 @@ fn anvil(level: &[Entry], dated: Option<Version>) -> Result<Source> {
 	})
 }
 
-fn legacy_biomes(level: &[Entry], space: Version) -> impl Fn(i32) -> Vec<String> {
+fn legacy_biomes(level: &[Entry], space: Version) -> impl Fn(i32) -> Vec<String> + use<> {
 	let names = registry::names(space, "biomes");
 	let mut known: HashMap<i32, String> = HashMap::new();
 	let mut name = |id: i32| {

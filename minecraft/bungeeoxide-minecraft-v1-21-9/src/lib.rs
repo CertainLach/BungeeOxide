@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod view;
@@ -213,14 +213,14 @@ pub use self::debug_subscription_event_5::DebugSubscriptionEvent5;
 pub use self::debug_subscription_event_6::DebugSubscriptionEvent6;
 pub use self::debug_subscription_event_7::DebugSubscriptionEvent7;
 pub use self::debug_subscription_update::DebugSubscriptionUpdate;
+pub use self::debug_subscription_update_7::DebugSubscriptionUpdate7;
+pub use self::debug_subscription_update_8::DebugSubscriptionUpdate8;
+pub use self::debug_subscription_update_9::DebugSubscriptionUpdate9;
 pub use self::debug_subscription_update_10::DebugSubscriptionUpdate10;
 pub use self::debug_subscription_update_11::DebugSubscriptionUpdate11;
 pub use self::debug_subscription_update_12::DebugSubscriptionUpdate12;
 pub use self::debug_subscription_update_13::DebugSubscriptionUpdate13;
 pub use self::debug_subscription_update_14::DebugSubscriptionUpdate14;
-pub use self::debug_subscription_update_7::DebugSubscriptionUpdate7;
-pub use self::debug_subscription_update_8::DebugSubscriptionUpdate8;
-pub use self::debug_subscription_update_9::DebugSubscriptionUpdate9;
 pub use self::entity_metadata::Ty as EntityMetadata;
 pub use self::entity_metadata_entry::EntityMetadataEntry;
 pub use self::entity_metadata_entry_63::EntityMetadataEntry63;
@@ -249,8 +249,6 @@ pub use self::item_written_book_page::Ty as ItemWrittenBookPage;
 pub use self::jukebox_song_data::Ty as JukeboxSongData;
 pub use self::node::Node;
 pub use self::node_14::Node14;
-pub use self::option_121::Ty as Option121;
-pub use self::option_122::Ty as Option122;
 pub use self::option_19::Ty as Option19;
 pub use self::option_85::Ty as Option85;
 pub use self::option_86::Ty as Option86;
@@ -263,6 +261,8 @@ pub use self::option_92::Ty as Option92;
 pub use self::option_93::Ty as Option93;
 pub use self::option_94::Ty as Option94;
 pub use self::option_95::Ty as Option95;
+pub use self::option_121::Ty as Option121;
+pub use self::option_122::Ty as Option122;
 pub use self::optvarint::Ty as Optvarint;
 pub use self::packed_chunk_pos::Ty as PackedChunkPos;
 pub use self::packet_common_add_resource_pack::Ty as PacketCommonAddResourcePack;

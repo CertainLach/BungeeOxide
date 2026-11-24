@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 
-use crate::pds::convert::{unconvertible, Result};
+use crate::pds::convert::{Result, unconvertible};
 
 pub(super) struct Reader<'a> {
 	data: &'a [u8],

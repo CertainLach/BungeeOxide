@@ -3,8 +3,8 @@ use std::collections::{HashMap, HashSet};
 use bungeeoxide_nbt::{CompoundExt, CompoundVecExt, Entry, List, ListItems, Payload};
 
 use super::chat_types;
-use crate::gen::convert::{v1_13_2, v1_17_1, Version as V};
-use crate::pds::convert::{unconvertible, Error, Result};
+use crate::generated::convert::{Version as V, v1_13_2, v1_17_1};
+use crate::pds::convert::{Error, Result, unconvertible};
 use crate::pds::{Input, Output};
 use crate::registry;
 use crate::session::Session;

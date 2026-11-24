@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod view;
@@ -191,6 +191,9 @@ pub use self::server_link_type::Ty as ServerLinkType;
 pub use self::slot::Slot;
 pub use self::slot_7::Slot7;
 pub use self::slot_component::SlotComponent;
+pub use self::slot_component_7::SlotComponent7;
+pub use self::slot_component_8::SlotComponent8;
+pub use self::slot_component_9::SlotComponent9;
 pub use self::slot_component_10::SlotComponent10;
 pub use self::slot_component_11::SlotComponent11;
 pub use self::slot_component_12::SlotComponent12;
@@ -225,9 +228,6 @@ pub use self::slot_component_40::SlotComponent40;
 pub use self::slot_component_41::SlotComponent41;
 pub use self::slot_component_42::SlotComponent42;
 pub use self::slot_component_43::SlotComponent43;
-pub use self::slot_component_7::SlotComponent7;
-pub use self::slot_component_8::SlotComponent8;
-pub use self::slot_component_9::SlotComponent9;
 pub use self::slot_component_type::SlotComponentType;
 pub use self::sound_source::Ty as SoundSource;
 pub use self::string::Ty as String;

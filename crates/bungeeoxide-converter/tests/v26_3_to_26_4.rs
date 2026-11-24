@@ -1,10 +1,12 @@
-use bungeeoxide_converter::gen::convert::{convert, v26_3 as a, v26_4_snapshot_10 as b, Root};
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{
+	Root, convert, v26_3 as a, v26_4_snapshot_10 as b,
+};
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::pds_native::pds_entityDelta::{self, Step};
 use bungeeoxide_converter::pds_native::pds_vecDelta;
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
-use bungeeoxide_converter::Version;
 
 const OLD: Version = Version::V26_3;
 const NEW: Version = Version::V26_4_snapshot_10;
@@ -197,8 +199,10 @@ fn position_sync_carries_the_head_yaw() {
 	assert!(!stepped.start_immediately);
 	assert_eq!(stepped.steps.len(), 1);
 	let back = down(&out[0], &mut cx);
-	let [a::play_to_client_packet::Ty::SyncEntityPosition(p), a::play_to_client_packet::Ty::EntityHeadRotation(h)] =
-		back.as_slice()
+	let [
+		a::play_to_client_packet::Ty::SyncEntityPosition(p),
+		a::play_to_client_packet::Ty::EntityHeadRotation(h),
+	] = back.as_slice()
 	else {
 		panic!("{back:?}")
 	};
@@ -268,8 +272,10 @@ fn explosion_knockback_moves_to_add_entity_motion() {
 			play_sound: true,
 		});
 	let out = up(&explosion, &mut cx);
-	let [b::play_to_client_packet::Ty::AddEntityMotion(m), b::play_to_client_packet::Ty::Explosion(e)] =
-		out.as_slice()
+	let [
+		b::play_to_client_packet::Ty::AddEntityMotion(m),
+		b::play_to_client_packet::Ty::Explosion(e),
+	] = out.as_slice()
 	else {
 		panic!("{out:?}")
 	};
@@ -609,14 +615,18 @@ fn compression_is_announced_in_the_login_options() {
 	assert!(!s.options.compression);
 
 	let mut cx = Session::new();
-	assert!(login_down(
-		&b::login_to_client_packet::Ty::SetupCompression(64),
-		&mut cx
-	)
-	.is_empty());
+	assert!(
+		login_down(
+			&b::login_to_client_packet::Ty::SetupCompression(64),
+			&mut cx
+		)
+		.is_empty()
+	);
 	let back = login_down(&out[0].clone().with_compression(), &mut cx);
-	let [a::login_to_client_packet::Ty::Success(s), a::login_to_client_packet::Ty::Compress(64)] =
-		back.as_slice()
+	let [
+		a::login_to_client_packet::Ty::Success(s),
+		a::login_to_client_packet::Ty::Compress(64),
+	] = back.as_slice()
 	else {
 		panic!("{back:?}")
 	};
@@ -644,22 +654,28 @@ fn online_mode_logins_are_refused() {
 		public_key: vec![1, 2, 3],
 		should_authenticate: true,
 	});
-	assert!(convert(
-		Root::LoginToClient,
-		NEW,
-		OLD,
-		&encode(&key, b::login_to_client_packet::serialize),
-		&mut Session::new()
-	)
-	.is_err());
-	assert!(login_down(
-		&b::login_to_client_packet::Ty::ApplyOptions(b::login_to_client_connection_options::Ty {
-			encryption: true,
-			compression: false,
-		}),
-		&mut Session::new()
-	)
-	.is_empty());
+	assert!(
+		convert(
+			Root::LoginToClient,
+			NEW,
+			OLD,
+			&encode(&key, b::login_to_client_packet::serialize),
+			&mut Session::new()
+		)
+		.is_err()
+	);
+	assert!(
+		login_down(
+			&b::login_to_client_packet::Ty::ApplyOptions(
+				b::login_to_client_connection_options::Ty {
+					encryption: true,
+					compression: false,
+				}
+			),
+			&mut Session::new()
+		)
+		.is_empty()
+	);
 }
 
 fn tags_of<'a>(
@@ -947,9 +963,11 @@ fn registry_data_loses_what_26_3_cannot_read() {
 	);
 	let value = out[0].1.as_ref().unwrap();
 	let attributes = value.value.field("attributes").unwrap();
-	assert!(attributes
-		.field("minecraft:visual/has_sky_occluder")
-		.is_none());
+	assert!(
+		attributes
+			.field("minecraft:visual/has_sky_occluder")
+			.is_none()
+	);
 	assert!(attributes.field("minecraft:visual/sky_color").is_some());
 	let flurry = Tag::new(Payload::Compound(vec![Entry::new(
 		"sound_event",

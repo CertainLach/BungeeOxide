@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod array;
@@ -92,6 +92,14 @@ pub use self::chunk_block_entity::Ty as ChunkBlockEntity;
 pub use self::command_node::CommandNode;
 pub use self::command_node_0::CommandNode0;
 pub use self::command_node_1::CommandNode1;
+pub use self::command_node_2::CommandNode2;
+pub use self::command_node_3::CommandNode3;
+pub use self::command_node_4::CommandNode4;
+pub use self::command_node_5::CommandNode5;
+pub use self::command_node_6::CommandNode6;
+pub use self::command_node_7::CommandNode7;
+pub use self::command_node_8::CommandNode8;
+pub use self::command_node_9::CommandNode9;
 pub use self::command_node_10::CommandNode10;
 pub use self::command_node_11::CommandNode11;
 pub use self::command_node_12::CommandNode12;
@@ -102,19 +110,11 @@ pub use self::command_node_16::CommandNode16;
 pub use self::command_node_17::CommandNode17;
 pub use self::command_node_18::CommandNode18;
 pub use self::command_node_19::CommandNode19;
-pub use self::command_node_2::CommandNode2;
 pub use self::command_node_20::CommandNode20;
 pub use self::command_node_21::CommandNode21;
 pub use self::command_node_22::CommandNode22;
 pub use self::command_node_23::CommandNode23;
 pub use self::command_node_24::CommandNode24;
-pub use self::command_node_3::CommandNode3;
-pub use self::command_node_4::CommandNode4;
-pub use self::command_node_5::CommandNode5;
-pub use self::command_node_6::CommandNode6;
-pub use self::command_node_7::CommandNode7;
-pub use self::command_node_8::CommandNode8;
-pub use self::command_node_9::CommandNode9;
 pub use self::entity_metadata::Ty as EntityMetadata;
 pub use self::entity_metadata_24::EntityMetadata24;
 pub use self::entity_metadata_26::EntityMetadata26;

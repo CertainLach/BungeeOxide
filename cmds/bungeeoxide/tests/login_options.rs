@@ -2,12 +2,12 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 
-use anyhow::{bail, ensure, Result};
+use anyhow::{Result, bail, ensure};
 use bungeeoxide::codec::Codec;
 use bungeeoxide::users::User;
-use bungeeoxide::{decode, encode, next, protocol_of, serve, Config, Conn};
-use bungeeoxide_converter::gen::convert::packet_name;
-use bungeeoxide_converter::gen::convert::v26_4_snapshot_10::{
+use bungeeoxide::{Config, Conn, decode, encode, next, protocol_of, serve};
+use bungeeoxide_converter::generated::convert::packet_name;
+use bungeeoxide_converter::generated::convert::v26_4_snapshot_10::{
 	configuration_to_client_packet as config_c,
 	configuration_to_client_packet_finish_configuration,
 	configuration_to_server_packet as config_s,

@@ -1,4 +1,4 @@
-use crate::gen::convert::{v1_10, v1_11, v1_12, v1_8, v1_9, v1_9_2, v1_9_4, Version};
+use crate::generated::convert::{Version, v1_8, v1_9, v1_9_2, v1_9_4, v1_10, v1_11, v1_12};
 use crate::pds::convert::{Error, Result};
 use crate::registry;
 use crate::session::Session;

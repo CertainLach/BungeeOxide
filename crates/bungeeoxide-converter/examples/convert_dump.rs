@@ -1,5 +1,5 @@
-use bungeeoxide_converter::gen::convert::{convert, Root, Version};
 use bungeeoxide_converter::Session;
+use bungeeoxide_converter::generated::convert::{Root, Version, convert};
 
 fn main() -> anyhow::Result<()> {
 	let args: Vec<String> = std::env::args().skip(1).collect();

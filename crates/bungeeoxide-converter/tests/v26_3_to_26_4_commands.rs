@@ -1,6 +1,6 @@
-use bungeeoxide_converter::gen::convert::{v26_3 as z, v26_4_snapshot_10 as w, Root};
+use bungeeoxide_converter::generated::convert::{Root, v26_3 as z, v26_4_snapshot_10 as w};
 use bungeeoxide_converter::pds::{Input, Output};
-use bungeeoxide_converter::{convert, Session, Version};
+use bungeeoxide_converter::{Session, Version, convert};
 
 type Props3 = z::command_node_extra_node_data_v2_properties::Ty;
 type Props4 = w::command_node_extra_node_data_v2_properties::Ty;
@@ -494,12 +494,14 @@ fn unknown_string_mode_is_unconvertible() {
 		Props3::BrigadierString(Mode::Default(7)),
 		None,
 	)]);
-	assert!(convert(
-		Root::PlayToClient,
-		Version::V26_3,
-		Version::V26_4_snapshot_10,
-		&encode(&tree, z::play_to_client_packet::serialize),
-		&mut Session::new(),
-	)
-	.is_err());
+	assert!(
+		convert(
+			Root::PlayToClient,
+			Version::V26_3,
+			Version::V26_4_snapshot_10,
+			&encode(&tree, z::play_to_client_packet::serialize),
+			&mut Session::new(),
+		)
+		.is_err()
+	);
 }

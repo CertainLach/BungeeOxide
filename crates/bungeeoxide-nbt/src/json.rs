@@ -191,11 +191,13 @@ fn object(m: &Map<String, Value>) -> Payload {
 		out.insert(0, Entry::new("text", ""));
 	}
 	match out.as_slice() {
-		[Entry {
-			name,
-			value: Payload::String(s),
-			..
-		}] if name == "text" => Payload::String(s.clone()),
+		[
+			Entry {
+				name,
+				value: Payload::String(s),
+				..
+			},
+		] if name == "text" => Payload::String(s.clone()),
 		_ => Payload::Compound(out),
 	}
 }

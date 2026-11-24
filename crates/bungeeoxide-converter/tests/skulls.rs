@@ -1,7 +1,7 @@
-use bungeeoxide_converter::gen::convert::{convert, v1_15_2, v1_16, Root};
-use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_converter::generated::convert::{Root, convert, v1_15_2, v1_16};
+use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_nbt::{Entry, Payload};
 
 fn owner_id<'a>(root: &'a Entry, key: &str) -> &'a Entry {

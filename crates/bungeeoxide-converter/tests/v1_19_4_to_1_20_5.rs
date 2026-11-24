@@ -1,11 +1,11 @@
+use bungeeoxide_converter::Session;
+use bungeeoxide_converter::Version;
 use bungeeoxide_converter::custom::{configuration_1_20_2, configuration_capture_1_20_2};
-use bungeeoxide_converter::gen::convert::{
-	convert, inspect, v1_19_4, v1_20, v1_20_2, v1_20_3, v1_20_5, Root,
+use bungeeoxide_converter::generated::convert::{
+	Root, convert, inspect, v1_19_4, v1_20, v1_20_2, v1_20_3, v1_20_5,
 };
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::registry;
-use bungeeoxide_converter::Session;
-use bungeeoxide_converter::Version;
 use bungeeoxide_nbt::{Entry, List, ListItems, Payload};
 use serde_json::Value;
 
@@ -136,11 +136,13 @@ fn configuration_reaches_1_20_5() {
 			_ => None,
 		}
 	});
-	assert!(damage
-		.unwrap()
-		.entries
-		.iter()
-		.any(|e| e.key == "minecraft:spit"));
+	assert!(
+		damage
+			.unwrap()
+			.entries
+			.iter()
+			.any(|e| e.key == "minecraft:spit")
+	);
 }
 
 #[test]
@@ -235,12 +237,14 @@ fn chat_becomes_nbt_text() {
 	let Payload::Compound(root) = &c.content.value else {
 		panic!("{c:?}")
 	};
-	assert!(root
-		.iter()
-		.any(|e| e.name == "bold" && e.value == Payload::Byte(1)));
-	assert!(root
-		.iter()
-		.any(|e| e.name == "text" && e.value == Payload::String("hi ".to_owned())));
+	assert!(
+		root.iter()
+			.any(|e| e.name == "bold" && e.value == Payload::Byte(1))
+	);
+	assert!(
+		root.iter()
+			.any(|e| e.name == "text" && e.value == Payload::String("hi ".to_owned()))
+	);
 	let Some(Payload::List(extra)) = root.iter().find(|e| e.name == "extra").map(|e| &e.value)
 	else {
 		panic!()
@@ -818,9 +822,11 @@ fn newer_server_configuration_feeds_old_clients() {
 	] {
 		assert!(registries.iter().any(|e| e.name == id), "{id} missing");
 	}
-	assert!(!registries
-		.iter()
-		.any(|e| e.name == "minecraft:wolf_variant"));
+	assert!(
+		!registries
+			.iter()
+			.any(|e| e.name == "minecraft:wolf_variant")
+	);
 	let v1_20::play_to_client_packet::Ty::Tags(tags) =
 		decode(&out[2], v1_20::play_to_client_packet::deserialize)
 	else {

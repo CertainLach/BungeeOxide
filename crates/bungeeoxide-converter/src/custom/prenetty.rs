@@ -11,10 +11,10 @@ mod ids;
 mod tables;
 mod text;
 
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 use std::collections::{HashMap, HashSet};
 
-use crate::gen::convert::{v1_0_1, v1_4_2, v1_6_4};
+use crate::generated::convert::{v1_0_1, v1_4_2, v1_6_4};
 use crate::pds_native::pds_legacySlot;
 use crate::session::Session;
 
@@ -106,7 +106,7 @@ fn old_meta_item(v: OldMetaItem, to: Version) -> OldMetaItem {
 }
 
 fn mid_meta_item(v: MidMetaItem, to: Version) -> MidMetaItem {
-	use crate::gen::convert::v1_4_2::entity_metadata_item_v5 as Item;
+	use crate::generated::convert::v1_4_2::entity_metadata_item_v5 as Item;
 	match v {
 		MidMetaItem::V5(Item::Ty::Default(id, mut item)) => {
 			let (id, damage) = ids::item(id, item.item_damage, to);

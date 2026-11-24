@@ -2,12 +2,12 @@
 pub mod packet;
 pub use ::bungeeoxide_minecraft_root::view::pstring_123 as packet_chat_command;
 pub use ::bungeeoxide_minecraft_root::view::pstring_123 as packet_name_item;
+pub use ::bungeeoxide_minecraft_v1_8::view::play::to_server::packet_custom_payload;
 pub use ::bungeeoxide_minecraft_v1_12::view::play::to_server::packet_advancement_tab;
 pub use ::bungeeoxide_minecraft_v1_17_1::view::play::to_server::packet_edit_book;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::play::to_server::packet_chat_session_update;
 pub use ::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_chat_command_signed;
 pub use ::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_chat_message;
-pub use ::bungeeoxide_minecraft_v1_8::view::play::to_server::packet_custom_payload;
 pub mod packet_set_creative_slot;
 pub use ::bungeeoxide_minecraft_v1_13::view::play::to_server::packet_tab_complete;
 pub use ::bungeeoxide_minecraft_v1_13::view::play::to_server::packet_update_command_block_minecart;

@@ -2,12 +2,12 @@ use std::io::{Read, Write};
 use std::path::PathBuf;
 
 use bungeeoxide_converter::pds::{Input, Output};
-use bungeeoxide_converter::{registry, world, Version};
-use bungeeoxide_nbt::gen::entry;
+use bungeeoxide_converter::{Version, registry, world};
+use bungeeoxide_nbt::generated::entry;
 use bungeeoxide_nbt::{CompoundExt, Entry, List, Payload};
+use flate2::Compression;
 use flate2::read::ZlibDecoder;
 use flate2::write::ZlibEncoder;
-use flate2::Compression;
 
 fn compound(entries: Vec<Entry>) -> Payload {
 	Payload::Compound(entries)

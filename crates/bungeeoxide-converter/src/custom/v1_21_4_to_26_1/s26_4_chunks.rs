@@ -1,7 +1,7 @@
 use super::{chunk, world};
-use crate::gen::convert::{v26_3 as a, v26_4_snapshot_10 as b, Version};
-use crate::pds::convert::Result;
 use crate::Session;
+use crate::generated::convert::{Version, v26_3 as a, v26_4_snapshot_10 as b};
+use crate::pds::convert::Result;
 
 pub use super::chunk::fluid_count_in;
 
@@ -31,7 +31,7 @@ pub fn session_biome_bits(cx: &mut Session) -> Option<u32> {
 #[cfg(test)]
 mod tests {
 	use super::super::util::{decode, read_varint};
-	use super::chunk::{format, read_biomes, read_sections, write_biomes, write_sections, Section};
+	use super::chunk::{Section, format, read_biomes, read_sections, write_biomes, write_sections};
 	use super::*;
 	use crate::custom::chunks::expand_cells;
 
@@ -205,9 +205,11 @@ mod tests {
 		assert_eq!(cells.len(), 1);
 		assert_eq!(cells[0][cell(1, 2, 3)], 5);
 		assert_eq!(cells[0][cell(0, 0, 0)], 8);
-		assert!((0..64)
-			.filter(|c| *c != cell(1, 2, 3) && *c != cell(0, 0, 0))
-			.all(|c| cells[0][c] == 1));
+		assert!(
+			(0..64)
+				.filter(|c| *c != cell(1, 2, 3) && *c != cell(0, 0, 0))
+				.all(|c| cells[0][c] == 1)
+		);
 	}
 
 	#[test]
@@ -246,7 +248,7 @@ mod tests {
 	#[test]
 	fn virtual_chunks_down_use_the_session_biome_registry() {
 		use crate::custom::chunks::{self, Biomes, Column};
-		use crate::gen::convert::{convert, Root};
+		use crate::generated::convert::{Root, convert};
 		let mut cx = Session::new();
 		world::world(&mut cx).biomes = Some(200);
 		let stone = crate::registry::blocks(NEW)

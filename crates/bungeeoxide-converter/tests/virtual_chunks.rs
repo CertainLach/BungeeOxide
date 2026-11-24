@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
 
 use bungeeoxide_converter::custom::chunks::{
-	decode, encode_chunk, Biomes, BlockEntity, Column, Light, Nibbles, Packet, Section,
+	Biomes, BlockEntity, Column, Light, Nibbles, Packet, Section, decode, encode_chunk,
 };
-use bungeeoxide_converter::gen::convert::{convert, step, Root};
-use bungeeoxide_converter::{version_range, Session};
+use bungeeoxide_converter::generated::convert::{Root, convert, step};
+use bungeeoxide_converter::{Session, version_range};
 
 const ROOT: Root = Root::PlayToClient;
 
@@ -417,20 +417,22 @@ fn every_pair(packets: impl Fn(Version) -> Vec<Vec<u8>> + Sync) {
 	let threads = std::thread::available_parallelism().map_or(4, |n| n.get());
 	std::thread::scope(|s| {
 		for _ in 0..threads {
-			s.spawn(|| loop {
-				let i = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-				let Some(&(from, to)) = pairs.get(i) else {
-					break;
-				};
-				let r = compare(from, to, &packets(from));
-				if !r.mismatches.is_empty() {
-					failures.lock().unwrap().push(format!(
-						"{} -> {}: {} mismatches, first: {}",
-						from,
-						to,
-						r.mismatches.len(),
-						r.mismatches[0]
-					));
+			s.spawn(|| {
+				loop {
+					let i = next.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+					let Some(&(from, to)) = pairs.get(i) else {
+						break;
+					};
+					let r = compare(from, to, &packets(from));
+					if !r.mismatches.is_empty() {
+						failures.lock().unwrap().push(format!(
+							"{} -> {}: {} mismatches, first: {}",
+							from,
+							to,
+							r.mismatches.len(),
+							r.mismatches[0]
+						));
+					}
 				}
 			});
 		}
@@ -701,7 +703,7 @@ fn set_height(dimension: &mut bungeeoxide_nbt::Entry, min_y: i32, height: i32) {
 }
 
 fn tall_login(version: Version, min_y: i32, height: i32) -> Vec<u8> {
-	use bungeeoxide_converter::gen::convert::{v1_17_1, v1_18};
+	use bungeeoxide_converter::generated::convert::{v1_17_1, v1_18};
 	use bungeeoxide_converter::pds::{Input, Output};
 	let login = traffic(version)
 		.into_iter()
@@ -754,8 +756,8 @@ fn tall_worlds_with_block_entities() {
 }
 
 macro_rules! switches {
-	($m:ident, $version:expr, $section:ty) => {{
-		use bungeeoxide_converter::gen::convert::$m as m;
+	($m:ident, $version:expr_2021, $section:ty) => {{
+		use bungeeoxide_converter::generated::convert::$m as m;
 		let ser = |p: m::play_to_client_packet::Ty| {
 			let mut o = bungeeoxide_converter::pds::Output::new();
 			m::play_to_client_packet::serialize(&p, &mut o).unwrap();
@@ -872,7 +874,7 @@ fn tall_world_switches_and_floors() {
 #[test]
 fn switch_columns_skip_the_wire() {
 	use bungeeoxide_converter::custom::virtual_wire;
-	use bungeeoxide_converter::gen::convert::Carrier;
+	use bungeeoxide_converter::generated::convert::Carrier;
 	let mut cx = Session::new();
 	let mut columns = Vec::new();
 	for p in &switch_packets(Version::V1_18) {
@@ -914,8 +916,8 @@ fn tall_worlds_every_target() {
 }
 
 macro_rules! vanilla_login {
-	($m:ident, $version:expr) => {{
-		use bungeeoxide_converter::gen::convert::$m as m;
+	($m:ident, $version:expr_2021) => {{
+		use bungeeoxide_converter::generated::convert::$m as m;
 		let v: serde_json::Value =
 			serde_json::from_str(bungeeoxide_converter::registry::login_packet($version).unwrap())
 				.unwrap();

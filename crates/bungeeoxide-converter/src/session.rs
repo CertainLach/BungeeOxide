@@ -1,7 +1,7 @@
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
 
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Kind {
@@ -12,7 +12,7 @@ pub enum Kind {
 
 #[derive(Debug)]
 pub struct Outgoing {
-	pub root: crate::gen::convert::Root,
+	pub root: crate::generated::convert::Root,
 	pub version: Version,
 	pub data: Vec<u8>,
 }
@@ -23,7 +23,7 @@ enum Payload {
 }
 
 struct Queued {
-	root: crate::gen::convert::Root,
+	root: crate::generated::convert::Root,
 	version: Version,
 	payload: Payload,
 }
@@ -94,7 +94,7 @@ impl Session {
 			.expect("states are keyed by their type")
 	}
 
-	pub fn send(&mut self, root: crate::gen::convert::Root, version: Version, data: Vec<u8>) {
+	pub fn send(&mut self, root: crate::generated::convert::Root, version: Version, data: Vec<u8>) {
 		self.outgoing.push(Queued {
 			root,
 			version,
@@ -104,7 +104,7 @@ impl Session {
 
 	pub fn send_model(
 		&mut self,
-		root: crate::gen::convert::Root,
+		root: crate::generated::convert::Root,
 		version: Version,
 		model: crate::custom::Virtual,
 	) {

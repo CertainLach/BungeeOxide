@@ -1,20 +1,20 @@
 use std::sync::OnceLock;
 
+use super::Virtual;
 use super::formats::{has_sky, light_array};
-use super::model::{Biomes, BlockEntity, Column, HeightKind, Light, Nibbles, Section, CELLS};
+use super::model::{Biomes, BlockEntity, CELLS, Column, HeightKind, Light, Nibbles, Section};
 use super::packets::{
-	body, decode, encode_chunk, encode_light, encode_unload, entities_18, from_light_14,
+	Packet, body, decode, encode_chunk, encode_light, encode_unload, entities_18, from_light_14,
 	from_light_17, heightmap_id, heightmap_name, heightmaps_entry, heightmaps_named, light_14,
-	light_17, list_18, list_202, named_entities, named_list, Packet,
+	light_17, list_18, list_202, named_entities, named_list,
 };
 use super::tables::{settle, step_table};
-use super::Virtual;
+use crate::Session;
 use crate::custom as m;
-use crate::gen::convert::{
-	step, v1_13, v1_14, v1_17, v1_18, v1_20_2, v1_21_3, Carrier, Root, Version,
+use crate::generated::convert::{
+	Carrier, Root, Version, step, v1_13, v1_14, v1_17, v1_18, v1_20_2, v1_21_3,
 };
 use crate::pds::convert::{Error, Result};
-use crate::Session;
 
 type Modern = v1_20_2::chunk_block_entity::Ty;
 
@@ -406,7 +406,7 @@ pub(super) fn advance(
 		(Version::V1_13_2, Version::V1_14) => return village_up(a, b, col, cx),
 		(Version::V1_16_2, Version::V1_17) if !col.full => return nether_partial(a, b, col),
 		(Version::V1_8, Version::V1_9) if col.full && col.sections.iter().all(Option::is_none) => {
-			return Ok(vec![wire(encode_unload(b, col.x, col.z)?)])
+			return Ok(vec![wire(encode_unload(b, col.x, col.z)?)]);
 		}
 		_ => {}
 	}

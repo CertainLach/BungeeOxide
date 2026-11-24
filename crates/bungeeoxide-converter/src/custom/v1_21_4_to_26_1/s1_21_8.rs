@@ -1,9 +1,9 @@
 use super::remap::{self, remaps};
 use super::rules::{items, statistics, tags};
 use super::slots::{self, exact_matchers, untrusted_step};
-use crate::gen::convert::{v1_21_6 as a, v1_21_8 as b, Version};
-use crate::pds::convert::Result;
 use crate::Session;
+use crate::generated::convert::{Version, v1_21_6 as a, v1_21_8 as b};
+use crate::pds::convert::Result;
 
 remaps!(Version::V1_21_6 => Version::V1_21_8 { late_sound_up_1_21_8: a::item_sound_holder::Ty = remap::sound; });
 remaps!(Version::V1_21_8 => Version::V1_21_6 { late_sound_down_1_21_6: a::item_sound_holder::Ty = remap::sound; });

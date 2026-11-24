@@ -1,6 +1,6 @@
 use super::util::remap;
-use crate::gen::convert::v1_21_4::play_to_client_packet_statistics_items as stat;
-use crate::gen::convert::Version;
+use crate::generated::convert::Version;
+use crate::generated::convert::v1_21_4::play_to_client_packet_statistics_items as stat;
 
 const CUSTOM_STATS: &[(Version, i32)] = &[(Version::V1_21_6, 17), (Version::V1_21_11, 22)];
 

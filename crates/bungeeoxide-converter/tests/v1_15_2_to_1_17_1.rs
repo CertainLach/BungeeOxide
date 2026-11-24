@@ -1,13 +1,13 @@
-use bungeeoxide_converter::gen::convert::{convert, Root};
-use bungeeoxide_converter::gen::convert::{v1_15_2, v1_16, v1_16_2, v1_17, v1_17_1};
-use bungeeoxide_converter::pds::{Input, Output, Result};
-use bungeeoxide_converter::registry;
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
-use bungeeoxide_nbt::gen::entry::Ty as Entry;
-use bungeeoxide_nbt::gen::list_0::Ty as Items;
-use bungeeoxide_nbt::gen::payload::Ty as P;
+use bungeeoxide_converter::generated::convert::{Root, convert};
+use bungeeoxide_converter::generated::convert::{v1_15_2, v1_16, v1_16_2, v1_17, v1_17_1};
+use bungeeoxide_converter::pds::{Input, Output, Result};
+use bungeeoxide_converter::registry;
 use bungeeoxide_nbt::CompoundExt;
+use bungeeoxide_nbt::generated::entry::Ty as Entry;
+use bungeeoxide_nbt::generated::list_0::Ty as Items;
+use bungeeoxide_nbt::generated::payload::Ty as P;
 
 type C15 = v1_15_2::play_to_client_packet::Ty;
 type C16 = v1_16::play_to_client_packet::Ty;
@@ -276,10 +276,11 @@ fn join_game_builds_codecs() {
 	);
 	let dims = compounds(get(compound(&l.dimension_codec.value), "dimension").unwrap());
 	assert_eq!(dims.len(), 4);
-	assert!(dims
-		.iter()
-		.any(|d| string(get(d, "name")) == "minecraft:the_nether"
-			&& int(get(d, "logical_height")) == 128));
+	assert!(
+		dims.iter()
+			.any(|d| string(get(d, "name")) == "minecraft:the_nether"
+				&& int(get(d, "logical_height")) == 128)
+	);
 	assert_eq!(l.world_names.len(), 3);
 
 	let C162::Login(l) = one(up_15(
@@ -334,9 +335,11 @@ fn join_game_builds_codecs() {
 		)
 		.unwrap(),
 	);
-	assert!(types
-		.iter()
-		.all(|t| int(get(compound(get(t, "element").unwrap()), "height")) == 256));
+	assert!(
+		types
+			.iter()
+			.all(|t| int(get(compound(get(t, "element").unwrap()), "height")) == 256)
+	);
 }
 
 #[test]
@@ -845,10 +848,11 @@ fn entities_and_metadata() {
 	)) else {
 		panic!()
 	};
-	assert!(m
-		.metadata
-		.iter()
-		.any(|e| e.key == 20 && e.value == v1_16::entity_metadata_item::Ty::V1(i32::MAX)));
+	assert!(
+		m.metadata
+			.iter()
+			.any(|e| e.key == 20 && e.value == v1_16::entity_metadata_item::Ty::V1(i32::MAX))
+	);
 }
 
 #[test]
@@ -1073,7 +1077,7 @@ fn items_particles_and_sounds() {
 	);
 }
 
-use bungeeoxide_converter::gen::convert::v1_16_1;
+use bungeeoxide_converter::generated::convert::v1_16_1;
 
 #[test]
 fn shaped_recipes_keep_ingredient_order() {
@@ -1157,10 +1161,12 @@ fn tags_gain_required_entries() {
 	let p = C15::Tags(v1_15_2::play_to_client_packet_tags::Ty {
 		block_tags: vec![tag(
 			"minecraft:logs",
-			vec![registry::names(Version::V1_15_2, "blocks")
-				.unwrap()
-				.id("oak_log")
-				.unwrap() as i32],
+			vec![
+				registry::names(Version::V1_15_2, "blocks")
+					.unwrap()
+					.id("oak_log")
+					.unwrap() as i32,
+			],
 		)],
 		item_tags: vec![tag("minecraft:furnace_materials", vec![])],
 		fluid_tags: vec![tag("minecraft:water", vec![1, 2])],
@@ -1180,9 +1186,11 @@ fn tags_gain_required_entries() {
 		.find(|t| t.tag_name == "minecraft:climbable")
 		.unwrap();
 	let blocks = registry::names(Version::V1_16, "blocks").unwrap();
-	assert!(climbable
-		.entries
-		.contains(&(blocks.id("ladder").unwrap() as i32)));
+	assert!(
+		climbable
+			.entries
+			.contains(&(blocks.id("ladder").unwrap() as i32))
+	);
 	assert_eq!(
 		t.block_tags[0].entries,
 		[blocks.id("oak_log").unwrap() as i32]
@@ -1206,14 +1214,18 @@ fn tags_gain_required_entries() {
 			"minecraft:game_event"
 		]
 	);
-	assert!(groups[1]
-		.tags
-		.iter()
-		.all(|t| t.tag_name != "minecraft:furnace_materials"));
-	assert!(groups[4]
-		.tags
-		.iter()
-		.any(|t| t.tag_name == "minecraft:vibrations"));
+	assert!(
+		groups[1]
+			.tags
+			.iter()
+			.all(|t| t.tag_name != "minecraft:furnace_materials")
+	);
+	assert!(
+		groups[4]
+			.tags
+			.iter()
+			.any(|t| t.tag_name == "minecraft:vibrations")
+	);
 	assert_eq!(groups[2].tags[0].entries, [1, 2]);
 }
 
@@ -1291,13 +1303,15 @@ fn split_packets_in_1_17() {
 		action: 18,
 		accepted: true,
 	});
-	assert!(up_15(
-		&accepted,
-		Version::V1_17,
-		&mut cx,
-		v1_17::play_to_client_packet::deserialize
-	)
-	.is_empty());
+	assert!(
+		up_15(
+			&accepted,
+			Version::V1_17,
+			&mut cx,
+			v1_17::play_to_client_packet::deserialize
+		)
+		.is_empty()
+	);
 }
 
 #[test]
@@ -1680,9 +1694,10 @@ fn tall_worlds_switch_windows_on_server_teleports() {
 	let light_at = order(&out, |p| matches!(p, C162::UpdateLight(_)));
 	let chunk_at = order(&out, |p| matches!(p, C162::MapChunk(_)));
 	assert!(light_at < chunk_at && chunk_at < order(&out, |p| matches!(p, C162::Position(_))));
-	assert!(out
-		.iter()
-		.any(|p| matches!(p, C162::EntityTeleport(t) if t.entity_id == 70 && t.y == 186.0)));
+	assert!(
+		out.iter()
+			.any(|p| matches!(p, C162::EntityTeleport(t) if t.entity_id == 70 && t.y == 186.0))
+	);
 	assert_eq!(confirm(2, &mut cx), [S17::TeleportConfirm(2)]);
 
 	let C162::BlockChange(b) = one(down_17(
@@ -1829,9 +1844,10 @@ fn tall_worlds_follow_walking_digging_and_flying() {
 		order(&back, |p| matches!(p, C162::MapChunk(_)))
 			< order(&back, |p| matches!(p, C162::Position(_)))
 	);
-	assert!(back
-		.iter()
-		.any(|p| matches!(p, C162::EntityTeleport(e) if e.entity_id == 71 && e.y == 214.0)));
+	assert!(
+		back.iter()
+			.any(|p| matches!(p, C162::EntityTeleport(e) if e.entity_id == 71 && e.y == 214.0))
+	);
 
 	let (sent, back) = up_16_2(&walk(30.0), &mut cx);
 	assert_eq!(server_y(&sent), 30.0);
@@ -1889,9 +1905,10 @@ fn tall_worlds_follow_walking_digging_and_flying() {
 	let (sent, back) = up_16_2(&boat(225.0), &mut cx);
 	assert_eq!(server_y(&sent), 225.0);
 	switched(&back, -64.0);
-	assert!(back
-		.iter()
-		.any(|p| matches!(p, C162::VehicleMove(v) if v.y == 161.0 && v.yaw == 90.0)));
+	assert!(
+		back.iter()
+			.any(|p| matches!(p, C162::VehicleMove(v) if v.y == 161.0 && v.yaw == 90.0))
+	);
 	assert_eq!(
 		first_section_block(map_chunk(&back, 0, 0).unwrap()),
 		expected_block(8)
@@ -2021,9 +2038,10 @@ fn window_floors_show_the_ground_below() {
 	assert_eq!(s[4].iter().filter(|b| **b != air).count(), 1);
 	let out = down_17(&teleport_17(300.0, 0, 3), &mut cx);
 	let c = map_chunk(&out, 0, 0).unwrap();
-	assert!(sections(c).iter().all(|s| s
-		.iter()
-		.all(|b| *b == state(Version::V1_16_2, "minecraft:stone"))));
+	assert!(sections(c).iter().all(|s| {
+		s.iter()
+			.all(|b| *b == state(Version::V1_16_2, "minecraft:stone"))
+	}));
 	let mut cx = Session::new();
 	down_17(&login_17(-64, 384, &mut cx), &mut cx);
 	let low: Vec<Option<u32>> = (0..24).map(|k| (k < 8).then_some(stone)).collect();
@@ -2187,7 +2205,9 @@ fn block_change_15(text: &str) -> C15 {
 #[test]
 fn changed_block_properties() {
 	let mut cx = Session::new();
-	let wall = block_change_15("minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]");
+	let wall = block_change_15(
+		"minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]",
+	);
 	let C16::BlockChange(b) = one(up_15(
 		&wall,
 		Version::V1_16,
@@ -2196,11 +2216,17 @@ fn changed_block_properties() {
 	)) else {
 		panic!()
 	};
-	assert_eq!(describe(Version::V1_16, b.r#type as u32), "minecraft:cobblestone_wall[east=low,north=none,south=low,up=true,waterlogged=false,west=none]");
+	assert_eq!(
+		describe(Version::V1_16, b.r#type as u32),
+		"minecraft:cobblestone_wall[east=low,north=none,south=low,up=true,waterlogged=false,west=none]"
+	);
 	let C15::BlockChange(b) = one(down_16(&C16::BlockChange(b), &mut cx)) else {
 		panic!()
 	};
-	assert_eq!(describe(Version::V1_15_2, b.r#type as u32), "minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]");
+	assert_eq!(
+		describe(Version::V1_15_2, b.r#type as u32),
+		"minecraft:cobblestone_wall[east=true,north=false,south=true,up=true,waterlogged=false,west=false]"
+	);
 	let jigsaw = block_change_15("minecraft:jigsaw[facing=up]");
 	let C16::BlockChange(b) = one(up_15(
 		&jigsaw,

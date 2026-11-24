@@ -1,11 +1,11 @@
 use super::blocks::{
-	item_earlier, item_later, new_items, packed_of_state, state_earlier, state_later,
-	state_of_packed, FLAT, OLD,
+	FLAT, OLD, item_earlier, item_later, new_items, packed_of_state, state_earlier, state_later,
+	state_of_packed,
 };
 use super::items::{
 	item_down, item_up, legacy_item_name, legacy_of_item, slot_earlier, slot_later,
 };
-use crate::gen::convert::{v1_12_2 as a, v1_13 as b, Version};
+use crate::generated::convert::{Version, v1_12_2 as a, v1_13 as b};
 use crate::pds::convert::{Error, Result};
 use crate::registry::{self, renames};
 use crate::session::Session;
@@ -364,8 +364,8 @@ pub fn flattening_sound_name_1_12_2(
 
 fn sound_id(
 	id: i32,
-	from: crate::gen::convert::Version,
-	to: crate::gen::convert::Version,
+	from: crate::generated::convert::Version,
+	to: crate::generated::convert::Version,
 	rename: fn(&str) -> String,
 ) -> Result<i32> {
 	let from = registry::names(from, "sounds").and_then(|n| n.name(id.max(0) as u32));
@@ -405,8 +405,8 @@ pub fn flattening_effect_flags_1_12_2(
 
 fn enchantment(
 	id: i16,
-	from: crate::gen::convert::Version,
-	to: crate::gen::convert::Version,
+	from: crate::generated::convert::Version,
+	to: crate::generated::convert::Version,
 ) -> i16 {
 	if id < 0 {
 		return id;

@@ -1,7 +1,7 @@
 use super::chunk;
-use super::meta::{self, Kind, Meta, MINECARTS};
+use super::meta::{self, Kind, MINECARTS, Meta};
 use super::*;
-use crate::gen::convert::{v1_18_2, v1_19, v1_19_2};
+use crate::generated::convert::{v1_18_2, v1_19, v1_19_2};
 
 type Client18 = v1_18_2::play_to_client_packet::Ty;
 type Client19 = v1_19::play_to_client_packet::Ty;
@@ -452,7 +452,7 @@ fn acknowledged(cx: &mut Session, sequence: i32) -> Result<()> {
 		&Client19::AcknowledgePlayerDigging(sequence),
 		v1_19::play_to_client_packet::serialize,
 	)?;
-	cx.send(crate::gen::convert::Root::PlayToClient, NEW, ack);
+	cx.send(crate::generated::convert::Root::PlayToClient, NEW, ack);
 	Ok(())
 }
 
@@ -861,7 +861,7 @@ pub fn caves_entity_sound_down_1_18_2(
 }
 
 macro_rules! player_info {
-	($name:ident, $from:ident, $to:ident $(, $field:ident: $value:expr)*) => {
+	($name:ident, $from:ident, $to:ident $(, $field:ident: $value:expr_2021)*) => {
 		pub fn $name(
 			v: $from::play_to_client_packet_player_info::Ty,
 			_cx: &mut Session,
@@ -939,7 +939,7 @@ pub fn caves_trade_second_input_down_1_18_2(
 }
 
 macro_rules! world_particles {
-	($name:ident, $from:ident, $to:ident, $a:expr, $b:expr) => {
+	($name:ident, $from:ident, $to:ident, $a:expr_2021, $b:expr_2021) => {
 		pub fn $name(
 			v: $from::play_to_client_packet_world_particles::Ty,
 			_cx: &mut Session,

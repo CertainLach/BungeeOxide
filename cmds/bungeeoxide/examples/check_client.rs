@@ -2,16 +2,16 @@ use std::collections::{BTreeMap, HashMap};
 use std::io::Write as _;
 use std::time::{Duration, Instant};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use bungeeoxide::codec::Codec;
-use bungeeoxide::legacy::{string16, Cfb8, Legacy};
-use bungeeoxide::{decode, encode, next, Conn};
-use bungeeoxide_converter::gen::convert::v1_8::{
+use bungeeoxide::legacy::{Cfb8, Legacy, string16};
+use bungeeoxide::{Conn, decode, encode, next};
+use bungeeoxide_converter::generated::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
 };
-use bungeeoxide_converter::gen::convert::{
-	v1_0_1, v1_12_2, v1_2_5, v1_3_2, v1_4_7, v1_5_2, v1_6_4, v1_8,
+use bungeeoxide_converter::generated::convert::{
+	v1_0_1, v1_2_5, v1_3_2, v1_4_7, v1_5_2, v1_6_4, v1_8, v1_12_2,
 };
 use bungeeoxide_converter::pds::{Input, Output};
 use bungeeoxide_converter::{Root, Version};
@@ -1842,7 +1842,9 @@ async fn join_modern(addr: &str, name: &str, protocol: i32) -> Result<Conn> {
 async fn main() -> Result<()> {
 	let args: Vec<String> = std::env::args().skip(1).collect();
 	let [addr, version, name, seconds, rest @ ..] = &args[..] else {
-		bail!("usage: check_client <bridge host:port> <1.0.1|1.2.5|1.3.2|1.4.7|1.5.2|1.6.4|1.8|1.12.2> <name> <seconds> [<server console file> <script>]");
+		bail!(
+			"usage: check_client <bridge host:port> <1.0.1|1.2.5|1.3.2|1.4.7|1.5.2|1.6.4|1.8|1.12.2> <name> <seconds> [<server console file> <script>]"
+		);
 	};
 	let seconds: u64 = seconds.parse()?;
 	let script = match rest {

@@ -14,8 +14,8 @@ use ::pds_bytes_runtime as pds;
 mod pds_native {
 	pub use bungeeoxide_pds_natives::*;
 	pub use pds_bytes_runtime::natives::{
-		pds_bool, pds_f32, pds_f64, pds_i16, pds_i32, pds_i64, pds_i8, pds_u16, pds_u32, pds_u64,
-		pds_u8, pds_void,
+		pds_bool, pds_f32, pds_f64, pds_i8, pds_i16, pds_i32, pds_i64, pds_u8, pds_u16, pds_u32,
+		pds_u64, pds_void,
 	};
 }
 pub mod view;
@@ -242,7 +242,6 @@ pub use self::packet_common_store_cookie::Ty as PacketCommonStoreCookie;
 pub use self::packet_common_transfer::Ty as PacketCommonTransfer;
 pub use self::partial_resolvable_profile::Ty as PartialResolvableProfile;
 pub use self::particle::Particle;
-pub use self::particle_10::Particle10;
 pub use self::particle_3::Particle3;
 pub use self::particle_4::Particle4;
 pub use self::particle_5::Particle5;
@@ -250,6 +249,7 @@ pub use self::particle_6::Particle6;
 pub use self::particle_7::Particle7;
 pub use self::particle_8::Particle8;
 pub use self::particle_9::Particle9;
+pub use self::particle_10::Particle10;
 pub use self::path::Ty as Path;
 pub use self::path_debug_data::Ty as PathDebugData;
 pub use self::player_skin_patch::Ty as PlayerSkinPatch;
