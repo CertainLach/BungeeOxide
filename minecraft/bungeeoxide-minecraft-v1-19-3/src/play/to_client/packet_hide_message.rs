@@ -9,7 +9,13 @@ pub enum PacketHideMessage {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::buffer::sized::serialize(__v, output),
+		Ty::V0(__v) => {
+			::bungeeoxide_minecraft_root::buffer::sized::check_count(
+				__v,
+				&(256).try_into().expect("constant fits"),
+			)?;
+			::bungeeoxide_minecraft_root::buffer::sized::serialize(__v, output)
+		}
 		Ty::Default(_) => Ok(()),
 	}
 }

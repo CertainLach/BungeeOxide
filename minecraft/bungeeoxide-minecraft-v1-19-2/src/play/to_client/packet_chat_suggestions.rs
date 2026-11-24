@@ -8,13 +8,13 @@ pub struct PacketChatSuggestions {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.action, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.entries, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.entries, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_action = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_entries = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_entries = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	Ok(Ty {
 		action: f_action,
 		entries: f_entries,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.action)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.entries)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.entries)
 }
 pub type Ty = PacketChatSuggestions;

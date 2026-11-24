@@ -16,12 +16,24 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-        Ty::Settings(__v) => ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_settings::serialize(__v, output),
-        Ty::CustomPayload(__v) => ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_custom_payload::serialize(__v, output),
-        Ty::FinishConfiguration(__v) => ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_finish_configuration::serialize(__v, output),
-        Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
-        Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
-        Ty::ResourcePackReceive(__v) => super::packet_resource_pack_receive::serialize(__v, output),
+        Ty::Settings(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_settings::serialize(__v, output)
+        }
+        Ty::CustomPayload(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_custom_payload::serialize(__v, output)
+        }
+        Ty::FinishConfiguration(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::configuration::to_server::packet_finish_configuration::serialize(__v, output)
+        }
+        Ty::KeepAlive(__v) => {
+            ::bungeeoxide_minecraft_root::i64::serialize(__v, output)
+        }
+        Ty::Pong(__v) => {
+            ::bungeeoxide_minecraft_root::i32::serialize(__v, output)
+        }
+        Ty::ResourcePackReceive(__v) => {
+            super::packet_resource_pack_receive::serialize(__v, output)
+        }
         Ty::Default(_) => Ok(()),
     }
 }

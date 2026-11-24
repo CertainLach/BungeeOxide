@@ -15,28 +15,28 @@ pub struct PacketRespawn {
 	pub copy_metadata: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.dimension, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.world_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.dimension, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.world_name, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.previous_gamemode, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_debug, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_flat, output)?;
-	super::super::super::option_47::serialize(&_0.death, output)?;
+	super::super::super::option_51::serialize(&_0.death, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.portal_cooldown, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.copy_metadata, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(17)?;
-	let f_dimension = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_worldName = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_dimension = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_worldName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_previousGamemode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_isDebug = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_isFlat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_death = super::super::super::option_47::deserialize(input)?;
+	let f_death = super::super::super::option_51::deserialize(input)?;
 	let f_portalCooldown = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_copyMetadata = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
@@ -53,14 +53,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.dimension)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.world_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.dimension)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.world_name)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.previous_gamemode)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_debug)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_flat)
-		+ super::super::super::option_47::size_of(&_0.death)
+		+ super::super::super::option_51::size_of(&_0.death)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.portal_cooldown)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.copy_metadata)
 }

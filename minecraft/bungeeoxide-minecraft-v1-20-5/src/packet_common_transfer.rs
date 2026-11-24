@@ -7,13 +7,13 @@ pub struct PacketCommonTransfer {
 	pub port: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.host, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.host, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.port, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_host = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_host = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_port = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		host: f_host,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.host)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.host)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.port)
 }
 pub type Ty = PacketCommonTransfer;

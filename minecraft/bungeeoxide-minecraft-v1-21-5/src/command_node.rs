@@ -10,7 +10,7 @@ pub struct CommandNode {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::command_node_50::serialize(&_0.flags, output)?;
-	::bungeeoxide_minecraft_root::array::inline_107::serialize(&_0.children, output)?;
+	::bungeeoxide_minecraft_root::array::inline_128::serialize(&_0.children, output)?;
 	super::command_node_51::debug_assert_tag(&_0.redirect_node, {
 		let _0: &super::CommandNode50 = &_0.flags;
 		let _0: &::bungeeoxide_minecraft_root::U8 = &_0.has_redirect_node;
@@ -28,7 +28,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_flags = super::command_node_50::deserialize(input)?;
-	let f_children = ::bungeeoxide_minecraft_root::array::inline_107::deserialize(input)?;
+	let f_children = ::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?;
 	let f_redirectNode = super::command_node_51::deserialize(
 		input,
 		super::command_node_51::Args {
@@ -63,7 +63,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + super::command_node_50::size_of(&_0.flags)
-		+ ::bungeeoxide_minecraft_root::array::inline_107::size_of(&_0.children)
+		+ ::bungeeoxide_minecraft_root::array::inline_128::size_of(&_0.children)
 		+ super::command_node_51::size_of(&_0.redirect_node)
 		+ super::command_node_74::size_of(&_0.extra_node_data)
 }

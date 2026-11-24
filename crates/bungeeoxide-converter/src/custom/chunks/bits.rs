@@ -78,6 +78,29 @@ impl<'a> Reader<'a> {
 	}
 }
 
+pub(crate) fn bitset_bytes(longs: &[i64]) -> Vec<u8> {
+	let mut bytes: Vec<u8> = longs.iter().flat_map(|l| l.to_le_bytes()).collect();
+	while bytes.last() == Some(&0) {
+		bytes.pop();
+	}
+	bytes
+}
+
+pub(crate) fn bitset_longs(bytes: &[u8]) -> Vec<i64> {
+	let mut longs: Vec<i64> = bytes
+		.chunks(8)
+		.map(|c| {
+			let mut b = [0u8; 8];
+			b[..c.len()].copy_from_slice(c);
+			i64::from_le_bytes(b)
+		})
+		.collect();
+	while longs.last() == Some(&0) {
+		longs.pop();
+	}
+	longs
+}
+
 pub(super) fn put_varint(out: &mut Vec<u8>, v: i32) {
 	let mut v = v as u32;
 	while v >= 0x80 {

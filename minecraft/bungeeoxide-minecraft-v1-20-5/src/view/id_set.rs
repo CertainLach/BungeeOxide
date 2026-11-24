@@ -3,14 +3,14 @@ use crate::pds::{Error, Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum IdSet<'i> {
-	Named(::bungeeoxide_minecraft_root::view::Pstring96<'i>),
+	Named(::bungeeoxide_minecraft_root::view::Pstring109<'i>),
 	Ids(Vec<::bungeeoxide_minecraft_root::Varint>),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::Named(v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_root::view::pstring_96::serialize(v, output)
+			::bungeeoxide_minecraft_root::view::pstring_109::serialize(v, output)
 		}
 		Ty::Ids(ids) => {
 			::bungeeoxide_minecraft_root::varint::serialize(
@@ -31,9 +31,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		.try_into()
 		.map_err(|_| Error::InvalidValue)?;
 	Ok(if n == 0 {
-		Ty::Named(::bungeeoxide_minecraft_root::view::pstring_96::deserialize(
-			input,
-		)?)
+		Ty::Named(::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?)
 	} else {
 		let mut ids = Vec::with_capacity((n - 1).min(input.remaining()));
 		for _ in 0..n - 1 {
@@ -44,7 +42,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	match _0 {
-		Ty::Named(v) => 1 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(v),
+		Ty::Named(v) => 1 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(v),
 		Ty::Ids(ids) => {
 			let mut n = ::bungeeoxide_minecraft_root::varint::size_of(
 				&(ids.len() + 1).try_into().unwrap_or_default(),
@@ -59,7 +57,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 pub fn view<'i>(_0: &'i super::super::IdSet) -> Ty<'i> {
 	match _0 {
 		super::super::IdSet::Named(v) => {
-			Ty::Named(::bungeeoxide_minecraft_root::view::pstring_96::view(v))
+			Ty::Named(::bungeeoxide_minecraft_root::view::pstring_109::view(v))
 		}
 		super::super::IdSet::Ids(ids) => Ty::Ids(ids.clone()),
 	}
@@ -67,7 +65,7 @@ pub fn view<'i>(_0: &'i super::super::IdSet) -> Ty<'i> {
 pub fn into_view<'i>(_0: &'i mut super::super::IdSet) -> Ty<'i> {
 	match _0 {
 		super::super::IdSet::Named(v) => {
-			Ty::Named(::bungeeoxide_minecraft_root::view::pstring_96::view(v))
+			Ty::Named(::bungeeoxide_minecraft_root::view::pstring_109::view(v))
 		}
 		super::super::IdSet::Ids(ids) => Ty::Ids(::core::mem::take(ids)),
 	}

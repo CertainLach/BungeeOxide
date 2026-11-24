@@ -7,13 +7,13 @@ pub struct PacketSystemChat {
 	pub is_action_bar: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.content, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.content, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_action_bar, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_content = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_content = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_isActionBar = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		content: f_content,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.content)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.content)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_action_bar)
 }
 pub type Ty = PacketSystemChat;

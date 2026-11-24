@@ -3,30 +3,34 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommandSigned<'i> {
-	pub command: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub command: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub timestamp: ::bungeeoxide_minecraft_root::I64,
 	pub salt: ::bungeeoxide_minecraft_root::I64,
-	pub argument_signatures: super::super::super::array::Inline293<'i>,
+	pub argument_signatures: super::super::super::array::Inline313<'i>,
 	pub message_count: ::bungeeoxide_minecraft_root::Varint,
 	pub acknowledged: ::bungeeoxide_minecraft_root::view::buffer::Sized<'i>,
 	pub checksum: ::bungeeoxide_minecraft_root::U8,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_293::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_313::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.message_count, output)?;
+	::bungeeoxide_minecraft_root::view::buffer::sized::check_count(
+		&_0.acknowledged,
+		&(3).try_into().expect("constant fits"),
+	)?;
 	::bungeeoxide_minecraft_root::view::buffer::sized::serialize(&_0.acknowledged, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.checksum, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(20)?;
-	let f_command = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_293::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_313::deserialize(input)?;
 	let f_messageCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_acknowledged = ::bungeeoxide_minecraft_root::view::buffer::sized::deserialize(
 		input,
@@ -46,10 +50,10 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.command)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_293::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_313::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.message_count)
 		+ ::bungeeoxide_minecraft_root::view::buffer::sized::size_of(&_0.acknowledged)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.checksum)
@@ -58,10 +62,10 @@ pub fn view<'i>(
 	_0: &'i super::super::super::super::play::to_server::PacketChatCommandSigned,
 ) -> Ty<'i> {
 	Ty {
-		command: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.command),
+		command: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.command),
 		timestamp: ::core::clone::Clone::clone(&_0.timestamp),
 		salt: ::core::clone::Clone::clone(&_0.salt),
-		argument_signatures: super::super::super::array::inline_293::view(&_0.argument_signatures),
+		argument_signatures: super::super::super::array::inline_313::view(&_0.argument_signatures),
 		message_count: ::core::clone::Clone::clone(&_0.message_count),
 		acknowledged: ::bungeeoxide_minecraft_root::view::buffer::sized::view(&_0.acknowledged),
 		checksum: ::core::clone::Clone::clone(&_0.checksum),

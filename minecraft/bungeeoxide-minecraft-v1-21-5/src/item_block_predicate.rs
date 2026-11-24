@@ -9,16 +9,16 @@ pub struct ItemBlockPredicate {
 	pub components: super::DataComponentMatchers,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::option_67::serialize(&_0.block_set, output)?;
-	::bungeeoxide_minecraft_v1_20_5::option_92::serialize(&_0.properties, output)?;
+	super::option_71::serialize(&_0.block_set, output)?;
+	::bungeeoxide_minecraft_v1_20_5::option_105::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::anon_optional_nbt::serialize(&_0.nbt, output)?;
 	super::data_component_matchers::serialize(&_0.components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_blockSet = super::option_67::deserialize(input)?;
-	let f_properties = ::bungeeoxide_minecraft_v1_20_5::option_92::deserialize(input)?;
+	let f_blockSet = super::option_71::deserialize(input)?;
+	let f_properties = ::bungeeoxide_minecraft_v1_20_5::option_105::deserialize(input)?;
 	let f_nbt = ::bungeeoxide_minecraft_root::anon_optional_nbt::deserialize(input)?;
 	let f_components = super::data_component_matchers::deserialize(input)?;
 	Ok(Ty {
@@ -29,8 +29,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::option_67::size_of(&_0.block_set)
-		+ ::bungeeoxide_minecraft_v1_20_5::option_92::size_of(&_0.properties)
+	0 + super::option_71::size_of(&_0.block_set)
+		+ ::bungeeoxide_minecraft_v1_20_5::option_105::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::anon_optional_nbt::size_of(&_0.nbt)
 		+ super::data_component_matchers::size_of(&_0.components)
 }

@@ -3,13 +3,13 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEncryptionBegin<'i> {
-	pub server_id: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub server_id: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub public_key: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub verify_token: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub should_authenticate: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.server_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.server_id, output)?;
 	::bungeeoxide_minecraft_root::view::buffer::inline_3::serialize(&_0.public_key, output)?;
 	::bungeeoxide_minecraft_root::view::buffer::inline_3::serialize(&_0.verify_token, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.should_authenticate, output)?;
@@ -17,7 +17,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(4)?;
-	let f_serverId = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_serverId = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_publicKey = ::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
 	let f_verifyToken = ::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
 	let f_shouldAuthenticate = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -29,7 +29,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.server_id)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.server_id)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.public_key)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.verify_token)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.should_authenticate)
@@ -38,7 +38,7 @@ pub fn view<'i>(
 	_0: &'i super::super::super::super::login::to_client::PacketEncryptionBegin,
 ) -> Ty<'i> {
 	Ty {
-		server_id: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.server_id),
+		server_id: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.server_id),
 		public_key: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.public_key),
 		verify_token: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.verify_token),
 		should_authenticate: ::core::clone::Clone::clone(&_0.should_authenticate),

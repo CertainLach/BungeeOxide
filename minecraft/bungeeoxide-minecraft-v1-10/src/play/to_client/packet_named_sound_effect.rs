@@ -12,7 +12,7 @@ pub struct PacketNamedSoundEffect {
 	pub pitch: ::bungeeoxide_minecraft_root::F32,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.sound_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.sound_name, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.sound_category, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.y, output)?;
@@ -23,7 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(22)?;
-	let f_soundName = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_soundName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_soundCategory = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_x = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_y = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
@@ -41,7 +41,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.sound_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.sound_name)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.sound_category)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.y)

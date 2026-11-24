@@ -14,7 +14,7 @@ pub struct SlotComponent41 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.block_delay_seconds, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.disable_cooldown_scale, output)?;
-	super::array::inline_321::serialize(&_0.damage_reductions, output)?;
+	super::array::inline_341::serialize(&_0.damage_reductions, output)?;
 	super::slot_component_40::serialize(&_0.item_damage, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.bypassed_by, output)?;
 	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.block_sound, output)?;
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(24)?;
 	let f_blockDelaySeconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_disableCooldownScale = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_damageReductions = super::array::inline_321::deserialize(input)?;
+	let f_damageReductions = super::array::inline_341::deserialize(input)?;
 	let f_itemDamage = super::slot_component_40::deserialize(input)?;
 	let f_bypassedBy = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_blockSound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
@@ -43,7 +43,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::f32::size_of(&_0.block_delay_seconds)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.disable_cooldown_scale)
-		+ super::array::inline_321::size_of(&_0.damage_reductions)
+		+ super::array::inline_341::size_of(&_0.damage_reductions)
 		+ super::slot_component_40::size_of(&_0.item_damage)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.bypassed_by)
 		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.block_sound)

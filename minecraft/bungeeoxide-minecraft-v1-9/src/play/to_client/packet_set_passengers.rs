@@ -8,13 +8,13 @@ pub struct PacketSetPassengers {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	::bungeeoxide_minecraft_root::array::inline_107::serialize(&_0.passengers, output)?;
+	::bungeeoxide_minecraft_root::array::inline_128::serialize(&_0.passengers, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_passengers = ::bungeeoxide_minecraft_root::array::inline_107::deserialize(input)?;
+	let f_passengers = ::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		passengers: f_passengers,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ ::bungeeoxide_minecraft_root::array::inline_107::size_of(&_0.passengers)
+		+ ::bungeeoxide_minecraft_root::array::inline_128::size_of(&_0.passengers)
 }
 pub type Ty = PacketSetPassengers;

@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use anyhow::{anyhow, bail, Context as _, Result};
 use bungeeoxide_authlib::Endpoints;
-use bungeeoxide_converter::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::v26_3::{
 	configuration_to_client_packet as config_c, configuration_to_server_packet as config_s,
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_server_packet as login_s,
@@ -38,7 +38,7 @@ use codec::{read_varint, Codec};
 
 pub type Conn = Framed<TcpStream, Codec>;
 
-pub const PIVOT: Version = Version::V26_1;
+pub const PIVOT: Version = Version::V26_3;
 
 pub const TRANSFERS: Version = Version::V1_20_5;
 
@@ -1114,7 +1114,7 @@ mod tests {
 			dimension,
 			name: name.to_owned(),
 			hashed_seed: 5,
-			gamemode: bungeeoxide_converter::gen::convert::v26_1::play_to_client_spawn_info_gamemode::Ty::Creative,
+			gamemode: bungeeoxide_converter::gen::convert::v26_3::play_to_client_spawn_info_gamemode::Ty::Creative,
 			previous_gamemode: 255,
 			is_debug: false,
 			is_flat: true,
@@ -1188,6 +1188,7 @@ mod tests {
 			enable_respawn_screen: true,
 			do_limited_crafting: false,
 			world_state: world,
+			online_mode: false,
 			enforces_secure_chat: false,
 		}
 	}
@@ -1298,7 +1299,7 @@ mod tests {
 		.unwrap();
 		let plain = encode(
 			&play_s::Ty::ChatMessage(
-				bungeeoxide_converter::gen::convert::v26_1::play_to_server_packet_chat_message::Ty {
+				bungeeoxide_converter::gen::convert::v26_3::play_to_server_packet_chat_message::Ty {
 					message: "/proxy-goto".to_owned(),
 					timestamp: 0,
 					salt: 0,

@@ -8,15 +8,15 @@ pub struct PacketScoreboardObjective {
 	pub action: ::bungeeoxide_minecraft_root::I8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.display_text, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.display_text, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.action, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_displayText = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_displayText = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_action = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.display_text)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.display_text)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.action)
 }
 pub type Ty = PacketScoreboardObjective;

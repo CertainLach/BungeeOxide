@@ -7,13 +7,13 @@ pub struct SlotComponent29 {
 	pub position: ::bungeeoxide_minecraft_v1_14::Position,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.dimension, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.dimension, output)?;
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.position, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(9)?;
-	let f_dimension = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_dimension = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_position = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	Ok(Ty {
 		dimension: f_dimension,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.dimension)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.dimension)
 		+ ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.position)
 }
 pub type Ty = SlotComponent29;

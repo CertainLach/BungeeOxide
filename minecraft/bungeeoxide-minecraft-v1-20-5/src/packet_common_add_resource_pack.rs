@@ -11,8 +11,8 @@ pub struct PacketCommonAddResourcePack {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.url, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.hash, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.url, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.hash, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.forced, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.prompt_message, output)?;
 	Ok(())
@@ -20,8 +20,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_url = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_hash = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_url = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_hash = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_forced = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_promptMessage = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	Ok(Ty {
@@ -34,8 +34,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.url)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.hash)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.url)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.hash)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.forced)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.prompt_message)
 }

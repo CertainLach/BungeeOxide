@@ -3,17 +3,17 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketResetScore<'i> {
-	pub entity_name: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub entity_name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub objective_name: ::bungeeoxide_minecraft_root::view::Option21<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.entity_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.entity_name, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.objective_name, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_entity_name = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_entity_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_objective_name = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
 	Ok(Ty {
 		entity_name: f_entity_name,
@@ -21,12 +21,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.entity_name)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.entity_name)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.objective_name)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketResetScore) -> Ty<'i> {
 	Ty {
-		entity_name: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.entity_name),
+		entity_name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.entity_name),
 		objective_name: ::bungeeoxide_minecraft_root::view::option_21::view(&_0.objective_name),
 	}
 }

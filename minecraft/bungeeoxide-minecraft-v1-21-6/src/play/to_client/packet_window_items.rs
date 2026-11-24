@@ -11,16 +11,16 @@ pub struct PacketWindowItems {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.window_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.state_id, output)?;
-	super::super::super::array::inline_85::serialize(&_0.items, output)?;
-	super::super::super::slot::serialize_guarded(&_0.carried_item, output)?;
+	super::super::super::array::inline_86::serialize(&_0.items, output)?;
+	super::super::super::slot::serialize(&_0.carried_item, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_stateId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_items = super::super::super::array::inline_85::deserialize(input)?;
-	let f_carriedItem = super::super::super::slot::deserialize_guarded(input)?;
+	let f_items = super::super::super::array::inline_86::deserialize(input)?;
+	let f_carriedItem = super::super::super::slot::deserialize(input)?;
 	Ok(Ty {
 		window_id: f_windowId,
 		state_id: f_stateId,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.window_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.state_id)
-		+ super::super::super::array::inline_85::size_of(&_0.items)
+		+ super::super::super::array::inline_86::size_of(&_0.items)
 		+ super::super::super::slot::size_of(&_0.carried_item)
 }
 pub type Ty = PacketWindowItems;

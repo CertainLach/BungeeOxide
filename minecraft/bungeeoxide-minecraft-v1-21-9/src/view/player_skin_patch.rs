@@ -6,13 +6,13 @@ pub struct PlayerSkinPatch<'i> {
 	pub body: ::bungeeoxide_minecraft_root::view::Option21<'i>,
 	pub cape: ::bungeeoxide_minecraft_root::view::Option21<'i>,
 	pub elytra: ::bungeeoxide_minecraft_root::view::Option21<'i>,
-	pub model: super::super::Option84,
+	pub model: super::super::Option90,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.body, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.cape, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.elytra, output)?;
-	super::super::option_84::serialize(&_0.model, output)?;
+	super::super::option_90::serialize(&_0.model, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
@@ -20,7 +20,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_body = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
 	let f_cape = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
 	let f_elytra = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
-	let f_model = super::super::option_84::deserialize(input)?;
+	let f_model = super::super::option_90::deserialize(input)?;
 	Ok(Ty {
 		body: f_body,
 		cape: f_cape,
@@ -32,7 +32,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.body)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.cape)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.elytra)
-		+ super::super::option_84::size_of(&_0.model)
+		+ super::super::option_90::size_of(&_0.model)
 }
 pub fn view<'i>(_0: &'i super::super::PlayerSkinPatch) -> Ty<'i> {
 	Ty {

@@ -28,7 +28,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Bees(__v) => super::debug_subscription_event_0::serialize(__v, output),
 		Ty::VillageSections => Ok(()),
 		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::array::inline_38::serialize(__v, output),
-		Ty::Structures(__v) => super::array::inline_89::serialize(__v, output),
+		Ty::Structures(__v) => super::array::inline_90::serialize(__v, output),
 		Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::position::serialize(__v, output),
 		Ty::GameEvents(__v) => super::debug_subscription_event_1::serialize(__v, output),
@@ -68,7 +68,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if (__tag.clone() == 12_i32) {
-		return Ok(Ty::Structures(super::array::inline_89::deserialize(input)?));
+		return Ok(Ty::Structures(super::array::inline_90::deserialize(input)?));
 	}
 	if (__tag.clone() == 13_i32) {
 		return Ok(Ty::GameEventListeners(
@@ -134,7 +134,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::Bees(__v) => super::debug_subscription_event_0::size_of(__v),
 			Ty::VillageSections => 0,
 			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::array::inline_38::size_of(__v),
-			Ty::Structures(__v) => super::array::inline_89::size_of(__v),
+			Ty::Structures(__v) => super::array::inline_90::size_of(__v),
 			Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::position::size_of(__v),
 			Ty::GameEvents(__v) => super::debug_subscription_event_1::size_of(__v),

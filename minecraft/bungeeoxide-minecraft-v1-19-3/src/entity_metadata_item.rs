@@ -49,11 +49,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::varlong::serialize(__v, output),
 		Ty::V20(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::V21(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::V22(__v) => super::option_41::serialize(__v, output),
+		Ty::V22(__v) => super::option_45::serialize(__v, output),
 		Ty::V23(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::V3(__v) => ::bungeeoxide_minecraft_root::f32::serialize(__v, output),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
-		Ty::V5(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
+		Ty::V5(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::V6(__v) => ::bungeeoxide_minecraft_root::option_21::serialize(__v, output),
 		Ty::V7(__v) => ::bungeeoxide_minecraft_v1_13_2::slot::serialize(__v, output),
 		Ty::V8(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
@@ -137,7 +137,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 		)?));
 	}
 	if (__tag.clone() == 22_i32) {
-		return Ok(Ty::V22(super::option_41::deserialize(input)?));
+		return Ok(Ty::V22(super::option_45::deserialize(input)?));
 	}
 	if (__tag.clone() == 23_i32) {
 		return Ok(Ty::V23(::bungeeoxide_minecraft_root::varint::deserialize(
@@ -151,12 +151,12 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::V4(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 5_i32) {
 		return Ok(Ty::V5(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 6_i32) {
@@ -196,11 +196,11 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::varlong::size_of(__v),
 		Ty::V20(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 		Ty::V21(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-		Ty::V22(__v) => super::option_41::size_of(__v),
+		Ty::V22(__v) => super::option_45::size_of(__v),
 		Ty::V23(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 		Ty::V3(__v) => ::bungeeoxide_minecraft_root::f32::size_of(__v),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
-		Ty::V5(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+		Ty::V5(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 		Ty::V6(__v) => ::bungeeoxide_minecraft_root::option_21::size_of(__v),
 		Ty::V7(__v) => ::bungeeoxide_minecraft_v1_13_2::slot::size_of(__v),
 		Ty::V8(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),

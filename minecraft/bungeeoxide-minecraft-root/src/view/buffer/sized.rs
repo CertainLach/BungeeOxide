@@ -5,6 +5,12 @@ pub struct Args<'a> {
 	pub count: &'a super::super::super::I32,
 }
 pub type Ty<'i> = &'i [u8];
+pub fn check_count<'i>(_0: &Ty<'i>, count: &super::super::super::I32) -> Result<()> {
+	if usize::try_from(*count).ok() != Some(_0.len()) {
+		return Err(Error::InvalidValue);
+	}
+	Ok(())
+}
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	let _: super::super::super::Varint = _0.len().try_into().map_err(|_| Error::InvalidValue)?;
 	for b in _0.iter() {

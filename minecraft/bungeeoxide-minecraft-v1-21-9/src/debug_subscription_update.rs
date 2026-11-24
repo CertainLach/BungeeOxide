@@ -28,30 +28,30 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::DedicatedServerTickTime => Ok(()),
-		Ty::Bees(__v) => super::option_77::serialize(__v, output),
-		Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_26::serialize(__v, output),
-		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_94::serialize(__v, output),
-		Ty::Structures(__v) => super::option_95::serialize(__v, output),
+		Ty::Bees(__v) => super::option_82::serialize(__v, output),
+		Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_30::serialize(__v, output),
+		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_107::serialize(__v, output),
+		Ty::Structures(__v) => super::option_108::serialize(__v, output),
 		Ty::GameEventListeners(__v) => {
-			::bungeeoxide_minecraft_root::option_25::serialize(__v, output)
+			::bungeeoxide_minecraft_root::option_29::serialize(__v, output)
 		}
 		Ty::NeighborUpdates(__v) => {
 			::bungeeoxide_minecraft_v1_14::option_10::serialize(__v, output)
 		}
-		Ty::GameEvents(__v) => super::option_78::serialize(__v, output),
-		Ty::Brains(__v) => super::option_79::serialize(__v, output),
-		Ty::Breezes(__v) => super::option_80::serialize(__v, output),
-		Ty::GoalSelectors(__v) => super::option_96::serialize(__v, output),
-		Ty::EntityPaths(__v) => super::option_81::serialize(__v, output),
+		Ty::GameEvents(__v) => super::option_83::serialize(__v, output),
+		Ty::Brains(__v) => super::option_84::serialize(__v, output),
+		Ty::Breezes(__v) => super::option_85::serialize(__v, output),
+		Ty::GoalSelectors(__v) => super::option_109::serialize(__v, output),
+		Ty::EntityPaths(__v) => super::option_86::serialize(__v, output),
 		Ty::EntityBlockIntersections(__v) => {
-			::bungeeoxide_minecraft_root::option_25::serialize(__v, output)
+			::bungeeoxide_minecraft_root::option_29::serialize(__v, output)
 		}
-		Ty::BeeHives(__v) => super::option_82::serialize(__v, output),
-		Ty::Pois(__v) => super::option_83::serialize(__v, output),
+		Ty::BeeHives(__v) => super::option_87::serialize(__v, output),
+		Ty::Pois(__v) => super::option_88::serialize(__v, output),
 		Ty::RedstoneWireOrientations(__v) => {
-			::bungeeoxide_minecraft_root::option_25::serialize(__v, output)
+			::bungeeoxide_minecraft_root::option_29::serialize(__v, output)
 		}
-		Ty::Default(_, __v) => ::bungeeoxide_minecraft_root::option_26::serialize(__v, output),
+		Ty::Default(_, __v) => ::bungeeoxide_minecraft_root::option_30::serialize(__v, output),
 	}
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -62,24 +62,24 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::DedicatedServerTickTime);
 	}
 	if (__tag.clone() == 1_i32) {
-		return Ok(Ty::Bees(super::option_77::deserialize(input)?));
+		return Ok(Ty::Bees(super::option_82::deserialize(input)?));
 	}
 	if (__tag.clone() == 10_i32) {
 		return Ok(Ty::VillageSections(
-			::bungeeoxide_minecraft_root::option_26::deserialize(input)?,
+			::bungeeoxide_minecraft_root::option_30::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 11_i32) {
 		return Ok(Ty::Raids(
-			::bungeeoxide_minecraft_v1_14::option_94::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_14::option_107::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 12_i32) {
-		return Ok(Ty::Structures(super::option_95::deserialize(input)?));
+		return Ok(Ty::Structures(super::option_108::deserialize(input)?));
 	}
 	if (__tag.clone() == 13_i32) {
 		return Ok(Ty::GameEventListeners(
-			::bungeeoxide_minecraft_root::option_25::deserialize(input)?,
+			::bungeeoxide_minecraft_root::option_29::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 14_i32) {
@@ -88,65 +88,65 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if (__tag.clone() == 15_i32) {
-		return Ok(Ty::GameEvents(super::option_78::deserialize(input)?));
+		return Ok(Ty::GameEvents(super::option_83::deserialize(input)?));
 	}
 	if (__tag.clone() == 2_i32) {
-		return Ok(Ty::Brains(super::option_79::deserialize(input)?));
+		return Ok(Ty::Brains(super::option_84::deserialize(input)?));
 	}
 	if (__tag.clone() == 3_i32) {
-		return Ok(Ty::Breezes(super::option_80::deserialize(input)?));
+		return Ok(Ty::Breezes(super::option_85::deserialize(input)?));
 	}
 	if (__tag.clone() == 4_i32) {
-		return Ok(Ty::GoalSelectors(super::option_96::deserialize(input)?));
+		return Ok(Ty::GoalSelectors(super::option_109::deserialize(input)?));
 	}
 	if (__tag.clone() == 5_i32) {
-		return Ok(Ty::EntityPaths(super::option_81::deserialize(input)?));
+		return Ok(Ty::EntityPaths(super::option_86::deserialize(input)?));
 	}
 	if (__tag.clone() == 6_i32) {
 		return Ok(Ty::EntityBlockIntersections(
-			::bungeeoxide_minecraft_root::option_25::deserialize(input)?,
+			::bungeeoxide_minecraft_root::option_29::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 7_i32) {
-		return Ok(Ty::BeeHives(super::option_82::deserialize(input)?));
+		return Ok(Ty::BeeHives(super::option_87::deserialize(input)?));
 	}
 	if (__tag.clone() == 8_i32) {
-		return Ok(Ty::Pois(super::option_83::deserialize(input)?));
+		return Ok(Ty::Pois(super::option_88::deserialize(input)?));
 	}
 	if (__tag.clone() == 9_i32) {
 		return Ok(Ty::RedstoneWireOrientations(
-			::bungeeoxide_minecraft_root::option_25::deserialize(input)?,
+			::bungeeoxide_minecraft_root::option_29::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(
 		__tagv,
-		::bungeeoxide_minecraft_root::option_26::deserialize(input)?,
+		::bungeeoxide_minecraft_root::option_30::deserialize(input)?,
 	))
 }
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::DedicatedServerTickTime => 0,
-			Ty::Bees(__v) => super::option_77::size_of(__v),
-			Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_26::size_of(__v),
-			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_94::size_of(__v),
-			Ty::Structures(__v) => super::option_95::size_of(__v),
-			Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::option_25::size_of(__v),
+			Ty::Bees(__v) => super::option_82::size_of(__v),
+			Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_30::size_of(__v),
+			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_107::size_of(__v),
+			Ty::Structures(__v) => super::option_108::size_of(__v),
+			Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::option_29::size_of(__v),
 			Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::option_10::size_of(__v),
-			Ty::GameEvents(__v) => super::option_78::size_of(__v),
-			Ty::Brains(__v) => super::option_79::size_of(__v),
-			Ty::Breezes(__v) => super::option_80::size_of(__v),
-			Ty::GoalSelectors(__v) => super::option_96::size_of(__v),
-			Ty::EntityPaths(__v) => super::option_81::size_of(__v),
+			Ty::GameEvents(__v) => super::option_83::size_of(__v),
+			Ty::Brains(__v) => super::option_84::size_of(__v),
+			Ty::Breezes(__v) => super::option_85::size_of(__v),
+			Ty::GoalSelectors(__v) => super::option_109::size_of(__v),
+			Ty::EntityPaths(__v) => super::option_86::size_of(__v),
 			Ty::EntityBlockIntersections(__v) => {
-				::bungeeoxide_minecraft_root::option_25::size_of(__v)
+				::bungeeoxide_minecraft_root::option_29::size_of(__v)
 			}
-			Ty::BeeHives(__v) => super::option_82::size_of(__v),
-			Ty::Pois(__v) => super::option_83::size_of(__v),
+			Ty::BeeHives(__v) => super::option_87::size_of(__v),
+			Ty::Pois(__v) => super::option_88::size_of(__v),
 			Ty::RedstoneWireOrientations(__v) => {
-				::bungeeoxide_minecraft_root::option_25::size_of(__v)
+				::bungeeoxide_minecraft_root::option_29::size_of(__v)
 			}
-			Ty::Default(_, __v) => ::bungeeoxide_minecraft_root::option_26::size_of(__v),
+			Ty::Default(_, __v) => ::bungeeoxide_minecraft_root::option_30::size_of(__v),
 		}
 }
 pub fn name(_0: &Ty) -> &'static str {

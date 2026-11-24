@@ -93,11 +93,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::MinecraftParticle => Ok(()),
 		Ty::MinecraftRange(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
 		Ty::MinecraftResource(__v) => {
-			::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
 		}
 		Ty::MinecraftResourceLocation => Ok(()),
 		Ty::MinecraftResourceOrTag(__v) => {
-			::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
 		}
 		Ty::MinecraftRotation => Ok(()),
 		Ty::MinecraftScoreHolder(__v) => super::command_node_20::serialize(__v, output),
@@ -234,7 +234,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == String::from("minecraft:resource")) {
 		return Ok(Ty::MinecraftResource(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == String::from("minecraft:resource_location")) {
@@ -242,7 +242,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == String::from("minecraft:resource_or_tag")) {
 		return Ok(Ty::MinecraftResourceOrTag(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == String::from("minecraft:rotation")) {
@@ -313,9 +313,9 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::MinecraftOperation => 0,
 		Ty::MinecraftParticle => 0,
 		Ty::MinecraftRange(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
-		Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+		Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 		Ty::MinecraftResourceLocation => 0,
-		Ty::MinecraftResourceOrTag(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+		Ty::MinecraftResourceOrTag(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 		Ty::MinecraftRotation => 0,
 		Ty::MinecraftScoreHolder(__v) => super::command_node_20::size_of(__v),
 		Ty::MinecraftScoreboardSlot => 0,

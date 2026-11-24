@@ -5,13 +5,13 @@ pub type Ty = Option<super::ItemStackTemplate>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::item_stack_template::serialize_guarded(v, output)?;
+		super::item_stack_template::serialize(v, output)?;
 	}
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::item_stack_template::deserialize_guarded(input)?)
+		Some(super::item_stack_template::deserialize(input)?)
 	} else {
 		None
 	})

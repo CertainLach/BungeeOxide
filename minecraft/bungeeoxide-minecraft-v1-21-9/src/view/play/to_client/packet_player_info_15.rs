@@ -6,12 +6,12 @@ pub struct Args<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketPlayerInfo15<'i> {
-	True(::bungeeoxide_minecraft_v1_19_3::view::Option40<'i>),
+	True(::bungeeoxide_minecraft_v1_19_3::view::Option44<'i>),
 	Default(::bungeeoxide_minecraft_root::Bool),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::True(__v) => ::bungeeoxide_minecraft_v1_19_3::view::option_40::serialize(__v, output),
+		Ty::True(__v) => ::bungeeoxide_minecraft_v1_19_3::view::option_44::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -19,14 +19,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> 
 	let __tag = args.action_initialize_chat;
 	if (__tag.clone() == true) {
 		return Ok(Ty::True(
-			::bungeeoxide_minecraft_v1_19_3::view::option_40::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_19_3::view::option_44::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tag.clone()))
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + match _0 {
-		Ty::True(__v) => ::bungeeoxide_minecraft_v1_19_3::view::option_40::size_of(__v),
+		Ty::True(__v) => ::bungeeoxide_minecraft_v1_19_3::view::option_44::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }
@@ -48,7 +48,7 @@ pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &::bungeeoxide_minecraft_root::B
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerInfo15) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::play::to_client::PacketPlayerInfo15::True(__v) => {
-			Ty::True(::bungeeoxide_minecraft_v1_19_3::view::option_40::view(__v))
+			Ty::True(::bungeeoxide_minecraft_v1_19_3::view::option_44::view(__v))
 		}
 		super::super::super::super::play::to_client::PacketPlayerInfo15::Default(__t) => {
 			Ty::Default(::core::clone::Clone::clone(__t))

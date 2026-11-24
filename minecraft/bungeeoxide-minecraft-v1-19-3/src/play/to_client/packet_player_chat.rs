@@ -20,14 +20,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.sender_uuid, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.index, output)?;
 	::bungeeoxide_minecraft_root::option_3::serialize(&_0.signature, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.plain_message, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.plain_message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_151::serialize(&_0.previous_messages, output)?;
+	super::super::super::array::inline_171::serialize(&_0.previous_messages, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.unsigned_chat_content, output)?;
 	super::packet_player_chat_8::serialize(&_0.filter_type_mask, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.network_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.network_name, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.network_target_name, output)?;
 	Ok(())
 }
@@ -36,14 +36,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_senderUuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_index = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::option_3::deserialize(input)?;
-	let f_plainMessage = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_plainMessage = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_151::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_171::deserialize(input)?;
 	let f_unsignedChatContent = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_filterTypeMask = super::packet_player_chat_8::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_networkName = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_networkName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_networkTargetName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		sender_uuid: f_senderUuid,
@@ -64,14 +64,14 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::uuid::size_of(&_0.sender_uuid)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.index)
 		+ ::bungeeoxide_minecraft_root::option_3::size_of(&_0.signature)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.plain_message)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.plain_message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_151::size_of(&_0.previous_messages)
+		+ super::super::super::array::inline_171::size_of(&_0.previous_messages)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.unsigned_chat_content)
 		+ super::packet_player_chat_8::size_of(&_0.filter_type_mask)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.network_name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.network_name)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.network_target_name)
 }
 pub type Ty = PacketPlayerChat;

@@ -22,7 +22,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.crafting_book_open, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.filtering_craftable, output)?;
-	::bungeeoxide_minecraft_root::array::inline_107::serialize(&_0.recipes1, output)?;
+	::bungeeoxide_minecraft_root::array::inline_128::serialize(&_0.recipes1, output)?;
 	super::packet_unlock_recipes_7::serialize(&_0.recipes2, output)?;
 	Ok(())
 }
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_action = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_craftingBookOpen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_filteringCraftable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_107::deserialize(input)?;
+	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?;
 	let f_recipes2 = super::packet_unlock_recipes_7::deserialize(
 		input,
 		super::packet_unlock_recipes_7::Args {
@@ -68,7 +68,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		_0.clone()
 	}) + ::bungeeoxide_minecraft_root::bool::size_of(&_0.crafting_book_open)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.filtering_craftable)
-		+ ::bungeeoxide_minecraft_root::array::inline_107::size_of(&_0.recipes1)
+		+ ::bungeeoxide_minecraft_root::array::inline_128::size_of(&_0.recipes1)
 		+ super::packet_unlock_recipes_7::size_of(&_0.recipes2)
 }
 pub type Ty = PacketUnlockRecipes;

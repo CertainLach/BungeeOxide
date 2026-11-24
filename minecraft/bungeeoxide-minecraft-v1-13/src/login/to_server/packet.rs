@@ -11,7 +11,7 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::LoginStart(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::LoginStart(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::EncryptionBegin(__v) => {
 			::bungeeoxide_minecraft_v1_8::login::to_server::packet_encryption_begin::serialize(
 				__v, output,
@@ -27,7 +27,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let __tag = &__tagv;
 	if (__tag.clone() == 0_i32) {
 		return Ok(Ty::LoginStart(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 1_i32) {
@@ -47,7 +47,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::LoginStart(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::LoginStart(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::EncryptionBegin(__v) => {
 				::bungeeoxide_minecraft_v1_8::login::to_server::packet_encryption_begin::size_of(
 					__v,

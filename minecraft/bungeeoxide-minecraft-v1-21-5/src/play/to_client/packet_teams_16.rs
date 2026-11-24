@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.formatting, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.prefix, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.suffix, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.players, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.players, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -32,7 +32,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_formatting = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_prefix = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	let f_suffix = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
-	let f_players = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_players = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		friendly_fire: f_friendlyFire,
@@ -52,6 +52,6 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.formatting)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.prefix)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.suffix)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.players)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.players)
 }
 pub type Ty = PacketTeams16;

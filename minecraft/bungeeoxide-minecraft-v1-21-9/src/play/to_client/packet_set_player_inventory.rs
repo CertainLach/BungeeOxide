@@ -8,13 +8,13 @@ pub struct PacketSetPlayerInventory {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.slot_id, output)?;
-	super::super::super::slot::serialize_guarded(&_0.contents, output)?;
+	super::super::super::slot::serialize(&_0.contents, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_slotId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_contents = super::super::super::slot::deserialize_guarded(input)?;
+	let f_contents = super::super::super::slot::deserialize(input)?;
 	Ok(Ty {
 		slot_id: f_slotId,
 		contents: f_contents,

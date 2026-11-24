@@ -92,7 +92,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_21_9::resolvable_profile::serialize(__v, output)
 		}
 		Ty::HumanoidArm(__v) => super::entity_metadata_entry_62::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
 		Ty::OptionalComponent(__v) => {
 			::bungeeoxide_minecraft_root::option_1::serialize(__v, output)
@@ -270,7 +270,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 4_i32) {
 		return Ok(Ty::String(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 5_i32) {
@@ -338,7 +338,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_21_9::resolvable_profile::size_of(__v)
 			}
 			Ty::HumanoidArm(__v) => super::entity_metadata_entry_62::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::OptionalComponent(__v) => ::bungeeoxide_minecraft_root::option_1::size_of(__v),
 			Ty::ItemStack(__v) => super::slot::size_of(__v),

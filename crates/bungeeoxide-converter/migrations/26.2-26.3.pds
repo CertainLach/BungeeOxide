@@ -1,71 +1,128 @@
-updated(ItemBlockProperty) {
-	updated(value) {
-		updated(false) {
-			updated(minValue, up: unsupported, down: unsupported);
-			updated(maxValue, up: unsupported, down: unsupported);
-		};
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(late_slot_item_up_26_3), down: custom(late_slot_item_down_26_2));
+		converted(addedComponentCount, up: custom(late_added_count_up_26_3), down: custom(late_added_count_down_26_2));
+		converted(removedComponentCount, up: custom(late_removed_count_up_26_3), down: custom(late_removed_count_down_26_2));
 	};
 };
 
+updated(ItemStackTemplate) {
+	converted(itemId, up: custom(late_template_item_up_26_3), down: custom(late_template_item_down_26_2));
+	converted(addedComponentCount, up: custom(late_template_added_up_26_3), down: custom(late_template_added_down_26_2));
+	converted(removedComponentCount, up: custom(late_template_removed_up_26_3), down: custom(late_template_removed_down_26_2));
+};
+
+updated(HashedSlot) {
+	converted(itemId, up: custom(late_hashed_item_up_26_3), down: custom(late_hashed_item_down_26_2));
+};
+
+updated(UntrustedSlot, up: custom(late_untrusted_up_26_3), down: custom(late_untrusted_down_26_2));
+
+updated(ItemSoundHolder, up: custom(late_sound_up_26_3), down: custom(late_sound_down_26_2));
+
+updated(ItemBlockPredicate) {
+	converted(blockSet, up: custom(late_predicate_up_26_3), down: custom(late_predicate_down_26_2));
+	converted(components, up: custom(late_matchers_up_26_3), down: custom(late_matchers_down_26_2));
+};
+
+updated(ArmorTrimMaterial) {
+	removed(assetBase, down: custom(late_trim_asset_down_26_2));
+	removed(overrideArmorAssets, down: custom(late_trim_overrides_down_26_2));
+	added(paletteId, up: custom(late_trim_palette_up_26_3));
+};
+
+updated(InstrumentData) {
+	added(durabilityDamage, up: 0);
+};
+
+updated(ItemConsumeEffect) {
+	converted(teleport_randomly, up: custom(late_teleport_effect_up_26_3), down: custom(late_teleport_effect_down_26_2));
+};
+
 updated(Particle) {
-	added(orange_poplar_leaves, down: unsupported);
-	added(red_poplar_leaves, down: unsupported);
-	removed(trial_spawner_detected_player, up: unsupported);
-	removed(trial_spawner_detected_player_ominous, up: unsupported);
-	added(trial_spawner_detection, down: unsupported);
-	added(trial_spawner_detection_ominous, down: unsupported);
-	added(yellow_poplar_leaves, down: unsupported);
-	updated(geyser_plume, up: unsupported, down: unsupported);
+	added(red_poplar_leaves, down: custom(late_particle_red_poplar_down_26_2));
+	added(orange_poplar_leaves, down: custom(late_particle_orange_poplar_down_26_2));
+	added(yellow_poplar_leaves, down: custom(late_particle_yellow_poplar_down_26_2));
+	renamed(trial_spawner_detected_player, to: trial_spawner_detection);
+	renamed(trial_spawner_detected_player_ominous, to: trial_spawner_detection_ominous);
+	converted(block, up: custom(late_particle_block_up_26_3), down: custom(late_particle_block_down_26_2));
+	converted(block_marker, up: custom(late_particle_marker_up_26_3), down: custom(late_particle_marker_down_26_2));
+	converted(falling_dust, up: custom(late_particle_dust_up_26_3), down: custom(late_particle_dust_down_26_2));
+	converted(dust_pillar, up: custom(late_particle_pillar_up_26_3), down: custom(late_particle_pillar_down_26_2));
+	converted(block_crumble, up: custom(late_particle_crumble_up_26_3), down: custom(late_particle_crumble_down_26_2));
 };
 
 updated(SlotComponent) {
-	added(attack_animation, down: unsupported);
-	added(block_transformer, down: unsupported);
-	added(brewing_fuel, down: unsupported);
-	added(compostable, down: unsupported);
-	added(cooking_fuel, down: unsupported);
-	added(cushion_color, down: unsupported);
-	added(interact_animation, down: unsupported);
-	removed(map_color, up: unsupported);
-	added(mob_visibility, down: unsupported);
-	added(provides_pottery_pattern, down: unsupported);
-	added(sign_text_back, down: unsupported);
-	added(sign_text_front, down: unsupported);
-	removed(swing_animation, up: unsupported);
-	added(villager_food, down: unsupported);
-	added(waxed, down: unsupported);
-	updated(pot_decorations, up: unsupported, down: unsupported);
+	added(attack_animation, down: custom(late_attack_animation_down_26_2));
+	added(interact_animation, down: drop);
+	removed(swing_animation, up: custom(late_swing_animation_up_26_3));
+	removed(map_color, up: drop);
+	added(block_transformer, down: drop);
+	added(brewing_fuel, down: drop);
+	added(compostable, down: drop);
+	added(cooking_fuel, down: drop);
+	added(cushion_color, down: drop);
+	added(mob_visibility, down: drop);
+	added(provides_pottery_pattern, down: drop);
+	added(sign_text_back, down: drop);
+	added(sign_text_front, down: drop);
+	added(villager_food, down: drop);
+	added(waxed, down: drop);
+	converted(pot_decorations, up: custom(late_pots_up_26_3), down: custom(late_pots_down_26_2));
+	updated(equippable) {
+		converted(allowedEntities, up: custom(late_equip_entities_up_26_3), down: custom(late_equip_entities_down_26_2));
+	};
+	updated(tool) {
+		updated(rules) {
+			updated(items) {
+				converted(blocks, up: custom(late_tool_up_26_3), down: custom(late_tool_down_26_2));
+			};
+		};
+	};
+	converted(repairable, up: custom(late_repairable_up_26_3), down: custom(late_repairable_down_26_2));
+	updated(tooltip_display) {
+		converted(hiddenComponents, up: custom(late_hidden_up_26_3), down: custom(late_hidden_down_26_2));
+	};
 };
 
 updated(SlotComponentType) {
-	added(attack_animation, down: unsupported);
-	added(block_transformer, down: unsupported);
-	added(brewing_fuel, down: unsupported);
-	added(compostable, down: unsupported);
-	added(cooking_fuel, down: unsupported);
-	added(cushion_color, down: unsupported);
-	added(interact_animation, down: unsupported);
-	removed(map_color, up: unsupported);
-	added(mob_visibility, down: unsupported);
-	added(provides_pottery_pattern, down: unsupported);
-	added(sign_text_back, down: unsupported);
-	added(sign_text_front, down: unsupported);
-	removed(swing_animation, up: unsupported);
-	added(villager_food, down: unsupported);
-	added(waxed, down: unsupported);
+	added(attack_animation, down: custom(late_attack_animation_type_down_26_2));
+	added(interact_animation, down: drop);
+	removed(swing_animation, up: custom(late_swing_animation_type_up_26_3));
+	removed(map_color, up: drop);
+	added(block_transformer, down: drop);
+	added(brewing_fuel, down: drop);
+	added(compostable, down: drop);
+	added(cooking_fuel, down: drop);
+	added(cushion_color, down: drop);
+	added(mob_visibility, down: drop);
+	added(provides_pottery_pattern, down: drop);
+	added(sign_text_back, down: drop);
+	added(sign_text_front, down: drop);
+	added(villager_food, down: drop);
+	added(waxed, down: drop);
 };
 
 updated(command_node) {
 	updated(extraNodeData) {
 		updated(v2) {
 			updated(properties) {
-				added(minecraft_context_float_provider, down: unsupported);
-				added(minecraft_context_int_provider, down: unsupported);
-				added(minecraft_feature, down: unsupported);
-				added(minecraft_slot_source, down: unsupported);
-				added(minecraft_swing_animation, down: unsupported);
+				added(minecraft_context_float_provider, down: minecraft_nbt_tag);
+				added(minecraft_context_int_provider, down: minecraft_nbt_tag);
+				added(minecraft_feature, down: minecraft_resource_location);
+				added(minecraft_slot_source, down: minecraft_nbt_tag);
+				added(minecraft_swing_animation, down: minecraft_resource_location);
 			};
 		};
+	};
+};
+
+updated(entityMetadataEntry) {
+	updated(value) {
+		added(dye_color, down: drop);
+		renamed(optional_uuid, to: optional_living_entity_reference);
+		converted(block_state, up: custom(late_meta_state_up_26_3), down: custom(late_meta_state_down_26_2));
+		converted(optional_block_state, up: custom(late_meta_optional_state_up_26_3), down: custom(late_meta_optional_state_down_26_2));
 	};
 };
 
@@ -73,49 +130,134 @@ namespace(configuration) {
 	namespace(toClient) {
 		updated(packet) {
 			added(post_effects, down: drop);
+			converted(registry_data, up: custom(late_registry_data_up_26_3), down: custom(late_registry_data_down_26_2));
+			converted(finish_configuration, up: custom(late_finish_configuration_up_26_3));
+			converted(tags, up: custom(late_config_tags_up_26_3), down: custom(late_config_tags_down_26_2));
 		};
-	};
-};
-
-updated(entityMetadataEntry) {
-	updated(value) {
-		added(dye_color, down: unsupported);
-		added(optional_living_entity_reference, down: unsupported);
-		removed(optional_uuid, up: unsupported);
 	};
 };
 
 namespace(play) {
 	namespace(toClient) {
 		updated(SlotDisplay) {
-			updated(tag, up: unsupported, down: unsupported);
+			converted(tag, up: custom(late_display_tag_up_26_3), down: custom(late_display_tag_down_26_2));
+			converted(item, up: custom(late_display_item_up_26_3), down: custom(late_display_item_down_26_2));
 		};
-	};
-};
 
-namespace(play) {
-	namespace(toClient) {
+		updated(SpawnInfo) {
+			converted(previousGamemode, up: custom(late_previous_gamemode_up_26_3), down: custom(late_previous_gamemode_down_26_2));
+		};
+
 		updated(packet) {
 			added(add_transient_block, down: drop);
 			added(post_effects, down: drop);
-			added(swing_animation, down: drop);
+			added(swing_animation, down: custom(late_swing_down_26_2));
+			converted(animation, up: custom(late_animation_up_26_3), down: custom(late_animation_down_26_2));
+			converted(rel_entity_move, up: custom(late_rel_move_up_26_3), down: custom(late_rel_move_down_26_2));
+			converted(entity_move_look, up: custom(late_move_look_up_26_3), down: custom(late_move_look_down_26_2));
+			converted(sync_entity_position, up: custom(late_sync_position_up_26_3), down: custom(late_sync_position_down_26_2));
+			converted(world_event, up: custom(late_world_event_up_26_3), down: custom(late_world_event_down_26_2));
+			converted(statistics, up: custom(late_statistics_up_26_3), down: custom(late_statistics_down_26_2));
+			converted(tags, up: custom(late_play_tags_up_26_3), down: custom(late_play_tags_down_26_2));
 		};
-	};
-};
 
-namespace(play) {
-	namespace(toClient) {
 		updated(packet_advancements) {
 			updated(advancementMapping) {
 				updated(items) {
-					added(x, up: unsupported);
-					added(y, up: unsupported);
+					converted(key, down: custom(late_advancement_key_down_26_2));
+					added(x, up: custom(late_advancement_x_up_26_3));
+					added(y, up: custom(late_advancement_y_up_26_3));
 					updated(value) {
 						updated(displayData) {
 							updated(value) {
-								removed(xCord, down: unsupported);
-								removed(yCord, down: unsupported);
+								removed(xCord, down: custom(late_advancement_x_down_26_2));
+								removed(yCord, down: custom(late_advancement_y_down_26_2));
 							};
+						};
+					};
+				};
+			};
+		};
+
+		updated(packet_explosion) {
+			added(playSound, up: true);
+		};
+
+		updated(packet_map_chunk) {
+			updated(skyLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(blockLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(emptySkyLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(emptyBlockLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			converted(chunkData, up: custom(late_chunk_up_26_3), down: custom(late_chunk_down_26_2));
+		};
+
+		updated(packet_update_light) {
+			updated(skyLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(blockLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(emptySkyLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			updated(emptyBlockLightMask, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+		};
+
+		updated(packet_player_chat) {
+			updated(filterTypeMask) {
+				updated(v2, up: custom(late_mask_up_26_3), down: custom(late_mask_down_26_2));
+			};
+		};
+
+		updated(packet_world_particles) {
+			converted(amount);
+			added(xMaxSpeed, up: ./velocityOffset);
+			added(yMaxSpeed, up: ./velocityOffset);
+			added(zMaxSpeed, up: ./velocityOffset);
+			removed(velocityOffset, down: ./xMaxSpeed);
+			added(randomizationType, up: custom(late_randomization_up_26_3));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(type, up: custom(late_spawn_type_up_26_3), down: custom(late_spawn_type_down_26_2));
+			converted(objectData, up: custom(late_object_data_up_26_3), down: custom(late_object_data_down_26_2));
+		};
+
+		updated(packet_block_change) {
+			converted(type, up: custom(late_block_change_up_26_3), down: custom(late_block_change_down_26_2));
+		};
+
+		updated(packet_multi_block_change) {
+			converted(records, up: custom(late_multi_block_up_26_3), down: custom(late_multi_block_down_26_2));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(late_block_action_up_26_3), down: custom(late_block_action_down_26_2));
+		};
+
+		updated(packet_declare_recipes) {
+			converted(recipes, up: custom(late_recipe_sets_up_26_3), down: custom(late_recipe_sets_down_26_2));
+			updated(stoneCutterRecipes) {
+				updated(items) {
+					converted(input, up: custom(late_stonecutter_up_26_3), down: custom(late_stonecutter_down_26_2));
+				};
+			};
+		};
+
+		updated(packet_recipe_book_add) {
+			updated(entries) {
+				updated(items) {
+					updated(recipe) {
+						converted(craftingRequirements, up: custom(late_requirements_up_26_3), down: custom(late_requirements_down_26_2));
+					};
+				};
+			};
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(late_trade1_up_26_3), down: custom(late_trade1_down_26_2));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(late_trade2_up_26_3), down: custom(late_trade2_down_26_2));
 						};
 					};
 				};
@@ -125,93 +267,18 @@ namespace(play) {
 };
 
 namespace(play) {
-	namespace(toClient) {
-		updated(packet_entity_move_look) {
-			removed(dX, down: unsupported);
-			removed(dY, down: unsupported);
-			removed(dZ, down: unsupported);
-			added(move, up: unsupported);
-			removed(onGround, down: unsupported);
-		};
-	};
-};
-
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_explosion) {
-			added(playSound, up: unsupported);
-		};
-	};
-};
-
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_map_chunk) {
-			updated(skyLightMask, up: unsupported, down: unsupported);
-			updated(blockLightMask, up: unsupported, down: unsupported);
-			updated(emptySkyLightMask, up: unsupported, down: unsupported);
-			updated(emptyBlockLightMask, up: unsupported, down: unsupported);
-		};
-	};
-};
-
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_rel_entity_move) {
-			removed(dX, down: unsupported);
-			removed(dY, down: unsupported);
-			removed(dZ, down: unsupported);
-			added(move, up: unsupported);
-			removed(onGround, down: unsupported);
-		};
-	};
-};
-
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_sync_entity_position) {
-			added(ANON, up: unsupported);
-			removed(dx, down: unsupported);
-			removed(dy, down: unsupported);
-			removed(dz, down: unsupported);
-			removed(x, down: unsupported);
-			removed(y, down: unsupported);
-			removed(z, down: unsupported);
-		};
-	};
-};
-
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_world_particles) {
-			converted(amount);
-			added(randomizationType, up: unsupported);
-			removed(velocityOffset, down: unsupported);
-			added(xMaxSpeed, up: unsupported);
-			added(yMaxSpeed, up: unsupported);
-			added(zMaxSpeed, up: unsupported);
-		};
-	};
-};
-
-namespace(play) {
 	namespace(toServer) {
 		updated(packet) {
-			removed(arm_animation, up: drop);
-			added(punch, down: drop);
-			updated(spectator_action, up: unsupported, down: unsupported);
-			updated(teleport_confirm, up: unsupported, down: unsupported);
+			removed(arm_animation, up: custom(late_arm_animation_up_26_3));
+			added(punch, down: custom(late_punch_down_26_2));
+			converted(teleport_confirm, up: custom(late_teleport_confirm_up_26_3), down: custom(late_teleport_confirm_down_26_2));
+			converted(position_look, up: custom(late_position_look_up_26_3));
+			converted(position, up: custom(late_position_up_26_3));
+			converted(tick_end, up: custom(late_tick_end_up_26_3));
 		};
-	};
-};
 
-namespace(play) {
-	namespace(toClient) {
-		updated(packet_update_light) {
-			updated(skyLightMask, up: unsupported, down: unsupported);
-			updated(blockLightMask, up: unsupported, down: unsupported);
-			updated(emptySkyLightMask, up: unsupported, down: unsupported);
-			updated(emptyBlockLightMask, up: unsupported, down: unsupported);
+		updated(packet_block_dig) {
+			converted(status, up: custom(late_dig_status_up_26_3), down: custom(late_dig_status_down_26_2));
 		};
 	};
 };

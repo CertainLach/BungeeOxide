@@ -6,7 +6,7 @@ pub struct PacketUpdateStructureBlock<'i> {
 	pub location: ::bungeeoxide_minecraft_v1_14::Position,
 	pub action: ::bungeeoxide_minecraft_root::Varint,
 	pub mode: ::bungeeoxide_minecraft_root::Varint,
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub offset_x: ::bungeeoxide_minecraft_root::I8,
 	pub offset_y: ::bungeeoxide_minecraft_root::I8,
 	pub offset_z: ::bungeeoxide_minecraft_root::I8,
@@ -15,7 +15,7 @@ pub struct PacketUpdateStructureBlock<'i> {
 	pub size_z: ::bungeeoxide_minecraft_root::I8,
 	pub mirror: ::bungeeoxide_minecraft_root::Varint,
 	pub rotation: ::bungeeoxide_minecraft_root::Varint,
-	pub metadata: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub metadata: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub integrity: ::bungeeoxide_minecraft_root::F32,
 	pub seed: ::bungeeoxide_minecraft_root::Varint,
 	pub flags: ::bungeeoxide_minecraft_root::U8,
@@ -24,7 +24,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.action, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.offset_x, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.offset_y, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.offset_z, output)?;
@@ -33,7 +33,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.size_z, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mirror, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.rotation, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.metadata, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.metadata, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.integrity, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.seed, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.flags, output)?;
@@ -44,7 +44,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	let f_action = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_offset_x = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_offset_y = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_offset_z = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
@@ -53,7 +53,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_size_z = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_mirror = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_rotation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_metadata = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_metadata = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_integrity = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_seed = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_flags = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
@@ -80,7 +80,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.action)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.offset_x)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.offset_y)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.offset_z)
@@ -89,7 +89,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.size_z)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mirror)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.rotation)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.metadata)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.metadata)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.integrity)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.seed)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.flags)
@@ -101,7 +101,7 @@ pub fn view<'i>(
 		location: ::core::clone::Clone::clone(&_0.location),
 		action: ::core::clone::Clone::clone(&_0.action),
 		mode: ::core::clone::Clone::clone(&_0.mode),
-		name: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.name),
 		offset_x: ::core::clone::Clone::clone(&_0.offset_x),
 		offset_y: ::core::clone::Clone::clone(&_0.offset_y),
 		offset_z: ::core::clone::Clone::clone(&_0.offset_z),
@@ -110,7 +110,7 @@ pub fn view<'i>(
 		size_z: ::core::clone::Clone::clone(&_0.size_z),
 		mirror: ::core::clone::Clone::clone(&_0.mirror),
 		rotation: ::core::clone::Clone::clone(&_0.rotation),
-		metadata: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.metadata),
+		metadata: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.metadata),
 		integrity: ::core::clone::Clone::clone(&_0.integrity),
 		seed: ::core::clone::Clone::clone(&_0.seed),
 		flags: ::core::clone::Clone::clone(&_0.flags),

@@ -8,15 +8,15 @@ pub struct PacketPlayerInfo {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::packet_player_info_19::serialize(&_0.action, output)?;
-	super::super::super::array::inline_172::serialize(&_0.data, output)?;
+	super::super::super::array::inline_192::serialize(&_0.data, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_action = super::packet_player_info_19::deserialize(input)?;
-	let f_data = super::super::super::array::inline_172::deserialize(
+	let f_data = super::super::super::array::inline_192::deserialize(
 		input,
-		super::super::super::array::inline_172::Args {
+		super::super::super::array::inline_192::Args {
 			action_add_player: {
 				let _0: &super::PacketPlayerInfo19 = &f_action;
 				let _0: &::bungeeoxide_minecraft_root::Bool = &_0.add_player;
@@ -56,6 +56,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + super::packet_player_info_19::size_of(&_0.action)
-		+ super::super::super::array::inline_172::size_of(&_0.data)
+		+ super::super::super::array::inline_192::size_of(&_0.data)
 }
 pub type Ty = PacketPlayerInfo;

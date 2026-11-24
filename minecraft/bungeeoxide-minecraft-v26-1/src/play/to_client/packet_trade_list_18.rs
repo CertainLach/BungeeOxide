@@ -10,14 +10,14 @@ pub struct PacketTradeList18 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
-	super::super::super::array::inline_103::serialize(&_0.components, output)?;
+	super::super::super::array::inline_106::serialize(&_0.components, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::super::super::array::inline_103::deserialize(input)?;
+	let f_components = super::super::super::array::inline_106::deserialize(input)?;
 	Ok(Ty {
 		item_id: f_itemId,
 		item_count: f_itemCount,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
-		+ super::super::super::array::inline_103::size_of(&_0.components)
+		+ super::super::super::array::inline_106::size_of(&_0.components)
 }
 pub type Ty = PacketTradeList18;

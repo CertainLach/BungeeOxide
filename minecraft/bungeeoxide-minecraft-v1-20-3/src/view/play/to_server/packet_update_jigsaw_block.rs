@@ -4,21 +4,21 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateJigsawBlock<'i> {
 	pub location: ::bungeeoxide_minecraft_v1_14::Position,
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
-	pub target: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
-	pub pool: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
-	pub final_state: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
-	pub joint_type: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub target: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub pool: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub final_state: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub joint_type: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub selection_priority: ::bungeeoxide_minecraft_root::Varint,
 	pub placement_priority: ::bungeeoxide_minecraft_root::Varint,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.target, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.pool, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.final_state, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.joint_type, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.target, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.pool, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.final_state, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.joint_type, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.selection_priority, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.placement_priority, output)?;
 	Ok(())
@@ -26,11 +26,11 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(15)?;
 	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
-	let f_target = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
-	let f_pool = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
-	let f_finalState = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
-	let f_jointType = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_target = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_pool = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_finalState = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_jointType = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_selection_priority = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_placement_priority = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
@@ -46,11 +46,11 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.target)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.pool)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.final_state)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.joint_type)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.target)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.pool)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.final_state)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.joint_type)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.selection_priority)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.placement_priority)
 }
@@ -59,11 +59,11 @@ pub fn view<'i>(
 ) -> Ty<'i> {
 	Ty {
 		location: ::core::clone::Clone::clone(&_0.location),
-		name: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.name),
-		target: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.target),
-		pool: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.pool),
-		final_state: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.final_state),
-		joint_type: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.joint_type),
+		name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.name),
+		target: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.target),
+		pool: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.pool),
+		final_state: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.final_state),
+		joint_type: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.joint_type),
 		selection_priority: ::core::clone::Clone::clone(&_0.selection_priority),
 		placement_priority: ::core::clone::Clone::clone(&_0.placement_priority),
 	}

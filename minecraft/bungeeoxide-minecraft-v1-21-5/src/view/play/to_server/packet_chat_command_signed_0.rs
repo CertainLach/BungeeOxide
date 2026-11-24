@@ -3,17 +3,21 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatCommandSigned0<'i> {
-	pub argument_name: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub argument_name: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub signature: ::bungeeoxide_minecraft_root::view::buffer::Sized<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.argument_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.argument_name, output)?;
+	::bungeeoxide_minecraft_root::view::buffer::sized::check_count(
+		&_0.signature,
+		&(256).try_into().expect("constant fits"),
+	)?;
 	::bungeeoxide_minecraft_root::view::buffer::sized::serialize(&_0.signature, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(1)?;
-	let f_argumentName = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_argumentName = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::view::buffer::sized::deserialize(
 		input,
 		::bungeeoxide_minecraft_root::view::buffer::sized::Args {
@@ -26,14 +30,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.argument_name)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.argument_name)
 		+ ::bungeeoxide_minecraft_root::view::buffer::sized::size_of(&_0.signature)
 }
 pub fn view<'i>(
 	_0: &'i super::super::super::super::play::to_server::PacketChatCommandSigned0,
 ) -> Ty<'i> {
 	Ty {
-		argument_name: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.argument_name),
+		argument_name: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.argument_name),
 		signature: ::bungeeoxide_minecraft_root::view::buffer::sized::view(&_0.signature),
 	}
 }

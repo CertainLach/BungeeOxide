@@ -8,13 +8,13 @@ pub struct PacketStopSound18 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.source, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.sound, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.sound, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_source = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_sound = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_sound = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		source: f_source,
 		sound: f_sound,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.source)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.sound)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.sound)
 }
 pub type Ty = PacketStopSound18;

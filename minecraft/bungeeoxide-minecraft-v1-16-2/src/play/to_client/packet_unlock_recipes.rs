@@ -13,14 +13,14 @@ pub struct PacketUnlockRecipes {
 	pub smoker_book_open: ::bungeeoxide_minecraft_root::Bool,
 	pub filtering_smoker: ::bungeeoxide_minecraft_root::Bool,
 	pub recipes1: Vec<String>,
-	pub recipes2: super::PacketUnlockRecipes7,
+	pub recipes2: super::PacketUnlockRecipes0,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
 		&{
-			let _0: &super::PacketUnlockRecipes7 = &_0.recipes2;
+			let _0: &super::PacketUnlockRecipes0 = &_0.recipes2;
 			let __v1: ::bungeeoxide_minecraft_root::Varint =
-				super::packet_unlock_recipes_7::virtual_tag(_0);
+				super::packet_unlock_recipes_0::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()
 		},
@@ -34,8 +34,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.filtering_blast_furnace, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.smoker_book_open, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.filtering_smoker, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.recipes1, output)?;
-	super::packet_unlock_recipes_7::serialize(&_0.recipes2, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.recipes1, output)?;
+	super::packet_unlock_recipes_0::serialize(&_0.recipes2, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -49,10 +49,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_filteringBlastFurnace = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_smokerBookOpen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_filteringSmoker = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
-	let f_recipes2 = super::packet_unlock_recipes_7::deserialize(
+	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
+	let f_recipes2 = super::packet_unlock_recipes_0::deserialize(
 		input,
-		super::packet_unlock_recipes_7::Args {
+		super::packet_unlock_recipes_0::Args {
 			action: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_action;
 				_0
@@ -62,9 +62,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	debug_assert!(
 		&f_action
 			== &{
-				let _0: &super::PacketUnlockRecipes7 = &f_recipes2;
+				let _0: &super::PacketUnlockRecipes0 = &f_recipes2;
 				let __v1: ::bungeeoxide_minecraft_root::Varint =
-					super::packet_unlock_recipes_7::virtual_tag(_0);
+					super::packet_unlock_recipes_0::virtual_tag(_0);
 				let _0 = &__v1;
 				_0.clone()
 			},
@@ -85,9 +85,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&{
-		let _0: &super::PacketUnlockRecipes7 = &_0.recipes2;
+		let _0: &super::PacketUnlockRecipes0 = &_0.recipes2;
 		let __v1: ::bungeeoxide_minecraft_root::Varint =
-			super::packet_unlock_recipes_7::virtual_tag(_0);
+			super::packet_unlock_recipes_0::virtual_tag(_0);
 		let _0 = &__v1;
 		_0.clone()
 	}) + ::bungeeoxide_minecraft_root::bool::size_of(&_0.crafting_book_open)
@@ -98,7 +98,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.filtering_blast_furnace)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.smoker_book_open)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.filtering_smoker)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.recipes1)
-		+ super::packet_unlock_recipes_7::size_of(&_0.recipes2)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.recipes1)
+		+ super::packet_unlock_recipes_0::size_of(&_0.recipes2)
 }
 pub type Ty = PacketUnlockRecipes;

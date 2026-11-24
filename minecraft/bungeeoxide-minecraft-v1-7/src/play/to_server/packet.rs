@@ -33,7 +33,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
-		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::UseEntity(__v) => super::packet_use_entity::serialize(__v, output),
 		Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
 		Ty::Position(__v) => {
@@ -96,7 +96,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 				__v, output,
 			)
 		}
-		Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::Settings(__v) => super::packet_settings::serialize(__v, output),
 		Ty::ClientCommand(__v) => super::packet_client_command::serialize(__v, output),
 		Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
@@ -114,7 +114,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 1_i32) {
 		return Ok(Ty::Chat(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 2_i32) {
@@ -223,7 +223,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 20_i32) {
 		return Ok(Ty::TabComplete(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 21_i32) {
@@ -245,7 +245,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
-			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::UseEntity(__v) => super::packet_use_entity::size_of(__v),
 			Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
 			Ty::Position(__v) => {
@@ -290,7 +290,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::Abilities(__v) => {
 				::bungeeoxide_minecraft_v1_6_1::play::to_server::packet_abilities::size_of(__v)
 			}
-			Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::Settings(__v) => super::packet_settings::size_of(__v),
 			Ty::ClientCommand(__v) => super::packet_client_command::size_of(__v),
 			Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),

@@ -12,24 +12,24 @@ pub struct PacketChatCommand {
 	pub last_rejected_message: Option<super::PacketChatCommand1>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_144::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_164::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.signed_preview, output)?;
-	super::super::super::array::inline_145::serialize(&_0.previous_messages, output)?;
-	super::super::super::option_37::serialize(&_0.last_rejected_message, output)?;
+	super::super::super::array::inline_165::serialize(&_0.previous_messages, output)?;
+	super::super::super::option_41::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(21)?;
-	let f_command = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_144::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_164::deserialize(input)?;
 	let f_signedPreview = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_145::deserialize(input)?;
-	let f_lastRejectedMessage = super::super::super::option_37::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_165::deserialize(input)?;
+	let f_lastRejectedMessage = super::super::super::option_41::deserialize(input)?;
 	Ok(Ty {
 		command: f_command,
 		timestamp: f_timestamp,
@@ -41,12 +41,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.command)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_144::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_164::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.signed_preview)
-		+ super::super::super::array::inline_145::size_of(&_0.previous_messages)
-		+ super::super::super::option_37::size_of(&_0.last_rejected_message)
+		+ super::super::super::array::inline_165::size_of(&_0.previous_messages)
+		+ super::super::super::option_41::size_of(&_0.last_rejected_message)
 }
 pub type Ty = PacketChatCommand;

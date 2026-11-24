@@ -12,7 +12,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.dimension, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.difficulty, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.gamemode, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.level_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.level_type, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_dimension = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_difficulty = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_levelType = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_levelType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		dimension: f_dimension,
 		difficulty: f_difficulty,
@@ -32,6 +32,6 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::i32::size_of(&_0.dimension)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.difficulty)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.gamemode)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.level_type)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.level_type)
 }
 pub type Ty = PacketRespawn;

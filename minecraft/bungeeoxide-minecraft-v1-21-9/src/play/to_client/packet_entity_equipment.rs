@@ -8,13 +8,13 @@ pub struct PacketEntityEquipment {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	super::super::super::top_bit_set_terminated_array_105::serialize(&_0.equipments, output)?;
+	super::super::super::top_bit_set_terminated_array_118::serialize(&_0.equipments, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_equipments = super::super::super::top_bit_set_terminated_array_105::deserialize(input)?;
+	let f_equipments = super::super::super::top_bit_set_terminated_array_118::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		equipments: f_equipments,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ super::super::super::top_bit_set_terminated_array_105::size_of(&_0.equipments)
+		+ super::super::super::top_bit_set_terminated_array_118::size_of(&_0.equipments)
 }
 pub type Ty = PacketEntityEquipment;

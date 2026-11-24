@@ -8,13 +8,13 @@ pub struct PacketEntityEquipment13 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.slot, output)?;
-	super::super::super::slot::serialize_guarded(&_0.item, output)?;
+	super::super::super::slot::serialize(&_0.item, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_slot = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
-	let f_item = super::super::super::slot::deserialize_guarded(input)?;
+	let f_item = super::super::super::slot::deserialize(input)?;
 	Ok(Ty {
 		slot: f_slot,
 		item: f_item,

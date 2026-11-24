@@ -62,56 +62,156 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-        Ty::TeleportConfirm(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-        Ty::QueryBlockNbt(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_query_block_nbt::serialize(__v, output),
-        Ty::SetDifficulty(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_set_difficulty::serialize(__v, output),
-        Ty::ChatCommand(__v) => super::packet_chat_command::serialize(__v, output),
-        Ty::ChatMessage(__v) => super::packet_chat_message::serialize(__v, output),
-        Ty::ChatPreview(__v) => super::packet_chat_preview::serialize(__v, output),
-        Ty::ClientCommand(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::serialize(__v, output),
-        Ty::Settings(__v) => ::bungeeoxide_minecraft_v1_18::play::to_server::packet_settings::serialize(__v, output),
-        Ty::TabComplete(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_tab_complete::serialize(__v, output),
-        Ty::EnchantItem(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item::serialize(__v, output),
-        Ty::WindowClick(__v) => ::bungeeoxide_minecraft_v1_17_1::play::to_server::packet_window_click::serialize(__v, output),
-        Ty::CloseWindow(__v) => ::bungeeoxide_minecraft_root::u8::serialize(__v, output),
-        Ty::CustomPayload(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_custom_payload::serialize(__v, output),
-        Ty::EditBook(__v) => ::bungeeoxide_minecraft_v1_17_1::play::to_server::packet_edit_book::serialize(__v, output),
-        Ty::QueryEntityNbt(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_query_entity_nbt::serialize(__v, output),
-        Ty::UseEntity(__v) => ::bungeeoxide_minecraft_v1_16::play::to_server::packet_use_entity::serialize(__v, output),
-        Ty::GenerateStructure(__v) => ::bungeeoxide_minecraft_v1_16::play::to_server::packet_generate_structure::serialize(__v, output),
-        Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
-        Ty::LockDifficulty(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
-        Ty::Position(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_position::serialize(__v, output),
-        Ty::PositionLook(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_position_look::serialize(__v, output),
-        Ty::Look(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_look::serialize(__v, output),
-        Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
-        Ty::VehicleMove(__v) => ::bungeeoxide_minecraft_v1_9::play::to_server::packet_vehicle_move::serialize(__v, output),
-        Ty::SteerBoat(__v) => ::bungeeoxide_minecraft_v1_9::play::to_server::packet_steer_boat::serialize(__v, output),
-        Ty::PickItem(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-        Ty::CraftRecipeRequest(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_craft_recipe_request::serialize(__v, output),
-        Ty::Abilities(__v) => ::bungeeoxide_minecraft_root::i8::serialize(__v, output),
-        Ty::BlockDig(__v) => super::packet_block_dig::serialize(__v, output),
-        Ty::EntityAction(__v) => ::bungeeoxide_minecraft_v1_9::play::to_server::packet_entity_action::serialize(__v, output),
-        Ty::SteerVehicle(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_steer_vehicle::serialize(__v, output),
-        Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
-        Ty::RecipeBook(__v) => ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::serialize(__v, output),
-        Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
-        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
-        Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-        Ty::AdvancementTab(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::serialize(__v, output),
-        Ty::SelectTrade(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-        Ty::SetBeaconEffect(__v) => super::packet_set_beacon_effect::serialize(__v, output),
-        Ty::HeldItemSlot(__v) => ::bungeeoxide_minecraft_root::i16::serialize(__v, output),
-        Ty::UpdateCommandBlock(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_command_block::serialize(__v, output),
-        Ty::UpdateCommandBlockMinecart(__v) => ::bungeeoxide_minecraft_v1_13::play::to_server::packet_update_command_block_minecart::serialize(__v, output),
-        Ty::SetCreativeSlot(__v) => ::bungeeoxide_minecraft_v1_13_2::play::to_server::packet_set_creative_slot::serialize(__v, output),
-        Ty::UpdateJigsawBlock(__v) => ::bungeeoxide_minecraft_v1_16::play::to_server::packet_update_jigsaw_block::serialize(__v, output),
-        Ty::UpdateStructureBlock(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::serialize(__v, output),
-        Ty::UpdateSign(__v) => ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_sign::serialize(__v, output),
-        Ty::ArmAnimation(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-        Ty::Spectate(__v) => ::bungeeoxide_minecraft_root::uuid::serialize(__v, output),
-        Ty::BlockPlace(__v) => super::packet_block_place::serialize(__v, output),
-        Ty::UseItem(__v) => super::packet_use_item::serialize(__v, output),
+        Ty::TeleportConfirm(__v) => {
+            ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
+        }
+        Ty::QueryBlockNbt(__v) => {
+            ::bungeeoxide_minecraft_v1_14::play::to_server::packet_query_block_nbt::serialize(__v, output)
+        }
+        Ty::SetDifficulty(__v) => {
+            ::bungeeoxide_minecraft_v1_14::play::to_server::packet_set_difficulty::serialize(__v, output)
+        }
+        Ty::ChatCommand(__v) => {
+            super::packet_chat_command::serialize(__v, output)
+        }
+        Ty::ChatMessage(__v) => {
+            super::packet_chat_message::serialize(__v, output)
+        }
+        Ty::ChatPreview(__v) => {
+            super::packet_chat_preview::serialize(__v, output)
+        }
+        Ty::ClientCommand(__v) => {
+            ::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::serialize(__v, output)
+        }
+        Ty::Settings(__v) => {
+            ::bungeeoxide_minecraft_v1_18::play::to_server::packet_settings::serialize(__v, output)
+        }
+        Ty::TabComplete(__v) => {
+            ::bungeeoxide_minecraft_v1_13::play::to_server::packet_tab_complete::serialize(__v, output)
+        }
+        Ty::EnchantItem(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item::serialize(__v, output)
+        }
+        Ty::WindowClick(__v) => {
+            ::bungeeoxide_minecraft_v1_17_1::play::to_server::packet_window_click::serialize(__v, output)
+        }
+        Ty::CloseWindow(__v) => {
+            ::bungeeoxide_minecraft_root::u8::serialize(__v, output)
+        }
+        Ty::CustomPayload(__v) => {
+            ::bungeeoxide_minecraft_v1_8::play::to_server::packet_custom_payload::serialize(__v, output)
+        }
+        Ty::EditBook(__v) => {
+            ::bungeeoxide_minecraft_v1_17_1::play::to_server::packet_edit_book::serialize(__v, output)
+        }
+        Ty::QueryEntityNbt(__v) => {
+            ::bungeeoxide_minecraft_v1_13::play::to_server::packet_query_entity_nbt::serialize(__v, output)
+        }
+        Ty::UseEntity(__v) => {
+            ::bungeeoxide_minecraft_v1_16::play::to_server::packet_use_entity::serialize(__v, output)
+        }
+        Ty::GenerateStructure(__v) => {
+            ::bungeeoxide_minecraft_v1_16::play::to_server::packet_generate_structure::serialize(__v, output)
+        }
+        Ty::KeepAlive(__v) => {
+            ::bungeeoxide_minecraft_root::i64::serialize(__v, output)
+        }
+        Ty::LockDifficulty(__v) => {
+            ::bungeeoxide_minecraft_root::bool::serialize(__v, output)
+        }
+        Ty::Position(__v) => {
+            ::bungeeoxide_minecraft_v1_8::play::to_server::packet_position::serialize(__v, output)
+        }
+        Ty::PositionLook(__v) => {
+            ::bungeeoxide_minecraft_v1_8::play::to_server::packet_position_look::serialize(__v, output)
+        }
+        Ty::Look(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_look::serialize(__v, output)
+        }
+        Ty::Flying(__v) => {
+            ::bungeeoxide_minecraft_root::bool::serialize(__v, output)
+        }
+        Ty::VehicleMove(__v) => {
+            ::bungeeoxide_minecraft_v1_9::play::to_server::packet_vehicle_move::serialize(__v, output)
+        }
+        Ty::SteerBoat(__v) => {
+            ::bungeeoxide_minecraft_v1_9::play::to_server::packet_steer_boat::serialize(__v, output)
+        }
+        Ty::PickItem(__v) => {
+            ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
+        }
+        Ty::CraftRecipeRequest(__v) => {
+            ::bungeeoxide_minecraft_v1_13::play::to_server::packet_craft_recipe_request::serialize(__v, output)
+        }
+        Ty::Abilities(__v) => {
+            ::bungeeoxide_minecraft_root::i8::serialize(__v, output)
+        }
+        Ty::BlockDig(__v) => {
+            super::packet_block_dig::serialize(__v, output)
+        }
+        Ty::EntityAction(__v) => {
+            ::bungeeoxide_minecraft_v1_9::play::to_server::packet_entity_action::serialize(__v, output)
+        }
+        Ty::SteerVehicle(__v) => {
+            ::bungeeoxide_minecraft_v1_8::play::to_server::packet_steer_vehicle::serialize(__v, output)
+        }
+        Ty::Pong(__v) => {
+            ::bungeeoxide_minecraft_root::i32::serialize(__v, output)
+        }
+        Ty::RecipeBook(__v) => {
+            ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::serialize(__v, output)
+        }
+        Ty::DisplayedRecipe(__v) => {
+            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+        }
+        Ty::NameItem(__v) => {
+            ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+        }
+        Ty::ResourcePackReceive(__v) => {
+            ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
+        }
+        Ty::AdvancementTab(__v) => {
+            ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::serialize(__v, output)
+        }
+        Ty::SelectTrade(__v) => {
+            ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
+        }
+        Ty::SetBeaconEffect(__v) => {
+            super::packet_set_beacon_effect::serialize(__v, output)
+        }
+        Ty::HeldItemSlot(__v) => {
+            ::bungeeoxide_minecraft_root::i16::serialize(__v, output)
+        }
+        Ty::UpdateCommandBlock(__v) => {
+            ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_command_block::serialize(__v, output)
+        }
+        Ty::UpdateCommandBlockMinecart(__v) => {
+            ::bungeeoxide_minecraft_v1_13::play::to_server::packet_update_command_block_minecart::serialize(__v, output)
+        }
+        Ty::SetCreativeSlot(__v) => {
+            ::bungeeoxide_minecraft_v1_13_2::play::to_server::packet_set_creative_slot::serialize(__v, output)
+        }
+        Ty::UpdateJigsawBlock(__v) => {
+            ::bungeeoxide_minecraft_v1_16::play::to_server::packet_update_jigsaw_block::serialize(__v, output)
+        }
+        Ty::UpdateStructureBlock(__v) => {
+            ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::serialize(__v, output)
+        }
+        Ty::UpdateSign(__v) => {
+            ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_sign::serialize(__v, output)
+        }
+        Ty::ArmAnimation(__v) => {
+            ::bungeeoxide_minecraft_root::varint::serialize(__v, output)
+        }
+        Ty::Spectate(__v) => {
+            ::bungeeoxide_minecraft_root::uuid::serialize(__v, output)
+        }
+        Ty::BlockPlace(__v) => {
+            super::packet_block_place::serialize(__v, output)
+        }
+        Ty::UseItem(__v) => {
+            super::packet_use_item::serialize(__v, output)
+        }
         Ty::Default(_) => Ok(()),
     }
 }
@@ -308,12 +408,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 33_i32) {
 		return Ok(Ty::DisplayedRecipe(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 34_i32) {
 		return Ok(Ty::NameItem(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 35_i32) {
@@ -418,8 +518,8 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::SteerVehicle(__v) => ::bungeeoxide_minecraft_v1_8::play::to_server::packet_steer_vehicle::size_of(__v),
         Ty::Pong(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
         Ty::RecipeBook(__v) => ::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::size_of(__v),
-        Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
-        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+        Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
+        Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
         Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
         Ty::AdvancementTab(__v) => ::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::size_of(__v),
         Ty::SelectTrade(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),

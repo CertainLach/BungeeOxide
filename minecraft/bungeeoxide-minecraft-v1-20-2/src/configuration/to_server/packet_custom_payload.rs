@@ -7,13 +7,13 @@ pub struct PacketCustomPayload {
 	pub data: ::bungeeoxide_minecraft_root::RestBuffer,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.channel, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.channel, output)?;
 	::bungeeoxide_minecraft_root::rest_buffer::serialize(&_0.data, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
-	let f_channel = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_channel = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_data = ::bungeeoxide_minecraft_root::rest_buffer::deserialize(input)?;
 	Ok(Ty {
 		channel: f_channel,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.channel)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.channel)
 		+ ::bungeeoxide_minecraft_root::rest_buffer::size_of(&_0.data)
 }
 pub type Ty = PacketCustomPayload;

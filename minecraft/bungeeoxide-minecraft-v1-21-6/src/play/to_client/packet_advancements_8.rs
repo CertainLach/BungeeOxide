@@ -15,7 +15,7 @@ pub struct PacketAdvancements8 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.title, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.description, output)?;
-	super::super::super::slot::serialize_guarded(&_0.icon, output)?;
+	super::super::super::slot::serialize(&_0.icon, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.frame_type, output)?;
 	super::packet_advancements_6::serialize(&_0.flags, output)?;
 	super::packet_advancements_7::debug_assert_tag(&_0.background_texture, {
@@ -32,7 +32,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(14)?;
 	let f_title = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
-	let f_icon = super::super::super::slot::deserialize_guarded(input)?;
+	let f_icon = super::super::super::slot::deserialize(input)?;
 	let f_frameType = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_flags = super::packet_advancements_6::deserialize(input)?;
 	let f_backgroundTexture = super::packet_advancements_7::deserialize(

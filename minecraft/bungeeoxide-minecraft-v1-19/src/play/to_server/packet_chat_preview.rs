@@ -8,13 +8,13 @@ pub struct PacketChatPreview {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.query, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.message, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_query = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		query: f_query,
 		message: f_message,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::i32::size_of(&_0.query)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.message)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.message)
 }
 pub type Ty = PacketChatPreview;

@@ -6,13 +6,13 @@ pub struct PacketTabComplete<'i> {
 	pub transaction_id: ::bungeeoxide_minecraft_root::Varint,
 	pub start: ::bungeeoxide_minecraft_root::Varint,
 	pub length: ::bungeeoxide_minecraft_root::Varint,
-	pub matches: super::super::super::array::Inline173<'i>,
+	pub matches: super::super::super::array::Inline193<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.transaction_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.start, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.length, output)?;
-	super::super::super::array::inline_173::serialize(&_0.matches, output)?;
+	super::super::super::array::inline_193::serialize(&_0.matches, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
@@ -20,7 +20,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_transactionId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_start = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_length = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_matches = super::super::super::array::inline_173::deserialize(input)?;
+	let f_matches = super::super::super::array::inline_193::deserialize(input)?;
 	Ok(Ty {
 		transaction_id: f_transactionId,
 		start: f_start,
@@ -32,14 +32,14 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.transaction_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.start)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.length)
-		+ super::super::super::array::inline_173::size_of(&_0.matches)
+		+ super::super::super::array::inline_193::size_of(&_0.matches)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTabComplete) -> Ty<'i> {
 	Ty {
 		transaction_id: ::core::clone::Clone::clone(&_0.transaction_id),
 		start: ::core::clone::Clone::clone(&_0.start),
 		length: ::core::clone::Clone::clone(&_0.length),
-		matches: super::super::super::array::inline_173::view(&_0.matches),
+		matches: super::super::super::array::inline_193::view(&_0.matches),
 	}
 }
 pub fn into_view<'i>(
@@ -49,7 +49,7 @@ pub fn into_view<'i>(
 		transaction_id: ::core::clone::Clone::clone(&mut _0.transaction_id),
 		start: ::core::clone::Clone::clone(&mut _0.start),
 		length: ::core::clone::Clone::clone(&mut _0.length),
-		matches: super::super::super::array::inline_173::into_view(&mut _0.matches),
+		matches: super::super::super::array::inline_193::into_view(&mut _0.matches),
 	}
 }
 pub type Ty<'i> = PacketTabComplete<'i>;

@@ -34,30 +34,78 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::u8::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-        Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
-        Ty::Login(__v) => super::packet_login::serialize(__v, output),
-        Ty::SetProtocol(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_set_protocol::serialize(__v, output),
-        Ty::Chat(__v) => ::bungeeoxide_minecraft_root::string16::serialize(__v, output),
-        Ty::UseEntity(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_use_entity::serialize(__v, output),
-        Ty::Respawn(__v) => super::packet_respawn::serialize(__v, output),
-        Ty::Flying(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
-        Ty::Position(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_position::serialize(__v, output),
-        Ty::Look(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_look::serialize(__v, output),
-        Ty::PositionLook(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_position_look::serialize(__v, output),
-        Ty::BlockDig(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_block_dig::serialize(__v, output),
-        Ty::BlockPlace(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_block_place::serialize(__v, output),
-        Ty::HeldItemSlot(__v) => ::bungeeoxide_minecraft_root::i16::serialize(__v, output),
-        Ty::ArmAnimation(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_arm_animation::serialize(__v, output),
-        Ty::EntityAction(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_entity_action::serialize(__v, output),
-        Ty::CloseWindow(__v) => ::bungeeoxide_minecraft_root::u8::serialize(__v, output),
-        Ty::WindowClick(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_window_click::serialize(__v, output),
-        Ty::Transaction(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_transaction::serialize(__v, output),
-        Ty::SetCreativeSlot(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_set_creative_slot::serialize(__v, output),
-        Ty::EnchantItem(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item::serialize(__v, output),
-        Ty::UpdateSign(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_update_sign::serialize(__v, output),
-        Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
-        Ty::LegacyServerListPing(__v) => ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_legacy_server_list_ping::serialize(__v, output),
-        Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::string16::serialize(__v, output),
+        Ty::KeepAlive(__v) => {
+            ::bungeeoxide_minecraft_root::i32::serialize(__v, output)
+        }
+        Ty::Login(__v) => {
+            super::packet_login::serialize(__v, output)
+        }
+        Ty::SetProtocol(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_set_protocol::serialize(__v, output)
+        }
+        Ty::Chat(__v) => {
+            ::bungeeoxide_minecraft_root::string16::serialize(__v, output)
+        }
+        Ty::UseEntity(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_use_entity::serialize(__v, output)
+        }
+        Ty::Respawn(__v) => {
+            super::packet_respawn::serialize(__v, output)
+        }
+        Ty::Flying(__v) => {
+            ::bungeeoxide_minecraft_root::bool::serialize(__v, output)
+        }
+        Ty::Position(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_position::serialize(__v, output)
+        }
+        Ty::Look(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_look::serialize(__v, output)
+        }
+        Ty::PositionLook(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_position_look::serialize(__v, output)
+        }
+        Ty::BlockDig(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_block_dig::serialize(__v, output)
+        }
+        Ty::BlockPlace(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_block_place::serialize(__v, output)
+        }
+        Ty::HeldItemSlot(__v) => {
+            ::bungeeoxide_minecraft_root::i16::serialize(__v, output)
+        }
+        Ty::ArmAnimation(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_arm_animation::serialize(__v, output)
+        }
+        Ty::EntityAction(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_entity_action::serialize(__v, output)
+        }
+        Ty::CloseWindow(__v) => {
+            ::bungeeoxide_minecraft_root::u8::serialize(__v, output)
+        }
+        Ty::WindowClick(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_window_click::serialize(__v, output)
+        }
+        Ty::Transaction(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_transaction::serialize(__v, output)
+        }
+        Ty::SetCreativeSlot(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_set_creative_slot::serialize(__v, output)
+        }
+        Ty::EnchantItem(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item::serialize(__v, output)
+        }
+        Ty::UpdateSign(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_update_sign::serialize(__v, output)
+        }
+        Ty::CustomPayload(__v) => {
+            super::packet_custom_payload::serialize(__v, output)
+        }
+        Ty::LegacyServerListPing(__v) => {
+            ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_legacy_server_list_ping::serialize(__v, output)
+        }
+        Ty::KickDisconnect(__v) => {
+            ::bungeeoxide_minecraft_root::string16::serialize(__v, output)
+        }
         Ty::Default(_) => Ok(()),
     }
 }

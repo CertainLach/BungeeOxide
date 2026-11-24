@@ -9,7 +9,7 @@ pub enum SlotComponent56 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::False(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::False(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::True(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 	}
 }
@@ -19,7 +19,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let __tag = &__tagv;
 	if (__tag.clone() == false) {
 		return Ok(Ty::False(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == true) {
@@ -32,7 +32,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::bool::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::False(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::False(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::True(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 		}
 }

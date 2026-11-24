@@ -10,14 +10,14 @@ pub struct SlotComponent31 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::option_0::serialize(&_0.uuid, output)?;
-	super::array::inline_180::serialize(&_0.properties, output)?;
+	super::array::inline_200::serialize(&_0.properties, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_name = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::option_0::deserialize(input)?;
-	let f_properties = super::array::inline_180::deserialize(input)?;
+	let f_properties = super::array::inline_200::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		uuid: f_uuid,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::option_21::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::option_0::size_of(&_0.uuid)
-		+ super::array::inline_180::size_of(&_0.properties)
+		+ super::array::inline_200::size_of(&_0.properties)
 }
 pub type Ty = SlotComponent31;

@@ -13,7 +13,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reached, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.next_node_index, output)?;
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.target, output)?;
-	super::array::inline_92::serialize(&_0.nodes, output)?;
+	super::array::inline_94::serialize(&_0.nodes, output)?;
 	super::path_debug_data::serialize(&_0.debug_data, output)?;
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_reached = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_nextNodeIndex = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_target = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_nodes = super::array::inline_92::deserialize(input)?;
+	let f_nodes = super::array::inline_94::deserialize(input)?;
 	let f_debugData = super::path_debug_data::deserialize(input)?;
 	Ok(Ty {
 		reached: f_reached,
@@ -36,7 +36,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::bool::size_of(&_0.reached)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.next_node_index)
 		+ ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.target)
-		+ super::array::inline_92::size_of(&_0.nodes)
+		+ super::array::inline_94::size_of(&_0.nodes)
 		+ super::path_debug_data::size_of(&_0.debug_data)
 }
 pub type Ty = Path;

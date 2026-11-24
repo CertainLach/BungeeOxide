@@ -12,7 +12,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.window_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.state_id, output)?;
 	::bungeeoxide_minecraft_root::i16::serialize(&_0.slot, output)?;
-	super::super::super::slot::serialize_guarded(&_0.item, output)?;
+	super::super::super::slot::serialize(&_0.item, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_windowId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_stateId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_slot = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
-	let f_item = super::super::super::slot::deserialize_guarded(input)?;
+	let f_item = super::super::super::slot::deserialize(input)?;
 	Ok(Ty {
 		window_id: f_windowId,
 		state_id: f_stateId,

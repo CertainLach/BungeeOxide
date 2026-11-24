@@ -12,21 +12,21 @@ pub struct PacketUpdateJigsawBlock {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.target, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.pool, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.final_state, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.joint_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.target, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.pool, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.final_state, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.joint_type, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(13)?;
 	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_target = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_pool = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_finalState = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_jointType = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_target = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_pool = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_finalState = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_jointType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		location: f_location,
 		name: f_name,
@@ -38,10 +38,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.target)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.pool)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.final_state)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.joint_type)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.target)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.pool)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.final_state)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.joint_type)
 }
 pub type Ty = PacketUpdateJigsawBlock;

@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
-		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::FinishConfiguration(__v) => super::packet_finish_configuration::serialize(__v, output),
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
 		Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
@@ -27,9 +27,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		}
 		Ty::ResourcePackSend(__v) => super::packet_resource_pack_send::serialize(__v, output),
 		Ty::FeatureFlags(__v) => {
-			::bungeeoxide_minecraft_root::array::inline_98::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output)
 		}
-		Ty::Tags(__v) => super::super::super::array::inline_159::serialize(__v, output),
+		Ty::Tags(__v) => super::super::super::array::inline_179::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -44,7 +44,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 1_i32) {
 		return Ok(Ty::Disconnect(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 2_i32) {
@@ -74,12 +74,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 7_i32) {
 		return Ok(Ty::FeatureFlags(
-			::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 8_i32) {
 		return Ok(Ty::Tags(
-			super::super::super::array::inline_159::deserialize(input)?,
+			super::super::super::array::inline_179::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -88,14 +88,14 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),
-			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::FinishConfiguration(__v) => super::packet_finish_configuration::size_of(__v),
 			Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::size_of(__v),
 			Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 			Ty::RegistryData(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::ResourcePackSend(__v) => super::packet_resource_pack_send::size_of(__v),
-			Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_98::size_of(__v),
-			Ty::Tags(__v) => super::super::super::array::inline_159::size_of(__v),
+			Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
+			Ty::Tags(__v) => super::super::super::array::inline_179::size_of(__v),
 			Ty::Default(_) => 0,
 		}
 }

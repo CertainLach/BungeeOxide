@@ -11,17 +11,21 @@ pub struct PacketChatMessage {
 	pub acknowledged: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
 	::bungeeoxide_minecraft_root::option_3::serialize(&_0.signature, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.offset, output)?;
+	::bungeeoxide_minecraft_root::buffer::sized::check_count(
+		&_0.acknowledged,
+		&(3).try_into().expect("constant fits"),
+	)?;
 	::bungeeoxide_minecraft_root::buffer::sized::serialize(&_0.acknowledged, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(19)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::option_3::deserialize(input)?;
@@ -42,7 +46,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.message)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
 		+ ::bungeeoxide_minecraft_root::option_3::size_of(&_0.signature)

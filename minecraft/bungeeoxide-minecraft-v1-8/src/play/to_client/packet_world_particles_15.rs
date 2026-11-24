@@ -13,9 +13,27 @@ pub enum PacketWorldParticles15 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::V36(__v) => ::bungeeoxide_minecraft_root::array::sized_391::serialize(__v, output),
-		Ty::V37(__v) => ::bungeeoxide_minecraft_root::array::sized_391::serialize(__v, output),
-		Ty::V38(__v) => ::bungeeoxide_minecraft_root::array::sized_391::serialize(__v, output),
+		Ty::V36(__v) => {
+			::bungeeoxide_minecraft_root::array::sized_461::check_count(
+				__v,
+				&(2).try_into().expect("constant fits"),
+			)?;
+			::bungeeoxide_minecraft_root::array::sized_461::serialize(__v, output)
+		}
+		Ty::V37(__v) => {
+			::bungeeoxide_minecraft_root::array::sized_461::check_count(
+				__v,
+				&(1).try_into().expect("constant fits"),
+			)?;
+			::bungeeoxide_minecraft_root::array::sized_461::serialize(__v, output)
+		}
+		Ty::V38(__v) => {
+			::bungeeoxide_minecraft_root::array::sized_461::check_count(
+				__v,
+				&(1).try_into().expect("constant fits"),
+			)?;
+			::bungeeoxide_minecraft_root::array::sized_461::serialize(__v, output)
+		}
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -23,9 +41,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.particle_id;
 	if (__tag.clone() == 36_i32) {
 		return Ok(Ty::V36(
-			::bungeeoxide_minecraft_root::array::sized_391::deserialize(
+			::bungeeoxide_minecraft_root::array::sized_461::deserialize(
 				input,
-				::bungeeoxide_minecraft_root::array::sized_391::Args {
+				::bungeeoxide_minecraft_root::array::sized_461::Args {
 					count: &(2).try_into().expect("constant fits"),
 				},
 			)?,
@@ -33,9 +51,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == 37_i32) {
 		return Ok(Ty::V37(
-			::bungeeoxide_minecraft_root::array::sized_391::deserialize(
+			::bungeeoxide_minecraft_root::array::sized_461::deserialize(
 				input,
-				::bungeeoxide_minecraft_root::array::sized_391::Args {
+				::bungeeoxide_minecraft_root::array::sized_461::Args {
 					count: &(1).try_into().expect("constant fits"),
 				},
 			)?,
@@ -43,9 +61,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	}
 	if (__tag.clone() == 38_i32) {
 		return Ok(Ty::V38(
-			::bungeeoxide_minecraft_root::array::sized_391::deserialize(
+			::bungeeoxide_minecraft_root::array::sized_461::deserialize(
 				input,
-				::bungeeoxide_minecraft_root::array::sized_391::Args {
+				::bungeeoxide_minecraft_root::array::sized_461::Args {
 					count: &(1).try_into().expect("constant fits"),
 				},
 			)?,
@@ -55,9 +73,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + match _0 {
-		Ty::V36(__v) => ::bungeeoxide_minecraft_root::array::sized_391::size_of(__v),
-		Ty::V37(__v) => ::bungeeoxide_minecraft_root::array::sized_391::size_of(__v),
-		Ty::V38(__v) => ::bungeeoxide_minecraft_root::array::sized_391::size_of(__v),
+		Ty::V36(__v) => ::bungeeoxide_minecraft_root::array::sized_461::size_of(__v),
+		Ty::V37(__v) => ::bungeeoxide_minecraft_root::array::sized_461::size_of(__v),
+		Ty::V38(__v) => ::bungeeoxide_minecraft_root::array::sized_461::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

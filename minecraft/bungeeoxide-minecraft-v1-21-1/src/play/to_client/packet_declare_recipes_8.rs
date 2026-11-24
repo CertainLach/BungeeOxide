@@ -12,24 +12,28 @@ pub struct PacketDeclareRecipes8 {
 	pub show_notification: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.group, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.category, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.grid_width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.grid_height, output)?;
-	super::super::super::array::sized_404::serialize(&_0.ingredients, output)?;
+	super::super::super::array::sized_473::check_count(&_0.ingredients, {
+		let _0: &::bungeeoxide_minecraft_root::Varint = &_0.grid_width;
+		_0
+	})?;
+	super::super::super::array::sized_473::serialize(&_0.ingredients, output)?;
 	super::super::super::slot::serialize_guarded(&_0.result, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_notification, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_category = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_gridWidth = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_gridHeight = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ingredients = super::super::super::array::sized_404::deserialize(
+	let f_ingredients = super::super::super::array::sized_473::deserialize(
 		input,
-		super::super::super::array::sized_404::Args {
+		super::super::super::array::sized_473::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::Varint = &f_gridWidth;
 				_0
@@ -53,11 +57,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.group)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.group)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.category)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.grid_width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.grid_height)
-		+ super::super::super::array::sized_404::size_of(&_0.ingredients)
+		+ super::super::super::array::sized_473::size_of(&_0.ingredients)
 		+ super::super::super::slot::size_of(&_0.result)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_notification)
 }

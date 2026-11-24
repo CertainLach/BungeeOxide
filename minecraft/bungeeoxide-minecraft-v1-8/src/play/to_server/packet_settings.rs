@@ -10,7 +10,7 @@ pub struct PacketSettings {
 	pub skin_parts: ::bungeeoxide_minecraft_root::U8,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.locale, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.locale, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.view_distance, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.chat_flags, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.chat_colors, output)?;
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
-	let f_locale = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_locale = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_chatFlags = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_chatColors = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.locale)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.locale)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.view_distance)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.chat_flags)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.chat_colors)

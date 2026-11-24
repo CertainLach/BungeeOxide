@@ -8,13 +8,13 @@ pub struct PacketCommonServerLinks43 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::packet_common_server_links_42::serialize(&_0.has_known_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.link, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.link, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_hasKnownType = super::packet_common_server_links_42::deserialize(input)?;
-	let f_link = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_link = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		has_known_type: f_hasKnownType,
 		link: f_link,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + super::packet_common_server_links_42::size_of(&_0.has_known_type)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.link)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.link)
 }
 pub type Ty = PacketCommonServerLinks43;

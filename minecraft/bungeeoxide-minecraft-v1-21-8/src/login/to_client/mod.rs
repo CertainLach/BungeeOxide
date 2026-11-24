@@ -5,7 +5,7 @@ pub use self::packet_disconnect::Ty as PacketDisconnect;
 pub use self::packet_encryption_begin::Ty as PacketEncryptionBegin;
 pub use self::packet_login_plugin_request::Ty as PacketLoginPluginRequest;
 pub use self::packet_success::Ty as PacketSuccess;
-pub use ::bungeeoxide_minecraft_root::pstring_96 as packet_disconnect;
+pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_disconnect;
 pub use ::bungeeoxide_minecraft_root::varint as packet_compress;
 pub use ::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request;
 pub use ::bungeeoxide_minecraft_v1_19::login::to_client::packet_success;

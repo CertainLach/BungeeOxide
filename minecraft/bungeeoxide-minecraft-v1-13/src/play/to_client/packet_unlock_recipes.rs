@@ -26,7 +26,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.filtering_craftable, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.smelting_book_open, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.filtering_smeltable, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.recipes1, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.recipes1, output)?;
 	super::packet_unlock_recipes_20::serialize(&_0.recipes2, output)?;
 	Ok(())
 }
@@ -37,7 +37,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_filteringCraftable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_smeltingBookOpen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_filteringSmeltable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_recipes1 = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_recipes2 = super::packet_unlock_recipes_20::deserialize(
 		input,
 		super::packet_unlock_recipes_20::Args {
@@ -78,7 +78,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.filtering_craftable)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.smelting_book_open)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.filtering_smeltable)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.recipes1)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.recipes1)
 		+ super::packet_unlock_recipes_20::size_of(&_0.recipes2)
 }
 pub type Ty = PacketUnlockRecipes;

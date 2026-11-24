@@ -7,21 +7,21 @@ pub struct BannerPattern {
 	pub translation_key: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.asset_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.translation_key, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.translation_key, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_translationKey = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_translationKey = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		asset_id: f_assetId,
 		translation_key: f_translationKey,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.asset_id)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.translation_key)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.asset_id)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.translation_key)
 }
 pub type Ty = BannerPattern;

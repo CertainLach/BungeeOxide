@@ -12,7 +12,7 @@ pub struct RecipeDisplay1 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
-	super::super::super::array::inline_97::serialize(&_0.ingredients, output)?;
+	super::super::super::array::inline_99::serialize(&_0.ingredients, output)?;
 	super::slot_display::serialize_guarded(&_0.result, output)?;
 	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
 	Ok(())
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ingredients = super::super::super::array::inline_97::deserialize(input)?;
+	let f_ingredients = super::super::super::array::inline_99::deserialize(input)?;
 	let f_result = super::slot_display::deserialize_guarded(input)?;
 	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
 	Ok(Ty {
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
-		+ super::super::super::array::inline_97::size_of(&_0.ingredients)
+		+ super::super::super::array::inline_99::size_of(&_0.ingredients)
 		+ super::slot_display::size_of(&_0.result)
 		+ super::slot_display::size_of(&_0.crafting_station)
 }

@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.game_mode, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.dimension, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.max_players, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.level_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.level_type, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.view_distance, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reduced_debug_info, output)?;
 	Ok(())
@@ -27,7 +27,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_gameMode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_dimension = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_maxPlayers = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_levelType = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_levelType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_reducedDebugInfo = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
@@ -45,7 +45,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.game_mode)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.dimension)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.max_players)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.level_type)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.level_type)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.view_distance)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.reduced_debug_info)
 }

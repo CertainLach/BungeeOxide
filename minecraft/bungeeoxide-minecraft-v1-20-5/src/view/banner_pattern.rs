@@ -3,31 +3,31 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct BannerPattern<'i> {
-	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
-	pub translation_key: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
+	pub translation_key: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.asset_id, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.translation_key, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.translation_key, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
-	let f_translationKey = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
+	let f_translationKey = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		asset_id: f_assetId,
 		translation_key: f_translationKey,
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.asset_id)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.translation_key)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.asset_id)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.translation_key)
 }
 pub fn view<'i>(_0: &'i super::super::BannerPattern) -> Ty<'i> {
 	Ty {
-		asset_id: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.asset_id),
-		translation_key: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.translation_key),
+		asset_id: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.asset_id),
+		translation_key: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.translation_key),
 	}
 }
 pub type Ty<'i> = BannerPattern<'i>;

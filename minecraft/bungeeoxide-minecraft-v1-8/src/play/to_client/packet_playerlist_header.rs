@@ -7,21 +7,21 @@ pub struct PacketPlayerlistHeader {
 	pub footer: String,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.header, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.footer, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.header, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.footer, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_header = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_footer = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_header = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_footer = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		header: f_header,
 		footer: f_footer,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.header)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.footer)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.header)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.footer)
 }
 pub type Ty = PacketPlayerlistHeader;

@@ -7,13 +7,13 @@ pub struct PacketAdvancements13 {
 	pub criterion_progress: Option<::bungeeoxide_minecraft_root::I64>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.criterion_identifier, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.criterion_identifier, output)?;
 	::bungeeoxide_minecraft_root::option_6::serialize(&_0.criterion_progress, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_criterionIdentifier = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_criterionIdentifier = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_criterionProgress = ::bungeeoxide_minecraft_root::option_6::deserialize(input)?;
 	Ok(Ty {
 		criterion_identifier: f_criterionIdentifier,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.criterion_identifier)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.criterion_identifier)
 		+ ::bungeeoxide_minecraft_root::option_6::size_of(&_0.criterion_progress)
 }
 pub type Ty = PacketAdvancements13;

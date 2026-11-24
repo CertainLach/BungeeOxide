@@ -8,15 +8,15 @@ pub struct GameProfileProperty {
 	pub signature: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.value, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.signature, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_value = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_value = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.value)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.value)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.signature)
 }
 pub type Ty = GameProfileProperty;

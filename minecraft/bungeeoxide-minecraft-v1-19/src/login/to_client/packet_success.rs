@@ -9,15 +9,15 @@ pub struct PacketSuccess {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.username, output)?;
-	super::super::super::array::inline_139::serialize(&_0.properties, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.username, output)?;
+	super::super::super::array::inline_159::serialize(&_0.properties, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_username = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_139::deserialize(input)?;
+	let f_username = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_159::deserialize(input)?;
 	Ok(Ty {
 		uuid: f_uuid,
 		username: f_username,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.username)
-		+ super::super::super::array::inline_139::size_of(&_0.properties)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.username)
+		+ super::super::super::array::inline_159::size_of(&_0.properties)
 }
 pub type Ty = PacketSuccess;

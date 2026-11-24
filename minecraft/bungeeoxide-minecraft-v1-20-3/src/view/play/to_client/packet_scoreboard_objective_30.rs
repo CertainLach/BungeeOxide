@@ -11,10 +11,10 @@ pub struct PacketScoreboardObjective30<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::view::anonymous_nbt::serialize(&_0.display_text, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::option_25::serialize(
+	::bungeeoxide_minecraft_root::option_29::serialize(
 		&{
 			let _0: &super::PacketScoreboardObjective29<'i> = &_0.styling;
-			let __v1: ::bungeeoxide_minecraft_root::Option25 =
+			let __v1: ::bungeeoxide_minecraft_root::Option29 =
 				super::packet_scoreboard_objective_29::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()
@@ -28,12 +28,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_displayText = ::bungeeoxide_minecraft_root::view::anonymous_nbt::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_number_format = ::bungeeoxide_minecraft_root::option_25::deserialize(input)?;
+	let f_number_format = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
 	let f_styling = super::packet_scoreboard_objective_29::deserialize(
 		input,
 		super::packet_scoreboard_objective_29::Args {
 			number_format: {
-				let _0: &::bungeeoxide_minecraft_root::Option25 = &f_number_format;
+				let _0: &::bungeeoxide_minecraft_root::Option29 = &f_number_format;
 				_0
 			},
 		},
@@ -42,7 +42,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		&f_number_format
 			== &{
 				let _0: &super::PacketScoreboardObjective29<'i> = &f_styling;
-				let __v1: ::bungeeoxide_minecraft_root::Option25 =
+				let __v1: ::bungeeoxide_minecraft_root::Option29 =
 					super::packet_scoreboard_objective_29::virtual_tag(_0);
 				let _0 = &__v1;
 				_0.clone()
@@ -58,9 +58,9 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::view::anonymous_nbt::size_of(&_0.display_text)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::option_25::size_of(&{
+		+ ::bungeeoxide_minecraft_root::option_29::size_of(&{
 			let _0: &super::PacketScoreboardObjective29<'i> = &_0.styling;
-			let __v1: ::bungeeoxide_minecraft_root::Option25 =
+			let __v1: ::bungeeoxide_minecraft_root::Option29 =
 				super::packet_scoreboard_objective_29::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()

@@ -11,7 +11,7 @@ pub struct SlotComponent28 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::array::inline_28::serialize(&_0.floats, output)?;
 	::bungeeoxide_minecraft_root::array::inline_27::serialize(&_0.flags, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.strings, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.strings, output)?;
 	::bungeeoxide_minecraft_root::array::inline_29::serialize(&_0.colors, output)?;
 	Ok(())
 }
@@ -19,7 +19,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_floats = ::bungeeoxide_minecraft_root::array::inline_28::deserialize(input)?;
 	let f_flags = ::bungeeoxide_minecraft_root::array::inline_27::deserialize(input)?;
-	let f_strings = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_strings = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_colors = ::bungeeoxide_minecraft_root::array::inline_29::deserialize(input)?;
 	Ok(Ty {
 		floats: f_floats,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::array::inline_28::size_of(&_0.floats)
 		+ ::bungeeoxide_minecraft_root::array::inline_27::size_of(&_0.flags)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.strings)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.strings)
 		+ ::bungeeoxide_minecraft_root::array::inline_29::size_of(&_0.colors)
 }
 pub type Ty = SlotComponent28;

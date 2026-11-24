@@ -2,6 +2,6 @@
 pub use self::packet::Ty as Packet;
 pub use self::packet_encryption_begin::Ty as PacketEncryptionBegin;
 pub use self::packet_login_start::Ty as PacketLoginStart;
-pub use ::bungeeoxide_minecraft_root::pstring_96 as packet_login_start;
+pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_login_start;
 pub use ::bungeeoxide_minecraft_v1_8::login::to_server::packet;
 pub use ::bungeeoxide_minecraft_v1_8::login::to_server::packet_encryption_begin;

@@ -7,13 +7,13 @@ pub struct PacketChatCommand0 {
 	pub signature: Vec<u8>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.argument_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.argument_name, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.signature, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_argumentName = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_argumentName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	Ok(Ty {
 		argument_name: f_argumentName,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.argument_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.argument_name)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.signature)
 }
 pub type Ty = PacketChatCommand0;

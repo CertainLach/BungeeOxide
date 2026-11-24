@@ -7,13 +7,13 @@ pub struct PacketLoginStart {
 	pub player_uuid: Option<::bungeeoxide_minecraft_root::Uuid>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.username, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.username, output)?;
 	::bungeeoxide_minecraft_root::option_0::serialize(&_0.player_uuid, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_username = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_username = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_playerUUID = ::bungeeoxide_minecraft_root::option_0::deserialize(input)?;
 	Ok(Ty {
 		username: f_username,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.username)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.username)
 		+ ::bungeeoxide_minecraft_root::option_0::size_of(&_0.player_uuid)
 }
 pub type Ty = PacketLoginStart;

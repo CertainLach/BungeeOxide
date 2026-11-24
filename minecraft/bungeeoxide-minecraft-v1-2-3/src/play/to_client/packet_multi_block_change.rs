@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		&(((&{
 			let _0: &Vec<super::PacketMultiBlockChange0> = &_0.records;
 			let __v1: ::bungeeoxide_minecraft_root::Varint =
-				super::super::super::array::sized_405::virtual_size(_0);
+				super::super::super::array::sized_474::virtual_size(_0);
 			let _0 = &__v1;
 			_0.clone()
 		})
@@ -24,7 +24,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.data_length, output)?;
-	super::super::super::array::sized_405::serialize(&_0.records, output)?;
+	super::super::super::array::sized_474::serialize(&_0.records, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -33,9 +33,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_chunkZ = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_recordCount = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
 	let f_dataLength = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_records = super::super::super::array::sized_405::deserialize(
+	let f_records = super::super::super::array::sized_474::deserialize(
 		input,
-		super::super::super::array::sized_405::Args {
+		super::super::super::array::sized_474::Args {
 			count: {
 				let _0: &::bungeeoxide_minecraft_root::I16 = &f_recordCount;
 				_0
@@ -47,7 +47,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			== &(((&{
 				let _0: &Vec<super::PacketMultiBlockChange0> = &f_records;
 				let __v1: ::bungeeoxide_minecraft_root::Varint =
-					super::super::super::array::sized_405::virtual_size(_0);
+					super::super::super::array::sized_474::virtual_size(_0);
 				let _0 = &__v1;
 				_0.clone()
 			})
@@ -68,12 +68,12 @@ pub fn size_of(_0: &Ty) -> usize {
 			&(((&{
 				let _0: &Vec<super::PacketMultiBlockChange0> = &_0.records;
 				let __v1: ::bungeeoxide_minecraft_root::Varint =
-					super::super::super::array::sized_405::virtual_size(_0);
+					super::super::super::array::sized_474::virtual_size(_0);
 				let _0 = &__v1;
 				_0.clone()
 			})
 				.clone()) as ::bungeeoxide_minecraft_root::I16),
 		) + ::bungeeoxide_minecraft_root::i32::size_of(&_0.data_length)
-		+ super::super::super::array::sized_405::size_of(&_0.records)
+		+ super::super::super::array::sized_474::size_of(&_0.records)
 }
 pub type Ty = PacketMultiBlockChange;

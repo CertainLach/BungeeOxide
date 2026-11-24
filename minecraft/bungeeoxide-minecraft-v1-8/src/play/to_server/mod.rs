@@ -4,7 +4,7 @@ pub use ::bungeeoxide_minecraft_v1_6_1::play::to_server::packet_abilities;
 pub mod packet_arm_animation;
 pub mod packet_block_dig;
 pub mod packet_block_place;
-pub use ::bungeeoxide_minecraft_root::pstring_96 as packet_chat;
+pub use ::bungeeoxide_minecraft_root::pstring_109 as packet_chat;
 pub mod packet_client_command;
 pub use ::bungeeoxide_minecraft_root::u8 as packet_close_window;
 pub mod packet_custom_payload;

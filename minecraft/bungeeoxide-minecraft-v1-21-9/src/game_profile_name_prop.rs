@@ -7,21 +7,21 @@ pub struct GameProfileNameProp {
 	pub properties: Vec<super::GameProfileProperty>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	super::array::inline_91::serialize(&_0.properties, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	super::array::inline_92::serialize(&_0.properties, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_properties = super::array::inline_91::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_properties = super::array::inline_92::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		properties: f_properties,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ super::array::inline_91::size_of(&_0.properties)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ super::array::inline_92::size_of(&_0.properties)
 }
 pub type Ty = GameProfileNameProp;

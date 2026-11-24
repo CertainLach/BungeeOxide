@@ -7,13 +7,13 @@ pub struct PacketAdvancements3 {
 	pub value: ::bungeeoxide_minecraft_root::Void,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::void::serialize(&_0.value, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
-	let f_key = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::void::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.key)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::void::size_of(&_0.value)
 }
 pub type Ty = PacketAdvancements3;

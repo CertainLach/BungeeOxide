@@ -10,14 +10,14 @@ pub struct DebugStructureInfo {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.bounding_box_min, output)?;
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.bounding_box_max, output)?;
-	super::array::inline_316::serialize(&_0.pieces, output)?;
+	super::array::inline_336::serialize(&_0.pieces, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(17)?;
 	let f_boundingBoxMin = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	let f_boundingBoxMax = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_pieces = super::array::inline_316::deserialize(input)?;
+	let f_pieces = super::array::inline_336::deserialize(input)?;
 	Ok(Ty {
 		bounding_box_min: f_boundingBoxMin,
 		bounding_box_max: f_boundingBoxMax,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.bounding_box_min)
 		+ ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.bounding_box_max)
-		+ super::array::inline_316::size_of(&_0.pieces)
+		+ super::array::inline_336::size_of(&_0.pieces)
 }
 pub type Ty = DebugStructureInfo;

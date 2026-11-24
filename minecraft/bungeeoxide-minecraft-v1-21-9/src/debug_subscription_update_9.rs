@@ -19,36 +19,36 @@ pub struct DebugSubscriptionUpdate9 {
 	pub potential_pois: Vec<::bungeeoxide_minecraft_v1_14::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.profession, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.profession, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.xp, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.health, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_health, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.inventory, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.inventory, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.wants_golem, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.anger_level, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.activities, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.behaviors, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.memories, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.gossips, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.activities, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.behaviors, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.memories, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.gossips, output)?;
 	::bungeeoxide_minecraft_v1_14::array::inline_38::serialize(&_0.pois, output)?;
 	::bungeeoxide_minecraft_v1_14::array::inline_38::serialize(&_0.potential_pois, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(26)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_profession = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_profession = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_xp = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_health = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_maxHealth = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_inventory = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_inventory = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_wantsGolem = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_angerLevel = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_activities = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
-	let f_behaviors = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
-	let f_memories = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
-	let f_gossips = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_activities = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
+	let f_behaviors = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
+	let f_memories = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
+	let f_gossips = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_pois = ::bungeeoxide_minecraft_v1_14::array::inline_38::deserialize(input)?;
 	let f_potentialPois = ::bungeeoxide_minecraft_v1_14::array::inline_38::deserialize(input)?;
 	Ok(Ty {
@@ -69,18 +69,18 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.profession)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.profession)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.xp)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.health)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_health)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.inventory)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.inventory)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.wants_golem)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.anger_level)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.activities)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.behaviors)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.memories)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.gossips)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.activities)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.behaviors)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.memories)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.gossips)
 		+ ::bungeeoxide_minecraft_v1_14::array::inline_38::size_of(&_0.pois)
 		+ ::bungeeoxide_minecraft_v1_14::array::inline_38::size_of(&_0.potential_pois)
 }

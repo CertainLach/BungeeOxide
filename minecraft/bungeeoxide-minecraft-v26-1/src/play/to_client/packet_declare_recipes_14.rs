@@ -7,21 +7,21 @@ pub struct PacketDeclareRecipes14 {
 	pub items: Vec<::bungeeoxide_minecraft_root::Varint>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::array::inline_107::serialize(&_0.items, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::array::inline_128::serialize(&_0.items, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_items = ::bungeeoxide_minecraft_root::array::inline_107::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_items = ::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		items: f_items,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::array::inline_107::size_of(&_0.items)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::array::inline_128::size_of(&_0.items)
 }
 pub type Ty = PacketDeclareRecipes14;

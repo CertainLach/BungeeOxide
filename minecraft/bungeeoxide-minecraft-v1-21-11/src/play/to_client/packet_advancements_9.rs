@@ -10,16 +10,16 @@ pub struct PacketAdvancements9 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.parent_id, output)?;
-	super::super::super::option_58::serialize(&_0.display_data, output)?;
-	::bungeeoxide_minecraft_root::array::inline_364::serialize(&_0.requirements, output)?;
+	super::super::super::option_62::serialize(&_0.display_data, output)?;
+	::bungeeoxide_minecraft_root::array::inline_425::serialize(&_0.requirements, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.sends_telemtry_data, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_parentId = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_displayData = super::super::super::option_58::deserialize(input)?;
-	let f_requirements = ::bungeeoxide_minecraft_root::array::inline_364::deserialize(input)?;
+	let f_displayData = super::super::super::option_62::deserialize(input)?;
+	let f_requirements = ::bungeeoxide_minecraft_root::array::inline_425::deserialize(input)?;
 	let f_sendsTelemtryData = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		parent_id: f_parentId,
@@ -30,8 +30,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::option_21::size_of(&_0.parent_id)
-		+ super::super::super::option_58::size_of(&_0.display_data)
-		+ ::bungeeoxide_minecraft_root::array::inline_364::size_of(&_0.requirements)
+		+ super::super::super::option_62::size_of(&_0.display_data)
+		+ ::bungeeoxide_minecraft_root::array::inline_425::size_of(&_0.requirements)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.sends_telemtry_data)
 }
 pub type Ty = PacketAdvancements9;

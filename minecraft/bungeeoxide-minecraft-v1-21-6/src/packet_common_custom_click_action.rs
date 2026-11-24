@@ -7,13 +7,13 @@ pub struct PacketCommonCustomClickAction {
 	pub nbt: Option<::bungeeoxide_minecraft_root::AnonymousNbt>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.id, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.nbt, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_id = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_nbt = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	Ok(Ty {
 		id: f_id,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.id)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.id)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.nbt)
 }
 pub type Ty = PacketCommonCustomClickAction;

@@ -12,7 +12,7 @@ pub struct PacketTradeList {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.window_id, output)?;
-	super::super::super::array::inline_254::serialize(&_0.trades, output)?;
+	super::super::super::array::inline_274::serialize(&_0.trades, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.villager_level, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.experience, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_regular_villager, output)?;
@@ -22,7 +22,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_trades = super::super::super::array::inline_254::deserialize(input)?;
+	let f_trades = super::super::super::array::inline_274::deserialize(input)?;
 	let f_villagerLevel = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_experience = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_isRegularVillager = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.window_id)
-		+ super::super::super::array::inline_254::size_of(&_0.trades)
+		+ super::super::super::array::inline_274::size_of(&_0.trades)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.villager_level)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.experience)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_regular_villager)

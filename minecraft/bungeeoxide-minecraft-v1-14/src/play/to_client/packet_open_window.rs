@@ -10,14 +10,14 @@ pub struct PacketOpenWindow {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.window_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.inventory_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.window_title, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.window_title, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_inventoryType = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		window_id: f_windowId,
 		inventory_type: f_inventoryType,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.window_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.inventory_type)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.window_title)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.window_title)
 }
 pub type Ty = PacketOpenWindow;

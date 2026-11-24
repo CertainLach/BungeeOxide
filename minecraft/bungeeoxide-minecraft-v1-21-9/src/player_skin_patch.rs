@@ -12,7 +12,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.body, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.cape, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.elytra, output)?;
-	super::option_84::serialize(&_0.model, output)?;
+	super::option_90::serialize(&_0.model, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_body = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_cape = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_elytra = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_model = super::option_84::deserialize(input)?;
+	let f_model = super::option_90::deserialize(input)?;
 	Ok(Ty {
 		body: f_body,
 		cape: f_cape,
@@ -32,6 +32,6 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::option_21::size_of(&_0.body)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.cape)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.elytra)
-		+ super::option_84::size_of(&_0.model)
+		+ super::option_90::size_of(&_0.model)
 }
 pub type Ty = PlayerSkinPatch;

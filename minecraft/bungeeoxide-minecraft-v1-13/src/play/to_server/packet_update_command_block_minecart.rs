@@ -9,14 +9,14 @@ pub struct PacketUpdateCommandBlockMinecart {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.track_output, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_command = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_track_output = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.command)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.track_output)
 }
 pub type Ty = PacketUpdateCommandBlockMinecart;

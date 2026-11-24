@@ -7,7 +7,7 @@ pub enum DebugSubscriptionEvent<'i> {
 	Bees(super::super::DebugSubscriptionEvent0),
 	VillageSections,
 	Raids(::bungeeoxide_minecraft_v1_14::array::Inline38),
-	Structures(super::super::array::Inline89),
+	Structures(super::super::array::Inline90),
 	GameEventListeners(::bungeeoxide_minecraft_root::Varint),
 	NeighborUpdates(::bungeeoxide_minecraft_v1_14::Position),
 	GameEvents(super::super::DebugSubscriptionEvent1),
@@ -28,7 +28,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		Ty::Bees(__v) => super::super::debug_subscription_event_0::serialize(__v, output),
 		Ty::VillageSections => Ok(()),
 		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::array::inline_38::serialize(__v, output),
-		Ty::Structures(__v) => super::super::array::inline_89::serialize(__v, output),
+		Ty::Structures(__v) => super::super::array::inline_90::serialize(__v, output),
 		Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::position::serialize(__v, output),
 		Ty::GameEvents(__v) => super::super::debug_subscription_event_1::serialize(__v, output),
@@ -68,7 +68,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		));
 	}
 	if (__tag.clone() == 12_i32) {
-		return Ok(Ty::Structures(super::super::array::inline_89::deserialize(
+		return Ok(Ty::Structures(super::super::array::inline_90::deserialize(
 			input,
 		)?));
 	}
@@ -136,7 +136,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 			Ty::Bees(__v) => super::super::debug_subscription_event_0::size_of(__v),
 			Ty::VillageSections => 0,
 			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::array::inline_38::size_of(__v),
-			Ty::Structures(__v) => super::super::array::inline_89::size_of(__v),
+			Ty::Structures(__v) => super::super::array::inline_90::size_of(__v),
 			Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::position::size_of(__v),
 			Ty::GameEvents(__v) => super::super::debug_subscription_event_1::size_of(__v),

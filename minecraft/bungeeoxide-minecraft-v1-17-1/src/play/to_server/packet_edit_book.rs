@@ -9,14 +9,14 @@ pub struct PacketEditBook {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.hand, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.pages, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.pages, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.title, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_hand = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_pages = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_pages = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_title = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		hand: f_hand,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.hand)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.pages)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.pages)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.title)
 }
 pub type Ty = PacketEditBook;

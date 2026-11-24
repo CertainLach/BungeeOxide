@@ -2,4 +2,4 @@
 
 Multi-version minecraft java edition proxy
 
-Connects clients and servers from 1.0.0 to 26.1 together, translating all the packets on version mismatch
+Connects clients and servers from 1.0.0 to 26.3 together, translating all the packets on version mismatch

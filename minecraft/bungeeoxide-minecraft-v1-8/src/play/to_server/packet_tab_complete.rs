@@ -7,13 +7,13 @@ pub struct PacketTabComplete {
 	pub block: Option<super::super::super::Position>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.text, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.text, output)?;
 	super::super::super::option_22::serialize(&_0.block, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_text = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_text = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_block = super::super::super::option_22::deserialize(input)?;
 	Ok(Ty {
 		text: f_text,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.text)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.text)
 		+ super::super::super::option_22::size_of(&_0.block)
 }
 pub type Ty = PacketTabComplete;

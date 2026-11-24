@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateCommandBlockMinecart<'i> {
 	pub entity_id: ::bungeeoxide_minecraft_root::Varint,
-	pub command: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub command: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub track_output: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.track_output, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_command = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_track_output = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
@@ -26,7 +26,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.command)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.track_output)
 }
 pub fn view<'i>(
@@ -34,7 +34,7 @@ pub fn view<'i>(
 ) -> Ty<'i> {
 	Ty {
 		entity_id: ::core::clone::Clone::clone(&_0.entity_id),
-		command: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.command),
+		command: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.command),
 		track_output: ::core::clone::Clone::clone(&_0.track_output),
 	}
 }

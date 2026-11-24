@@ -10,7 +10,7 @@ pub struct PacketSculkVibrationSignal {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.source_position, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.destination_identifier, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.destination_identifier, output)?;
 	super::packet_sculk_vibration_signal_3::debug_assert_tag(&_0.destination, {
 		let _0: &String = &_0.destination_identifier;
 		_0
@@ -22,7 +22,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(10)?;
 	let f_sourcePosition = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_destinationIdentifier = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_destinationIdentifier = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_destination = super::packet_sculk_vibration_signal_3::deserialize(
 		input,
 		super::packet_sculk_vibration_signal_3::Args {
@@ -42,7 +42,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.source_position)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.destination_identifier)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.destination_identifier)
 		+ super::packet_sculk_vibration_signal_3::size_of(&_0.destination)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.arrival_ticks)
 }

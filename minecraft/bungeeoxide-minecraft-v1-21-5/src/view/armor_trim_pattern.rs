@@ -3,19 +3,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimPattern<'i> {
-	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub description: ::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>,
 	pub decal: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.asset_id, output)?;
 	::bungeeoxide_minecraft_root::view::anonymous_nbt::serialize(&_0.description, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.decal, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::view::anonymous_nbt::deserialize(input)?;
 	let f_decal = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.asset_id)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.asset_id)
 		+ ::bungeeoxide_minecraft_root::view::anonymous_nbt::size_of(&_0.description)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.decal)
 }
 pub fn view<'i>(_0: &'i super::super::ArmorTrimPattern) -> Ty<'i> {
 	Ty {
-		asset_id: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.asset_id),
+		asset_id: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.asset_id),
 		description: ::bungeeoxide_minecraft_root::view::anonymous_nbt::view(&_0.description),
 		decal: ::core::clone::Clone::clone(&_0.decal),
 	}
 }
 pub fn into_view<'i>(_0: &'i mut super::super::ArmorTrimPattern) -> Ty<'i> {
 	Ty {
-		asset_id: ::bungeeoxide_minecraft_root::view::pstring_96::view(&mut _0.asset_id),
+		asset_id: ::bungeeoxide_minecraft_root::view::pstring_109::view(&mut _0.asset_id),
 		description: ::bungeeoxide_minecraft_root::view::anonymous_nbt::into_view(
 			&mut _0.description,
 		),

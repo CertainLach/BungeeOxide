@@ -8,14 +8,14 @@ pub struct PacketDeclareRecipes10 {
 	pub result: super::super::super::Slot,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.group, output)?;
 	super::super::super::array::inline_36::serialize(&_0.ingredients, output)?;
 	super::super::super::slot::serialize(&_0.result, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_ingredients = super::super::super::array::inline_36::deserialize(input)?;
 	let f_result = super::super::super::slot::deserialize(input)?;
 	Ok(Ty {
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.group)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.group)
 		+ super::super::super::array::inline_36::size_of(&_0.ingredients)
 		+ super::super::super::slot::size_of(&_0.result)
 }

@@ -48,5 +48,5 @@ pub use self::slot::Slot;
 pub use self::slot_3::Slot3;
 pub use self::string::Ty as String;
 pub use self::vec3i16::Ty as Vec3i16;
-pub use ::bungeeoxide_minecraft_root::pstring_96 as string;
+pub use ::bungeeoxide_minecraft_root::pstring_109 as string;
 pub use ::bungeeoxide_minecraft_v1_0_1::vec3i16;

@@ -3,17 +3,17 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBookPage<'i> {
-	pub content: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub content: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 	pub filtered_content: ::bungeeoxide_minecraft_root::view::Option21<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.content, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.content, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.filtered_content, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_content = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_content = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	let f_filteredContent = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
 	Ok(Ty {
 		content: f_content,
@@ -21,12 +21,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	})
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	0 + ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.content)
+	0 + ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.content)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.filtered_content)
 }
 pub fn view<'i>(_0: &'i super::super::ItemBookPage) -> Ty<'i> {
 	Ty {
-		content: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.content),
+		content: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.content),
 		filtered_content: ::bungeeoxide_minecraft_root::view::option_21::view(&_0.filtered_content),
 	}
 }

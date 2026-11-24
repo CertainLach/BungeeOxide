@@ -3,25 +3,25 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockProperty0 {
-	pub min_value: String,
-	pub max_value: String,
+	pub min_value: Option<String>,
+	pub max_value: Option<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.min_value, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.max_value, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.min_value, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.max_value, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_minValue = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_maxValue = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_minValue = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
+	let f_maxValue = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		min_value: f_minValue,
 		max_value: f_maxValue,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.min_value)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.max_value)
+	0 + ::bungeeoxide_minecraft_root::option_21::size_of(&_0.min_value)
+		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.max_value)
 }
 pub type Ty = ItemBlockProperty0;

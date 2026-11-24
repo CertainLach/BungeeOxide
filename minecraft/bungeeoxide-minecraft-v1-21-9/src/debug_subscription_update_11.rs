@@ -10,14 +10,14 @@ pub struct DebugSubscriptionUpdate11 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.priority, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.running, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_priority = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_running = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		priority: f_priority,
 		running: f_running,
@@ -27,6 +27,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.priority)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.running)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
 }
 pub type Ty = DebugSubscriptionUpdate11;

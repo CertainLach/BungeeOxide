@@ -7,21 +7,21 @@ pub struct PacketSetBeaconEffect {
 	pub secondary_effect: Option<::bungeeoxide_minecraft_root::Varint>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::option_25::serialize(&_0.primary_effect, output)?;
-	::bungeeoxide_minecraft_root::option_25::serialize(&_0.secondary_effect, output)?;
+	::bungeeoxide_minecraft_root::option_29::serialize(&_0.primary_effect, output)?;
+	::bungeeoxide_minecraft_root::option_29::serialize(&_0.secondary_effect, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_primary_effect = ::bungeeoxide_minecraft_root::option_25::deserialize(input)?;
-	let f_secondary_effect = ::bungeeoxide_minecraft_root::option_25::deserialize(input)?;
+	let f_primary_effect = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
+	let f_secondary_effect = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
 	Ok(Ty {
 		primary_effect: f_primary_effect,
 		secondary_effect: f_secondary_effect,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::option_25::size_of(&_0.primary_effect)
-		+ ::bungeeoxide_minecraft_root::option_25::size_of(&_0.secondary_effect)
+	0 + ::bungeeoxide_minecraft_root::option_29::size_of(&_0.primary_effect)
+		+ ::bungeeoxide_minecraft_root::option_29::size_of(&_0.secondary_effect)
 }
 pub type Ty = PacketSetBeaconEffect;

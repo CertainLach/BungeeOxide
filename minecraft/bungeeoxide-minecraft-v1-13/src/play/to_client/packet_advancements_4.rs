@@ -10,17 +10,17 @@ pub struct PacketAdvancements4 {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.parent_id, output)?;
-	super::super::super::option_28::serialize(&_0.display_data, output)?;
-	super::super::super::array::inline_113::serialize(&_0.criteria, output)?;
-	::bungeeoxide_minecraft_root::array::inline_364::serialize(&_0.requirements, output)?;
+	super::super::super::option_32::serialize(&_0.display_data, output)?;
+	super::super::super::array::inline_134::serialize(&_0.criteria, output)?;
+	::bungeeoxide_minecraft_root::array::inline_425::serialize(&_0.requirements, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_parentId = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_displayData = super::super::super::option_28::deserialize(input)?;
-	let f_criteria = super::super::super::array::inline_113::deserialize(input)?;
-	let f_requirements = ::bungeeoxide_minecraft_root::array::inline_364::deserialize(input)?;
+	let f_displayData = super::super::super::option_32::deserialize(input)?;
+	let f_criteria = super::super::super::array::inline_134::deserialize(input)?;
+	let f_requirements = ::bungeeoxide_minecraft_root::array::inline_425::deserialize(input)?;
 	Ok(Ty {
 		parent_id: f_parentId,
 		display_data: f_displayData,
@@ -30,8 +30,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::option_21::size_of(&_0.parent_id)
-		+ super::super::super::option_28::size_of(&_0.display_data)
-		+ super::super::super::array::inline_113::size_of(&_0.criteria)
-		+ ::bungeeoxide_minecraft_root::array::inline_364::size_of(&_0.requirements)
+		+ super::super::super::option_32::size_of(&_0.display_data)
+		+ super::super::super::array::inline_134::size_of(&_0.criteria)
+		+ ::bungeeoxide_minecraft_root::array::inline_425::size_of(&_0.requirements)
 }
 pub type Ty = PacketAdvancements4;

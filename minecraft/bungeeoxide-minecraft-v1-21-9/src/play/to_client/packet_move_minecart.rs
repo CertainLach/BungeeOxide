@@ -8,13 +8,13 @@ pub struct PacketMoveMinecart {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	super::super::super::array::inline_331::serialize(&_0.steps, output)?;
+	super::super::super::array::inline_351::serialize(&_0.steps, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_steps = super::super::super::array::inline_331::deserialize(input)?;
+	let f_steps = super::super::super::array::inline_351::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		steps: f_steps,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ super::super::super::array::inline_331::size_of(&_0.steps)
+		+ super::super::super::array::inline_351::size_of(&_0.steps)
 }
 pub type Ty = PacketMoveMinecart;

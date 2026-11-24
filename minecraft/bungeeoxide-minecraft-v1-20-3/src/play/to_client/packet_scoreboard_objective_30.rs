@@ -11,7 +11,7 @@ pub struct PacketScoreboardObjective30 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.display_text, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::option_25::serialize(
+	::bungeeoxide_minecraft_root::option_29::serialize(
 		&{
 			let _0: &super::PacketScoreboardObjective29 = &_0.styling;
 			let __v1: Option<::bungeeoxide_minecraft_root::Varint> =
@@ -28,7 +28,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_displayText = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_number_format = ::bungeeoxide_minecraft_root::option_25::deserialize(input)?;
+	let f_number_format = ::bungeeoxide_minecraft_root::option_29::deserialize(input)?;
 	let f_styling = super::packet_scoreboard_objective_29::deserialize(
 		input,
 		super::packet_scoreboard_objective_29::Args {
@@ -58,7 +58,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.display_text)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::option_25::size_of(&{
+		+ ::bungeeoxide_minecraft_root::option_29::size_of(&{
 			let _0: &super::PacketScoreboardObjective29 = &_0.styling;
 			let __v1: Option<::bungeeoxide_minecraft_root::Varint> =
 				super::packet_scoreboard_objective_29::virtual_tag(_0);

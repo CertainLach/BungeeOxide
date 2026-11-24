@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 
 use bungeeoxide_nbt::{Entry, Payload, Tag};
 
-use super::bits::{put_varint, Reader};
+use super::bits::{bitset_bytes, bitset_longs, put_varint, Reader};
 use super::formats::{
 	decode_14, decode_16, decode_18, decode_7, decode_8, decode_9, deflate, encode_14, encode_16,
 	encode_18, encode_7, encode_8, encode_9, inflate, size_7, size_8, Bitmask,
@@ -12,7 +12,7 @@ use super::formats::{
 use super::model::{Biomes, BlockEntity, Column, HeightKind, Heightmap, Light, Nibbles, CELLS};
 use crate::gen::convert::{
 	inspect, v1_14, v1_15, v1_16, v1_16_2, v1_17, v1_18, v1_20, v1_20_2, v1_21_5, v1_21_6, v1_7,
-	v1_8, v1_9, v1_9_4, Root,
+	v1_8, v1_9, v1_9_4, v26_3, Root,
 };
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::pds::{Input, Output};
@@ -36,7 +36,9 @@ type C216 = v1_21_6::play_to_client_packet_map_chunk::Ty;
 type L14 = v1_14::play_to_client_packet_update_light::Ty;
 type L16 = v1_16::play_to_client_packet_update_light::Ty;
 type L17 = v1_17::play_to_client_packet_update_light::Ty;
+type C263 = v26_3::play_to_client_packet_map_chunk::Ty;
 type L20 = v1_20::play_to_client_packet_update_light::Ty;
+type L263 = v26_3::play_to_client_packet_update_light::Ty;
 type U9 = v1_9::play_to_client_packet_unload_chunk::Ty;
 type U202 = v1_20_2::play_to_client_packet_unload_chunk::Ty;
 type E18 = v1_18::chunk_block_entity::Ty;
@@ -740,8 +742,84 @@ pub fn chunk_body(version: Version, col: &Column) -> Result<Vec<u8>> {
 				sky_light: m.sky_data,
 				block_light: m.block_data,
 			};
+			if version >= Version::V26_3 {
+				return body(
+					&chunk_263(p)?,
+					v26_3::play_to_client_packet_map_chunk::serialize,
+				);
+			}
 			body(&p, v1_21_6::play_to_client_packet_map_chunk::serialize)
 		}
+	}
+}
+
+fn chunk_263(p: C216) -> Result<C263> {
+	Ok(C263 {
+		x: p.x,
+		z: p.z,
+		heightmaps: read(
+			&body(
+				&p.heightmaps,
+				v1_21_6::play_to_client_packet_map_chunk_heightmaps::serialize,
+			)?,
+			v26_3::play_to_client_packet_map_chunk_heightmaps::deserialize,
+		)?,
+		chunk_data: p.chunk_data,
+		block_entities: p.block_entities,
+		sky_light_mask: bitset_bytes(&p.sky_light_mask),
+		block_light_mask: bitset_bytes(&p.block_light_mask),
+		empty_sky_light_mask: bitset_bytes(&p.empty_sky_light_mask),
+		empty_block_light_mask: bitset_bytes(&p.empty_block_light_mask),
+		sky_light: p.sky_light,
+		block_light: p.block_light,
+	})
+}
+
+fn chunk_216(p: C263) -> Result<C216> {
+	Ok(C216 {
+		x: p.x,
+		z: p.z,
+		heightmaps: read(
+			&body(
+				&p.heightmaps,
+				v26_3::play_to_client_packet_map_chunk_heightmaps::serialize,
+			)?,
+			v1_21_6::play_to_client_packet_map_chunk_heightmaps::deserialize,
+		)?,
+		chunk_data: p.chunk_data,
+		block_entities: p.block_entities,
+		sky_light_mask: bitset_longs(&p.sky_light_mask),
+		block_light_mask: bitset_longs(&p.block_light_mask),
+		empty_sky_light_mask: bitset_longs(&p.empty_sky_light_mask),
+		empty_block_light_mask: bitset_longs(&p.empty_block_light_mask),
+		sky_light: p.sky_light,
+		block_light: p.block_light,
+	})
+}
+
+fn light_263(p: L20) -> L263 {
+	L263 {
+		chunk_x: p.chunk_x,
+		chunk_z: p.chunk_z,
+		sky_light_mask: bitset_bytes(&p.sky_light_mask),
+		block_light_mask: bitset_bytes(&p.block_light_mask),
+		empty_sky_light_mask: bitset_bytes(&p.empty_sky_light_mask),
+		empty_block_light_mask: bitset_bytes(&p.empty_block_light_mask),
+		sky_light: p.sky_light,
+		block_light: p.block_light,
+	}
+}
+
+fn light_20(p: L263) -> L20 {
+	L20 {
+		chunk_x: p.chunk_x,
+		chunk_z: p.chunk_z,
+		sky_light_mask: bitset_longs(&p.sky_light_mask),
+		block_light_mask: bitset_longs(&p.block_light_mask),
+		empty_sky_light_mask: bitset_longs(&p.empty_sky_light_mask),
+		empty_block_light_mask: bitset_longs(&p.empty_block_light_mask),
+		sky_light: p.sky_light,
+		block_light: p.block_light,
 	}
 }
 
@@ -880,6 +958,12 @@ pub fn light_body(version: Version, x: i32, z: i32, light: &Light) -> Result<Vec
 				sky_light: m.sky_data,
 				block_light: m.block_data,
 			};
+			if version >= Version::V26_3 {
+				return body(
+					&light_263(p),
+					v26_3::play_to_client_packet_update_light::serialize,
+				);
+			}
 			body(&p, v1_20::play_to_client_packet_update_light::serialize)
 		}
 	}
@@ -1091,7 +1175,13 @@ fn decode_chunk_body(version: Version, data: &[u8], sections: Option<usize>) -> 
 			Ok(col)
 		}
 		_ => {
-			let p = read(data, v1_21_6::play_to_client_packet_map_chunk::deserialize)?;
+			let p = match version {
+				version_range!(V26_3..) => chunk_216(read(
+					data,
+					v26_3::play_to_client_packet_map_chunk::deserialize,
+				)?)?,
+				_ => read(data, v1_21_6::play_to_client_packet_map_chunk::deserialize)?,
+			};
 			let mut col = Column::new(p.x, p.z, true, version);
 			decode_18(&mut col, &p.chunk_data, version, sections)?;
 			let n = col.sections.len();
@@ -1185,7 +1275,13 @@ fn decode_light_body(version: Version, data: &[u8]) -> Result<(i32, i32, Light)>
 			Ok((p.chunk_x, p.chunk_z, l))
 		}
 		_ => {
-			let p = read(data, v1_20::play_to_client_packet_update_light::deserialize)?;
+			let p = match version {
+				version_range!(V26_3..) => light_20(read(
+					data,
+					v26_3::play_to_client_packet_update_light::deserialize,
+				)?),
+				_ => read(data, v1_20::play_to_client_packet_update_light::deserialize)?,
+			};
 			let l = light_from_masks(0, masks_of!(p), false);
 			Ok((p.chunk_x, p.chunk_z, l))
 		}

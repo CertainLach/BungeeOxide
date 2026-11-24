@@ -177,7 +177,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Composter => Ok(()),
 		Ty::Heart => Ok(()),
 		Ty::InstantEffect => Ok(()),
-		Ty::Item(__v) => super::slot::serialize_guarded(__v, output),
+		Ty::Item(__v) => super::slot::serialize(__v, output),
 		Ty::Vibration(__v) => super::particle_4::serialize(__v, output),
 		Ty::Trail(__v) => super::particle_5::serialize(__v, output),
 		Ty::ItemSlime => Ok(()),
@@ -429,7 +429,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::InstantEffect);
 	}
 	if (__tag.clone() == 46_i32) {
-		return Ok(Ty::Item(super::slot::deserialize_guarded(input)?));
+		return Ok(Ty::Item(super::slot::deserialize(input)?));
 	}
 	if (__tag.clone() == 47_i32) {
 		return Ok(Ty::Vibration(super::particle_4::deserialize(input)?));

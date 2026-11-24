@@ -18,7 +18,6 @@ mod pds_native {
 		pds_u8, pds_void,
 	};
 }
-pub mod array;
 pub use ::bungeeoxide_minecraft_root::buffer::inline_3 as byte_array;
 pub use ::bungeeoxide_minecraft_v1_13::command_node;
 pub use ::bungeeoxide_minecraft_v1_16::entity_metadata;
@@ -48,6 +47,6 @@ pub use self::slot::Ty as Slot;
 pub use self::string::Ty as String;
 pub use self::tags::Ty as Tags;
 pub use self::vec3i16::Ty as Vec3i16;
-pub use ::bungeeoxide_minecraft_root::pstring_96 as string;
+pub use ::bungeeoxide_minecraft_root::pstring_109 as string;
 pub use ::bungeeoxide_minecraft_v1_0_1::vec3i16;
-pub use ::bungeeoxide_minecraft_v1_14::array::inline_129 as tags;
+pub use ::bungeeoxide_minecraft_v1_14::array::inline_150 as tags;

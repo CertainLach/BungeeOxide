@@ -2,7 +2,7 @@ use bungeeoxide_converter::Version;
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_converter::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::v26_3::{
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin as begin,
 	login_to_client_packet_success as success, login_to_server_packet as login_s,
 	login_to_server_packet_encryption_begin as response, login_to_server_packet_login_start,
@@ -162,6 +162,7 @@ impl Online {
 			uuid: offline_uuid_bits(username),
 			username: username.to_owned(),
 			properties: Vec::new(),
+			session_id: rand::random(),
 		})
 	}
 

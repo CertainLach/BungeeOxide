@@ -4,17 +4,17 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTabComplete<'i> {
 	pub transaction_id: ::bungeeoxide_minecraft_root::Varint,
-	pub text: ::bungeeoxide_minecraft_root::view::Pstring96<'i>,
+	pub text: ::bungeeoxide_minecraft_root::view::Pstring109<'i>,
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.transaction_id, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_96::serialize(&_0.text, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_109::serialize(&_0.text, output)?;
 	Ok(())
 }
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_transactionId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_text = ::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?;
+	let f_text = ::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		transaction_id: f_transactionId,
 		text: f_text,
@@ -22,12 +22,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	0 + ::bungeeoxide_minecraft_root::varint::size_of(&_0.transaction_id)
-		+ ::bungeeoxide_minecraft_root::view::pstring_96::size_of(&_0.text)
+		+ ::bungeeoxide_minecraft_root::view::pstring_109::size_of(&_0.text)
 }
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketTabComplete) -> Ty<'i> {
 	Ty {
 		transaction_id: ::core::clone::Clone::clone(&_0.transaction_id),
-		text: ::bungeeoxide_minecraft_root::view::pstring_96::view(&_0.text),
+		text: ::bungeeoxide_minecraft_root::view::pstring_109::view(&_0.text),
 	}
 }
 pub type Ty<'i> = PacketTabComplete<'i>;

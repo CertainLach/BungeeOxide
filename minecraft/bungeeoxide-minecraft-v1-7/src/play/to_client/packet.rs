@@ -75,7 +75,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
 		Ty::Login(__v) => super::packet_login::serialize(__v, output),
-		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output),
 		Ty::UpdateTime(__v) => {
 			::bungeeoxide_minecraft_v1_4_2::play::to_client::packet_update_time::serialize(
 				__v, output,
@@ -228,7 +228,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::OpenSignEntity(__v) => {
 			::bungeeoxide_minecraft_v1_0_1::position_iii::serialize(__v, output)
 		}
-		Ty::Statistics(__v) => super::super::super::array::inline_336::serialize(__v, output),
+		Ty::Statistics(__v) => super::super::super::array::inline_356::serialize(__v, output),
 		Ty::PlayerInfo(__v) => super::packet_player_info::serialize(__v, output),
 		Ty::Abilities(__v) => {
 			::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities::serialize(
@@ -236,7 +236,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			)
 		}
 		Ty::TabComplete(__v) => {
-			::bungeeoxide_minecraft_root::array::inline_98::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output)
 		}
 		Ty::ScoreboardObjective(__v) => super::packet_scoreboard_objective::serialize(__v, output),
 		Ty::ScoreboardScore(__v) => super::packet_scoreboard_score::serialize(__v, output),
@@ -245,7 +245,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		}
 		Ty::ScoreboardTeam(__v) => super::packet_scoreboard_team::serialize(__v, output),
 		Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
-		Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::KickDisconnect(__v) => {
+			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+		}
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -263,7 +265,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 2_i32) {
 		return Ok(Ty::Chat(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 3_i32) {
@@ -540,7 +542,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 55_i32) {
 		return Ok(Ty::Statistics(
-			super::super::super::array::inline_336::deserialize(input)?,
+			super::super::super::array::inline_356::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 56_i32) {
@@ -555,7 +557,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 58_i32) {
 		return Ok(Ty::TabComplete(
-			::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 59_i32) {
@@ -585,7 +587,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 64_i32) {
 		return Ok(Ty::KickDisconnect(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -594,7 +596,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0)) + match _0 {
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 		Ty::Login(__v) => super::packet_login::size_of(__v),
-		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 		Ty::UpdateTime(__v) => {
 			::bungeeoxide_minecraft_v1_4_2::play::to_client::packet_update_time::size_of(__v)
 		}
@@ -701,12 +703,12 @@ pub fn size_of(_0: &Ty) -> usize {
 			::bungeeoxide_minecraft_v1_3_2::play::to_client::packet_tile_entity_data::size_of(__v)
 		}
 		Ty::OpenSignEntity(__v) => ::bungeeoxide_minecraft_v1_0_1::position_iii::size_of(__v),
-		Ty::Statistics(__v) => super::super::super::array::inline_336::size_of(__v),
+		Ty::Statistics(__v) => super::super::super::array::inline_356::size_of(__v),
 		Ty::PlayerInfo(__v) => super::packet_player_info::size_of(__v),
 		Ty::Abilities(__v) => {
 			::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities::size_of(__v)
 		}
-		Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::array::inline_98::size_of(__v),
+		Ty::TabComplete(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
 		Ty::ScoreboardObjective(__v) => super::packet_scoreboard_objective::size_of(__v),
 		Ty::ScoreboardScore(__v) => super::packet_scoreboard_score::size_of(__v),
 		Ty::ScoreboardDisplayObjective(__v) => {
@@ -714,7 +716,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		}
 		Ty::ScoreboardTeam(__v) => super::packet_scoreboard_team::size_of(__v),
 		Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),
-		Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+		Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

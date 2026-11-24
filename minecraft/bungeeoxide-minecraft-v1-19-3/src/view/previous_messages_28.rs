@@ -9,7 +9,13 @@ pub enum PreviousMessages28<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::buffer::sized::serialize(__v, output),
+		Ty::V0(__v) => {
+			::bungeeoxide_minecraft_root::view::buffer::sized::check_count(
+				__v,
+				&(256).try_into().expect("constant fits"),
+			)?;
+			::bungeeoxide_minecraft_root::view::buffer::sized::serialize(__v, output)
+		}
 		Ty::Default(_) => Ok(()),
 	}
 }

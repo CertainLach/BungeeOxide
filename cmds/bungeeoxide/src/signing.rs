@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Result};
-use bungeeoxide_converter::gen::convert::{packet_name, v26_1};
+use bungeeoxide_converter::gen::convert::{packet_name, v26_3};
 use bungeeoxide_converter::{convert, Root, Session};
 use sha2::{Digest, Sha256};
 use tracing::warn;
@@ -621,8 +621,8 @@ pub struct Tree {
 
 impl Tree {
 	fn from_packet(sv: Version, data: &[u8]) -> Result<Self> {
-		use v26_1::play_to_client_packet::{deserialize, Ty};
-		let anchor = Version::V26_1;
+		use v26_3::play_to_client_packet::{deserialize, Ty};
+		let anchor = Version::V26_3;
 		let packets = if sv == anchor {
 			vec![data.to_vec()]
 		} else {
@@ -634,14 +634,14 @@ impl Tree {
 				return Self::new(commands);
 			}
 		}
-		bail!("the command tree did not survive conversion to 26.1")
+		bail!("the command tree did not survive conversion to {anchor}")
 	}
 
-	fn new(commands: v26_1::play_to_client_packet_declare_commands::Ty) -> Result<Self> {
-		use v26_1::command_node_extra_node_data::Ty as Data;
-		use v26_1::command_node_extra_node_data_v2_properties::Ty as P;
-		use v26_1::command_node_extra_node_data_v2_properties_brigadier_string::Ty as Mode;
-		use v26_1::command_node_redirect_node::Ty as Redirect;
+	fn new(commands: v26_3::play_to_client_packet_declare_commands::Ty) -> Result<Self> {
+		use v26_3::command_node_extra_node_data::Ty as Data;
+		use v26_3::command_node_extra_node_data_v2_properties::Ty as P;
+		use v26_3::command_node_extra_node_data_v2_properties_brigadier_string::Ty as Mode;
+		use v26_3::command_node_redirect_node::Ty as Redirect;
 		let count = commands.nodes.len();
 		let index = |i: i32| usize::try_from(i).ok().filter(|i| *i < count);
 		let mut nodes = Vec::with_capacity(count);

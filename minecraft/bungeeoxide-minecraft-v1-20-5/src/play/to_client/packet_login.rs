@@ -18,7 +18,7 @@ pub struct PacketLogin {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.entity_id, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_hardcore, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.world_names, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.world_names, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.max_players, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.view_distance, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.simulation_distance, output)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(29)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_isHardcore = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_worldNames = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_worldNames = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	let f_maxPlayers = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_simulationDistance = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
@@ -59,7 +59,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::i32::size_of(&_0.entity_id)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_hardcore)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.world_names)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.world_names)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.max_players)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.view_distance)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.simulation_distance)

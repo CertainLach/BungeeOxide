@@ -8,7 +8,7 @@ pub struct PacketMapChunk {
 	//  groundUp - virtual field
 	pub bit_map: ::bungeeoxide_minecraft_root::Varint,
 	pub heightmaps: ::bungeeoxide_minecraft_root::Nbt,
-	pub biomes: super::PacketMapChunk7,
+	pub biomes: super::PacketMapChunk0,
 	pub chunk_data: Vec<u8>,
 	pub block_entities: Vec<::bungeeoxide_minecraft_root::Nbt>,
 }
@@ -17,9 +17,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.z, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(
 		&{
-			let _0: &super::PacketMapChunk7 = &_0.biomes;
+			let _0: &super::PacketMapChunk0 = &_0.biomes;
 			let __v1: ::bungeeoxide_minecraft_root::Bool =
-				super::packet_map_chunk_7::virtual_tag(_0);
+				super::packet_map_chunk_0::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()
 		},
@@ -27,7 +27,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.bit_map, output)?;
 	::bungeeoxide_minecraft_root::nbt::serialize(&_0.heightmaps, output)?;
-	super::packet_map_chunk_7::serialize(&_0.biomes, output)?;
+	super::packet_map_chunk_0::serialize(&_0.biomes, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.chunk_data, output)?;
 	::bungeeoxide_minecraft_root::array::inline_31::serialize(&_0.block_entities, output)?;
 	Ok(())
@@ -39,9 +39,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_groundUp = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_bitMap = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_heightmaps = ::bungeeoxide_minecraft_root::nbt::deserialize(input)?;
-	let f_biomes = super::packet_map_chunk_7::deserialize(
+	let f_biomes = super::packet_map_chunk_0::deserialize(
 		input,
-		super::packet_map_chunk_7::Args {
+		super::packet_map_chunk_0::Args {
 			ground_up: {
 				let _0: &::bungeeoxide_minecraft_root::Bool = &f_groundUp;
 				_0
@@ -53,9 +53,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	debug_assert!(
 		&f_groundUp
 			== &{
-				let _0: &super::PacketMapChunk7 = &f_biomes;
+				let _0: &super::PacketMapChunk0 = &f_biomes;
 				let __v1: ::bungeeoxide_minecraft_root::Bool =
-					super::packet_map_chunk_7::virtual_tag(_0);
+					super::packet_map_chunk_0::virtual_tag(_0);
 				let _0 = &__v1;
 				_0.clone()
 			},
@@ -75,14 +75,14 @@ pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::i32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.z)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&{
-			let _0: &super::PacketMapChunk7 = &_0.biomes;
+			let _0: &super::PacketMapChunk0 = &_0.biomes;
 			let __v1: ::bungeeoxide_minecraft_root::Bool =
-				super::packet_map_chunk_7::virtual_tag(_0);
+				super::packet_map_chunk_0::virtual_tag(_0);
 			let _0 = &__v1;
 			_0.clone()
 		}) + ::bungeeoxide_minecraft_root::varint::size_of(&_0.bit_map)
 		+ ::bungeeoxide_minecraft_root::nbt::size_of(&_0.heightmaps)
-		+ super::packet_map_chunk_7::size_of(&_0.biomes)
+		+ super::packet_map_chunk_0::size_of(&_0.biomes)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.chunk_data)
 		+ ::bungeeoxide_minecraft_root::array::inline_31::size_of(&_0.block_entities)
 }

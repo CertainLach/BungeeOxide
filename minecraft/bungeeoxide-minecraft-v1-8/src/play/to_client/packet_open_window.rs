@@ -11,8 +11,8 @@ pub struct PacketOpenWindow {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.window_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.inventory_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.window_title, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.inventory_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.window_title, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.slot_count, output)?;
 	super::packet_open_window_3::debug_assert_tag(&_0.entity_id, {
 		let _0: &String = &_0.inventory_type;
@@ -24,8 +24,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_inventoryType = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_inventoryType = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_slotCount = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_entityId = super::packet_open_window_3::deserialize(
 		input,
@@ -46,8 +46,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::u8::size_of(&_0.window_id)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.inventory_type)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.window_title)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.inventory_type)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.window_title)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.slot_count)
 		+ super::packet_open_window_3::size_of(&_0.entity_id)
 }

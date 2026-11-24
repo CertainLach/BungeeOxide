@@ -5,13 +5,13 @@ pub type Ty = Option<String>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::pstring_96::serialize(v, output)?;
+		super::pstring_109::serialize(v, output)?;
 	}
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	Ok(if super::bool::deserialize(input)? {
-		Some(super::pstring_96::deserialize(input)?)
+		Some(super::pstring_109::deserialize(input)?)
 	} else {
 		None
 	})
@@ -19,7 +19,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = super::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::pstring_96::size_of(v);
+		n += super::pstring_109::size_of(v);
 	}
 	n
 }

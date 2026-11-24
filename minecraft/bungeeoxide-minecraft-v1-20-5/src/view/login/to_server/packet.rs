@@ -17,11 +17,21 @@ pub enum Packet<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-        Ty::LoginStart(__v) => ::bungeeoxide_minecraft_v1_20_2::view::login::to_server::packet_login_start::serialize(__v, output),
-        Ty::EncryptionBegin(__v) => ::bungeeoxide_minecraft_v1_8::view::login::to_server::packet_encryption_begin::serialize(__v, output),
-        Ty::LoginPluginResponse(__v) => ::bungeeoxide_minecraft_v1_13::view::login::to_server::packet_login_plugin_response::serialize(__v, output),
-        Ty::LoginAcknowledged(__v) => ::bungeeoxide_minecraft_v1_20_2::login::to_server::packet_login_acknowledged::serialize(__v, output),
-        Ty::CookieResponse(__v) => super::super::super::packet_common_cookie_response::serialize(__v, output),
+        Ty::LoginStart(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::view::login::to_server::packet_login_start::serialize(__v, output)
+        }
+        Ty::EncryptionBegin(__v) => {
+            ::bungeeoxide_minecraft_v1_8::view::login::to_server::packet_encryption_begin::serialize(__v, output)
+        }
+        Ty::LoginPluginResponse(__v) => {
+            ::bungeeoxide_minecraft_v1_13::view::login::to_server::packet_login_plugin_response::serialize(__v, output)
+        }
+        Ty::LoginAcknowledged(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::login::to_server::packet_login_acknowledged::serialize(__v, output)
+        }
+        Ty::CookieResponse(__v) => {
+            super::super::super::packet_common_cookie_response::serialize(__v, output)
+        }
         Ty::Default(_) => Ok(()),
     }
 }

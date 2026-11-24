@@ -3,14 +3,14 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketAdvancementTab<'i> {
-	V0(::bungeeoxide_minecraft_root::view::Pstring96<'i>),
+	V0(::bungeeoxide_minecraft_root::view::Pstring109<'i>),
 	V1,
 	Default(::bungeeoxide_minecraft_root::Varint),
 }
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_96::serialize(__v, output),
+		Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::serialize(__v, output),
 		Ty::V1 => Ok(()),
 		Ty::Default(_) => Ok(()),
 	}
@@ -21,7 +21,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let __tag = &__tagv;
 	if (__tag.clone() == 0_i32) {
 		return Ok(Ty::V0(
-			::bungeeoxide_minecraft_root::view::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 1_i32) {
@@ -32,7 +32,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_96::size_of(__v),
+			Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_109::size_of(__v),
 			Ty::V1 => 0,
 			Ty::Default(_) => 0,
 		}
@@ -56,7 +56,7 @@ pub fn view<'i>(
 ) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::play::to_server::PacketAdvancementTab::V0(__v) => {
-			Ty::V0(::bungeeoxide_minecraft_root::view::pstring_96::view(__v))
+			Ty::V0(::bungeeoxide_minecraft_root::view::pstring_109::view(__v))
 		}
 		super::super::super::super::play::to_server::PacketAdvancementTab::V1 => Ty::V1,
 		super::super::super::super::play::to_server::PacketAdvancementTab::Default(__t) => {

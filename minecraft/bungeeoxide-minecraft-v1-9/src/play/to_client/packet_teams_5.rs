@@ -13,26 +13,26 @@ pub struct PacketTeams5 {
 	pub players: Vec<String>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.prefix, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.suffix, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.prefix, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.suffix, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.friendly_fire, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.name_tag_visibility, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.collision_rule, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.name_tag_visibility, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.collision_rule, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.color, output)?;
-	::bungeeoxide_minecraft_root::array::inline_98::serialize(&_0.players, output)?;
+	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.players, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(8)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_prefix = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_suffix = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_prefix = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_suffix = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_friendlyFire = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
-	let f_nameTagVisibility = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
-	let f_collisionRule = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_nameTagVisibility = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
+	let f_collisionRule = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_color = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
-	let f_players = ::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?;
+	let f_players = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		prefix: f_prefix,
@@ -45,13 +45,13 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.prefix)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.suffix)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.prefix)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.suffix)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.friendly_fire)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.name_tag_visibility)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.collision_rule)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.name_tag_visibility)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.collision_rule)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.color)
-		+ ::bungeeoxide_minecraft_root::array::inline_98::size_of(&_0.players)
+		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.players)
 }
 pub type Ty = PacketTeams5;

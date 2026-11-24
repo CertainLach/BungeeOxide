@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 use anyhow::{anyhow, bail, Context as _, Result};
-use bungeeoxide_converter::gen::convert::v26_1::{
+use bungeeoxide_converter::gen::convert::v26_3::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	status_to_client_packet as status_c, status_to_server_packet as status_s,
 	status_to_server_packet_ping_start,

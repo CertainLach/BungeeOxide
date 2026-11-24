@@ -8,13 +8,13 @@ pub struct PacketCraftRecipeResponse {
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.window_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.recipe, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.recipe, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
-	let f_recipe = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_recipe = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	Ok(Ty {
 		window_id: f_windowId,
 		recipe: f_recipe,
@@ -22,6 +22,6 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 pub fn size_of(_0: &Ty) -> usize {
 	0 + ::bungeeoxide_minecraft_root::i8::size_of(&_0.window_id)
-		+ ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.recipe)
+		+ ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.recipe)
 }
 pub type Ty = PacketCraftRecipeResponse;

@@ -96,7 +96,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Damage(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::BundleContents(__v) => super::array::inline_56::serialize(__v, output),
 		Ty::PotionContents(__v) => super::slot_component_20::serialize(__v, output),
-		Ty::SuspiciousStewEffects(__v) => super::array::inline_179::serialize(__v, output),
+		Ty::SuspiciousStewEffects(__v) => super::array::inline_199::serialize(__v, output),
 		Ty::WritableBookContent(__v) => super::array::inline_51::serialize(__v, output),
 		Ty::WrittenBookContent(__v) => super::slot_component_22::serialize(__v, output),
 		Ty::Trim(__v) => super::slot_component_25::serialize(__v, output),
@@ -120,16 +120,18 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::FireworkExplosion(__v) => super::item_firework_explosion::serialize(__v, output),
 		Ty::Fireworks(__v) => super::slot_component_29::serialize(__v, output),
 		Ty::Profile(__v) => super::slot_component_31::serialize(__v, output),
-		Ty::NoteBlockSound(__v) => ::bungeeoxide_minecraft_root::pstring_96::serialize(__v, output),
+		Ty::NoteBlockSound(__v) => {
+			::bungeeoxide_minecraft_root::pstring_109::serialize(__v, output)
+		}
 		Ty::BannerPatterns(__v) => super::array::inline_47::serialize(__v, output),
 		Ty::BaseColor(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::CustomName(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
 		Ty::PotDecorations(__v) => {
-			::bungeeoxide_minecraft_root::array::inline_107::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::inline_128::serialize(__v, output)
 		}
 		Ty::Container(__v) => super::array::inline_56::serialize(__v, output),
-		Ty::BlockState(__v) => super::array::inline_181::serialize(__v, output),
-		Ty::Bees(__v) => super::array::inline_182::serialize(__v, output),
+		Ty::BlockState(__v) => super::array::inline_201::serialize(__v, output),
+		Ty::Bees(__v) => super::array::inline_202::serialize(__v, output),
 		Ty::Lock(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
 		Ty::ContainerLoot(__v) => {
 			::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output)
@@ -259,7 +261,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 32_i32) {
 		return Ok(Ty::SuspiciousStewEffects(
-			super::array::inline_179::deserialize(input)?,
+			super::array::inline_199::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 33_i32) {
@@ -333,7 +335,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 47_i32) {
 		return Ok(Ty::NoteBlockSound(
-			::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 48_i32) {
@@ -353,19 +355,19 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 50_i32) {
 		return Ok(Ty::PotDecorations(
-			::bungeeoxide_minecraft_root::array::inline_107::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_128::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 51_i32) {
 		return Ok(Ty::Container(super::array::inline_56::deserialize(input)?));
 	}
 	if (__tag.clone() == 52_i32) {
-		return Ok(Ty::BlockState(super::array::inline_181::deserialize(
+		return Ok(Ty::BlockState(super::array::inline_201::deserialize(
 			input,
 		)?));
 	}
 	if (__tag.clone() == 53_i32) {
-		return Ok(Ty::Bees(super::array::inline_182::deserialize(input)?));
+		return Ok(Ty::Bees(super::array::inline_202::deserialize(input)?));
 	}
 	if (__tag.clone() == 54_i32) {
 		return Ok(Ty::Lock(
@@ -428,7 +430,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::Damage(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::BundleContents(__v) => super::array::inline_56::size_of(__v),
 			Ty::PotionContents(__v) => super::slot_component_20::size_of(__v),
-			Ty::SuspiciousStewEffects(__v) => super::array::inline_179::size_of(__v),
+			Ty::SuspiciousStewEffects(__v) => super::array::inline_199::size_of(__v),
 			Ty::WritableBookContent(__v) => super::array::inline_51::size_of(__v),
 			Ty::WrittenBookContent(__v) => super::slot_component_22::size_of(__v),
 			Ty::Trim(__v) => super::slot_component_25::size_of(__v),
@@ -444,16 +446,16 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::FireworkExplosion(__v) => super::item_firework_explosion::size_of(__v),
 			Ty::Fireworks(__v) => super::slot_component_29::size_of(__v),
 			Ty::Profile(__v) => super::slot_component_31::size_of(__v),
-			Ty::NoteBlockSound(__v) => ::bungeeoxide_minecraft_root::pstring_96::size_of(__v),
+			Ty::NoteBlockSound(__v) => ::bungeeoxide_minecraft_root::pstring_109::size_of(__v),
 			Ty::BannerPatterns(__v) => super::array::inline_47::size_of(__v),
 			Ty::BaseColor(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::CustomName(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::PotDecorations(__v) => {
-				::bungeeoxide_minecraft_root::array::inline_107::size_of(__v)
+				::bungeeoxide_minecraft_root::array::inline_128::size_of(__v)
 			}
 			Ty::Container(__v) => super::array::inline_56::size_of(__v),
-			Ty::BlockState(__v) => super::array::inline_181::size_of(__v),
-			Ty::Bees(__v) => super::array::inline_182::size_of(__v),
+			Ty::BlockState(__v) => super::array::inline_201::size_of(__v),
+			Ty::Bees(__v) => super::array::inline_202::size_of(__v),
 			Ty::Lock(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::ContainerLoot(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::ItemName(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),

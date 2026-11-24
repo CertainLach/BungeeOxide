@@ -20,16 +20,36 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-        Ty::CustomPayload(__v) => ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_custom_payload::serialize(__v, output),
-        Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
-        Ty::FinishConfiguration(__v) => ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_finish_configuration::serialize(__v, output),
-        Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
-        Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
-        Ty::RegistryData(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
-        Ty::RemoveResourcePack(__v) => ::bungeeoxide_minecraft_root::option_0::serialize(__v, output),
-        Ty::AddResourcePack(__v) => super::packet_add_resource_pack::serialize(__v, output),
-        Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_98::serialize(__v, output),
-        Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_159::serialize(__v, output),
+        Ty::CustomPayload(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_custom_payload::serialize(__v, output)
+        }
+        Ty::Disconnect(__v) => {
+            ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output)
+        }
+        Ty::FinishConfiguration(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_finish_configuration::serialize(__v, output)
+        }
+        Ty::KeepAlive(__v) => {
+            ::bungeeoxide_minecraft_root::i64::serialize(__v, output)
+        }
+        Ty::Ping(__v) => {
+            ::bungeeoxide_minecraft_root::i32::serialize(__v, output)
+        }
+        Ty::RegistryData(__v) => {
+            ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output)
+        }
+        Ty::RemoveResourcePack(__v) => {
+            ::bungeeoxide_minecraft_root::option_0::serialize(__v, output)
+        }
+        Ty::AddResourcePack(__v) => {
+            super::packet_add_resource_pack::serialize(__v, output)
+        }
+        Ty::FeatureFlags(__v) => {
+            ::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output)
+        }
+        Ty::Tags(__v) => {
+            ::bungeeoxide_minecraft_v1_20_2::array::inline_179::serialize(__v, output)
+        }
         Ty::Default(_) => Ok(()),
     }
 }
@@ -75,12 +95,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 8_i32) {
 		return Ok(Ty::FeatureFlags(
-			::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 9_i32) {
 		return Ok(Ty::Tags(
-			::bungeeoxide_minecraft_v1_20_2::array::inline_159::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_20_2::array::inline_179::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -95,8 +115,8 @@ pub fn size_of(_0: &Ty) -> usize {
         Ty::RegistryData(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
         Ty::RemoveResourcePack(__v) => ::bungeeoxide_minecraft_root::option_0::size_of(__v),
         Ty::AddResourcePack(__v) => super::packet_add_resource_pack::size_of(__v),
-        Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_98::size_of(__v),
-        Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_159::size_of(__v),
+        Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
+        Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_179::size_of(__v),
         Ty::Default(_) => 0,
     }
 }

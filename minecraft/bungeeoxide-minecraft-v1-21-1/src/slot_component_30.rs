@@ -7,13 +7,13 @@ pub struct SlotComponent30 {
 	pub tracked: ::bungeeoxide_minecraft_root::Bool,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::option_54::serialize(&_0.global_position, output)?;
+	super::option_58::serialize(&_0.global_position, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.tracked, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_globalPosition = super::option_54::deserialize(input)?;
+	let f_globalPosition = super::option_58::deserialize(input)?;
 	let f_tracked = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		global_position: f_globalPosition,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::option_54::size_of(&_0.global_position)
+	0 + super::option_58::size_of(&_0.global_position)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.tracked)
 }
 pub type Ty = SlotComponent30;

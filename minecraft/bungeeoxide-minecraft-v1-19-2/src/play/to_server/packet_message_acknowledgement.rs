@@ -7,21 +7,21 @@ pub struct PacketMessageAcknowledgement {
 	pub last_rejected_message: Option<super::PacketMessageAcknowledgement1>,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_145::serialize(&_0.previous_messages, output)?;
-	super::super::super::option_39::serialize(&_0.last_rejected_message, output)?;
+	super::super::super::array::inline_165::serialize(&_0.previous_messages, output)?;
+	super::super::super::option_43::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_previousMessages = super::super::super::array::inline_145::deserialize(input)?;
-	let f_lastRejectedMessage = super::super::super::option_39::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_165::deserialize(input)?;
+	let f_lastRejectedMessage = super::super::super::option_43::deserialize(input)?;
 	Ok(Ty {
 		previous_messages: f_previousMessages,
 		last_rejected_message: f_lastRejectedMessage,
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::super::super::array::inline_145::size_of(&_0.previous_messages)
-		+ super::super::super::option_39::size_of(&_0.last_rejected_message)
+	0 + super::super::super::array::inline_165::size_of(&_0.previous_messages)
+		+ super::super::super::option_43::size_of(&_0.last_rejected_message)
 }
 pub type Ty = PacketMessageAcknowledgement;

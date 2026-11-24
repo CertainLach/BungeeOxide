@@ -7,13 +7,13 @@ pub struct PacketScoreboardScore {
 	pub action: super::PacketScoreboardScore1,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_96::serialize(&_0.item_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_109::serialize(&_0.item_name, output)?;
 	super::packet_scoreboard_score_1::serialize(&_0.action, output)?;
 	Ok(())
 }
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_itemName = ::bungeeoxide_minecraft_root::pstring_96::deserialize(input)?;
+	let f_itemName = ::bungeeoxide_minecraft_root::pstring_109::deserialize(input)?;
 	let f_action = super::packet_scoreboard_score_1::deserialize(input)?;
 	Ok(Ty {
 		item_name: f_itemName,
@@ -21,7 +21,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	})
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + ::bungeeoxide_minecraft_root::pstring_96::size_of(&_0.item_name)
+	0 + ::bungeeoxide_minecraft_root::pstring_109::size_of(&_0.item_name)
 		+ super::packet_scoreboard_score_1::size_of(&_0.action)
 }
 pub type Ty = PacketScoreboardScore;

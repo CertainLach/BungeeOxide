@@ -14,8 +14,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::V0(__v) => super::packet_teams_31::serialize(__v, output),
 		Ty::V2(__v) => super::packet_teams_32::serialize(__v, output),
-		Ty::V3(__v) => ::bungeeoxide_minecraft_root::array::inline_98::serialize(__v, output),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::array::inline_98::serialize(__v, output),
+		Ty::V3(__v) => ::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -31,12 +31,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if (__tag.clone() == 3_i8) {
 		return Ok(Ty::V3(
-			::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?,
 		));
 	}
 	if (__tag.clone() == 4_i8) {
 		return Ok(Ty::V4(
-			::bungeeoxide_minecraft_root::array::inline_98::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -46,8 +46,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ match _0 {
 			Ty::V0(__v) => super::packet_teams_31::size_of(__v),
 			Ty::V2(__v) => super::packet_teams_32::size_of(__v),
-			Ty::V3(__v) => ::bungeeoxide_minecraft_root::array::inline_98::size_of(__v),
-			Ty::V4(__v) => ::bungeeoxide_minecraft_root::array::inline_98::size_of(__v),
+			Ty::V3(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
+			Ty::V4(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
 			Ty::Default(_) => 0,
 		}
 }
