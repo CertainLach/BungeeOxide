@@ -90,9 +90,13 @@ pub struct Cfb8 {
 
 impl Cfb8 {
 	pub fn new(key: &[u8; 16]) -> Self {
+		Self::with_iv(key, key)
+	}
+
+	pub fn with_iv(key: &[u8; 16], iv: &[u8; 16]) -> Self {
 		Self {
 			aes: Aes128::new(GenericArray::from_slice(key)),
-			register: *key,
+			register: *iv,
 		}
 	}
 

@@ -13,7 +13,7 @@ use bungeeoxide_converter::generated::convert::v26_4_snapshot_10::{
 	configuration_to_server_packet as config_s,
 	configuration_to_server_packet_finish_configuration, handshaking_to_server_packet as handshake,
 	handshaking_to_server_packet_set_protocol, login_to_client_connection_options as options,
-	login_to_client_packet as login_c, login_to_client_packet_key, login_to_client_packet_success,
+	login_to_client_packet as login_c, login_to_client_packet_success,
 	login_to_server_packet as login_s, login_to_server_packet_login_acknowledged,
 	login_to_server_packet_login_start,
 };
@@ -32,7 +32,7 @@ async fn read(conn: &mut Conn) -> Result<Vec<u8>> {
 	tokio::time::timeout(WAIT, next(conn)).await?
 }
 
-async fn backend(online: bool) -> (SocketAddr, mpsc::UnboundedReceiver<String>) {
+async fn backend() -> (SocketAddr, mpsc::UnboundedReceiver<String>) {
 	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
 	let addr = listener.local_addr().unwrap();
 	let (events, received) = mpsc::unbounded_channel();
@@ -42,7 +42,7 @@ async fn backend(online: bool) -> (SocketAddr, mpsc::UnboundedReceiver<String>) 
 			let events = events.clone();
 			tokio::spawn(async move {
 				let conn = Framed::new(stream, Codec::default());
-				if let Err(e) = serve_login(conn, online, &events).await {
+				if let Err(e) = serve_login(conn, &events).await {
 					let _ = events.send(format!("error {e:#}"));
 				}
 			});
@@ -51,11 +51,7 @@ async fn backend(online: bool) -> (SocketAddr, mpsc::UnboundedReceiver<String>) 
 	(addr, received)
 }
 
-async fn serve_login(
-	mut conn: Conn,
-	online: bool,
-	events: &mpsc::UnboundedSender<String>,
-) -> Result<()> {
+async fn serve_login(mut conn: Conn, events: &mpsc::UnboundedSender<String>) -> Result<()> {
 	let handshake::Ty::SetProtocol(hs) = decode(&read(&mut conn).await?, handshake::deserialize)?
 	else {
 		bail!("handshake");
@@ -65,17 +61,6 @@ async fn serve_login(
 	else {
 		bail!("login start");
 	};
-	if online {
-		let key = login_c::Ty::Key(login_to_client_packet_key::Ty {
-			salt: 1,
-			server_id: "server".to_owned(),
-			public_key: vec![0; 44],
-			should_authenticate: true,
-		});
-		conn.send(encode(&key, login_c::serialize)?).await?;
-		read(&mut conn).await?;
-		return Ok(());
-	}
 	conn.send(encode(
 		&login_c::Ty::SetupCompression(BACKEND_THRESHOLD),
 		login_c::serialize,
@@ -156,7 +141,7 @@ async fn event(rx: &mut mpsc::UnboundedReceiver<String>) -> Option<String> {
 
 #[tokio::test]
 async fn compression_starts_after_the_login_acknowledgement() -> Result<()> {
-	let (backend, mut events) = backend(false).await;
+	let (backend, mut events) = backend().await;
 	let proxy = proxy(backend).await;
 	let mut conn = start_login(proxy).await?;
 	let login_c::Ty::SetupCompression(threshold) =
@@ -192,42 +177,6 @@ async fn compression_starts_after_the_login_acknowledgement() -> Result<()> {
 	assert_eq!(
 		event(&mut events).await.as_deref(),
 		Some("configured compressed")
-	);
-	Ok(())
-}
-
-#[tokio::test]
-async fn online_mode_snapshot_backends_are_refused_clearly() -> Result<()> {
-	let (backend, _events) = backend(true).await;
-	let proxy = proxy(backend).await;
-	let mut conn = start_login(proxy).await?;
-	let login_c::Ty::Disconnect(reason) = decode(&read(&mut conn).await?, login_c::deserialize)?
-	else {
-		bail!("expected a disconnect");
-	};
-	assert!(
-		reason.contains("key exchange is not implemented"),
-		"{reason}"
-	);
-	Ok(())
-}
-
-#[tokio::test]
-async fn online_mode_snapshot_clients_are_refused_clearly() -> Result<()> {
-	let (backend, _events) = backend(false).await;
-	let user = User {
-		downstream: true,
-		..User::guest("snap")
-	};
-	let proxy = proxy_for(backend, user).await;
-	let mut conn = start_login(proxy).await?;
-	let login_c::Ty::Disconnect(reason) = decode(&read(&mut conn).await?, login_c::deserialize)?
-	else {
-		bail!("expected a disconnect");
-	};
-	assert!(
-		reason.contains("key exchange is not implemented"),
-		"{reason}"
 	);
 	Ok(())
 }

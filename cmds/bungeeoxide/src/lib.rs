@@ -28,6 +28,7 @@ use tracing::{info, warn};
 
 pub mod codec;
 pub mod cookies;
+pub mod exchange;
 pub mod legacy;
 pub mod online;
 pub mod signing;
@@ -514,12 +515,9 @@ impl Proxy {
 		loop {
 			let data = self.read_server(Root::LoginToClient).await?;
 			if self.sv >= KEY_EXCHANGE
-				&& packet_name(Root::LoginToClient, self.sv, &data) == Some("key")
+				&& online::key_exchange(self, &data, protocol, username).await?
 			{
-				bail!(
-					"{target} is an online-mode {} server: its key exchange is not implemented",
-					self.sv
-				);
+				continue;
 			}
 			let packets = self.convert(Root::LoginToClient, self.sv, PIVOT, data);
 			self.drain().await?;
@@ -1005,7 +1003,7 @@ async fn login(
 	let claimed = Some(player.player_uuid).filter(|uuid| *uuid != 0);
 	let user = config.user(&username);
 	let admitted = match user.downstream {
-		true => online::authenticate(&mut p, &config.endpoints, &username)
+		true => online::authenticate(&mut p, &config.endpoints, &username, hs.protocol_version)
 			.await
 			.and_then(|profile| user.admit(Some(profile.id))),
 		false => user.admit(claimed),

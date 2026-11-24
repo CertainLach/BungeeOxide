@@ -1,21 +1,28 @@
 use bungeeoxide_converter::Version;
 use std::sync::Arc;
 
-use anyhow::{Context as _, Result, anyhow, bail};
+use anyhow::{Context as _, Result, anyhow, bail, ensure};
 use bungeeoxide_converter::Root;
 use bungeeoxide_converter::generated::convert::v26_3::{
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin as begin,
 	login_to_client_packet_success as success, login_to_server_packet as login_s,
 	login_to_server_packet_encryption_begin as response, login_to_server_packet_login_start,
 };
-use bungeeoxide_converter::generated::convert::{v1_19, v1_19_2};
+use bungeeoxide_converter::generated::convert::v26_4_snapshot_10::{
+	login_to_client_connection_options as options, login_to_client_packet as key_c,
+	login_to_client_packet_key as key, login_to_server_packet as key_s,
+	login_to_server_packet_encryption_begin as key_response,
+	login_to_server_packet_options_applied as applied,
+};
+use bungeeoxide_converter::generated::convert::{packet_name, v1_19, v1_19_2};
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPublicKey};
 use tracing::{info, warn};
 
 use crate::codec::Cipher;
+use crate::exchange::{self, Keys, Params, Peer, SERVER_NAME, Side};
 use crate::signing::Chat;
-use crate::{PIVOT, Proxy, decode, encode, legacy, next};
+use crate::{KEY_EXCHANGE, PIVOT, Proxy, decode, encode, legacy, next};
 use bungeeoxide_authlib::accounts::{Account, Credentials};
 use bungeeoxide_authlib::{self as auth, Endpoints, GameProfile, PlayerKeys, offline_uuid_bits};
 
@@ -26,6 +33,8 @@ pub struct Online {
 	keys: Option<Arc<PlayerKeys>>,
 	signed_start: bool,
 	encrypted: bool,
+	name: String,
+	pending: Option<Keys>,
 	profile: Option<success::Ty>,
 	pub(crate) chat: Option<Chat>,
 }
@@ -54,6 +63,7 @@ impl Online {
 		self.keys = None;
 		self.signed_start = false;
 		self.encrypted = false;
+		self.pending = None;
 		let Some(account) = self.account.clone() else {
 			return Ok(());
 		};
@@ -94,6 +104,7 @@ impl Online {
 			Some(c) => (c.name.clone(), c.uuid),
 			None => (username.to_owned(), offline_uuid_bits(username)),
 		};
+		self.name = name.clone();
 		if let Some(keys) = self
 			.keys
 			.as_ref()
@@ -180,16 +191,105 @@ impl Online {
 	}
 }
 
+async fn has_joined(endpoints: &Endpoints, username: &str, hash: String) -> Result<GameProfile> {
+	let (endpoints, name) = (endpoints.clone(), username.to_owned());
+	blocking(move || auth::has_joined(&endpoints, &name, &hash))
+		.await?
+		.ok_or_else(|| {
+			anyhow!(
+				"the session server did not see {username} join, restart the game and try again"
+			)
+		})
+}
+
+async fn join_session(p: &mut Proxy, hash: String, username: &str) -> Result<()> {
+	let Some(account) = p.online.account.clone() else {
+		bail!(
+			"the server is in online mode, give {username} an upstream account in --users or set online-mode=false"
+		);
+	};
+	let credentials = p
+		.online
+		.credentials
+		.clone()
+		.ok_or_else(|| anyhow!("no credentials for {username}"))?;
+	let credentials = blocking(move || account.join(&credentials, &hash)).await?;
+	p.online.credentials = Some(credentials);
+	Ok(())
+}
+
+async fn authenticate_key_exchange(
+	p: &mut Proxy,
+	endpoints: &Endpoints,
+	username: &str,
+	protocol: i32,
+) -> Result<GameProfile> {
+	let secret = exchange::secret();
+	let params = Params {
+		protocol,
+		salt: rand::random(),
+		authenticate: true,
+	};
+	let request = key_c::Ty::Key(key::Ty {
+		salt: params.salt,
+		server_id: SERVER_NAME.to_owned(),
+		public_key: exchange::der(&secret),
+		should_authenticate: params.authenticate,
+	});
+	p.send(
+		Root::LoginToClient,
+		KEY_EXCHANGE,
+		encode(&request, key_c::serialize)?,
+	)
+	.await?;
+	let data = next(&mut p.client).await?;
+	let cv = p.cv;
+	let reply = p
+		.convert(Root::LoginToServer, cv, KEY_EXCHANGE, data)
+		.iter()
+		.find_map(|packet| match decode(packet, key_s::deserialize) {
+			Ok(key_s::Ty::EncryptionBegin(reply)) => Some(reply),
+			_ => None,
+		})
+		.ok_or_else(|| anyhow!("expected the client's key"))?;
+	let peer = Peer {
+		name: username,
+		key: &reply.public_key,
+	};
+	let keys = Keys::derive(&params, &secret, Side::Server, SERVER_NAME, &peer)
+		.context("reading the client's key")?;
+	ensure!(
+		keys.verify(&reply.signature),
+		"the client signed a different key exchange"
+	);
+	let profile = has_joined(endpoints, username, keys.authentication.clone()).await?;
+	let apply = key_c::Ty::ApplyOptions(options::Ty {
+		encryption: true,
+		compression: false,
+	});
+	p.send(
+		Root::LoginToClient,
+		KEY_EXCHANGE,
+		encode(&apply, key_c::serialize)?,
+	)
+	.await?;
+	let data = next(&mut p.client).await?;
+	ensure!(
+		packet_name(Root::LoginToServer, cv, &data) == Some("options_applied"),
+		"expected the client to apply encryption"
+	);
+	p.client.codec_mut().cipher = Some(keys.cipher(Side::Server));
+	Ok(profile)
+}
+
 pub async fn authenticate(
 	p: &mut Proxy,
 	endpoints: &Endpoints,
 	username: &str,
+	protocol: i32,
 ) -> Result<GameProfile> {
-	if p.cv >= crate::KEY_EXCHANGE {
-		bail!(
-			"online-mode login of {} clients is not supported: their key exchange is not implemented",
-			p.cv
-		);
+	if p.cv >= KEY_EXCHANGE {
+		return authenticate_key_exchange(p, endpoints, username, protocol).await;
 	}
 	let key = tokio::task::spawn_blocking(legacy::rsa_key).await?;
 	let public = key
@@ -254,15 +354,89 @@ pub async fn authenticate(
 		.try_into()
 		.map_err(|_| anyhow!("the shared secret is not 16 bytes"))?;
 	p.client.codec_mut().cipher = Some(Cipher::new(&secret));
-	let hash = auth::server_hash("", &secret, &public);
-	let (endpoints, name) = (endpoints.clone(), username.to_owned());
-	blocking(move || auth::has_joined(&endpoints, &name, &hash))
-		.await?
-		.ok_or_else(|| {
-			anyhow!(
-				"the session server did not see {username} join, restart the game and try again"
-			)
-		})
+	has_joined(endpoints, username, auth::server_hash("", &secret, &public)).await
+}
+
+async fn exchange_keys(
+	p: &mut Proxy,
+	request: key::Ty,
+	protocol: i32,
+	username: &str,
+) -> Result<()> {
+	let secret = exchange::secret();
+	let params = Params {
+		protocol,
+		salt: request.salt,
+		authenticate: request.should_authenticate,
+	};
+	let peer = Peer {
+		name: &request.server_id,
+		key: &request.public_key,
+	};
+	let keys = Keys::derive(&params, &secret, Side::Client, &p.online.name, &peer)
+		.context("reading the server key")?;
+	if request.should_authenticate {
+		join_session(p, keys.authentication.clone(), username).await?;
+	}
+	let reply = key_s::Ty::EncryptionBegin(key_response::Ty {
+		public_key: exchange::der(&secret),
+		signature: keys.signature().to_vec(),
+	});
+	p.online.pending = Some(keys);
+	p.send(
+		Root::LoginToServer,
+		KEY_EXCHANGE,
+		encode(&reply, key_s::serialize)?,
+	)
+	.await
+}
+
+async fn apply_options(p: &mut Proxy, options: options::Ty) -> Result<()> {
+	if options.compression {
+		bail!(
+			"{} asked for compression ahead of the login, which is not supported",
+			p.target
+		);
+	}
+	let keys =
+		match options.encryption {
+			true => Some(p.online.pending.take().ok_or_else(|| {
+				anyhow!("{} applied encryption before exchanging keys", p.target)
+			})?),
+			false => None,
+		};
+	let reply = key_s::Ty::OptionsApplied(applied::Ty {});
+	p.send(
+		Root::LoginToServer,
+		KEY_EXCHANGE,
+		encode(&reply, key_s::serialize)?,
+	)
+	.await?;
+	if let Some(keys) = keys {
+		p.server()?.codec_mut().cipher = Some(keys.cipher(Side::Client));
+		p.online.encrypted = true;
+	}
+	Ok(())
+}
+
+pub async fn key_exchange(
+	p: &mut Proxy,
+	data: &[u8],
+	protocol: i32,
+	username: &str,
+) -> Result<bool> {
+	let Some("key" | "apply_options") = packet_name(Root::LoginToClient, p.sv, data) else {
+		return Ok(false);
+	};
+	let sv = p.sv;
+	for packet in p.convert(Root::LoginToClient, sv, KEY_EXCHANGE, data.to_vec()) {
+		match decode(&packet, key_c::deserialize)? {
+			key_c::Ty::Key(request) => exchange_keys(p, request, protocol, username).await?,
+			key_c::Ty::ApplyOptions(options) => apply_options(p, options).await?,
+			_ => {}
+		}
+	}
+	Ok(true)
 }
 
 pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Result<()> {
@@ -270,19 +444,8 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 		RsaPublicKey::from_public_key_der(&request.public_key).context("reading the server key")?;
 	let secret: [u8; 16] = rand::random();
 	if request.should_authenticate {
-		let Some(account) = p.online.account.clone() else {
-			bail!(
-				"the server is in online mode, give {username} an upstream account in --users or set online-mode=false"
-			);
-		};
-		let credentials = p
-			.online
-			.credentials
-			.clone()
-			.ok_or_else(|| anyhow!("no credentials for {username}"))?;
 		let hash = auth::server_hash(&request.server_id, &secret, &request.public_key);
-		let credentials = blocking(move || account.join(&credentials, &hash)).await?;
-		p.online.credentials = Some(credentials);
+		join_session(p, hash, username).await?;
 	}
 	let shared = key
 		.encrypt(&mut rand::thread_rng(), Pkcs1v15Encrypt, &secret)
@@ -340,6 +503,18 @@ pub async fn encrypt(p: &mut Proxy, request: begin::Ty, username: &str) -> Resul
 mod tests {
 	use super::*;
 	use crate::decode;
+
+	#[test]
+	fn connection_options_use_the_vanilla_flag_bits() {
+		for (encryption, compression, bits) in [(true, false, 1), (false, true, 2), (true, true, 3)]
+		{
+			let apply = key_c::Ty::ApplyOptions(options::Ty {
+				encryption,
+				compression,
+			});
+			assert_eq!(encode(&apply, key_c::serialize).unwrap(), [6, bits]);
+		}
+	}
 	use bungeeoxide_converter::{Session, convert};
 
 	#[test]

@@ -47,9 +47,13 @@ pub struct Cipher {
 
 impl Cipher {
 	pub fn new(secret: &[u8; 16]) -> Self {
+		Self::split(Cfb8::new(secret), Cfb8::new(secret))
+	}
+
+	pub fn split(decrypt: Cfb8, encrypt: Cfb8) -> Self {
 		Self {
-			decrypt: Cfb8::new(secret),
-			encrypt: Cfb8::new(secret),
+			decrypt,
+			encrypt,
 			plain: BytesMut::new(),
 		}
 	}

@@ -13,6 +13,8 @@ bytes.workspace = true
 clap = { workspace = true, features = ["derive"] }
 flate2.workspace = true
 futures.workspace = true
+hkdf.workspace = true
+hmac.workspace = true
 bungeeoxide-authlib.workspace = true
 bungeeoxide-converter.workspace = true
 bungeeoxide-nbt.workspace = true
@@ -27,3 +29,4 @@ tokio-util = { workspace = true, features = ["codec"] }
 toml.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
+x25519-dalek = { workspace = true, features = ["static_secrets"] }

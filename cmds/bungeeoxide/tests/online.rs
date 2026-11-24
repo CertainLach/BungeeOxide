@@ -5,10 +5,13 @@ use std::path::Path;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use anyhow::{Result, bail};
+use anyhow::{Result, bail, ensure};
 use bungeeoxide::codec::{Cipher, Codec};
-use bungeeoxide::{Config, Conn, decode, encode, next, serve, users};
+use bungeeoxide::exchange::{self, Keys, Params, Peer, SERVER_NAME, Side};
+use bungeeoxide::{Config, Conn, decode, encode, next, protocol_of, serve, users};
 use bungeeoxide_authlib::{hyphenated, server_hash};
+use bungeeoxide_converter::Root;
+use bungeeoxide_converter::generated::convert::packet_name;
 use bungeeoxide_converter::generated::convert::v1_8::{
 	handshaking_to_server_packet as handshake, handshaking_to_server_packet_set_protocol,
 	login_to_client_packet as login_c, login_to_client_packet_encryption_begin,
@@ -16,6 +19,7 @@ use bungeeoxide_converter::generated::convert::v1_8::{
 	login_to_server_packet_encryption_begin, play_to_client_packet as play_c,
 	play_to_client_packet_chat, play_to_client_packet_login, play_to_server_packet as play_s,
 };
+use bungeeoxide_converter::generated::convert::v26_4_snapshot_10 as snap;
 use futures::SinkExt;
 use rsa::pkcs8::{DecodePublicKey, EncodePublicKey};
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
@@ -380,5 +384,331 @@ async fn downstream_players_the_session_server_did_not_see_are_kicked() -> Resul
 		bail!("expected a disconnect");
 	};
 	assert!(reason.contains("did not see Notch join"), "{reason}");
+	Ok(())
+}
+
+const SNAPSHOT: Version = Version::V26_4_snapshot_10;
+
+const SNAPSHOT_SALT: i64 = -0x0123_4567_89ab_cdef;
+
+async fn snapshot_backend() -> (SocketAddr, mpsc::UnboundedReceiver<String>) {
+	let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+	let addr = listener.local_addr().unwrap();
+	let (events, received) = mpsc::unbounded_channel();
+	tokio::spawn(async move {
+		loop {
+			let (stream, _) = listener.accept().await.unwrap();
+			let events = events.clone();
+			tokio::spawn(async move {
+				let conn = Framed::new(stream, Codec::default());
+				if let Err(e) = snapshot_login(conn, &events).await {
+					let _ = events.send(format!("error {e:#}"));
+				}
+			});
+		}
+	});
+	(addr, received)
+}
+
+async fn snapshot_login(mut conn: Conn, events: &mpsc::UnboundedSender<String>) -> Result<()> {
+	let snap::handshaking_to_server_packet::Ty::SetProtocol(hs) = decode(
+		&receive(&mut conn).await?,
+		snap::handshaking_to_server_packet::deserialize,
+	)?
+	else {
+		bail!("handshake");
+	};
+	let snap::login_to_server_packet::Ty::LoginStart(start) = decode(
+		&receive(&mut conn).await?,
+		snap::login_to_server_packet::deserialize,
+	)?
+	else {
+		bail!("login start");
+	};
+	let secret = exchange::secret();
+	let params = Params {
+		protocol: hs.protocol_version,
+		salt: SNAPSHOT_SALT,
+		authenticate: true,
+	};
+	let key = snap::login_to_client_packet::Ty::Key(snap::login_to_client_packet_key::Ty {
+		salt: params.salt,
+		server_id: SERVER_NAME.to_owned(),
+		public_key: exchange::der(&secret),
+		should_authenticate: params.authenticate,
+	});
+	conn.send(encode(&key, snap::login_to_client_packet::serialize)?)
+		.await?;
+	let snap::login_to_server_packet::Ty::EncryptionBegin(reply) = decode(
+		&receive(&mut conn).await?,
+		snap::login_to_server_packet::deserialize,
+	)?
+	else {
+		bail!("key response");
+	};
+	let peer = Peer {
+		name: &start.username,
+		key: &reply.public_key,
+	};
+	let keys = Keys::derive(&params, &secret, Side::Server, SERVER_NAME, &peer)?;
+	ensure!(
+		keys.verify(&reply.signature),
+		"{} signed another exchange",
+		start.username
+	);
+	events.send(format!("joined {}", keys.authentication))?;
+	let apply = snap::login_to_client_packet::Ty::ApplyOptions(
+		snap::login_to_client_connection_options::Ty {
+			encryption: true,
+			compression: false,
+		},
+	);
+	conn.send(encode(&apply, snap::login_to_client_packet::serialize)?)
+		.await?;
+	let applied = receive(&mut conn).await?;
+	ensure!(packet_name(Root::LoginToServer, SNAPSHOT, &applied) == Some("options_applied"));
+	conn.codec_mut().cipher = Some(keys.cipher(Side::Server));
+	conn.send(encode(
+		&snap::login_to_client_packet::Ty::SetupCompression(48),
+		snap::login_to_client_packet::serialize,
+	)?)
+	.await?;
+	let success =
+		snap::login_to_client_packet::Ty::Success(snap::login_to_client_packet_success::Ty {
+			uuid: PROFILE,
+			username: start.username,
+			properties: Vec::new(),
+			session_id: 9,
+			options: snap::login_to_client_connection_options::Ty {
+				encryption: false,
+				compression: true,
+			},
+		});
+	conn.send(encode(&success, snap::login_to_client_packet::serialize)?)
+		.await?;
+	let ack = receive(&mut conn).await?;
+	ensure!(packet_name(Root::LoginToServer, SNAPSHOT, &ack) == Some("login_acknowledged"));
+	conn.codec_mut().threshold = Some(48);
+	let finish = snap::configuration_to_client_packet::Ty::FinishConfiguration(
+		snap::configuration_to_client_packet_finish_configuration::Ty {},
+	);
+	conn.send(encode(
+		&finish,
+		snap::configuration_to_client_packet::serialize,
+	)?)
+	.await?;
+	loop {
+		let data = receive(&mut conn).await?;
+		if packet_name(Root::ConfigurationToServer, SNAPSHOT, &data) == Some("finish_configuration")
+		{
+			events.send("configured".to_owned())?;
+			return Ok(());
+		}
+	}
+}
+
+async fn snapshot_event(events: &mut mpsc::UnboundedReceiver<String>) -> Option<String> {
+	tokio::time::timeout(Duration::from_secs(10), events.recv())
+		.await
+		.ok()
+		.flatten()
+}
+
+async fn snapshot_start(proxy: SocketAddr, name: &str) -> Result<Conn> {
+	let mut conn = Framed::new(TcpStream::connect(proxy).await?, Codec::default());
+	let hs = snap::handshaking_to_server_packet::Ty::SetProtocol(
+		snap::handshaking_to_server_packet_set_protocol::Ty {
+			protocol_version: protocol_of(SNAPSHOT).unwrap(),
+			server_host: "localhost".to_owned(),
+			server_port: proxy.port(),
+			next_state: 2,
+		},
+	);
+	conn.send(encode(&hs, snap::handshaking_to_server_packet::serialize)?)
+		.await?;
+	let start = snap::login_to_server_packet::Ty::LoginStart(
+		snap::login_to_server_packet_login_start::Ty {
+			username: name.to_owned(),
+			player_uuid: 0,
+		},
+	);
+	conn.send(encode(&start, snap::login_to_server_packet::serialize)?)
+		.await?;
+	Ok(conn)
+}
+
+async fn snapshot_join(conn: &mut Conn) -> Result<snap::login_to_client_packet_success::Ty> {
+	let snap::login_to_client_packet::Ty::SetupCompression(threshold) = decode(
+		&receive(conn).await?,
+		snap::login_to_client_packet::deserialize,
+	)?
+	else {
+		bail!("expected setup_compression");
+	};
+	let snap::login_to_client_packet::Ty::Success(success) = decode(
+		&receive(conn).await?,
+		snap::login_to_client_packet::deserialize,
+	)?
+	else {
+		bail!("expected login_finished");
+	};
+	let ack = snap::login_to_server_packet::Ty::LoginAcknowledged(
+		snap::login_to_server_packet_login_acknowledged::Ty {},
+	);
+	conn.send(encode(&ack, snap::login_to_server_packet::serialize)?)
+		.await?;
+	conn.codec_mut().threshold = Some(usize::try_from(threshold)?);
+	loop {
+		let data = receive(conn).await?;
+		if let snap::configuration_to_client_packet::Ty::FinishConfiguration(_) =
+			decode(&data, snap::configuration_to_client_packet::deserialize)?
+		{
+			break;
+		}
+	}
+	let finish = snap::configuration_to_server_packet::Ty::FinishConfiguration(
+		snap::configuration_to_server_packet_finish_configuration::Ty {},
+	);
+	conn.send(encode(
+		&finish,
+		snap::configuration_to_server_packet::serialize,
+	)?)
+	.await?;
+	Ok(success)
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum Proof {
+	Known,
+	Unknown,
+	Forged,
+}
+
+async fn snapshot_verify(
+	conn: &mut Conn,
+	name: &str,
+	session: &Session,
+	proof: Proof,
+) -> Result<()> {
+	let snap::login_to_client_packet::Ty::Key(request) = decode(
+		&receive(conn).await?,
+		snap::login_to_client_packet::deserialize,
+	)?
+	else {
+		bail!("expected the proxy's key");
+	};
+	assert_eq!(request.server_id, SERVER_NAME);
+	assert!(request.should_authenticate);
+	let secret = exchange::secret();
+	let params = Params {
+		protocol: protocol_of(SNAPSHOT).unwrap(),
+		salt: request.salt,
+		authenticate: request.should_authenticate,
+	};
+	let peer = Peer {
+		name: &request.server_id,
+		key: &request.public_key,
+	};
+	let keys = Keys::derive(&params, &secret, Side::Client, name, &peer)?;
+	if proof != Proof::Unknown {
+		session
+			.verified
+			.lock()
+			.unwrap()
+			.insert(keys.authentication.clone(), (name.to_owned(), PROFILE));
+	}
+	let mut signature = keys.signature().to_vec();
+	if proof == Proof::Forged {
+		signature[0] ^= 1;
+	}
+	let reply = snap::login_to_server_packet::Ty::EncryptionBegin(
+		snap::login_to_server_packet_encryption_begin::Ty {
+			public_key: exchange::der(&secret),
+			signature,
+		},
+	);
+	conn.send(encode(&reply, snap::login_to_server_packet::serialize)?)
+		.await?;
+	let data = receive(conn).await?;
+	match decode(&data, snap::login_to_client_packet::deserialize)? {
+		snap::login_to_client_packet::Ty::ApplyOptions(options) => {
+			assert!(options.encryption && !options.compression, "{options:?}");
+		}
+		snap::login_to_client_packet::Ty::Disconnect(reason) => bail!("kicked: {reason}"),
+		other => bail!("expected apply_options, got {other:?}"),
+	}
+	let applied = snap::login_to_server_packet::Ty::OptionsApplied(
+		snap::login_to_server_packet_options_applied::Ty {},
+	);
+	conn.send(encode(&applied, snap::login_to_server_packet::serialize)?)
+		.await?;
+	conn.codec_mut().cipher = Some(keys.cipher(Side::Client));
+	Ok(())
+}
+
+#[tokio::test]
+async fn snapshot_players_log_in_upstream_with_their_account() -> Result<()> {
+	let Session {
+		addr: session,
+		mut joins,
+		..
+	} = session_server().await;
+	let (backend, mut events) = snapshot_backend().await;
+	let proxy = start_proxy(backend, session, SNAPSHOT).await;
+	let mut conn = snapshot_start(proxy, "Steve").await?;
+	let success = snapshot_join(&mut conn).await?;
+	assert_eq!(success.username, "Notch");
+	assert_eq!(success.uuid, PROFILE);
+	let joined = snapshot_event(&mut events).await.unwrap_or_default();
+	let hash = joined
+		.strip_prefix("joined ")
+		.unwrap_or_else(|| panic!("{joined}"));
+	let join = joins.recv().await.unwrap();
+	assert_eq!(join["accessToken"], "fake-token");
+	assert_eq!(join["selectedProfile"], format!("{PROFILE:032x}"));
+	assert_eq!(join["serverId"], hash);
+	assert_eq!(
+		snapshot_event(&mut events).await.as_deref(),
+		Some("configured")
+	);
+	Ok(())
+}
+
+#[tokio::test]
+async fn snapshot_players_prove_their_account_before_joining() -> Result<()> {
+	let session = session_server().await;
+	let (backend, mut events) = snapshot_backend().await;
+	let proxy = start_proxy(backend, session.addr, SNAPSHOT).await;
+	let mut conn = snapshot_start(proxy, "Notch").await?;
+	snapshot_verify(&mut conn, "Notch", &session, Proof::Known).await?;
+	let success = snapshot_join(&mut conn).await?;
+	assert_eq!(success.uuid, PROFILE);
+	assert!(
+		snapshot_event(&mut events)
+			.await
+			.is_some_and(|e| e.starts_with("joined ")),
+	);
+	assert_eq!(
+		snapshot_event(&mut events).await.as_deref(),
+		Some("configured")
+	);
+	Ok(())
+}
+
+#[tokio::test]
+async fn snapshot_players_without_a_valid_exchange_are_kicked() -> Result<()> {
+	for (proof, expected) in [
+		(Proof::Unknown, "did not see Notch join"),
+		(Proof::Forged, "signed a different key exchange"),
+	] {
+		let session = session_server().await;
+		let (backend, _events) = snapshot_backend().await;
+		let proxy = start_proxy(backend, session.addr, SNAPSHOT).await;
+		let mut conn = snapshot_start(proxy, "Notch").await?;
+		let kicked = snapshot_verify(&mut conn, "Notch", &session, proof)
+			.await
+			.expect_err("the proxy let the player in");
+		assert!(kicked.to_string().contains(expected), "{kicked:#}");
+	}
 	Ok(())
 }
