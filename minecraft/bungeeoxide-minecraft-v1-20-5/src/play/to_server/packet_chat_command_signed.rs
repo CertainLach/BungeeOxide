@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_226::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_227::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.message_count, output)?;
 	::bungeeoxide_minecraft_root::buffer::sized::check_count(
 		&_0.acknowledged,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_command = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_226::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_227::deserialize(input)?;
 	let f_messageCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_acknowledged = ::bungeeoxide_minecraft_root::buffer::sized::deserialize(
 		input,
@@ -51,7 +51,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_226::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_227::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.message_count)
 		+ ::bungeeoxide_minecraft_root::buffer::sized::size_of(&_0.acknowledged)
 }

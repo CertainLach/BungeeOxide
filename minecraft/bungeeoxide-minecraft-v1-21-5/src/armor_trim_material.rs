@@ -11,7 +11,7 @@ pub struct ArmorTrimMaterial {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.asset_base, output)?;
-	super::array::inline_303::serialize(&_0.override_armor_assets, output)?;
+	super::array::inline_304::serialize(&_0.override_armor_assets, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.description, output)?;
 	Ok(())
 }
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_assetBase = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
-	let f_overrideArmorAssets = super::array::inline_303::deserialize(input)?;
+	let f_overrideArmorAssets = super::array::inline_304::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	Ok(Ty {
 		asset_base: f_assetBase,
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.asset_base)
-		+ super::array::inline_303::size_of(&_0.override_armor_assets)
+		+ super::array::inline_304::size_of(&_0.override_armor_assets)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.description)
 }
 

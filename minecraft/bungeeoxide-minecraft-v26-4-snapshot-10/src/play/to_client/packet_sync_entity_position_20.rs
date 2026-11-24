@@ -9,14 +9,14 @@ pub struct PacketSyncEntityPosition20 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_455::serialize(&_0.steps, output)?;
+	super::super::super::array::inline_456::serialize(&_0.steps, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.start_immediately, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_steps = super::super::super::array::inline_455::deserialize(input)?;
+	let f_steps = super::super::super::array::inline_456::deserialize(input)?;
 	let f_startImmediately = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		steps: f_steps,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_455::size_of(&_0.steps)
+	super::super::super::array::inline_456::size_of(&_0.steps)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.start_immediately)
 }
 

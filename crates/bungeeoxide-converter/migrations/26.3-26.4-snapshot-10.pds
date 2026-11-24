@@ -94,6 +94,15 @@ updated(DebugSubscriptionUpdate) {
 	};
 };
 
+updated(Node) {
+	updated(type) {
+		renamed(trapdoor, to: drop_down);
+		renamed(sticky_honey, to: sticky);
+		renamed(cocoa, to: avoid_in_air);
+		renamed(on_top_of_trapdoor, to: on_top_of_drop_down);
+	};
+};
+
 updated(command_node) {
 	updated(extraNodeData) {
 		updated(v2) {

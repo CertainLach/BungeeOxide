@@ -24,7 +24,7 @@ pub use ::bungeeoxide_minecraft_root::array::inline_100 as packet_post_effects;
 pub use ::bungeeoxide_minecraft_root::i32 as packet_ping;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_keep_alive;
 pub use ::bungeeoxide_minecraft_root::pstring_131 as packet_code_of_conduct;
-pub use ::bungeeoxide_minecraft_v1_20_2::array::inline_189 as packet_tags;
+pub use ::bungeeoxide_minecraft_v1_20_2::array::inline_190 as packet_tags;
 pub use ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_custom_payload;
 pub use ::bungeeoxide_minecraft_v1_20_2::configuration::to_client::packet_finish_configuration;
 pub use ::bungeeoxide_minecraft_v1_20_5::configuration::to_client::packet_registry_data;

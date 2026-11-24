@@ -10,14 +10,14 @@ pub struct DataComponentMatchers {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::array::inline_66::serialize(&_0.exact_matchers, output)?;
-	super::array::inline_248::serialize(&_0.partial_matchers, output)?;
+	super::array::inline_249::serialize(&_0.partial_matchers, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_exactMatchers = super::array::inline_66::deserialize(input)?;
-	let f_partialMatchers = super::array::inline_248::deserialize(input)?;
+	let f_partialMatchers = super::array::inline_249::deserialize(input)?;
 	Ok(Ty {
 		exact_matchers: f_exactMatchers,
 		partial_matchers: f_partialMatchers,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	super::array::inline_66::size_of(&_0.exact_matchers)
-		+ super::array::inline_248::size_of(&_0.partial_matchers)
+		+ super::array::inline_249::size_of(&_0.partial_matchers)
 }
 
 pub type Ty = DataComponentMatchers;

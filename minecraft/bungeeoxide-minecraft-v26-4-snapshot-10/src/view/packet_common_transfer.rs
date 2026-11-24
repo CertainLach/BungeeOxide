@@ -6,13 +6,13 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketCommonTransfer<'i> {
 	pub host: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub port: ::bungeeoxide_minecraft_root::Varint,
-	pub properties: super::array::Inline448<'i>,
+	pub properties: super::array::Inline449<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.host, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.port, output)?;
-	super::array::inline_448::serialize(&_0.properties, output)?;
+	super::array::inline_449::serialize(&_0.properties, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
 	let f_host = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_port = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_properties = super::array::inline_448::deserialize(input)?;
+	let f_properties = super::array::inline_449::deserialize(input)?;
 	Ok(Ty {
 		host: f_host,
 		port: f_port,
@@ -31,14 +31,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.host)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.port)
-		+ super::array::inline_448::size_of(&_0.properties)
+		+ super::array::inline_449::size_of(&_0.properties)
 }
 
 pub fn view<'i>(_0: &'i super::super::PacketCommonTransfer) -> Ty<'i> {
 	Ty {
 		host: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.host),
 		port: ::core::clone::Clone::clone(&_0.port),
-		properties: super::array::inline_448::view(&_0.properties),
+		properties: super::array::inline_449::view(&_0.properties),
 	}
 }
 

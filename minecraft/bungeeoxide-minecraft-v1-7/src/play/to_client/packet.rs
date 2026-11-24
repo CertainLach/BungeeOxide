@@ -186,7 +186,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::OpenSignEntity(__v) => {
 			::bungeeoxide_minecraft_v1_0_1::position_iii::serialize(__v, output)
 		}
-		Ty::Statistics(__v) => super::super::super::array::inline_366::serialize(__v, output),
+		Ty::Statistics(__v) => super::super::super::array::inline_367::serialize(__v, output),
 		Ty::PlayerInfo(__v) => super::packet_player_info::serialize(__v, output),
 		Ty::Abilities(__v) => {
 			::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities::serialize(__v, output)
@@ -438,7 +438,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if *__tag == 55_i32 {
-		return Ok(Ty::Statistics(super::super::super::array::inline_366::deserialize(input)?));
+		return Ok(Ty::Statistics(super::super::super::array::inline_367::deserialize(input)?));
 	}
 	if *__tag == 56_i32 {
 		return Ok(Ty::PlayerInfo(super::packet_player_info::deserialize(input)?));
@@ -586,7 +586,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_3_2::play::to_client::packet_tile_entity_data::size_of(__v)
 			}
 			Ty::OpenSignEntity(__v) => ::bungeeoxide_minecraft_v1_0_1::position_iii::size_of(__v),
-			Ty::Statistics(__v) => super::super::super::array::inline_366::size_of(__v),
+			Ty::Statistics(__v) => super::super::super::array::inline_367::size_of(__v),
 			Ty::PlayerInfo(__v) => super::packet_player_info::size_of(__v),
 			Ty::Abilities(__v) => {
 				::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities::size_of(__v)

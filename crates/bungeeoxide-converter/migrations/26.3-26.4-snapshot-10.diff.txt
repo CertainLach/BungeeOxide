@@ -18,12 +18,16 @@
 = HashedSlot (references changed)
 = ItemBlockPredicate (references changed)
 = ItemStackTemplate (references changed)
+~ Node [FieldsRetypedNested]
+    ~type: nested change
 ~ Particle [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
     +freezing
     ~current_down
     ~bubble_column_up
     -item_snowball
     33 arms renumbered
+= Path (references changed)
+= PathDebugData (references changed)
 = Slot (references changed)
 ~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
     ~consumable

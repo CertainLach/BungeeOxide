@@ -2,12 +2,12 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 pub mod inline_13;
 pub mod inline_14;
-pub mod inline_365;
 pub mod inline_366;
+pub mod inline_367;
 pub mod inline_8;
 
 pub use self::inline_8::Ty as Inline8;
 pub use self::inline_13::Ty as Inline13;
 pub use self::inline_14::Ty as Inline14;
-pub use self::inline_365::Ty as Inline365;
 pub use self::inline_366::Ty as Inline366;
+pub use self::inline_367::Ty as Inline367;

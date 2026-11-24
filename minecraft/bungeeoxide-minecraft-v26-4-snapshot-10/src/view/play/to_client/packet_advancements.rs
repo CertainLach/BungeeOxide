@@ -5,17 +5,17 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements<'i> {
 	pub reset: ::bungeeoxide_minecraft_root::Bool,
-	pub advancement_mapping: super::super::super::array::Inline449<'i>,
+	pub advancement_mapping: super::super::super::array::Inline450<'i>,
 	pub identifiers: ::bungeeoxide_minecraft_root::view::array::Inline100<'i>,
-	pub progress_mapping: super::super::super::array::Inline451<'i>,
+	pub progress_mapping: super::super::super::array::Inline452<'i>,
 	pub show_advancements: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reset, output)?;
-	super::super::super::array::inline_449::serialize(&_0.advancement_mapping, output)?;
+	super::super::super::array::inline_450::serialize(&_0.advancement_mapping, output)?;
 	::bungeeoxide_minecraft_root::view::array::inline_100::serialize(&_0.identifiers, output)?;
-	super::super::super::array::inline_451::serialize(&_0.progress_mapping, output)?;
+	super::super::super::array::inline_452::serialize(&_0.progress_mapping, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_advancements, output)?;
 	Ok(())
 }
@@ -23,9 +23,9 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(5)?;
 	let f_reset = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_advancementMapping = super::super::super::array::inline_449::deserialize(input)?;
+	let f_advancementMapping = super::super::super::array::inline_450::deserialize(input)?;
 	let f_identifiers = ::bungeeoxide_minecraft_root::view::array::inline_100::deserialize(input)?;
-	let f_progressMapping = super::super::super::array::inline_451::deserialize(input)?;
+	let f_progressMapping = super::super::super::array::inline_452::deserialize(input)?;
 	let f_showAdvancements = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		reset: f_reset,
@@ -38,18 +38,18 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::bool::size_of(&_0.reset)
-		+ super::super::super::array::inline_449::size_of(&_0.advancement_mapping)
+		+ super::super::super::array::inline_450::size_of(&_0.advancement_mapping)
 		+ ::bungeeoxide_minecraft_root::view::array::inline_100::size_of(&_0.identifiers)
-		+ super::super::super::array::inline_451::size_of(&_0.progress_mapping)
+		+ super::super::super::array::inline_452::size_of(&_0.progress_mapping)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_advancements)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements) -> Ty<'i> {
 	Ty {
 		reset: ::core::clone::Clone::clone(&_0.reset),
-		advancement_mapping: super::super::super::array::inline_449::view(&_0.advancement_mapping),
+		advancement_mapping: super::super::super::array::inline_450::view(&_0.advancement_mapping),
 		identifiers: ::bungeeoxide_minecraft_root::view::array::inline_100::view(&_0.identifiers),
-		progress_mapping: super::super::super::array::inline_451::view(&_0.progress_mapping),
+		progress_mapping: super::super::super::array::inline_452::view(&_0.progress_mapping),
 		show_advancements: ::core::clone::Clone::clone(&_0.show_advancements),
 	}
 }
@@ -57,9 +57,9 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvan
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements) -> Ty<'i> {
 	Ty {
 		reset: ::core::clone::Clone::clone(&mut _0.reset),
-		advancement_mapping: super::super::super::array::inline_449::into_view(&mut _0.advancement_mapping),
+		advancement_mapping: super::super::super::array::inline_450::into_view(&mut _0.advancement_mapping),
 		identifiers: ::bungeeoxide_minecraft_root::view::array::inline_100::view(&mut _0.identifiers),
-		progress_mapping: super::super::super::array::inline_451::view(&mut _0.progress_mapping),
+		progress_mapping: super::super::super::array::inline_452::view(&mut _0.progress_mapping),
 		show_advancements: ::core::clone::Clone::clone(&mut _0.show_advancements),
 	}
 }

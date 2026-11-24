@@ -12,7 +12,7 @@ pub struct PacketMultiBlockChange {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::packet_multi_block_change_0::serialize(&_0.chunk_coordinates, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.not_trust_edges, output)?;
-	::bungeeoxide_minecraft_root::array::inline_139::serialize(&_0.records, output)?;
+	::bungeeoxide_minecraft_root::array::inline_140::serialize(&_0.records, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(10)?;
 	let f_chunkCoordinates = super::packet_multi_block_change_0::deserialize(input)?;
 	let f_notTrustEdges = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_records = ::bungeeoxide_minecraft_root::array::inline_139::deserialize(input)?;
+	let f_records = ::bungeeoxide_minecraft_root::array::inline_140::deserialize(input)?;
 	Ok(Ty {
 		chunk_coordinates: f_chunkCoordinates,
 		not_trust_edges: f_notTrustEdges,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	super::packet_multi_block_change_0::size_of(&_0.chunk_coordinates)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.not_trust_edges)
-		+ ::bungeeoxide_minecraft_root::array::inline_139::size_of(&_0.records)
+		+ ::bungeeoxide_minecraft_root::array::inline_140::size_of(&_0.records)
 }
 
 pub type Ty = PacketMultiBlockChange;

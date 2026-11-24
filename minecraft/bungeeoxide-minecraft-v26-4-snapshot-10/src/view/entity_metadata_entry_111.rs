@@ -13,7 +13,7 @@ pub enum EntityMetadataEntry111<'i> {
 	BlockState(::bungeeoxide_minecraft_root::Varint),
 	OptionalBlockState(::bungeeoxide_minecraft_root::Varint),
 	Particle(super::Particle<'i>),
-	Particles(super::array::Inline131<'i>),
+	Particles(super::array::Inline132<'i>),
 	VillagerData(super::super::EntityMetadataEntry107),
 	OptionalUnsignedInt(::bungeeoxide_minecraft_root::Varint),
 	Long(::bungeeoxide_minecraft_root::Varlong),
@@ -67,7 +67,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::Particle(__v) => super::particle::serialize(__v, output),
-		Ty::Particles(__v) => super::array::inline_131::serialize(__v, output),
+		Ty::Particles(__v) => super::array::inline_132::serialize(__v, output),
 		Ty::VillagerData(__v) => super::super::entity_metadata_entry_107::serialize(__v, output),
 		Ty::OptionalUnsignedInt(__v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
@@ -160,7 +160,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		return Ok(Ty::Particle(super::particle::deserialize(input)?));
 	}
 	if *__tag == 17_i32 {
-		return Ok(Ty::Particles(super::array::inline_131::deserialize(input)?));
+		return Ok(Ty::Particles(super::array::inline_132::deserialize(input)?));
 	}
 	if *__tag == 18_i32 {
 		return Ok(Ty::VillagerData(super::super::entity_metadata_entry_107::deserialize(input)?));
@@ -297,7 +297,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 			Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Particle(__v) => super::particle::size_of(__v),
-			Ty::Particles(__v) => super::array::inline_131::size_of(__v),
+			Ty::Particles(__v) => super::array::inline_132::size_of(__v),
 			Ty::VillagerData(__v) => super::super::entity_metadata_entry_107::size_of(__v),
 			Ty::OptionalUnsignedInt(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Long(__v) => ::bungeeoxide_minecraft_root::varlong::size_of(__v),
@@ -472,7 +472,7 @@ pub fn view<'i>(_0: &'i super::super::EntityMetadataEntry111) -> Ty<'i> {
 			Ty::Particle(super::particle::view(__v))
 		}
 		super::super::EntityMetadataEntry111::Particles(__v) => {
-			Ty::Particles(super::array::inline_131::view(__v))
+			Ty::Particles(super::array::inline_132::view(__v))
 		}
 		super::super::EntityMetadataEntry111::VillagerData(__v) => {
 			Ty::VillagerData(::core::clone::Clone::clone(__v))
@@ -610,7 +610,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataEntry111) -> Ty<'i>
 			Ty::Particle(super::particle::into_view(__v))
 		}
 		super::super::EntityMetadataEntry111::Particles(__v) => {
-			Ty::Particles(super::array::inline_131::into_view(__v))
+			Ty::Particles(super::array::inline_132::into_view(__v))
 		}
 		super::super::EntityMetadataEntry111::VillagerData(__v) => {
 			Ty::VillagerData(::core::clone::Clone::clone(__v))

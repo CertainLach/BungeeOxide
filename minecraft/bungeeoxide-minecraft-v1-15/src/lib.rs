@@ -46,7 +46,7 @@ pub use ::bungeeoxide_minecraft_v1_0_1::vec3i16;
 pub use ::bungeeoxide_minecraft_v1_13::command_node;
 pub use ::bungeeoxide_minecraft_v1_13_2::array::inline_37 as ingredient;
 pub use ::bungeeoxide_minecraft_v1_13_2::slot;
-pub use ::bungeeoxide_minecraft_v1_14::array::inline_160 as tags;
+pub use ::bungeeoxide_minecraft_v1_14::array::inline_161 as tags;
 pub use ::bungeeoxide_minecraft_v1_14::entity_metadata;
 pub use ::bungeeoxide_minecraft_v1_14::entity_metadata_item;
 pub use ::bungeeoxide_minecraft_v1_14::minecraft_smelting_format;

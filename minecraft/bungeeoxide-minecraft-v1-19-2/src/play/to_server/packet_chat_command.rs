@@ -17,9 +17,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_174::serialize(&_0.argument_signatures, output)?;
+	super::super::super::array::inline_175::serialize(&_0.argument_signatures, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.signed_preview, output)?;
-	super::super::super::array::inline_175::serialize(&_0.previous_messages, output)?;
+	super::super::super::array::inline_176::serialize(&_0.previous_messages, output)?;
 	super::super::super::option_44::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
@@ -29,9 +29,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_command = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_argumentSignatures = super::super::super::array::inline_174::deserialize(input)?;
+	let f_argumentSignatures = super::super::super::array::inline_175::deserialize(input)?;
 	let f_signedPreview = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_175::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_176::deserialize(input)?;
 	let f_lastRejectedMessage = super::super::super::option_44::deserialize(input)?;
 	Ok(Ty {
 		command: f_command,
@@ -48,9 +48,9 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_174::size_of(&_0.argument_signatures)
+		+ super::super::super::array::inline_175::size_of(&_0.argument_signatures)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.signed_preview)
-		+ super::super::super::array::inline_175::size_of(&_0.previous_messages)
+		+ super::super::super::array::inline_176::size_of(&_0.previous_messages)
 		+ super::super::super::option_44::size_of(&_0.last_rejected_message)
 }
 

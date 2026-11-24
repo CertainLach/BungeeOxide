@@ -9,15 +9,15 @@ pub struct PacketDeclareRecipes {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_359::serialize(&_0.recipes, output)?;
-	super::super::super::array::inline_360::serialize(&_0.stone_cutter_recipes, output)?;
+	super::super::super::array::inline_360::serialize(&_0.recipes, output)?;
+	super::super::super::array::inline_361::serialize(&_0.stone_cutter_recipes, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_recipes = super::super::super::array::inline_359::deserialize(input)?;
-	let f_stoneCutterRecipes = super::super::super::array::inline_360::deserialize(input)?;
+	let f_recipes = super::super::super::array::inline_360::deserialize(input)?;
+	let f_stoneCutterRecipes = super::super::super::array::inline_361::deserialize(input)?;
 	Ok(Ty {
 		recipes: f_recipes,
 		stone_cutter_recipes: f_stoneCutterRecipes,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_359::size_of(&_0.recipes)
-		+ super::super::super::array::inline_360::size_of(&_0.stone_cutter_recipes)
+	super::super::super::array::inline_360::size_of(&_0.recipes)
+		+ super::super::super::array::inline_361::size_of(&_0.stone_cutter_recipes)
 }
 
 pub type Ty = PacketDeclareRecipes;

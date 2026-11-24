@@ -14,7 +14,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.transaction_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.start, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.length, output)?;
-	super::super::super::array::inline_151::serialize(&_0.matches, output)?;
+	super::super::super::array::inline_152::serialize(&_0.matches, output)?;
 	Ok(())
 }
 
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_transactionId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_start = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_length = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_matches = super::super::super::array::inline_151::deserialize(input)?;
+	let f_matches = super::super::super::array::inline_152::deserialize(input)?;
 	Ok(Ty {
 		transaction_id: f_transactionId,
 		start: f_start,
@@ -36,7 +36,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.transaction_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.start)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.length)
-		+ super::super::super::array::inline_151::size_of(&_0.matches)
+		+ super::super::super::array::inline_152::size_of(&_0.matches)
 }
 
 pub type Ty = PacketTabComplete;

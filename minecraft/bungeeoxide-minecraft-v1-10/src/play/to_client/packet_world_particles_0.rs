@@ -18,32 +18,32 @@ pub enum PacketWorldParticles0 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::V36(__v) => {
-			::bungeeoxide_minecraft_root::array::sized_498::check_count(
+			::bungeeoxide_minecraft_root::array::sized_499::check_count(
 				__v,
 				&2.try_into().expect("constant fits"),
 			)?;
-			::bungeeoxide_minecraft_root::array::sized_498::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::sized_499::serialize(__v, output)
 		}
 		Ty::V37(__v) => {
-			::bungeeoxide_minecraft_root::array::sized_498::check_count(
+			::bungeeoxide_minecraft_root::array::sized_499::check_count(
 				__v,
 				&1.try_into().expect("constant fits"),
 			)?;
-			::bungeeoxide_minecraft_root::array::sized_498::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::sized_499::serialize(__v, output)
 		}
 		Ty::V38(__v) => {
-			::bungeeoxide_minecraft_root::array::sized_498::check_count(
+			::bungeeoxide_minecraft_root::array::sized_499::check_count(
 				__v,
 				&1.try_into().expect("constant fits"),
 			)?;
-			::bungeeoxide_minecraft_root::array::sized_498::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::sized_499::serialize(__v, output)
 		}
 		Ty::V46(__v) => {
-			::bungeeoxide_minecraft_root::array::sized_498::check_count(
+			::bungeeoxide_minecraft_root::array::sized_499::check_count(
 				__v,
 				&1.try_into().expect("constant fits"),
 			)?;
-			::bungeeoxide_minecraft_root::array::sized_498::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::sized_499::serialize(__v, output)
 		}
 		Ty::Default(_) => Ok(()),
 	}
@@ -52,27 +52,27 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.particle_id;
 	if *__tag == 36_i32 {
-		return Ok(Ty::V36(::bungeeoxide_minecraft_root::array::sized_498::deserialize(
+		return Ok(Ty::V36(::bungeeoxide_minecraft_root::array::sized_499::deserialize(
 			input,
-			::bungeeoxide_minecraft_root::array::sized_498::Args { count: &2 },
+			::bungeeoxide_minecraft_root::array::sized_499::Args { count: &2 },
 		)?));
 	}
 	if *__tag == 37_i32 {
-		return Ok(Ty::V37(::bungeeoxide_minecraft_root::array::sized_498::deserialize(
+		return Ok(Ty::V37(::bungeeoxide_minecraft_root::array::sized_499::deserialize(
 			input,
-			::bungeeoxide_minecraft_root::array::sized_498::Args { count: &1 },
+			::bungeeoxide_minecraft_root::array::sized_499::Args { count: &1 },
 		)?));
 	}
 	if *__tag == 38_i32 {
-		return Ok(Ty::V38(::bungeeoxide_minecraft_root::array::sized_498::deserialize(
+		return Ok(Ty::V38(::bungeeoxide_minecraft_root::array::sized_499::deserialize(
 			input,
-			::bungeeoxide_minecraft_root::array::sized_498::Args { count: &1 },
+			::bungeeoxide_minecraft_root::array::sized_499::Args { count: &1 },
 		)?));
 	}
 	if *__tag == 46_i32 {
-		return Ok(Ty::V46(::bungeeoxide_minecraft_root::array::sized_498::deserialize(
+		return Ok(Ty::V46(::bungeeoxide_minecraft_root::array::sized_499::deserialize(
 			input,
-			::bungeeoxide_minecraft_root::array::sized_498::Args { count: &1 },
+			::bungeeoxide_minecraft_root::array::sized_499::Args { count: &1 },
 		)?));
 	}
 	Ok(Ty::Default(*__tag))
@@ -80,10 +80,10 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
-		Ty::V36(__v) => ::bungeeoxide_minecraft_root::array::sized_498::size_of(__v),
-		Ty::V37(__v) => ::bungeeoxide_minecraft_root::array::sized_498::size_of(__v),
-		Ty::V38(__v) => ::bungeeoxide_minecraft_root::array::sized_498::size_of(__v),
-		Ty::V46(__v) => ::bungeeoxide_minecraft_root::array::sized_498::size_of(__v),
+		Ty::V36(__v) => ::bungeeoxide_minecraft_root::array::sized_499::size_of(__v),
+		Ty::V37(__v) => ::bungeeoxide_minecraft_root::array::sized_499::size_of(__v),
+		Ty::V38(__v) => ::bungeeoxide_minecraft_root::array::sized_499::size_of(__v),
+		Ty::V46(__v) => ::bungeeoxide_minecraft_root::array::sized_499::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

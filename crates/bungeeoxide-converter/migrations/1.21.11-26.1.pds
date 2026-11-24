@@ -21,6 +21,12 @@ updated(ItemBlockPredicate) {
 
 updated(Node) {
 	updated(type) {
+		renamed(danger_powder_snow, to: on_top_of_powder_snow);
+		renamed(danger_fire, to: fire_in_neighbor);
+		renamed(damage_fire, to: fire);
+		renamed(danger_other, to: damaging_in_neighbor);
+		renamed(damage_other, to: damaging);
+		renamed(danger_trapdoor, to: on_top_of_trapdoor);
 		added(big_mobs_close_to_danger, down: danger_other);
 	};
 };

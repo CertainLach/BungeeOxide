@@ -13,7 +13,7 @@ pub struct PacketPlayerInfo5 {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
-	super::super::super::array::inline_370::serialize(&_0.properties, output)?;
+	super::super::super::array::inline_371::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.ping, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.display_name, output)?;
@@ -23,7 +23,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_370::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_371::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_ping = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_displayName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
-		+ super::super::super::array::inline_370::size_of(&_0.properties)
+		+ super::super::super::array::inline_371::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.ping)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.display_name)

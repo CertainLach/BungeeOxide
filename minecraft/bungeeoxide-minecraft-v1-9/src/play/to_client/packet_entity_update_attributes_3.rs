@@ -12,7 +12,7 @@ pub struct PacketEntityUpdateAttributes3 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
-	super::super::super::array::inline_373::serialize(&_0.modifiers, output)?;
+	super::super::super::array::inline_374::serialize(&_0.modifiers, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(10)?;
 	let f_key = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
-	let f_modifiers = super::super::super::array::inline_373::deserialize(input)?;
+	let f_modifiers = super::super::super::array::inline_374::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
-		+ super::super::super::array::inline_373::size_of(&_0.modifiers)
+		+ super::super::super::array::inline_374::size_of(&_0.modifiers)
 }
 
 pub type Ty = PacketEntityUpdateAttributes3;

@@ -223,7 +223,7 @@ pub use self::packet_world_border_warning_reach::Ty as PacketWorldBorderWarningR
 pub use self::packet_world_event::Ty as PacketWorldEvent;
 pub use self::packet_world_particles::PacketWorldParticles;
 pub use ::bungeeoxide_minecraft_root::array::inline_24 as packet_player_remove;
-pub use ::bungeeoxide_minecraft_root::array::inline_138 as packet_entity_destroy;
+pub use ::bungeeoxide_minecraft_root::array::inline_139 as packet_entity_destroy;
 pub use ::bungeeoxide_minecraft_root::bool as packet_clear_titles;
 pub use ::bungeeoxide_minecraft_root::f64 as packet_world_border_size;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_held_item_slot;
@@ -262,7 +262,7 @@ pub use ::bungeeoxide_minecraft_v1_9::play::to_client::packet_set_passengers;
 pub use ::bungeeoxide_minecraft_v1_9::play::to_client::packet_spawn_entity_experience_orb;
 pub use ::bungeeoxide_minecraft_v1_9::play::to_client::packet_vehicle_move;
 pub use ::bungeeoxide_minecraft_v1_11::play::to_client::packet_collect;
-pub use ::bungeeoxide_minecraft_v1_13::array::inline_150 as packet_statistics;
+pub use ::bungeeoxide_minecraft_v1_13::array::inline_151 as packet_statistics;
 pub use ::bungeeoxide_minecraft_v1_13::play::to_client::packet_craft_recipe_response;
 pub use ::bungeeoxide_minecraft_v1_13::play::to_client::packet_stop_sound;
 pub use ::bungeeoxide_minecraft_v1_14::play::to_client::packet_block_action;
@@ -273,7 +273,7 @@ pub use ::bungeeoxide_minecraft_v1_14::play::to_client::packet_open_horse_window
 pub use ::bungeeoxide_minecraft_v1_14::play::to_client::packet_update_view_position;
 pub use ::bungeeoxide_minecraft_v1_14::play::to_client::packet_world_event;
 pub use ::bungeeoxide_minecraft_v1_16_2::play::to_client::packet_unlock_recipes;
-pub use ::bungeeoxide_minecraft_v1_17::array::inline_166 as packet_tags;
+pub use ::bungeeoxide_minecraft_v1_17::array::inline_167 as packet_tags;
 pub use ::bungeeoxide_minecraft_v1_17::play::to_client::packet_enter_combat_event;
 pub use ::bungeeoxide_minecraft_v1_17::play::to_client::packet_entity_update_attributes;
 pub use ::bungeeoxide_minecraft_v1_17::play::to_client::packet_set_title_time;
@@ -285,7 +285,7 @@ pub use ::bungeeoxide_minecraft_v1_19_2::play::to_client::packet_chat_suggestion
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_client::packet_entity_sound_effect;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_client::packet_hide_message;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_client::packet_sound_effect;
-pub use ::bungeeoxide_minecraft_v1_19_4::array::inline_182 as packet_chunk_biomes;
+pub use ::bungeeoxide_minecraft_v1_19_4::array::inline_183 as packet_chunk_biomes;
 pub use ::bungeeoxide_minecraft_v1_19_4::play::to_client::packet_damage_event;
 pub use ::bungeeoxide_minecraft_v1_19_4::play::to_client::packet_hurt_animation;
 pub use ::bungeeoxide_minecraft_v1_19_4::play::to_client::packet_initialize_world_border;

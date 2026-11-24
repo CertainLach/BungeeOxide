@@ -7,14 +7,14 @@ pub type Ty = Option<Vec<super::DebugSubscriptionUpdate11>>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::array::inline_437::serialize(v, output)?;
+		super::array::inline_438::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::array::inline_437::deserialize(input)?)
+		Some(super::array::inline_438::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::array::inline_437::size_of(v);
+		n += super::array::inline_438::size_of(v);
 	}
 	n
 }

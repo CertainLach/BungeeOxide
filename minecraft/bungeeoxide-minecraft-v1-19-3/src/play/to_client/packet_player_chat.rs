@@ -25,7 +25,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.plain_message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	super::super::super::array::inline_181::serialize(&_0.previous_messages, output)?;
+	super::super::super::array::inline_182::serialize(&_0.previous_messages, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.unsigned_chat_content, output)?;
 	super::packet_player_chat_8::serialize(&_0.filter_type_mask, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
@@ -42,7 +42,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_plainMessage = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_181::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_182::deserialize(input)?;
 	let f_unsignedChatContent = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_filterTypeMask = super::packet_player_chat_8::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
@@ -71,7 +71,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.plain_message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ super::super::super::array::inline_181::size_of(&_0.previous_messages)
+		+ super::super::super::array::inline_182::size_of(&_0.previous_messages)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.unsigned_chat_content)
 		+ super::packet_player_chat_8::size_of(&_0.filter_type_mask)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)

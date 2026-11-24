@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty = Vec<super::super::login::to_client::PacketSuccess0>;
+pub type Ty = Vec<super::super::configuration::to_client::PacketRegistryData0>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::login::to_client::packet_success_0::serialize(e, output)?;
+		super::super::configuration::to_client::packet_registry_data_0::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -19,10 +19,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let count: usize = ::bungeeoxide_minecraft_root::varint::deserialize(input)?
 		.try_into()
 		.map_err(|_| Error::InvalidValue)?;
-	input.expect(count.saturating_mul(3))?;
+	input.expect(count.saturating_mul(2))?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::login::to_client::packet_success_0::deserialize(input)?);
+		out.push(super::super::configuration::to_client::packet_registry_data_0::deserialize(
+			input,
+		)?);
 	}
 	Ok(out)
 }
@@ -31,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::login::to_client::packet_success_0::size_of(e);
+		n += super::super::configuration::to_client::packet_registry_data_0::size_of(e);
 	}
 	n
 }

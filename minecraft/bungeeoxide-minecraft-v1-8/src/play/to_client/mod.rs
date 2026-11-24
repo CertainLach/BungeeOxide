@@ -188,7 +188,7 @@ pub use ::bungeeoxide_minecraft_v1_0_1::play::to_client::packet_entity_status;
 pub use ::bungeeoxide_minecraft_v1_4_2::play::to_client::packet_update_time;
 pub use ::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities;
 pub use ::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_attach_entity;
-pub use ::bungeeoxide_minecraft_v1_7::array::inline_366 as packet_statistics;
+pub use ::bungeeoxide_minecraft_v1_7::array::inline_367 as packet_statistics;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_animation;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_explosion;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_named_sound_effect;

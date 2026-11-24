@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketSuccess<'i> {
 	pub uuid: ::bungeeoxide_minecraft_root::Uuid,
 	pub username: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
-	pub properties: super::super::super::array::Inline447<'i>,
+	pub properties: super::super::super::array::Inline448<'i>,
 	pub session_id: ::bungeeoxide_minecraft_root::Uuid,
 	pub options: super::super::super::super::login::to_client::ConnectionOptions,
 }
@@ -14,7 +14,7 @@ pub struct PacketSuccess<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
 	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.username, output)?;
-	super::super::super::array::inline_447::serialize(&_0.properties, output)?;
+	super::super::super::array::inline_448::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.session_id, output)?;
 	super::super::super::super::login::to_client::connection_options::serialize(&_0.options, output)?;
 	Ok(())
@@ -24,7 +24,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_username = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_447::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_448::deserialize(input)?;
 	let f_sessionId = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_options =
 		super::super::super::super::login::to_client::connection_options::deserialize(input)?;
@@ -40,7 +40,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
 		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.username)
-		+ super::super::super::array::inline_447::size_of(&_0.properties)
+		+ super::super::super::array::inline_448::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.session_id)
 		+ super::super::super::super::login::to_client::connection_options::size_of(&_0.options)
 }
@@ -49,7 +49,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::PacketSucc
 	Ty {
 		uuid: ::core::clone::Clone::clone(&_0.uuid),
 		username: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.username),
-		properties: super::super::super::array::inline_447::view(&_0.properties),
+		properties: super::super::super::array::inline_448::view(&_0.properties),
 		session_id: ::core::clone::Clone::clone(&_0.session_id),
 		options: ::core::clone::Clone::clone(&_0.options),
 	}

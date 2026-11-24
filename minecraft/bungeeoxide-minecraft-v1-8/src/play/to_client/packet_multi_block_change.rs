@@ -12,7 +12,7 @@ pub struct PacketMultiBlockChange {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_z, output)?;
-	super::super::super::array::inline_369::serialize(&_0.records, output)?;
+	super::super::super::array::inline_370::serialize(&_0.records, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(9)?;
 	let f_chunkX = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_chunkZ = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_records = super::super::super::array::inline_369::deserialize(input)?;
+	let f_records = super::super::super::array::inline_370::deserialize(input)?;
 	Ok(Ty {
 		chunk_x: f_chunkX,
 		chunk_z: f_chunkZ,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_z)
-		+ super::super::super::array::inline_369::size_of(&_0.records)
+		+ super::super::super::array::inline_370::size_of(&_0.records)
 }
 
 pub type Ty = PacketMultiBlockChange;

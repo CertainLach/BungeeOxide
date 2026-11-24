@@ -3,13 +3,13 @@
 pub mod inline_100;
 pub mod inline_26;
 pub mod inline_32;
-pub mod inline_458;
 pub mod inline_459;
-pub mod sized_463;
+pub mod inline_460;
+pub mod sized_464;
 
 pub use self::inline_26::Ty as Inline26;
 pub use self::inline_32::Ty as Inline32;
 pub use self::inline_100::Ty as Inline100;
-pub use self::inline_458::Ty as Inline458;
 pub use self::inline_459::Ty as Inline459;
-pub use self::sized_463::Ty as Sized463;
+pub use self::inline_460::Ty as Inline460;
+pub use self::sized_464::Ty as Sized464;

@@ -4,23 +4,23 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent29<'i> {
-	pub messages: ::bungeeoxide_minecraft_root::view::array::Sized463<'i>,
-	pub filtered_messages: ::bungeeoxide_minecraft_root::view::array::Sized463<'i>,
+	pub messages: ::bungeeoxide_minecraft_root::view::array::Sized464<'i>,
+	pub filtered_messages: ::bungeeoxide_minecraft_root::view::array::Sized464<'i>,
 	pub color: ::bungeeoxide_minecraft_root::Varint,
 	pub has_glowing_text: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::array::sized_463::check_count(
+	::bungeeoxide_minecraft_root::view::array::sized_464::check_count(
 		&_0.messages,
 		&4.try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::view::array::sized_463::serialize(&_0.messages, output)?;
-	::bungeeoxide_minecraft_root::view::array::sized_463::check_count(
+	::bungeeoxide_minecraft_root::view::array::sized_464::serialize(&_0.messages, output)?;
+	::bungeeoxide_minecraft_root::view::array::sized_464::check_count(
 		&_0.filtered_messages,
 		&4.try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::view::array::sized_463::serialize(&_0.filtered_messages, output)?;
+	::bungeeoxide_minecraft_root::view::array::sized_464::serialize(&_0.filtered_messages, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.color, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.has_glowing_text, output)?;
 	Ok(())
@@ -28,13 +28,13 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_messages = ::bungeeoxide_minecraft_root::view::array::sized_463::deserialize(
+	let f_messages = ::bungeeoxide_minecraft_root::view::array::sized_464::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::view::array::sized_463::Args { count: &4 },
+		::bungeeoxide_minecraft_root::view::array::sized_464::Args { count: &4 },
 	)?;
-	let f_filteredMessages = ::bungeeoxide_minecraft_root::view::array::sized_463::deserialize(
+	let f_filteredMessages = ::bungeeoxide_minecraft_root::view::array::sized_464::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::view::array::sized_463::Args { count: &4 },
+		::bungeeoxide_minecraft_root::view::array::sized_464::Args { count: &4 },
 	)?;
 	let f_color = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_hasGlowingText = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -47,16 +47,16 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::array::sized_463::size_of(&_0.messages)
-		+ ::bungeeoxide_minecraft_root::view::array::sized_463::size_of(&_0.filtered_messages)
+	::bungeeoxide_minecraft_root::view::array::sized_464::size_of(&_0.messages)
+		+ ::bungeeoxide_minecraft_root::view::array::sized_464::size_of(&_0.filtered_messages)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.color)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.has_glowing_text)
 }
 
 pub fn view<'i>(_0: &'i super::super::SlotComponent29) -> Ty<'i> {
 	Ty {
-		messages: ::bungeeoxide_minecraft_root::view::array::sized_463::view(&_0.messages),
-		filtered_messages: ::bungeeoxide_minecraft_root::view::array::sized_463::view(&_0.filtered_messages),
+		messages: ::bungeeoxide_minecraft_root::view::array::sized_464::view(&_0.messages),
+		filtered_messages: ::bungeeoxide_minecraft_root::view::array::sized_464::view(&_0.filtered_messages),
 		color: ::core::clone::Clone::clone(&_0.color),
 		has_glowing_text: ::core::clone::Clone::clone(&_0.has_glowing_text),
 	}
@@ -64,8 +64,8 @@ pub fn view<'i>(_0: &'i super::super::SlotComponent29) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent29) -> Ty<'i> {
 	Ty {
-		messages: ::bungeeoxide_minecraft_root::view::array::sized_463::into_view(&mut _0.messages),
-		filtered_messages: ::bungeeoxide_minecraft_root::view::array::sized_463::into_view(&mut _0.filtered_messages),
+		messages: ::bungeeoxide_minecraft_root::view::array::sized_464::into_view(&mut _0.messages),
+		filtered_messages: ::bungeeoxide_minecraft_root::view::array::sized_464::into_view(&mut _0.filtered_messages),
 		color: ::core::clone::Clone::clone(&mut _0.color),
 		has_glowing_text: ::core::clone::Clone::clone(&mut _0.has_glowing_text),
 	}

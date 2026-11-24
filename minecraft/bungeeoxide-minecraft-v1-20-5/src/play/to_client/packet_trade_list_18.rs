@@ -14,8 +14,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
-	super::super::super::array::sized_469::check_count(&_0.components, &_0.added_component_count)?;
-	super::super::super::array::sized_469::serialize(&_0.components, output)?;
+	super::super::super::array::sized_470::check_count(&_0.components, &_0.added_component_count)?;
+	super::super::super::array::sized_470::serialize(&_0.components, output)?;
 	Ok(())
 }
 
@@ -24,9 +24,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::super::super::array::sized_469::deserialize(
+	let f_components = super::super::super::array::sized_470::deserialize(
 		input,
-		super::super::super::array::sized_469::Args {
+		super::super::super::array::sized_470::Args {
 			count: &f_addedComponentCount,
 		},
 	)?;
@@ -42,7 +42,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
-		+ super::super::super::array::sized_469::size_of(&_0.components)
+		+ super::super::super::array::sized_470::size_of(&_0.components)
 }
 
 pub type Ty = PacketTradeList18;

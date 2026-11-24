@@ -15,8 +15,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.group, output)?;
-	super::super::super::array::sized_501::check_count(&_0.ingredients, &_0.width)?;
-	super::super::super::array::sized_501::serialize(&_0.ingredients, output)?;
+	super::super::super::array::sized_502::check_count(&_0.ingredients, &_0.width)?;
+	super::super::super::array::sized_502::serialize(&_0.ingredients, output)?;
 	super::super::super::slot::serialize(&_0.result, output)?;
 	Ok(())
 }
@@ -26,9 +26,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_group = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
-	let f_ingredients = super::super::super::array::sized_501::deserialize(
+	let f_ingredients = super::super::super::array::sized_502::deserialize(
 		input,
-		super::super::super::array::sized_501::Args {
+		super::super::super::array::sized_502::Args {
 			count: &f_width,
 			height: &f_height,
 		},
@@ -47,7 +47,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
 		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.group)
-		+ super::super::super::array::sized_501::size_of(&_0.ingredients)
+		+ super::super::super::array::sized_502::size_of(&_0.ingredients)
 		+ super::super::super::slot::size_of(&_0.result)
 }
 

@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRecipeBookAdd<'i> {
-	pub entries: super::super::super::array::Inline454<'i>,
+	pub entries: super::super::super::array::Inline455<'i>,
 	pub replace: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_454::serialize(&_0.entries, output)?;
+	super::super::super::array::inline_455::serialize(&_0.entries, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.replace, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_entries = super::super::super::array::inline_454::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_455::deserialize(input)?;
 	let f_replace = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		entries: f_entries,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	super::super::super::array::inline_454::size_of(&_0.entries)
+	super::super::super::array::inline_455::size_of(&_0.entries)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.replace)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketRecipeBookAdd) -> Ty<'i> {
 	Ty {
-		entries: super::super::super::array::inline_454::view(&_0.entries),
+		entries: super::super::super::array::inline_455::view(&_0.entries),
 		replace: ::core::clone::Clone::clone(&_0.replace),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketRecipeBookAdd) -> Ty<'i> {
 	Ty {
-		entries: super::super::super::array::inline_454::into_view(&mut _0.entries),
+		entries: super::super::super::array::inline_455::into_view(&mut _0.entries),
 		replace: ::core::clone::Clone::clone(&mut _0.replace),
 	}
 }

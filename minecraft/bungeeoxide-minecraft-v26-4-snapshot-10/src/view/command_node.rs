@@ -5,14 +5,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode<'i> {
 	pub flags: super::super::CommandNode79,
-	pub children: ::bungeeoxide_minecraft_root::array::Inline138,
+	pub children: ::bungeeoxide_minecraft_root::array::Inline139,
 	pub redirect_node: super::super::CommandNode80,
 	pub extra_node_data: super::CommandNode107<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::command_node_79::serialize(&_0.flags, output)?;
-	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.children, output)?;
+	::bungeeoxide_minecraft_root::array::inline_139::serialize(&_0.children, output)?;
 	super::super::command_node_80::debug_assert_tag(&_0.redirect_node, &_0.flags.has_redirect_node);
 	super::super::command_node_80::serialize(&_0.redirect_node, output)?;
 	super::command_node_107::debug_assert_tag(&_0.extra_node_data, &_0.flags.command_node_type);
@@ -23,7 +23,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_flags = super::super::command_node_79::deserialize(input)?;
-	let f_children = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
+	let f_children = ::bungeeoxide_minecraft_root::array::inline_139::deserialize(input)?;
 	let f_redirectNode = super::super::command_node_80::deserialize(
 		input,
 		super::super::command_node_80::Args {
@@ -47,7 +47,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	super::super::command_node_79::size_of(&_0.flags)
-		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.children)
+		+ ::bungeeoxide_minecraft_root::array::inline_139::size_of(&_0.children)
 		+ super::super::command_node_80::size_of(&_0.redirect_node)
 		+ super::command_node_107::size_of(&_0.extra_node_data)
 }

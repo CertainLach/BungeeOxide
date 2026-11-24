@@ -11,16 +11,16 @@ pub struct SlotComponent29 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::array::sized_463::check_count(
+	::bungeeoxide_minecraft_root::array::sized_464::check_count(
 		&_0.messages,
 		&4.try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::array::sized_463::serialize(&_0.messages, output)?;
-	::bungeeoxide_minecraft_root::array::sized_463::check_count(
+	::bungeeoxide_minecraft_root::array::sized_464::serialize(&_0.messages, output)?;
+	::bungeeoxide_minecraft_root::array::sized_464::check_count(
 		&_0.filtered_messages,
 		&4.try_into().expect("constant fits"),
 	)?;
-	::bungeeoxide_minecraft_root::array::sized_463::serialize(&_0.filtered_messages, output)?;
+	::bungeeoxide_minecraft_root::array::sized_464::serialize(&_0.filtered_messages, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.color, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.has_glowing_text, output)?;
 	Ok(())
@@ -28,13 +28,13 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_messages = ::bungeeoxide_minecraft_root::array::sized_463::deserialize(
+	let f_messages = ::bungeeoxide_minecraft_root::array::sized_464::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_463::Args { count: &4 },
+		::bungeeoxide_minecraft_root::array::sized_464::Args { count: &4 },
 	)?;
-	let f_filteredMessages = ::bungeeoxide_minecraft_root::array::sized_463::deserialize(
+	let f_filteredMessages = ::bungeeoxide_minecraft_root::array::sized_464::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_463::Args { count: &4 },
+		::bungeeoxide_minecraft_root::array::sized_464::Args { count: &4 },
 	)?;
 	let f_color = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_hasGlowingText = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -47,8 +47,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::array::sized_463::size_of(&_0.messages)
-		+ ::bungeeoxide_minecraft_root::array::sized_463::size_of(&_0.filtered_messages)
+	::bungeeoxide_minecraft_root::array::sized_464::size_of(&_0.messages)
+		+ ::bungeeoxide_minecraft_root::array::sized_464::size_of(&_0.filtered_messages)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.color)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.has_glowing_text)
 }

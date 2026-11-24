@@ -11,19 +11,19 @@ pub struct PacketTags {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_160::serialize(&_0.block_tags, output)?;
-	super::super::super::array::inline_160::serialize(&_0.item_tags, output)?;
-	super::super::super::array::inline_160::serialize(&_0.fluid_tags, output)?;
-	super::super::super::array::inline_160::serialize(&_0.entity_tags, output)?;
+	super::super::super::array::inline_161::serialize(&_0.block_tags, output)?;
+	super::super::super::array::inline_161::serialize(&_0.item_tags, output)?;
+	super::super::super::array::inline_161::serialize(&_0.fluid_tags, output)?;
+	super::super::super::array::inline_161::serialize(&_0.entity_tags, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_blockTags = super::super::super::array::inline_160::deserialize(input)?;
-	let f_itemTags = super::super::super::array::inline_160::deserialize(input)?;
-	let f_fluidTags = super::super::super::array::inline_160::deserialize(input)?;
-	let f_entityTags = super::super::super::array::inline_160::deserialize(input)?;
+	let f_blockTags = super::super::super::array::inline_161::deserialize(input)?;
+	let f_itemTags = super::super::super::array::inline_161::deserialize(input)?;
+	let f_fluidTags = super::super::super::array::inline_161::deserialize(input)?;
+	let f_entityTags = super::super::super::array::inline_161::deserialize(input)?;
 	Ok(Ty {
 		block_tags: f_blockTags,
 		item_tags: f_itemTags,
@@ -33,10 +33,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_160::size_of(&_0.block_tags)
-		+ super::super::super::array::inline_160::size_of(&_0.item_tags)
-		+ super::super::super::array::inline_160::size_of(&_0.fluid_tags)
-		+ super::super::super::array::inline_160::size_of(&_0.entity_tags)
+	super::super::super::array::inline_161::size_of(&_0.block_tags)
+		+ super::super::super::array::inline_161::size_of(&_0.item_tags)
+		+ super::super::super::array::inline_161::size_of(&_0.fluid_tags)
+		+ super::super::super::array::inline_161::size_of(&_0.entity_tags)
 }
 
 pub type Ty = PacketTags;

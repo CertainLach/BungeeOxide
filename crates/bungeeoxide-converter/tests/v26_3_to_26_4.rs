@@ -1013,3 +1013,48 @@ fn tag_updates_in_play_keep_the_derived_tags() {
 		.unwrap();
 	assert_eq!(swimmable.entries, vec![1]);
 }
+
+fn entity_path(version: Version, types: &[u8]) -> Vec<u8> {
+	let mut b = vec![if version == NEW { 29 } else { 28 }, 7, 5, 1, 1];
+	b.extend(1i32.to_be_bytes());
+	b.extend([0; 8]);
+	b.push(types.len() as u8);
+	for &t in types {
+		b.extend([0; 12]);
+		b.extend(1.5f32.to_be_bytes());
+		b.extend(0.5f32.to_be_bytes());
+		b.push(0);
+		b.push(t);
+		b.extend(2.0f32.to_be_bytes());
+	}
+	b.extend([0, 0, 0]);
+	b.extend(16.0f32.to_be_bytes());
+	if version == NEW {
+		b.push(0);
+	}
+	b
+}
+
+#[test]
+fn path_node_types_keep_their_ids() {
+	let types = [4, 6, 13, 14, 15, 16, 22, 23, 25, 26];
+	let mut cx = Session::new();
+	let down = convert(
+		Root::PlayToClient,
+		NEW,
+		OLD,
+		&entity_path(NEW, &types),
+		&mut cx,
+	)
+	.unwrap();
+	assert_eq!(down, [entity_path(OLD, &types)]);
+	let up = convert(
+		Root::PlayToClient,
+		OLD,
+		NEW,
+		&entity_path(OLD, &types),
+		&mut cx,
+	)
+	.unwrap();
+	assert_eq!(up, [entity_path(NEW, &types)]);
+}

@@ -18,6 +18,6 @@ pub use ::bungeeoxide_minecraft_root::view::anonymous_nbt as packet_show_dialog;
 pub use ::bungeeoxide_minecraft_root::view::array::inline_100 as packet_feature_flags;
 pub use ::bungeeoxide_minecraft_root::view::array::inline_100 as packet_post_effects;
 pub use ::bungeeoxide_minecraft_root::view::pstring_131 as packet_code_of_conduct;
-pub use ::bungeeoxide_minecraft_v1_20_2::view::array::inline_189 as packet_tags;
+pub use ::bungeeoxide_minecraft_v1_20_2::view::array::inline_190 as packet_tags;
 pub use ::bungeeoxide_minecraft_v1_20_2::view::configuration::to_client::packet_custom_payload;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::configuration::to_client::packet_registry_data;

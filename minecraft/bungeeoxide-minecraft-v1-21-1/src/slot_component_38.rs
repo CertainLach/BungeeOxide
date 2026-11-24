@@ -9,14 +9,14 @@ pub struct SlotComponent38 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::array::inline_236::serialize(&_0.enchantments, output)?;
+	super::array::inline_237::serialize(&_0.enchantments, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_tooltip, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_enchantments = super::array::inline_236::deserialize(input)?;
+	let f_enchantments = super::array::inline_237::deserialize(input)?;
 	let f_showTooltip = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		enchantments: f_enchantments,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::array::inline_236::size_of(&_0.enchantments)
+	super::array::inline_237::size_of(&_0.enchantments)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_tooltip)
 }
 

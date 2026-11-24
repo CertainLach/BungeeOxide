@@ -631,13 +631,13 @@ def(Node) => container {
 
 		variant(unpassable_rail, match: 12);
 
-		variant(danger_fire, match: 13);
+		variant(fire_in_neighbor, match: 13);
 
-		variant(damage_fire, match: 14);
+		variant(fire, match: 14);
 
-		variant(danger_other, match: 15);
+		variant(damaging_in_neighbor, match: 15);
 
-		variant(damage_other, match: 16);
+		variant(damaging, match: 16);
 
 		variant(door_open, match: 17);
 
@@ -651,23 +651,23 @@ def(Node) => container {
 
 		variant(leaves, match: 21);
 
-		variant(sticky_honey, match: 22);
+		variant(sticky, match: 22);
 
-		variant(cocoa, match: 23);
+		variant(avoid_in_air, match: 23);
 
 		variant(damage_cautious, match: 24);
 
-		variant(danger_trapdoor, match: 25);
+		variant(on_top_of_drop_down, match: 25);
 
 		variant(big_mobs_close_to_danger, match: 26);
 
 		variant(walkable_door, match: 3);
 
-		variant(trapdoor, match: 4);
+		variant(drop_down, match: 4);
 
 		variant(powder_snow, match: 5);
 
-		variant(danger_powder_snow, match: 6);
+		variant(on_top_of_powder_snow, match: 6);
 
 		variant(fence, match: 7);
 

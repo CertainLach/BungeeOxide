@@ -158,7 +158,7 @@ pub use ::bungeeoxide_minecraft_root::view::array::inline_100 as packet_post_eff
 pub use ::bungeeoxide_minecraft_root::view::option_21 as packet_select_advancement_tab;
 pub use ::bungeeoxide_minecraft_v1_8::view::play::to_client::packet_custom_payload;
 pub use ::bungeeoxide_minecraft_v1_13::view::play::to_client::packet_stop_sound;
-pub use ::bungeeoxide_minecraft_v1_17::view::array::inline_166 as packet_tags;
+pub use ::bungeeoxide_minecraft_v1_17::view::array::inline_167 as packet_tags;
 pub use ::bungeeoxide_minecraft_v1_19_2::view::play::to_client::packet_chat_suggestions;
 pub use ::bungeeoxide_minecraft_v1_19_3::view::play::to_client::packet_hide_message;
 pub use ::bungeeoxide_minecraft_v1_20_2::view::play::to_client::packet_nbt_query_response;
@@ -174,7 +174,7 @@ pub use ::bungeeoxide_minecraft_v1_20_3::view::play::to_client::packet_scoreboar
 pub use ::bungeeoxide_minecraft_v1_20_3::view::play::to_client::packet_scoreboard_score;
 pub use ::bungeeoxide_minecraft_v1_20_3::view::play::to_client::packet_system_chat;
 pub use ::bungeeoxide_minecraft_v1_20_3::view::play::to_client::packet_tab_complete;
-pub use ::bungeeoxide_minecraft_v1_20_5::view::array::inline_220 as packet_chunk_biomes;
+pub use ::bungeeoxide_minecraft_v1_20_5::view::array::inline_221 as packet_chunk_biomes;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::play::to_client::chat_type;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::play::to_client::chat_types;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::play::to_client::packet_server_data;

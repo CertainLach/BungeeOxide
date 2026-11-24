@@ -7,14 +7,14 @@ pub type Ty = Option<Vec<super::play::to_client::PacketMap1>>;
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::array::inline_165::serialize(v, output)?;
+		super::array::inline_166::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::array::inline_165::deserialize(input)?)
+		Some(super::array::inline_166::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::array::inline_165::size_of(v);
+		n += super::array::inline_166::size_of(v);
 	}
 	n
 }

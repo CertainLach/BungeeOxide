@@ -85,7 +85,7 @@ pub use self::packet_world_event::Ty as PacketWorldEvent;
 pub use self::packet_world_particles::PacketWorldParticles;
 pub use self::packet_world_particles_0::PacketWorldParticles0;
 pub use ::bungeeoxide_minecraft_root::array::inline_100 as packet_tab_complete;
-pub use ::bungeeoxide_minecraft_root::array::inline_138 as packet_entity_destroy;
+pub use ::bungeeoxide_minecraft_root::array::inline_139 as packet_entity_destroy;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_held_item_slot;
 pub use ::bungeeoxide_minecraft_root::pstring_131 as packet_kick_disconnect;
 pub use ::bungeeoxide_minecraft_root::u8 as packet_close_window;
@@ -97,7 +97,7 @@ pub use ::bungeeoxide_minecraft_v1_0_1::play::to_client::packet_craft_progress_b
 pub use ::bungeeoxide_minecraft_v1_0_1::play::to_client::packet_entity_status;
 pub use ::bungeeoxide_minecraft_v1_4_2::play::to_client::packet_update_time;
 pub use ::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities;
-pub use ::bungeeoxide_minecraft_v1_7::array::inline_366 as packet_statistics;
+pub use ::bungeeoxide_minecraft_v1_7::array::inline_367 as packet_statistics;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_animation;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_explosion;
 pub use ::bungeeoxide_minecraft_v1_7::play::to_client::packet_respawn;

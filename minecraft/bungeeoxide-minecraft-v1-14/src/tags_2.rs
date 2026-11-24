@@ -10,14 +10,14 @@ pub struct Tags2 {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.tag_name, output)?;
-	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.entries, output)?;
+	::bungeeoxide_minecraft_root::array::inline_139::serialize(&_0.entries, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_tagName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
-	let f_entries = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
+	let f_entries = ::bungeeoxide_minecraft_root::array::inline_139::deserialize(input)?;
 	Ok(Ty {
 		tag_name: f_tagName,
 		entries: f_entries,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.tag_name)
-		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.entries)
+		+ ::bungeeoxide_minecraft_root::array::inline_139::size_of(&_0.entries)
 }
 
 pub type Ty = Tags2;

@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketEntityUpdateAttributes17<'i> {
 	pub key: super::super::super::super::play::to_client::PacketEntityUpdateAttributes15,
 	pub value: ::bungeeoxide_minecraft_root::F64,
-	pub modifiers: super::super::super::array::Inline411<'i>,
+	pub modifiers: super::super::super::array::Inline412<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -15,7 +15,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
-	super::super::super::array::inline_411::serialize(&_0.modifiers, output)?;
+	super::super::super::array::inline_412::serialize(&_0.modifiers, output)?;
 	Ok(())
 }
 
@@ -25,7 +25,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		input,
 	)?;
 	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
-	let f_modifiers = super::super::super::array::inline_411::deserialize(input)?;
+	let f_modifiers = super::super::super::array::inline_412::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
@@ -38,14 +38,14 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		&_0.key,
 	)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
-		+ super::super::super::array::inline_411::size_of(&_0.modifiers)
+		+ super::super::super::array::inline_412::size_of(&_0.modifiers)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes17) -> Ty<'i> {
 	Ty {
 		key: ::core::clone::Clone::clone(&_0.key),
 		value: ::core::clone::Clone::clone(&_0.value),
-		modifiers: super::super::super::array::inline_411::view(&_0.modifiers),
+		modifiers: super::super::super::array::inline_412::view(&_0.modifiers),
 	}
 }
 

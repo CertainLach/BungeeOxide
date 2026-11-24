@@ -3,12 +3,12 @@
 use crate::pds::{Error, Input, Output, Result};
 
 pub struct Args<'a> {
-	pub count: &'a super::super::I16,
+	pub count: &'a usize,
 }
 
-pub type Ty = Vec<super::super::U8>;
+pub type Ty = Vec<super::super::I32>;
 
-pub fn check_count(_0: &Ty, count: &super::super::I16) -> Result<()> {
+pub fn check_count(_0: &Ty, count: &usize) -> Result<()> {
 	if usize::try_from(*count).ok() != Some(_0.len()) {
 		return Err(Error::InvalidValue);
 	}
@@ -17,17 +17,17 @@ pub fn check_count(_0: &Ty, count: &super::super::I16) -> Result<()> {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	for e in _0.iter() {
-		super::super::u8::serialize(e, output)?;
+		super::super::i32::serialize(e, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
-	input.expect(count)?;
+	input.expect(count.saturating_mul(4))?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::u8::deserialize(input)?);
+		out.push(super::super::i32::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = 0;
 	for e in _0.iter() {
-		n += super::super::u8::size_of(e);
+		n += super::super::i32::size_of(e);
 	}
 	n
 }

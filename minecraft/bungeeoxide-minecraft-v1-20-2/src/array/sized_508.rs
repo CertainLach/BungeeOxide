@@ -18,7 +18,7 @@ pub fn check_count(_0: &Ty, count: &::bungeeoxide_minecraft_root::Varint) -> Res
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	for e in _0.iter() {
-		super::sized_468::serialize(e, output)?;
+		super::sized_469::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -27,9 +27,9 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::sized_468::deserialize(
+		out.push(super::sized_469::deserialize(
 			input,
-			super::sized_468::Args { count: args.height },
+			super::sized_469::Args { count: args.height },
 		)?);
 	}
 	Ok(out)
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = 0;
 	for e in _0.iter() {
-		n += super::sized_468::size_of(e);
+		n += super::sized_469::size_of(e);
 	}
 	n
 }

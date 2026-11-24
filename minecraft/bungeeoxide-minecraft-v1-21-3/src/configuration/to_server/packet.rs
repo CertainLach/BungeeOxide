@@ -34,7 +34,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::serialize(__v, output)
 		}
 		Ty::SelectKnownPacks(__v) => {
-			::bungeeoxide_minecraft_v1_20_5::array::inline_216::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_20_5::array::inline_217::serialize(__v, output)
 		}
 		Ty::Default(_) => Ok(()),
 	}
@@ -81,7 +81,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 7_i32 {
 		return Ok(Ty::SelectKnownPacks(
-			::bungeeoxide_minecraft_v1_20_5::array::inline_216::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_20_5::array::inline_217::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -106,7 +106,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_20_3::configuration::to_server::packet_resource_pack_receive::size_of(__v)
 			}
 			Ty::SelectKnownPacks(__v) => {
-				::bungeeoxide_minecraft_v1_20_5::array::inline_216::size_of(__v)
+				::bungeeoxide_minecraft_v1_20_5::array::inline_217::size_of(__v)
 			}
 			Ty::Default(_) => 0,
 		}

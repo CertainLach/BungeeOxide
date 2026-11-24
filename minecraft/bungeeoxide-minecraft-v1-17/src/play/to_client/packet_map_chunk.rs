@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.z, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.bit_map, output)?;
 	::bungeeoxide_minecraft_root::nbt::serialize(&_0.heightmaps, output)?;
-	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.biomes, output)?;
+	::bungeeoxide_minecraft_root::array::inline_139::serialize(&_0.biomes, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.chunk_data, output)?;
 	::bungeeoxide_minecraft_root::array::inline_31::serialize(&_0.block_entities, output)?;
 	Ok(())
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_z = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_bitMap = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_heightmaps = ::bungeeoxide_minecraft_root::nbt::deserialize(input)?;
-	let f_biomes = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
+	let f_biomes = ::bungeeoxide_minecraft_root::array::inline_139::deserialize(input)?;
 	let f_chunkData = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_blockEntities = ::bungeeoxide_minecraft_root::array::inline_31::deserialize(input)?;
 	Ok(Ty {
@@ -49,7 +49,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.z)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.bit_map)
 		+ ::bungeeoxide_minecraft_root::nbt::size_of(&_0.heightmaps)
-		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.biomes)
+		+ ::bungeeoxide_minecraft_root::array::inline_139::size_of(&_0.biomes)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.chunk_data)
 		+ ::bungeeoxide_minecraft_root::array::inline_31::size_of(&_0.block_entities)
 }

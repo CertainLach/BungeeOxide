@@ -2,19 +2,19 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Input, Output, Result};
 
-pub type Ty<'i> = Option<super::array::Inline201<'i>>;
+pub type Ty<'i> = Option<super::array::Inline202<'i>>;
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::array::inline_201::serialize(v, output)?;
+		super::array::inline_202::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::array::inline_201::deserialize(input)?)
+		Some(super::array::inline_202::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,15 +23,15 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	let mut n = ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::array::inline_201::size_of(v);
+		n += super::array::inline_202::size_of(v);
 	}
 	n
 }
 
 pub fn view<'i>(_0: &'i super::super::Option124) -> Ty<'i> {
-	_0.as_ref().map(|v| super::array::inline_201::view(v))
+	_0.as_ref().map(|v| super::array::inline_202::view(v))
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::Option124) -> Ty<'i> {
-	_0.as_mut().map(|v| super::array::inline_201::into_view(v))
+	_0.as_mut().map(|v| super::array::inline_202::into_view(v))
 }

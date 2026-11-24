@@ -16,12 +16,12 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_z, output)?;
 	::bungeeoxide_minecraft_root::i16::serialize(
-		&(super::super::super::array::sized_499::virtual_size(&_0.coordinates) as ::bungeeoxide_minecraft_root::I16),
+		&(super::super::super::array::sized_500::virtual_size(&_0.coordinates) as ::bungeeoxide_minecraft_root::I16),
 		output,
 	)?;
-	super::super::super::array::sized_499::serialize(&_0.coordinates, output)?;
-	::bungeeoxide_minecraft_root::array::sized_465::serialize(&_0.block_ids, output)?;
-	::bungeeoxide_minecraft_root::array::sized_465::serialize(&_0.metadata, output)?;
+	super::super::super::array::sized_500::serialize(&_0.coordinates, output)?;
+	::bungeeoxide_minecraft_root::array::sized_466::serialize(&_0.block_ids, output)?;
+	::bungeeoxide_minecraft_root::array::sized_466::serialize(&_0.metadata, output)?;
 	Ok(())
 }
 
@@ -30,26 +30,26 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_chunkX = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_chunkZ = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_recordCount = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
-	let f_coordinates = super::super::super::array::sized_499::deserialize(
+	let f_coordinates = super::super::super::array::sized_500::deserialize(
 		input,
-		super::super::super::array::sized_499::Args {
+		super::super::super::array::sized_500::Args {
 			count: &f_recordCount,
 		},
 	)?;
-	let f_blockIds = ::bungeeoxide_minecraft_root::array::sized_465::deserialize(
+	let f_blockIds = ::bungeeoxide_minecraft_root::array::sized_466::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_465::Args {
+		::bungeeoxide_minecraft_root::array::sized_466::Args {
 			count: &f_recordCount,
 		},
 	)?;
-	let f_metadata = ::bungeeoxide_minecraft_root::array::sized_465::deserialize(
+	let f_metadata = ::bungeeoxide_minecraft_root::array::sized_466::deserialize(
 		input,
-		::bungeeoxide_minecraft_root::array::sized_465::Args {
+		::bungeeoxide_minecraft_root::array::sized_466::Args {
 			count: &f_recordCount,
 		},
 	)?;
 	debug_assert!(
-		f_recordCount == super::super::super::array::sized_499::virtual_size(&f_coordinates) as ::bungeeoxide_minecraft_root::I16,
+		f_recordCount == super::super::super::array::sized_500::virtual_size(&f_coordinates) as ::bungeeoxide_minecraft_root::I16,
 		"virtual field recordCount does not match its value source",
 	);
 	Ok(Ty {
@@ -65,11 +65,11 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_z)
 		+ ::bungeeoxide_minecraft_root::i16::size_of(
-			&(super::super::super::array::sized_499::virtual_size(&_0.coordinates) as ::bungeeoxide_minecraft_root::I16),
+			&(super::super::super::array::sized_500::virtual_size(&_0.coordinates) as ::bungeeoxide_minecraft_root::I16),
 		)
-		+ super::super::super::array::sized_499::size_of(&_0.coordinates)
-		+ ::bungeeoxide_minecraft_root::array::sized_465::size_of(&_0.block_ids)
-		+ ::bungeeoxide_minecraft_root::array::sized_465::size_of(&_0.metadata)
+		+ super::super::super::array::sized_500::size_of(&_0.coordinates)
+		+ ::bungeeoxide_minecraft_root::array::sized_466::size_of(&_0.block_ids)
+		+ ::bungeeoxide_minecraft_root::array::sized_466::size_of(&_0.metadata)
 }
 
 pub type Ty = PacketMultiBlockChange;

@@ -35,5 +35,65 @@
 		"op": "add",
 		"path": "/types/Node/1/4/type/1/mappings/26",
 		"value": "big_mobs_close_to_danger"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/6",
+		"value": "danger_powder_snow"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/6",
+		"value": "on_top_of_powder_snow"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/13",
+		"value": "danger_fire"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/13",
+		"value": "fire_in_neighbor"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/14",
+		"value": "damage_fire"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/14",
+		"value": "fire"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/15",
+		"value": "danger_other"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/15",
+		"value": "damaging_in_neighbor"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/16",
+		"value": "damage_other"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/16",
+		"value": "damaging"
+	},
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings/25",
+		"value": "danger_trapdoor"
+	},
+	{
+		"op": "replace",
+		"path": "/types/Node/1/4/type/1/mappings/25",
+		"value": "on_top_of_trapdoor"
 	}
 ]

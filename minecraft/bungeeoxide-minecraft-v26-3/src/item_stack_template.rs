@@ -17,10 +17,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_492::check_count(&_0.components, &_0.added_component_count)?;
-	super::array::sized_492::serialize(&_0.components, output)?;
-	super::array::sized_493::check_count(&_0.remove_components, &_0.removed_component_count)?;
-	super::array::sized_493::serialize(&_0.remove_components, output)?;
+	super::array::sized_493::check_count(&_0.components, &_0.added_component_count)?;
+	super::array::sized_493::serialize(&_0.components, output)?;
+	super::array::sized_494::check_count(&_0.remove_components, &_0.removed_component_count)?;
+	super::array::sized_494::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 
@@ -30,15 +30,15 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_492::deserialize(
+	let f_components = super::array::sized_493::deserialize(
 		input,
-		super::array::sized_492::Args {
+		super::array::sized_493::Args {
 			count: &f_addedComponentCount,
 		},
 	)?;
-	let f_removeComponents = super::array::sized_493::deserialize(
+	let f_removeComponents = super::array::sized_494::deserialize(
 		input,
-		super::array::sized_493::Args {
+		super::array::sized_494::Args {
 			count: &f_removedComponentCount,
 		},
 	)?;
@@ -57,8 +57,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_492::size_of(&_0.components)
-		+ super::array::sized_493::size_of(&_0.remove_components)
+		+ super::array::sized_493::size_of(&_0.components)
+		+ super::array::sized_494::size_of(&_0.remove_components)
 }
 
 pub type Ty = ItemStackTemplate;

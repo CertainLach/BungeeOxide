@@ -118,7 +118,7 @@ pub use self::packet_window_items::Ty as PacketWindowItems;
 pub use self::packet_world_border::Ty as PacketWorldBorder;
 pub use self::packet_world_event::Ty as PacketWorldEvent;
 pub use self::packet_world_particles::PacketWorldParticles;
-pub use ::bungeeoxide_minecraft_root::array::inline_138 as packet_entity_destroy;
+pub use ::bungeeoxide_minecraft_root::array::inline_139 as packet_entity_destroy;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_held_item_slot;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_keep_alive;
 pub use ::bungeeoxide_minecraft_root::option_21 as packet_select_advancement_tab;
@@ -166,7 +166,7 @@ pub use ::bungeeoxide_minecraft_v1_10::play::to_client::packet_named_sound_effec
 pub use ::bungeeoxide_minecraft_v1_10::play::to_client::packet_sound_effect;
 pub use ::bungeeoxide_minecraft_v1_11::play::to_client::packet_collect;
 pub use ::bungeeoxide_minecraft_v1_11::play::to_client::packet_title;
-pub use ::bungeeoxide_minecraft_v1_13::array::inline_150 as packet_statistics;
+pub use ::bungeeoxide_minecraft_v1_13::array::inline_151 as packet_statistics;
 pub use ::bungeeoxide_minecraft_v1_13::play::to_client::packet_craft_recipe_response;
 pub use ::bungeeoxide_minecraft_v1_13::play::to_client::packet_declare_commands;
 pub use ::bungeeoxide_minecraft_v1_13::play::to_client::packet_face_player;

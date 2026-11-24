@@ -50,8 +50,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::FeatureFlags(__v) => {
 			::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output)
 		}
-		Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_189::serialize(__v, output),
-		Ty::SelectKnownPacks(__v) => super::super::super::array::inline_216::serialize(__v, output),
+		Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_190::serialize(__v, output),
+		Ty::SelectKnownPacks(__v) => super::super::super::array::inline_217::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -118,13 +118,13 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if *__tag == 13_i32 {
-		return Ok(Ty::Tags(::bungeeoxide_minecraft_v1_20_2::array::inline_189::deserialize(
+		return Ok(Ty::Tags(::bungeeoxide_minecraft_v1_20_2::array::inline_190::deserialize(
 			input,
 		)?));
 	}
 	if *__tag == 14_i32 {
 		return Ok(Ty::SelectKnownPacks(
-			super::super::super::array::inline_216::deserialize(input)?,
+			super::super::super::array::inline_217::deserialize(input)?,
 		));
 	}
 	Ok(Ty::Default(__tagv))
@@ -152,8 +152,8 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::StoreCookie(__v) => super::super::super::packet_common_store_cookie::size_of(__v),
 			Ty::Transfer(__v) => super::super::super::packet_common_transfer::size_of(__v),
 			Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
-			Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_189::size_of(__v),
-			Ty::SelectKnownPacks(__v) => super::super::super::array::inline_216::size_of(__v),
+			Ty::Tags(__v) => ::bungeeoxide_minecraft_v1_20_2::array::inline_190::size_of(__v),
+			Ty::SelectKnownPacks(__v) => super::super::super::array::inline_217::size_of(__v),
 			Ty::Default(_) => 0,
 		}
 }

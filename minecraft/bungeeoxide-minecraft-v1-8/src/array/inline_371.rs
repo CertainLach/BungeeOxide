@@ -2,11 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub struct Args<'a> {
-	pub action: &'a super::super::play::to_client::PacketPlayerInfo3,
-}
-
-pub type Ty = Vec<super::super::play::to_client::PacketPlayerInfo7>;
+pub type Ty = Vec<super::super::play::to_client::PacketPlayerInfo4>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -14,23 +10,19 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::play::to_client::packet_player_info_7::serialize(e, output)?;
+		super::super::play::to_client::packet_player_info_4::serialize(e, output)?;
 	}
 	Ok(())
 }
 
-pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
+pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let count: usize = ::bungeeoxide_minecraft_root::varint::deserialize(input)?
 		.try_into()
 		.map_err(|_| Error::InvalidValue)?;
+	input.expect(count.saturating_mul(3))?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::play::to_client::packet_player_info_7::deserialize(
-			input,
-			super::super::play::to_client::packet_player_info_7::Args {
-				action: args.action,
-			},
-		)?);
+		out.push(super::super::play::to_client::packet_player_info_4::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -39,7 +31,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::play::to_client::packet_player_info_7::size_of(e);
+		n += super::super::play::to_client::packet_player_info_4::size_of(e);
 	}
 	n
 }

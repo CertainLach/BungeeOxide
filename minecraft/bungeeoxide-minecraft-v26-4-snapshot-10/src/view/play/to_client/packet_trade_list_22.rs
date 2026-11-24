@@ -6,13 +6,13 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketTradeList22<'i> {
 	pub item_id: ::bungeeoxide_minecraft_root::Varint,
 	pub item_count: ::bungeeoxide_minecraft_root::Varint,
-	pub components: super::super::super::array::Inline133<'i>,
+	pub components: super::super::super::array::Inline134<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
-	super::super::super::array::inline_133::serialize(&_0.components, output)?;
+	super::super::super::array::inline_134::serialize(&_0.components, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::super::super::array::inline_133::deserialize(input)?;
+	let f_components = super::super::super::array::inline_134::deserialize(input)?;
 	Ok(Ty {
 		item_id: f_itemId,
 		item_count: f_itemCount,
@@ -31,14 +31,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
-		+ super::super::super::array::inline_133::size_of(&_0.components)
+		+ super::super::super::array::inline_134::size_of(&_0.components)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTradeList22) -> Ty<'i> {
 	Ty {
 		item_id: ::core::clone::Clone::clone(&_0.item_id),
 		item_count: ::core::clone::Clone::clone(&_0.item_count),
-		components: super::super::super::array::inline_133::view(&_0.components),
+		components: super::super::super::array::inline_134::view(&_0.components),
 	}
 }
 
@@ -46,7 +46,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 	Ty {
 		item_id: ::core::clone::Clone::clone(&mut _0.item_id),
 		item_count: ::core::clone::Clone::clone(&mut _0.item_count),
-		components: super::super::super::array::inline_133::into_view(&mut _0.components),
+		components: super::super::super::array::inline_134::into_view(&mut _0.components),
 	}
 }
 

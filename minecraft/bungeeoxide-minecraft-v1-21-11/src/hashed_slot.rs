@@ -13,7 +13,7 @@ pub struct HashedSlot {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
-	super::array::inline_249::serialize(&_0.components, output)?;
+	super::array::inline_250::serialize(&_0.components, output)?;
 	super::array::inline_67::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::inline_249::deserialize(input)?;
+	let f_components = super::array::inline_250::deserialize(input)?;
 	let f_removeComponents = super::array::inline_67::deserialize(input)?;
 	Ok(Ty {
 		item_id: f_itemId,
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
-		+ super::array::inline_249::size_of(&_0.components)
+		+ super::array::inline_250::size_of(&_0.components)
 		+ super::array::inline_67::size_of(&_0.remove_components)
 }
 

@@ -15,10 +15,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_486::check_count(&_0.components, &_0.added_component_count)?;
-	super::array::sized_486::serialize(&_0.components, output)?;
-	super::array::sized_487::check_count(&_0.remove_components, &_0.removed_component_count)?;
-	super::array::sized_487::serialize(&_0.remove_components, output)?;
+	super::array::sized_487::check_count(&_0.components, &_0.added_component_count)?;
+	super::array::sized_487::serialize(&_0.components, output)?;
+	super::array::sized_488::check_count(&_0.remove_components, &_0.removed_component_count)?;
+	super::array::sized_488::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 
@@ -27,15 +27,15 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_486::deserialize(
+	let f_components = super::array::sized_487::deserialize(
 		input,
-		super::array::sized_486::Args {
+		super::array::sized_487::Args {
 			count: &f_addedComponentCount,
 		},
 	)?;
-	let f_removeComponents = super::array::sized_487::deserialize(
+	let f_removeComponents = super::array::sized_488::deserialize(
 		input,
-		super::array::sized_487::Args {
+		super::array::sized_488::Args {
 			count: &f_removedComponentCount,
 		},
 	)?;
@@ -52,8 +52,8 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_486::size_of(&_0.components)
-		+ super::array::sized_487::size_of(&_0.remove_components)
+		+ super::array::sized_487::size_of(&_0.components)
+		+ super::array::sized_488::size_of(&_0.remove_components)
 }
 
 pub type Ty = Slot26;

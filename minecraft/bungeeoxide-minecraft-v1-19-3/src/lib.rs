@@ -132,7 +132,7 @@ pub use ::bungeeoxide_minecraft_root::varint as optvarint;
 pub use ::bungeeoxide_minecraft_v1_0_1::vec3i16;
 pub use ::bungeeoxide_minecraft_v1_13_2::array::inline_37 as ingredient;
 pub use ::bungeeoxide_minecraft_v1_13_2::slot;
-pub use ::bungeeoxide_minecraft_v1_14::array::inline_160 as tags;
+pub use ::bungeeoxide_minecraft_v1_14::array::inline_161 as tags;
 pub use ::bungeeoxide_minecraft_v1_14::position;
 pub use ::bungeeoxide_minecraft_v1_18::chunk_block_entity;
 pub use ::bungeeoxide_minecraft_v1_19::particle;

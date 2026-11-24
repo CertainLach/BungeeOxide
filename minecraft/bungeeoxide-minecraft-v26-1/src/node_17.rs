@@ -9,10 +9,10 @@ pub enum Node17 {
 	WaterBorder,
 	Rail,
 	UnpassableRail,
-	DangerFire,
-	DamageFire,
-	DangerOther,
-	DamageOther,
+	FireInNeighbor,
+	Fire,
+	DamagingInNeighbor,
+	Damaging,
 	DoorOpen,
 	DoorWoodClosed,
 	DoorIronClosed,
@@ -22,12 +22,12 @@ pub enum Node17 {
 	StickyHoney,
 	Cocoa,
 	DamageCautious,
-	DangerTrapdoor,
+	OnTopOfTrapdoor,
 	BigMobsCloseToDanger,
 	WalkableDoor,
 	Trapdoor,
 	PowderSnow,
-	DangerPowderSnow,
+	OnTopOfPowderSnow,
 	Fence,
 	Lava,
 	Water,
@@ -42,10 +42,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::WaterBorder => Ok(()),
 		Ty::Rail => Ok(()),
 		Ty::UnpassableRail => Ok(()),
-		Ty::DangerFire => Ok(()),
-		Ty::DamageFire => Ok(()),
-		Ty::DangerOther => Ok(()),
-		Ty::DamageOther => Ok(()),
+		Ty::FireInNeighbor => Ok(()),
+		Ty::Fire => Ok(()),
+		Ty::DamagingInNeighbor => Ok(()),
+		Ty::Damaging => Ok(()),
 		Ty::DoorOpen => Ok(()),
 		Ty::DoorWoodClosed => Ok(()),
 		Ty::DoorIronClosed => Ok(()),
@@ -55,12 +55,12 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::StickyHoney => Ok(()),
 		Ty::Cocoa => Ok(()),
 		Ty::DamageCautious => Ok(()),
-		Ty::DangerTrapdoor => Ok(()),
+		Ty::OnTopOfTrapdoor => Ok(()),
 		Ty::BigMobsCloseToDanger => Ok(()),
 		Ty::WalkableDoor => Ok(()),
 		Ty::Trapdoor => Ok(()),
 		Ty::PowderSnow => Ok(()),
-		Ty::DangerPowderSnow => Ok(()),
+		Ty::OnTopOfPowderSnow => Ok(()),
 		Ty::Fence => Ok(()),
 		Ty::Lava => Ok(()),
 		Ty::Water => Ok(()),
@@ -88,16 +88,16 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::UnpassableRail);
 	}
 	if *__tag == 13_i32 {
-		return Ok(Ty::DangerFire);
+		return Ok(Ty::FireInNeighbor);
 	}
 	if *__tag == 14_i32 {
-		return Ok(Ty::DamageFire);
+		return Ok(Ty::Fire);
 	}
 	if *__tag == 15_i32 {
-		return Ok(Ty::DangerOther);
+		return Ok(Ty::DamagingInNeighbor);
 	}
 	if *__tag == 16_i32 {
-		return Ok(Ty::DamageOther);
+		return Ok(Ty::Damaging);
 	}
 	if *__tag == 17_i32 {
 		return Ok(Ty::DoorOpen);
@@ -127,7 +127,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::DamageCautious);
 	}
 	if *__tag == 25_i32 {
-		return Ok(Ty::DangerTrapdoor);
+		return Ok(Ty::OnTopOfTrapdoor);
 	}
 	if *__tag == 26_i32 {
 		return Ok(Ty::BigMobsCloseToDanger);
@@ -142,7 +142,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::PowderSnow);
 	}
 	if *__tag == 6_i32 {
-		return Ok(Ty::DangerPowderSnow);
+		return Ok(Ty::OnTopOfPowderSnow);
 	}
 	if *__tag == 7_i32 {
 		return Ok(Ty::Fence);
@@ -164,10 +164,10 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::WaterBorder => 0,
 			Ty::Rail => 0,
 			Ty::UnpassableRail => 0,
-			Ty::DangerFire => 0,
-			Ty::DamageFire => 0,
-			Ty::DangerOther => 0,
-			Ty::DamageOther => 0,
+			Ty::FireInNeighbor => 0,
+			Ty::Fire => 0,
+			Ty::DamagingInNeighbor => 0,
+			Ty::Damaging => 0,
 			Ty::DoorOpen => 0,
 			Ty::DoorWoodClosed => 0,
 			Ty::DoorIronClosed => 0,
@@ -177,12 +177,12 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::StickyHoney => 0,
 			Ty::Cocoa => 0,
 			Ty::DamageCautious => 0,
-			Ty::DangerTrapdoor => 0,
+			Ty::OnTopOfTrapdoor => 0,
 			Ty::BigMobsCloseToDanger => 0,
 			Ty::WalkableDoor => 0,
 			Ty::Trapdoor => 0,
 			Ty::PowderSnow => 0,
-			Ty::DangerPowderSnow => 0,
+			Ty::OnTopOfPowderSnow => 0,
 			Ty::Fence => 0,
 			Ty::Lava => 0,
 			Ty::Water => 0,
@@ -197,10 +197,10 @@ pub fn name(_0: &Ty) -> &'static str {
 		Ty::WaterBorder => "water_border",
 		Ty::Rail => "rail",
 		Ty::UnpassableRail => "unpassable_rail",
-		Ty::DangerFire => "danger_fire",
-		Ty::DamageFire => "damage_fire",
-		Ty::DangerOther => "danger_other",
-		Ty::DamageOther => "damage_other",
+		Ty::FireInNeighbor => "fire_in_neighbor",
+		Ty::Fire => "fire",
+		Ty::DamagingInNeighbor => "damaging_in_neighbor",
+		Ty::Damaging => "damaging",
 		Ty::DoorOpen => "door_open",
 		Ty::DoorWoodClosed => "door_wood_closed",
 		Ty::DoorIronClosed => "door_iron_closed",
@@ -210,12 +210,12 @@ pub fn name(_0: &Ty) -> &'static str {
 		Ty::StickyHoney => "sticky_honey",
 		Ty::Cocoa => "cocoa",
 		Ty::DamageCautious => "damage_cautious",
-		Ty::DangerTrapdoor => "danger_trapdoor",
+		Ty::OnTopOfTrapdoor => "on_top_of_trapdoor",
 		Ty::BigMobsCloseToDanger => "big_mobs_close_to_danger",
 		Ty::WalkableDoor => "walkable_door",
 		Ty::Trapdoor => "trapdoor",
 		Ty::PowderSnow => "powder_snow",
-		Ty::DangerPowderSnow => "danger_powder_snow",
+		Ty::OnTopOfPowderSnow => "on_top_of_powder_snow",
 		Ty::Fence => "fence",
 		Ty::Lava => "lava",
 		Ty::Water => "water",
@@ -230,10 +230,10 @@ pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
 		Ty::WaterBorder => 10_i32,
 		Ty::Rail => 11_i32,
 		Ty::UnpassableRail => 12_i32,
-		Ty::DangerFire => 13_i32,
-		Ty::DamageFire => 14_i32,
-		Ty::DangerOther => 15_i32,
-		Ty::DamageOther => 16_i32,
+		Ty::FireInNeighbor => 13_i32,
+		Ty::Fire => 14_i32,
+		Ty::DamagingInNeighbor => 15_i32,
+		Ty::Damaging => 16_i32,
 		Ty::DoorOpen => 17_i32,
 		Ty::DoorWoodClosed => 18_i32,
 		Ty::DoorIronClosed => 19_i32,
@@ -243,12 +243,12 @@ pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
 		Ty::StickyHoney => 22_i32,
 		Ty::Cocoa => 23_i32,
 		Ty::DamageCautious => 24_i32,
-		Ty::DangerTrapdoor => 25_i32,
+		Ty::OnTopOfTrapdoor => 25_i32,
 		Ty::BigMobsCloseToDanger => 26_i32,
 		Ty::WalkableDoor => 3_i32,
 		Ty::Trapdoor => 4_i32,
 		Ty::PowderSnow => 5_i32,
-		Ty::DangerPowderSnow => 6_i32,
+		Ty::OnTopOfPowderSnow => 6_i32,
 		Ty::Fence => 7_i32,
 		Ty::Lava => 8_i32,
 		Ty::Water => 9_i32,

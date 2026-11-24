@@ -10,14 +10,14 @@ pub struct PacketDeclareRecipes14 {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.items, output)?;
+	::bungeeoxide_minecraft_root::array::inline_139::serialize(&_0.items, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
-	let f_items = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
+	let f_items = ::bungeeoxide_minecraft_root::array::inline_139::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		items: f_items,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.items)
+		+ ::bungeeoxide_minecraft_root::array::inline_139::size_of(&_0.items)
 }
 
 pub type Ty = PacketDeclareRecipes14;

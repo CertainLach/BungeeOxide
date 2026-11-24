@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareCommands<'i> {
-	pub nodes: super::super::super::array::Inline135<'i>,
+	pub nodes: super::super::super::array::Inline136<'i>,
 	pub root_index: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_135::serialize(&_0.nodes, output)?;
+	super::super::super::array::inline_136::serialize(&_0.nodes, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.root_index, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_nodes = super::super::super::array::inline_135::deserialize(input)?;
+	let f_nodes = super::super::super::array::inline_136::deserialize(input)?;
 	let f_rootIndex = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		nodes: f_nodes,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	super::super::super::array::inline_135::size_of(&_0.nodes)
+	super::super::super::array::inline_136::size_of(&_0.nodes)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.root_index)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::PacketDeclareCommands) -> Ty<'i> {
 	Ty {
-		nodes: super::super::super::array::inline_135::view(&_0.nodes),
+		nodes: super::super::super::array::inline_136::view(&_0.nodes),
 		root_index: ::core::clone::Clone::clone(&_0.root_index),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::PacketDeclareCommands) -> Ty<'i> {
 	Ty {
-		nodes: super::super::super::array::inline_135::into_view(&mut _0.nodes),
+		nodes: super::super::super::array::inline_136::into_view(&mut _0.nodes),
 		root_index: ::core::clone::Clone::clone(&mut _0.root_index),
 	}
 }

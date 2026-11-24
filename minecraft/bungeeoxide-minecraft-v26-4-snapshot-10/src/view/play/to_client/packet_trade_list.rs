@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTradeList<'i> {
 	pub window_id: ::bungeeoxide_minecraft_root::Varint,
-	pub trades: super::super::super::array::Inline456<'i>,
+	pub trades: super::super::super::array::Inline457<'i>,
 	pub villager_level: ::bungeeoxide_minecraft_root::Varint,
 	pub experience: ::bungeeoxide_minecraft_root::Varint,
 	pub is_regular_villager: ::bungeeoxide_minecraft_root::Bool,
@@ -14,7 +14,7 @@ pub struct PacketTradeList<'i> {
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.window_id, output)?;
-	super::super::super::array::inline_456::serialize(&_0.trades, output)?;
+	super::super::super::array::inline_457::serialize(&_0.trades, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.villager_level, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.experience, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_regular_villager, output)?;
@@ -25,7 +25,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(6)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_trades = super::super::super::array::inline_456::deserialize(input)?;
+	let f_trades = super::super::super::array::inline_457::deserialize(input)?;
 	let f_villagerLevel = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_experience = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_isRegularVillager = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -42,7 +42,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.window_id)
-		+ super::super::super::array::inline_456::size_of(&_0.trades)
+		+ super::super::super::array::inline_457::size_of(&_0.trades)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.villager_level)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.experience)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_regular_villager)
@@ -52,7 +52,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTradeList) -> Ty<'i> {
 	Ty {
 		window_id: ::core::clone::Clone::clone(&_0.window_id),
-		trades: super::super::super::array::inline_456::view(&_0.trades),
+		trades: super::super::super::array::inline_457::view(&_0.trades),
 		villager_level: ::core::clone::Clone::clone(&_0.villager_level),
 		experience: ::core::clone::Clone::clone(&_0.experience),
 		is_regular_villager: ::core::clone::Clone::clone(&_0.is_regular_villager),
@@ -63,7 +63,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTrade
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketTradeList) -> Ty<'i> {
 	Ty {
 		window_id: ::core::clone::Clone::clone(&mut _0.window_id),
-		trades: super::super::super::array::inline_456::into_view(&mut _0.trades),
+		trades: super::super::super::array::inline_457::into_view(&mut _0.trades),
 		villager_level: ::core::clone::Clone::clone(&mut _0.villager_level),
 		experience: ::core::clone::Clone::clone(&mut _0.experience),
 		is_regular_villager: ::core::clone::Clone::clone(&mut _0.is_regular_villager),

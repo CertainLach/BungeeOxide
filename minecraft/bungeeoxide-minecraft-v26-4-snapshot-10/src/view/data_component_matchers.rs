@@ -4,20 +4,20 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DataComponentMatchers<'i> {
-	pub exact_matchers: super::array::Inline133<'i>,
-	pub partial_matchers: super::array::Inline436<'i>,
+	pub exact_matchers: super::array::Inline134<'i>,
+	pub partial_matchers: super::array::Inline437<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	super::array::inline_133::serialize(&_0.exact_matchers, output)?;
-	super::array::inline_436::serialize(&_0.partial_matchers, output)?;
+	super::array::inline_134::serialize(&_0.exact_matchers, output)?;
+	super::array::inline_437::serialize(&_0.partial_matchers, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_exactMatchers = super::array::inline_133::deserialize(input)?;
-	let f_partialMatchers = super::array::inline_436::deserialize(input)?;
+	let f_exactMatchers = super::array::inline_134::deserialize(input)?;
+	let f_partialMatchers = super::array::inline_437::deserialize(input)?;
 	Ok(Ty {
 		exact_matchers: f_exactMatchers,
 		partial_matchers: f_partialMatchers,
@@ -25,21 +25,21 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	super::array::inline_133::size_of(&_0.exact_matchers)
-		+ super::array::inline_436::size_of(&_0.partial_matchers)
+	super::array::inline_134::size_of(&_0.exact_matchers)
+		+ super::array::inline_437::size_of(&_0.partial_matchers)
 }
 
 pub fn view<'i>(_0: &'i super::super::DataComponentMatchers) -> Ty<'i> {
 	Ty {
-		exact_matchers: super::array::inline_133::view(&_0.exact_matchers),
-		partial_matchers: super::array::inline_436::view(&_0.partial_matchers),
+		exact_matchers: super::array::inline_134::view(&_0.exact_matchers),
+		partial_matchers: super::array::inline_437::view(&_0.partial_matchers),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::DataComponentMatchers) -> Ty<'i> {
 	Ty {
-		exact_matchers: super::array::inline_133::into_view(&mut _0.exact_matchers),
-		partial_matchers: super::array::inline_436::into_view(&mut _0.partial_matchers),
+		exact_matchers: super::array::inline_134::into_view(&mut _0.exact_matchers),
+		partial_matchers: super::array::inline_437::into_view(&mut _0.partial_matchers),
 	}
 }
 

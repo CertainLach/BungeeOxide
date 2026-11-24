@@ -168,7 +168,7 @@ pub use self::packet_world_border::Ty as PacketWorldBorder;
 pub use self::packet_world_event::Ty as PacketWorldEvent;
 pub use self::packet_world_particles::PacketWorldParticles;
 pub use self::tags_20::Tags20;
-pub use ::bungeeoxide_minecraft_root::array::inline_138 as packet_entity_destroy;
+pub use ::bungeeoxide_minecraft_root::array::inline_139 as packet_entity_destroy;
 pub use ::bungeeoxide_minecraft_root::i8 as packet_held_item_slot;
 pub use ::bungeeoxide_minecraft_root::i64 as packet_keep_alive;
 pub use ::bungeeoxide_minecraft_root::option_21 as packet_select_advancement_tab;

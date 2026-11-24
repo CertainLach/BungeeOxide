@@ -5,19 +5,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityUpdateAttributes<'i> {
 	pub entity_id: ::bungeeoxide_minecraft_root::Varint,
-	pub properties: super::super::super::array::Inline412<'i>,
+	pub properties: super::super::super::array::Inline413<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	super::super::super::array::inline_412::serialize(&_0.properties, output)?;
+	super::super::super::array::inline_413::serialize(&_0.properties, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_412::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_413::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		properties: f_properties,
@@ -26,13 +26,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ super::super::super::array::inline_412::size_of(&_0.properties)
+		+ super::super::super::array::inline_413::size_of(&_0.properties)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityUpdateAttributes) -> Ty<'i> {
 	Ty {
 		entity_id: ::core::clone::Clone::clone(&_0.entity_id),
-		properties: super::super::super::array::inline_412::view(&_0.properties),
+		properties: super::super::super::array::inline_413::view(&_0.properties),
 	}
 }
 

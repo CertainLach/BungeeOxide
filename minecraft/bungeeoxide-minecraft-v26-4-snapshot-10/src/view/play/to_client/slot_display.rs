@@ -7,7 +7,7 @@ use crate::pds::{Input, Output, Result};
 pub enum SlotDisplay<'i> {
 	Empty,
 	AnyFuel,
-	Composite(super::super::super::array::Inline137<'i>),
+	Composite(super::super::super::array::Inline138<'i>),
 	WithAnyPotion(Box<super::SlotDisplay<'i>>),
 	OnlyWithComponent(Box<super::SlotDisplay4<'i>>),
 	Item(::bungeeoxide_minecraft_root::Varint),
@@ -24,7 +24,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::Empty => Ok(()),
 		Ty::AnyFuel => Ok(()),
-		Ty::Composite(__v) => super::super::super::array::inline_137::serialize(__v, output),
+		Ty::Composite(__v) => super::super::super::array::inline_138::serialize(__v, output),
 		Ty::WithAnyPotion(__v) => self::serialize_guarded(__v, output),
 		Ty::OnlyWithComponent(__v) => super::slot_display_4::serialize(__v, output),
 		Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
@@ -48,7 +48,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		return Ok(Ty::AnyFuel);
 	}
 	if *__tag == 10_i32 {
-		return Ok(Ty::Composite(super::super::super::array::inline_137::deserialize(input)?));
+		return Ok(Ty::Composite(super::super::super::array::inline_138::deserialize(input)?));
 	}
 	if *__tag == 2_i32 {
 		return Ok(Ty::WithAnyPotion(Box::new(self::deserialize_guarded(input)?)));
@@ -82,7 +82,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ match _0 {
 			Ty::Empty => 0,
 			Ty::AnyFuel => 0,
-			Ty::Composite(__v) => super::super::super::array::inline_137::size_of(__v),
+			Ty::Composite(__v) => super::super::super::array::inline_138::size_of(__v),
 			Ty::WithAnyPotion(__v) => self::size_of(__v),
 			Ty::OnlyWithComponent(__v) => super::slot_display_4::size_of(__v),
 			Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
@@ -134,7 +134,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::SlotDisplay
 		super::super::super::super::play::to_client::SlotDisplay::Empty => Ty::Empty,
 		super::super::super::super::play::to_client::SlotDisplay::AnyFuel => Ty::AnyFuel,
 		super::super::super::super::play::to_client::SlotDisplay::Composite(__v) => {
-			Ty::Composite(super::super::super::array::inline_137::view(__v))
+			Ty::Composite(super::super::super::array::inline_138::view(__v))
 		}
 		super::super::super::super::play::to_client::SlotDisplay::WithAnyPotion(__v) => {
 			Ty::WithAnyPotion(Box::new(self::view(__v)))
@@ -171,7 +171,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Sl
 		super::super::super::super::play::to_client::SlotDisplay::Empty => Ty::Empty,
 		super::super::super::super::play::to_client::SlotDisplay::AnyFuel => Ty::AnyFuel,
 		super::super::super::super::play::to_client::SlotDisplay::Composite(__v) => {
-			Ty::Composite(super::super::super::array::inline_137::into_view(__v))
+			Ty::Composite(super::super::super::array::inline_138::into_view(__v))
 		}
 		super::super::super::super::play::to_client::SlotDisplay::WithAnyPotion(__v) => {
 			Ty::WithAnyPotion(Box::new(self::into_view(__v)))

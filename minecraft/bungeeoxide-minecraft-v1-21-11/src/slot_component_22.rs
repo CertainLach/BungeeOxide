@@ -11,7 +11,7 @@ pub struct SlotComponent22 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::array::inline_252::serialize(&_0.rules, output)?;
+	super::array::inline_253::serialize(&_0.rules, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.default_mining_speed, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.damage_per_block, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_destroy_blocks_in_creative, output)?;
@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(7)?;
-	let f_rules = super::array::inline_252::deserialize(input)?;
+	let f_rules = super::array::inline_253::deserialize(input)?;
 	let f_defaultMiningSpeed = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_damagePerBlock = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_canDestroyBlocksInCreative = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::array::inline_252::size_of(&_0.rules)
+	super::array::inline_253::size_of(&_0.rules)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.default_mining_speed)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.damage_per_block)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_destroy_blocks_in_creative)

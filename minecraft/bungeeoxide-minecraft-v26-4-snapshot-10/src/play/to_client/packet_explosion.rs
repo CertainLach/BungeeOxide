@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.block_count, output)?;
 	super::super::super::option_31::serialize(&_0.explosion_particle, output)?;
 	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.sound, output)?;
-	super::super::super::array::inline_136::serialize(&_0.block_particles, output)?;
+	super::super::super::array::inline_137::serialize(&_0.block_particles, output)?;
 	Ok(())
 }
 
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_blockCount = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_explosionParticle = super::super::super::option_31::deserialize(input)?;
 	let f_sound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
-	let f_blockParticles = super::super::super::array::inline_136::deserialize(input)?;
+	let f_blockParticles = super::super::super::array::inline_137::deserialize(input)?;
 	Ok(Ty {
 		center: f_center,
 		radius: f_radius,
@@ -46,7 +46,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.block_count)
 		+ super::super::super::option_31::size_of(&_0.explosion_particle)
 		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.sound)
-		+ super::super::super::array::inline_136::size_of(&_0.block_particles)
+		+ super::super::super::array::inline_137::size_of(&_0.block_particles)
 }
 
 pub type Ty = PacketExplosion;

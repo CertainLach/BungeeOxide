@@ -18,8 +18,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.category, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.grid_width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.grid_height, output)?;
-	super::super::super::array::sized_510::check_count(&_0.ingredients, &_0.grid_width)?;
-	super::super::super::array::sized_510::serialize(&_0.ingredients, output)?;
+	super::super::super::array::sized_511::check_count(&_0.ingredients, &_0.grid_width)?;
+	super::super::super::array::sized_511::serialize(&_0.ingredients, output)?;
 	super::super::super::slot::serialize_guarded(&_0.result, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.show_notification, output)?;
 	Ok(())
@@ -31,9 +31,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_category = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_gridWidth = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_gridHeight = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ingredients = super::super::super::array::sized_510::deserialize(
+	let f_ingredients = super::super::super::array::sized_511::deserialize(
 		input,
-		super::super::super::array::sized_510::Args {
+		super::super::super::array::sized_511::Args {
 			count: &f_gridWidth,
 			grid_height: &f_gridHeight,
 		},
@@ -56,7 +56,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.category)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.grid_width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.grid_height)
-		+ super::super::super::array::sized_510::size_of(&_0.ingredients)
+		+ super::super::super::array::sized_511::size_of(&_0.ingredients)
 		+ super::super::super::slot::size_of(&_0.result)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.show_notification)
 }

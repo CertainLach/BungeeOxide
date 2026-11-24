@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty = Vec<super::super::PacketCommonCustomReportDetails42>;
+pub type Ty = Vec<super::super::SlotComponent37>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::packet_common_custom_report_details_42::serialize(e, output)?;
+		super::super::slot_component_37::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(count.saturating_mul(2))?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::packet_common_custom_report_details_42::deserialize(input)?);
+		out.push(super::super::slot_component_37::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -31,7 +31,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::packet_common_custom_report_details_42::size_of(e);
+		n += super::super::slot_component_37::size_of(e);
 	}
 	n
 }
