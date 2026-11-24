@@ -162,6 +162,7 @@ fn proxies_login_through_compression_into_play() {
 	server.join().unwrap();
 	thread::sleep(Duration::from_millis(300));
 	proxy.kill().unwrap();
+	proxy.wait().unwrap();
 	let mut log = String::new();
 	out.read_to_string(&mut log).unwrap();
 	println!("{log}");

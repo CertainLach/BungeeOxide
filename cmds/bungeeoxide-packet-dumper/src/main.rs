@@ -168,11 +168,7 @@ fn varint(buf: &[u8]) -> Option<(i32, usize)> {
 }
 
 fn variant_name(debug: &str) -> String {
-	debug
-		.split(|c: char| c == '(' || c == '{' || c == ' ')
-		.next()
-		.unwrap_or("")
-		.to_owned()
+	debug.split(['(', '{', ' ']).next().unwrap_or("").to_owned()
 }
 
 fn check<T: Debug>(

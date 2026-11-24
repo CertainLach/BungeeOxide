@@ -59,10 +59,10 @@ fn chunk_sections_keep_block_states() {
 		}
 	}
 	for &s in &sections {
-		data.extend(std::iter::repeat(s as u8).take(2048));
+		data.extend(std::iter::repeat_n(s as u8, 2048));
 	}
 	for &s in &sections {
-		data.extend(std::iter::repeat(0xf0 | s as u8).take(2048));
+		data.extend(std::iter::repeat_n(0xf0 | s as u8, 2048));
 	}
 	data.extend((0..256).map(|b| b as u8));
 	let packet = oldest::Ty::MapChunk(chunk_1_8::Ty {

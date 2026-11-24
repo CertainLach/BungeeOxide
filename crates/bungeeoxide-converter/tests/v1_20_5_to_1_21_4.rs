@@ -998,7 +998,7 @@ fn write_dumps() {
 	}
 	use d::play_to_server_packet::Ty as S;
 	let flags = |on_ground| d::play_to_server_movement_flags::Ty {
-		on_ground: on_ground,
+		on_ground,
 		has_horizontal_collision: false,
 	};
 	let slot = d::slot::Ty::Default(
@@ -1399,7 +1399,7 @@ fn movement_goes_down_with_ticks() {
 	use d::play_to_server_packet::Ty as Q;
 	let mut cx = Session::new();
 	let flags = |on_ground| d::play_to_server_movement_flags::Ty {
-		on_ground: on_ground,
+		on_ground,
 		has_horizontal_collision: false,
 	};
 	let out = down(

@@ -581,7 +581,7 @@ fn light_reaches_1_17() {
 	let mut data = Vec::new();
 	for fill in [1u8, 2, 3] {
 		varint(&mut data, 2048);
-		data.extend(std::iter::repeat(fill).take(2048));
+		data.extend(std::iter::repeat_n(fill, 2048));
 	}
 	let p = C15::UpdateLight(v1_15_2::play_to_client_packet_update_light::Ty {
 		chunk_x: 1,
@@ -2028,7 +2028,7 @@ fn window_floors_show_the_ground_below() {
 	let out = down_17(&teleport_17(-40.0, 0, 2), &mut cx);
 	let c = map_chunk(&out, 0, 0).unwrap();
 	assert_eq!(c.bit_map, 0xffff);
-	let s = sections(&c);
+	let s = sections(c);
 	assert!(s[0].iter().all(|b| *b == floor));
 	assert_eq!(s[3][(15 << 8) | (4 << 4) | 3], air);
 	assert_eq!(

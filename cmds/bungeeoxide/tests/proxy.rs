@@ -136,7 +136,7 @@ async fn connect_as(proxy: SocketAddr, next_state: i32, protocol: i32) -> Result
 		protocol_version: protocol,
 		server_host: "localhost".to_owned(),
 		server_port: proxy.port(),
-		next_state: next_state,
+		next_state,
 	});
 	conn.send(encode(&hs, handshake::serialize)?).await?;
 	Ok(conn)

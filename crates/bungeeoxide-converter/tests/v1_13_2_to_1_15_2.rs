@@ -211,8 +211,10 @@ fn idx(x: usize, y: usize, z: usize) -> usize {
 	y << 8 | z << 4 | x
 }
 
+type Section = (usize, Vec<u32>, Vec<u8>, Vec<u8>);
+
 struct Column {
-	sections: Vec<(usize, Vec<u32>, Vec<u8>, Vec<u8>)>,
+	sections: Vec<Section>,
 	biomes: Vec<i32>,
 }
 
@@ -478,9 +480,9 @@ fn chunk_reaches_1_15_2_with_biome_volume() {
 		panic!()
 	};
 	assert_eq!(biomes.len(), 1024);
-	for i in 0..1024 {
+	for (i, biome) in biomes.iter().enumerate() {
 		assert_eq!(
-			biomes[i],
+			*biome,
 			column.biomes[((i >> 2 & 3) * 4 + 2) * 16 + (i & 3) * 4 + 2]
 		);
 	}

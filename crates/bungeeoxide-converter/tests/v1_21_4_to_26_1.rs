@@ -2023,7 +2023,7 @@ fn mannequins_get_a_hidden_player_entry_before_the_spawn() {
 	let v1_21_8::play_to_client_packet_teams_mode::Ty::Add(add) = &team.mode else {
 		panic!("{team:?}")
 	};
-	assert_eq!(add.players, [profile.name.clone()]);
+	assert_eq!(add.players, std::slice::from_ref(&profile.name));
 	assert!(matches!(
 		add.name_tag_visibility,
 		v1_21_8::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Always

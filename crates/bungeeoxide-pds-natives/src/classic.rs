@@ -50,9 +50,9 @@ pub mod pds_classicString {
 	use super::*;
 	pub type Ty = String;
 	pub const SIZE: usize = 64;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
 		let mut out = [b' '; SIZE];
-		for (i, c) in _0.chars().enumerate() {
+		for (i, c) in value.chars().enumerate() {
 			*out.get_mut(i).ok_or(Error::InvalidValue)? =
 				cp437_byte(c).ok_or(Error::InvalidValue)?;
 		}
@@ -64,7 +64,7 @@ pub mod pds_classicString {
 		let end = bytes.iter().rposition(|b| *b != b' ').map_or(0, |i| i + 1);
 		Ok(bytes[..end].iter().map(|b| CP437[*b as usize]).collect())
 	}
-	pub fn size_of(_0: &Ty) -> usize {
+	pub fn size_of(_value: &Ty) -> usize {
 		SIZE
 	}
 }

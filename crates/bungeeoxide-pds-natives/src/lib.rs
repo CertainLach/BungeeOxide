@@ -9,16 +9,16 @@ pub use classic::*;
 pub mod pds_varint {
 	use super::*;
 	pub type Ty = i32;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		let mut value = *_0 as u32;
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		let mut bits = *value as u32;
 		loop {
-			let mut b = (value & 0x7f) as u8;
-			value >>= 7;
-			if value != 0 {
+			let mut b = (bits & 0x7f) as u8;
+			bits >>= 7;
+			if bits != 0 {
 				b |= 0x80;
 			}
 			output.write(&[b]);
-			if value == 0 {
+			if bits == 0 {
 				return Ok(());
 			}
 		}
@@ -38,12 +38,12 @@ pub mod pds_varint {
 			}
 		}
 	}
-	pub fn size_of(_0: &Ty) -> usize {
+	pub fn size_of(value: &Ty) -> usize {
 		let mut size = 1;
-		let mut value = (*_0 as u32) >> 7;
-		while value != 0 {
+		let mut bits = (*value as u32) >> 7;
+		while bits != 0 {
 			size += 1;
-			value >>= 7;
+			bits >>= 7;
 		}
 		size
 	}
@@ -52,16 +52,16 @@ pub mod pds_varint {
 pub mod pds_varlong {
 	use super::*;
 	pub type Ty = i64;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		let mut value = *_0 as u64;
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		let mut bits = *value as u64;
 		loop {
-			let mut b = (value & 0x7f) as u8;
-			value >>= 7;
-			if value != 0 {
+			let mut b = (bits & 0x7f) as u8;
+			bits >>= 7;
+			if bits != 0 {
 				b |= 0x80;
 			}
 			output.write(&[b]);
-			if value == 0 {
+			if bits == 0 {
 				return Ok(());
 			}
 		}
@@ -81,12 +81,12 @@ pub mod pds_varlong {
 			}
 		}
 	}
-	pub fn size_of(_0: &Ty) -> usize {
+	pub fn size_of(value: &Ty) -> usize {
 		let mut size = 1;
-		let mut value = (*_0 as u64) >> 7;
-		while value != 0 {
+		let mut bits = (*value as u64) >> 7;
+		while bits != 0 {
 			size += 1;
-			value >>= 7;
+			bits >>= 7;
 		}
 		size
 	}
@@ -95,14 +95,14 @@ pub mod pds_varlong {
 pub mod pds_UUID {
 	use super::*;
 	pub type Ty = u128;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		output.write(&_0.to_be_bytes());
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		output.write(&value.to_be_bytes());
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		Ok(u128::from_be_bytes(input.exact()?))
 	}
-	pub fn size_of(_0: &Ty) -> usize {
+	pub fn size_of(_value: &Ty) -> usize {
 		16
 	}
 }
@@ -110,25 +110,26 @@ pub mod pds_UUID {
 pub mod pds_restBuffer {
 	use super::*;
 	pub type Ty = Vec<u8>;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		output.write(_0);
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		output.write(value);
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		Ok(input.rest().to_vec())
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		_0.len()
+	pub fn size_of(value: &Ty) -> usize {
+		value.len()
 	}
 }
 
 pub mod pds_string16 {
 	use super::*;
 	pub type Ty = String;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		let len = i16::try_from(_0.encode_utf16().count()).map_err(|_| Error::TooLargeInteger)?;
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		let len =
+			i16::try_from(value.encode_utf16().count()).map_err(|_| Error::TooLargeInteger)?;
 		output.write(&len.to_be_bytes());
-		for unit in _0.encode_utf16() {
+		for unit in value.encode_utf16() {
 			output.write(&unit.to_be_bytes());
 		}
 		Ok(())
@@ -138,13 +139,15 @@ pub mod pds_string16 {
 		let len = usize::try_from(len).map_err(|_| Error::InvalidValue)?;
 		let units: Vec<u16> = input
 			.bytes(len * 2)?
-			.chunks_exact(2)
+			.as_chunks::<2>()
+			.0
+			.iter()
 			.map(|c| u16::from_be_bytes([c[0], c[1]]))
 			.collect();
 		String::from_utf16(&units).map_err(|_| Error::InvalidValue)
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		2 + 2 * _0.encode_utf16().count()
+	pub fn size_of(value: &Ty) -> usize {
+		2 + 2 * value.encode_utf16().count()
 	}
 }
 
@@ -161,8 +164,8 @@ pub mod pds_legacySlot {
 	pub fn has_nbt(id: i16) -> bool {
 		matches!(id, 256..=259 | 261 | 267..=279 | 283..=286 | 290..=294 | 298..=317 | 346 | 359)
 	}
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		let Some(item) = _0 else {
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		let Some(item) = value else {
 			output.write(&(-1i16).to_be_bytes());
 			return Ok(());
 		};
@@ -196,8 +199,8 @@ pub mod pds_legacySlot {
 			nbtData,
 		}))
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		match _0 {
+	pub fn size_of(value: &Ty) -> usize {
+		match value {
 			None => 2,
 			Some(item) if has_nbt(item.id) => 5 + pds_compressedNbt::size_of(&item.nbtData),
 			Some(_) => 5,
@@ -208,8 +211,8 @@ pub mod pds_legacySlot {
 pub mod pds_lpVec3 {
 	use super::*;
 	pub type Ty = Vec<u8>;
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		output.write(_0);
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		output.write(value);
 		Ok(())
 	}
 	pub fn deserialize(input: &mut Input) -> Result<Ty> {
@@ -227,8 +230,8 @@ pub mod pds_lpVec3 {
 		}
 		Ok(out)
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		_0.len()
+	pub fn size_of(value: &Ty) -> usize {
+		value.len()
 	}
 }
 
@@ -251,8 +254,8 @@ pub mod pds_entityDelta {
 		pub onGround: bool,
 		pub delta: Delta,
 	}
-	fn properties(_0: &Ty) -> Result<i32> {
-		let steps = match &_0.delta {
+	fn properties(value: &Ty) -> Result<i32> {
+		let steps = match &value.delta {
 			Delta::Linear { .. } => 0,
 			Delta::Stepped(steps) if steps.is_empty() => return Err(Error::InvalidValue),
 			Delta::Stepped(steps) => u32::try_from(steps.len())
@@ -260,16 +263,16 @@ pub mod pds_entityDelta {
 				.filter(|n| *n <= u32::MAX >> 1)
 				.ok_or(Error::TooLargeInteger)?,
 		};
-		Ok((steps << 1 | _0.onGround as u32) as i32)
+		Ok((steps << 1 | value.onGround as u32) as i32)
 	}
 	fn write_xyz(dX: i16, dY: i16, dZ: i16, output: &mut Output) {
 		output.write(&dX.to_be_bytes());
 		output.write(&dY.to_be_bytes());
 		output.write(&dZ.to_be_bytes());
 	}
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		pds_varint::serialize(&properties(_0)?, output)?;
-		match &_0.delta {
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		pds_varint::serialize(&properties(value)?, output)?;
+		match &value.delta {
 			Delta::Linear { dX, dY, dZ } => write_xyz(*dX, *dY, *dZ, output),
 			Delta::Stepped(steps) => {
 				for s in steps {
@@ -309,9 +312,9 @@ pub mod pds_entityDelta {
 			delta: Delta::Stepped(steps),
 		})
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		let head = pds_varint::size_of(&properties(_0).unwrap_or(0));
-		match &_0.delta {
+	pub fn size_of(value: &Ty) -> usize {
+		let head = pds_varint::size_of(&properties(value).unwrap_or(0));
+		match &value.delta {
 			Delta::Linear { .. } => head + 6,
 			Delta::Stepped(steps) => {
 				head + steps
@@ -343,8 +346,8 @@ pub mod pds_vecDelta {
 		pub onGround: bool,
 		pub delta: Delta,
 	}
-	fn properties(_0: &Ty) -> Result<i32> {
-		let steps = match &_0.delta {
+	fn properties(value: &Ty) -> Result<i32> {
+		let steps = match &value.delta {
 			Delta::Linear { .. } => 0,
 			Delta::Stepped { steps, .. } if steps.is_empty() => return Err(Error::InvalidValue),
 			Delta::Stepped { steps, .. } => u32::try_from(steps.len())
@@ -352,7 +355,7 @@ pub mod pds_vecDelta {
 				.filter(|n| *n <= u32::MAX >> 1)
 				.ok_or(Error::TooLargeInteger)?,
 		};
-		Ok((steps << 1 | _0.onGround as u32) as i32)
+		Ok((steps << 1 | value.onGround as u32) as i32)
 	}
 	fn write_xyz(dX: i16, dY: i16, dZ: i16, output: &mut Output) {
 		output.write(&dX.to_be_bytes());
@@ -366,9 +369,9 @@ pub mod pds_vecDelta {
 			i16::from_be_bytes(input.exact()?),
 		))
 	}
-	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-		pds_varint::serialize(&properties(_0)?, output)?;
-		match &_0.delta {
+	pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+		pds_varint::serialize(&properties(value)?, output)?;
+		match &value.delta {
 			Delta::Linear { dX, dY, dZ } => write_xyz(*dX, *dY, *dZ, output),
 			Delta::Stepped {
 				startImmediately,
@@ -413,9 +416,9 @@ pub mod pds_vecDelta {
 			},
 		})
 	}
-	pub fn size_of(_0: &Ty) -> usize {
-		let head = pds_varint::size_of(&properties(_0).unwrap_or(0));
-		match &_0.delta {
+	pub fn size_of(value: &Ty) -> usize {
+		let head = pds_varint::size_of(&properties(value).unwrap_or(0));
+		match &value.delta {
 			Delta::Linear { .. } => head + 6,
 			Delta::Stepped { steps, .. } => {
 				head + 1
@@ -436,26 +439,26 @@ pub mod view {
 	pub mod pds_restBuffer {
 		use super::*;
 		pub type Ty<'i> = &'i [u8];
-		pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-			output.write(_0);
+		pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+			output.write(value);
 			Ok(())
 		}
 		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 			Ok(input.rest())
 		}
-		pub fn size_of(_0: &Ty) -> usize {
-			_0.len()
+		pub fn size_of(value: &Ty) -> usize {
+			value.len()
 		}
-		pub fn view(_0: &Vec<u8>) -> Ty<'_> {
-			_0
+		pub fn view(value: &Vec<u8>) -> Ty<'_> {
+			value
 		}
 	}
 
 	pub mod pds_lpVec3 {
 		use super::*;
 		pub type Ty<'i> = &'i [u8];
-		pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-			output.write(_0);
+		pub fn serialize(value: &Ty, output: &mut Output) -> Result<()> {
+			output.write(value);
 			Ok(())
 		}
 		pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
@@ -471,11 +474,11 @@ pub mod view {
 			input.rewind(start);
 			input.bytes(end - start)
 		}
-		pub fn size_of(_0: &Ty) -> usize {
-			_0.len()
+		pub fn size_of(value: &Ty) -> usize {
+			value.len()
 		}
-		pub fn view(_0: &Vec<u8>) -> Ty<'_> {
-			_0
+		pub fn view(value: &Vec<u8>) -> Ty<'_> {
+			value
 		}
 	}
 }

@@ -1561,13 +1561,11 @@ fn check_1_8(w: &mut World, p: &v1_8::play_to_client_packet::Ty) {
 					.fail("equipment slot outside 0..=4", format!("{e:?}"));
 			}
 		}
-		P::EntityEffect(e) => {
-			if !(1..=23).contains(&e.effect_id) {
-				w.report.fail(
-					format!("effect {} unknown to 1.8", e.effect_id),
-					format!("{e:?}"),
-				);
-			}
+		P::EntityEffect(e) if !(1..=23).contains(&e.effect_id) => {
+			w.report.fail(
+				format!("effect {} unknown to 1.8", e.effect_id),
+				format!("{e:?}"),
+			);
 		}
 		_ => {}
 	}
@@ -1668,13 +1666,11 @@ fn check_1_12(w: &mut World, p: &v1_12_2::play_to_client_packet::Ty) {
 					.fail("equipment slot outside 0..=5", format!("{e:?}"));
 			}
 		}
-		P::EntityEffect(e) => {
-			if !(1..=27).contains(&e.effect_id) {
-				w.report.fail(
-					format!("effect {} unknown to 1.12.2", e.effect_id),
-					format!("{e:?}"),
-				);
-			}
+		P::EntityEffect(e) if !(1..=27).contains(&e.effect_id) => {
+			w.report.fail(
+				format!("effect {} unknown to 1.12.2", e.effect_id),
+				format!("{e:?}"),
+			);
 		}
 		_ => {}
 	}

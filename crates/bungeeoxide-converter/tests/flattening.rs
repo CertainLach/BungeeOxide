@@ -114,8 +114,8 @@ fn legacy_section(out: &mut Vec<u8>, states: &[u32], palette: Option<&[u32]>) {
 	for l in longs {
 		out.extend(l.to_be_bytes());
 	}
-	out.extend(std::iter::repeat(0x0f).take(2048));
-	out.extend(std::iter::repeat(0xf0).take(2048));
+	out.extend(std::iter::repeat_n(0x0f, 2048));
+	out.extend(std::iter::repeat_n(0xf0, 2048));
 }
 
 struct Flat {

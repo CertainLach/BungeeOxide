@@ -29,7 +29,7 @@ const BACKEND_THRESHOLD: i32 = 48;
 const PROXY_THRESHOLD: usize = 64;
 
 async fn read(conn: &mut Conn) -> Result<Vec<u8>> {
-	Ok(tokio::time::timeout(WAIT, next(conn)).await??)
+	tokio::time::timeout(WAIT, next(conn)).await?
 }
 
 async fn backend(online: bool) -> (SocketAddr, mpsc::UnboundedReceiver<String>) {

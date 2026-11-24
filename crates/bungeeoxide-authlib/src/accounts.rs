@@ -111,10 +111,8 @@ impl Account {
 
 	pub fn credentials(&self, force: bool) -> Result<Credentials> {
 		let mut state = self.state();
-		if !force {
-			if let Some(credentials) = state.credentials.as_ref().filter(|c| c.fresh()) {
-				return Ok(credentials.clone());
-			}
+		if !force && let Some(credentials) = state.credentials.as_ref().filter(|c| c.fresh()) {
+			return Ok(credentials.clone());
 		}
 		let credentials = match &self.source {
 			Source::Prism {
@@ -239,18 +237,18 @@ impl Account {
 			}
 		}
 		let mut refresh_tokens = Vec::new();
-		if let Some(cached) = &cached {
-			if let Some(token) = &cached.refresh_token {
-				refresh_tokens.push((token.clone(), cached.client_id.clone()));
-			}
+		if let Some(cached) = &cached
+			&& let Some(token) = &cached.refresh_token
+		{
+			refresh_tokens.push((token.clone(), cached.client_id.clone()));
 		}
 		let mut unknown_client = false;
-		if let Some(token) = &account.refresh {
-			if !refresh_tokens.iter().any(|(t, _)| t == token) {
-				match account.client_id.as_deref().or(client_id) {
-					Some(id) => refresh_tokens.push((token.clone(), id.to_owned())),
-					None => unknown_client = true,
-				}
+		if let Some(token) = &account.refresh
+			&& !refresh_tokens.iter().any(|(t, _)| t == token)
+		{
+			match account.client_id.as_deref().or(client_id) {
+				Some(id) => refresh_tokens.push((token.clone(), id.to_owned())),
+				None => unknown_client = true,
 			}
 		}
 		if refresh_tokens.is_empty() && unknown_client {

@@ -156,8 +156,10 @@ pub(crate) fn read_string16(data: &[u8], at: usize) -> Option<(String, usize)> {
 	let len = usize::try_from(len).ok()?;
 	let units: Vec<u16> = data
 		.get(at + 2..at + 2 + len * 2)?
-		.chunks_exact(2)
-		.map(|c| u16::from_be_bytes([c[0], c[1]]))
+		.as_chunks::<2>()
+		.0
+		.iter()
+		.map(|c| u16::from_be_bytes(*c))
 		.collect();
 	Some((String::from_utf16(&units).ok()?, at + 2 + len * 2))
 }

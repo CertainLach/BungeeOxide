@@ -50,10 +50,10 @@ impl Cache {
 
 pub async fn upstream(config: &Config) -> Option<Arc<Upstream>> {
 	let mut entry = config.status.entry.lock().await;
-	if let Some((when, value)) = entry.as_ref() {
-		if when.elapsed() < config.status_cache {
-			return value.clone();
-		}
+	if let Some((when, value)) = entry.as_ref()
+		&& when.elapsed() < config.status_cache
+	{
+		return value.clone();
 	}
 	config
 		.status

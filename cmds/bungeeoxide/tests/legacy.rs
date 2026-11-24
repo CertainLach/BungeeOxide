@@ -141,8 +141,10 @@ struct Client {
 fn read_string16(data: &[u8], at: usize) -> String {
 	let len = i16::from_be_bytes([data[at], data[at + 1]]) as usize;
 	let units: Vec<u16> = data[at + 2..at + 2 + len * 2]
-		.chunks_exact(2)
-		.map(|c| u16::from_be_bytes([c[0], c[1]]))
+		.as_chunks::<2>()
+		.0
+		.iter()
+		.map(|c| u16::from_be_bytes(*c))
 		.collect();
 	String::from_utf16(&units).unwrap()
 }

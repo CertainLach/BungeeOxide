@@ -56,13 +56,11 @@ fn main() {
 				for p in &packets {
 					if let Ok(v1_8::play_to_client_packet::Ty::NamedSoundEffect(s)) =
 						v1_8::play_to_client_packet::deserialize(&mut Input::new(p))
-					{
-						if registry::names(Version::V1_8, "sounds")
+						&& registry::names(Version::V1_8, "sounds")
 							.and_then(|n| n.id(&s.sound_name))
 							.is_none()
-						{
-							unknown.push((s.sound_name, name));
-						}
+					{
+						unknown.push((s.sound_name, name));
 					}
 				}
 			}
