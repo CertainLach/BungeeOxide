@@ -2,7 +2,7 @@ macro_rules! items {
 	($a:ident => $b:ident, $from:path => $to:path {
 		slot: $slot:ident, hashed: $hashed:ident, trade1: $trade1:ident, trade2: $trade2:ident,
 		display: $display:ident, recipes: $recipes:ident, stonecutter: $stonecutter:ident,
-		requirements: $requirements:ident, repairable: $repairable:ident, pots: $pots:ident,
+		requirements: $requirements:ident, repairable: $repairable:ident, $(pots: $pots:ident,)?
 	}) => {
 		pub fn $slot(
 			v: &$a::slot_default::Ty,
@@ -78,14 +78,16 @@ macro_rules! items {
 			)?))
 		}
 
-		pub fn $pots(
-			v: Vec<i32>,
-			_cx: &mut crate::Session,
-		) -> crate::pds::convert::Result<$b::slot_component::Ty> {
-			Ok($b::slot_component::Ty::PotDecorations(super::remap::items(
-				$from, $to, v,
-			)?))
-		}
+		$(
+			pub fn $pots(
+				v: Vec<i32>,
+				_cx: &mut crate::Session,
+			) -> crate::pds::convert::Result<$b::slot_component::Ty> {
+				Ok($b::slot_component::Ty::PotDecorations(super::remap::items(
+					$from, $to, v,
+				)?))
+			}
+		)?
 	};
 }
 

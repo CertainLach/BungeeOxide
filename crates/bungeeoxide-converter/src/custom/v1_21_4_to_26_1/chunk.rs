@@ -244,7 +244,7 @@ pub fn write_biomes(sections: &[Vec<u32>], f: Format) -> Vec<u8> {
 pub fn format(version: Version, biomes: u32) -> Format {
 	Format {
 		lengths: version == Version::V1_21_4,
-		fluids: version == Version::V26_1,
+		fluids: version >= Version::V26_1,
 		block_states: crate::registry::blocks(version).map_or(1, |b| b.states()),
 		biomes,
 	}
@@ -261,8 +261,14 @@ const FLUID_BLOCKS: &[&str] = &[
 ];
 
 fn fluid_states(version: Version) -> &'static [bool] {
-	static CACHE: std::sync::OnceLock<Vec<bool>> = std::sync::OnceLock::new();
+	static CACHE: std::sync::OnceLock<Vec<std::sync::OnceLock<Vec<bool>>>> =
+		std::sync::OnceLock::new();
 	CACHE.get_or_init(|| {
+		(0..Version::ALL.len())
+			.map(|_| std::sync::OnceLock::new())
+			.collect()
+	})[version.index()]
+	.get_or_init(|| {
 		let Some(blocks) = crate::registry::blocks(version) else {
 			return Vec::new();
 		};
@@ -297,19 +303,14 @@ pub fn fluid_count_26_1(count: i16, blocks: &[u32]) -> i16 {
 }
 
 pub fn step(from: Version, to: Version, data: &[u8], biomes: u32) -> Result<Vec<u8>> {
-	let fluid = |s: u32| {
-		fluid_states(Version::V26_1)
-			.get(s as usize)
-			.copied()
-			.unwrap_or(false)
-	};
+	let fluid = |s: u32| fluid_states(to).get(s as usize).copied().unwrap_or(false);
 	let table = crate::registry::state_table(from, to).unwrap_or_default();
 	convert(
 		data,
 		format(from, biomes),
 		format(to, biomes),
 		|s| table.get(s as usize).copied().unwrap_or(0),
-		(to == Version::V26_1).then_some(&fluid as &dyn Fn(u32) -> bool),
+		(to >= Version::V26_1).then_some(&fluid as &dyn Fn(u32) -> bool),
 	)
 }
 

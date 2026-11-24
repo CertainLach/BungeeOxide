@@ -26,6 +26,10 @@ fn known(to: Version, registry: &str) -> bool {
 		| "cow_sound_variant"
 		| "pig_sound_variant"
 		| "chicken_sound_variant" => Version::V26_1,
+		"sulfur_cube_archetype" => Version::V26_2,
+		"decorated_pot_pattern" | "block_transformer" | "worldgen/block_state_provider" => {
+			Version::V26_3
+		}
 		_ => return true,
 	};
 	to >= since
@@ -61,6 +65,53 @@ fn convert(
 			tag::Ty { tag_name, entries }
 		})
 		.collect()
+}
+
+pub type Derived = (&'static str, &'static str, &'static [&'static str]);
+
+pub fn derive(to: Version, v: &mut Vec<config_tags::Ty>, derived: &[Derived]) {
+	for (registry, name, values) in derived {
+		let full = format!("minecraft:{registry}");
+		let at = match v
+			.iter()
+			.position(|r| r.tag_type == full || r.tag_type == *registry)
+		{
+			Some(at) => at,
+			None => {
+				v.push(config_tags::Ty {
+					tag_type: full,
+					tags: Vec::new(),
+				});
+				v.len() - 1
+			}
+		};
+		let tag_name = format!("minecraft:{name}");
+		let group = &v[at].tags;
+		if group
+			.iter()
+			.any(|t| t.tag_name == tag_name || t.tag_name == *name)
+		{
+			continue;
+		}
+		let names = kind(registry).and_then(|k| crate::registry::names(to, k));
+		let mut entries = Vec::new();
+		for value in *values {
+			match value.strip_prefix('#') {
+				Some(reference) => entries.extend(
+					group
+						.iter()
+						.filter(|t| {
+							t.tag_name == reference
+								|| t.tag_name.strip_prefix("minecraft:")
+									== reference.strip_prefix("minecraft:")
+						})
+						.flat_map(|t| t.entries.iter().copied()),
+				),
+				None => entries.extend(names.and_then(|n| n.id(value)).map(|id| id as i32)),
+			}
+		}
+		v[at].tags.push(tag::Ty { tag_name, entries });
+	}
 }
 
 pub fn config(
