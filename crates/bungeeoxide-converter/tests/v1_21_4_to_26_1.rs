@@ -2009,8 +2009,9 @@ fn mannequins_get_a_hidden_player_entry_before_the_spawn() {
 	assert_eq!(add.players, [profile.name.clone()]);
 	assert!(matches!(
 		add.name_tag_visibility,
-		v1_21_8::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Never
+		v1_21_8::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Always
 	));
+	assert_eq!(add.prefix.value, Payload::String("Mannequin".into()));
 	assert_eq!(spawn.r#type, id(Version::V1_21_8, "entities", "player"));
 	assert_eq!((spawn.object_uuid, spawn.x, spawn.z), (MANNEQUIN, 1.5, -2.5));
 	assert!(cx.take_outgoing().is_empty());
@@ -2096,6 +2097,93 @@ fn mannequin_entries_precede_named_spawns_below_1_20_2() {
 		assert_eq!(gone[0], "entity_destroy", "{version}: {gone:?}");
 		assert!(gone.contains(&"player_info") || gone.contains(&"player_remove"), "{version}: {gone:?}");
 		assert!(gone.iter().any(|n| n.contains("team")), "{version}: {gone:?}");
+	}
+}
+
+fn mannequin_name(entity: i32, name: Option<&str>) -> v1_21_9::play_to_client_packet::Ty {
+	v1_21_9::play_to_client_packet::Ty::EntityMetadata(v1_21_9::play_to_client_packet_entity_metadata::Ty {
+		entity_id: entity,
+		metadata: vec![v1_21_9::entity_metadata_entry::Ty {
+			key: 2,
+			value: v1_21_9::entity_metadata_entry_value::Ty::OptionalComponent(
+				name.map(|n| tag(Payload::String(n.into()))),
+			),
+		}],
+	})
+}
+
+#[test]
+fn mannequin_custom_names_become_the_team_prefix() {
+	use v1_21_8::play_to_client_packet::Ty as P;
+	use v1_21_8::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
+	use v1_21_8::play_to_client_packet_teams_mode::Ty as Mode;
+	let mut cx = Session::new();
+	let out = to_1_21_8(&mannequin_spawn(40), &mut cx);
+	let [_, P::Teams(team), _] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let out = to_1_21_8(&mannequin_name(40, Some("Bob")), &mut cx);
+	assert!(matches!(out.as_slice(), [P::EntityMetadata(_)]));
+	let updates = queued_1_21_8(&mut cx);
+	let [P::PlayerInfo(info), P::Teams(change)] = updates.as_slice() else {
+		panic!("{updates:?}")
+	};
+	assert!(info.action.update_display_name && !info.action.add_player);
+	assert!(matches!(&info.data[0].display_name, Name::True(Some(t)) if t.value == Payload::String("Bob".into())));
+	assert_eq!(change.team, team.team);
+	let Mode::Change(c) = &change.mode else {
+		panic!("{change:?}")
+	};
+	assert_eq!(c.prefix.value, Payload::String("Bob".into()));
+	to_1_21_8(&mannequin_name(40, Some("Bob")), &mut cx);
+	assert!(queued_1_21_8(&mut cx).is_empty());
+	to_1_21_8(&mannequin_name(40, None), &mut cx);
+	let updates = queued_1_21_8(&mut cx);
+	let [_, P::Teams(change)] = updates.as_slice() else {
+		panic!("{updates:?}")
+	};
+	let Mode::Change(c) = &change.mode else {
+		panic!("{change:?}")
+	};
+	assert_eq!(c.prefix.value, Payload::String("Mannequin".into()));
+
+	to_1_21_8(&mannequin_name(40, Some("Ann")), &mut cx);
+	queued_1_21_8(&mut cx);
+	to_1_21_8(&mannequin_profile(40), &mut cx);
+	let respawned = queued_1_21_8(&mut cx);
+	let info = respawned.iter().find_map(|p| match p {
+		P::PlayerInfo(i) if i.action.add_player => Some(i),
+		_ => None,
+	});
+	assert!(
+		matches!(info.map(|i| &i.data[0].display_name), Some(Name::True(Some(t))) if t.value == Payload::String("Ann".into())),
+		"{respawned:?}"
+	);
+}
+
+#[test]
+fn mannequin_names_reach_old_teams() {
+	for version in [Version::V1_20, Version::V1_12_2, Version::V1_8, Version::V1_7] {
+		let mut cx = Session::new();
+		let run_all = |cx: &mut Session, p: &v1_21_9::play_to_client_packet::Ty| -> Vec<(&'static str, Vec<u8>)> {
+			let bytes = encode(p, v1_21_9::play_to_client_packet::serialize);
+			let mut out = convert(Root::PlayToClient, Version::V1_21_9, version, &bytes, cx).unwrap();
+			for o in cx.take_outgoing() {
+				out.extend(convert(o.root, o.version, version, &o.data, cx).unwrap());
+			}
+			out.into_iter()
+				.map(|b| (bungeeoxide_converter::gen::convert::packet_name(Root::PlayToClient, version, &b).unwrap_or("?"), b))
+				.collect()
+		};
+		let has = |packets: &[(&str, Vec<u8>)], text: &[u8]| {
+			packets
+				.iter()
+				.any(|(n, b)| n.contains("team") && b.windows(text.len()).any(|w| w == text))
+		};
+		let spawned = run_all(&mut cx, &mannequin_spawn(40));
+		assert!(has(&spawned, b"Mannequin"), "{version}: {spawned:?}");
+		let renamed = run_all(&mut cx, &mannequin_name(40, Some("Bob")));
+		assert!(has(&renamed, b"Bob"), "{version}: {renamed:?}");
 	}
 }
 

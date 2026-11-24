@@ -746,6 +746,7 @@ struct Mannequin {
 	pitch: i8,
 	head_yaw: i8,
 	properties: Vec<a::game_profile_properties_items::Ty>,
+	display: Option<Tag>,
 	metadata: Vec<b::entity_metadata_entry::Ty>,
 	passengers: Vec<i32>,
 	equipment: Vec<b::play_to_client_packet_entity_equipment_equipments_items::Ty>,
@@ -778,6 +779,12 @@ fn empty_text() -> Tag {
 	Tag::new(Payload::String(String::new()))
 }
 
+fn label(m: &Mannequin) -> Tag {
+	m.display
+		.clone()
+		.unwrap_or_else(|| Tag::new(Payload::String("Mannequin".to_owned())))
+}
+
 fn player_info_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 	use a::play_to_client_packet_player_info_data_items_chat_session::Ty as Session;
 	use a::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
@@ -808,7 +815,7 @@ fn player_info_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 			gamemode: Gamemode::True(0),
 			listed: Listed::True(0),
 			latency: Latency::True(0),
-			display_name: Name::True(None),
+			display_name: Name::True(m.display.clone()),
 			list_priority: Priority::True(1000),
 			show_hat: Hat::True(true),
 		}],
@@ -819,18 +826,70 @@ fn team_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
 	a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
 		team: m.name.clone(),
 		mode: a::play_to_client_packet_teams_mode::Ty::Add(a::play_to_client_packet_teams_mode_add::Ty {
-			name: empty_text(),
+			name: label(m),
 			flags: a::play_to_client_packet_teams_mode_add_flags::Ty {
 				friendly_fire: false,
 				see_friendly_invisible: false,
 			},
-			name_tag_visibility: a::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Never,
+			name_tag_visibility: a::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Always,
 			collision_rule: a::play_to_client_packet_teams_mode_add_collision_rule::Ty::Always,
 			formatting: 21,
-			prefix: empty_text(),
+			prefix: label(m),
 			suffix: empty_text(),
 			players: vec![m.name.clone()],
 		}),
+	})
+}
+
+fn team_change(m: &Mannequin) -> a::play_to_client_packet::Ty {
+	a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
+		team: m.name.clone(),
+		mode: a::play_to_client_packet_teams_mode::Ty::Change(a::play_to_client_packet_teams_mode_change::Ty {
+			name: label(m),
+			flags: a::play_to_client_packet_teams_mode_change_flags::Ty {
+				friendly_fire: false,
+				see_friendly_invisible: false,
+			},
+			name_tag_visibility: a::play_to_client_packet_teams_mode_change_name_tag_visibility::Ty::Always,
+			collision_rule: a::play_to_client_packet_teams_mode_change_collision_rule::Ty::Always,
+			formatting: 21,
+			prefix: label(m),
+			suffix: empty_text(),
+		}),
+	})
+}
+
+fn player_info_display(m: &Mannequin) -> a::play_to_client_packet::Ty {
+	use a::play_to_client_packet_player_info_data_items_chat_session::Ty as Session;
+	use a::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
+	use a::play_to_client_packet_player_info_data_items_gamemode::Ty as Gamemode;
+	use a::play_to_client_packet_player_info_data_items_latency::Ty as Latency;
+	use a::play_to_client_packet_player_info_data_items_list_priority::Ty as Priority;
+	use a::play_to_client_packet_player_info_data_items_listed::Ty as Listed;
+	use a::play_to_client_packet_player_info_data_items_player::Ty as Player;
+	use a::play_to_client_packet_player_info_data_items_show_hat::Ty as Hat;
+	a::play_to_client_packet::Ty::PlayerInfo(a::play_to_client_packet_player_info::Ty {
+		action: a::play_to_client_packet_player_info_action::Ty {
+			add_player: false,
+			initialize_chat: false,
+			update_game_mode: false,
+			update_listed: false,
+			update_latency: false,
+			update_display_name: true,
+			update_list_order: false,
+			update_hat: false,
+		},
+		data: vec![a::play_to_client_packet_player_info_data_items::Ty {
+			uuid: m.uuid,
+			player: Player::Default(false),
+			chat_session: Session::Default(false),
+			gamemode: Gamemode::Default(false),
+			listed: Listed::Default(false),
+			latency: Latency::Default(false),
+			display_name: Name::True(m.display.clone()),
+			list_priority: Priority::Default(false),
+			show_hat: Hat::Default(false),
+		}],
 	})
 }
 
@@ -901,20 +960,47 @@ fn mannequin_metadata(
 		return Ok(());
 	};
 	let mut profile = None;
+	let mut renamed = false;
 	for e in &p.metadata {
 		match &e.value {
 			b::entity_metadata_entry_value::Ty::ResolvableProfile(v) => profile = Some(v),
-			_ => {
+			value => {
+				if let b::entity_metadata_entry_value::Ty::OptionalComponent(name) = value {
+					let display = name.clone().map(text::unobject);
+					if is_custom_name(e.key) && m.display != display {
+						m.display = display;
+						renamed = true;
+					}
+				}
 				m.metadata.retain(|old| old.key != e.key);
 				m.metadata.push(e.clone());
 			}
 		}
 	}
+	let mut updates = Vec::new();
 	if let Some(profile) = profile {
 		m.properties = profile_properties(profile);
+	} else if renamed {
+		updates.push(player_info_display(m));
+	}
+	if renamed {
+		updates.push(team_change(m));
+	}
+	if profile.is_some() {
 		respawn_mannequin(cx, p.entity_id)?;
 	}
+	for u in &updates {
+		queue_old(cx, u)?;
+	}
 	Ok(())
+}
+
+fn is_custom_name(key: u8) -> bool {
+	crate::registry::names(Version::V1_21_9, "entities")
+		.and_then(|n| n.id("mannequin"))
+		.and_then(|id| crate::registry::entity_metadata_keys(Version::V1_21_9, id))
+		.and_then(|keys| keys.get(key as usize))
+		.is_some_and(|k| k == "custom_name")
 }
 
 fn respawn_mannequin(cx: &mut Session, id: i32) -> Result<()> {
@@ -1000,6 +1086,7 @@ pub fn late_spawn_entity_down_1_21_8(
 			pitch: p.pitch,
 			head_yaw: p.head_pitch,
 			properties: Vec::new(),
+			display: None,
 			metadata: Vec::new(),
 			passengers: Vec::new(),
 			equipment: Vec::new(),
