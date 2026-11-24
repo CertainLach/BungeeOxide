@@ -9,14 +9,14 @@ pub struct PacketScoreboardScore0 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.score_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.score_name, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
-	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_scoreName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	Ok(Ty {
 		score_name: f_scoreName,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.score_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.score_name)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.value)
 }
 

@@ -5,19 +5,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct EntityMetadataEntry {
 	pub key: ::bungeeoxide_minecraft_root::U8,
-	pub value: super::EntityMetadataEntry61,
+	pub value: super::EntityMetadataEntry75,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.key, output)?;
-	super::entity_metadata_entry_61::serialize(&_0.value, output)?;
+	super::entity_metadata_entry_75::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_key = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_value = super::entity_metadata_entry_61::deserialize(input)?;
+	let f_value = super::entity_metadata_entry_75::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::u8::size_of(&_0.key)
-		+ super::entity_metadata_entry_61::size_of(&_0.value)
+		+ super::entity_metadata_entry_75::size_of(&_0.value)
 }
 
 pub type Ty = EntityMetadataEntry;

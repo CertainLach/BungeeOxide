@@ -42,10 +42,10 @@ pub enum CommandNode103<'i> {
 	MinecraftParticle,
 	MinecraftPattern(super::CommandNode98<'i>),
 	MinecraftQuotedString,
-	MinecraftResource(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	MinecraftResource(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	MinecraftResourceLocation,
-	MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
-	MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
+	MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	MinecraftRotation,
 	MinecraftScoreHolder(::bungeeoxide_minecraft_root::Bool),
 	MinecraftScoreboardSlot,
@@ -116,14 +116,14 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		Ty::MinecraftPattern(__v) => super::command_node_98::serialize(__v, output),
 		Ty::MinecraftQuotedString => Ok(()),
 		Ty::MinecraftResource(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftResourceLocation => Ok(()),
 		Ty::MinecraftResourceOrTag(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftResourceSelector(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftRotation => Ok(()),
 		Ty::MinecraftScoreHolder(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
@@ -282,7 +282,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if *__tag == 43_i32 {
 		return Ok(Ty::MinecraftResource(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 44_i32 {
@@ -290,12 +290,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if *__tag == 45_i32 {
 		return Ok(Ty::MinecraftResourceOrTag(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 46_i32 {
 		return Ok(Ty::MinecraftResourceSelector(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 47_i32 {
@@ -414,14 +414,14 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 			Ty::MinecraftPattern(__v) => super::command_node_98::size_of(__v),
 			Ty::MinecraftQuotedString => 0,
 			Ty::MinecraftResource(__v) => {
-				::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v)
 			}
 			Ty::MinecraftResourceLocation => 0,
 			Ty::MinecraftResourceOrTag(__v) => {
-				::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v)
 			}
 			Ty::MinecraftResourceSelector(__v) => {
-				::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v)
 			}
 			Ty::MinecraftRotation => 0,
 			Ty::MinecraftScoreHolder(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
@@ -649,14 +649,14 @@ pub fn view<'i>(_0: &'i super::super::CommandNode103) -> Ty<'i> {
 		}
 		super::super::CommandNode103::MinecraftQuotedString => Ty::MinecraftQuotedString,
 		super::super::CommandNode103::MinecraftResource(__v) => {
-			Ty::MinecraftResource(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResource(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftResourceLocation => Ty::MinecraftResourceLocation,
 		super::super::CommandNode103::MinecraftResourceOrTag(__v) => {
-			Ty::MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftResourceSelector(__v) => {
-			Ty::MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftRotation => Ty::MinecraftRotation,
 		super::super::CommandNode103::MinecraftScoreHolder(__v) => {
@@ -756,14 +756,14 @@ pub fn into_view<'i>(_0: &'i mut super::super::CommandNode103) -> Ty<'i> {
 		}
 		super::super::CommandNode103::MinecraftQuotedString => Ty::MinecraftQuotedString,
 		super::super::CommandNode103::MinecraftResource(__v) => {
-			Ty::MinecraftResource(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResource(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftResourceLocation => Ty::MinecraftResourceLocation,
 		super::super::CommandNode103::MinecraftResourceOrTag(__v) => {
-			Ty::MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResourceOrTag(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftResourceSelector(__v) => {
-			Ty::MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::MinecraftResourceSelector(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::CommandNode103::MinecraftRotation => Ty::MinecraftRotation,
 		super::super::CommandNode103::MinecraftScoreHolder(__v) => {

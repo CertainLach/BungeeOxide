@@ -9,14 +9,14 @@ pub struct PacketTabComplete {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.text, output)?;
 	super::super::super::option_22::serialize(&_0.block, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_text = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_block = super::super::super::option_22::deserialize(input)?;
 	Ok(Ty {
 		text: f_text,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.text)
 		+ super::super::super::option_22::size_of(&_0.block)
 }
 

@@ -9,14 +9,14 @@ pub struct PacketResetScore {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.entity_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.entity_name, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.objective_name, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_entity_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_entity_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_objective_name = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		entity_name: f_entity_name,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.entity_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.entity_name)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.objective_name)
 }
 

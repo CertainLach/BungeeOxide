@@ -5,14 +5,14 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub enum Slot {
 	V0,
-	Default(::bungeeoxide_minecraft_root::Varint, super::Slot12),
+	Default(::bungeeoxide_minecraft_root::Varint, super::Slot26),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::V0 => Ok(()),
-		Ty::Default(_, __v) => super::slot_12::serialize(__v, output),
+		Ty::Default(_, __v) => super::slot_26::serialize(__v, output),
 	}
 }
 
@@ -23,14 +23,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	if *__tag == 0_i32 {
 		return Ok(Ty::V0);
 	}
-	Ok(Ty::Default(__tagv, super::slot_12::deserialize(input)?))
+	Ok(Ty::Default(__tagv, super::slot_26::deserialize(input)?))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::V0 => 0,
-			Ty::Default(_, __v) => super::slot_12::size_of(__v),
+			Ty::Default(_, __v) => super::slot_26::size_of(__v),
 		}
 }
 

@@ -5,15 +5,15 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements11<'i> {
 	pub parent_id: ::bungeeoxide_minecraft_root::view::Option21<'i>,
-	pub display_data: super::super::super::Option113<'i>,
-	pub requirements: ::bungeeoxide_minecraft_root::view::array::Inline456<'i>,
+	pub display_data: super::super::super::Option120<'i>,
+	pub requirements: ::bungeeoxide_minecraft_root::view::array::Inline458<'i>,
 	pub sends_telemtry_data: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.parent_id, output)?;
-	super::super::super::option_113::serialize(&_0.display_data, output)?;
-	::bungeeoxide_minecraft_root::view::array::inline_456::serialize(&_0.requirements, output)?;
+	super::super::super::option_120::serialize(&_0.display_data, output)?;
+	::bungeeoxide_minecraft_root::view::array::inline_458::serialize(&_0.requirements, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.sends_telemtry_data, output)?;
 	Ok(())
 }
@@ -21,8 +21,8 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(4)?;
 	let f_parentId = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
-	let f_displayData = super::super::super::option_113::deserialize(input)?;
-	let f_requirements = ::bungeeoxide_minecraft_root::view::array::inline_456::deserialize(input)?;
+	let f_displayData = super::super::super::option_120::deserialize(input)?;
+	let f_requirements = ::bungeeoxide_minecraft_root::view::array::inline_458::deserialize(input)?;
 	let f_sendsTelemtryData = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		parent_id: f_parentId,
@@ -34,16 +34,16 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.parent_id)
-		+ super::super::super::option_113::size_of(&_0.display_data)
-		+ ::bungeeoxide_minecraft_root::view::array::inline_456::size_of(&_0.requirements)
+		+ super::super::super::option_120::size_of(&_0.display_data)
+		+ ::bungeeoxide_minecraft_root::view::array::inline_458::size_of(&_0.requirements)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.sends_telemtry_data)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements11) -> Ty<'i> {
 	Ty {
 		parent_id: ::bungeeoxide_minecraft_root::view::option_21::view(&_0.parent_id),
-		display_data: super::super::super::option_113::view(&_0.display_data),
-		requirements: ::bungeeoxide_minecraft_root::view::array::inline_456::view(&_0.requirements),
+		display_data: super::super::super::option_120::view(&_0.display_data),
+		requirements: ::bungeeoxide_minecraft_root::view::array::inline_458::view(&_0.requirements),
 		sends_telemtry_data: ::core::clone::Clone::clone(&_0.sends_telemtry_data),
 	}
 }
@@ -51,8 +51,8 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvan
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements11) -> Ty<'i> {
 	Ty {
 		parent_id: ::bungeeoxide_minecraft_root::view::option_21::view(&mut _0.parent_id),
-		display_data: super::super::super::option_113::into_view(&mut _0.display_data),
-		requirements: ::bungeeoxide_minecraft_root::view::array::inline_456::view(&mut _0.requirements),
+		display_data: super::super::super::option_120::into_view(&mut _0.display_data),
+		requirements: ::bungeeoxide_minecraft_root::view::array::inline_458::view(&mut _0.requirements),
 		sends_telemtry_data: ::core::clone::Clone::clone(&mut _0.sends_telemtry_data),
 	}
 }

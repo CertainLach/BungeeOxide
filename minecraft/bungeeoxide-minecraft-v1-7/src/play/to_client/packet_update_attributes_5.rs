@@ -10,7 +10,7 @@ pub struct PacketUpdateAttributes5 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
 	super::super::super::array::inline_8::serialize(&_0.modifiers, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(11)?;
-	let f_key = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
 	let f_modifiers = super::super::super::array::inline_8::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.key)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
 		+ super::super::super::array::inline_8::size_of(&_0.modifiers)
 }

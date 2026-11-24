@@ -4,28 +4,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent45 {
-	pub material: super::SlotComponent43,
-	pub pattern: super::SlotComponent44,
+	pub horizontal_blocking_angle: ::bungeeoxide_minecraft_root::F32,
+	pub r#type: Option<::bungeeoxide_minecraft_v1_20_5::IdSet>,
+	pub base: ::bungeeoxide_minecraft_root::F32,
+	pub factor: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::slot_component_43::serialize(&_0.material, output)?;
-	super::slot_component_44::serialize(&_0.pattern, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.horizontal_blocking_angle, output)?;
+	::bungeeoxide_minecraft_v1_20_5::option_13::serialize(&_0.r#type, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.base, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.factor, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(2)?;
-	let f_material = super::slot_component_43::deserialize(input)?;
-	let f_pattern = super::slot_component_44::deserialize(input)?;
+	input.expect(13)?;
+	let f_horizontalBlockingAngle = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_type = ::bungeeoxide_minecraft_v1_20_5::option_13::deserialize(input)?;
+	let f_base = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_factor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	Ok(Ty {
-		material: f_material,
-		pattern: f_pattern,
+		horizontal_blocking_angle: f_horizontalBlockingAngle,
+		r#type: f_type,
+		base: f_base,
+		factor: f_factor,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::slot_component_43::size_of(&_0.material) + super::slot_component_44::size_of(&_0.pattern)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.horizontal_blocking_angle)
+		+ ::bungeeoxide_minecraft_v1_20_5::option_13::size_of(&_0.r#type)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.base)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.factor)
 }
 
 pub type Ty = SlotComponent45;

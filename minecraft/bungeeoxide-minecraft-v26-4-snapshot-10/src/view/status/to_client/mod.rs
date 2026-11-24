@@ -2,5 +2,5 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 pub use self::packet::Ty as Packet;
 pub use self::packet_server_info::Ty as PacketServerInfo;
-pub use ::bungeeoxide_minecraft_root::view::pstring_123 as packet_server_info;
+pub use ::bungeeoxide_minecraft_root::view::pstring_131 as packet_server_info;
 pub use ::bungeeoxide_minecraft_v1_7::view::status::to_client::packet;

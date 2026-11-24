@@ -4,49 +4,49 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent42 {
-	pub raw_title: String,
-	pub filtered_title: Option<String>,
-	pub author: String,
-	pub generation: ::bungeeoxide_minecraft_root::Varint,
-	pub pages: Vec<::bungeeoxide_minecraft_v1_20_5::ItemWrittenBookPage>,
-	pub resolved: ::bungeeoxide_minecraft_root::Bool,
+	pub min_range: ::bungeeoxide_minecraft_root::F32,
+	pub max_range: ::bungeeoxide_minecraft_root::F32,
+	pub min_creative_range: ::bungeeoxide_minecraft_root::F32,
+	pub max_creative_range: ::bungeeoxide_minecraft_root::F32,
+	pub hitbox_margin: ::bungeeoxide_minecraft_root::F32,
+	pub mob_factor: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.raw_title, output)?;
-	::bungeeoxide_minecraft_root::option_21::serialize(&_0.filtered_title, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.author, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.generation, output)?;
-	::bungeeoxide_minecraft_v1_20_5::array::inline_54::serialize(&_0.pages, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.resolved, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.min_range, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_range, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.min_creative_range, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_creative_range, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.hitbox_margin, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.mob_factor, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(6)?;
-	let f_rawTitle = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_filteredTitle = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_author = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_generation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_pages = ::bungeeoxide_minecraft_v1_20_5::array::inline_54::deserialize(input)?;
-	let f_resolved = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	input.expect(24)?;
+	let f_minRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_maxRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_minCreativeRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_maxCreativeRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_hitboxMargin = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_mobFactor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	Ok(Ty {
-		raw_title: f_rawTitle,
-		filtered_title: f_filteredTitle,
-		author: f_author,
-		generation: f_generation,
-		pages: f_pages,
-		resolved: f_resolved,
+		min_range: f_minRange,
+		max_range: f_maxRange,
+		min_creative_range: f_minCreativeRange,
+		max_creative_range: f_maxCreativeRange,
+		hitbox_margin: f_hitboxMargin,
+		mob_factor: f_mobFactor,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.raw_title)
-		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.filtered_title)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.author)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.generation)
-		+ ::bungeeoxide_minecraft_v1_20_5::array::inline_54::size_of(&_0.pages)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.resolved)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.min_range)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_range)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.min_creative_range)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_creative_range)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.hitbox_margin)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.mob_factor)
 }
 
 pub type Ty = SlotComponent42;

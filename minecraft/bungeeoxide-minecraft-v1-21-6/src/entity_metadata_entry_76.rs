@@ -78,7 +78,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::ArmadilloState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
 		Ty::OptionalComponent(__v) => {
 			::bungeeoxide_minecraft_root::option_1::serialize(__v, output)
@@ -190,7 +190,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::Quaternion(::bungeeoxide_minecraft_v1_19_4::vec4f::deserialize(input)?));
 	}
 	if *__tag == 4_i32 {
-		return Ok(Ty::String(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::String(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 5_i32 {
 		return Ok(Ty::Component(::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?));
@@ -244,7 +244,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::ArmadilloState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
 			Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::Component(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::OptionalComponent(__v) => ::bungeeoxide_minecraft_root::option_1::size_of(__v),
 			Ty::ItemStack(__v) => super::slot::size_of(__v),

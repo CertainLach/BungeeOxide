@@ -10,7 +10,7 @@ pub struct PacketPlayerInfo {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.player_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.player_name, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.online, output)?;
 	::bungeeoxide_minecraft_root::i16::serialize(&_0.ping, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_playerName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_playerName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_online = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_ping = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.player_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.player_name)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.online)
 		+ ::bungeeoxide_minecraft_root::i16::size_of(&_0.ping)
 }

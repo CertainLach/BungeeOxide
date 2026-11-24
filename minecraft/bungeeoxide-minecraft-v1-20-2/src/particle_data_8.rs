@@ -12,7 +12,7 @@ pub struct ParticleData8 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.position_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.position_type, output)?;
 	super::particle_data_5::debug_assert_tag(&_0.entity_id, &_0.position_type);
 	super::particle_data_5::serialize(&_0.entity_id, output)?;
 	super::particle_data_6::debug_assert_tag(&_0.entity_eye_height, &_0.position_type);
@@ -25,7 +25,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_positionType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_positionType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_entityId = super::particle_data_5::deserialize(
 		input,
 		super::particle_data_5::Args {
@@ -55,7 +55,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.position_type)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.position_type)
 		+ super::particle_data_5::size_of(&_0.entity_id)
 		+ super::particle_data_6::size_of(&_0.entity_eye_height)
 		+ super::particle_data_7::size_of(&_0.destination)

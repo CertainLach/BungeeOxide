@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode98<'i> {
-	pub pattern: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub pattern: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub error_message: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.pattern, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.pattern, output)?;
 	::bungeeoxide_minecraft_root::view::option_1::serialize(&_0.error_message, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_pattern = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_pattern = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_errorMessage = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	Ok(Ty {
 		pattern: f_pattern,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.pattern)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.pattern)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.error_message)
 }
 
 pub fn view<'i>(_0: &'i super::super::CommandNode98) -> Ty<'i> {
 	Ty {
-		pattern: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.pattern),
+		pattern: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.pattern),
 		error_message: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.error_message),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::CommandNode98) -> Ty<'i> {
 	Ty {
-		pattern: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.pattern),
+		pattern: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.pattern),
 		error_message: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.error_message),
 	}
 }

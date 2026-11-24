@@ -29,8 +29,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.block_light_mask, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.empty_sky_light_mask, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.empty_block_light_mask, output)?;
-	::bungeeoxide_minecraft_root::array::inline_457::serialize(&_0.sky_light, output)?;
-	::bungeeoxide_minecraft_root::array::inline_457::serialize(&_0.block_light, output)?;
+	::bungeeoxide_minecraft_root::array::inline_459::serialize(&_0.sky_light, output)?;
+	::bungeeoxide_minecraft_root::array::inline_459::serialize(&_0.block_light, output)?;
 	Ok(())
 }
 
@@ -46,8 +46,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_blockLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_emptySkyLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_emptyBlockLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
-	let f_skyLight = ::bungeeoxide_minecraft_root::array::inline_457::deserialize(input)?;
-	let f_blockLight = ::bungeeoxide_minecraft_root::array::inline_457::deserialize(input)?;
+	let f_skyLight = ::bungeeoxide_minecraft_root::array::inline_459::deserialize(input)?;
+	let f_blockLight = ::bungeeoxide_minecraft_root::array::inline_459::deserialize(input)?;
 	Ok(Ty {
 		x: f_x,
 		z: f_z,
@@ -75,8 +75,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.block_light_mask)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.empty_sky_light_mask)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.empty_block_light_mask)
-		+ ::bungeeoxide_minecraft_root::array::inline_457::size_of(&_0.sky_light)
-		+ ::bungeeoxide_minecraft_root::array::inline_457::size_of(&_0.block_light)
+		+ ::bungeeoxide_minecraft_root::array::inline_459::size_of(&_0.sky_light)
+		+ ::bungeeoxide_minecraft_root::array::inline_459::size_of(&_0.block_light)
 }
 
 pub type Ty = PacketMapChunk;

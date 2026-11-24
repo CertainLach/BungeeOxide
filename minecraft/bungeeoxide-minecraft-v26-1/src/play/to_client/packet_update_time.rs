@@ -10,14 +10,14 @@ pub struct PacketUpdateTime {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.age, output)?;
-	super::super::super::array::inline_391::serialize(&_0.clock_updates, output)?;
+	super::super::super::array::inline_393::serialize(&_0.clock_updates, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(9)?;
 	let f_age = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
-	let f_clockUpdates = super::super::super::array::inline_391::deserialize(input)?;
+	let f_clockUpdates = super::super::super::array::inline_393::deserialize(input)?;
 	Ok(Ty {
 		age: f_age,
 		clock_updates: f_clockUpdates,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i64::size_of(&_0.age)
-		+ super::super::super::array::inline_391::size_of(&_0.clock_updates)
+		+ super::super::super::array::inline_393::size_of(&_0.clock_updates)
 }
 
 pub type Ty = PacketUpdateTime;

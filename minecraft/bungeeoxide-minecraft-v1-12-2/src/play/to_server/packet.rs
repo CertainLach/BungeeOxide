@@ -47,7 +47,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::TabComplete(__v) => {
 			::bungeeoxide_minecraft_v1_9::play::to_server::packet_tab_complete::serialize(__v, output)
 		}
-		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::ClientCommand(__v) => {
 			::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::serialize(__v, output)
 		}
@@ -141,7 +141,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if *__tag == 2_i32 {
-		return Ok(Ty::Chat(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::Chat(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 3_i32 {
 		return Ok(Ty::ClientCommand(
@@ -291,7 +291,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::TabComplete(__v) => {
 				::bungeeoxide_minecraft_v1_9::play::to_server::packet_tab_complete::size_of(__v)
 			}
-			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::Chat(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::ClientCommand(__v) => {
 				::bungeeoxide_minecraft_v1_12::play::to_server::packet_client_command::size_of(__v)
 			}

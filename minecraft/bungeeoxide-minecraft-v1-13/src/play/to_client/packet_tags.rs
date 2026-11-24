@@ -10,17 +10,17 @@ pub struct PacketTags {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_151::serialize(&_0.block_tags, output)?;
-	super::super::super::array::inline_151::serialize(&_0.item_tags, output)?;
-	super::super::super::array::inline_151::serialize(&_0.fluid_tags, output)?;
+	super::super::super::array::inline_152::serialize(&_0.block_tags, output)?;
+	super::super::super::array::inline_152::serialize(&_0.item_tags, output)?;
+	super::super::super::array::inline_152::serialize(&_0.fluid_tags, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_blockTags = super::super::super::array::inline_151::deserialize(input)?;
-	let f_itemTags = super::super::super::array::inline_151::deserialize(input)?;
-	let f_fluidTags = super::super::super::array::inline_151::deserialize(input)?;
+	let f_blockTags = super::super::super::array::inline_152::deserialize(input)?;
+	let f_itemTags = super::super::super::array::inline_152::deserialize(input)?;
+	let f_fluidTags = super::super::super::array::inline_152::deserialize(input)?;
 	Ok(Ty {
 		block_tags: f_blockTags,
 		item_tags: f_itemTags,
@@ -29,9 +29,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_151::size_of(&_0.block_tags)
-		+ super::super::super::array::inline_151::size_of(&_0.item_tags)
-		+ super::super::super::array::inline_151::size_of(&_0.fluid_tags)
+	super::super::super::array::inline_152::size_of(&_0.block_tags)
+		+ super::super::super::array::inline_152::size_of(&_0.item_tags)
+		+ super::super::super::array::inline_152::size_of(&_0.fluid_tags)
 }
 
 pub type Ty = PacketTags;

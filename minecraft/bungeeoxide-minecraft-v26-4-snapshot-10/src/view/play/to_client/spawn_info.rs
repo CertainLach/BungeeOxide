@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct SpawnInfo<'i> {
 	pub dimension: ::bungeeoxide_minecraft_root::Varint,
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub gamemode: super::super::super::super::play::to_client::SpawnInfo8,
 	pub previous_gamemode: ::bungeeoxide_minecraft_root::Varint,
 	pub is_flat: ::bungeeoxide_minecraft_root::Bool,
@@ -16,7 +16,7 @@ pub struct SpawnInfo<'i> {
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.dimension, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.name, output)?;
 	super::super::super::super::play::to_client::spawn_info_8::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.previous_gamemode, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_flat, output)?;
@@ -29,7 +29,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(8)?;
 	let f_dimension = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_gamemode = super::super::super::super::play::to_client::spawn_info_8::deserialize(input)?;
 	let f_previousGamemode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_isFlat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -50,7 +50,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.dimension)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.name)
 		+ super::super::super::super::play::to_client::spawn_info_8::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.previous_gamemode)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_flat)
@@ -62,7 +62,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::SpawnInfo) -> Ty<'i> {
 	Ty {
 		dimension: ::core::clone::Clone::clone(&_0.dimension),
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.name),
 		gamemode: ::core::clone::Clone::clone(&_0.gamemode),
 		previous_gamemode: ::core::clone::Clone::clone(&_0.previous_gamemode),
 		is_flat: ::core::clone::Clone::clone(&_0.is_flat),

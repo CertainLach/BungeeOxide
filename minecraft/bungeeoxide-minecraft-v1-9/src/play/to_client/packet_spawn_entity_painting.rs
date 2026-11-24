@@ -14,7 +14,7 @@ pub struct PacketSpawnEntityPainting {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.entity_uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.title, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.title, output)?;
 	::bungeeoxide_minecraft_v1_8::position::serialize(&_0.location, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.direction, output)?;
 	Ok(())
@@ -24,7 +24,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(11)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_entityUUID = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_title = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_title = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_location = ::bungeeoxide_minecraft_v1_8::position::deserialize(input)?;
 	let f_direction = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	Ok(Ty {
@@ -39,7 +39,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.entity_uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.title)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.title)
 		+ ::bungeeoxide_minecraft_v1_8::position::size_of(&_0.location)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.direction)
 }

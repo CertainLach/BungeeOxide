@@ -11,7 +11,7 @@ pub struct PacketLoginPluginRequest {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.message_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.channel, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.channel, output)?;
 	::bungeeoxide_minecraft_root::rest_buffer::serialize(&_0.data, output)?;
 	Ok(())
 }
@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_messageId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_channel = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_channel = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_data = ::bungeeoxide_minecraft_root::rest_buffer::deserialize(input)?;
 	Ok(Ty {
 		message_id: f_messageId,
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.message_id)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.channel)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.channel)
 		+ ::bungeeoxide_minecraft_root::rest_buffer::size_of(&_0.data)
 }
 

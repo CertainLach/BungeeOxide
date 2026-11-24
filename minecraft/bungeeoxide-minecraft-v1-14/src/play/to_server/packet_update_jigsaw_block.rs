@@ -12,18 +12,18 @@ pub struct PacketUpdateJigsawBlock {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::super::super::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.attachment_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.target_pool, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.final_state, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.attachment_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.target_pool, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.final_state, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(11)?;
 	let f_location = super::super::super::position::deserialize(input)?;
-	let f_attachmentType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_targetPool = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_finalState = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_attachmentType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_targetPool = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_finalState = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		location: f_location,
 		attachment_type: f_attachmentType,
@@ -34,9 +34,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	super::super::super::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.attachment_type)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.target_pool)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.final_state)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.attachment_type)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.target_pool)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.final_state)
 }
 
 pub type Ty = PacketUpdateJigsawBlock;

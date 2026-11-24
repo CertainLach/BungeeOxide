@@ -12,7 +12,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::False(__v) => super::item_block_property_0::serialize(__v, output),
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 	}
 }
 
@@ -24,7 +24,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::False(super::item_block_property_0::deserialize(input)?));
 	}
 	if *__tag == true {
-		return Ok(Ty::True(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::True(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	Err(Error::InvalidValue)
 }
@@ -33,7 +33,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::bool::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::False(__v) => super::item_block_property_0::size_of(__v),
-			Ty::True(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::True(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 		}
 }
 

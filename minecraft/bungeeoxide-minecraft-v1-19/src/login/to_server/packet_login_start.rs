@@ -9,14 +9,14 @@ pub struct PacketLoginStart {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.username, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.username, output)?;
 	super::super::super::option_38::serialize(&_0.signature, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_username = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_username = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_signature = super::super::super::option_38::deserialize(input)?;
 	Ok(Ty {
 		username: f_username,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.username)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.username)
 		+ super::super::super::option_38::size_of(&_0.signature)
 }
 

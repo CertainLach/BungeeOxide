@@ -10,16 +10,16 @@ pub struct PacketPlayerInfo {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::packet_player_info_12::serialize(&_0.action, output)?;
-	super::super::super::array::inline_298::serialize(&_0.data, output)?;
+	super::super::super::array::inline_299::serialize(&_0.data, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_action = super::packet_player_info_12::deserialize(input)?;
-	let f_data = super::super::super::array::inline_298::deserialize(
+	let f_data = super::super::super::array::inline_299::deserialize(
 		input,
-		super::super::super::array::inline_298::Args {
+		super::super::super::array::inline_299::Args {
 			action_add_player: &f_action.add_player,
 			action_initialize_chat: &f_action.initialize_chat,
 			action_update_display_name: &f_action.update_display_name,
@@ -38,7 +38,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	super::packet_player_info_12::size_of(&_0.action)
-		+ super::super::super::array::inline_298::size_of(&_0.data)
+		+ super::super::super::array::inline_299::size_of(&_0.data)
 }
 
 pub type Ty = PacketPlayerInfo;

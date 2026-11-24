@@ -5,22 +5,22 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct UntrustedSlot {
 	pub item_count: ::bungeeoxide_minecraft_root::Varint,
-	pub anon: super::UntrustedSlot57,
+	pub anon: super::UntrustedSlot71,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
-	super::untrusted_slot_57::debug_assert_tag(&_0.anon, &_0.item_count);
-	super::untrusted_slot_57::serialize(&_0.anon, output)?;
+	super::untrusted_slot_71::debug_assert_tag(&_0.anon, &_0.item_count);
+	super::untrusted_slot_71::serialize(&_0.anon, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ANON = super::untrusted_slot_57::deserialize(
+	let f_ANON = super::untrusted_slot_71::deserialize(
 		input,
-		super::untrusted_slot_57::Args {
+		super::untrusted_slot_71::Args {
 			item_count: &f_itemCount,
 		},
 	)?;
@@ -32,7 +32,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
-		+ super::untrusted_slot_57::size_of(&_0.anon)
+		+ super::untrusted_slot_71::size_of(&_0.anon)
 }
 
 pub type Ty = UntrustedSlot;

@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTrackedWaypoint30<'i> {
-	pub style: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub style: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub color: super::super::super::super::Option83,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.style, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.style, output)?;
 	super::super::super::super::option_83::serialize(&_0.color, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_style = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_style = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_color = super::super::super::super::option_83::deserialize(input)?;
 	Ok(Ty {
 		style: f_style,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.style)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.style)
 		+ super::super::super::super::option_83::size_of(&_0.color)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTrackedWaypoint30) -> Ty<'i> {
 	Ty {
-		style: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.style),
+		style: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.style),
 		color: ::core::clone::Clone::clone(&_0.color),
 	}
 }

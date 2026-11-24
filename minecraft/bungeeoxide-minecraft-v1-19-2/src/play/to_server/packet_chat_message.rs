@@ -14,24 +14,24 @@ pub struct PacketChatMessage {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.signature, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.signed_preview, output)?;
-	super::super::super::array::inline_174::serialize(&_0.previous_messages, output)?;
+	super::super::super::array::inline_175::serialize(&_0.previous_messages, output)?;
 	super::super::super::option_45::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(21)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_signedPreview = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_previousMessages = super::super::super::array::inline_174::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_175::deserialize(input)?;
 	let f_lastRejectedMessage = super::super::super::option_45::deserialize(input)?;
 	Ok(Ty {
 		message: f_message,
@@ -45,12 +45,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.signature)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.signed_preview)
-		+ super::super::super::array::inline_174::size_of(&_0.previous_messages)
+		+ super::super::super::array::inline_175::size_of(&_0.previous_messages)
 		+ super::super::super::option_45::size_of(&_0.last_rejected_message)
 }
 

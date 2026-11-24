@@ -4,12 +4,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet<'i> {
-	Disconnect(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	Disconnect(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	Key(super::PacketKey<'i>),
 	Success(super::PacketSuccess<'i>),
 	SetupCompression(::bungeeoxide_minecraft_root::Varint),
 	LoginPluginRequest(::bungeeoxide_minecraft_v1_13::view::login::to_client::PacketLoginPluginRequest<'i>),
-	CookieRequest(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	CookieRequest(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	ApplyOptions(super::super::super::super::login::to_client::ConnectionOptions),
 	Default(::bungeeoxide_minecraft_root::Varint),
 }
@@ -18,7 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::Disconnect(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::Key(__v) => super::packet_key::serialize(__v, output),
 		Ty::Success(__v) => super::packet_success::serialize(__v, output),
@@ -27,7 +27,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_13::view::login::to_client::packet_login_plugin_request::serialize(__v, output)
 		}
 		Ty::CookieRequest(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::ApplyOptions(__v) => {
 			super::super::super::super::login::to_client::connection_options::serialize(__v, output)
@@ -42,7 +42,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let __tag = &__tagv;
 	if *__tag == 0_i32 {
 		return Ok(Ty::Disconnect(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 1_i32 {
@@ -63,7 +63,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if *__tag == 5_i32 {
 		return Ok(Ty::CookieRequest(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 6_i32 {
@@ -77,14 +77,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 			Ty::Key(__v) => super::packet_key::size_of(__v),
 			Ty::Success(__v) => super::packet_success::size_of(__v),
 			Ty::SetupCompression(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::LoginPluginRequest(__v) => {
 				::bungeeoxide_minecraft_v1_13::view::login::to_client::packet_login_plugin_request::size_of(__v)
 			}
-			Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 			Ty::ApplyOptions(__v) => {
 				super::super::super::super::login::to_client::connection_options::size_of(__v)
 			}
@@ -121,7 +121,7 @@ pub fn virtual_tag<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Varint {
 pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::Packet) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::login::to_client::Packet::Disconnect(__v) => {
-			Ty::Disconnect(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::Disconnect(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::super::super::login::to_client::Packet::Key(__v) => {
 			Ty::Key(super::packet_key::view(__v))
@@ -136,7 +136,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::Packet) ->
 			Ty::LoginPluginRequest(::bungeeoxide_minecraft_v1_13::view::login::to_client::packet_login_plugin_request::view(__v))
 		}
 		super::super::super::super::login::to_client::Packet::CookieRequest(__v) => {
-			Ty::CookieRequest(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::CookieRequest(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::super::super::login::to_client::Packet::ApplyOptions(__v) => {
 			Ty::ApplyOptions(::core::clone::Clone::clone(__v))

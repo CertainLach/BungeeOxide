@@ -10,7 +10,7 @@ pub struct ChatType {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.translation_key, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.translation_key, output)?;
 	super::super::super::array::inline_59::serialize(&_0.parameters, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.style, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_translationKey = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_translationKey = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_parameters = super::super::super::array::inline_59::deserialize(input)?;
 	let f_style = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.translation_key)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.translation_key)
 		+ super::super::super::array::inline_59::size_of(&_0.parameters)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.style)
 }

@@ -669,6 +669,8 @@ def(Node) => container {
 
 		variant(danger_trapdoor, match: 25);
 
+		variant(big_mobs_close_to_danger, match: 26);
+
 		variant(walkable_door, match: 3);
 
 		variant(trapdoor, match: 4);

@@ -16,7 +16,7 @@ pub struct SpawnInfo {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.dimension, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
 	super::spawn_info_8::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.previous_gamemode, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_flat, output)?;
@@ -29,7 +29,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(8)?;
 	let f_dimension = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_gamemode = super::spawn_info_8::deserialize(input)?;
 	let f_previousGamemode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_isFlat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -50,7 +50,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.dimension)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
 		+ super::spawn_info_8::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.previous_gamemode)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_flat)

@@ -4,13 +4,13 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionUpdate12 {
-	pub path: ::bungeeoxide_minecraft_v1_21_9::Path,
+	pub path: ::bungeeoxide_minecraft_v26_1::Path,
 	pub max_node_distance: ::bungeeoxide_minecraft_root::F32,
 	pub stuck_countdown: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_v1_21_9::path::serialize(&_0.path, output)?;
+	::bungeeoxide_minecraft_v26_1::path::serialize(&_0.path, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_node_distance, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.stuck_countdown, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(22)?;
-	let f_path = ::bungeeoxide_minecraft_v1_21_9::path::deserialize(input)?;
+	let f_path = ::bungeeoxide_minecraft_v26_1::path::deserialize(input)?;
 	let f_maxNodeDistance = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_stuckCountdown = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_v1_21_9::path::size_of(&_0.path)
+	::bungeeoxide_minecraft_v26_1::path::size_of(&_0.path)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_node_distance)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.stuck_countdown)
 }

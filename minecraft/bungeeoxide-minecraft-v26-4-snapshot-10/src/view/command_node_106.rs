@@ -8,13 +8,13 @@ pub struct Args<'a> {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct CommandNode106<'i> {
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub properties: super::CommandNode103<'i>,
 	pub suggestion_type: super::CommandNode105<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.name, output)?;
 	super::command_node_103::serialize(&_0.properties, output)?;
 	super::command_node_105::serialize(&_0.suggestion_type, output)?;
 	Ok(())
@@ -22,7 +22,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_properties = super::command_node_103::deserialize(input)?;
 	let f_suggestionType = super::command_node_105::deserialize(
 		input,
@@ -38,14 +38,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> 
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.name)
 		+ super::command_node_103::size_of(&_0.properties)
 		+ super::command_node_105::size_of(&_0.suggestion_type)
 }
 
 pub fn view<'i>(_0: &'i super::super::CommandNode106) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.name),
 		properties: super::command_node_103::view(&_0.properties),
 		suggestion_type: super::command_node_105::view(&_0.suggestion_type),
 	}
@@ -53,7 +53,7 @@ pub fn view<'i>(_0: &'i super::super::CommandNode106) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::CommandNode106) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.name),
 		properties: super::command_node_103::into_view(&mut _0.properties),
 		suggestion_type: super::command_node_105::view(&mut _0.suggestion_type),
 	}

@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketChatMessage<'i> {
-	pub message: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub message: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub timestamp: ::bungeeoxide_minecraft_root::I64,
 	pub salt: ::bungeeoxide_minecraft_root::I64,
 	pub signature: ::bungeeoxide_minecraft_root::view::Option3<'i>,
@@ -14,7 +14,7 @@ pub struct PacketChatMessage<'i> {
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
 	::bungeeoxide_minecraft_root::view::option_3::serialize(&_0.signature, output)?;
@@ -30,7 +30,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(20)?;
-	let f_message = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::view::option_3::deserialize(input)?;
@@ -52,7 +52,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.message)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
 		+ ::bungeeoxide_minecraft_root::view::option_3::size_of(&_0.signature)
@@ -63,7 +63,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketChatMessage) -> Ty<'i> {
 	Ty {
-		message: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.message),
+		message: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.message),
 		timestamp: ::core::clone::Clone::clone(&_0.timestamp),
 		salt: ::core::clone::Clone::clone(&_0.salt),
 		signature: ::bungeeoxide_minecraft_root::view::option_3::view(&_0.signature),

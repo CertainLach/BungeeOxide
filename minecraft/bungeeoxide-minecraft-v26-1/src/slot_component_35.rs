@@ -4,64 +4,34 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent35 {
-	pub contact_cooldown_ticks: ::bungeeoxide_minecraft_root::Varint,
-	pub delay_ticks: ::bungeeoxide_minecraft_root::Varint,
-	pub dismount_conditions: Option<::bungeeoxide_minecraft_v1_21_11::KineticWeaponCondition>,
-	pub knockback_conditions: Option<::bungeeoxide_minecraft_v1_21_11::KineticWeaponCondition>,
-	pub damage_conditions: Option<::bungeeoxide_minecraft_v1_21_11::KineticWeaponCondition>,
-	pub forward_movement: ::bungeeoxide_minecraft_root::F32,
-	pub damage_multiplier: ::bungeeoxide_minecraft_root::F32,
-	pub sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
-	pub hit_sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
+	pub nutrition: ::bungeeoxide_minecraft_root::Varint,
+	pub saturation_modifier: ::bungeeoxide_minecraft_root::F32,
+	pub can_always_eat: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.contact_cooldown_ticks, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.delay_ticks, output)?;
-	::bungeeoxide_minecraft_v1_21_11::option_16::serialize(&_0.dismount_conditions, output)?;
-	::bungeeoxide_minecraft_v1_21_11::option_16::serialize(&_0.knockback_conditions, output)?;
-	::bungeeoxide_minecraft_v1_21_11::option_16::serialize(&_0.damage_conditions, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.forward_movement, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.damage_multiplier, output)?;
-	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.sound, output)?;
-	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.hit_sound, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.nutrition, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.saturation_modifier, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_always_eat, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(15)?;
-	let f_contactCooldownTicks = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_delayTicks = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_dismountConditions = ::bungeeoxide_minecraft_v1_21_11::option_16::deserialize(input)?;
-	let f_knockbackConditions = ::bungeeoxide_minecraft_v1_21_11::option_16::deserialize(input)?;
-	let f_damageConditions = ::bungeeoxide_minecraft_v1_21_11::option_16::deserialize(input)?;
-	let f_forwardMovement = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_damageMultiplier = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_sound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
-	let f_hitSound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
+	input.expect(6)?;
+	let f_nutrition = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_saturationModifier = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_canAlwaysEat = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
-		contact_cooldown_ticks: f_contactCooldownTicks,
-		delay_ticks: f_delayTicks,
-		dismount_conditions: f_dismountConditions,
-		knockback_conditions: f_knockbackConditions,
-		damage_conditions: f_damageConditions,
-		forward_movement: f_forwardMovement,
-		damage_multiplier: f_damageMultiplier,
-		sound: f_sound,
-		hit_sound: f_hitSound,
+		nutrition: f_nutrition,
+		saturation_modifier: f_saturationModifier,
+		can_always_eat: f_canAlwaysEat,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.contact_cooldown_ticks)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.delay_ticks)
-		+ ::bungeeoxide_minecraft_v1_21_11::option_16::size_of(&_0.dismount_conditions)
-		+ ::bungeeoxide_minecraft_v1_21_11::option_16::size_of(&_0.knockback_conditions)
-		+ ::bungeeoxide_minecraft_v1_21_11::option_16::size_of(&_0.damage_conditions)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.forward_movement)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.damage_multiplier)
-		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.sound)
-		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.hit_sound)
+	::bungeeoxide_minecraft_root::varint::size_of(&_0.nutrition)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.saturation_modifier)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_always_eat)
 }
 
 pub type Ty = SlotComponent35;

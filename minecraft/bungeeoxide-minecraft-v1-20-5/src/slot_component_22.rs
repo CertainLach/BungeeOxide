@@ -13,9 +13,9 @@ pub struct SlotComponent22 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.raw_title, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.raw_title, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.filtered_title, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.author, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.author, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.generation, output)?;
 	super::array::inline_54::serialize(&_0.pages, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.resolved, output)?;
@@ -24,9 +24,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(6)?;
-	let f_rawTitle = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_rawTitle = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_filteredTitle = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_author = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_author = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_generation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_pages = super::array::inline_54::deserialize(input)?;
 	let f_resolved = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -41,9 +41,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.raw_title)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.raw_title)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.filtered_title)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.author)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.author)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.generation)
 		+ super::array::inline_54::size_of(&_0.pages)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.resolved)

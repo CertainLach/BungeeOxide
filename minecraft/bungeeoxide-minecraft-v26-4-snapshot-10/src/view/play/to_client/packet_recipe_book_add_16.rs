@@ -8,7 +8,7 @@ pub struct PacketRecipeBookAdd16<'i> {
 	pub display: super::RecipeDisplay<'i>,
 	pub group: ::bungeeoxide_minecraft_root::Varint,
 	pub category: super::super::super::super::play::to_client::PacketRecipeBookAdd15,
-	pub crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::Option119<'i>,
+	pub crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::Option126<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -19,7 +19,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		&_0.category,
 		output,
 	)?;
-	::bungeeoxide_minecraft_v1_20_5::view::option_119::serialize(&_0.crafting_requirements, output)?;
+	::bungeeoxide_minecraft_v1_20_5::view::option_126::serialize(&_0.crafting_requirements, output)?;
 	Ok(())
 }
 
@@ -31,7 +31,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_category =
 		super::super::super::super::play::to_client::packet_recipe_book_add_15::deserialize(input)?;
 	let f_craftingRequirements =
-		::bungeeoxide_minecraft_v1_20_5::view::option_119::deserialize(input)?;
+		::bungeeoxide_minecraft_v1_20_5::view::option_126::deserialize(input)?;
 	Ok(Ty {
 		display_id: f_displayId,
 		display: f_display,
@@ -46,7 +46,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ super::recipe_display::size_of(&_0.display)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.group)
 		+ super::super::super::super::play::to_client::packet_recipe_book_add_15::size_of(&_0.category)
-		+ ::bungeeoxide_minecraft_v1_20_5::view::option_119::size_of(&_0.crafting_requirements)
+		+ ::bungeeoxide_minecraft_v1_20_5::view::option_126::size_of(&_0.crafting_requirements)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketRecipeBookAdd16) -> Ty<'i> {
@@ -55,7 +55,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketRecip
 		display: super::recipe_display::view(&_0.display),
 		group: ::core::clone::Clone::clone(&_0.group),
 		category: ::core::clone::Clone::clone(&_0.category),
-		crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::option_119::view(&_0.crafting_requirements),
+		crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::option_126::view(&_0.crafting_requirements),
 	}
 }
 
@@ -65,7 +65,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		display: super::recipe_display::into_view(&mut _0.display),
 		group: ::core::clone::Clone::clone(&mut _0.group),
 		category: ::core::clone::Clone::clone(&mut _0.category),
-		crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::option_119::into_view(&mut _0.crafting_requirements),
+		crafting_requirements: ::bungeeoxide_minecraft_v1_20_5::view::option_126::into_view(&mut _0.crafting_requirements),
 	}
 }
 

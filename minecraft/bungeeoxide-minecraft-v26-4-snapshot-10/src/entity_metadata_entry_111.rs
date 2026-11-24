@@ -67,7 +67,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::Particle(__v) => super::particle::serialize(__v, output),
-		Ty::Particles(__v) => super::array::inline_130::serialize(__v, output),
+		Ty::Particles(__v) => super::array::inline_131::serialize(__v, output),
 		Ty::VillagerData(__v) => super::entity_metadata_entry_107::serialize(__v, output),
 		Ty::OptionalUnsignedInt(__v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
@@ -102,7 +102,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
 		}
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
 		Ty::ResolvableProfile(__v) => {
 			::bungeeoxide_minecraft_v1_21_9::resolvable_profile::serialize(__v, output)
@@ -158,7 +158,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::Particle(super::particle::deserialize(input)?));
 	}
 	if *__tag == 17_i32 {
-		return Ok(Ty::Particles(super::array::inline_130::deserialize(input)?));
+		return Ok(Ty::Particles(super::array::inline_131::deserialize(input)?));
 	}
 	if *__tag == 18_i32 {
 		return Ok(Ty::VillagerData(super::entity_metadata_entry_107::deserialize(input)?));
@@ -243,7 +243,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::Vector3(::bungeeoxide_minecraft_v1_19_4::vec3f::deserialize(input)?));
 	}
 	if *__tag == 4_i32 {
-		return Ok(Ty::String(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::String(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 40_i32 {
 		return Ok(Ty::Quaternion(::bungeeoxide_minecraft_v1_19_4::vec4f::deserialize(input)?));
@@ -293,7 +293,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Particle(__v) => super::particle::size_of(__v),
-			Ty::Particles(__v) => super::array::inline_130::size_of(__v),
+			Ty::Particles(__v) => super::array::inline_131::size_of(__v),
 			Ty::VillagerData(__v) => super::entity_metadata_entry_107::size_of(__v),
 			Ty::OptionalUnsignedInt(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Long(__v) => ::bungeeoxide_minecraft_root::varlong::size_of(__v),
@@ -320,7 +320,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_root::varint::size_of(__v)
 			}
 			Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
 			Ty::ResolvableProfile(__v) => {
 				::bungeeoxide_minecraft_v1_21_9::resolvable_profile::size_of(__v)

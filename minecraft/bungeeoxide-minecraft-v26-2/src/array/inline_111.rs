@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty = Vec<super::super::ItemStackTemplate>;
+pub type Ty = Vec<super::super::ItemBlockPredicate>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::item_stack_template::serialize(e, output)?;
+		super::super::item_block_predicate::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(count.saturating_mul(4))?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::item_stack_template::deserialize(input)?);
+		out.push(super::super::item_block_predicate::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -31,7 +31,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::item_stack_template::size_of(e);
+		n += super::super::item_block_predicate::size_of(e);
 	}
 	n
 }

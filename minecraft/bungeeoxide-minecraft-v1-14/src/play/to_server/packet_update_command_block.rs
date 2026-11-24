@@ -12,7 +12,7 @@ pub struct PacketUpdateCommandBlock {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::super::super::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.command, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.command, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.flags, output)?;
 	Ok(())
@@ -21,7 +21,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(11)?;
 	let f_location = super::super::super::position::deserialize(input)?;
-	let f_command = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_command = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_flags = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	Ok(Ty {
@@ -34,7 +34,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	super::super::super::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.command)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.command)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.flags)
 }

@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty = Vec<super::super::Varlong>;
+pub type Ty = Vec<super::super::Varint>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::super::varint::serialize(
@@ -10,7 +10,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::varlong::serialize(e, output)?;
+		super::super::varint::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::varlong::deserialize(input)?);
+		out.push(super::super::varint::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = super::super::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::varlong::size_of(e);
+		n += super::super::varint::size_of(e);
 	}
 	n
 }

@@ -27,9 +27,9 @@ pub enum Particle {
 	Firefly,
 	DrippingWater,
 	FallingWater,
-	Dust(super::Particle3),
-	DustColorTransition(super::Particle4),
-	Effect(super::Particle5),
+	Dust(super::Particle17),
+	DustColorTransition(super::Particle18),
+	Effect(super::Particle19),
 	ElderGuardian,
 	EnchantedHit,
 	Enchant,
@@ -62,10 +62,10 @@ pub enum Particle {
 	HappyVillager,
 	Composter,
 	Heart,
-	InstantEffect(super::Particle6),
+	InstantEffect(super::Particle20),
 	Item(super::ItemStackTemplate),
-	Vibration(super::Particle9),
-	Trail(super::Particle10),
+	Vibration(super::Particle23),
+	Trail(super::Particle24),
 	CopperFireFlame,
 	PauseMobGrowth,
 	ResetMobGrowth,
@@ -150,9 +150,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::Firefly => Ok(()),
 		Ty::DrippingWater => Ok(()),
 		Ty::FallingWater => Ok(()),
-		Ty::Dust(__v) => super::particle_3::serialize(__v, output),
-		Ty::DustColorTransition(__v) => super::particle_4::serialize(__v, output),
-		Ty::Effect(__v) => super::particle_5::serialize(__v, output),
+		Ty::Dust(__v) => super::particle_17::serialize(__v, output),
+		Ty::DustColorTransition(__v) => super::particle_18::serialize(__v, output),
+		Ty::Effect(__v) => super::particle_19::serialize(__v, output),
 		Ty::ElderGuardian => Ok(()),
 		Ty::EnchantedHit => Ok(()),
 		Ty::Enchant => Ok(()),
@@ -185,10 +185,10 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::HappyVillager => Ok(()),
 		Ty::Composter => Ok(()),
 		Ty::Heart => Ok(()),
-		Ty::InstantEffect(__v) => super::particle_6::serialize(__v, output),
+		Ty::InstantEffect(__v) => super::particle_20::serialize(__v, output),
 		Ty::Item(__v) => super::item_stack_template::serialize(__v, output),
-		Ty::Vibration(__v) => super::particle_9::serialize(__v, output),
-		Ty::Trail(__v) => super::particle_10::serialize(__v, output),
+		Ty::Vibration(__v) => super::particle_23::serialize(__v, output),
+		Ty::Trail(__v) => super::particle_24::serialize(__v, output),
 		Ty::CopperFireFlame => Ok(()),
 		Ty::PauseMobGrowth => Ok(()),
 		Ty::ResetMobGrowth => Ok(()),
@@ -322,13 +322,13 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::FallingWater);
 	}
 	if *__tag == 14_i32 {
-		return Ok(Ty::Dust(super::particle_3::deserialize(input)?));
+		return Ok(Ty::Dust(super::particle_17::deserialize(input)?));
 	}
 	if *__tag == 15_i32 {
-		return Ok(Ty::DustColorTransition(super::particle_4::deserialize(input)?));
+		return Ok(Ty::DustColorTransition(super::particle_18::deserialize(input)?));
 	}
 	if *__tag == 16_i32 {
-		return Ok(Ty::Effect(super::particle_5::deserialize(input)?));
+		return Ok(Ty::Effect(super::particle_19::deserialize(input)?));
 	}
 	if *__tag == 17_i32 {
 		return Ok(Ty::ElderGuardian);
@@ -427,16 +427,16 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::Heart);
 	}
 	if *__tag == 46_i32 {
-		return Ok(Ty::InstantEffect(super::particle_6::deserialize(input)?));
+		return Ok(Ty::InstantEffect(super::particle_20::deserialize(input)?));
 	}
 	if *__tag == 47_i32 {
 		return Ok(Ty::Item(super::item_stack_template::deserialize(input)?));
 	}
 	if *__tag == 48_i32 {
-		return Ok(Ty::Vibration(super::particle_9::deserialize(input)?));
+		return Ok(Ty::Vibration(super::particle_23::deserialize(input)?));
 	}
 	if *__tag == 49_i32 {
-		return Ok(Ty::Trail(super::particle_10::deserialize(input)?));
+		return Ok(Ty::Trail(super::particle_24::deserialize(input)?));
 	}
 	if *__tag == 5_i32 {
 		return Ok(Ty::CopperFireFlame);
@@ -632,9 +632,9 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::Firefly => 0,
 			Ty::DrippingWater => 0,
 			Ty::FallingWater => 0,
-			Ty::Dust(__v) => super::particle_3::size_of(__v),
-			Ty::DustColorTransition(__v) => super::particle_4::size_of(__v),
-			Ty::Effect(__v) => super::particle_5::size_of(__v),
+			Ty::Dust(__v) => super::particle_17::size_of(__v),
+			Ty::DustColorTransition(__v) => super::particle_18::size_of(__v),
+			Ty::Effect(__v) => super::particle_19::size_of(__v),
 			Ty::ElderGuardian => 0,
 			Ty::EnchantedHit => 0,
 			Ty::Enchant => 0,
@@ -667,10 +667,10 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::HappyVillager => 0,
 			Ty::Composter => 0,
 			Ty::Heart => 0,
-			Ty::InstantEffect(__v) => super::particle_6::size_of(__v),
+			Ty::InstantEffect(__v) => super::particle_20::size_of(__v),
 			Ty::Item(__v) => super::item_stack_template::size_of(__v),
-			Ty::Vibration(__v) => super::particle_9::size_of(__v),
-			Ty::Trail(__v) => super::particle_10::size_of(__v),
+			Ty::Vibration(__v) => super::particle_23::size_of(__v),
+			Ty::Trail(__v) => super::particle_24::size_of(__v),
 			Ty::CopperFireFlame => 0,
 			Ty::PauseMobGrowth => 0,
 			Ty::ResetMobGrowth => 0,

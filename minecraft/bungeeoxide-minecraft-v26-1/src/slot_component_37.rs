@@ -4,29 +4,44 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent37 {
-	pub r#type: super::SlotComponent36,
-	pub duration: ::bungeeoxide_minecraft_root::Varint,
+	pub consume_seconds: ::bungeeoxide_minecraft_root::F32,
+	pub animation: super::SlotComponent36,
+	pub sound: ::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder,
+	pub makes_particles: ::bungeeoxide_minecraft_root::Bool,
+	pub effects: Vec<::bungeeoxide_minecraft_v1_21_3::ItemConsumeEffect>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::slot_component_36::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.duration, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.consume_seconds, output)?;
+	super::slot_component_36::serialize(&_0.animation, output)?;
+	::bungeeoxide_minecraft_v1_19_3::item_sound_holder::serialize(&_0.sound, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.makes_particles, output)?;
+	::bungeeoxide_minecraft_v1_21_3::array::inline_70::serialize(&_0.effects, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(2)?;
-	let f_type = super::slot_component_36::deserialize(input)?;
-	let f_duration = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	input.expect(8)?;
+	let f_consume_seconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_animation = super::slot_component_36::deserialize(input)?;
+	let f_sound = ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::deserialize(input)?;
+	let f_makes_particles = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_effects = ::bungeeoxide_minecraft_v1_21_3::array::inline_70::deserialize(input)?;
 	Ok(Ty {
-		r#type: f_type,
-		duration: f_duration,
+		consume_seconds: f_consume_seconds,
+		animation: f_animation,
+		sound: f_sound,
+		makes_particles: f_makes_particles,
+		effects: f_effects,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::slot_component_36::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.duration)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.consume_seconds)
+		+ super::slot_component_36::size_of(&_0.animation)
+		+ ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::size_of(&_0.sound)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.makes_particles)
+		+ ::bungeeoxide_minecraft_v1_21_3::array::inline_70::size_of(&_0.effects)
 }
 
 pub type Ty = SlotComponent37;

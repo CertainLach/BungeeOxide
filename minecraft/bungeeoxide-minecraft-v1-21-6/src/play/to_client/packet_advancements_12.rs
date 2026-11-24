@@ -9,15 +9,15 @@ pub struct PacketAdvancements12 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.key, output)?;
-	super::super::super::array::inline_335::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.key, output)?;
+	super::super::super::array::inline_336::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_key = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_value = super::super::super::array::inline_335::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_value = super::super::super::array::inline_336::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
 		value: f_value,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.key)
-		+ super::super::super::array::inline_335::size_of(&_0.value)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.key)
+		+ super::super::super::array::inline_336::size_of(&_0.value)
 }
 
 pub type Ty = PacketAdvancements12;

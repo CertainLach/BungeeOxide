@@ -15,11 +15,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.chunk_z, output)?;
 	::bungeeoxide_minecraft_root::i16::serialize(
-		&(super::super::super::array::sized_509::virtual_size(&_0.records) as ::bungeeoxide_minecraft_root::I16),
+		&(super::super::super::array::sized_511::virtual_size(&_0.records) as ::bungeeoxide_minecraft_root::I16),
 		output,
 	)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.data_length, output)?;
-	super::super::super::array::sized_509::serialize(&_0.records, output)?;
+	super::super::super::array::sized_511::serialize(&_0.records, output)?;
 	Ok(())
 }
 
@@ -29,14 +29,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_chunkZ = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_recordCount = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
 	let f_dataLength = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_records = super::super::super::array::sized_509::deserialize(
+	let f_records = super::super::super::array::sized_511::deserialize(
 		input,
-		super::super::super::array::sized_509::Args {
+		super::super::super::array::sized_511::Args {
 			count: &f_recordCount,
 		},
 	)?;
 	debug_assert!(
-		f_recordCount == super::super::super::array::sized_509::virtual_size(&f_records) as ::bungeeoxide_minecraft_root::I16,
+		f_recordCount == super::super::super::array::sized_511::virtual_size(&f_records) as ::bungeeoxide_minecraft_root::I16,
 		"virtual field recordCount does not match its value source",
 	);
 	Ok(Ty {
@@ -51,10 +51,10 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.chunk_z)
 		+ ::bungeeoxide_minecraft_root::i16::size_of(
-			&(super::super::super::array::sized_509::virtual_size(&_0.records) as ::bungeeoxide_minecraft_root::I16),
+			&(super::super::super::array::sized_511::virtual_size(&_0.records) as ::bungeeoxide_minecraft_root::I16),
 		)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.data_length)
-		+ super::super::super::array::sized_509::size_of(&_0.records)
+		+ super::super::super::array::sized_511::size_of(&_0.records)
 }
 
 pub type Ty = PacketMultiBlockChange;

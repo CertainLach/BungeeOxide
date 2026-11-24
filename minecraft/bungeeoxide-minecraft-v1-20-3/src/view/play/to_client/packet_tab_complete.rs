@@ -7,14 +7,14 @@ pub struct PacketTabComplete<'i> {
 	pub transaction_id: ::bungeeoxide_minecraft_root::Varint,
 	pub start: ::bungeeoxide_minecraft_root::Varint,
 	pub length: ::bungeeoxide_minecraft_root::Varint,
-	pub matches: super::super::super::array::Inline202<'i>,
+	pub matches: super::super::super::array::Inline203<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.transaction_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.start, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.length, output)?;
-	super::super::super::array::inline_202::serialize(&_0.matches, output)?;
+	super::super::super::array::inline_203::serialize(&_0.matches, output)?;
 	Ok(())
 }
 
@@ -23,7 +23,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_transactionId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_start = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_length = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_matches = super::super::super::array::inline_202::deserialize(input)?;
+	let f_matches = super::super::super::array::inline_203::deserialize(input)?;
 	Ok(Ty {
 		transaction_id: f_transactionId,
 		start: f_start,
@@ -36,7 +36,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.transaction_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.start)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.length)
-		+ super::super::super::array::inline_202::size_of(&_0.matches)
+		+ super::super::super::array::inline_203::size_of(&_0.matches)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTabComplete) -> Ty<'i> {
@@ -44,7 +44,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTabCo
 		transaction_id: ::core::clone::Clone::clone(&_0.transaction_id),
 		start: ::core::clone::Clone::clone(&_0.start),
 		length: ::core::clone::Clone::clone(&_0.length),
-		matches: super::super::super::array::inline_202::view(&_0.matches),
+		matches: super::super::super::array::inline_203::view(&_0.matches),
 	}
 }
 
@@ -53,7 +53,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		transaction_id: ::core::clone::Clone::clone(&mut _0.transaction_id),
 		start: ::core::clone::Clone::clone(&mut _0.start),
 		length: ::core::clone::Clone::clone(&mut _0.length),
-		matches: super::super::super::array::inline_202::into_view(&mut _0.matches),
+		matches: super::super::super::array::inline_203::into_view(&mut _0.matches),
 	}
 }
 

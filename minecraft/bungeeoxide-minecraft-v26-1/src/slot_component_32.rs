@@ -4,34 +4,49 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent32 {
-	pub threshold: ::bungeeoxide_minecraft_root::F32,
-	pub base: ::bungeeoxide_minecraft_root::F32,
-	pub factor: ::bungeeoxide_minecraft_root::F32,
+	pub type_id: ::bungeeoxide_minecraft_root::Varint,
+	pub name: String,
+	pub value: ::bungeeoxide_minecraft_root::F64,
+	pub operation: super::SlotComponent29,
+	pub slot: super::SlotComponent30,
+	pub display: super::SlotComponent31,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.threshold, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.base, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.factor, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.type_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
+	super::slot_component_29::serialize(&_0.operation, output)?;
+	super::slot_component_30::serialize(&_0.slot, output)?;
+	super::slot_component_31::serialize(&_0.display, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(12)?;
-	let f_threshold = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_base = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_factor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	input.expect(13)?;
+	let f_typeId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
+	let f_operation = super::slot_component_29::deserialize(input)?;
+	let f_slot = super::slot_component_30::deserialize(input)?;
+	let f_display = super::slot_component_31::deserialize(input)?;
 	Ok(Ty {
-		threshold: f_threshold,
-		base: f_base,
-		factor: f_factor,
+		type_id: f_typeId,
+		name: f_name,
+		value: f_value,
+		operation: f_operation,
+		slot: f_slot,
+		display: f_display,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::f32::size_of(&_0.threshold)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.base)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.factor)
+	::bungeeoxide_minecraft_root::varint::size_of(&_0.type_id)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
+		+ super::slot_component_29::size_of(&_0.operation)
+		+ super::slot_component_30::size_of(&_0.slot)
+		+ super::slot_component_31::size_of(&_0.display)
 }
 
 pub type Ty = SlotComponent32;

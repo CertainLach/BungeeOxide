@@ -2280,3 +2280,44 @@ fn mannequin_names_reach_old_teams() {
 		assert!(has(&renamed, b"Bob"), "{version}: {renamed:?}");
 	}
 }
+
+fn entity_path(types: &[u8]) -> Vec<u8> {
+	let mut b = vec![28, 7, 5, 1, 1];
+	b.extend(1i32.to_be_bytes());
+	b.extend([0; 8]);
+	b.push(types.len() as u8);
+	for &t in types {
+		b.extend([0; 12]);
+		b.extend(1.5f32.to_be_bytes());
+		b.extend(0.5f32.to_be_bytes());
+		b.push(0);
+		b.push(t);
+		b.extend(2.0f32.to_be_bytes());
+	}
+	b.extend([0, 0, 0]);
+	b.extend(16.0f32.to_be_bytes());
+	b
+}
+
+#[test]
+fn path_node_types_keep_their_ids() {
+	let mut cx = Session::new();
+	let down = convert(
+		Root::PlayToClient,
+		Version::V26_1,
+		Version::V1_21_11,
+		&entity_path(&[26, 6, 13, 14, 15, 16, 25]),
+		&mut cx,
+	)
+	.unwrap();
+	assert_eq!(down, [entity_path(&[15, 6, 13, 14, 15, 16, 25])]);
+	let up = convert(
+		Root::PlayToClient,
+		Version::V1_21_11,
+		Version::V26_1,
+		&entity_path(&[6, 13, 14, 15, 16, 25]),
+		&mut cx,
+	)
+	.unwrap();
+	assert_eq!(up, [entity_path(&[6, 13, 14, 15, 16, 25])]);
+}

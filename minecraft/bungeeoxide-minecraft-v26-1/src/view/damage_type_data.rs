@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DamageTypeData<'i> {
-	pub msg_id: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub msg_id: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub scaling: super::super::DamageTypeData0,
 	pub exhaustion: ::bungeeoxide_minecraft_root::F32,
 	pub effects: super::super::DamageTypeData1,
@@ -12,7 +12,7 @@ pub struct DamageTypeData<'i> {
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.msg_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.msg_id, output)?;
 	super::super::damage_type_data_0::serialize(&_0.scaling, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.exhaustion, output)?;
 	super::super::damage_type_data_1::serialize(&_0.effects, output)?;
@@ -22,7 +22,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(8)?;
-	let f_msgId = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_msgId = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_scaling = super::super::damage_type_data_0::deserialize(input)?;
 	let f_exhaustion = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_effects = super::super::damage_type_data_1::deserialize(input)?;
@@ -37,7 +37,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.msg_id)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.msg_id)
 		+ super::super::damage_type_data_0::size_of(&_0.scaling)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.exhaustion)
 		+ super::super::damage_type_data_1::size_of(&_0.effects)
@@ -46,7 +46,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::DamageTypeData) -> Ty<'i> {
 	Ty {
-		msg_id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.msg_id),
+		msg_id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.msg_id),
 		scaling: ::core::clone::Clone::clone(&_0.scaling),
 		exhaustion: ::core::clone::Clone::clone(&_0.exhaustion),
 		effects: ::core::clone::Clone::clone(&_0.effects),

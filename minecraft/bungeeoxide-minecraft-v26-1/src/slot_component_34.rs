@@ -4,39 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent34 {
-	pub deals_knockback: ::bungeeoxide_minecraft_root::Bool,
-	pub dismounts: ::bungeeoxide_minecraft_root::Bool,
-	pub sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
-	pub hit_sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
+	pub hide_tooltip: ::bungeeoxide_minecraft_root::Bool,
+	pub hidden_components: Vec<::bungeeoxide_minecraft_root::Varint>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.deals_knockback, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.dismounts, output)?;
-	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.sound, output)?;
-	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.hit_sound, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.hide_tooltip, output)?;
+	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.hidden_components, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(4)?;
-	let f_dealsKnockback = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_dismounts = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_sound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
-	let f_hitSound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
+	input.expect(2)?;
+	let f_hideTooltip = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_hiddenComponents = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
 	Ok(Ty {
-		deals_knockback: f_dealsKnockback,
-		dismounts: f_dismounts,
-		sound: f_sound,
-		hit_sound: f_hitSound,
+		hide_tooltip: f_hideTooltip,
+		hidden_components: f_hiddenComponents,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::bool::size_of(&_0.deals_knockback)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.dismounts)
-		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.sound)
-		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.hit_sound)
+	::bungeeoxide_minecraft_root::bool::size_of(&_0.hide_tooltip)
+		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.hidden_components)
 }
 
 pub type Ty = SlotComponent34;

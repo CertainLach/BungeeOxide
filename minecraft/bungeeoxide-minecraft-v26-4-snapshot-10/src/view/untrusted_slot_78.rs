@@ -7,18 +7,18 @@ pub struct UntrustedSlot78<'i> {
 	pub item_id: ::bungeeoxide_minecraft_root::Varint,
 	pub added_component_count: ::bungeeoxide_minecraft_root::Varint,
 	pub removed_component_count: ::bungeeoxide_minecraft_root::Varint,
-	pub components: super::array::Sized495<'i>,
-	pub remove_components: super::super::array::Sized494,
+	pub components: super::array::Sized497<'i>,
+	pub remove_components: super::super::array::Sized496,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.added_component_count, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.removed_component_count, output)?;
-	super::array::sized_495::check_count(&_0.components, &_0.added_component_count)?;
-	super::array::sized_495::serialize(&_0.components, output)?;
-	super::super::array::sized_494::check_count(&_0.remove_components, &_0.removed_component_count)?;
-	super::super::array::sized_494::serialize(&_0.remove_components, output)?;
+	super::array::sized_497::check_count(&_0.components, &_0.added_component_count)?;
+	super::array::sized_497::serialize(&_0.components, output)?;
+	super::super::array::sized_496::check_count(&_0.remove_components, &_0.removed_component_count)?;
+	super::super::array::sized_496::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 
@@ -27,15 +27,15 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_addedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_removedComponentCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::sized_495::deserialize(
+	let f_components = super::array::sized_497::deserialize(
 		input,
-		super::array::sized_495::Args {
+		super::array::sized_497::Args {
 			count: &f_addedComponentCount,
 		},
 	)?;
-	let f_removeComponents = super::super::array::sized_494::deserialize(
+	let f_removeComponents = super::super::array::sized_496::deserialize(
 		input,
-		super::super::array::sized_494::Args {
+		super::super::array::sized_496::Args {
 			count: &f_removedComponentCount,
 		},
 	)?;
@@ -52,8 +52,8 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.added_component_count)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.removed_component_count)
-		+ super::array::sized_495::size_of(&_0.components)
-		+ super::super::array::sized_494::size_of(&_0.remove_components)
+		+ super::array::sized_497::size_of(&_0.components)
+		+ super::super::array::sized_496::size_of(&_0.remove_components)
 }
 
 pub fn view<'i>(_0: &'i super::super::UntrustedSlot78) -> Ty<'i> {
@@ -61,7 +61,7 @@ pub fn view<'i>(_0: &'i super::super::UntrustedSlot78) -> Ty<'i> {
 		item_id: ::core::clone::Clone::clone(&_0.item_id),
 		added_component_count: ::core::clone::Clone::clone(&_0.added_component_count),
 		removed_component_count: ::core::clone::Clone::clone(&_0.removed_component_count),
-		components: super::array::sized_495::view(&_0.components),
+		components: super::array::sized_497::view(&_0.components),
 		remove_components: ::core::clone::Clone::clone(&_0.remove_components),
 	}
 }
@@ -71,7 +71,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::UntrustedSlot78) -> Ty<'i> {
 		item_id: ::core::clone::Clone::clone(&mut _0.item_id),
 		added_component_count: ::core::clone::Clone::clone(&mut _0.added_component_count),
 		removed_component_count: ::core::clone::Clone::clone(&mut _0.removed_component_count),
-		components: super::array::sized_495::view(&mut _0.components),
+		components: super::array::sized_497::view(&mut _0.components),
 		remove_components: ::core::mem::take(&mut _0.remove_components),
 	}
 }

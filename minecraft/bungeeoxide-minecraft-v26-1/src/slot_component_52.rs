@@ -4,29 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent52 {
-	pub flight_duration: ::bungeeoxide_minecraft_root::Varint,
-	pub explosions: Vec<::bungeeoxide_minecraft_v1_20_5::ItemFireworkExplosion>,
+	pub id: ::bungeeoxide_minecraft_root::Varint,
+	pub level: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.flight_duration, output)?;
-	::bungeeoxide_minecraft_v1_20_5::array::inline_52::serialize(&_0.explosions, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.level, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_flightDuration = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_explosions = ::bungeeoxide_minecraft_v1_20_5::array::inline_52::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_level = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
-		flight_duration: f_flightDuration,
-		explosions: f_explosions,
+		id: f_id,
+		level: f_level,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.flight_duration)
-		+ ::bungeeoxide_minecraft_v1_20_5::array::inline_52::size_of(&_0.explosions)
+	::bungeeoxide_minecraft_root::varint::size_of(&_0.id)
+		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.level)
 }
 
 pub type Ty = SlotComponent52;

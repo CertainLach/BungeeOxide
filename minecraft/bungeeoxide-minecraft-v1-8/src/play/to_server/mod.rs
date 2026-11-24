@@ -51,7 +51,7 @@ pub use self::packet_use_entity_1::PacketUseEntity1;
 pub use self::packet_window_click::PacketWindowClick;
 pub use ::bungeeoxide_minecraft_root::bool as packet_flying;
 pub use ::bungeeoxide_minecraft_root::i16 as packet_held_item_slot;
-pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat;
+pub use ::bungeeoxide_minecraft_root::pstring_131 as packet_chat;
 pub use ::bungeeoxide_minecraft_root::u8 as packet_close_window;
 pub use ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_enchant_item;
 pub use ::bungeeoxide_minecraft_v1_0_1::play::to_server::packet_look;

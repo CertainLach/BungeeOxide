@@ -9,14 +9,14 @@ pub struct PacketMessageAcknowledgement {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_174::serialize(&_0.previous_messages, output)?;
+	super::super::super::array::inline_175::serialize(&_0.previous_messages, output)?;
 	super::super::super::option_46::serialize(&_0.last_rejected_message, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_previousMessages = super::super::super::array::inline_174::deserialize(input)?;
+	let f_previousMessages = super::super::super::array::inline_175::deserialize(input)?;
 	let f_lastRejectedMessage = super::super::super::option_46::deserialize(input)?;
 	Ok(Ty {
 		previous_messages: f_previousMessages,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_174::size_of(&_0.previous_messages)
+	super::super::super::array::inline_175::size_of(&_0.previous_messages)
 		+ super::super::super::option_46::size_of(&_0.last_rejected_message)
 }
 

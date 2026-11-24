@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardObjective<'i> {
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub action: super::PacketScoreboardObjective31<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.name, output)?;
 	super::packet_scoreboard_objective_31::serialize(&_0.action, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_action = super::packet_scoreboard_objective_31::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.name)
 		+ super::packet_scoreboard_objective_31::size_of(&_0.action)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScoreboardObjective) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.name),
 		action: super::packet_scoreboard_objective_31::view(&_0.action),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardObjective) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.name),
 		action: super::packet_scoreboard_objective_31::into_view(&mut _0.action),
 	}
 }

@@ -19,7 +19,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.dimension, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.difficulty, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.max_players, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.level_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.level_type, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reduced_debug_info, output)?;
 	Ok(())
 }
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_dimension = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_difficulty = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_maxPlayers = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_levelType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_levelType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_reducedDebugInfo = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
@@ -50,7 +50,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.dimension)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.difficulty)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.max_players)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.level_type)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.level_type)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.reduced_debug_info)
 }
 

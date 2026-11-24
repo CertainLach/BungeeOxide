@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketTradeList23<'i> {
 	pub input_item1: super::PacketTradeList21<'i>,
 	pub output_item: super::super::super::Slot<'i>,
-	pub input_item2: super::super::super::Option114<'i>,
+	pub input_item2: super::super::super::Option121<'i>,
 	pub trade_disabled: ::bungeeoxide_minecraft_root::Bool,
 	pub nb_trade_uses: ::bungeeoxide_minecraft_root::I32,
 	pub maximum_nb_trade_uses: ::bungeeoxide_minecraft_root::I32,
@@ -19,7 +19,7 @@ pub struct PacketTradeList23<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::packet_trade_list_21::serialize(&_0.input_item1, output)?;
 	super::super::super::slot::serialize(&_0.output_item, output)?;
-	super::super::super::option_114::serialize(&_0.input_item2, output)?;
+	super::super::super::option_121::serialize(&_0.input_item2, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.trade_disabled, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.nb_trade_uses, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.maximum_nb_trade_uses, output)?;
@@ -34,7 +34,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(30)?;
 	let f_inputItem1 = super::packet_trade_list_21::deserialize(input)?;
 	let f_outputItem = super::super::super::slot::deserialize(input)?;
-	let f_inputItem2 = super::super::super::option_114::deserialize(input)?;
+	let f_inputItem2 = super::super::super::option_121::deserialize(input)?;
 	let f_tradeDisabled = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_nbTradeUses = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_maximumNbTradeUses = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
@@ -59,7 +59,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	super::packet_trade_list_21::size_of(&_0.input_item1)
 		+ super::super::super::slot::size_of(&_0.output_item)
-		+ super::super::super::option_114::size_of(&_0.input_item2)
+		+ super::super::super::option_121::size_of(&_0.input_item2)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.trade_disabled)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.nb_trade_uses)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.maximum_nb_trade_uses)
@@ -73,7 +73,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTrade
 	Ty {
 		input_item1: super::packet_trade_list_21::view(&_0.input_item1),
 		output_item: super::super::super::slot::view(&_0.output_item),
-		input_item2: super::super::super::option_114::view(&_0.input_item2),
+		input_item2: super::super::super::option_121::view(&_0.input_item2),
 		trade_disabled: ::core::clone::Clone::clone(&_0.trade_disabled),
 		nb_trade_uses: ::core::clone::Clone::clone(&_0.nb_trade_uses),
 		maximum_nb_trade_uses: ::core::clone::Clone::clone(&_0.maximum_nb_trade_uses),
@@ -88,7 +88,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 	Ty {
 		input_item1: super::packet_trade_list_21::into_view(&mut _0.input_item1),
 		output_item: super::super::super::slot::into_view(&mut _0.output_item),
-		input_item2: super::super::super::option_114::into_view(&mut _0.input_item2),
+		input_item2: super::super::super::option_121::into_view(&mut _0.input_item2),
 		trade_disabled: ::core::clone::Clone::clone(&mut _0.trade_disabled),
 		nb_trade_uses: ::core::clone::Clone::clone(&mut _0.nb_trade_uses),
 		maximum_nb_trade_uses: ::core::clone::Clone::clone(&mut _0.maximum_nb_trade_uses),

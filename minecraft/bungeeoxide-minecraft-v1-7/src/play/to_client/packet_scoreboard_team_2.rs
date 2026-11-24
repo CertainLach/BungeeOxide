@@ -11,18 +11,18 @@ pub struct PacketScoreboardTeam2 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.prefix, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.suffix, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.prefix, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.suffix, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.friendly_fire, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_prefix = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_suffix = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_prefix = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_suffix = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_friendlyFire = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -33,9 +33,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.prefix)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.suffix)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.prefix)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.suffix)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.friendly_fire)
 }
 

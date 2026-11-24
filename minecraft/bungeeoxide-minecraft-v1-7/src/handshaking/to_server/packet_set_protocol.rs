@@ -12,7 +12,7 @@ pub struct PacketSetProtocol {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.protocol_version, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.server_host, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.server_host, output)?;
 	::bungeeoxide_minecraft_root::u16::serialize(&_0.server_port, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.next_state, output)?;
 	Ok(())
@@ -21,7 +21,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_protocolVersion = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_serverHost = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_serverHost = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_serverPort = ::bungeeoxide_minecraft_root::u16::deserialize(input)?;
 	let f_nextState = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
@@ -34,7 +34,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.protocol_version)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.server_host)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.server_host)
 		+ ::bungeeoxide_minecraft_root::u16::size_of(&_0.server_port)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.next_state)
 }

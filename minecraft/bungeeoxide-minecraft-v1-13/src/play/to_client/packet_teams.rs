@@ -9,14 +9,14 @@ pub struct PacketTeams {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.team, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.team, output)?;
 	super::packet_teams_20::serialize(&_0.mode, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_team = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_team = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_mode = super::packet_teams_20::deserialize(input)?;
 	Ok(Ty {
 		team: f_team,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.team)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.team)
 		+ super::packet_teams_20::size_of(&_0.mode)
 }
 

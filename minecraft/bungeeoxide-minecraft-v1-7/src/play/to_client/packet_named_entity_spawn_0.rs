@@ -10,17 +10,17 @@ pub struct PacketNamedEntitySpawn0 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.value, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.signature, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.signature, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_value = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_signature = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_value = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_signature = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		value: f_value,
@@ -29,9 +29,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.value)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.signature)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.value)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.signature)
 }
 
 pub type Ty = PacketNamedEntitySpawn0;

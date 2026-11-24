@@ -11,18 +11,18 @@ pub struct EntityMetadataWolfVariant {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.wild_texture, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.tame_texture, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.angry_texture, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.wild_texture, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.tame_texture, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.angry_texture, output)?;
 	super::id_set::serialize(&_0.biome, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_wildTexture = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_tameTexture = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_angryTexture = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_wildTexture = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_tameTexture = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_angryTexture = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_biome = super::id_set::deserialize(input)?;
 	Ok(Ty {
 		wild_texture: f_wildTexture,
@@ -33,9 +33,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.wild_texture)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.tame_texture)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.angry_texture)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.wild_texture)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.tame_texture)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.angry_texture)
 		+ super::id_set::size_of(&_0.biome)
 }
 

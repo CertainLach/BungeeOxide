@@ -25,7 +25,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::V1(__v) => ::bungeeoxide_minecraft_root::i16::serialize(__v, output),
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
 		Ty::V3(__v) => ::bungeeoxide_minecraft_root::f32::serialize(__v, output),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::V5(__v) => super::slot::serialize(__v, output),
 		Ty::V6(__v) => super::entity_metadata_item_2::serialize(__v, output),
 		Ty::V7(__v) => super::entity_metadata_item_3::serialize(__v, output),
@@ -48,7 +48,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 		return Ok(Ty::V3(::bungeeoxide_minecraft_root::f32::deserialize(input)?));
 	}
 	if *__tag == 4_u8 {
-		return Ok(Ty::V4(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V4(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 5_u8 {
 		return Ok(Ty::V5(super::slot::deserialize(input)?));
@@ -68,7 +68,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::V1(__v) => ::bungeeoxide_minecraft_root::i16::size_of(__v),
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 		Ty::V3(__v) => ::bungeeoxide_minecraft_root::f32::size_of(__v),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 		Ty::V5(__v) => super::slot::size_of(__v),
 		Ty::V6(__v) => super::entity_metadata_item_2::size_of(__v),
 		Ty::V7(__v) => super::entity_metadata_item_3::size_of(__v),

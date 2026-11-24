@@ -4,29 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent41 {
-	pub effect: ::bungeeoxide_minecraft_root::Varint,
-	pub duration: ::bungeeoxide_minecraft_root::Varint,
+	pub item_damage_per_attack: ::bungeeoxide_minecraft_root::Varint,
+	pub disable_blocking_for_seconds: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.effect, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.duration, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_damage_per_attack, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.disable_blocking_for_seconds, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(2)?;
-	let f_effect = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_duration = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	input.expect(5)?;
+	let f_itemDamagePerAttack = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_disableBlockingForSeconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	Ok(Ty {
-		effect: f_effect,
-		duration: f_duration,
+		item_damage_per_attack: f_itemDamagePerAttack,
+		disable_blocking_for_seconds: f_disableBlockingForSeconds,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.effect)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.duration)
+	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_damage_per_attack)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.disable_blocking_for_seconds)
 }
 
 pub type Ty = SlotComponent41;

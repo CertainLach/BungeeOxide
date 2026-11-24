@@ -10,7 +10,7 @@ pub struct PacketTabComplete {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.text, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.assume_command, output)?;
 	::bungeeoxide_minecraft_v1_8::option_22::serialize(&_0.looked_at_block, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_text = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_assumeCommand = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_lookedAtBlock = ::bungeeoxide_minecraft_v1_8::option_22::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.text)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.assume_command)
 		+ ::bungeeoxide_minecraft_v1_8::option_22::size_of(&_0.looked_at_block)
 }

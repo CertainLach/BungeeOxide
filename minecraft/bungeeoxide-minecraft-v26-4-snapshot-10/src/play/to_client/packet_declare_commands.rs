@@ -9,14 +9,14 @@ pub struct PacketDeclareCommands {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_134::serialize(&_0.nodes, output)?;
+	super::super::super::array::inline_135::serialize(&_0.nodes, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.root_index, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_nodes = super::super::super::array::inline_134::deserialize(input)?;
+	let f_nodes = super::super::super::array::inline_135::deserialize(input)?;
 	let f_rootIndex = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		nodes: f_nodes,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_134::size_of(&_0.nodes)
+	super::super::super::array::inline_135::size_of(&_0.nodes)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.root_index)
 }
 

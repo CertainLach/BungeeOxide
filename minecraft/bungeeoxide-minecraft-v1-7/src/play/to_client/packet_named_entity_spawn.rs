@@ -19,9 +19,9 @@ pub struct PacketNamedEntitySpawn {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.player_uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.player_name, output)?;
-	super::super::super::array::inline_364::serialize(&_0.data, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.player_uuid, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.player_name, output)?;
+	super::super::super::array::inline_365::serialize(&_0.data, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.y, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.z, output)?;
@@ -35,9 +35,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(21)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_playerUUID = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_playerName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_data = super::super::super::array::inline_364::deserialize(input)?;
+	let f_playerUUID = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_playerName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_data = super::super::super::array::inline_365::deserialize(input)?;
 	let f_x = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_y = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_z = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
@@ -62,9 +62,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.player_uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.player_name)
-		+ super::super::super::array::inline_364::size_of(&_0.data)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.player_uuid)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.player_name)
+		+ super::super::super::array::inline_365::size_of(&_0.data)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.y)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.z)

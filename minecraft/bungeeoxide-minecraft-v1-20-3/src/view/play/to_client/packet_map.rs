@@ -7,7 +7,7 @@ pub struct PacketMap<'i> {
 	pub item_damage: ::bungeeoxide_minecraft_root::Varint,
 	pub scale: ::bungeeoxide_minecraft_root::I8,
 	pub locked: ::bungeeoxide_minecraft_root::Bool,
-	pub icons: super::super::super::Option117<'i>,
+	pub icons: super::super::super::Option124<'i>,
 	pub columns: super::PacketMap19<'i>,
 }
 
@@ -15,7 +15,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_damage, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.scale, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.locked, output)?;
-	super::super::super::option_117::serialize(&_0.icons, output)?;
+	super::super::super::option_124::serialize(&_0.icons, output)?;
 	super::packet_map_19::serialize(&_0.columns, output)?;
 	Ok(())
 }
@@ -25,7 +25,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_itemDamage = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_scale = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_locked = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_icons = super::super::super::option_117::deserialize(input)?;
+	let f_icons = super::super::super::option_124::deserialize(input)?;
 	let f_columns = super::packet_map_19::deserialize(input)?;
 	Ok(Ty {
 		item_damage: f_itemDamage,
@@ -40,7 +40,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_damage)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.scale)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.locked)
-		+ super::super::super::option_117::size_of(&_0.icons)
+		+ super::super::super::option_124::size_of(&_0.icons)
 		+ super::packet_map_19::size_of(&_0.columns)
 }
 
@@ -49,7 +49,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketMap) 
 		item_damage: ::core::clone::Clone::clone(&_0.item_damage),
 		scale: ::core::clone::Clone::clone(&_0.scale),
 		locked: ::core::clone::Clone::clone(&_0.locked),
-		icons: super::super::super::option_117::view(&_0.icons),
+		icons: super::super::super::option_124::view(&_0.icons),
 		columns: super::packet_map_19::view(&_0.columns),
 	}
 }
@@ -59,7 +59,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		item_damage: ::core::clone::Clone::clone(&mut _0.item_damage),
 		scale: ::core::clone::Clone::clone(&mut _0.scale),
 		locked: ::core::clone::Clone::clone(&mut _0.locked),
-		icons: super::super::super::option_117::into_view(&mut _0.icons),
+		icons: super::super::super::option_124::into_view(&mut _0.icons),
 		columns: super::packet_map_19::view(&mut _0.columns),
 	}
 }

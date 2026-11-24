@@ -9,14 +9,14 @@ pub struct PacketCommonCookieResponse {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::option_20::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_key = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::option_20::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.key)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::option_20::size_of(&_0.value)
 }
 

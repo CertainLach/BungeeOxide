@@ -17,14 +17,14 @@ pub enum Packet {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::Key(__v) => super::packet_key::serialize(__v, output),
 		Ty::Success(__v) => super::packet_success::serialize(__v, output),
 		Ty::SetupCompression(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::LoginPluginRequest(__v) => {
 			::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request::serialize(__v, output)
 		}
-		Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::ApplyOptions(__v) => super::connection_options::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let __tag = &__tagv;
 	if *__tag == 0_i32 {
-		return Ok(Ty::Disconnect(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::Disconnect(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 1_i32 {
 		return Ok(Ty::Key(super::packet_key::deserialize(input)?));
@@ -53,7 +53,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 5_i32 {
 		return Ok(Ty::CookieRequest(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 6_i32 {
@@ -65,14 +65,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::Key(__v) => super::packet_key::size_of(__v),
 			Ty::Success(__v) => super::packet_success::size_of(__v),
 			Ty::SetupCompression(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::LoginPluginRequest(__v) => {
 				::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request::size_of(__v)
 			}
-			Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::CookieRequest(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::ApplyOptions(__v) => super::connection_options::size_of(__v),
 			Ty::Default(_) => 0,
 		}

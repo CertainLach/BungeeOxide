@@ -2,7 +2,16 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty = Vec<super::super::play::to_server::PacketChatCommand0>;
+pub struct Args<'a> {
+	pub action_add_player: &'a ::bungeeoxide_minecraft_root::Bool,
+	pub action_initialize_chat: &'a ::bungeeoxide_minecraft_root::Bool,
+	pub action_update_display_name: &'a ::bungeeoxide_minecraft_root::Bool,
+	pub action_update_game_mode: &'a ::bungeeoxide_minecraft_root::Bool,
+	pub action_update_latency: &'a ::bungeeoxide_minecraft_root::Bool,
+	pub action_update_listed: &'a ::bungeeoxide_minecraft_root::Bool,
+}
+
+pub type Ty = Vec<super::super::play::to_client::PacketPlayerInfo15>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -10,19 +19,28 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::play::to_server::packet_chat_command_0::serialize(e, output)?;
+		super::super::play::to_client::packet_player_info_15::serialize(e, output)?;
 	}
 	Ok(())
 }
 
-pub fn deserialize(input: &mut Input) -> Result<Ty> {
+pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let count: usize = ::bungeeoxide_minecraft_root::varint::deserialize(input)?
 		.try_into()
 		.map_err(|_| Error::InvalidValue)?;
-	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::play::to_server::packet_chat_command_0::deserialize(input)?);
+		out.push(super::super::play::to_client::packet_player_info_15::deserialize(
+			input,
+			super::super::play::to_client::packet_player_info_15::Args {
+				action_add_player: args.action_add_player,
+				action_initialize_chat: args.action_initialize_chat,
+				action_update_game_mode: args.action_update_game_mode,
+				action_update_listed: args.action_update_listed,
+				action_update_latency: args.action_update_latency,
+				action_update_display_name: args.action_update_display_name,
+			},
+		)?);
 	}
 	Ok(out)
 }
@@ -31,7 +49,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::play::to_server::packet_chat_command_0::size_of(e);
+		n += super::super::play::to_client::packet_player_info_15::size_of(e);
 	}
 	n
 }

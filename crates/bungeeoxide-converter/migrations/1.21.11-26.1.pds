@@ -19,6 +19,12 @@ updated(ItemBlockPredicate) {
 	converted(components, up: custom(late_matchers_up_26_1), down: custom(late_matchers_down_1_21_11));
 };
 
+updated(Node) {
+	updated(type) {
+		added(big_mobs_close_to_danger, down: danger_other);
+	};
+};
+
 updated(Particle) {
 	added(pause_mob_growth, down: drop);
 	added(reset_mob_growth, down: drop);

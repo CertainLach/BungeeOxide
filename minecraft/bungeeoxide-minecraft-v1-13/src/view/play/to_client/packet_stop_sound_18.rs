@@ -5,19 +5,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketStopSound18<'i> {
 	pub source: ::bungeeoxide_minecraft_root::Varint,
-	pub sound: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub sound: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.source, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.sound, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.sound, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_source = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_sound = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_sound = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		source: f_source,
 		sound: f_sound,
@@ -26,13 +26,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.source)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.sound)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.sound)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketStopSound18) -> Ty<'i> {
 	Ty {
 		source: ::core::clone::Clone::clone(&_0.source),
-		sound: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.sound),
+		sound: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.sound),
 	}
 }
 

@@ -4,29 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent38 {
-	pub id: ::bungeeoxide_minecraft_root::Varint,
-	pub level: ::bungeeoxide_minecraft_root::Varint,
+	pub seconds: ::bungeeoxide_minecraft_root::F32,
+	pub cooldown_group: Option<String>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.id, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.level, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.seconds, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.cooldown_group, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(2)?;
-	let f_id = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_level = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	input.expect(5)?;
+	let f_seconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_cooldownGroup = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
-		id: f_id,
-		level: f_level,
+		seconds: f_seconds,
+		cooldown_group: f_cooldownGroup,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.id)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.level)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.seconds)
+		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.cooldown_group)
 }
 
 pub type Ty = SlotComponent38;

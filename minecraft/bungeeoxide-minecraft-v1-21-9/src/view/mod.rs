@@ -9,8 +9,6 @@ pub mod game_profile_property;
 pub mod global_pos;
 pub mod option_19;
 pub mod partial_resolvable_profile;
-pub mod path;
-pub mod path_debug_data;
 pub mod play;
 pub mod player_skin_patch;
 pub mod resolvable_profile;

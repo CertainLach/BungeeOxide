@@ -4,18 +4,18 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent60<'i> {
-	pub raw_title: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub raw_title: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub filtered_title: ::bungeeoxide_minecraft_root::view::Option21<'i>,
-	pub author: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub author: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub generation: ::bungeeoxide_minecraft_root::Varint,
 	pub pages: ::bungeeoxide_minecraft_v1_20_5::view::array::Inline54<'i>,
 	pub resolved: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.raw_title, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.raw_title, output)?;
 	::bungeeoxide_minecraft_root::view::option_21::serialize(&_0.filtered_title, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.author, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.author, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.generation, output)?;
 	::bungeeoxide_minecraft_v1_20_5::view::array::inline_54::serialize(&_0.pages, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.resolved, output)?;
@@ -24,9 +24,9 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(6)?;
-	let f_rawTitle = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_rawTitle = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_filteredTitle = ::bungeeoxide_minecraft_root::view::option_21::deserialize(input)?;
-	let f_author = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_author = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_generation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_pages = ::bungeeoxide_minecraft_v1_20_5::view::array::inline_54::deserialize(input)?;
 	let f_resolved = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -41,9 +41,9 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.raw_title)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.raw_title)
 		+ ::bungeeoxide_minecraft_root::view::option_21::size_of(&_0.filtered_title)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.author)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.author)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.generation)
 		+ ::bungeeoxide_minecraft_v1_20_5::view::array::inline_54::size_of(&_0.pages)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.resolved)
@@ -51,9 +51,9 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::SlotComponent60) -> Ty<'i> {
 	Ty {
-		raw_title: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.raw_title),
+		raw_title: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.raw_title),
 		filtered_title: ::bungeeoxide_minecraft_root::view::option_21::view(&_0.filtered_title),
-		author: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.author),
+		author: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.author),
 		generation: ::core::clone::Clone::clone(&_0.generation),
 		pages: ::bungeeoxide_minecraft_v1_20_5::view::array::inline_54::view(&_0.pages),
 		resolved: ::core::clone::Clone::clone(&_0.resolved),
@@ -62,9 +62,9 @@ pub fn view<'i>(_0: &'i super::super::SlotComponent60) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent60) -> Ty<'i> {
 	Ty {
-		raw_title: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.raw_title),
+		raw_title: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.raw_title),
 		filtered_title: ::bungeeoxide_minecraft_root::view::option_21::view(&mut _0.filtered_title),
-		author: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.author),
+		author: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.author),
 		generation: ::core::clone::Clone::clone(&mut _0.generation),
 		pages: ::bungeeoxide_minecraft_v1_20_5::view::array::inline_54::into_view(&mut _0.pages),
 		resolved: ::core::clone::Clone::clone(&mut _0.resolved),

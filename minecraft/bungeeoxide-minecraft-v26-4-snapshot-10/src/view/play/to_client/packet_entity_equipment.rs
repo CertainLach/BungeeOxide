@@ -5,19 +5,19 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketEntityEquipment<'i> {
 	pub entity_id: ::bungeeoxide_minecraft_root::Varint,
-	pub equipments: super::super::super::TopBitSetTerminatedArray136<'i>,
+	pub equipments: super::super::super::TopBitSetTerminatedArray144<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.entity_id, output)?;
-	super::super::super::top_bit_set_terminated_array_136::serialize(&_0.equipments, output)?;
+	super::super::super::top_bit_set_terminated_array_144::serialize(&_0.equipments, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(1)?;
 	let f_entityId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_equipments = super::super::super::top_bit_set_terminated_array_136::deserialize(input)?;
+	let f_equipments = super::super::super::top_bit_set_terminated_array_144::deserialize(input)?;
 	Ok(Ty {
 		entity_id: f_entityId,
 		equipments: f_equipments,
@@ -26,20 +26,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.entity_id)
-		+ super::super::super::top_bit_set_terminated_array_136::size_of(&_0.equipments)
+		+ super::super::super::top_bit_set_terminated_array_144::size_of(&_0.equipments)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketEntityEquipment) -> Ty<'i> {
 	Ty {
 		entity_id: ::core::clone::Clone::clone(&_0.entity_id),
-		equipments: super::super::super::top_bit_set_terminated_array_136::view(&_0.equipments),
+		equipments: super::super::super::top_bit_set_terminated_array_144::view(&_0.equipments),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketEntityEquipment) -> Ty<'i> {
 	Ty {
 		entity_id: ::core::clone::Clone::clone(&mut _0.entity_id),
-		equipments: super::super::super::top_bit_set_terminated_array_136::into_view(&mut _0.equipments),
+		equipments: super::super::super::top_bit_set_terminated_array_144::into_view(&mut _0.equipments),
 	}
 }
 

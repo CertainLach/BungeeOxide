@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRegistryData0<'i> {
-	pub key: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub key: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub value: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::view::option_1::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_key = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.key)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.value)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::PacketRegistryData0) -> Ty<'i> {
 	Ty {
-		key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.key),
+		key: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.key),
 		value: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.value),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::PacketRegistryData0) -> Ty<'i> {
 	Ty {
-		key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.key),
+		key: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.key),
 		value: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.value),
 	}
 }

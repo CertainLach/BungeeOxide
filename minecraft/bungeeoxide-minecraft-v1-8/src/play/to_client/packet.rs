@@ -112,7 +112,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		}
 		Ty::EntityVelocity(__v) => super::packet_entity_velocity::serialize(__v, output),
 		Ty::EntityDestroy(__v) => {
-			::bungeeoxide_minecraft_root::array::inline_137::serialize(__v, output)
+			::bungeeoxide_minecraft_root::array::inline_138::serialize(__v, output)
 		}
 		Ty::Entity(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::RelEntityMove(__v) => super::packet_rel_entity_move::serialize(__v, output),
@@ -162,7 +162,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::TileEntityData(__v) => super::packet_tile_entity_data::serialize(__v, output),
 		Ty::OpenSignEntity(__v) => super::super::super::position::serialize(__v, output),
 		Ty::Statistics(__v) => {
-			::bungeeoxide_minecraft_v1_7::array::inline_365::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_7::array::inline_366::serialize(__v, output)
 		}
 		Ty::PlayerInfo(__v) => super::packet_player_info::serialize(__v, output),
 		Ty::Abilities(__v) => {
@@ -179,7 +179,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::ScoreboardTeam(__v) => super::packet_scoreboard_team::serialize(__v, output),
 		Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
 		Ty::KickDisconnect(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
 		Ty::Difficulty(__v) => super::packet_difficulty::serialize(__v, output),
 		Ty::CombatEvent(__v) => super::packet_combat_event::serialize(__v, output),
@@ -269,7 +269,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 19_i32 {
 		return Ok(Ty::EntityDestroy(
-			::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?,
+			::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?,
 		));
 	}
 	if *__tag == 20_i32 {
@@ -393,7 +393,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 55_i32 {
 		return Ok(Ty::Statistics(
-			::bungeeoxide_minecraft_v1_7::array::inline_365::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_7::array::inline_366::deserialize(input)?,
 		));
 	}
 	if *__tag == 56_i32 {
@@ -428,7 +428,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 64_i32 {
 		return Ok(Ty::KickDisconnect(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 65_i32 {
@@ -491,7 +491,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_7::play::to_client::packet_spawn_entity_experience_orb::size_of(__v)
 			}
 			Ty::EntityVelocity(__v) => super::packet_entity_velocity::size_of(__v),
-			Ty::EntityDestroy(__v) => ::bungeeoxide_minecraft_root::array::inline_137::size_of(__v),
+			Ty::EntityDestroy(__v) => ::bungeeoxide_minecraft_root::array::inline_138::size_of(__v),
 			Ty::Entity(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::RelEntityMove(__v) => super::packet_rel_entity_move::size_of(__v),
 			Ty::EntityLook(__v) => super::packet_entity_look::size_of(__v),
@@ -539,7 +539,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::Map(__v) => super::packet_map::size_of(__v),
 			Ty::TileEntityData(__v) => super::packet_tile_entity_data::size_of(__v),
 			Ty::OpenSignEntity(__v) => super::super::super::position::size_of(__v),
-			Ty::Statistics(__v) => ::bungeeoxide_minecraft_v1_7::array::inline_365::size_of(__v),
+			Ty::Statistics(__v) => ::bungeeoxide_minecraft_v1_7::array::inline_366::size_of(__v),
 			Ty::PlayerInfo(__v) => super::packet_player_info::size_of(__v),
 			Ty::Abilities(__v) => {
 				::bungeeoxide_minecraft_v1_6_1::play::to_client::packet_abilities::size_of(__v)
@@ -552,7 +552,7 @@ pub fn size_of(_0: &Ty) -> usize {
 			}
 			Ty::ScoreboardTeam(__v) => super::packet_scoreboard_team::size_of(__v),
 			Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),
-			Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::KickDisconnect(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::Difficulty(__v) => super::packet_difficulty::size_of(__v),
 			Ty::CombatEvent(__v) => super::packet_combat_event::size_of(__v),
 			Ty::Camera(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),

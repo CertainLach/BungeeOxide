@@ -15,8 +15,8 @@ pub struct CommandNode23 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.parser, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.parser, output)?;
 	super::command_node_21::debug_assert_tag(&_0.properties, &_0.parser);
 	super::command_node_21::serialize(&_0.properties, output)?;
 	super::command_node_22::serialize(&_0.suggestion_type, output)?;
@@ -25,8 +25,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_parser = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_parser = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_properties = super::command_node_21::deserialize(
 		input,
 		super::command_node_21::Args { parser: &f_parser },
@@ -46,8 +46,8 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.parser)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.parser)
 		+ super::command_node_21::size_of(&_0.properties)
 		+ super::command_node_22::size_of(&_0.suggestion_type)
 }

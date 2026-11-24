@@ -16,11 +16,11 @@ pub struct PacketPlayerChat {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.signed_chat_content, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.signed_chat_content, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.unsigned_chat_content, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.sender_uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.sender_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.sender_name, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.sender_team, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
@@ -30,11 +30,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(22)?;
-	let f_signedChatContent = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_signedChatContent = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_unsignedChatContent = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_senderUuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_senderName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_senderName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_senderTeam = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
@@ -53,11 +53,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.signed_chat_content)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.signed_chat_content)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.unsigned_chat_content)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.sender_uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.sender_name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.sender_name)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.sender_team)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)

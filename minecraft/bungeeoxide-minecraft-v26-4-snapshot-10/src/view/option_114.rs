@@ -2,19 +2,19 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Input, Output, Result};
 
-pub type Ty<'i> = Option<super::play::to_client::PacketTradeList22<'i>>;
+pub type Ty<'i> = Option<super::DebugSubscriptionUpdate9<'i>>;
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::play::to_client::packet_trade_list_22::serialize(v, output)?;
+		super::debug_subscription_update_9::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::play::to_client::packet_trade_list_22::deserialize(input)?)
+		Some(super::debug_subscription_update_9::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,15 +23,15 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	let mut n = ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::play::to_client::packet_trade_list_22::size_of(v);
+		n += super::debug_subscription_update_9::size_of(v);
 	}
 	n
 }
 
 pub fn view<'i>(_0: &'i super::super::Option114) -> Ty<'i> {
-	_0.as_ref().map(|v| super::play::to_client::packet_trade_list_22::view(v))
+	_0.as_ref().map(|v| super::debug_subscription_update_9::view(v))
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::Option114) -> Ty<'i> {
-	_0.as_mut().map(|v| super::play::to_client::packet_trade_list_22::into_view(v))
+	_0.as_mut().map(|v| super::debug_subscription_update_9::into_view(v))
 }

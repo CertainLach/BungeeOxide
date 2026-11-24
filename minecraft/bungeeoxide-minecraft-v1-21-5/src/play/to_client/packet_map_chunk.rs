@@ -20,15 +20,15 @@ pub struct PacketMapChunk {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.z, output)?;
-	super::super::super::array::inline_319::serialize(&_0.heightmaps, output)?;
+	super::super::super::array::inline_320::serialize(&_0.heightmaps, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.chunk_data, output)?;
 	::bungeeoxide_minecraft_v1_20_2::array::inline_43::serialize(&_0.block_entities, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.sky_light_mask, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.block_light_mask, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.empty_sky_light_mask, output)?;
 	::bungeeoxide_minecraft_root::array::inline_30::serialize(&_0.empty_block_light_mask, output)?;
-	::bungeeoxide_minecraft_root::array::inline_457::serialize(&_0.sky_light, output)?;
-	::bungeeoxide_minecraft_root::array::inline_457::serialize(&_0.block_light, output)?;
+	::bungeeoxide_minecraft_root::array::inline_459::serialize(&_0.sky_light, output)?;
+	::bungeeoxide_minecraft_root::array::inline_459::serialize(&_0.block_light, output)?;
 	Ok(())
 }
 
@@ -36,15 +36,15 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(17)?;
 	let f_x = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_z = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_heightmaps = super::super::super::array::inline_319::deserialize(input)?;
+	let f_heightmaps = super::super::super::array::inline_320::deserialize(input)?;
 	let f_chunkData = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_blockEntities = ::bungeeoxide_minecraft_v1_20_2::array::inline_43::deserialize(input)?;
 	let f_skyLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_blockLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_emptySkyLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
 	let f_emptyBlockLightMask = ::bungeeoxide_minecraft_root::array::inline_30::deserialize(input)?;
-	let f_skyLight = ::bungeeoxide_minecraft_root::array::inline_457::deserialize(input)?;
-	let f_blockLight = ::bungeeoxide_minecraft_root::array::inline_457::deserialize(input)?;
+	let f_skyLight = ::bungeeoxide_minecraft_root::array::inline_459::deserialize(input)?;
+	let f_blockLight = ::bungeeoxide_minecraft_root::array::inline_459::deserialize(input)?;
 	Ok(Ty {
 		x: f_x,
 		z: f_z,
@@ -63,15 +63,15 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.z)
-		+ super::super::super::array::inline_319::size_of(&_0.heightmaps)
+		+ super::super::super::array::inline_320::size_of(&_0.heightmaps)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.chunk_data)
 		+ ::bungeeoxide_minecraft_v1_20_2::array::inline_43::size_of(&_0.block_entities)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.sky_light_mask)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.block_light_mask)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.empty_sky_light_mask)
 		+ ::bungeeoxide_minecraft_root::array::inline_30::size_of(&_0.empty_block_light_mask)
-		+ ::bungeeoxide_minecraft_root::array::inline_457::size_of(&_0.sky_light)
-		+ ::bungeeoxide_minecraft_root::array::inline_457::size_of(&_0.block_light)
+		+ ::bungeeoxide_minecraft_root::array::inline_459::size_of(&_0.sky_light)
+		+ ::bungeeoxide_minecraft_root::array::inline_459::size_of(&_0.block_light)
 }
 
 pub type Ty = PacketMapChunk;

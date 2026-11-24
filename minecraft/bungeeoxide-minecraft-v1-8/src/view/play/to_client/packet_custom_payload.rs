@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCustomPayload<'i> {
-	pub channel: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub channel: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub data: ::bungeeoxide_minecraft_root::view::RestBuffer<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.channel, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.channel, output)?;
 	::bungeeoxide_minecraft_root::view::rest_buffer::serialize(&_0.data, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(1)?;
-	let f_channel = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_channel = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_data = ::bungeeoxide_minecraft_root::view::rest_buffer::deserialize(input)?;
 	Ok(Ty {
 		channel: f_channel,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.channel)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.channel)
 		+ ::bungeeoxide_minecraft_root::view::rest_buffer::size_of(&_0.data)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketCustomPayload) -> Ty<'i> {
 	Ty {
-		channel: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.channel),
+		channel: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.channel),
 		data: ::bungeeoxide_minecraft_root::view::rest_buffer::view(&_0.data),
 	}
 }

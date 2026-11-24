@@ -17,7 +17,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.scale, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.tracking_position, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.locked, output)?;
-	super::super::super::array::inline_158::serialize(&_0.icons, output)?;
+	super::super::super::array::inline_159::serialize(&_0.icons, output)?;
 	super::packet_map_8::serialize(&_0.columns, output)?;
 	Ok(())
 }
@@ -28,7 +28,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_scale = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_trackingPosition = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_locked = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_icons = super::super::super::array::inline_158::deserialize(input)?;
+	let f_icons = super::super::super::array::inline_159::deserialize(input)?;
 	let f_columns = super::packet_map_8::deserialize(input)?;
 	Ok(Ty {
 		item_damage: f_itemDamage,
@@ -45,7 +45,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.scale)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.tracking_position)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.locked)
-		+ super::super::super::array::inline_158::size_of(&_0.icons)
+		+ super::super::super::array::inline_159::size_of(&_0.icons)
 		+ super::packet_map_8::size_of(&_0.columns)
 }
 

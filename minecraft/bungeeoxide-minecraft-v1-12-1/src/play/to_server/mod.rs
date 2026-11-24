@@ -39,7 +39,7 @@ pub use self::packet_vehicle_move::Ty as PacketVehicleMove;
 pub use self::packet_window_click::Ty as PacketWindowClick;
 pub use ::bungeeoxide_minecraft_root::bool as packet_flying;
 pub use ::bungeeoxide_minecraft_root::i16 as packet_held_item_slot;
-pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_chat;
+pub use ::bungeeoxide_minecraft_root::pstring_131 as packet_chat;
 pub use ::bungeeoxide_minecraft_root::u8 as packet_close_window;
 pub use ::bungeeoxide_minecraft_root::uuid as packet_spectate;
 pub use ::bungeeoxide_minecraft_root::varint as packet_arm_animation;

@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonStoreCookie<'i> {
-	pub key: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub key: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub value: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.key, output)?;
 	::bungeeoxide_minecraft_root::view::buffer::inline_3::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_key = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
 	Ok(Ty {
 		key: f_key,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.key)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.key)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.value)
 }
 
 pub fn view<'i>(_0: &'i super::super::PacketCommonStoreCookie) -> Ty<'i> {
 	Ty {
-		key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.key),
+		key: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.key),
 		value: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.value),
 	}
 }

@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct GlobalPos<'i> {
-	pub dimension_name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub dimension_name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub location: ::bungeeoxide_minecraft_v1_14::Position,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.dimension_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.dimension_name, output)?;
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(9)?;
-	let f_dimensionName = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_dimensionName = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	Ok(Ty {
 		dimension_name: f_dimensionName,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.dimension_name)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.dimension_name)
 		+ ::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
 }
 
 pub fn view<'i>(_0: &'i super::super::GlobalPos) -> Ty<'i> {
 	Ty {
-		dimension_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.dimension_name),
+		dimension_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.dimension_name),
 		location: ::core::clone::Clone::clone(&_0.location),
 	}
 }

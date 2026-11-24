@@ -16,7 +16,7 @@ pub struct PacketWorldParticles {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.particle_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.particle_name, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.y, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.z, output)?;
@@ -30,7 +30,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(33)?;
-	let f_particleName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_particleName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_x = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_y = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_z = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
@@ -53,7 +53,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.particle_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.particle_name)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.y)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.z)

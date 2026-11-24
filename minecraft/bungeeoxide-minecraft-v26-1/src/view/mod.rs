@@ -3,6 +3,8 @@
 pub mod array;
 pub mod damage_type_data;
 pub mod game_rule;
+pub mod path;
+pub mod path_debug_data;
 pub mod play;
 
 pub use self::damage_type_data::DamageTypeData;

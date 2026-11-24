@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent42<'i> {
-	pub rules: super::array::Inline439<'i>,
+	pub rules: super::array::Inline441<'i>,
 	pub default_mining_speed: ::bungeeoxide_minecraft_root::F32,
 	pub damage_per_block: ::bungeeoxide_minecraft_root::Varint,
 	pub can_destroy_blocks_in_creative: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	super::array::inline_439::serialize(&_0.rules, output)?;
+	super::array::inline_441::serialize(&_0.rules, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.default_mining_speed, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.damage_per_block, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_destroy_blocks_in_creative, output)?;
@@ -20,7 +20,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(7)?;
-	let f_rules = super::array::inline_439::deserialize(input)?;
+	let f_rules = super::array::inline_441::deserialize(input)?;
 	let f_defaultMiningSpeed = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_damagePerBlock = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_canDestroyBlocksInCreative = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	super::array::inline_439::size_of(&_0.rules)
+	super::array::inline_441::size_of(&_0.rules)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.default_mining_speed)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.damage_per_block)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_destroy_blocks_in_creative)
@@ -41,7 +41,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::SlotComponent42) -> Ty<'i> {
 	Ty {
-		rules: super::array::inline_439::view(&_0.rules),
+		rules: super::array::inline_441::view(&_0.rules),
 		default_mining_speed: ::core::clone::Clone::clone(&_0.default_mining_speed),
 		damage_per_block: ::core::clone::Clone::clone(&_0.damage_per_block),
 		can_destroy_blocks_in_creative: ::core::clone::Clone::clone(&_0.can_destroy_blocks_in_creative),
@@ -50,7 +50,7 @@ pub fn view<'i>(_0: &'i super::super::SlotComponent42) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent42) -> Ty<'i> {
 	Ty {
-		rules: super::array::inline_439::into_view(&mut _0.rules),
+		rules: super::array::inline_441::into_view(&mut _0.rules),
 		default_mining_speed: ::core::clone::Clone::clone(&mut _0.default_mining_speed),
 		damage_per_block: ::core::clone::Clone::clone(&mut _0.damage_per_block),
 		can_destroy_blocks_in_creative: ::core::clone::Clone::clone(&mut _0.can_destroy_blocks_in_creative),

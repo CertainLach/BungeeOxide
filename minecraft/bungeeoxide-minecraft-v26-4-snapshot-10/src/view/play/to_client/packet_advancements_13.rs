@@ -4,12 +4,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements13<'i> {
-	pub criterion_identifier: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub criterion_identifier: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub criterion_progress: ::bungeeoxide_minecraft_root::Option6,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.criterion_identifier, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.criterion_identifier, output)?;
 	::bungeeoxide_minecraft_root::option_6::serialize(&_0.criterion_progress, output)?;
 	Ok(())
 }
@@ -17,7 +17,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_criterionIdentifier =
-		::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+		::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_criterionProgress = ::bungeeoxide_minecraft_root::option_6::deserialize(input)?;
 	Ok(Ty {
 		criterion_identifier: f_criterionIdentifier,
@@ -26,13 +26,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.criterion_identifier)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.criterion_identifier)
 		+ ::bungeeoxide_minecraft_root::option_6::size_of(&_0.criterion_progress)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements13) -> Ty<'i> {
 	Ty {
-		criterion_identifier: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.criterion_identifier),
+		criterion_identifier: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.criterion_identifier),
 		criterion_progress: ::core::clone::Clone::clone(&_0.criterion_progress),
 	}
 }

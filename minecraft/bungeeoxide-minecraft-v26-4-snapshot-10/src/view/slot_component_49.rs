@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct SlotComponent49<'i> {
 	pub block_delay_seconds: ::bungeeoxide_minecraft_root::F32,
 	pub disable_cooldown_scale: ::bungeeoxide_minecraft_root::F32,
-	pub damage_reductions: super::array::Inline440<'i>,
+	pub damage_reductions: super::array::Inline442<'i>,
 	pub item_damage: super::super::SlotComponent48,
 	pub bypassed_by: ::bungeeoxide_minecraft_v1_20_5::view::Option13<'i>,
 	pub block_sound: ::bungeeoxide_minecraft_v1_19_3::view::Option11<'i>,
@@ -16,7 +16,7 @@ pub struct SlotComponent49<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.block_delay_seconds, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.disable_cooldown_scale, output)?;
-	super::array::inline_440::serialize(&_0.damage_reductions, output)?;
+	super::array::inline_442::serialize(&_0.damage_reductions, output)?;
 	super::super::slot_component_48::serialize(&_0.item_damage, output)?;
 	::bungeeoxide_minecraft_v1_20_5::view::option_13::serialize(&_0.bypassed_by, output)?;
 	::bungeeoxide_minecraft_v1_19_3::view::option_11::serialize(&_0.block_sound, output)?;
@@ -28,7 +28,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(24)?;
 	let f_blockDelaySeconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_disableCooldownScale = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_damageReductions = super::array::inline_440::deserialize(input)?;
+	let f_damageReductions = super::array::inline_442::deserialize(input)?;
 	let f_itemDamage = super::super::slot_component_48::deserialize(input)?;
 	let f_bypassedBy = ::bungeeoxide_minecraft_v1_20_5::view::option_13::deserialize(input)?;
 	let f_blockSound = ::bungeeoxide_minecraft_v1_19_3::view::option_11::deserialize(input)?;
@@ -47,7 +47,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::f32::size_of(&_0.block_delay_seconds)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.disable_cooldown_scale)
-		+ super::array::inline_440::size_of(&_0.damage_reductions)
+		+ super::array::inline_442::size_of(&_0.damage_reductions)
 		+ super::super::slot_component_48::size_of(&_0.item_damage)
 		+ ::bungeeoxide_minecraft_v1_20_5::view::option_13::size_of(&_0.bypassed_by)
 		+ ::bungeeoxide_minecraft_v1_19_3::view::option_11::size_of(&_0.block_sound)
@@ -58,7 +58,7 @@ pub fn view<'i>(_0: &'i super::super::SlotComponent49) -> Ty<'i> {
 	Ty {
 		block_delay_seconds: ::core::clone::Clone::clone(&_0.block_delay_seconds),
 		disable_cooldown_scale: ::core::clone::Clone::clone(&_0.disable_cooldown_scale),
-		damage_reductions: super::array::inline_440::view(&_0.damage_reductions),
+		damage_reductions: super::array::inline_442::view(&_0.damage_reductions),
 		item_damage: ::core::clone::Clone::clone(&_0.item_damage),
 		bypassed_by: ::bungeeoxide_minecraft_v1_20_5::view::option_13::view(&_0.bypassed_by),
 		block_sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&_0.block_sound),
@@ -70,7 +70,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent49) -> Ty<'i> {
 	Ty {
 		block_delay_seconds: ::core::clone::Clone::clone(&mut _0.block_delay_seconds),
 		disable_cooldown_scale: ::core::clone::Clone::clone(&mut _0.disable_cooldown_scale),
-		damage_reductions: super::array::inline_440::into_view(&mut _0.damage_reductions),
+		damage_reductions: super::array::inline_442::into_view(&mut _0.damage_reductions),
 		item_damage: ::core::clone::Clone::clone(&mut _0.item_damage),
 		bypassed_by: ::bungeeoxide_minecraft_v1_20_5::view::option_13::into_view(&mut _0.bypassed_by),
 		block_sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&mut _0.block_sound),

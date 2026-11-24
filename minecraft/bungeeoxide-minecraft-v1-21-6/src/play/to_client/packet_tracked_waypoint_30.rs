@@ -9,14 +9,14 @@ pub struct PacketTrackedWaypoint30 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.style, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.style, output)?;
 	super::super::super::option_83::serialize(&_0.color, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_style = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_style = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_color = super::super::super::option_83::deserialize(input)?;
 	Ok(Ty {
 		style: f_style,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.style)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.style)
 		+ super::super::super::option_83::size_of(&_0.color)
 }
 

@@ -1,0 +1,39 @@
+[
+	{
+		"op": "test",
+		"path": "/types/Node/1/4/type/1/mappings",
+		"value": {
+			"0": "blocked",
+			"1": "open",
+			"2": "walkable",
+			"3": "walkable_door",
+			"4": "trapdoor",
+			"5": "powder_snow",
+			"6": "danger_powder_snow",
+			"7": "fence",
+			"8": "lava",
+			"9": "water",
+			"10": "water_border",
+			"11": "rail",
+			"12": "unpassable_rail",
+			"13": "danger_fire",
+			"14": "damage_fire",
+			"15": "danger_other",
+			"16": "damage_other",
+			"17": "door_open",
+			"18": "door_wood_closed",
+			"19": "door_iron_closed",
+			"20": "breach",
+			"21": "leaves",
+			"22": "sticky_honey",
+			"23": "cocoa",
+			"24": "damage_cautious",
+			"25": "danger_trapdoor"
+		}
+	},
+	{
+		"op": "add",
+		"path": "/types/Node/1/4/type/1/mappings/26",
+		"value": "big_mobs_close_to_danger"
+	}
+]

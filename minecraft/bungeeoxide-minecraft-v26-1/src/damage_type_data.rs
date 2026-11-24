@@ -12,7 +12,7 @@ pub struct DamageTypeData {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.msg_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.msg_id, output)?;
 	super::damage_type_data_0::serialize(&_0.scaling, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.exhaustion, output)?;
 	super::damage_type_data_1::serialize(&_0.effects, output)?;
@@ -22,7 +22,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(8)?;
-	let f_msgId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_msgId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_scaling = super::damage_type_data_0::deserialize(input)?;
 	let f_exhaustion = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_effects = super::damage_type_data_1::deserialize(input)?;
@@ -37,7 +37,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.msg_id)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.msg_id)
 		+ super::damage_type_data_0::size_of(&_0.scaling)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.exhaustion)
 		+ super::damage_type_data_1::size_of(&_0.effects)

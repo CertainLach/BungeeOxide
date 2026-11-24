@@ -4,39 +4,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent40 {
-	pub potion_id: Option<::bungeeoxide_minecraft_root::Varint>,
-	pub custom_color: Option<::bungeeoxide_minecraft_root::I32>,
-	pub custom_effects: Vec<::bungeeoxide_minecraft_v1_20_5::ItemPotionEffect>,
-	pub custom_name: Option<String>,
+	pub rules: Vec<super::SlotComponent39>,
+	pub default_mining_speed: ::bungeeoxide_minecraft_root::F32,
+	pub damage_per_block: ::bungeeoxide_minecraft_root::Varint,
+	pub can_destroy_blocks_in_creative: ::bungeeoxide_minecraft_root::Bool,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::option_32::serialize(&_0.potion_id, output)?;
-	::bungeeoxide_minecraft_root::option_5::serialize(&_0.custom_color, output)?;
-	::bungeeoxide_minecraft_v1_20_5::array::inline_53::serialize(&_0.custom_effects, output)?;
-	::bungeeoxide_minecraft_root::option_21::serialize(&_0.custom_name, output)?;
+	super::array::inline_380::serialize(&_0.rules, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.default_mining_speed, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.damage_per_block, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_destroy_blocks_in_creative, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(4)?;
-	let f_potionId = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
-	let f_customColor = ::bungeeoxide_minecraft_root::option_5::deserialize(input)?;
-	let f_customEffects = ::bungeeoxide_minecraft_v1_20_5::array::inline_53::deserialize(input)?;
-	let f_customName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
+	input.expect(7)?;
+	let f_rules = super::array::inline_380::deserialize(input)?;
+	let f_defaultMiningSpeed = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_damagePerBlock = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_canDestroyBlocksInCreative = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	Ok(Ty {
-		potion_id: f_potionId,
-		custom_color: f_customColor,
-		custom_effects: f_customEffects,
-		custom_name: f_customName,
+		rules: f_rules,
+		default_mining_speed: f_defaultMiningSpeed,
+		damage_per_block: f_damagePerBlock,
+		can_destroy_blocks_in_creative: f_canDestroyBlocksInCreative,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::option_32::size_of(&_0.potion_id)
-		+ ::bungeeoxide_minecraft_root::option_5::size_of(&_0.custom_color)
-		+ ::bungeeoxide_minecraft_v1_20_5::array::inline_53::size_of(&_0.custom_effects)
-		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.custom_name)
+	super::array::inline_380::size_of(&_0.rules)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.default_mining_speed)
+		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.damage_per_block)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_destroy_blocks_in_creative)
 }
 
 pub type Ty = SlotComponent40;

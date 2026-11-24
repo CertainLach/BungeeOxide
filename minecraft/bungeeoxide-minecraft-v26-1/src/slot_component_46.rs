@@ -4,29 +4,34 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent46 {
-	pub r#type: ::bungeeoxide_minecraft_root::Varint,
-	pub data: ::bungeeoxide_minecraft_root::AnonymousNbt,
+	pub threshold: ::bungeeoxide_minecraft_root::F32,
+	pub base: ::bungeeoxide_minecraft_root::F32,
+	pub factor: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.data, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.threshold, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.base, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.factor, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(1)?;
-	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_data = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
+	input.expect(12)?;
+	let f_threshold = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_base = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_factor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	Ok(Ty {
-		r#type: f_type,
-		data: f_data,
+		threshold: f_threshold,
+		base: f_base,
+		factor: f_factor,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.data)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.threshold)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.base)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.factor)
 }
 
 pub type Ty = SlotComponent46;

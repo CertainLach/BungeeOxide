@@ -11,7 +11,7 @@ pub struct PacketEncryptionBegin {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.server_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.server_id, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.public_key, output)?;
 	::bungeeoxide_minecraft_root::buffer::inline_3::serialize(&_0.verify_token, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.should_authenticate, output)?;
@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_serverId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_serverId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_publicKey = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_verifyToken = ::bungeeoxide_minecraft_root::buffer::inline_3::deserialize(input)?;
 	let f_shouldAuthenticate = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.server_id)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.server_id)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.public_key)
 		+ ::bungeeoxide_minecraft_root::buffer::inline_3::size_of(&_0.verify_token)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.should_authenticate)

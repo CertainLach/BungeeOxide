@@ -9,14 +9,14 @@ pub struct PacketSystemChat {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.content, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.content, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_content = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_content = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		content: f_content,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.content)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.content)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
 }
 

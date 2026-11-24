@@ -8,14 +8,20 @@
 + play::toServer::packet_set_game_rule
 + play::toServer::packet_spectate_entity
 = DataComponentMatchers (references changed)
+= DebugSubscriptionEvent (references changed)
+= DebugSubscriptionUpdate (references changed)
 = ExactComponentMatcher (references changed)
 = HashedSlot (references changed)
 = ItemBlockPredicate (references changed)
+~ Node [FieldsRetypedNested]
+    ~type: nested change
 ~ Particle [Renumbered, ArmsAdded, ArmsChanged]
     ~item
     +pause_mob_growth
     +reset_mob_growth
     65 arms renumbered
+= Path (references changed)
+= PathDebugData (references changed)
 = Slot (references changed)
 ~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
     +cat_sound_variant
@@ -75,6 +81,10 @@
 ~ play::toClient::packet_advancements [FieldsRetypedNested]
     ~advancementMapping: nested change
 = play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_debug_block_value (references changed)
+= play::toClient::packet_debug_chunk_value (references changed)
+= play::toClient::packet_debug_entity_value (references changed)
+= play::toClient::packet_debug_event (references changed)
 = play::toClient::packet_declare_recipes (references changed)
 = play::toClient::packet_entity_equipment (references changed)
 = play::toClient::packet_entity_metadata (references changed)

@@ -11,18 +11,18 @@ pub struct PacketProfilelessChat {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.message, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::option_21::serialize(&_0.target, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_target = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
 		message: f_message,
@@ -33,9 +33,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.message)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.target)
 }
 

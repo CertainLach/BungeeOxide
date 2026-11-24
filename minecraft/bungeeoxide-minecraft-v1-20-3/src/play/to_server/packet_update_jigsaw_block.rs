@@ -16,11 +16,11 @@ pub struct PacketUpdateJigsawBlock {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.target, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.pool, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.final_state, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.joint_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.target, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.pool, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.final_state, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.joint_type, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.selection_priority, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.placement_priority, output)?;
 	Ok(())
@@ -29,11 +29,11 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(15)?;
 	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_target = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_pool = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_finalState = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_jointType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_target = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_pool = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_finalState = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_jointType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_selection_priority = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_placement_priority = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
@@ -50,11 +50,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.target)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.pool)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.final_state)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.joint_type)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.target)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.pool)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.final_state)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.joint_type)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.selection_priority)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.placement_priority)
 }

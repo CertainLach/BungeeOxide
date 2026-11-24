@@ -4,20 +4,20 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketDeclareRecipes14<'i> {
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub items: ::bungeeoxide_minecraft_root::array::Inline137,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub items: ::bungeeoxide_minecraft_root::array::Inline138,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::array::inline_137::serialize(&_0.items, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.items, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_items = ::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_items = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
 		items: f_items,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::array::inline_137::size_of(&_0.items)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.items)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketDeclareRecipes14) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.name),
 		items: ::core::clone::Clone::clone(&_0.items),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketDeclareRecipes14) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.name),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.name),
 		items: ::core::mem::take(&mut _0.items),
 	}
 }

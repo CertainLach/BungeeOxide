@@ -9,14 +9,14 @@ pub struct PacketStatistics4 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.value, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		name: f_name,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.value)
 }
 

@@ -4,49 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent28 {
-	pub min_range: ::bungeeoxide_minecraft_root::F32,
-	pub max_range: ::bungeeoxide_minecraft_root::F32,
-	pub min_creative_range: ::bungeeoxide_minecraft_root::F32,
-	pub max_creative_range: ::bungeeoxide_minecraft_root::F32,
-	pub hitbox_margin: ::bungeeoxide_minecraft_root::F32,
-	pub mob_factor: ::bungeeoxide_minecraft_root::F32,
+	pub id: ::bungeeoxide_minecraft_root::Varint,
+	pub level: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.min_range, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_range, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.min_creative_range, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_creative_range, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.hitbox_margin, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.mob_factor, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.level, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(24)?;
-	let f_minRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_maxRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_minCreativeRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_maxCreativeRange = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_hitboxMargin = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_mobFactor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	input.expect(2)?;
+	let f_id = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_level = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
-		min_range: f_minRange,
-		max_range: f_maxRange,
-		min_creative_range: f_minCreativeRange,
-		max_creative_range: f_maxCreativeRange,
-		hitbox_margin: f_hitboxMargin,
-		mob_factor: f_mobFactor,
+		id: f_id,
+		level: f_level,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::f32::size_of(&_0.min_range)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_range)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.min_creative_range)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_creative_range)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.hitbox_margin)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.mob_factor)
+	::bungeeoxide_minecraft_root::varint::size_of(&_0.id)
+		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.level)
 }
 
 pub type Ty = SlotComponent28;

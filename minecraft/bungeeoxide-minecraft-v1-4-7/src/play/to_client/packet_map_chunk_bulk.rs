@@ -13,7 +13,7 @@ pub struct PacketMapChunkBulk {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i16::serialize(
-		&(super::super::super::array::sized_511::virtual_size(&_0.meta) as ::bungeeoxide_minecraft_root::I16),
+		&(super::super::super::array::sized_513::virtual_size(&_0.meta) as ::bungeeoxide_minecraft_root::I16),
 		output,
 	)?;
 	::bungeeoxide_minecraft_root::i32::serialize(
@@ -22,7 +22,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.sky_light_sent, output)?;
 	::bungeeoxide_minecraft_root::buffer::sized::serialize(&_0.compressed_chunk_data, output)?;
-	super::super::super::array::sized_511::serialize(&_0.meta, output)?;
+	super::super::super::array::sized_513::serialize(&_0.meta, output)?;
 	Ok(())
 }
 
@@ -37,14 +37,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			count: &f_dataLength,
 		},
 	)?;
-	let f_meta = super::super::super::array::sized_511::deserialize(
+	let f_meta = super::super::super::array::sized_513::deserialize(
 		input,
-		super::super::super::array::sized_511::Args {
+		super::super::super::array::sized_513::Args {
 			count: &f_chunkColumnCount,
 		},
 	)?;
 	debug_assert!(
-		f_chunkColumnCount == super::super::super::array::sized_511::virtual_size(&f_meta) as ::bungeeoxide_minecraft_root::I16,
+		f_chunkColumnCount == super::super::super::array::sized_513::virtual_size(&f_meta) as ::bungeeoxide_minecraft_root::I16,
 		"virtual field chunkColumnCount does not match its value source",
 	);
 	debug_assert!(
@@ -60,14 +60,14 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i16::size_of(
-		&(super::super::super::array::sized_511::virtual_size(&_0.meta) as ::bungeeoxide_minecraft_root::I16),
+		&(super::super::super::array::sized_513::virtual_size(&_0.meta) as ::bungeeoxide_minecraft_root::I16),
 	)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(
 			&(::bungeeoxide_minecraft_root::buffer::sized::virtual_size(&_0.compressed_chunk_data) as ::bungeeoxide_minecraft_root::I32),
 		)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.sky_light_sent)
 		+ ::bungeeoxide_minecraft_root::buffer::sized::size_of(&_0.compressed_chunk_data)
-		+ super::super::super::array::sized_511::size_of(&_0.meta)
+		+ super::super::super::array::sized_513::size_of(&_0.meta)
 }
 
 pub type Ty = PacketMapChunkBulk;

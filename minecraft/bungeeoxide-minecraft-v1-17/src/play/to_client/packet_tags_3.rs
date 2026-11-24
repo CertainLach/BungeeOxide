@@ -9,15 +9,15 @@ pub struct PacketTags3 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.tag_type, output)?;
-	::bungeeoxide_minecraft_v1_14::array::inline_159::serialize(&_0.tags, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.tag_type, output)?;
+	::bungeeoxide_minecraft_v1_14::array::inline_160::serialize(&_0.tags, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_tagType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_tags = ::bungeeoxide_minecraft_v1_14::array::inline_159::deserialize(input)?;
+	let f_tagType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_tags = ::bungeeoxide_minecraft_v1_14::array::inline_160::deserialize(input)?;
 	Ok(Ty {
 		tag_type: f_tagType,
 		tags: f_tags,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.tag_type)
-		+ ::bungeeoxide_minecraft_v1_14::array::inline_159::size_of(&_0.tags)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.tag_type)
+		+ ::bungeeoxide_minecraft_v1_14::array::inline_160::size_of(&_0.tags)
 }
 
 pub type Ty = PacketTags3;

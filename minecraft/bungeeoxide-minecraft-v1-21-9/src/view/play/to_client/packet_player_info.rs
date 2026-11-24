@@ -5,7 +5,7 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketPlayerInfo<'i> {
 	pub action: super::super::super::super::play::to_client::PacketPlayerInfo13,
-	pub data: super::super::super::array::Inline361<'i>,
+	pub data: super::super::super::array::Inline362<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -13,7 +13,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		&_0.action,
 		output,
 	)?;
-	super::super::super::array::inline_361::serialize(&_0.data, output)?;
+	super::super::super::array::inline_362::serialize(&_0.data, output)?;
 	Ok(())
 }
 
@@ -21,9 +21,9 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_action =
 		super::super::super::super::play::to_client::packet_player_info_13::deserialize(input)?;
-	let f_data = super::super::super::array::inline_361::deserialize(
+	let f_data = super::super::super::array::inline_362::deserialize(
 		input,
-		super::super::super::array::inline_361::Args {
+		super::super::super::array::inline_362::Args {
 			action_add_player: &f_action.add_player,
 			action_initialize_chat: &f_action.initialize_chat,
 			action_update_display_name: &f_action.update_display_name,
@@ -42,20 +42,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	super::super::super::super::play::to_client::packet_player_info_13::size_of(&_0.action)
-		+ super::super::super::array::inline_361::size_of(&_0.data)
+		+ super::super::super::array::inline_362::size_of(&_0.data)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlayerInfo) -> Ty<'i> {
 	Ty {
 		action: ::core::clone::Clone::clone(&_0.action),
-		data: super::super::super::array::inline_361::view(&_0.data),
+		data: super::super::super::array::inline_362::view(&_0.data),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketPlayerInfo) -> Ty<'i> {
 	Ty {
 		action: ::core::clone::Clone::clone(&mut _0.action),
-		data: super::super::super::array::inline_361::into_view(&mut _0.data),
+		data: super::super::super::array::inline_362::into_view(&mut _0.data),
 	}
 }
 

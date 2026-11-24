@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 pub mod array;
 pub mod configuration;
-pub mod option_117;
+pub mod option_124;
 pub mod play;
 
-pub use self::option_117::Ty as Option117;
+pub use self::option_124::Ty as Option124;

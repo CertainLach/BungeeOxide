@@ -9,14 +9,14 @@ pub struct ItemSoundEvent {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.sound_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.sound_name, output)?;
 	::bungeeoxide_minecraft_root::option_4::serialize(&_0.fixed_range, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_soundName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_soundName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_fixedRange = ::bungeeoxide_minecraft_root::option_4::deserialize(input)?;
 	Ok(Ty {
 		sound_name: f_soundName,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.sound_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.sound_name)
 		+ ::bungeeoxide_minecraft_root::option_4::size_of(&_0.fixed_range)
 }
 

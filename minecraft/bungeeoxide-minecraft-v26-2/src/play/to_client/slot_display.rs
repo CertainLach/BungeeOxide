@@ -24,12 +24,12 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::Empty => Ok(()),
 		Ty::AnyFuel => Ok(()),
-		Ty::Composite(__v) => super::super::super::array::inline_117::serialize(__v, output),
+		Ty::Composite(__v) => super::super::super::array::inline_118::serialize(__v, output),
 		Ty::WithAnyPotion(__v) => self::serialize_guarded(__v, output),
 		Ty::OnlyWithComponent(__v) => super::slot_display_4::serialize(__v, output),
 		Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::ItemStack(__v) => super::super::super::item_stack_template::serialize(__v, output),
-		Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::DyedSlotDemo(__v) => super::slot_display_5::serialize(__v, output),
 		Ty::SmithingTrim(__v) => super::slot_display_7::serialize(__v, output),
 		Ty::WithRemainder(__v) => super::slot_display_8::serialize(__v, output),
@@ -48,7 +48,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::AnyFuel);
 	}
 	if *__tag == 10_i32 {
-		return Ok(Ty::Composite(super::super::super::array::inline_117::deserialize(input)?));
+		return Ok(Ty::Composite(super::super::super::array::inline_118::deserialize(input)?));
 	}
 	if *__tag == 2_i32 {
 		return Ok(Ty::WithAnyPotion(Box::new(self::deserialize_guarded(input)?)));
@@ -63,7 +63,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::ItemStack(super::super::super::item_stack_template::deserialize(input)?));
 	}
 	if *__tag == 6_i32 {
-		return Ok(Ty::Tag(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::Tag(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 7_i32 {
 		return Ok(Ty::DyedSlotDemo(Box::new(super::slot_display_5::deserialize(input)?)));
@@ -82,12 +82,12 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ match _0 {
 			Ty::Empty => 0,
 			Ty::AnyFuel => 0,
-			Ty::Composite(__v) => super::super::super::array::inline_117::size_of(__v),
+			Ty::Composite(__v) => super::super::super::array::inline_118::size_of(__v),
 			Ty::WithAnyPotion(__v) => self::size_of(__v),
 			Ty::OnlyWithComponent(__v) => super::slot_display_4::size_of(__v),
 			Ty::Item(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::ItemStack(__v) => super::super::super::item_stack_template::size_of(__v),
-			Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::Tag(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::DyedSlotDemo(__v) => super::slot_display_5::size_of(__v),
 			Ty::SmithingTrim(__v) => super::slot_display_7::size_of(__v),
 			Ty::WithRemainder(__v) => super::slot_display_8::size_of(__v),

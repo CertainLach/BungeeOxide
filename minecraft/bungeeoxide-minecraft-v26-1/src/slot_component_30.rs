@@ -3,75 +3,129 @@
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct SlotComponent30 {
-	pub slot: super::SlotComponent29,
-	pub sound: ::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder,
-	pub model: Option<String>,
-	pub camera_overlay: Option<String>,
-	pub allowed_entities: Option<::bungeeoxide_minecraft_v1_20_5::IdSet>,
-	pub dispensable: ::bungeeoxide_minecraft_root::Bool,
-	pub swappable: ::bungeeoxide_minecraft_root::Bool,
-	pub damageable: ::bungeeoxide_minecraft_root::Bool,
-	pub equip_on_interact: ::bungeeoxide_minecraft_root::Bool,
-	pub shearable: ::bungeeoxide_minecraft_root::Bool,
-	pub shearing_sound: ::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder,
+pub enum SlotComponent30 {
+	Any,
+	MainHand,
+	Saddle,
+	OffHand,
+	Hand,
+	Feet,
+	Legs,
+	Chest,
+	Head,
+	Armor,
+	Body,
+	Default(::bungeeoxide_minecraft_root::Varint),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::slot_component_29::serialize(&_0.slot, output)?;
-	::bungeeoxide_minecraft_v1_19_3::item_sound_holder::serialize(&_0.sound, output)?;
-	::bungeeoxide_minecraft_root::option_21::serialize(&_0.model, output)?;
-	::bungeeoxide_minecraft_root::option_21::serialize(&_0.camera_overlay, output)?;
-	::bungeeoxide_minecraft_v1_20_5::option_13::serialize(&_0.allowed_entities, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.dispensable, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.swappable, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.damageable, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.equip_on_interact, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.shearable, output)?;
-	::bungeeoxide_minecraft_v1_19_3::item_sound_holder::serialize(&_0.shearing_sound, output)?;
-	Ok(())
+	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Any => Ok(()),
+		Ty::MainHand => Ok(()),
+		Ty::Saddle => Ok(()),
+		Ty::OffHand => Ok(()),
+		Ty::Hand => Ok(()),
+		Ty::Feet => Ok(()),
+		Ty::Legs => Ok(()),
+		Ty::Chest => Ok(()),
+		Ty::Head => Ok(()),
+		Ty::Armor => Ok(()),
+		Ty::Body => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(11)?;
-	let f_slot = super::slot_component_29::deserialize(input)?;
-	let f_sound = ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::deserialize(input)?;
-	let f_model = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_cameraOverlay = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
-	let f_allowedEntities = ::bungeeoxide_minecraft_v1_20_5::option_13::deserialize(input)?;
-	let f_dispensable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_swappable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_damageable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_equipOnInteract = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_shearable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_shearingSound = ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::deserialize(input)?;
-	Ok(Ty {
-		slot: f_slot,
-		sound: f_sound,
-		model: f_model,
-		camera_overlay: f_cameraOverlay,
-		allowed_entities: f_allowedEntities,
-		dispensable: f_dispensable,
-		swappable: f_swappable,
-		damageable: f_damageable,
-		equip_on_interact: f_equipOnInteract,
-		shearable: f_shearable,
-		shearing_sound: f_shearingSound,
-	})
+	input.expect(1)?;
+	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if *__tag == 0_i32 {
+		return Ok(Ty::Any);
+	}
+	if *__tag == 1_i32 {
+		return Ok(Ty::MainHand);
+	}
+	if *__tag == 10_i32 {
+		return Ok(Ty::Saddle);
+	}
+	if *__tag == 2_i32 {
+		return Ok(Ty::OffHand);
+	}
+	if *__tag == 3_i32 {
+		return Ok(Ty::Hand);
+	}
+	if *__tag == 4_i32 {
+		return Ok(Ty::Feet);
+	}
+	if *__tag == 5_i32 {
+		return Ok(Ty::Legs);
+	}
+	if *__tag == 6_i32 {
+		return Ok(Ty::Chest);
+	}
+	if *__tag == 7_i32 {
+		return Ok(Ty::Head);
+	}
+	if *__tag == 8_i32 {
+		return Ok(Ty::Armor);
+	}
+	if *__tag == 9_i32 {
+		return Ok(Ty::Body);
+	}
+	Ok(Ty::Default(__tagv))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::slot_component_29::size_of(&_0.slot)
-		+ ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::size_of(&_0.sound)
-		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.model)
-		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.camera_overlay)
-		+ ::bungeeoxide_minecraft_v1_20_5::option_13::size_of(&_0.allowed_entities)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.dispensable)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.swappable)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.damageable)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.equip_on_interact)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.shearable)
-		+ ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::size_of(&_0.shearing_sound)
+	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Any => 0,
+			Ty::MainHand => 0,
+			Ty::Saddle => 0,
+			Ty::OffHand => 0,
+			Ty::Hand => 0,
+			Ty::Feet => 0,
+			Ty::Legs => 0,
+			Ty::Chest => 0,
+			Ty::Head => 0,
+			Ty::Armor => 0,
+			Ty::Body => 0,
+			Ty::Default(_) => 0,
+		}
+}
+
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::Any => "any",
+		Ty::MainHand => "main_hand",
+		Ty::Saddle => "saddle",
+		Ty::OffHand => "off_hand",
+		Ty::Hand => "hand",
+		Ty::Feet => "feet",
+		Ty::Legs => "legs",
+		Ty::Chest => "chest",
+		Ty::Head => "head",
+		Ty::Armor => "armor",
+		Ty::Body => "body",
+		Ty::Default(..) => "default",
+	}
+}
+
+pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
+	match _0 {
+		Ty::Any => 0_i32,
+		Ty::MainHand => 1_i32,
+		Ty::Saddle => 10_i32,
+		Ty::OffHand => 2_i32,
+		Ty::Hand => 3_i32,
+		Ty::Feet => 4_i32,
+		Ty::Legs => 5_i32,
+		Ty::Chest => 6_i32,
+		Ty::Head => 7_i32,
+		Ty::Armor => 8_i32,
+		Ty::Body => 9_i32,
+		Ty::Default(__t) => *__t,
+	}
 }
 
 pub type Ty = SlotComponent30;

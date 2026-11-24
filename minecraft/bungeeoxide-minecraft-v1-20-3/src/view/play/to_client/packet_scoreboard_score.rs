@@ -4,8 +4,8 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketScoreboardScore<'i> {
-	pub item_name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub score_name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub item_name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub score_name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub value: ::bungeeoxide_minecraft_root::Varint,
 	pub display_name: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 	// number_format - virtual field
@@ -13,8 +13,8 @@ pub struct PacketScoreboardScore<'i> {
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.item_name, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.score_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.item_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.score_name, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.value, output)?;
 	::bungeeoxide_minecraft_root::view::option_1::serialize(&_0.display_name, output)?;
 	::bungeeoxide_minecraft_root::option_32::serialize(
@@ -27,8 +27,8 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(5)?;
-	let f_itemName = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_scoreName = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_itemName = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_scoreName = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_display_name = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	let f_number_format = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
@@ -52,8 +52,8 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.item_name)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.score_name)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.item_name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.score_name)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.value)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.display_name)
 		+ ::bungeeoxide_minecraft_root::option_32::size_of(
@@ -64,8 +64,8 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScoreboardScore) -> Ty<'i> {
 	Ty {
-		item_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.item_name),
-		score_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.score_name),
+		item_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.item_name),
+		score_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.score_name),
 		value: ::core::clone::Clone::clone(&_0.value),
 		display_name: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.display_name),
 		styling: super::packet_scoreboard_score_31::view(&_0.styling),
@@ -74,8 +74,8 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketScore
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketScoreboardScore) -> Ty<'i> {
 	Ty {
-		item_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.item_name),
-		score_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.score_name),
+		item_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.item_name),
+		score_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.score_name),
 		value: ::core::clone::Clone::clone(&mut _0.value),
 		display_name: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.display_name),
 		styling: super::packet_scoreboard_score_31::into_view(&mut _0.styling),

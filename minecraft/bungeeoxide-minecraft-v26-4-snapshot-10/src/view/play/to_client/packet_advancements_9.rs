@@ -8,13 +8,13 @@ pub struct Args<'a> {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketAdvancements9<'i> {
-	V1(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	V1(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	Default(::bungeeoxide_minecraft_root::U8),
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -22,14 +22,14 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
 	let __tag = args.flags_has_background_texture;
 	if *__tag == 1_u8 {
-		return Ok(Ty::V1(::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?));
+		return Ok(Ty::V1(::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?));
 	}
 	Ok(Ty::Default(*__tag))
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	match _0 {
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }
@@ -54,7 +54,7 @@ pub fn debug_assert_tag<'i>(_0: &Ty<'i>, __tag: &::bungeeoxide_minecraft_root::U
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements9) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::play::to_client::PacketAdvancements9::V1(__v) => {
-			Ty::V1(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::V1(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::super::super::play::to_client::PacketAdvancements9::Default(__t) => {
 			Ty::Default(::core::clone::Clone::clone(__t))

@@ -4,20 +4,20 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketRegistryData<'i> {
-	pub id: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub entries: super::super::super::array::Inline213<'i>,
+	pub id: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub entries: super::super::super::array::Inline214<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.id, output)?;
-	super::super::super::array::inline_213::serialize(&_0.entries, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.id, output)?;
+	super::super::super::array::inline_214::serialize(&_0.entries, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_id = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_entries = super::super::super::array::inline_213::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_214::deserialize(input)?;
 	Ok(Ty {
 		id: f_id,
 		entries: f_entries,
@@ -25,21 +25,21 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.id)
-		+ super::super::super::array::inline_213::size_of(&_0.entries)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.id)
+		+ super::super::super::array::inline_214::size_of(&_0.entries)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::configuration::to_client::PacketRegistryData) -> Ty<'i> {
 	Ty {
-		id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.id),
-		entries: super::super::super::array::inline_213::view(&_0.entries),
+		id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.id),
+		entries: super::super::super::array::inline_214::view(&_0.entries),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::configuration::to_client::PacketRegistryData) -> Ty<'i> {
 	Ty {
-		id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.id),
-		entries: super::super::super::array::inline_213::into_view(&mut _0.entries),
+		id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.id),
+		entries: super::super::super::array::inline_214::into_view(&mut _0.entries),
 	}
 }
 

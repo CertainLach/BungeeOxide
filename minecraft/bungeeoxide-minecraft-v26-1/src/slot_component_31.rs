@@ -3,40 +3,65 @@
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct SlotComponent31 {
-	pub horizontal_blocking_angle: ::bungeeoxide_minecraft_root::F32,
-	pub r#type: Option<::bungeeoxide_minecraft_v1_20_5::IdSet>,
-	pub base: ::bungeeoxide_minecraft_root::F32,
-	pub factor: ::bungeeoxide_minecraft_root::F32,
+pub enum SlotComponent31 {
+	default,
+	Hidden,
+	Override(::bungeeoxide_minecraft_root::AnonymousNbt),
+	default_(::bungeeoxide_minecraft_root::Varint),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.horizontal_blocking_angle, output)?;
-	::bungeeoxide_minecraft_v1_20_5::option_13::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.base, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.factor, output)?;
-	Ok(())
+	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::default => Ok(()),
+		Ty::Hidden => Ok(()),
+		Ty::Override(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::serialize(__v, output),
+		Ty::default_(_) => Ok(()),
+	}
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(13)?;
-	let f_horizontalBlockingAngle = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_type = ::bungeeoxide_minecraft_v1_20_5::option_13::deserialize(input)?;
-	let f_base = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_factor = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	Ok(Ty {
-		horizontal_blocking_angle: f_horizontalBlockingAngle,
-		r#type: f_type,
-		base: f_base,
-		factor: f_factor,
-	})
+	input.expect(1)?;
+	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if *__tag == 0_i32 {
+		return Ok(Ty::default);
+	}
+	if *__tag == 1_i32 {
+		return Ok(Ty::Hidden);
+	}
+	if *__tag == 2_i32 {
+		return Ok(Ty::Override(::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?));
+	}
+	Ok(Ty::default_(__tagv))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::f32::size_of(&_0.horizontal_blocking_angle)
-		+ ::bungeeoxide_minecraft_v1_20_5::option_13::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.base)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.factor)
+	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::default => 0,
+			Ty::Hidden => 0,
+			Ty::Override(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
+			Ty::default_(_) => 0,
+		}
+}
+
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::default => "default",
+		Ty::Hidden => "hidden",
+		Ty::Override(_) => "override",
+		Ty::default_(..) => "default_",
+	}
+}
+
+pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
+	match _0 {
+		Ty::default => 0_i32,
+		Ty::Hidden => 1_i32,
+		Ty::Override(_) => 2_i32,
+		Ty::default_(__t) => *__t,
+	}
 }
 
 pub type Ty = SlotComponent31;

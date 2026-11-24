@@ -142,9 +142,9 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::serialize(__v, output)
 		}
 		Ty::DisplayedRecipe(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
-		Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::ResourcePackReceive(__v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
 		}
@@ -340,11 +340,11 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 34_i32 {
 		return Ok(Ty::DisplayedRecipe(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 35_i32 {
-		return Ok(Ty::NameItem(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::NameItem(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 36_i32 {
 		return Ok(Ty::ResourcePackReceive(
@@ -501,8 +501,8 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::RecipeBook(__v) => {
 				::bungeeoxide_minecraft_v1_16_2::play::to_server::packet_recipe_book::size_of(__v)
 			}
-			Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
-			Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::DisplayedRecipe(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
+			Ty::NameItem(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::ResourcePackReceive(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::AdvancementTab(__v) => {
 				::bungeeoxide_minecraft_v1_12::play::to_server::packet_advancement_tab::size_of(__v)

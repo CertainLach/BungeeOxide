@@ -4,35 +4,63 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent50 {
-	Id(::bungeeoxide_minecraft_root::Varint),
-	Inline(::bungeeoxide_minecraft_v1_21_1::JukeboxSongData),
+	None,
+	Whack,
+	Stab,
+	Default(::bungeeoxide_minecraft_root::Varint),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::serialize(&(id + 1), output),
-		Ty::Inline(v) => {
-			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_v1_21_1::jukebox_song_data::serialize(v, output)
-		}
+		Ty::None => Ok(()),
+		Ty::Whack => Ok(()),
+		Ty::Stab => Ok(()),
+		Ty::Default(_) => Ok(()),
 	}
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	let n = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	Ok(if n == 0 {
-		Ty::Inline(::bungeeoxide_minecraft_v1_21_1::jukebox_song_data::deserialize(input)?)
-	} else {
-		Ty::Id(n - 1)
-	})
+	input.expect(1)?;
+	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if *__tag == 0_i32 {
+		return Ok(Ty::None);
+	}
+	if *__tag == 1_i32 {
+		return Ok(Ty::Whack);
+	}
+	if *__tag == 2_i32 {
+		return Ok(Ty::Stab);
+	}
+	Ok(Ty::Default(__tagv))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	match _0 {
-		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::size_of(&(id + 1)),
-		Ty::Inline(v) => {
-			::bungeeoxide_minecraft_root::varint::size_of(&0) + ::bungeeoxide_minecraft_v1_21_1::jukebox_song_data::size_of(v)
+	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::None => 0,
+			Ty::Whack => 0,
+			Ty::Stab => 0,
+			Ty::Default(_) => 0,
 		}
+}
+
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::None => "none",
+		Ty::Whack => "whack",
+		Ty::Stab => "stab",
+		Ty::Default(..) => "default",
+	}
+}
+
+pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
+	match _0 {
+		Ty::None => 0_i32,
+		Ty::Whack => 1_i32,
+		Ty::Stab => 2_i32,
+		Ty::Default(__t) => *__t,
 	}
 }
 

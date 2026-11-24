@@ -14,7 +14,7 @@ pub enum PacketAdvancements2 {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -22,14 +22,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.flags_has_background_texture;
 	if *__tag == 1_u8 {
-		return Ok(Ty::V1(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V1(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	Ok(Ty::Default(*__tag))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

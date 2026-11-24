@@ -21,7 +21,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.dimension, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.max_players, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.level_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.level_type, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.view_distance, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reduced_debug_info, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.enable_respawn_screen, output)?;
@@ -35,7 +35,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_dimension = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_maxPlayers = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_levelType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_levelType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_viewDistance = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_reducedDebugInfo = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_enableRespawnScreen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -58,7 +58,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.dimension)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.max_players)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.level_type)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.level_type)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.view_distance)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.reduced_debug_info)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.enable_respawn_screen)

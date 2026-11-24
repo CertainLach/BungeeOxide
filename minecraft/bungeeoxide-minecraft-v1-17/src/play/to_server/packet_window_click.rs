@@ -17,7 +17,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i16::serialize(&_0.slot, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.mouse_button, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.mode, output)?;
-	super::super::super::array::inline_166::serialize(&_0.changed_slots, output)?;
+	super::super::super::array::inline_167::serialize(&_0.changed_slots, output)?;
 	::bungeeoxide_minecraft_v1_13_2::slot::serialize(&_0.cursor_item, output)?;
 	Ok(())
 }
@@ -28,7 +28,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_slot = ::bungeeoxide_minecraft_root::i16::deserialize(input)?;
 	let f_mouseButton = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
-	let f_changedSlots = super::super::super::array::inline_166::deserialize(input)?;
+	let f_changedSlots = super::super::super::array::inline_167::deserialize(input)?;
 	let f_cursorItem = ::bungeeoxide_minecraft_v1_13_2::slot::deserialize(input)?;
 	Ok(Ty {
 		window_id: f_windowId,
@@ -45,7 +45,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::i16::size_of(&_0.slot)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.mouse_button)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.mode)
-		+ super::super::super::array::inline_166::size_of(&_0.changed_slots)
+		+ super::super::super::array::inline_167::size_of(&_0.changed_slots)
 		+ ::bungeeoxide_minecraft_v1_13_2::slot::size_of(&_0.cursor_item)
 }
 

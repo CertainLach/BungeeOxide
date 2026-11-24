@@ -4,14 +4,14 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketAdvancements12<'i> {
-	pub key: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub key: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub value: super::PacketAdvancements11<'i>,
 	pub x: ::bungeeoxide_minecraft_root::F32,
 	pub y: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.key, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.key, output)?;
 	super::packet_advancements_11::serialize(&_0.value, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.y, output)?;
@@ -20,7 +20,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(13)?;
-	let f_key = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_key = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_value = super::packet_advancements_11::deserialize(input)?;
 	let f_x = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_y = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.key)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.key)
 		+ super::packet_advancements_11::size_of(&_0.value)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.y)
@@ -41,7 +41,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvancements12) -> Ty<'i> {
 	Ty {
-		key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.key),
+		key: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.key),
 		value: super::packet_advancements_11::view(&_0.value),
 		x: ::core::clone::Clone::clone(&_0.x),
 		y: ::core::clone::Clone::clone(&_0.y),
@@ -50,7 +50,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketAdvan
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketAdvancements12) -> Ty<'i> {
 	Ty {
-		key: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.key),
+		key: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.key),
 		value: super::packet_advancements_11::into_view(&mut _0.value),
 		x: ::core::clone::Clone::clone(&mut _0.x),
 		y: ::core::clone::Clone::clone(&mut _0.y),

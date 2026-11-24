@@ -10,8 +10,8 @@ pub struct PacketDeclareRecipes13 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.recipe_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.r#type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.recipe_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.r#type, output)?;
 	super::packet_declare_recipes_12::debug_assert_tag(&_0.data, &_0.r#type);
 	super::packet_declare_recipes_12::serialize(&_0.data, output)?;
 	Ok(())
@@ -19,8 +19,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_recipeId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_type = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_recipeId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_type = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_data = super::packet_declare_recipes_12::deserialize(
 		input,
 		super::packet_declare_recipes_12::Args { r#type: &f_type },
@@ -33,8 +33,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.recipe_id)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.r#type)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.recipe_id)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.r#type)
 		+ super::packet_declare_recipes_12::size_of(&_0.data)
 }
 

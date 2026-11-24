@@ -11,7 +11,7 @@ pub struct ArmorTrimPattern {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.asset_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.template_item_id, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.description, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.decal, output)?;
@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_templateItemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	let f_decal = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
@@ -33,7 +33,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.asset_id)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.asset_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.template_item_id)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.description)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.decal)

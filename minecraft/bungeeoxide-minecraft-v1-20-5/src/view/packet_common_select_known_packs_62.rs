@@ -4,23 +4,23 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketCommonSelectKnownPacks62<'i> {
-	pub namespace: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub id: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub version: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub namespace: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub id: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub version: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.namespace, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.id, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.version, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.namespace, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.version, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(3)?;
-	let f_namespace = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_id = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_version = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_namespace = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_version = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		namespace: f_namespace,
 		id: f_id,
@@ -29,16 +29,16 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.namespace)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.id)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.version)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.namespace)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.id)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.version)
 }
 
 pub fn view<'i>(_0: &'i super::super::PacketCommonSelectKnownPacks62) -> Ty<'i> {
 	Ty {
-		namespace: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.namespace),
-		id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.id),
-		version: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.version),
+		namespace: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.namespace),
+		id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.id),
+		version: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.version),
 	}
 }
 

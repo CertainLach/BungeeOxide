@@ -18,7 +18,7 @@ pub struct SpawnInfo {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.dimension, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	super::spawn_info_5::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.previous_gamemode, output)?;
@@ -33,7 +33,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(17)?;
 	let f_dimension = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_gamemode = super::spawn_info_5::deserialize(input)?;
 	let f_previousGamemode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
@@ -58,7 +58,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.dimension)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ super::spawn_info_5::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.previous_gamemode)

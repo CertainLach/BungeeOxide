@@ -6,21 +6,21 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketMapChunk<'i> {
 	pub x: ::bungeeoxide_minecraft_root::I32,
 	pub z: ::bungeeoxide_minecraft_root::I32,
-	pub heightmaps: super::super::super::super::array::Inline429,
+	pub heightmaps: super::super::super::super::array::Inline431,
 	pub chunk_data: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub block_entities: ::bungeeoxide_minecraft_v1_20_2::view::array::Inline43<'i>,
 	pub sky_light_mask: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub empty_sky_light_mask: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
 	pub empty_block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::Inline3<'i>,
-	pub sky_light: ::bungeeoxide_minecraft_root::view::array::Inline457<'i>,
-	pub block_light: ::bungeeoxide_minecraft_root::view::array::Inline457<'i>,
+	pub sky_light: ::bungeeoxide_minecraft_root::view::array::Inline459<'i>,
+	pub block_light: ::bungeeoxide_minecraft_root::view::array::Inline459<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.x, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.z, output)?;
-	super::super::super::super::array::inline_429::serialize(&_0.heightmaps, output)?;
+	super::super::super::super::array::inline_431::serialize(&_0.heightmaps, output)?;
 	::bungeeoxide_minecraft_root::view::buffer::inline_3::serialize(&_0.chunk_data, output)?;
 	::bungeeoxide_minecraft_v1_20_2::view::array::inline_43::serialize(&_0.block_entities, output)?;
 	::bungeeoxide_minecraft_root::view::buffer::inline_3::serialize(&_0.sky_light_mask, output)?;
@@ -33,8 +33,8 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		&_0.empty_block_light_mask,
 		output,
 	)?;
-	::bungeeoxide_minecraft_root::view::array::inline_457::serialize(&_0.sky_light, output)?;
-	::bungeeoxide_minecraft_root::view::array::inline_457::serialize(&_0.block_light, output)?;
+	::bungeeoxide_minecraft_root::view::array::inline_459::serialize(&_0.sky_light, output)?;
+	::bungeeoxide_minecraft_root::view::array::inline_459::serialize(&_0.block_light, output)?;
 	Ok(())
 }
 
@@ -42,7 +42,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(17)?;
 	let f_x = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_z = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_heightmaps = super::super::super::super::array::inline_429::deserialize(input)?;
+	let f_heightmaps = super::super::super::super::array::inline_431::deserialize(input)?;
 	let f_chunkData = ::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
 	let f_blockEntities =
 		::bungeeoxide_minecraft_v1_20_2::view::array::inline_43::deserialize(input)?;
@@ -53,8 +53,8 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
 	let f_emptyBlockLightMask =
 		::bungeeoxide_minecraft_root::view::buffer::inline_3::deserialize(input)?;
-	let f_skyLight = ::bungeeoxide_minecraft_root::view::array::inline_457::deserialize(input)?;
-	let f_blockLight = ::bungeeoxide_minecraft_root::view::array::inline_457::deserialize(input)?;
+	let f_skyLight = ::bungeeoxide_minecraft_root::view::array::inline_459::deserialize(input)?;
+	let f_blockLight = ::bungeeoxide_minecraft_root::view::array::inline_459::deserialize(input)?;
 	Ok(Ty {
 		x: f_x,
 		z: f_z,
@@ -73,15 +73,15 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.x)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.z)
-		+ super::super::super::super::array::inline_429::size_of(&_0.heightmaps)
+		+ super::super::super::super::array::inline_431::size_of(&_0.heightmaps)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.chunk_data)
 		+ ::bungeeoxide_minecraft_v1_20_2::view::array::inline_43::size_of(&_0.block_entities)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.sky_light_mask)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.block_light_mask)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.empty_sky_light_mask)
 		+ ::bungeeoxide_minecraft_root::view::buffer::inline_3::size_of(&_0.empty_block_light_mask)
-		+ ::bungeeoxide_minecraft_root::view::array::inline_457::size_of(&_0.sky_light)
-		+ ::bungeeoxide_minecraft_root::view::array::inline_457::size_of(&_0.block_light)
+		+ ::bungeeoxide_minecraft_root::view::array::inline_459::size_of(&_0.sky_light)
+		+ ::bungeeoxide_minecraft_root::view::array::inline_459::size_of(&_0.block_light)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketMapChunk) -> Ty<'i> {
@@ -95,8 +95,8 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketMapCh
 		block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.block_light_mask),
 		empty_sky_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.empty_sky_light_mask),
 		empty_block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&_0.empty_block_light_mask),
-		sky_light: ::bungeeoxide_minecraft_root::view::array::inline_457::view(&_0.sky_light),
-		block_light: ::bungeeoxide_minecraft_root::view::array::inline_457::view(&_0.block_light),
+		sky_light: ::bungeeoxide_minecraft_root::view::array::inline_459::view(&_0.sky_light),
+		block_light: ::bungeeoxide_minecraft_root::view::array::inline_459::view(&_0.block_light),
 	}
 }
 
@@ -111,8 +111,8 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&mut _0.block_light_mask),
 		empty_sky_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&mut _0.empty_sky_light_mask),
 		empty_block_light_mask: ::bungeeoxide_minecraft_root::view::buffer::inline_3::view(&mut _0.empty_block_light_mask),
-		sky_light: ::bungeeoxide_minecraft_root::view::array::inline_457::view(&mut _0.sky_light),
-		block_light: ::bungeeoxide_minecraft_root::view::array::inline_457::view(&mut _0.block_light),
+		sky_light: ::bungeeoxide_minecraft_root::view::array::inline_459::view(&mut _0.sky_light),
+		block_light: ::bungeeoxide_minecraft_root::view::array::inline_459::view(&mut _0.block_light),
 	}
 }
 

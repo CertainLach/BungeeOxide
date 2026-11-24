@@ -13,8 +13,8 @@ pub struct PacketSuccess {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.username, output)?;
-	super::super::super::array::inline_445::serialize(&_0.properties, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.username, output)?;
+	super::super::super::array::inline_447::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.session_id, output)?;
 	super::connection_options::serialize(&_0.options, output)?;
 	Ok(())
@@ -23,8 +23,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_username = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_properties = super::super::super::array::inline_445::deserialize(input)?;
+	let f_username = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_properties = super::super::super::array::inline_447::deserialize(input)?;
 	let f_sessionId = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_options = super::connection_options::deserialize(input)?;
 	Ok(Ty {
@@ -38,8 +38,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.username)
-		+ super::super::super::array::inline_445::size_of(&_0.properties)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.username)
+		+ super::super::super::array::inline_447::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.session_id)
 		+ super::connection_options::size_of(&_0.options)
 }

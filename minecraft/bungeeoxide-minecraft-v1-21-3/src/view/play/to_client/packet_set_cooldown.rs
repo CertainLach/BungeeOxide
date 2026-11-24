@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketSetCooldown<'i> {
-	pub cooldown_group: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub cooldown_group: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub cooldown_ticks: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.cooldown_group, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.cooldown_group, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.cooldown_ticks, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_cooldownGroup = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_cooldownGroup = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_cooldownTicks = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		cooldown_group: f_cooldownGroup,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.cooldown_group)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.cooldown_group)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.cooldown_ticks)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketSetCooldown) -> Ty<'i> {
 	Ty {
-		cooldown_group: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.cooldown_group),
+		cooldown_group: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.cooldown_group),
 		cooldown_ticks: ::core::clone::Clone::clone(&_0.cooldown_ticks),
 	}
 }

@@ -10,7 +10,7 @@ pub struct PacketDeclareRecipes7 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.group, output)?;
 	::bungeeoxide_minecraft_v1_13_2::array::inline_37::serialize(&_0.ingredient, output)?;
 	::bungeeoxide_minecraft_v1_13_2::slot::serialize(&_0.result, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_ingredient = ::bungeeoxide_minecraft_v1_13_2::array::inline_37::deserialize(input)?;
 	let f_result = ::bungeeoxide_minecraft_v1_13_2::slot::deserialize(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.group)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.group)
 		+ ::bungeeoxide_minecraft_v1_13_2::array::inline_37::size_of(&_0.ingredient)
 		+ ::bungeeoxide_minecraft_v1_13_2::slot::size_of(&_0.result)
 }

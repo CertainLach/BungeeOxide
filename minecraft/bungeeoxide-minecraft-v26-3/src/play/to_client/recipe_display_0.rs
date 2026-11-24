@@ -10,7 +10,7 @@ pub struct RecipeDisplay0 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::super::super::array::inline_127::serialize(&_0.ingredients, output)?;
+	super::super::super::array::inline_128::serialize(&_0.ingredients, output)?;
 	super::slot_display::serialize_guarded(&_0.result, output)?;
 	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
 	Ok(())
@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(3)?;
-	let f_ingredients = super::super::super::array::inline_127::deserialize(input)?;
+	let f_ingredients = super::super::super::array::inline_128::deserialize(input)?;
 	let f_result = super::slot_display::deserialize_guarded(input)?;
 	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
 	Ok(Ty {
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::super::super::array::inline_127::size_of(&_0.ingredients)
+	super::super::super::array::inline_128::size_of(&_0.ingredients)
 		+ super::slot_display::size_of(&_0.result)
 		+ super::slot_display::size_of(&_0.crafting_station)
 }

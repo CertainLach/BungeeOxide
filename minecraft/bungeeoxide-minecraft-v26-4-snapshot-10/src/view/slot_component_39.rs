@@ -8,7 +8,7 @@ pub struct SlotComponent39<'i> {
 	pub animation: super::super::SlotComponent38,
 	pub sound: ::bungeeoxide_minecraft_v1_19_3::view::Option11<'i>,
 	pub makes_particles: ::bungeeoxide_minecraft_root::Bool,
-	pub effects: ::bungeeoxide_minecraft_v26_3::view::array::Inline119<'i>,
+	pub effects: ::bungeeoxide_minecraft_v26_3::view::array::Inline120<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -16,7 +16,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::slot_component_38::serialize(&_0.animation, output)?;
 	::bungeeoxide_minecraft_v1_19_3::view::option_11::serialize(&_0.sound, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.makes_particles, output)?;
-	::bungeeoxide_minecraft_v26_3::view::array::inline_119::serialize(&_0.effects, output)?;
+	::bungeeoxide_minecraft_v26_3::view::array::inline_120::serialize(&_0.effects, output)?;
 	Ok(())
 }
 
@@ -26,7 +26,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_animation = super::super::slot_component_38::deserialize(input)?;
 	let f_sound = ::bungeeoxide_minecraft_v1_19_3::view::option_11::deserialize(input)?;
 	let f_makes_particles = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_effects = ::bungeeoxide_minecraft_v26_3::view::array::inline_119::deserialize(input)?;
+	let f_effects = ::bungeeoxide_minecraft_v26_3::view::array::inline_120::deserialize(input)?;
 	Ok(Ty {
 		consume_seconds: f_consume_seconds,
 		animation: f_animation,
@@ -41,7 +41,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ super::super::slot_component_38::size_of(&_0.animation)
 		+ ::bungeeoxide_minecraft_v1_19_3::view::option_11::size_of(&_0.sound)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.makes_particles)
-		+ ::bungeeoxide_minecraft_v26_3::view::array::inline_119::size_of(&_0.effects)
+		+ ::bungeeoxide_minecraft_v26_3::view::array::inline_120::size_of(&_0.effects)
 }
 
 pub fn view<'i>(_0: &'i super::super::SlotComponent39) -> Ty<'i> {
@@ -50,7 +50,7 @@ pub fn view<'i>(_0: &'i super::super::SlotComponent39) -> Ty<'i> {
 		animation: ::core::clone::Clone::clone(&_0.animation),
 		sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&_0.sound),
 		makes_particles: ::core::clone::Clone::clone(&_0.makes_particles),
-		effects: ::bungeeoxide_minecraft_v26_3::view::array::inline_119::view(&_0.effects),
+		effects: ::bungeeoxide_minecraft_v26_3::view::array::inline_120::view(&_0.effects),
 	}
 }
 
@@ -60,7 +60,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::SlotComponent39) -> Ty<'i> {
 		animation: ::core::clone::Clone::clone(&mut _0.animation),
 		sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&mut _0.sound),
 		makes_particles: ::core::clone::Clone::clone(&mut _0.makes_particles),
-		effects: ::bungeeoxide_minecraft_v26_3::view::array::inline_119::into_view(&mut _0.effects),
+		effects: ::bungeeoxide_minecraft_v26_3::view::array::inline_120::into_view(&mut _0.effects),
 	}
 }
 

@@ -18,7 +18,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		&super::packet_open_window_0::virtual_tag(&_0.entity_id),
 		output,
 	)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.window_title, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.window_title, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.slot_count, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.use_provided_title, output)?;
 	super::packet_open_window_0::serialize(&_0.entity_id, output)?;
@@ -29,7 +29,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_windowId = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_inventoryType = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
-	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_windowTitle = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_slotCount = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_useProvidedTitle = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_entityId = super::packet_open_window_0::deserialize(
@@ -56,7 +56,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::u8::size_of(
 			&super::packet_open_window_0::virtual_tag(&_0.entity_id),
 		)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.window_title)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.window_title)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.slot_count)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.use_provided_title)
 		+ super::packet_open_window_0::size_of(&_0.entity_id)

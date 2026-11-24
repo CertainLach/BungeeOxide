@@ -16,8 +16,8 @@ pub struct PacketRespawn {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.dimension, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.world_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.dimension, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.world_name, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.gamemode, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.previous_gamemode, output)?;
@@ -30,8 +30,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(16)?;
-	let f_dimension = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_worldName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_dimension = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_worldName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_gamemode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_previousGamemode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
@@ -53,8 +53,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.dimension)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.world_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.dimension)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.world_name)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.gamemode)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.previous_gamemode)

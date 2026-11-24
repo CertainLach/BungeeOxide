@@ -3,40 +3,37 @@
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct SlotComponent26 {
-	pub rules: Vec<super::SlotComponent25>,
-	pub default_mining_speed: ::bungeeoxide_minecraft_root::F32,
-	pub damage_per_block: ::bungeeoxide_minecraft_root::Varint,
-	pub can_destroy_blocks_in_creative: ::bungeeoxide_minecraft_root::Bool,
+pub enum SlotComponent26 {
+	Id(::bungeeoxide_minecraft_root::Varint),
+	Inline(::bungeeoxide_minecraft_v1_20_5::EntityMetadataPaintingVariant),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::array::inline_378::serialize(&_0.rules, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.default_mining_speed, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.damage_per_block, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_destroy_blocks_in_creative, output)?;
-	Ok(())
+	match _0 {
+		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::serialize(&(id + 1), output),
+		Ty::Inline(v) => {
+			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
+			::bungeeoxide_minecraft_v1_20_5::entity_metadata_painting_variant::serialize(v, output)
+		}
+	}
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(7)?;
-	let f_rules = super::array::inline_378::deserialize(input)?;
-	let f_defaultMiningSpeed = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_damagePerBlock = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_canDestroyBlocksInCreative = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	Ok(Ty {
-		rules: f_rules,
-		default_mining_speed: f_defaultMiningSpeed,
-		damage_per_block: f_damagePerBlock,
-		can_destroy_blocks_in_creative: f_canDestroyBlocksInCreative,
+	let n = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	Ok(if n == 0 {
+		Ty::Inline(::bungeeoxide_minecraft_v1_20_5::entity_metadata_painting_variant::deserialize(input)?)
+	} else {
+		Ty::Id(n - 1)
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	super::array::inline_378::size_of(&_0.rules)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.default_mining_speed)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.damage_per_block)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.can_destroy_blocks_in_creative)
+	match _0 {
+		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::size_of(&(id + 1)),
+		Ty::Inline(v) => {
+			::bungeeoxide_minecraft_root::varint::size_of(&0) + ::bungeeoxide_minecraft_v1_20_5::entity_metadata_painting_variant::size_of(v)
+		}
+	}
 }
 
 pub type Ty = SlotComponent26;

@@ -2,19 +2,19 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Input, Output, Result};
 
-pub type Ty<'i> = Option<super::Pstring123<'i>>;
+pub type Ty<'i> = Option<super::Pstring131<'i>>;
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	super::super::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::pstring_123::serialize(v, output)?;
+		super::pstring_131::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	Ok(if super::super::bool::deserialize(input)? {
-		Some(super::pstring_123::deserialize(input)?)
+		Some(super::pstring_131::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,11 +23,11 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	let mut n = super::super::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::pstring_123::size_of(v);
+		n += super::pstring_131::size_of(v);
 	}
 	n
 }
 
 pub fn view<'i>(_0: &'i super::super::Option21) -> Ty<'i> {
-	_0.as_ref().map(|v| super::pstring_123::view(v))
+	_0.as_ref().map(|v| super::pstring_131::view(v))
 }

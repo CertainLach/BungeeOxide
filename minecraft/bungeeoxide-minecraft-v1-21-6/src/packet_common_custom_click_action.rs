@@ -9,14 +9,14 @@ pub struct PacketCommonCustomClickAction {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.id, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.nbt, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_id = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_nbt = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	Ok(Ty {
 		id: f_id,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.id)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.id)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.nbt)
 }
 

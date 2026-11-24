@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::recipe_display::serialize(&_0.display, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.group, output)?;
 	super::packet_recipe_book_add_15::serialize(&_0.category, output)?;
-	::bungeeoxide_minecraft_v1_20_5::option_119::serialize(&_0.crafting_requirements, output)?;
+	::bungeeoxide_minecraft_v1_20_5::option_126::serialize(&_0.crafting_requirements, output)?;
 	Ok(())
 }
 
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_display = super::recipe_display::deserialize(input)?;
 	let f_group = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_category = super::packet_recipe_book_add_15::deserialize(input)?;
-	let f_craftingRequirements = ::bungeeoxide_minecraft_v1_20_5::option_119::deserialize(input)?;
+	let f_craftingRequirements = ::bungeeoxide_minecraft_v1_20_5::option_126::deserialize(input)?;
 	Ok(Ty {
 		display_id: f_displayId,
 		display: f_display,
@@ -41,7 +41,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ super::recipe_display::size_of(&_0.display)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.group)
 		+ super::packet_recipe_book_add_15::size_of(&_0.category)
-		+ ::bungeeoxide_minecraft_v1_20_5::option_119::size_of(&_0.crafting_requirements)
+		+ ::bungeeoxide_minecraft_v1_20_5::option_126::size_of(&_0.crafting_requirements)
 }
 
 pub type Ty = PacketRecipeBookAdd16;

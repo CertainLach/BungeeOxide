@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct RecipeDisplay1<'i> {
 	pub width: ::bungeeoxide_minecraft_root::Varint,
 	pub height: ::bungeeoxide_minecraft_root::Varint,
-	pub ingredients: super::super::super::array::Inline136<'i>,
+	pub ingredients: super::super::super::array::Inline137<'i>,
 	pub result: super::SlotDisplay<'i>,
 	pub crafting_station: super::SlotDisplay<'i>,
 }
@@ -14,7 +14,7 @@ pub struct RecipeDisplay1<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
-	super::super::super::array::inline_136::serialize(&_0.ingredients, output)?;
+	super::super::super::array::inline_137::serialize(&_0.ingredients, output)?;
 	super::slot_display::serialize_guarded(&_0.result, output)?;
 	super::slot_display::serialize_guarded(&_0.crafting_station, output)?;
 	Ok(())
@@ -24,7 +24,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(5)?;
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_ingredients = super::super::super::array::inline_136::deserialize(input)?;
+	let f_ingredients = super::super::super::array::inline_137::deserialize(input)?;
 	let f_result = super::slot_display::deserialize_guarded(input)?;
 	let f_craftingStation = super::slot_display::deserialize_guarded(input)?;
 	Ok(Ty {
@@ -39,7 +39,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
-		+ super::super::super::array::inline_136::size_of(&_0.ingredients)
+		+ super::super::super::array::inline_137::size_of(&_0.ingredients)
 		+ super::slot_display::size_of(&_0.result)
 		+ super::slot_display::size_of(&_0.crafting_station)
 }
@@ -48,7 +48,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::RecipeDispl
 	Ty {
 		width: ::core::clone::Clone::clone(&_0.width),
 		height: ::core::clone::Clone::clone(&_0.height),
-		ingredients: super::super::super::array::inline_136::view(&_0.ingredients),
+		ingredients: super::super::super::array::inline_137::view(&_0.ingredients),
 		result: super::slot_display::view(&_0.result),
 		crafting_station: super::slot_display::view(&_0.crafting_station),
 	}
@@ -58,7 +58,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Re
 	Ty {
 		width: ::core::clone::Clone::clone(&mut _0.width),
 		height: ::core::clone::Clone::clone(&mut _0.height),
-		ingredients: super::super::super::array::inline_136::into_view(&mut _0.ingredients),
+		ingredients: super::super::super::array::inline_137::into_view(&mut _0.ingredients),
 		result: super::slot_display::into_view(&mut _0.result),
 		crafting_station: super::slot_display::into_view(&mut _0.crafting_station),
 	}

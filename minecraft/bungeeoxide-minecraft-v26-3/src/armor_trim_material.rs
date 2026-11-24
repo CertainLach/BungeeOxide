@@ -9,14 +9,14 @@ pub struct ArmorTrimMaterial {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.palette_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.palette_id, output)?;
 	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.description, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
-	let f_paletteId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_paletteId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
 	Ok(Ty {
 		palette_id: f_paletteId,
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.palette_id)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.palette_id)
 		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.description)
 }
 

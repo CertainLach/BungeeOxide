@@ -13,7 +13,7 @@ pub enum EntityMetadataEntry111<'i> {
 	BlockState(::bungeeoxide_minecraft_root::Varint),
 	OptionalBlockState(::bungeeoxide_minecraft_root::Varint),
 	Particle(super::Particle<'i>),
-	Particles(super::array::Inline130<'i>),
+	Particles(super::array::Inline131<'i>),
 	VillagerData(super::super::EntityMetadataEntry107),
 	OptionalUnsignedInt(::bungeeoxide_minecraft_root::Varint),
 	Long(::bungeeoxide_minecraft_root::Varlong),
@@ -38,7 +38,7 @@ pub enum EntityMetadataEntry111<'i> {
 	CopperGolemState(::bungeeoxide_minecraft_root::Varint),
 	WeatheringCopperGolemState(::bungeeoxide_minecraft_root::Varint),
 	Vector3(::bungeeoxide_minecraft_v1_19_4::Vec3f),
-	String(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	String(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	Quaternion(::bungeeoxide_minecraft_v1_19_4::Vec4f),
 	ResolvableProfile(::bungeeoxide_minecraft_v1_21_9::view::ResolvableProfile<'i>),
 	HumanoidArm(super::super::EntityMetadataEntry109),
@@ -67,7 +67,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::Particle(__v) => super::particle::serialize(__v, output),
-		Ty::Particles(__v) => super::array::inline_130::serialize(__v, output),
+		Ty::Particles(__v) => super::array::inline_131::serialize(__v, output),
 		Ty::VillagerData(__v) => super::super::entity_metadata_entry_107::serialize(__v, output),
 		Ty::OptionalUnsignedInt(__v) => {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
@@ -102,7 +102,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_root::varint::serialize(__v, output)
 		}
 		Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::serialize(__v, output),
-		Ty::String(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
+		Ty::String(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output),
 		Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::serialize(__v, output),
 		Ty::ResolvableProfile(__v) => {
 			::bungeeoxide_minecraft_v1_21_9::view::resolvable_profile::serialize(__v, output)
@@ -160,7 +160,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		return Ok(Ty::Particle(super::particle::deserialize(input)?));
 	}
 	if *__tag == 17_i32 {
-		return Ok(Ty::Particles(super::array::inline_130::deserialize(input)?));
+		return Ok(Ty::Particles(super::array::inline_131::deserialize(input)?));
 	}
 	if *__tag == 18_i32 {
 		return Ok(Ty::VillagerData(super::super::entity_metadata_entry_107::deserialize(input)?));
@@ -245,7 +245,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		return Ok(Ty::Vector3(::bungeeoxide_minecraft_v1_19_4::vec3f::deserialize(input)?));
 	}
 	if *__tag == 4_i32 {
-		return Ok(Ty::String(::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?));
+		return Ok(Ty::String(::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 40_i32 {
 		return Ok(Ty::Quaternion(::bungeeoxide_minecraft_v1_19_4::vec4f::deserialize(input)?));
@@ -297,7 +297,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 			Ty::BlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::OptionalBlockState(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Particle(__v) => super::particle::size_of(__v),
-			Ty::Particles(__v) => super::array::inline_130::size_of(__v),
+			Ty::Particles(__v) => super::array::inline_131::size_of(__v),
 			Ty::VillagerData(__v) => super::super::entity_metadata_entry_107::size_of(__v),
 			Ty::OptionalUnsignedInt(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 			Ty::Long(__v) => ::bungeeoxide_minecraft_root::varlong::size_of(__v),
@@ -326,7 +326,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 				::bungeeoxide_minecraft_root::varint::size_of(__v)
 			}
 			Ty::Vector3(__v) => ::bungeeoxide_minecraft_v1_19_4::vec3f::size_of(__v),
-			Ty::String(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::String(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 			Ty::Quaternion(__v) => ::bungeeoxide_minecraft_v1_19_4::vec4f::size_of(__v),
 			Ty::ResolvableProfile(__v) => {
 				::bungeeoxide_minecraft_v1_21_9::view::resolvable_profile::size_of(__v)
@@ -472,7 +472,7 @@ pub fn view<'i>(_0: &'i super::super::EntityMetadataEntry111) -> Ty<'i> {
 			Ty::Particle(super::particle::view(__v))
 		}
 		super::super::EntityMetadataEntry111::Particles(__v) => {
-			Ty::Particles(super::array::inline_130::view(__v))
+			Ty::Particles(super::array::inline_131::view(__v))
 		}
 		super::super::EntityMetadataEntry111::VillagerData(__v) => {
 			Ty::VillagerData(::core::clone::Clone::clone(__v))
@@ -547,7 +547,7 @@ pub fn view<'i>(_0: &'i super::super::EntityMetadataEntry111) -> Ty<'i> {
 			Ty::Vector3(::core::clone::Clone::clone(__v))
 		}
 		super::super::EntityMetadataEntry111::String(__v) => {
-			Ty::String(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::String(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::EntityMetadataEntry111::Quaternion(__v) => {
 			Ty::Quaternion(::core::clone::Clone::clone(__v))
@@ -610,7 +610,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataEntry111) -> Ty<'i>
 			Ty::Particle(super::particle::into_view(__v))
 		}
 		super::super::EntityMetadataEntry111::Particles(__v) => {
-			Ty::Particles(super::array::inline_130::into_view(__v))
+			Ty::Particles(super::array::inline_131::into_view(__v))
 		}
 		super::super::EntityMetadataEntry111::VillagerData(__v) => {
 			Ty::VillagerData(::core::clone::Clone::clone(__v))
@@ -685,7 +685,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataEntry111) -> Ty<'i>
 			Ty::Vector3(::core::clone::Clone::clone(__v))
 		}
 		super::super::EntityMetadataEntry111::String(__v) => {
-			Ty::String(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::String(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::EntityMetadataEntry111::Quaternion(__v) => {
 			Ty::Quaternion(::core::clone::Clone::clone(__v))

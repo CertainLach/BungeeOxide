@@ -6,13 +6,13 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketSetTestBlock<'i> {
 	pub position: ::bungeeoxide_minecraft_v1_14::Position,
 	pub mode: ::bungeeoxide_minecraft_root::Varint,
-	pub message: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub message: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.position, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.message, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(10)?;
 	let f_position = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_message = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		position: f_position,
 		mode: f_mode,
@@ -31,14 +31,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_v1_14::position::size_of(&_0.position)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.message)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.message)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketSetTestBlock) -> Ty<'i> {
 	Ty {
 		position: ::core::clone::Clone::clone(&_0.position),
 		mode: ::core::clone::Clone::clone(&_0.mode),
-		message: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.message),
+		message: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.message),
 	}
 }
 

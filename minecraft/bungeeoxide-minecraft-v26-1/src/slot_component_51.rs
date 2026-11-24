@@ -4,29 +4,29 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent51 {
-	pub global_position: Option<::bungeeoxide_minecraft_v1_21_9::GlobalPos>,
-	pub tracked: ::bungeeoxide_minecraft_root::Bool,
+	pub r#type: super::SlotComponent50,
+	pub duration: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_v1_21_9::option_19::serialize(&_0.global_position, output)?;
-	::bungeeoxide_minecraft_root::bool::serialize(&_0.tracked, output)?;
+	super::slot_component_50::serialize(&_0.r#type, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.duration, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_globalPosition = ::bungeeoxide_minecraft_v1_21_9::option_19::deserialize(input)?;
-	let f_tracked = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_type = super::slot_component_50::deserialize(input)?;
+	let f_duration = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
-		global_position: f_globalPosition,
-		tracked: f_tracked,
+		r#type: f_type,
+		duration: f_duration,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_v1_21_9::option_19::size_of(&_0.global_position)
-		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.tracked)
+	super::slot_component_50::size_of(&_0.r#type)
+		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.duration)
 }
 
 pub type Ty = SlotComponent51;

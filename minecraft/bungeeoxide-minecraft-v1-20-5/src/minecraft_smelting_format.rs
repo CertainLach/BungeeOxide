@@ -13,7 +13,7 @@ pub struct MinecraftSmeltingFormat {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.group, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.group, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.category, output)?;
 	super::array::inline_56::serialize(&_0.ingredient, output)?;
 	super::slot::serialize_guarded(&_0.result, output)?;
@@ -24,7 +24,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(9)?;
-	let f_group = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_group = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_category = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_ingredient = super::array::inline_56::deserialize(input)?;
 	let f_result = super::slot::deserialize_guarded(input)?;
@@ -41,7 +41,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.group)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.group)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.category)
 		+ super::array::inline_56::size_of(&_0.ingredient)
 		+ super::slot::size_of(&_0.result)

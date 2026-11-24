@@ -14,7 +14,7 @@ pub struct EntityMetadataPaintingVariant {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.height, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.asset_id, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.title, output)?;
 	::bungeeoxide_minecraft_root::option_1::serialize(&_0.author, output)?;
 	Ok(())
@@ -24,7 +24,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(5)?;
 	let f_width = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_title = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	let f_author = ::bungeeoxide_minecraft_root::option_1::deserialize(input)?;
 	Ok(Ty {
@@ -39,7 +39,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.height)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.asset_id)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.asset_id)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.title)
 		+ ::bungeeoxide_minecraft_root::option_1::size_of(&_0.author)
 }

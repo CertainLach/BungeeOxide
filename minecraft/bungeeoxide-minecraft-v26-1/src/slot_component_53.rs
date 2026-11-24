@@ -4,29 +4,34 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent53 {
-	pub name: String,
-	pub value: String,
+	pub can_sprint: ::bungeeoxide_minecraft_root::Bool,
+	pub interact_vibrations: ::bungeeoxide_minecraft_root::Bool,
+	pub speed_multiplier: ::bungeeoxide_minecraft_root::F32,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.value, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.can_sprint, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.interact_vibrations, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.speed_multiplier, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(2)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_value = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	input.expect(6)?;
+	let f_can_sprint = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_interact_vibrations = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_speed_multiplier = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	Ok(Ty {
-		name: f_name,
-		value: f_value,
+		can_sprint: f_can_sprint,
+		interact_vibrations: f_interact_vibrations,
+		speed_multiplier: f_speed_multiplier,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.value)
+	::bungeeoxide_minecraft_root::bool::size_of(&_0.can_sprint)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.interact_vibrations)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.speed_multiplier)
 }
 
 pub type Ty = SlotComponent53;

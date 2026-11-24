@@ -8,10 +8,10 @@ pub struct PacketPlayerChat<'i> {
 	pub sender_uuid: ::bungeeoxide_minecraft_root::Uuid,
 	pub index: ::bungeeoxide_minecraft_root::Varint,
 	pub signature: ::bungeeoxide_minecraft_root::view::Option3<'i>,
-	pub plain_message: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub plain_message: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub timestamp: ::bungeeoxide_minecraft_root::I64,
 	pub salt: ::bungeeoxide_minecraft_root::I64,
-	pub previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::Inline180<'i>,
+	pub previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::Inline181<'i>,
 	pub unsigned_chat_content: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 	pub filter_type_mask: super::PacketPlayerChat16<'i>,
 	pub r#type: ::bungeeoxide_minecraft_v1_21_1::view::play::to_client::ChatTypesHolder<'i>,
@@ -24,10 +24,10 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.sender_uuid, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.index, output)?;
 	::bungeeoxide_minecraft_root::view::option_3::serialize(&_0.signature, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.plain_message, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.plain_message, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.timestamp, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.salt, output)?;
-	::bungeeoxide_minecraft_v1_19_3::view::array::inline_180::serialize(
+	::bungeeoxide_minecraft_v1_19_3::view::array::inline_181::serialize(
 		&_0.previous_messages,
 		output,
 	)?;
@@ -48,11 +48,11 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_senderUuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
 	let f_index = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::view::option_3::deserialize(input)?;
-	let f_plainMessage = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_plainMessage = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_timestamp = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_salt = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_previousMessages =
-		::bungeeoxide_minecraft_v1_19_3::view::array::inline_180::deserialize(input)?;
+		::bungeeoxide_minecraft_v1_19_3::view::array::inline_181::deserialize(input)?;
 	let f_unsignedChatContent = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	let f_filterTypeMask = super::packet_player_chat_16::deserialize(input)?;
 	let f_type = ::bungeeoxide_minecraft_v1_21_1::view::play::to_client::chat_types_holder::deserialize(
@@ -82,10 +82,10 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.sender_uuid)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.index)
 		+ ::bungeeoxide_minecraft_root::view::option_3::size_of(&_0.signature)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.plain_message)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.plain_message)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.timestamp)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.salt)
-		+ ::bungeeoxide_minecraft_v1_19_3::view::array::inline_180::size_of(&_0.previous_messages)
+		+ ::bungeeoxide_minecraft_v1_19_3::view::array::inline_181::size_of(&_0.previous_messages)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.unsigned_chat_content)
 		+ super::packet_player_chat_16::size_of(&_0.filter_type_mask)
 		+ ::bungeeoxide_minecraft_v1_21_1::view::play::to_client::chat_types_holder::size_of(&_0.r#type)
@@ -99,10 +99,10 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketPlaye
 		sender_uuid: ::core::clone::Clone::clone(&_0.sender_uuid),
 		index: ::core::clone::Clone::clone(&_0.index),
 		signature: ::bungeeoxide_minecraft_root::view::option_3::view(&_0.signature),
-		plain_message: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.plain_message),
+		plain_message: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.plain_message),
 		timestamp: ::core::clone::Clone::clone(&_0.timestamp),
 		salt: ::core::clone::Clone::clone(&_0.salt),
-		previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::inline_180::view(&_0.previous_messages),
+		previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::inline_181::view(&_0.previous_messages),
 		unsigned_chat_content: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.unsigned_chat_content),
 		filter_type_mask: super::packet_player_chat_16::view(&_0.filter_type_mask),
 		r#type: ::bungeeoxide_minecraft_v1_21_1::view::play::to_client::chat_types_holder::view(&_0.r#type),
@@ -117,10 +117,10 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		sender_uuid: ::core::clone::Clone::clone(&mut _0.sender_uuid),
 		index: ::core::clone::Clone::clone(&mut _0.index),
 		signature: ::bungeeoxide_minecraft_root::view::option_3::view(&mut _0.signature),
-		plain_message: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.plain_message),
+		plain_message: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.plain_message),
 		timestamp: ::core::clone::Clone::clone(&mut _0.timestamp),
 		salt: ::core::clone::Clone::clone(&mut _0.salt),
-		previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::inline_180::view(&mut _0.previous_messages),
+		previous_messages: ::bungeeoxide_minecraft_v1_19_3::view::array::inline_181::view(&mut _0.previous_messages),
 		unsigned_chat_content: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.unsigned_chat_content),
 		filter_type_mask: super::packet_player_chat_16::view(&mut _0.filter_type_mask),
 		r#type: ::bungeeoxide_minecraft_v1_21_1::view::play::to_client::chat_types_holder::into_view(&mut _0.r#type),

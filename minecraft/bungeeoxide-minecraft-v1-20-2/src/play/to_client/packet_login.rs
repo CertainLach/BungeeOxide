@@ -34,8 +34,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.reduced_debug_info, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.enable_respawn_screen, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.do_limited_crafting, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.world_type, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.world_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.world_type, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.world_name, output)?;
 	::bungeeoxide_minecraft_root::i64::serialize(&_0.hashed_seed, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.game_mode, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.previous_game_mode, output)?;
@@ -57,8 +57,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_reducedDebugInfo = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_enableRespawnScreen = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_doLimitedCrafting = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_worldType = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_worldName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_worldType = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_worldName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_hashedSeed = ::bungeeoxide_minecraft_root::i64::deserialize(input)?;
 	let f_gameMode = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	let f_previousGameMode = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
@@ -98,8 +98,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.reduced_debug_info)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.enable_respawn_screen)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.do_limited_crafting)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.world_type)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.world_name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.world_type)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.world_name)
 		+ ::bungeeoxide_minecraft_root::i64::size_of(&_0.hashed_seed)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.game_mode)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.previous_game_mode)

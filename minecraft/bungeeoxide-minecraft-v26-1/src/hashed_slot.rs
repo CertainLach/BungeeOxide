@@ -6,15 +6,15 @@ use crate::pds::{Input, Output, Result};
 pub struct HashedSlot {
 	pub item_id: ::bungeeoxide_minecraft_root::Varint,
 	pub item_count: ::bungeeoxide_minecraft_root::Varint,
-	pub components: Vec<super::HashedSlot2>,
+	pub components: Vec<super::HashedSlot16>,
 	pub remove_components: Vec<super::SlotComponentType>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_id, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_count, output)?;
-	super::array::inline_375::serialize(&_0.components, output)?;
-	super::array::inline_107::serialize(&_0.remove_components, output)?;
+	super::array::inline_377::serialize(&_0.components, output)?;
+	super::array::inline_108::serialize(&_0.remove_components, output)?;
 	Ok(())
 }
 
@@ -22,8 +22,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(4)?;
 	let f_itemId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_itemCount = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_components = super::array::inline_375::deserialize(input)?;
-	let f_removeComponents = super::array::inline_107::deserialize(input)?;
+	let f_components = super::array::inline_377::deserialize(input)?;
+	let f_removeComponents = super::array::inline_108::deserialize(input)?;
 	Ok(Ty {
 		item_id: f_itemId,
 		item_count: f_itemCount,
@@ -35,8 +35,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_id)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.item_count)
-		+ super::array::inline_375::size_of(&_0.components)
-		+ super::array::inline_107::size_of(&_0.remove_components)
+		+ super::array::inline_377::size_of(&_0.components)
+		+ super::array::inline_108::size_of(&_0.remove_components)
 }
 
 pub type Ty = HashedSlot;

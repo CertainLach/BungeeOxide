@@ -9,7 +9,7 @@ pub struct PacketExplosion<'i> {
 	pub block_count: ::bungeeoxide_minecraft_root::I32,
 	pub explosion_particle: super::super::super::Option31<'i>,
 	pub sound: ::bungeeoxide_minecraft_v1_19_3::view::Option11<'i>,
-	pub block_particles: super::super::super::array::Inline135<'i>,
+	pub block_particles: super::super::super::array::Inline136<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
@@ -18,7 +18,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.block_count, output)?;
 	super::super::super::option_31::serialize(&_0.explosion_particle, output)?;
 	::bungeeoxide_minecraft_v1_19_3::view::option_11::serialize(&_0.sound, output)?;
-	super::super::super::array::inline_135::serialize(&_0.block_particles, output)?;
+	super::super::super::array::inline_136::serialize(&_0.block_particles, output)?;
 	Ok(())
 }
 
@@ -29,7 +29,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_blockCount = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_explosionParticle = super::super::super::option_31::deserialize(input)?;
 	let f_sound = ::bungeeoxide_minecraft_v1_19_3::view::option_11::deserialize(input)?;
-	let f_blockParticles = super::super::super::array::inline_135::deserialize(input)?;
+	let f_blockParticles = super::super::super::array::inline_136::deserialize(input)?;
 	Ok(Ty {
 		center: f_center,
 		radius: f_radius,
@@ -46,7 +46,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.block_count)
 		+ super::super::super::option_31::size_of(&_0.explosion_particle)
 		+ ::bungeeoxide_minecraft_v1_19_3::view::option_11::size_of(&_0.sound)
-		+ super::super::super::array::inline_135::size_of(&_0.block_particles)
+		+ super::super::super::array::inline_136::size_of(&_0.block_particles)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketExplosion) -> Ty<'i> {
@@ -56,7 +56,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketExplo
 		block_count: ::core::clone::Clone::clone(&_0.block_count),
 		explosion_particle: super::super::super::option_31::view(&_0.explosion_particle),
 		sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&_0.sound),
-		block_particles: super::super::super::array::inline_135::view(&_0.block_particles),
+		block_particles: super::super::super::array::inline_136::view(&_0.block_particles),
 	}
 }
 
@@ -67,7 +67,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::Pa
 		block_count: ::core::clone::Clone::clone(&mut _0.block_count),
 		explosion_particle: super::super::super::option_31::into_view(&mut _0.explosion_particle),
 		sound: ::bungeeoxide_minecraft_v1_19_3::view::option_11::view(&mut _0.sound),
-		block_particles: super::super::super::array::inline_135::into_view(&mut _0.block_particles),
+		block_particles: super::super::super::array::inline_136::into_view(&mut _0.block_particles),
 	}
 }
 

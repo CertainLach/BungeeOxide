@@ -4,39 +4,39 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent54 {
-	pub r#type: ::bungeeoxide_minecraft_root::Varint,
-	pub nbt_data: ::bungeeoxide_minecraft_root::AnonymousNbt,
-	pub ticks_in_hive: ::bungeeoxide_minecraft_root::Varint,
-	pub min_ticks_in_hive: ::bungeeoxide_minecraft_root::Varint,
+	pub potion_id: Option<::bungeeoxide_minecraft_root::Varint>,
+	pub custom_color: Option<::bungeeoxide_minecraft_root::I32>,
+	pub custom_effects: Vec<::bungeeoxide_minecraft_v1_20_5::ItemPotionEffect>,
+	pub custom_name: Option<String>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.nbt_data, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.ticks_in_hive, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.min_ticks_in_hive, output)?;
+	::bungeeoxide_minecraft_root::option_32::serialize(&_0.potion_id, output)?;
+	::bungeeoxide_minecraft_root::option_5::serialize(&_0.custom_color, output)?;
+	::bungeeoxide_minecraft_v1_20_5::array::inline_53::serialize(&_0.custom_effects, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.custom_name, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(3)?;
-	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_nbtData = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
-	let f_ticksInHive = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_minTicksInHive = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	input.expect(4)?;
+	let f_potionId = ::bungeeoxide_minecraft_root::option_32::deserialize(input)?;
+	let f_customColor = ::bungeeoxide_minecraft_root::option_5::deserialize(input)?;
+	let f_customEffects = ::bungeeoxide_minecraft_v1_20_5::array::inline_53::deserialize(input)?;
+	let f_customName = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
 	Ok(Ty {
-		r#type: f_type,
-		nbt_data: f_nbtData,
-		ticks_in_hive: f_ticksInHive,
-		min_ticks_in_hive: f_minTicksInHive,
+		potion_id: f_potionId,
+		custom_color: f_customColor,
+		custom_effects: f_customEffects,
+		custom_name: f_customName,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.nbt_data)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.ticks_in_hive)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.min_ticks_in_hive)
+	::bungeeoxide_minecraft_root::option_32::size_of(&_0.potion_id)
+		+ ::bungeeoxide_minecraft_root::option_5::size_of(&_0.custom_color)
+		+ ::bungeeoxide_minecraft_v1_20_5::array::inline_53::size_of(&_0.custom_effects)
+		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.custom_name)
 }
 
 pub type Ty = SlotComponent54;

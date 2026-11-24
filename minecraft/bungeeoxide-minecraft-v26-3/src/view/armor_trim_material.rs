@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ArmorTrimMaterial<'i> {
-	pub palette_id: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub palette_id: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub description: ::bungeeoxide_minecraft_root::view::AnonymousNbt<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.palette_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.palette_id, output)?;
 	::bungeeoxide_minecraft_root::view::anonymous_nbt::serialize(&_0.description, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(1)?;
-	let f_paletteId = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_paletteId = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_description = ::bungeeoxide_minecraft_root::view::anonymous_nbt::deserialize(input)?;
 	Ok(Ty {
 		palette_id: f_paletteId,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.palette_id)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.palette_id)
 		+ ::bungeeoxide_minecraft_root::view::anonymous_nbt::size_of(&_0.description)
 }
 
 pub fn view<'i>(_0: &'i super::super::ArmorTrimMaterial) -> Ty<'i> {
 	Ty {
-		palette_id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.palette_id),
+		palette_id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.palette_id),
 		description: ::bungeeoxide_minecraft_root::view::anonymous_nbt::view(&_0.description),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::ArmorTrimMaterial) -> Ty<'i> {
 	Ty {
-		palette_id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.palette_id),
+		palette_id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.palette_id),
 		description: ::bungeeoxide_minecraft_root::view::anonymous_nbt::into_view(&mut _0.description),
 	}
 }

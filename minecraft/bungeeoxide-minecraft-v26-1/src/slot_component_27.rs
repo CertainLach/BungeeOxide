@@ -3,30 +3,73 @@
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct SlotComponent27 {
-	pub item_damage_per_attack: ::bungeeoxide_minecraft_root::Varint,
-	pub disable_blocking_for_seconds: ::bungeeoxide_minecraft_root::F32,
+pub enum SlotComponent27 {
+	Common,
+	Uncommon,
+	Rare,
+	Epic,
+	Default(::bungeeoxide_minecraft_root::Varint),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_damage_per_attack, output)?;
-	::bungeeoxide_minecraft_root::f32::serialize(&_0.disable_blocking_for_seconds, output)?;
-	Ok(())
+	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
+	match _0 {
+		Ty::Common => Ok(()),
+		Ty::Uncommon => Ok(()),
+		Ty::Rare => Ok(()),
+		Ty::Epic => Ok(()),
+		Ty::Default(_) => Ok(()),
+	}
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(5)?;
-	let f_itemDamagePerAttack = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_disableBlockingForSeconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	Ok(Ty {
-		item_damage_per_attack: f_itemDamagePerAttack,
-		disable_blocking_for_seconds: f_disableBlockingForSeconds,
-	})
+	input.expect(1)?;
+	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let __tag = &__tagv;
+	if *__tag == 0_i32 {
+		return Ok(Ty::Common);
+	}
+	if *__tag == 1_i32 {
+		return Ok(Ty::Uncommon);
+	}
+	if *__tag == 2_i32 {
+		return Ok(Ty::Rare);
+	}
+	if *__tag == 3_i32 {
+		return Ok(Ty::Epic);
+	}
+	Ok(Ty::Default(__tagv))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_damage_per_attack)
-		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.disable_blocking_for_seconds)
+	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
+		+ match _0 {
+			Ty::Common => 0,
+			Ty::Uncommon => 0,
+			Ty::Rare => 0,
+			Ty::Epic => 0,
+			Ty::Default(_) => 0,
+		}
+}
+
+pub fn name(_0: &Ty) -> &'static str {
+	match _0 {
+		Ty::Common => "common",
+		Ty::Uncommon => "uncommon",
+		Ty::Rare => "rare",
+		Ty::Epic => "epic",
+		Ty::Default(..) => "default",
+	}
+}
+
+pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
+	match _0 {
+		Ty::Common => 0_i32,
+		Ty::Uncommon => 1_i32,
+		Ty::Rare => 2_i32,
+		Ty::Epic => 3_i32,
+		Ty::Default(__t) => *__t,
+	}
 }
 
 pub type Ty = SlotComponent27;

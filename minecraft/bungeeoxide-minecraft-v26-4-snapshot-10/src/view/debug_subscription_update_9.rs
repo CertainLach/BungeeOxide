@@ -4,12 +4,12 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct DebugSubscriptionUpdate9<'i> {
-	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub profession: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub profession: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub xp: ::bungeeoxide_minecraft_root::I32,
 	pub health: ::bungeeoxide_minecraft_root::F32,
 	pub max_health: ::bungeeoxide_minecraft_root::F32,
-	pub inventory: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub inventory: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub wants_golem: ::bungeeoxide_minecraft_root::Bool,
 	pub anger_level: ::bungeeoxide_minecraft_root::I32,
 	pub activities: ::bungeeoxide_minecraft_root::view::array::Inline100<'i>,
@@ -21,12 +21,12 @@ pub struct DebugSubscriptionUpdate9<'i> {
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.profession, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.profession, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.xp, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.health, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_health, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.inventory, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.inventory, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.wants_golem, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.anger_level, output)?;
 	::bungeeoxide_minecraft_root::view::array::inline_100::serialize(&_0.activities, output)?;
@@ -40,12 +40,12 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(26)?;
-	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_profession = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_profession = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_xp = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_health = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_maxHealth = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_inventory = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_inventory = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_wantsGolem = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_angerLevel = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_activities = ::bungeeoxide_minecraft_root::view::array::inline_100::deserialize(input)?;
@@ -73,12 +73,12 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.profession)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.profession)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.xp)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.health)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_health)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.inventory)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.inventory)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.wants_golem)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.anger_level)
 		+ ::bungeeoxide_minecraft_root::view::array::inline_100::size_of(&_0.activities)
@@ -91,12 +91,12 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 
 pub fn view<'i>(_0: &'i super::super::DebugSubscriptionUpdate9) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.name),
-		profession: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.profession),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.name),
+		profession: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.profession),
 		xp: ::core::clone::Clone::clone(&_0.xp),
 		health: ::core::clone::Clone::clone(&_0.health),
 		max_health: ::core::clone::Clone::clone(&_0.max_health),
-		inventory: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.inventory),
+		inventory: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.inventory),
 		wants_golem: ::core::clone::Clone::clone(&_0.wants_golem),
 		anger_level: ::core::clone::Clone::clone(&_0.anger_level),
 		activities: ::bungeeoxide_minecraft_root::view::array::inline_100::view(&_0.activities),
@@ -110,12 +110,12 @@ pub fn view<'i>(_0: &'i super::super::DebugSubscriptionUpdate9) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::DebugSubscriptionUpdate9) -> Ty<'i> {
 	Ty {
-		name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.name),
-		profession: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.profession),
+		name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.name),
+		profession: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.profession),
 		xp: ::core::clone::Clone::clone(&mut _0.xp),
 		health: ::core::clone::Clone::clone(&mut _0.health),
 		max_health: ::core::clone::Clone::clone(&mut _0.max_health),
-		inventory: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.inventory),
+		inventory: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.inventory),
 		wants_golem: ::core::clone::Clone::clone(&mut _0.wants_golem),
 		anger_level: ::core::clone::Clone::clone(&mut _0.anger_level),
 		activities: ::bungeeoxide_minecraft_root::view::array::inline_100::view(&mut _0.activities),

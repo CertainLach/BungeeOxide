@@ -21,12 +21,12 @@ pub struct DebugSubscriptionUpdate9 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.profession, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.profession, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.xp, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.health, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.max_health, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.inventory, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.inventory, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.wants_golem, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.anger_level, output)?;
 	::bungeeoxide_minecraft_root::array::inline_100::serialize(&_0.activities, output)?;
@@ -40,12 +40,12 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(26)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_profession = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_profession = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_xp = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_health = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
 	let f_maxHealth = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_inventory = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_inventory = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_wantsGolem = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
 	let f_angerLevel = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_activities = ::bungeeoxide_minecraft_root::array::inline_100::deserialize(input)?;
@@ -73,12 +73,12 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.profession)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.profession)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.xp)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.health)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.max_health)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.inventory)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.inventory)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.wants_golem)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.anger_level)
 		+ ::bungeeoxide_minecraft_root::array::inline_100::size_of(&_0.activities)

@@ -18,7 +18,7 @@ pub enum CommandNode74 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
 		Ty::V0 => Ok(()),
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::V2(__v) => super::command_node_73::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
@@ -30,7 +30,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 		return Ok(Ty::V0);
 	}
 	if *__tag == 1_u8 {
-		return Ok(Ty::V1(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V1(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 2_u8 {
 		return Ok(Ty::V2(super::command_node_73::deserialize(
@@ -46,7 +46,7 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
 		Ty::V0 => 0,
-		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+		Ty::V1(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 		Ty::V2(__v) => super::command_node_73::size_of(__v),
 		Ty::Default(_) => 0,
 	}

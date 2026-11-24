@@ -9,15 +9,15 @@ pub struct PacketRegistryData {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.id, output)?;
-	super::super::super::array::inline_213::serialize(&_0.entries, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.id, output)?;
+	super::super::super::array::inline_214::serialize(&_0.entries, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_id = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_entries = super::super::super::array::inline_213::deserialize(input)?;
+	let f_id = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_entries = super::super::super::array::inline_214::deserialize(input)?;
 	Ok(Ty {
 		id: f_id,
 		entries: f_entries,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.id)
-		+ super::super::super::array::inline_213::size_of(&_0.entries)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.id)
+		+ super::super::super::array::inline_214::size_of(&_0.entries)
 }
 
 pub type Ty = PacketRegistryData;

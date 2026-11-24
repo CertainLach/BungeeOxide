@@ -32,8 +32,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::V11(__v) => ::bungeeoxide_minecraft_root::option_0::serialize(__v, output),
 		Ty::V12(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::f32::serialize(__v, output),
-		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::V5(__v) => ::bungeeoxide_minecraft_v1_8::slot::serialize(__v, output),
 		Ty::V6(__v) => ::bungeeoxide_minecraft_root::bool::serialize(__v, output),
 		Ty::V7(__v) => super::entity_metadata_item_1::serialize(__v, output),
@@ -64,10 +64,10 @@ pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 		return Ok(Ty::V2(::bungeeoxide_minecraft_root::f32::deserialize(input)?));
 	}
 	if *__tag == 3_i8 {
-		return Ok(Ty::V3(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V3(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 4_i8 {
-		return Ok(Ty::V4(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V4(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 5_i8 {
 		return Ok(Ty::V5(::bungeeoxide_minecraft_v1_8::slot::deserialize(input)?));
@@ -95,8 +95,8 @@ pub fn size_of(_0: &Ty) -> usize {
 		Ty::V11(__v) => ::bungeeoxide_minecraft_root::option_0::size_of(__v),
 		Ty::V12(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
 		Ty::V2(__v) => ::bungeeoxide_minecraft_root::f32::size_of(__v),
-		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
-		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+		Ty::V3(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
+		Ty::V4(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 		Ty::V5(__v) => ::bungeeoxide_minecraft_v1_8::slot::size_of(__v),
 		Ty::V6(__v) => ::bungeeoxide_minecraft_root::bool::size_of(__v),
 		Ty::V7(__v) => super::entity_metadata_item_1::size_of(__v),

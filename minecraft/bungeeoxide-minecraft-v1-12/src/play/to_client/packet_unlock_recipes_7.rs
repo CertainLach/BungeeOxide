@@ -14,7 +14,7 @@ pub enum PacketUnlockRecipes7 {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::array::inline_137::serialize(__v, output),
+		Ty::V0(__v) => ::bungeeoxide_minecraft_root::array::inline_138::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -22,14 +22,14 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 pub fn deserialize(input: &mut Input, args: Args<'_>) -> Result<Ty> {
 	let __tag = args.action;
 	if *__tag == 0_i32 {
-		return Ok(Ty::V0(::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?));
+		return Ok(Ty::V0(::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?));
 	}
 	Ok(Ty::Default(*__tag))
 }
 
 pub fn size_of(_0: &Ty) -> usize {
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::array::inline_137::size_of(__v),
+		Ty::V0(__v) => ::bungeeoxide_minecraft_root::array::inline_138::size_of(__v),
 		Ty::Default(_) => 0,
 	}
 }

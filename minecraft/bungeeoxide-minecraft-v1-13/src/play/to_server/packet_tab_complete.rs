@@ -10,14 +10,14 @@ pub struct PacketTabComplete {
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.transaction_id, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.text, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.text, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
 	let f_transactionId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_text = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_text = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		transaction_id: f_transactionId,
 		text: f_text,
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.transaction_id)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.text)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.text)
 }
 
 pub type Ty = PacketTabComplete;

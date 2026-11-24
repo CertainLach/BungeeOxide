@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 pub fn into_view(_0: &mut super::super::DebugSubscriptionEvent5) -> super::super::DebugSubscriptionEvent5 {
 	super::super::DebugSubscriptionEvent5 {
-		path: ::bungeeoxide_minecraft_v1_21_9::view::path::into_view(&mut _0.path),
+		path: ::bungeeoxide_minecraft_v26_1::view::path::into_view(&mut _0.path),
 		max_node_distance: ::core::clone::Clone::clone(&mut _0.max_node_distance),
 		stuck_countdown: ::core::clone::Clone::clone(&mut _0.stuck_countdown),
 	}

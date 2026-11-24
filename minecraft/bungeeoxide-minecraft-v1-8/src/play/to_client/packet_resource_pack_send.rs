@@ -9,15 +9,15 @@ pub struct PacketResourcePackSend {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.url, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.hash, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.url, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.hash, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(2)?;
-	let f_url = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_hash = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_url = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_hash = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		url: f_url,
 		hash: f_hash,
@@ -25,8 +25,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.url)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.hash)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.url)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.hash)
 }
 
 pub type Ty = PacketResourcePackSend;

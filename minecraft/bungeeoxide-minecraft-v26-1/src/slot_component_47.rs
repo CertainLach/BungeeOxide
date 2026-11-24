@@ -4,29 +4,54 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct SlotComponent47 {
-	pub r#type: ::bungeeoxide_minecraft_root::Varint,
-	pub data: ::bungeeoxide_minecraft_root::AnonymousNbt,
+	pub block_delay_seconds: ::bungeeoxide_minecraft_root::F32,
+	pub disable_cooldown_scale: ::bungeeoxide_minecraft_root::F32,
+	pub damage_reductions: Vec<super::SlotComponent45>,
+	pub item_damage: super::SlotComponent46,
+	pub bypassed_by: Option<::bungeeoxide_minecraft_v1_20_5::IdSet>,
+	pub block_sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
+	pub disable_sound: Option<::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder>,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.r#type, output)?;
-	::bungeeoxide_minecraft_root::anonymous_nbt::serialize(&_0.data, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.block_delay_seconds, output)?;
+	::bungeeoxide_minecraft_root::f32::serialize(&_0.disable_cooldown_scale, output)?;
+	super::array::inline_381::serialize(&_0.damage_reductions, output)?;
+	super::slot_component_46::serialize(&_0.item_damage, output)?;
+	::bungeeoxide_minecraft_v1_20_5::option_13::serialize(&_0.bypassed_by, output)?;
+	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.block_sound, output)?;
+	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.disable_sound, output)?;
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	input.expect(1)?;
-	let f_type = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_data = ::bungeeoxide_minecraft_root::anonymous_nbt::deserialize(input)?;
+	input.expect(24)?;
+	let f_blockDelaySeconds = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_disableCooldownScale = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
+	let f_damageReductions = super::array::inline_381::deserialize(input)?;
+	let f_itemDamage = super::slot_component_46::deserialize(input)?;
+	let f_bypassedBy = ::bungeeoxide_minecraft_v1_20_5::option_13::deserialize(input)?;
+	let f_blockSound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
+	let f_disableSound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
 	Ok(Ty {
-		r#type: f_type,
-		data: f_data,
+		block_delay_seconds: f_blockDelaySeconds,
+		disable_cooldown_scale: f_disableCooldownScale,
+		damage_reductions: f_damageReductions,
+		item_damage: f_itemDamage,
+		bypassed_by: f_bypassedBy,
+		block_sound: f_blockSound,
+		disable_sound: f_disableSound,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::varint::size_of(&_0.r#type)
-		+ ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(&_0.data)
+	::bungeeoxide_minecraft_root::f32::size_of(&_0.block_delay_seconds)
+		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.disable_cooldown_scale)
+		+ super::array::inline_381::size_of(&_0.damage_reductions)
+		+ super::slot_component_46::size_of(&_0.item_damage)
+		+ ::bungeeoxide_minecraft_v1_20_5::option_13::size_of(&_0.bypassed_by)
+		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.block_sound)
+		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.disable_sound)
 }
 
 pub type Ty = SlotComponent47;

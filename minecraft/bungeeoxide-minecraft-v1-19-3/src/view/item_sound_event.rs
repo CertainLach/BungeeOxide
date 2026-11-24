@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemSoundEvent<'i> {
-	pub sound_name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub sound_name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub fixed_range: ::bungeeoxide_minecraft_root::Option4,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.sound_name, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.sound_name, output)?;
 	::bungeeoxide_minecraft_root::option_4::serialize(&_0.fixed_range, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_soundName = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_soundName = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_fixedRange = ::bungeeoxide_minecraft_root::option_4::deserialize(input)?;
 	Ok(Ty {
 		sound_name: f_soundName,
@@ -25,13 +25,13 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.sound_name)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.sound_name)
 		+ ::bungeeoxide_minecraft_root::option_4::size_of(&_0.fixed_range)
 }
 
 pub fn view<'i>(_0: &'i super::super::ItemSoundEvent) -> Ty<'i> {
 	Ty {
-		sound_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.sound_name),
+		sound_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.sound_name),
 		fixed_range: ::core::clone::Clone::clone(&_0.fixed_range),
 	}
 }

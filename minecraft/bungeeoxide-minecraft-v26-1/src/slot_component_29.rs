@@ -4,28 +4,18 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum SlotComponent29 {
-	MainHand,
-	OffHand,
-	Feet,
-	Legs,
-	Chest,
-	Head,
-	Body,
-	Saddle,
+	Add,
+	MultiplyBase,
+	MultiplyTotal,
 	Default(::bungeeoxide_minecraft_root::Varint),
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::MainHand => Ok(()),
-		Ty::OffHand => Ok(()),
-		Ty::Feet => Ok(()),
-		Ty::Legs => Ok(()),
-		Ty::Chest => Ok(()),
-		Ty::Head => Ok(()),
-		Ty::Body => Ok(()),
-		Ty::Saddle => Ok(()),
+		Ty::Add => Ok(()),
+		Ty::MultiplyBase => Ok(()),
+		Ty::MultiplyTotal => Ok(()),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -35,28 +25,13 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let __tag = &__tagv;
 	if *__tag == 0_i32 {
-		return Ok(Ty::MainHand);
+		return Ok(Ty::Add);
 	}
 	if *__tag == 1_i32 {
-		return Ok(Ty::OffHand);
+		return Ok(Ty::MultiplyBase);
 	}
 	if *__tag == 2_i32 {
-		return Ok(Ty::Feet);
-	}
-	if *__tag == 3_i32 {
-		return Ok(Ty::Legs);
-	}
-	if *__tag == 4_i32 {
-		return Ok(Ty::Chest);
-	}
-	if *__tag == 5_i32 {
-		return Ok(Ty::Head);
-	}
-	if *__tag == 6_i32 {
-		return Ok(Ty::Body);
-	}
-	if *__tag == 7_i32 {
-		return Ok(Ty::Saddle);
+		return Ok(Ty::MultiplyTotal);
 	}
 	Ok(Ty::Default(__tagv))
 }
@@ -64,42 +39,27 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::MainHand => 0,
-			Ty::OffHand => 0,
-			Ty::Feet => 0,
-			Ty::Legs => 0,
-			Ty::Chest => 0,
-			Ty::Head => 0,
-			Ty::Body => 0,
-			Ty::Saddle => 0,
+			Ty::Add => 0,
+			Ty::MultiplyBase => 0,
+			Ty::MultiplyTotal => 0,
 			Ty::Default(_) => 0,
 		}
 }
 
 pub fn name(_0: &Ty) -> &'static str {
 	match _0 {
-		Ty::MainHand => "main_hand",
-		Ty::OffHand => "off_hand",
-		Ty::Feet => "feet",
-		Ty::Legs => "legs",
-		Ty::Chest => "chest",
-		Ty::Head => "head",
-		Ty::Body => "body",
-		Ty::Saddle => "saddle",
+		Ty::Add => "add",
+		Ty::MultiplyBase => "multiply_base",
+		Ty::MultiplyTotal => "multiply_total",
 		Ty::Default(..) => "default",
 	}
 }
 
 pub fn virtual_tag(_0: &Ty) -> ::bungeeoxide_minecraft_root::Varint {
 	match _0 {
-		Ty::MainHand => 0_i32,
-		Ty::OffHand => 1_i32,
-		Ty::Feet => 2_i32,
-		Ty::Legs => 3_i32,
-		Ty::Chest => 4_i32,
-		Ty::Head => 5_i32,
-		Ty::Body => 6_i32,
-		Ty::Saddle => 7_i32,
+		Ty::Add => 0_i32,
+		Ty::MultiplyBase => 1_i32,
+		Ty::MultiplyTotal => 2_i32,
 		Ty::Default(__t) => *__t,
 	}
 }

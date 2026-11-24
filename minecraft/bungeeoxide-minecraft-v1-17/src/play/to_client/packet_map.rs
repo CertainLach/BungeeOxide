@@ -15,7 +15,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.item_damage, output)?;
 	::bungeeoxide_minecraft_root::i8::serialize(&_0.scale, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.locked, output)?;
-	super::super::super::option_116::serialize(&_0.icons, output)?;
+	super::super::super::option_123::serialize(&_0.icons, output)?;
 	super::packet_map_3::serialize(&_0.columns, output)?;
 	Ok(())
 }
@@ -25,7 +25,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_itemDamage = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_scale = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
 	let f_locked = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_icons = super::super::super::option_116::deserialize(input)?;
+	let f_icons = super::super::super::option_123::deserialize(input)?;
 	let f_columns = super::packet_map_3::deserialize(input)?;
 	Ok(Ty {
 		item_damage: f_itemDamage,
@@ -40,7 +40,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.item_damage)
 		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.scale)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.locked)
-		+ super::super::super::option_116::size_of(&_0.icons)
+		+ super::super::super::option_123::size_of(&_0.icons)
 		+ super::packet_map_3::size_of(&_0.columns)
 }
 

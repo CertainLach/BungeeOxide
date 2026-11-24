@@ -5,13 +5,13 @@ use crate::pds::{Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketLoginPluginRequest<'i> {
 	pub message_id: ::bungeeoxide_minecraft_root::Varint,
-	pub channel: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub channel: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub data: ::bungeeoxide_minecraft_root::view::RestBuffer<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.message_id, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.channel, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.channel, output)?;
 	::bungeeoxide_minecraft_root::view::rest_buffer::serialize(&_0.data, output)?;
 	Ok(())
 }
@@ -19,7 +19,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
 	let f_messageId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_channel = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_channel = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_data = ::bungeeoxide_minecraft_root::view::rest_buffer::deserialize(input)?;
 	Ok(Ty {
 		message_id: f_messageId,
@@ -30,14 +30,14 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.message_id)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.channel)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.channel)
 		+ ::bungeeoxide_minecraft_root::view::rest_buffer::size_of(&_0.data)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::login::to_client::PacketLoginPluginRequest) -> Ty<'i> {
 	Ty {
 		message_id: ::core::clone::Clone::clone(&_0.message_id),
-		channel: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.channel),
+		channel: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.channel),
 		data: ::bungeeoxide_minecraft_root::view::rest_buffer::view(&_0.data),
 	}
 }

@@ -15,8 +15,8 @@ pub struct PacketAdvancements2 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.title, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.description, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.title, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.description, output)?;
 	::bungeeoxide_minecraft_v1_8::slot::serialize(&_0.icon, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.frame_type, output)?;
 	super::packet_advancements_0::serialize(&_0.flags, output)?;
@@ -32,8 +32,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(17)?;
-	let f_title = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
-	let f_description = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_title = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
+	let f_description = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_icon = ::bungeeoxide_minecraft_v1_8::slot::deserialize(input)?;
 	let f_frameType = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_flags = super::packet_advancements_0::deserialize(input)?;
@@ -58,8 +58,8 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.title)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.description)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.title)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.description)
 		+ ::bungeeoxide_minecraft_v1_8::slot::size_of(&_0.icon)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.frame_type)
 		+ super::packet_advancements_0::size_of(&_0.flags)

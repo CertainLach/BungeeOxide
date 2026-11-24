@@ -96,16 +96,16 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::BrigadierLong(__v) => super::command_node_18::serialize(__v, output),
 		Ty::MinecraftTime(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
 		Ty::MinecraftResourceOrTag(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftResourceOrTagKey(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftResource(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftResourceKey(__v) => {
-			::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output)
 		}
 		Ty::MinecraftTemplateMirror => Ok(()),
 		Ty::MinecraftTemplateRotation => Ok(()),
@@ -234,22 +234,22 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 41_i32 {
 		return Ok(Ty::MinecraftResourceOrTag(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 42_i32 {
 		return Ok(Ty::MinecraftResourceOrTagKey(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 43_i32 {
 		return Ok(Ty::MinecraftResource(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 44_i32 {
 		return Ok(Ty::MinecraftResourceKey(
-			::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 45_i32 {
@@ -322,14 +322,14 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::BrigadierLong(__v) => super::command_node_18::size_of(__v),
 			Ty::MinecraftTime(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 			Ty::MinecraftResourceOrTag(__v) => {
-				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_131::size_of(__v)
 			}
 			Ty::MinecraftResourceOrTagKey(__v) => {
-				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_131::size_of(__v)
 			}
-			Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::MinecraftResource(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::MinecraftResourceKey(__v) => {
-				::bungeeoxide_minecraft_root::pstring_123::size_of(__v)
+				::bungeeoxide_minecraft_root::pstring_131::size_of(__v)
 			}
 			Ty::MinecraftTemplateMirror => 0,
 			Ty::MinecraftTemplateRotation => 0,

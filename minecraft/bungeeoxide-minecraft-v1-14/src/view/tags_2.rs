@@ -4,20 +4,20 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Tags2<'i> {
-	pub tag_name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
-	pub entries: ::bungeeoxide_minecraft_root::array::Inline137,
+	pub tag_name: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
+	pub entries: ::bungeeoxide_minecraft_root::array::Inline138,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.tag_name, output)?;
-	::bungeeoxide_minecraft_root::array::inline_137::serialize(&_0.entries, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.tag_name, output)?;
+	::bungeeoxide_minecraft_root::array::inline_138::serialize(&_0.entries, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_tagName = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
-	let f_entries = ::bungeeoxide_minecraft_root::array::inline_137::deserialize(input)?;
+	let f_tagName = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
+	let f_entries = ::bungeeoxide_minecraft_root::array::inline_138::deserialize(input)?;
 	Ok(Ty {
 		tag_name: f_tagName,
 		entries: f_entries,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.tag_name)
-		+ ::bungeeoxide_minecraft_root::array::inline_137::size_of(&_0.entries)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.tag_name)
+		+ ::bungeeoxide_minecraft_root::array::inline_138::size_of(&_0.entries)
 }
 
 pub fn view<'i>(_0: &'i super::super::Tags2) -> Ty<'i> {
 	Ty {
-		tag_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.tag_name),
+		tag_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.tag_name),
 		entries: ::core::clone::Clone::clone(&_0.entries),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::Tags2) -> Ty<'i> {
 	Ty {
-		tag_name: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.tag_name),
+		tag_name: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.tag_name),
 		entries: ::core::mem::take(&mut _0.entries),
 	}
 }

@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Packet<'i> {
-	ServerInfo(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	ServerInfo(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	Ping(::bungeeoxide_minecraft_root::I64),
 	Default(::bungeeoxide_minecraft_root::Varint),
 }
@@ -13,7 +13,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::ServerInfo(__v) => {
-			::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output)
+			::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output)
 		}
 		Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
@@ -26,7 +26,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let __tag = &__tagv;
 	if *__tag == 0_i32 {
 		return Ok(Ty::ServerInfo(
-			::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?,
+			::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?,
 		));
 	}
 	if *__tag == 1_i32 {
@@ -38,7 +38,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::ServerInfo(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::ServerInfo(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 			Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i64::size_of(__v),
 			Ty::Default(_) => 0,
 		}
@@ -63,7 +63,7 @@ pub fn virtual_tag<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Varint {
 pub fn view<'i>(_0: &'i super::super::super::super::status::to_client::Packet) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::status::to_client::Packet::ServerInfo(__v) => {
-			Ty::ServerInfo(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::ServerInfo(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::super::super::status::to_client::Packet::Ping(__v) => {
 			Ty::Ping(::core::clone::Clone::clone(__v))

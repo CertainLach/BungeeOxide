@@ -10,7 +10,7 @@ pub mod option_20;
 pub mod option_21;
 pub mod option_3;
 pub mod option_8;
-pub mod pstring_123;
+pub mod pstring_131;
 pub mod rest_buffer;
 
 pub use self::anon_optional_nbt::Ty as AnonOptionalNbt;
@@ -21,5 +21,5 @@ pub use self::option_3::Ty as Option3;
 pub use self::option_8::Ty as Option8;
 pub use self::option_20::Ty as Option20;
 pub use self::option_21::Ty as Option21;
-pub use self::pstring_123::Ty as Pstring123;
+pub use self::pstring_131::Ty as Pstring131;
 pub use self::rest_buffer::Ty as RestBuffer;

@@ -29,8 +29,8 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::DedicatedServerTickTime => Ok(()),
 		Ty::Bees(__v) => super::option_85::serialize(__v, output),
 		Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_33::serialize(__v, output),
-		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_120::serialize(__v, output),
-		Ty::Structures(__v) => super::option_121::serialize(__v, output),
+		Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_127::serialize(__v, output),
+		Ty::Structures(__v) => super::option_128::serialize(__v, output),
 		Ty::GameEventListeners(__v) => {
 			::bungeeoxide_minecraft_root::option_32::serialize(__v, output)
 		}
@@ -40,7 +40,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::GameEvents(__v) => super::option_86::serialize(__v, output),
 		Ty::Brains(__v) => super::option_87::serialize(__v, output),
 		Ty::Breezes(__v) => super::option_88::serialize(__v, output),
-		Ty::GoalSelectors(__v) => super::option_122::serialize(__v, output),
+		Ty::GoalSelectors(__v) => super::option_129::serialize(__v, output),
 		Ty::EntityPaths(__v) => super::option_89::serialize(__v, output),
 		Ty::EntityBlockIntersections(__v) => {
 			::bungeeoxide_minecraft_root::option_32::serialize(__v, output)
@@ -70,10 +70,10 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if *__tag == 11_i32 {
-		return Ok(Ty::Raids(::bungeeoxide_minecraft_v1_14::option_120::deserialize(input)?));
+		return Ok(Ty::Raids(::bungeeoxide_minecraft_v1_14::option_127::deserialize(input)?));
 	}
 	if *__tag == 12_i32 {
-		return Ok(Ty::Structures(super::option_121::deserialize(input)?));
+		return Ok(Ty::Structures(super::option_128::deserialize(input)?));
 	}
 	if *__tag == 13_i32 {
 		return Ok(Ty::GameEventListeners(
@@ -95,7 +95,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::Breezes(super::option_88::deserialize(input)?));
 	}
 	if *__tag == 4_i32 {
-		return Ok(Ty::GoalSelectors(super::option_122::deserialize(input)?));
+		return Ok(Ty::GoalSelectors(super::option_129::deserialize(input)?));
 	}
 	if *__tag == 5_i32 {
 		return Ok(Ty::EntityPaths(super::option_89::deserialize(input)?));
@@ -128,14 +128,14 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::DedicatedServerTickTime => 0,
 			Ty::Bees(__v) => super::option_85::size_of(__v),
 			Ty::VillageSections(__v) => ::bungeeoxide_minecraft_root::option_33::size_of(__v),
-			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_120::size_of(__v),
-			Ty::Structures(__v) => super::option_121::size_of(__v),
+			Ty::Raids(__v) => ::bungeeoxide_minecraft_v1_14::option_127::size_of(__v),
+			Ty::Structures(__v) => super::option_128::size_of(__v),
 			Ty::GameEventListeners(__v) => ::bungeeoxide_minecraft_root::option_32::size_of(__v),
 			Ty::NeighborUpdates(__v) => ::bungeeoxide_minecraft_v1_14::option_10::size_of(__v),
 			Ty::GameEvents(__v) => super::option_86::size_of(__v),
 			Ty::Brains(__v) => super::option_87::size_of(__v),
 			Ty::Breezes(__v) => super::option_88::size_of(__v),
-			Ty::GoalSelectors(__v) => super::option_122::size_of(__v),
+			Ty::GoalSelectors(__v) => super::option_129::size_of(__v),
 			Ty::EntityPaths(__v) => super::option_89::size_of(__v),
 			Ty::EntityBlockIntersections(__v) => {
 				::bungeeoxide_minecraft_root::option_32::size_of(__v)

@@ -3,37 +3,75 @@
 use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum SlotComponent44 {
-	Id(::bungeeoxide_minecraft_root::Varint),
-	Inline(::bungeeoxide_minecraft_v1_21_5::ArmorTrimPattern),
+pub struct SlotComponent44 {
+	pub slot: super::SlotComponent43,
+	pub sound: ::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder,
+	pub model: Option<String>,
+	pub camera_overlay: Option<String>,
+	pub allowed_entities: Option<::bungeeoxide_minecraft_v1_20_5::IdSet>,
+	pub dispensable: ::bungeeoxide_minecraft_root::Bool,
+	pub swappable: ::bungeeoxide_minecraft_root::Bool,
+	pub damageable: ::bungeeoxide_minecraft_root::Bool,
+	pub equip_on_interact: ::bungeeoxide_minecraft_root::Bool,
+	pub shearable: ::bungeeoxide_minecraft_root::Bool,
+	pub shearing_sound: ::bungeeoxide_minecraft_v1_19_3::ItemSoundHolder,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	match _0 {
-		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::serialize(&(id + 1), output),
-		Ty::Inline(v) => {
-			::bungeeoxide_minecraft_root::varint::serialize(&0, output)?;
-			::bungeeoxide_minecraft_v1_21_5::armor_trim_pattern::serialize(v, output)
-		}
-	}
+	super::slot_component_43::serialize(&_0.slot, output)?;
+	::bungeeoxide_minecraft_v1_19_3::item_sound_holder::serialize(&_0.sound, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.model, output)?;
+	::bungeeoxide_minecraft_root::option_21::serialize(&_0.camera_overlay, output)?;
+	::bungeeoxide_minecraft_v1_20_5::option_13::serialize(&_0.allowed_entities, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.dispensable, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.swappable, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.damageable, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.equip_on_interact, output)?;
+	::bungeeoxide_minecraft_root::bool::serialize(&_0.shearable, output)?;
+	::bungeeoxide_minecraft_v1_19_3::item_sound_holder::serialize(&_0.shearing_sound, output)?;
+	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
-	let n = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	Ok(if n == 0 {
-		Ty::Inline(::bungeeoxide_minecraft_v1_21_5::armor_trim_pattern::deserialize(input)?)
-	} else {
-		Ty::Id(n - 1)
+	input.expect(11)?;
+	let f_slot = super::slot_component_43::deserialize(input)?;
+	let f_sound = ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::deserialize(input)?;
+	let f_model = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
+	let f_cameraOverlay = ::bungeeoxide_minecraft_root::option_21::deserialize(input)?;
+	let f_allowedEntities = ::bungeeoxide_minecraft_v1_20_5::option_13::deserialize(input)?;
+	let f_dispensable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_swappable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_damageable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_equipOnInteract = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_shearable = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
+	let f_shearingSound = ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::deserialize(input)?;
+	Ok(Ty {
+		slot: f_slot,
+		sound: f_sound,
+		model: f_model,
+		camera_overlay: f_cameraOverlay,
+		allowed_entities: f_allowedEntities,
+		dispensable: f_dispensable,
+		swappable: f_swappable,
+		damageable: f_damageable,
+		equip_on_interact: f_equipOnInteract,
+		shearable: f_shearable,
+		shearing_sound: f_shearingSound,
 	})
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	match _0 {
-		Ty::Id(id) => ::bungeeoxide_minecraft_root::varint::size_of(&(id + 1)),
-		Ty::Inline(v) => {
-			::bungeeoxide_minecraft_root::varint::size_of(&0) + ::bungeeoxide_minecraft_v1_21_5::armor_trim_pattern::size_of(v)
-		}
-	}
+	super::slot_component_43::size_of(&_0.slot)
+		+ ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::size_of(&_0.sound)
+		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.model)
+		+ ::bungeeoxide_minecraft_root::option_21::size_of(&_0.camera_overlay)
+		+ ::bungeeoxide_minecraft_v1_20_5::option_13::size_of(&_0.allowed_entities)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.dispensable)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.swappable)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.damageable)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.equip_on_interact)
+		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.shearable)
+		+ ::bungeeoxide_minecraft_v1_19_3::item_sound_holder::size_of(&_0.shearing_sound)
 }
 
 pub type Ty = SlotComponent44;

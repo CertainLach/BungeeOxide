@@ -5,14 +5,14 @@ use crate::pds::{Error, Input, Output, Result};
 #[derive(Debug, Clone, PartialEq)]
 pub enum ItemBlockProperty1<'i> {
 	False(super::ItemBlockProperty0<'i>),
-	True(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	True(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::False(__v) => super::item_block_property_0::serialize(__v, output),
-		Ty::True(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
+		Ty::True(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output),
 	}
 }
 
@@ -24,7 +24,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 		return Ok(Ty::False(super::item_block_property_0::deserialize(input)?));
 	}
 	if *__tag == true {
-		return Ok(Ty::True(::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?));
+		return Ok(Ty::True(::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?));
 	}
 	Err(Error::InvalidValue)
 }
@@ -33,7 +33,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::bool::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::False(__v) => super::item_block_property_0::size_of(__v),
-			Ty::True(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::True(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 		}
 }
 
@@ -57,7 +57,7 @@ pub fn view<'i>(_0: &'i super::super::ItemBlockProperty1) -> Ty<'i> {
 			Ty::False(super::item_block_property_0::view(__v))
 		}
 		super::super::ItemBlockProperty1::True(__v) => {
-			Ty::True(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::True(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 	}
 }

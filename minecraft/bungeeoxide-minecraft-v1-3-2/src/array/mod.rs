@@ -2,8 +2,8 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 pub mod inline_10;
 pub mod inline_4;
-pub mod sized_510;
+pub mod sized_512;
 
 pub use self::inline_4::Ty as Inline4;
 pub use self::inline_10::Ty as Inline10;
-pub use self::sized_510::Ty as Sized510;
+pub use self::sized_512::Ty as Sized512;

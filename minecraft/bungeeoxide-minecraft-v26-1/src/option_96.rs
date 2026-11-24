@@ -2,19 +2,19 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Input, Output, Result};
 
-pub type Ty = Option<super::ItemBlockPredicate2>;
+pub type Ty = Option<super::DebugSubscriptionUpdate9>;
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.is_some(), output)?;
 	if let Some(v) = _0 {
-		super::item_block_predicate_2::serialize(v, output)?;
+		super::debug_subscription_update_9::serialize(v, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	Ok(if ::bungeeoxide_minecraft_root::bool::deserialize(input)? {
-		Some(super::item_block_predicate_2::deserialize(input)?)
+		Some(super::debug_subscription_update_9::deserialize(input)?)
 	} else {
 		None
 	})
@@ -23,7 +23,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	let mut n = ::bungeeoxide_minecraft_root::bool::size_of(&_0.is_some());
 	if let Some(v) = _0 {
-		n += super::item_block_predicate_2::size_of(v);
+		n += super::debug_subscription_update_9::size_of(v);
 	}
 	n
 }

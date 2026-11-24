@@ -4,19 +4,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketTeams<'i> {
-	pub team: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub team: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub mode: super::PacketTeams28<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.team, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.team, output)?;
 	super::packet_teams_28::serialize(&_0.mode, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(2)?;
-	let f_team = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_team = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_mode = super::packet_teams_28::deserialize(input)?;
 	Ok(Ty {
 		team: f_team,
@@ -25,20 +25,20 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.team)
+	::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.team)
 		+ super::packet_teams_28::size_of(&_0.mode)
 }
 
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_client::PacketTeams) -> Ty<'i> {
 	Ty {
-		team: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.team),
+		team: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.team),
 		mode: super::packet_teams_28::view(&_0.mode),
 	}
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_client::PacketTeams) -> Ty<'i> {
 	Ty {
-		team: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.team),
+		team: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.team),
 		mode: super::packet_teams_28::into_view(&mut _0.mode),
 	}
 }

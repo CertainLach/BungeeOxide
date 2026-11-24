@@ -15,7 +15,7 @@ pub struct SlotComponent11 {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.type_id, output)?;
 	::bungeeoxide_minecraft_root::uuid::serialize(&_0.uuid, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.name, output)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.value, output)?;
 	super::slot_component_9::serialize(&_0.operation, output)?;
 	super::slot_component_10::serialize(&_0.slot, output)?;
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(12)?;
 	let f_typeId = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::uuid::deserialize(input)?;
-	let f_name = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_name = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_value = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
 	let f_operation = super::slot_component_9::deserialize(input)?;
 	let f_slot = super::slot_component_10::deserialize(input)?;
@@ -43,7 +43,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&_0.type_id)
 		+ ::bungeeoxide_minecraft_root::uuid::size_of(&_0.uuid)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.name)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.name)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.value)
 		+ super::slot_component_9::size_of(&_0.operation)
 		+ super::slot_component_10::size_of(&_0.slot)

@@ -13,5 +13,5 @@ pub use self::packet_key::PacketKey;
 pub use self::packet_login_plugin_request::Ty as PacketLoginPluginRequest;
 pub use self::packet_success::PacketSuccess;
 pub use self::packet_success_0::PacketSuccess0;
-pub use ::bungeeoxide_minecraft_root::pstring_123 as packet_disconnect;
+pub use ::bungeeoxide_minecraft_root::pstring_131 as packet_disconnect;
 pub use ::bungeeoxide_minecraft_v1_13::login::to_client::packet_login_plugin_request;

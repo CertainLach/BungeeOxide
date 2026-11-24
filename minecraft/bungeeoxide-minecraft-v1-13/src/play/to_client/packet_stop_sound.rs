@@ -14,7 +14,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i8::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::V1(__v) => ::bungeeoxide_minecraft_root::varint::serialize(__v, output),
-		Ty::V2(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::V2(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::V3(__v) => super::packet_stop_sound_18::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
@@ -28,7 +28,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::V1(::bungeeoxide_minecraft_root::varint::deserialize(input)?));
 	}
 	if *__tag == 2_i8 {
-		return Ok(Ty::V2(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::V2(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 3_i8 {
 		return Ok(Ty::V3(super::packet_stop_sound_18::deserialize(input)?));
@@ -40,7 +40,7 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::i8::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::V1(__v) => ::bungeeoxide_minecraft_root::varint::size_of(__v),
-			Ty::V2(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::V2(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::V3(__v) => super::packet_stop_sound_18::size_of(__v),
 			Ty::Default(_) => 0,
 		}

@@ -16,7 +16,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	super::slot_component_38::serialize(&_0.animation, output)?;
 	::bungeeoxide_minecraft_v1_19_3::option_11::serialize(&_0.sound, output)?;
 	::bungeeoxide_minecraft_root::bool::serialize(&_0.makes_particles, output)?;
-	::bungeeoxide_minecraft_v26_3::array::inline_119::serialize(&_0.effects, output)?;
+	::bungeeoxide_minecraft_v26_3::array::inline_120::serialize(&_0.effects, output)?;
 	Ok(())
 }
 
@@ -26,7 +26,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	let f_animation = super::slot_component_38::deserialize(input)?;
 	let f_sound = ::bungeeoxide_minecraft_v1_19_3::option_11::deserialize(input)?;
 	let f_makes_particles = ::bungeeoxide_minecraft_root::bool::deserialize(input)?;
-	let f_effects = ::bungeeoxide_minecraft_v26_3::array::inline_119::deserialize(input)?;
+	let f_effects = ::bungeeoxide_minecraft_v26_3::array::inline_120::deserialize(input)?;
 	Ok(Ty {
 		consume_seconds: f_consume_seconds,
 		animation: f_animation,
@@ -41,7 +41,7 @@ pub fn size_of(_0: &Ty) -> usize {
 		+ super::slot_component_38::size_of(&_0.animation)
 		+ ::bungeeoxide_minecraft_v1_19_3::option_11::size_of(&_0.sound)
 		+ ::bungeeoxide_minecraft_root::bool::size_of(&_0.makes_particles)
-		+ ::bungeeoxide_minecraft_v26_3::array::inline_119::size_of(&_0.effects)
+		+ ::bungeeoxide_minecraft_v26_3::array::inline_120::size_of(&_0.effects)
 }
 
 pub type Ty = SlotComponent39;

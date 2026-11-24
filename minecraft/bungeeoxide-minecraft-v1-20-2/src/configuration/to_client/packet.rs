@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
 		Ty::CustomPayload(__v) => super::packet_custom_payload::serialize(__v, output),
-		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_123::serialize(__v, output),
+		Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_131::serialize(__v, output),
 		Ty::FinishConfiguration(__v) => super::packet_finish_configuration::serialize(__v, output),
 		Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::serialize(__v, output),
 		Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i32::serialize(__v, output),
@@ -31,7 +31,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 		Ty::FeatureFlags(__v) => {
 			::bungeeoxide_minecraft_root::array::inline_100::serialize(__v, output)
 		}
-		Ty::Tags(__v) => super::super::super::array::inline_188::serialize(__v, output),
+		Ty::Tags(__v) => super::super::super::array::inline_189::serialize(__v, output),
 		Ty::Default(_) => Ok(()),
 	}
 }
@@ -44,7 +44,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		return Ok(Ty::CustomPayload(super::packet_custom_payload::deserialize(input)?));
 	}
 	if *__tag == 1_i32 {
-		return Ok(Ty::Disconnect(::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?));
+		return Ok(Ty::Disconnect(::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 2_i32 {
 		return Ok(Ty::FinishConfiguration(super::packet_finish_configuration::deserialize(input)?));
@@ -69,7 +69,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 		));
 	}
 	if *__tag == 8_i32 {
-		return Ok(Ty::Tags(super::super::super::array::inline_188::deserialize(input)?));
+		return Ok(Ty::Tags(super::super::super::array::inline_189::deserialize(input)?));
 	}
 	Ok(Ty::Default(__tagv))
 }
@@ -78,14 +78,14 @@ pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
 			Ty::CustomPayload(__v) => super::packet_custom_payload::size_of(__v),
-			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_123::size_of(__v),
+			Ty::Disconnect(__v) => ::bungeeoxide_minecraft_root::pstring_131::size_of(__v),
 			Ty::FinishConfiguration(__v) => super::packet_finish_configuration::size_of(__v),
 			Ty::KeepAlive(__v) => ::bungeeoxide_minecraft_root::i64::size_of(__v),
 			Ty::Ping(__v) => ::bungeeoxide_minecraft_root::i32::size_of(__v),
 			Ty::RegistryData(__v) => ::bungeeoxide_minecraft_root::anonymous_nbt::size_of(__v),
 			Ty::ResourcePackSend(__v) => super::packet_resource_pack_send::size_of(__v),
 			Ty::FeatureFlags(__v) => ::bungeeoxide_minecraft_root::array::inline_100::size_of(__v),
-			Ty::Tags(__v) => super::super::super::array::inline_188::size_of(__v),
+			Ty::Tags(__v) => super::super::super::array::inline_189::size_of(__v),
 			Ty::Default(_) => 0,
 		}
 }

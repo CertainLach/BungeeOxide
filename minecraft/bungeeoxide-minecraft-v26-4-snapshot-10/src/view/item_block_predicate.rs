@@ -4,15 +4,15 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ItemBlockPredicate<'i> {
-	pub block_set: super::Option112<'i>,
-	pub properties: ::bungeeoxide_minecraft_v1_20_5::view::Option118<'i>,
+	pub block_set: super::Option119<'i>,
+	pub properties: ::bungeeoxide_minecraft_v1_20_5::view::Option125<'i>,
 	pub nbt: ::bungeeoxide_minecraft_root::view::AnonOptionalNbt<'i>,
 	pub components: super::DataComponentMatchers<'i>,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	super::option_112::serialize(&_0.block_set, output)?;
-	::bungeeoxide_minecraft_v1_20_5::view::option_118::serialize(&_0.properties, output)?;
+	super::option_119::serialize(&_0.block_set, output)?;
+	::bungeeoxide_minecraft_v1_20_5::view::option_125::serialize(&_0.properties, output)?;
 	::bungeeoxide_minecraft_root::view::anon_optional_nbt::serialize(&_0.nbt, output)?;
 	super::data_component_matchers::serialize(&_0.components, output)?;
 	Ok(())
@@ -20,8 +20,8 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(4)?;
-	let f_blockSet = super::option_112::deserialize(input)?;
-	let f_properties = ::bungeeoxide_minecraft_v1_20_5::view::option_118::deserialize(input)?;
+	let f_blockSet = super::option_119::deserialize(input)?;
+	let f_properties = ::bungeeoxide_minecraft_v1_20_5::view::option_125::deserialize(input)?;
 	let f_nbt = ::bungeeoxide_minecraft_root::view::anon_optional_nbt::deserialize(input)?;
 	let f_components = super::data_component_matchers::deserialize(input)?;
 	Ok(Ty {
@@ -33,16 +33,16 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	super::option_112::size_of(&_0.block_set)
-		+ ::bungeeoxide_minecraft_v1_20_5::view::option_118::size_of(&_0.properties)
+	super::option_119::size_of(&_0.block_set)
+		+ ::bungeeoxide_minecraft_v1_20_5::view::option_125::size_of(&_0.properties)
 		+ ::bungeeoxide_minecraft_root::view::anon_optional_nbt::size_of(&_0.nbt)
 		+ super::data_component_matchers::size_of(&_0.components)
 }
 
 pub fn view<'i>(_0: &'i super::super::ItemBlockPredicate) -> Ty<'i> {
 	Ty {
-		block_set: super::option_112::view(&_0.block_set),
-		properties: ::bungeeoxide_minecraft_v1_20_5::view::option_118::view(&_0.properties),
+		block_set: super::option_119::view(&_0.block_set),
+		properties: ::bungeeoxide_minecraft_v1_20_5::view::option_125::view(&_0.properties),
 		nbt: ::bungeeoxide_minecraft_root::view::anon_optional_nbt::view(&_0.nbt),
 		components: super::data_component_matchers::view(&_0.components),
 	}
@@ -50,8 +50,8 @@ pub fn view<'i>(_0: &'i super::super::ItemBlockPredicate) -> Ty<'i> {
 
 pub fn into_view<'i>(_0: &'i mut super::super::ItemBlockPredicate) -> Ty<'i> {
 	Ty {
-		block_set: super::option_112::into_view(&mut _0.block_set),
-		properties: ::bungeeoxide_minecraft_v1_20_5::view::option_118::view(&mut _0.properties),
+		block_set: super::option_119::into_view(&mut _0.block_set),
+		properties: ::bungeeoxide_minecraft_v1_20_5::view::option_125::view(&mut _0.properties),
 		nbt: ::bungeeoxide_minecraft_root::view::anon_optional_nbt::into_view(&mut _0.nbt),
 		components: super::data_component_matchers::into_view(&mut _0.components),
 	}

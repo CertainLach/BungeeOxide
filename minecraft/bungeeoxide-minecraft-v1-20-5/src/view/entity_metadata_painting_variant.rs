@@ -6,7 +6,7 @@ use crate::pds::{Input, Output, Result};
 pub struct EntityMetadataPaintingVariant<'i> {
 	pub width: ::bungeeoxide_minecraft_root::I32,
 	pub height: ::bungeeoxide_minecraft_root::I32,
-	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
+	pub asset_id: ::bungeeoxide_minecraft_root::view::Pstring131<'i>,
 	pub title: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 	pub author: ::bungeeoxide_minecraft_root::view::Option1<'i>,
 }
@@ -14,7 +14,7 @@ pub struct EntityMetadataPaintingVariant<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.width, output)?;
 	::bungeeoxide_minecraft_root::i32::serialize(&_0.height, output)?;
-	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.asset_id, output)?;
+	::bungeeoxide_minecraft_root::view::pstring_131::serialize(&_0.asset_id, output)?;
 	::bungeeoxide_minecraft_root::view::option_1::serialize(&_0.title, output)?;
 	::bungeeoxide_minecraft_root::view::option_1::serialize(&_0.author, output)?;
 	Ok(())
@@ -24,7 +24,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(11)?;
 	let f_width = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
 	let f_height = ::bungeeoxide_minecraft_root::i32::deserialize(input)?;
-	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
+	let f_assetId = ::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?;
 	let f_title = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	let f_author = ::bungeeoxide_minecraft_root::view::option_1::deserialize(input)?;
 	Ok(Ty {
@@ -39,7 +39,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::i32::size_of(&_0.width)
 		+ ::bungeeoxide_minecraft_root::i32::size_of(&_0.height)
-		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.asset_id)
+		+ ::bungeeoxide_minecraft_root::view::pstring_131::size_of(&_0.asset_id)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.title)
 		+ ::bungeeoxide_minecraft_root::view::option_1::size_of(&_0.author)
 }
@@ -48,7 +48,7 @@ pub fn view<'i>(_0: &'i super::super::EntityMetadataPaintingVariant) -> Ty<'i> {
 	Ty {
 		width: ::core::clone::Clone::clone(&_0.width),
 		height: ::core::clone::Clone::clone(&_0.height),
-		asset_id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&_0.asset_id),
+		asset_id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&_0.asset_id),
 		title: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.title),
 		author: ::bungeeoxide_minecraft_root::view::option_1::view(&_0.author),
 	}
@@ -58,7 +58,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::EntityMetadataPaintingVariant) ->
 	Ty {
 		width: ::core::clone::Clone::clone(&mut _0.width),
 		height: ::core::clone::Clone::clone(&mut _0.height),
-		asset_id: ::bungeeoxide_minecraft_root::view::pstring_123::view(&mut _0.asset_id),
+		asset_id: ::bungeeoxide_minecraft_root::view::pstring_131::view(&mut _0.asset_id),
 		title: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.title),
 		author: ::bungeeoxide_minecraft_root::view::option_1::into_view(&mut _0.author),
 	}

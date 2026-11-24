@@ -2,7 +2,7 @@
 #![cfg_attr(rustfmt, rustfmt::skip)]
 use crate::pds::{Error, Input, Output, Result};
 
-pub type Ty<'i> = Vec<super::super::SlotComponent<'i>>;
+pub type Ty<'i> = Vec<super::super::Slot<'i>>;
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(
@@ -10,7 +10,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 		output,
 	)?;
 	for e in _0.iter() {
-		super::super::slot_component::serialize_guarded(e, output)?;
+		super::super::slot::serialize(e, output)?;
 	}
 	Ok(())
 }
@@ -22,7 +22,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::slot_component::deserialize_guarded(input)?);
+		out.push(super::super::slot::deserialize(input)?);
 	}
 	Ok(out)
 }
@@ -31,19 +31,17 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	let mut n =
 		::bungeeoxide_minecraft_root::varint::size_of(&_0.len().try_into().unwrap_or_default());
 	for e in _0.iter() {
-		n += super::super::slot_component::size_of(e);
+		n += super::super::slot::size_of(e);
 	}
 	n
 }
 
 pub fn view<'i>(_0: &'i super::super::super::array::Inline132) -> Ty<'i> {
-	_0.iter()
-		.map(|e| super::super::slot_component::view(e))
-		.collect()
+	_0.iter().map(|e| super::super::slot::view(e)).collect()
 }
 
 pub fn into_view<'i>(_0: &'i mut super::super::super::array::Inline132) -> Ty<'i> {
 	_0.iter_mut()
-		.map(|e| super::super::slot_component::into_view(e))
+		.map(|e| super::super::slot::into_view(e))
 		.collect()
 }

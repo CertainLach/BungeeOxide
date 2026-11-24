@@ -9,7 +9,7 @@ pub struct PacketChatCommandSigned0 {
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.argument_name, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.argument_name, output)?;
 	::bungeeoxide_minecraft_root::buffer::sized::check_count(
 		&_0.signature,
 		&256.try_into().expect("constant fits"),
@@ -20,7 +20,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 
 pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(1)?;
-	let f_argumentName = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_argumentName = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	let f_signature = ::bungeeoxide_minecraft_root::buffer::sized::deserialize(
 		input,
 		::bungeeoxide_minecraft_root::buffer::sized::Args { count: &256_i32 },
@@ -32,7 +32,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 }
 
 pub fn size_of(_0: &Ty) -> usize {
-	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.argument_name)
+	::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.argument_name)
 		+ ::bungeeoxide_minecraft_root::buffer::sized::size_of(&_0.signature)
 }
 

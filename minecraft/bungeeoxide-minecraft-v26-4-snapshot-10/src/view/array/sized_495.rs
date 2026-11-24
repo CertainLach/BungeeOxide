@@ -6,7 +6,7 @@ pub struct Args<'a> {
 	pub count: &'a ::bungeeoxide_minecraft_root::Varint,
 }
 
-pub type Ty<'i> = Vec<super::super::UntrustedSlotComponent<'i>>;
+pub type Ty<'i> = Vec<super::super::SlotComponent<'i>>;
 
 pub fn check_count<'i>(_0: &Ty<'i>, count: &::bungeeoxide_minecraft_root::Varint) -> Result<()> {
 	if usize::try_from(*count).ok() != Some(_0.len()) {
@@ -17,17 +17,17 @@ pub fn check_count<'i>(_0: &Ty<'i>, count: &::bungeeoxide_minecraft_root::Varint
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	for e in _0.iter() {
-		super::super::untrusted_slot_component::serialize(e, output)?;
+		super::super::slot_component::serialize_guarded(e, output)?;
 	}
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> {
 	let count: usize = (*args.count).try_into().map_err(|_| Error::InvalidValue)?;
-	input.expect(count.saturating_mul(2))?;
+	input.expect(count)?;
 	let mut out = Vec::with_capacity(count.min(input.remaining()));
 	for _ in 0..count {
-		out.push(super::super::untrusted_slot_component::deserialize(input)?);
+		out.push(super::super::slot_component::deserialize_guarded(input)?);
 	}
 	Ok(out)
 }
@@ -35,7 +35,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>, args: Args<'_>) -> Result<Ty<'i>> 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	let mut n = 0;
 	for e in _0.iter() {
-		n += super::super::untrusted_slot_component::size_of(e);
+		n += super::super::slot_component::size_of(e);
 	}
 	n
 }
@@ -46,6 +46,12 @@ pub fn virtual_size<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Varint {
 
 pub fn view<'i>(_0: &'i super::super::super::array::Sized495) -> Ty<'i> {
 	_0.iter()
-		.map(|e| super::super::untrusted_slot_component::view(e))
+		.map(|e| super::super::slot_component::view(e))
+		.collect()
+}
+
+pub fn into_view<'i>(_0: &'i mut super::super::super::array::Sized495) -> Ty<'i> {
+	_0.iter_mut()
+		.map(|e| super::super::slot_component::into_view(e))
 		.collect()
 }

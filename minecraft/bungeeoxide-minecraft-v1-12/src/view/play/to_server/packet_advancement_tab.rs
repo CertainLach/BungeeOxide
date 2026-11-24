@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum PacketAdvancementTab<'i> {
-	V0(::bungeeoxide_minecraft_root::view::Pstring123<'i>),
+	V0(::bungeeoxide_minecraft_root::view::Pstring131<'i>),
 	V1,
 	Default(::bungeeoxide_minecraft_root::Varint),
 }
@@ -12,7 +12,7 @@ pub enum PacketAdvancementTab<'i> {
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&virtual_tag(_0), output)?;
 	match _0 {
-		Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::serialize(__v, output),
+		Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::serialize(__v, output),
 		Ty::V1 => Ok(()),
 		Ty::Default(_) => Ok(()),
 	}
@@ -23,7 +23,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let __tagv = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let __tag = &__tagv;
 	if *__tag == 0_i32 {
-		return Ok(Ty::V0(::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?));
+		return Ok(Ty::V0(::bungeeoxide_minecraft_root::view::pstring_131::deserialize(input)?));
 	}
 	if *__tag == 1_i32 {
 		return Ok(Ty::V1);
@@ -34,7 +34,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 	::bungeeoxide_minecraft_root::varint::size_of(&virtual_tag(_0))
 		+ match _0 {
-			Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_123::size_of(__v),
+			Ty::V0(__v) => ::bungeeoxide_minecraft_root::view::pstring_131::size_of(__v),
 			Ty::V1 => 0,
 			Ty::Default(_) => 0,
 		}
@@ -59,7 +59,7 @@ pub fn virtual_tag<'i>(_0: &Ty<'i>) -> ::bungeeoxide_minecraft_root::Varint {
 pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::PacketAdvancementTab) -> Ty<'i> {
 	match _0 {
 		super::super::super::super::play::to_server::PacketAdvancementTab::V0(__v) => {
-			Ty::V0(::bungeeoxide_minecraft_root::view::pstring_123::view(__v))
+			Ty::V0(::bungeeoxide_minecraft_root::view::pstring_131::view(__v))
 		}
 		super::super::super::super::play::to_server::PacketAdvancementTab::V1 => Ty::V1,
 		super::super::super::super::play::to_server::PacketAdvancementTab::Default(__t) => {

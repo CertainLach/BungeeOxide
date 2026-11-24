@@ -12,7 +12,7 @@ pub struct PacketSetTestBlock {
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.position, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
-	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.message, output)?;
+	::bungeeoxide_minecraft_root::pstring_131::serialize(&_0.message, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(10)?;
 	let f_position = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
-	let f_message = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
+	let f_message = ::bungeeoxide_minecraft_root::pstring_131::deserialize(input)?;
 	Ok(Ty {
 		position: f_position,
 		mode: f_mode,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_v1_14::position::size_of(&_0.position)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
-		+ ::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.message)
+		+ ::bungeeoxide_minecraft_root::pstring_131::size_of(&_0.message)
 }
 
 pub type Ty = PacketSetTestBlock;
