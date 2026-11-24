@@ -6,6 +6,7 @@ use bungeeoxide_converter::pds_native::pds_entityDelta::{Delta, Step, Ty as Enti
 use bungeeoxide_converter::registry;
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
+use bungeeoxide_nbt::{Payload, Tag};
 
 fn encode<T>(v: &T, ser: fn(&T, &mut Output) -> bungeeoxide_converter::pds::Result<()>) -> Vec<u8> {
 	let mut o = Output::new();
@@ -1112,4 +1113,42 @@ fn fake_id_survives_the_26_3_step() {
 		&mut cx,
 	);
 	assert!(matches!(back.as_slice(), [x::play_to_server_packet::Ty::Attack(0)]));
+}
+
+#[test]
+fn brewing_stands_get_their_totals() {
+	let mut cx = Session::new();
+	let open = |id, kind| y::play_to_client_packet_open_window::Ty {
+		window_id: id,
+		inventory_type: kind,
+		window_title: Tag::new(Payload::String("Brewing Stand".into())),
+	};
+	let out = up(&y::play_to_client_packet::Ty::OpenWindow(open(3, 11)), &mut cx);
+	let totals: Vec<(i32, i16, i16)> = out[1..]
+		.iter()
+		.map(|p| match p {
+			z::play_to_client_packet::Ty::CraftProgressBar(b) => (b.window_id, b.property, b.value),
+			other => panic!("{other:?}"),
+		})
+		.collect();
+	assert!(matches!(&out[0], z::play_to_client_packet::Ty::OpenWindow(w) if w.window_id == 3));
+	assert_eq!(totals, [(3, 2, 400), (3, 3, 20)]);
+	let out = up(&y::play_to_client_packet::Ty::OpenWindow(open(4, 14)), &mut cx);
+	assert!(matches!(out.as_slice(), [z::play_to_client_packet::Ty::OpenWindow(_)]));
+
+	let bar = |id, property| {
+		z::play_to_client_packet::Ty::CraftProgressBar(z::play_to_client_packet_craft_progress_bar::Ty {
+			window_id: id,
+			property,
+			value: 7,
+		})
+	};
+	down(&z::play_to_client_packet::Ty::OpenWindow(open(5, 11)), &mut cx);
+	let kept: Vec<usize> = [bar(5, 0), bar(5, 1), bar(5, 2), bar(5, 3)]
+		.iter()
+		.map(|p| down(p, &mut cx).len())
+		.collect();
+	assert_eq!(kept, [1, 1, 0, 0]);
+	down(&z::play_to_client_packet::Ty::OpenWindow(open(6, 14)), &mut cx);
+	assert_eq!(down(&bar(6, 2), &mut cx).len(), 1);
 }

@@ -159,6 +159,8 @@ namespace(play) {
 			converted(world_event, up: custom(late_world_event_up_26_3), down: custom(late_world_event_down_26_2));
 			converted(statistics, up: custom(late_statistics_up_26_3), down: custom(late_statistics_down_26_2));
 			converted(tags, up: custom(late_play_tags_up_26_3), down: custom(late_play_tags_down_26_2));
+			converted(open_window, up: custom(late_open_window_up_26_3), down: custom(late_open_window_down_26_2));
+			converted(craft_progress_bar, down: custom(late_progress_bar_down_26_2));
 		};
 
 		updated(packet_advancements) {

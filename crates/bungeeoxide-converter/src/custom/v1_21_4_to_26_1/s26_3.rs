@@ -508,6 +508,54 @@ pub fn late_recipe_sets_down_26_2(
 		.collect()
 }
 
+const BREWING_STAND_MENU: i32 = 11;
+const TOTAL_BREW_TIME: i16 = 2;
+const TOTAL_FUEL: i16 = 3;
+
+#[derive(Default)]
+struct BrewingStand {
+	window: Option<i32>,
+}
+
+pub fn late_open_window_up_26_3(
+	v: a::play_to_client_packet_open_window::Ty,
+	_cx: &mut Session,
+) -> Result<Vec<b::play_to_client_packet::Ty>> {
+	let total = |property, value| {
+		b::play_to_client_packet::Ty::CraftProgressBar(b::play_to_client_packet_craft_progress_bar::Ty {
+			window_id: v.window_id,
+			property,
+			value,
+		})
+	};
+	let mut out = Vec::new();
+	if v.inventory_type == BREWING_STAND_MENU {
+		out.push(total(TOTAL_BREW_TIME, 400));
+		out.push(total(TOTAL_FUEL, 20));
+	}
+	out.insert(0, b::play_to_client_packet::Ty::OpenWindow(v));
+	Ok(out)
+}
+
+pub fn late_open_window_down_26_2(
+	v: b::play_to_client_packet_open_window::Ty,
+	cx: &mut Session,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	cx.state::<BrewingStand>().window =
+		(v.inventory_type == BREWING_STAND_MENU).then_some(v.window_id);
+	Ok(vec![a::play_to_client_packet::Ty::OpenWindow(v)])
+}
+
+pub fn late_progress_bar_down_26_2(
+	v: b::play_to_client_packet_craft_progress_bar::Ty,
+	cx: &mut Session,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	if v.property >= TOTAL_BREW_TIME && cx.state::<BrewingStand>().window == Some(v.window_id) {
+		return Ok(Vec::new());
+	}
+	Ok(vec![a::play_to_client_packet::Ty::CraftProgressBar(v)])
+}
+
 const MAIN_HAND: i32 = 0;
 const WHACK: i32 = 1;
 const SWING_TICKS: i32 = 6;

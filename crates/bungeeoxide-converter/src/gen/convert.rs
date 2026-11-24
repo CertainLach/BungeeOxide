@@ -258028,7 +258028,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 			vec![::bungeeoxide_minecraft::v26_3::play::to_client::Packet::OpenBook(p)]
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::OpenWindow(p) => {
-			vec![::bungeeoxide_minecraft::v26_3::play::to_client::Packet::OpenWindow(p)]
+			return crate::custom::late_open_window_up_26_3(p, cx)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::OpenSignEntity(p) => {
 			vec![::bungeeoxide_minecraft::v26_3::play::to_client::Packet::OpenSignEntity(p)]
@@ -263826,7 +263826,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CraftProgressBar(p) => {
-			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::CraftProgressBar(p)]
+			return crate::custom::late_progress_bar_down_26_2(p, cx)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SetSlot(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SetSlot(
@@ -263965,7 +263965,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::OpenBook(p)]
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::OpenWindow(p) => {
-			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::OpenWindow(p)]
+			return crate::custom::late_open_window_down_26_2(p, cx)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::OpenSignEntity(p) => {
 			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::OpenSignEntity(p)]
