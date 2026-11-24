@@ -273,6 +273,14 @@ fn entities(a: Version, b: Version, col: &mut Column, cx: &mut Session) -> Resul
 		(Version::V1_21_9, Version::V1_21_8) => each_modern(col, cx, |e, t, cx| {
 			Ok(e.kind = Some(m::late_chunk_block_entity_down_1_21_8(t, cx)?))
 		})?,
+		(Version::V26_2, Version::V26_3) | (Version::V26_3, Version::V26_2) => {
+			for nbt in col.entities.iter_mut().filter_map(|e| e.nbt.as_mut()) {
+				match up {
+					true => m::sherds_up(&mut nbt.value),
+					false => m::sherds_down(&mut nbt.value),
+				}
+			}
+		}
 		_ => {}
 	}
 	Ok(())

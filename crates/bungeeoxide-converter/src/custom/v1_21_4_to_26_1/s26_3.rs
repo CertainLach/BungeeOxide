@@ -508,6 +508,86 @@ pub fn late_recipe_sets_down_26_2(
 		.collect()
 }
 
+const POT_SIDES: [&str; 4] = ["back", "left", "right", "front"];
+const BRICK: &str = "minecraft:brick";
+
+pub fn sherds_up(nbt: &mut Payload) {
+	let Some(Payload::List(list)) = nbt.field("sherds") else {
+		return;
+	};
+	let ids: Vec<Option<String>> = list
+		.values()
+		.into_iter()
+		.map(|v| v.as_str().map(str::to_owned))
+		.collect();
+	let mut sides = Payload::Compound(Vec::new());
+	for (i, side) in POT_SIDES.iter().enumerate() {
+		let id = ids.get(i).cloned().flatten().unwrap_or_else(|| BRICK.to_owned());
+		let mut item = Payload::Compound(Vec::new());
+		item.put("id", Payload::String(id));
+		sides.put(side, item);
+	}
+	nbt.put("sherds", sides);
+}
+
+pub fn sherds_down(nbt: &mut Payload) {
+	let Some(sides @ Payload::Compound(_)) = nbt.field("sherds") else {
+		return;
+	};
+	let ids: Vec<Payload> = POT_SIDES
+		.iter()
+		.map(|side| {
+			let id = sides.field(side).and_then(|s| s.field("id")).and_then(Payload::as_str);
+			Payload::String(id.unwrap_or(BRICK).to_owned())
+		})
+		.collect();
+	nbt.put("sherds", Payload::List(bungeeoxide_nbt::List::of(ids)));
+}
+
+pub fn late_block_entity_up_26_3(
+	nbt: &mut Option<Tag>,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	if let Some(tag) = nbt {
+		sherds_up(&mut tag.value);
+	}
+	Ok(())
+}
+
+pub fn late_block_entity_down_26_2(
+	nbt: &mut Option<Tag>,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	if let Some(tag) = nbt {
+		sherds_down(&mut tag.value);
+	}
+	Ok(())
+}
+
+pub fn late_item_block_entity_up_26_3(
+	tag: &mut Tag,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	sherds_up(&mut tag.value);
+	Ok(())
+}
+
+pub fn late_item_block_entity_down_26_2(
+	tag: &mut Tag,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	sherds_down(&mut tag.value);
+	Ok(())
+}
+
 const MAP_DECORATION_TYPES_26_2: i32 = 35;
 const TARGET_X: i32 = 4;
 const NEW_MAP_DECORATIONS: &[&str] = &[

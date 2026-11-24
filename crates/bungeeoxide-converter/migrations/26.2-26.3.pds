@@ -70,6 +70,9 @@ updated(SlotComponent) {
 	added(waxed, down: drop);
 	converted(pot_decorations, up: custom(late_pots_up_26_3), down: custom(late_pots_down_26_2));
 	hooked(map_decorations, down: custom(late_map_decorations_down_26_2));
+	updated(block_entity_data) {
+		hooked(data, up: custom(late_item_block_entity_up_26_3), down: custom(late_item_block_entity_down_26_2));
+	};
 	updated(equippable) {
 		converted(allowedEntities, up: custom(late_equip_entities_up_26_3), down: custom(late_equip_entities_down_26_2));
 	};
@@ -102,6 +105,10 @@ updated(SlotComponentType) {
 	added(sign_text_front, down: drop);
 	added(villager_food, down: drop);
 	added(waxed, down: drop);
+};
+
+updated(chunkBlockEntity) {
+	hooked(nbtData, up: custom(late_block_entity_up_26_3), down: custom(late_block_entity_down_26_2));
 };
 
 updated(command_node) {
@@ -184,6 +191,10 @@ namespace(play) {
 
 		updated(packet_explosion) {
 			added(playSound, up: true);
+		};
+
+		updated(packet_tile_entity_data) {
+			hooked(nbtData, up: custom(late_block_entity_up_26_3), down: custom(late_block_entity_down_26_2));
 		};
 
 		updated(packet_map) {

@@ -1214,3 +1214,154 @@ fn new_map_decorations_become_target_x() {
 	assert_eq!(kind("camp"), Some("minecraft:target_x"));
 	assert_eq!(kind("x"), Some("minecraft:red_x"));
 }
+
+fn sherd_list(ids: &[&str]) -> Payload {
+	let mut pot = Payload::Compound(vec![]);
+	pot.put(
+		"sherds",
+		Payload::List(bungeeoxide_nbt::List::of(
+			ids.iter().map(|i| Payload::String((*i).into())).collect(),
+		)),
+	);
+	pot
+}
+
+fn sides_of(pot: &Payload) -> Vec<&str> {
+	["back", "left", "right", "front"]
+		.iter()
+		.map(|s| {
+			pot.field("sherds")
+				.and_then(|p| p.field(s))
+				.and_then(|p| p.field("id"))
+				.and_then(Payload::as_str)
+				.unwrap_or("missing")
+		})
+		.collect()
+}
+
+fn list_of(pot: &Payload) -> Vec<String> {
+	match pot.field("sherds") {
+		Some(Payload::List(l)) => l
+			.values()
+			.iter()
+			.map(|v| v.as_str().unwrap_or("?").to_owned())
+			.collect(),
+		other => panic!("{other:?}"),
+	}
+}
+
+#[test]
+fn pot_sherds_become_sides_and_back() {
+	let mut cx = Session::new();
+	let tile = |nbt: Payload| y::play_to_client_packet_tile_entity_data::Ty {
+		location: y::position::Ty { x: 1, z: 2, y: 3 },
+		action: 0,
+		nbt_data: Some(Tag::new(nbt)),
+	};
+	let pot = sherd_list(&["minecraft:angler_pottery_sherd", "minecraft:brick", "minecraft:skull_pottery_sherd"]);
+	let out = up(&y::play_to_client_packet::Ty::TileEntityData(tile(pot)), &mut cx);
+	let [z::play_to_client_packet::Ty::TileEntityData(t)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let nbt = &t.nbt_data.as_ref().unwrap().value;
+	assert_eq!(
+		sides_of(nbt),
+		[
+			"minecraft:angler_pottery_sherd",
+			"minecraft:brick",
+			"minecraft:skull_pottery_sherd",
+			"minecraft:brick"
+		]
+	);
+	let back = down(&out[0], &mut cx);
+	let [y::play_to_client_packet::Ty::TileEntityData(b)] = back.as_slice() else {
+		panic!("{back:?}")
+	};
+	assert_eq!(
+		list_of(&b.nbt_data.as_ref().unwrap().value),
+		[
+			"minecraft:angler_pottery_sherd",
+			"minecraft:brick",
+			"minecraft:skull_pottery_sherd",
+			"minecraft:brick"
+		]
+	);
+
+	let pot_item = |nbt: Payload| {
+		y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(
+			1,
+			y::slot_default::Ty {
+				item_id: id(Version::V26_2, "items", "decorated_pot"),
+				added_component_count: 1,
+				removed_component_count: 0,
+				components: vec![y::slot_component::Ty::BlockEntityData(y::slot_component_block_entity_data::Ty {
+					r#type: 0,
+					data: Tag::new(nbt),
+				})],
+				remove_components: vec![],
+			},
+		))
+	};
+	let out = up(&pot_item(sherd_list(&["minecraft:arms_up_pottery_sherd"])), &mut cx);
+	let [z::play_to_client_packet::Ty::SetCursorItem(z::slot::Ty::Default(_, d))] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let [z::slot_component::Ty::BlockEntityData(e)] = d.components.as_slice() else {
+		panic!("{d:?}")
+	};
+	assert_eq!(sides_of(&e.data.value)[0], "minecraft:arms_up_pottery_sherd");
+	let back = down(&out[0], &mut cx);
+	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = back.as_slice() else {
+		panic!("{back:?}")
+	};
+	let [y::slot_component::Ty::BlockEntityData(e)] = d.components.as_slice() else {
+		panic!("{d:?}")
+	};
+	assert_eq!(list_of(&e.data.value)[0], "minecraft:arms_up_pottery_sherd");
+}
+
+#[test]
+fn pot_sherds_in_chunks() {
+	use bungeeoxide_converter::custom::chunks::{decode as decode_chunk, encode_chunk, BlockEntity, Column, Light, Packet, Section};
+	let mut cx = Session::new();
+	let mut col = Column::new(0, 0, true, Version::V26_2);
+	col.sections = (0..24).map(|_| Some(Section::filled(0, Some(0)))).collect();
+	col.light = Some(Light::new(24, true));
+	col.entities = vec![BlockEntity {
+		x: 1,
+		y: 64,
+		z: 2,
+		kind: Some(0),
+		name: String::new(),
+		nbt: Some(Tag::new(sherd_list(&["minecraft:heart_pottery_sherd"]))),
+	}];
+	let mut converted = Vec::new();
+	for bytes in encode_chunk(Version::V26_2, &col).unwrap() {
+		converted.extend(convert(Root::PlayToClient, Version::V26_2, Version::V26_3, &bytes, &mut cx).unwrap());
+	}
+	let entities: Vec<BlockEntity> = converted
+		.iter()
+		.filter_map(|b| match decode_chunk(Version::V26_3, b).unwrap() {
+			Some(Packet::Chunk(c)) => Some(c.entities),
+			_ => None,
+		})
+		.flatten()
+		.collect();
+	let [e] = entities.as_slice() else {
+		panic!("{entities:?}")
+	};
+	assert_eq!(sides_of(&e.nbt.as_ref().unwrap().value)[0], "minecraft:heart_pottery_sherd");
+	let mut back = Vec::new();
+	for bytes in &converted {
+		back.extend(convert(Root::PlayToClient, Version::V26_3, Version::V26_2, bytes, &mut cx).unwrap());
+	}
+	let entities: Vec<BlockEntity> = back
+		.iter()
+		.filter_map(|b| match decode_chunk(Version::V26_2, b).unwrap() {
+			Some(Packet::Chunk(c)) => Some(c.entities),
+			_ => None,
+		})
+		.flatten()
+		.collect();
+	assert_eq!(list_of(&entities[0].nbt.as_ref().unwrap().value)[0], "minecraft:heart_pottery_sherd");
+}
