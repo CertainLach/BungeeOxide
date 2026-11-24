@@ -999,6 +999,38 @@ pub const FILES: &[(&str, &str)] = &[
 		include_str!("../../data/26.3/sounds.txt"),
 	),
 	(
+		"26.4-snapshot-10/biomes.txt",
+		include_str!("../../data/26.4-snapshot-10/biomes.txt"),
+	),
+	(
+		"26.4-snapshot-10/blocks.txt",
+		include_str!("../../data/26.4-snapshot-10/blocks.txt"),
+	),
+	(
+		"26.4-snapshot-10/effects.txt",
+		include_str!("../../data/26.4-snapshot-10/effects.txt"),
+	),
+	(
+		"26.4-snapshot-10/entities.txt",
+		include_str!("../../data/26.4-snapshot-10/entities.txt"),
+	),
+	(
+		"26.4-snapshot-10/items.txt",
+		include_str!("../../data/26.4-snapshot-10/items.txt"),
+	),
+	(
+		"26.4-snapshot-10/loginPacket.json",
+		include_str!("../../data/26.4-snapshot-10/loginPacket.json"),
+	),
+	(
+		"26.4-snapshot-10/particles.txt",
+		include_str!("../../data/26.4-snapshot-10/particles.txt"),
+	),
+	(
+		"26.4-snapshot-10/sounds.txt",
+		include_str!("../../data/26.4-snapshot-10/sounds.txt"),
+	),
+	(
 		"data-versions.tsv",
 		include_str!("../../data/data-versions.tsv"),
 	),
