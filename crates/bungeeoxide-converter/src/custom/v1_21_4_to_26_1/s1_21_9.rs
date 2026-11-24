@@ -9,6 +9,7 @@ use crate::gen::convert::{v1_21_8 as a, v1_21_9 as b, Version};
 use crate::pds::convert::{Error, Result};
 use crate::Session;
 use bungeeoxide_nbt::{Entry, Payload, Tag};
+use std::collections::HashMap;
 
 remaps!(Version::V1_21_8 => Version::V1_21_9 { late_sound_up_1_21_9: a::item_sound_holder::Ty = remap::sound; });
 remaps!(Version::V1_21_9 => Version::V1_21_8 { late_sound_down_1_21_8: a::item_sound_holder::Ty = remap::sound; });
@@ -541,6 +542,7 @@ pub fn late_meta_entity_down_1_21_8(
 	cx: &mut Session,
 ) -> Result<i32> {
 	shared::meta_entity(cx, Version::V1_21_9, p.entity_id);
+	mannequin_metadata(p, cx)?;
 	Ok(p.entity_id)
 }
 
@@ -732,6 +734,418 @@ pub fn late_rotation_down_1_21_8(
 	};
 	*r = Rotation { yaw, pitch };
 	Ok(a::play_to_client_packet_player_rotation::Ty { yaw, pitch })
+}
+
+struct Mannequin {
+	uuid: u128,
+	name: String,
+	x: f64,
+	y: f64,
+	z: f64,
+	yaw: i8,
+	pitch: i8,
+	head_yaw: i8,
+	properties: Vec<a::game_profile_properties_items::Ty>,
+	metadata: Vec<b::entity_metadata_entry::Ty>,
+	passengers: Vec<i32>,
+	equipment: Vec<b::play_to_client_packet_entity_equipment_equipments_items::Ty>,
+}
+
+#[derive(Default)]
+struct Mannequins {
+	by_id: HashMap<i32, Mannequin>,
+	bundling: bool,
+}
+
+fn mannequins(cx: &mut Session) -> &mut Mannequins {
+	cx.state::<Mannequins>()
+}
+
+fn hidden_name() -> String {
+	use std::hash::BuildHasher;
+	let mut bits = std::collections::hash_map::RandomState::new().hash_one(4u8);
+	let mut name = String::new();
+	for _ in 0..7 {
+		name.push('\u{a7}');
+		name.push(char::from_digit((bits & 0xf) as u32, 16).unwrap_or('f'));
+		bits >>= 4;
+	}
+	name.push_str("\u{a7}r");
+	name
+}
+
+fn empty_text() -> Tag {
+	Tag::new(Payload::String(String::new()))
+}
+
+fn player_info_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
+	use a::play_to_client_packet_player_info_data_items_chat_session::Ty as Session;
+	use a::play_to_client_packet_player_info_data_items_display_name::Ty as Name;
+	use a::play_to_client_packet_player_info_data_items_gamemode::Ty as Gamemode;
+	use a::play_to_client_packet_player_info_data_items_latency::Ty as Latency;
+	use a::play_to_client_packet_player_info_data_items_list_priority::Ty as Priority;
+	use a::play_to_client_packet_player_info_data_items_listed::Ty as Listed;
+	use a::play_to_client_packet_player_info_data_items_player::Ty as Player;
+	use a::play_to_client_packet_player_info_data_items_show_hat::Ty as Hat;
+	a::play_to_client_packet::Ty::PlayerInfo(a::play_to_client_packet_player_info::Ty {
+		action: a::play_to_client_packet_player_info_action::Ty {
+			add_player: true,
+			initialize_chat: true,
+			update_game_mode: true,
+			update_listed: true,
+			update_latency: true,
+			update_display_name: true,
+			update_list_order: true,
+			update_hat: true,
+		},
+		data: vec![a::play_to_client_packet_player_info_data_items::Ty {
+			uuid: m.uuid,
+			player: Player::True(a::game_profile::Ty {
+				name: m.name.clone(),
+				properties: m.properties.clone(),
+			}),
+			chat_session: Session::True(None),
+			gamemode: Gamemode::True(0),
+			listed: Listed::True(0),
+			latency: Latency::True(0),
+			display_name: Name::True(None),
+			list_priority: Priority::True(1000),
+			show_hat: Hat::True(true),
+		}],
+	})
+}
+
+fn team_add(m: &Mannequin) -> a::play_to_client_packet::Ty {
+	a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
+		team: m.name.clone(),
+		mode: a::play_to_client_packet_teams_mode::Ty::Add(a::play_to_client_packet_teams_mode_add::Ty {
+			name: empty_text(),
+			flags: a::play_to_client_packet_teams_mode_add_flags::Ty {
+				friendly_fire: false,
+				see_friendly_invisible: false,
+			},
+			name_tag_visibility: a::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Never,
+			collision_rule: a::play_to_client_packet_teams_mode_add_collision_rule::Ty::Always,
+			formatting: 21,
+			prefix: empty_text(),
+			suffix: empty_text(),
+			players: vec![m.name.clone()],
+		}),
+	})
+}
+
+fn forget(m: &Mannequin) -> [a::play_to_client_packet::Ty; 2] {
+	[
+		a::play_to_client_packet::Ty::PlayerRemove(vec![m.uuid]),
+		a::play_to_client_packet::Ty::Teams(a::play_to_client_packet_teams::Ty {
+			team: m.name.clone(),
+			mode: a::play_to_client_packet_teams_mode::Ty::Remove,
+		}),
+	]
+}
+
+fn player_spawn(id: i32, m: &Mannequin) -> Result<a::play_to_client_packet::Ty> {
+	let player = crate::registry::names(Version::V1_21_8, "entities")
+		.and_then(|n| n.id("player"))
+		.ok_or(Error::Dropped)?;
+	Ok(a::play_to_client_packet::Ty::SpawnEntity(
+		a::play_to_client_packet_spawn_entity::Ty {
+			entity_id: id,
+			object_uuid: m.uuid,
+			r#type: player as i32,
+			x: m.x,
+			y: m.y,
+			z: m.z,
+			pitch: m.pitch,
+			yaw: m.yaw,
+			head_pitch: m.head_yaw,
+			object_data: 0,
+			velocity: a::vec3i16::Ty { x: 0, y: 0, z: 0 },
+		},
+	))
+}
+
+fn queue_old(cx: &mut Session, p: &a::play_to_client_packet::Ty) -> Result<()> {
+	let data = super::util::encode(p, a::play_to_client_packet::serialize)?;
+	cx.send(crate::gen::convert::Root::PlayToClient, Version::V1_21_8, data);
+	Ok(())
+}
+
+fn queue_new(cx: &mut Session, p: &b::play_to_client_packet::Ty) -> Result<()> {
+	let data = super::util::encode(p, b::play_to_client_packet::serialize)?;
+	cx.send(crate::gen::convert::Root::PlayToClient, Version::V1_21_9, data);
+	Ok(())
+}
+
+fn profile_properties(p: &b::resolvable_profile::Ty) -> Vec<a::game_profile_properties_items::Ty> {
+	let properties = match &p.anon {
+		b::resolvable_profile_anon::Ty::Partial(p) => p.properties.as_slice(),
+		b::resolvable_profile_anon::Ty::Complete(p) => p.properties.as_slice(),
+		b::resolvable_profile_anon::Ty::Default(_) => &[],
+	};
+	properties
+		.iter()
+		.map(|p| a::game_profile_properties_items::Ty {
+			name: p.name.clone(),
+			value: p.value.clone(),
+			signature: p.signature.clone(),
+		})
+		.collect()
+}
+
+fn mannequin_metadata(
+	p: &b::play_to_client_packet_entity_metadata::Ty,
+	cx: &mut Session,
+) -> Result<()> {
+	let Some(m) = mannequins(cx).by_id.get_mut(&p.entity_id) else {
+		return Ok(());
+	};
+	let mut profile = None;
+	for e in &p.metadata {
+		match &e.value {
+			b::entity_metadata_entry_value::Ty::ResolvableProfile(v) => profile = Some(v),
+			_ => {
+				m.metadata.retain(|old| old.key != e.key);
+				m.metadata.push(e.clone());
+			}
+		}
+	}
+	if let Some(profile) = profile {
+		m.properties = profile_properties(profile);
+		respawn_mannequin(cx, p.entity_id)?;
+	}
+	Ok(())
+}
+
+fn respawn_mannequin(cx: &mut Session, id: i32) -> Result<()> {
+	let bundling = mannequins(cx).bundling;
+	let Some(m) = mannequins(cx).by_id.remove(&id) else {
+		return Ok(());
+	};
+	let mut old = Vec::new();
+	if !bundling {
+		old.push(a::play_to_client_packet::Ty::BundleDelimiter);
+	}
+	old.push(a::play_to_client_packet::Ty::EntityDestroy(vec![id]));
+	old.push(a::play_to_client_packet::Ty::PlayerRemove(vec![m.uuid]));
+	old.push(player_info_add(&m));
+	old.push(player_spawn(id, &m)?);
+	for p in &old {
+		queue_old(cx, p)?;
+	}
+	if !m.metadata.is_empty() {
+		queue_new(
+			cx,
+			&b::play_to_client_packet::Ty::EntityMetadata(b::play_to_client_packet_entity_metadata::Ty {
+				entity_id: id,
+				metadata: m.metadata.clone(),
+			}),
+		)?;
+	}
+	if !m.passengers.is_empty() {
+		queue_old(
+			cx,
+			&a::play_to_client_packet::Ty::SetPassengers(a::play_to_client_packet_set_passengers::Ty {
+				entity_id: id,
+				passengers: m.passengers.clone(),
+			}),
+		)?;
+	}
+	if !m.equipment.is_empty() {
+		queue_new(
+			cx,
+			&b::play_to_client_packet::Ty::EntityEquipment(b::play_to_client_packet_entity_equipment::Ty {
+				entity_id: id,
+				equipments: m.equipment.clone(),
+			}),
+		)?;
+	}
+	if !bundling {
+		queue_old(cx, &a::play_to_client_packet::Ty::BundleDelimiter)?;
+	}
+	mannequins(cx).by_id.insert(id, m);
+	Ok(())
+}
+
+pub fn late_spawn_entity_down_1_21_8(
+	p: b::play_to_client_packet_spawn_entity::Ty,
+	cx: &mut Session,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	let spawn = a::play_to_client_packet_spawn_entity::Ty {
+		entity_id: p.entity_id,
+		object_uuid: p.object_uuid,
+		r#type: late_spawn_type_down_1_21_8(&p, cx)?,
+		x: p.x,
+		y: p.y,
+		z: p.z,
+		pitch: p.pitch,
+		yaw: p.yaw,
+		head_pitch: p.head_pitch,
+		object_data: late_object_data_down_1_21_8(&p, cx)?,
+		velocity: late_spawn_velocity_down_1_21_8(&p, cx)?,
+	};
+	let mut out = Vec::new();
+	if let Some(stale) = mannequins(cx).by_id.remove(&p.entity_id) {
+		out.extend(forget(&stale));
+	}
+	let kind = crate::registry::names(Version::V1_21_9, "entities").and_then(|n| n.name(p.r#type.max(0) as u32));
+	if kind == Some("mannequin") {
+		let m = Mannequin {
+			uuid: p.object_uuid,
+			name: hidden_name(),
+			x: p.x,
+			y: p.y,
+			z: p.z,
+			yaw: p.yaw,
+			pitch: p.pitch,
+			head_yaw: p.head_pitch,
+			properties: Vec::new(),
+			metadata: Vec::new(),
+			passengers: Vec::new(),
+			equipment: Vec::new(),
+		};
+		out.push(player_info_add(&m));
+		out.push(team_add(&m));
+		mannequins(cx).by_id.insert(p.entity_id, m);
+	}
+	out.push(a::play_to_client_packet::Ty::SpawnEntity(spawn));
+	Ok(out)
+}
+
+pub fn late_entity_destroy_down_1_21_8(
+	ids: Vec<i32>,
+	cx: &mut Session,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	let gone: Vec<Mannequin> = ids
+		.iter()
+		.filter_map(|id| mannequins(cx).by_id.remove(id))
+		.collect();
+	let mut out = vec![a::play_to_client_packet::Ty::EntityDestroy(ids)];
+	for m in &gone {
+		out.extend(forget(m));
+	}
+	Ok(out)
+}
+
+pub fn late_bundle_down_1_21_8(
+	_v: (),
+	cx: &mut Session,
+) -> Result<Vec<a::play_to_client_packet::Ty>> {
+	let m = mannequins(cx);
+	m.bundling = !m.bundling;
+	Ok(vec![a::play_to_client_packet::Ty::BundleDelimiter])
+}
+
+pub fn late_login_entity_down_1_21_8(
+	p: &b::play_to_client_packet_login::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	*mannequins(cx) = Mannequins::default();
+	Ok(p.entity_id)
+}
+
+pub fn late_respawn_down_1_21_8(
+	p: &b::play_to_client_packet_respawn::Ty,
+	cx: &mut Session,
+) -> Result<u8> {
+	let gone = std::mem::take(&mut mannequins(cx).by_id);
+	for m in gone.values() {
+		for packet in forget(m) {
+			queue_old(cx, &packet)?;
+		}
+	}
+	Ok(p.copy_metadata)
+}
+
+fn track(cx: &mut Session, id: i32, f: impl FnOnce(&mut Mannequin)) -> i32 {
+	if let Some(m) = mannequins(cx).by_id.get_mut(&id) {
+		f(m);
+	}
+	id
+}
+
+fn angle(degrees: f32) -> i8 {
+	(degrees * 256.0 / 360.0).floor() as i32 as i8
+}
+
+pub fn late_teleport_entity_down_1_21_8(
+	p: &b::play_to_client_packet_entity_teleport::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| {
+		let r = &p.flags;
+		m.x = if r.x { m.x + p.x } else { p.x };
+		m.y = if r.y { m.y + p.y } else { p.y };
+		m.z = if r.z { m.z + p.z } else { p.z };
+		m.yaw = if r.yaw { m.yaw.wrapping_add(angle(p.yaw)) } else { angle(p.yaw) };
+		m.pitch = if r.pitch { m.pitch.wrapping_add(angle(p.pitch)) } else { angle(p.pitch) };
+	}))
+}
+
+pub fn late_sync_position_entity_down_1_21_8(
+	p: &b::play_to_client_packet_sync_entity_position::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| {
+		(m.x, m.y, m.z) = (p.x, p.y, p.z);
+		(m.yaw, m.pitch) = (angle(p.yaw), angle(p.pitch));
+	}))
+}
+
+fn moved(m: &mut Mannequin, dx: i16, dy: i16, dz: i16) {
+	m.x += dx as f64 / 4096.0;
+	m.y += dy as f64 / 4096.0;
+	m.z += dz as f64 / 4096.0;
+}
+
+pub fn late_rel_move_entity_down_1_21_8(
+	p: &b::play_to_client_packet_rel_entity_move::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| moved(m, p.d_x, p.d_y, p.d_z)))
+}
+
+pub fn late_move_look_entity_down_1_21_8(
+	p: &b::play_to_client_packet_entity_move_look::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| {
+		moved(m, p.d_x, p.d_y, p.d_z);
+		(m.yaw, m.pitch) = (p.yaw, p.pitch);
+	}))
+}
+
+pub fn late_look_entity_down_1_21_8(
+	p: &b::play_to_client_packet_entity_look::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| (m.yaw, m.pitch) = (p.yaw, p.pitch)))
+}
+
+pub fn late_head_rotation_entity_down_1_21_8(
+	p: &b::play_to_client_packet_entity_head_rotation::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| m.head_yaw = p.head_yaw))
+}
+
+pub fn late_passengers_entity_down_1_21_8(
+	p: &b::play_to_client_packet_set_passengers::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| m.passengers = p.passengers.clone()))
+}
+
+pub fn late_equipment_entity_down_1_21_8(
+	p: &b::play_to_client_packet_entity_equipment::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	Ok(track(cx, p.entity_id, |m| {
+		for e in &p.equipments {
+			m.equipment.retain(|old| old.slot != e.slot);
+			m.equipment.push(e.clone());
+		}
+	}))
 }
 
 text_down!(b => a, text::unobject, {

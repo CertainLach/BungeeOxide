@@ -1908,3 +1908,194 @@ fn own_player_metadata_keeps_the_player_layout_on_old_clients() {
 	keys.sort();
 	assert_eq!(keys, vec![(11, 2), (12, 1), (13, 0), (14, 0)]);
 }
+
+const MANNEQUIN: u128 = 0x0123_4567_89ab_4cde_8f01_2345_6789_abcd;
+
+fn mannequin_spawn(entity: i32) -> v1_21_9::play_to_client_packet::Ty {
+	v1_21_9::play_to_client_packet::Ty::SpawnEntity(v1_21_9::play_to_client_packet_spawn_entity::Ty {
+		entity_id: entity,
+		object_uuid: MANNEQUIN,
+		r#type: id(Version::V1_21_9, "entities", "mannequin"),
+		x: 1.5,
+		y: 64.0,
+		z: -2.5,
+		velocity: vec![0],
+		pitch: 0,
+		yaw: 64,
+		head_pitch: 64,
+		object_data: 0,
+	})
+}
+
+fn mannequin_profile(entity: i32) -> v1_21_9::play_to_client_packet::Ty {
+	v1_21_9::play_to_client_packet::Ty::EntityMetadata(v1_21_9::play_to_client_packet_entity_metadata::Ty {
+		entity_id: entity,
+		metadata: vec![
+			v1_21_9::entity_metadata_entry::Ty {
+				key: 17,
+				value: v1_21_9::entity_metadata_entry_value::Ty::ResolvableProfile(v1_21_9::resolvable_profile::Ty {
+					anon: v1_21_9::resolvable_profile_anon::Ty::Complete(v1_21_9::game_profile::Ty {
+						uuid: 7,
+						name: "Skin".into(),
+						properties: vec![v1_21_9::game_profile_property::Ty {
+							name: "textures".into(),
+							value: "e30=".into(),
+							signature: Some("sig".into()),
+						}],
+					}),
+					skin_patch: v1_21_9::player_skin_patch::Ty {
+						body: None,
+						cape: None,
+						elytra: None,
+						model: None,
+					},
+				}),
+			},
+			v1_21_9::entity_metadata_entry::Ty {
+				key: 0,
+				value: v1_21_9::entity_metadata_entry_value::Ty::Byte(0x20),
+			},
+		],
+	})
+}
+
+fn to_1_21_8(p: &v1_21_9::play_to_client_packet::Ty, cx: &mut Session) -> Vec<v1_21_8::play_to_client_packet::Ty> {
+	run(
+		Root::PlayToClient,
+		Version::V1_21_9,
+		Version::V1_21_8,
+		p,
+		v1_21_9::play_to_client_packet::serialize,
+		v1_21_8::play_to_client_packet::deserialize,
+		cx,
+	)
+}
+
+fn queued_1_21_8(cx: &mut Session) -> Vec<v1_21_8::play_to_client_packet::Ty> {
+	let mut out = Vec::new();
+	for o in cx.take_outgoing() {
+		for b in convert(o.root, o.version, Version::V1_21_8, &o.data, cx).unwrap() {
+			out.push(decode(&b, v1_21_8::play_to_client_packet::deserialize));
+		}
+	}
+	out
+}
+
+#[test]
+fn mannequins_get_a_hidden_player_entry_before_the_spawn() {
+	use v1_21_8::play_to_client_packet::Ty as P;
+	use v1_21_8::play_to_client_packet_player_info_data_items_listed::Ty as Listed;
+	use v1_21_8::play_to_client_packet_player_info_data_items_player::Ty as Player;
+	let mut cx = Session::new();
+	let out = to_1_21_8(&mannequin_spawn(40), &mut cx);
+	let [P::PlayerInfo(info), P::Teams(team), P::SpawnEntity(spawn)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let [entry] = info.data.as_slice() else {
+		panic!("{info:?}")
+	};
+	assert!(info.action.add_player);
+	assert_eq!(entry.uuid, MANNEQUIN);
+	assert!(matches!(entry.listed, Listed::True(0)));
+	let Player::True(profile) = &entry.player else {
+		panic!("{entry:?}")
+	};
+	assert!(profile.properties.is_empty());
+	assert!(profile.name.chars().count() <= 16);
+	assert_eq!(team.team, profile.name);
+	let v1_21_8::play_to_client_packet_teams_mode::Ty::Add(add) = &team.mode else {
+		panic!("{team:?}")
+	};
+	assert_eq!(add.players, [profile.name.clone()]);
+	assert!(matches!(
+		add.name_tag_visibility,
+		v1_21_8::play_to_client_packet_teams_mode_add_name_tag_visibility::Ty::Never
+	));
+	assert_eq!(spawn.r#type, id(Version::V1_21_8, "entities", "player"));
+	assert_eq!((spawn.object_uuid, spawn.x, spawn.z), (MANNEQUIN, 1.5, -2.5));
+	assert!(cx.take_outgoing().is_empty());
+
+	let out = to_1_21_8(&mannequin_profile(40), &mut cx);
+	let [P::EntityMetadata(m)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	assert_eq!(m.metadata.len(), 1);
+	let again = queued_1_21_8(&mut cx);
+	let names: Vec<&str> = again
+		.iter()
+		.map(|p| match p {
+			P::BundleDelimiter => "bundle",
+			P::EntityDestroy(_) => "destroy",
+			P::PlayerRemove(_) => "remove",
+			P::PlayerInfo(_) => "info",
+			P::SpawnEntity(_) => "spawn",
+			P::EntityMetadata(_) => "metadata",
+			other => panic!("{other:?}"),
+		})
+		.collect();
+	assert_eq!(
+		names,
+		["bundle", "destroy", "remove", "info", "spawn", "metadata", "bundle"]
+	);
+	let P::PlayerInfo(info) = &again[3] else { unreachable!() };
+	let Player::True(skinned) = &info.data[0].player else {
+		panic!("{info:?}")
+	};
+	assert_eq!(skinned.name, profile.name);
+	assert_eq!(skinned.properties.len(), 1);
+	assert_eq!(skinned.properties[0].value, "e30=");
+	let P::SpawnEntity(respawn) = &again[4] else { unreachable!() };
+	assert_eq!((respawn.entity_id, respawn.x, respawn.yaw), (40, 1.5, 64));
+
+	let out = to_1_21_8(&v1_21_9::play_to_client_packet::Ty::EntityDestroy(vec![40]), &mut cx);
+	let [P::EntityDestroy(ids), P::PlayerRemove(uuids), P::Teams(removed)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	assert_eq!((ids.as_slice(), uuids.as_slice()), ([40].as_slice(), [MANNEQUIN].as_slice()));
+	assert_eq!(removed.team, profile.name);
+	assert!(matches!(removed.mode, v1_21_8::play_to_client_packet_teams_mode::Ty::Remove));
+	let out = to_1_21_8(&v1_21_9::play_to_client_packet::Ty::EntityDestroy(vec![40]), &mut cx);
+	assert!(matches!(out.as_slice(), [P::EntityDestroy(_)]));
+}
+
+#[test]
+fn mannequin_entries_precede_named_spawns_below_1_20_2() {
+	for version in [Version::V1_20, Version::V1_12_2, Version::V1_8, Version::V1_7, Version::V1_6_4] {
+		let mut cx = Session::new();
+		let names = |cx: &mut Session, p: &v1_21_9::play_to_client_packet::Ty| -> Vec<&'static str> {
+			let bytes = encode(p, v1_21_9::play_to_client_packet::serialize);
+			convert(Root::PlayToClient, Version::V1_21_9, version, &bytes, cx)
+				.unwrap()
+				.iter()
+				.filter_map(|b| bungeeoxide_converter::gen::convert::packet_name(Root::PlayToClient, version, b))
+				.collect()
+		};
+		let spawned = names(&mut cx, &mannequin_spawn(40));
+		let info = spawned.iter().position(|n| *n == "player_info");
+		let spawn = spawned.iter().position(|n| *n == "named_entity_spawn");
+		assert!(
+			matches!((info, spawn), (Some(i), Some(s)) if i < s),
+			"{version}: {spawned:?}"
+		);
+		assert!(spawned.iter().any(|n| n.contains("team")), "{version}: {spawned:?}");
+		names(&mut cx, &mannequin_profile(40));
+		let mut respawned = Vec::new();
+		for o in cx.take_outgoing() {
+			for b in convert(o.root, o.version, version, &o.data, &mut cx).unwrap() {
+				respawned.extend(bungeeoxide_converter::gen::convert::packet_name(Root::PlayToClient, version, &b));
+			}
+		}
+		let destroy = respawned.iter().position(|n| *n == "entity_destroy");
+		let info = respawned.iter().rposition(|n| *n == "player_info");
+		let spawn = respawned.iter().position(|n| *n == "named_entity_spawn");
+		assert!(
+			matches!((destroy, info, spawn), (Some(d), Some(i), Some(s)) if d < i && i < s),
+			"{version}: {respawned:?}"
+		);
+		let gone = names(&mut cx, &v1_21_9::play_to_client_packet::Ty::EntityDestroy(vec![40]));
+		assert_eq!(gone[0], "entity_destroy", "{version}: {gone:?}");
+		assert!(gone.contains(&"player_info") || gone.contains(&"player_remove"), "{version}: {gone:?}");
+		assert!(gone.iter().any(|n| n.contains("team")), "{version}: {gone:?}");
+	}
+}
+
