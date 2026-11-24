@@ -6,15 +6,19 @@
 + play::toClient::packet_swing_animation
 + play::toServer::packet_punch
 - play::toServer::packet_arm_animation
+~ ArmorTrimMaterial [FieldsRemoved, FieldsRenamed]
+    assetBase renamed to paletteId
+    -overrideArmorAssets: field() => array(Count: varint) => container { field(key) => string; field(value) => string; };
 = DataComponentMatchers (references changed)
 = ExactComponentMatcher (references changed)
 = HashedSlot (references changed)
+~ InstrumentData [FieldsAdded]
+    +durabilityDamage: field() => varint;
 = ItemBlockPredicate (references changed)
-~ ItemBlockProperty [FieldsRetypedNested]
-    ~value: nested change
+~ ItemConsumeEffect [ArmsChanged]
+    ~teleport_randomly
 = ItemStackTemplate (references changed)
-~ Particle [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
-    ~geyser_plume
+~ Particle [Renumbered, ArmsAdded, ArmsRemoved]
     +trial_spawner_detection
     +trial_spawner_detection_ominous
     +red_poplar_leaves
@@ -75,6 +79,9 @@
 = play::toClient::RecipeDisplay (references changed)
 ~ play::toClient::SlotDisplay [ArmsChanged]
     ~tag
+~ play::toClient::SpawnInfo [FieldsRetypedScalar, FieldsRetypedNested]
+    ~gamemode: nested change
+    ~previousGamemode: field() => u8; -> field() => optvarint;
 ~ play::toClient::packet [Renumbered, ArmsAdded]
     +add_transient_block
     +post_effects
@@ -86,6 +93,8 @@
 = play::toClient::packet_declare_commands (references changed)
 = play::toClient::packet_declare_recipes (references changed)
 = play::toClient::packet_entity_equipment (references changed)
+~ play::toClient::packet_entity_look [FieldsReordered]
+    fields reordered
 = play::toClient::packet_entity_metadata (references changed)
 ~ play::toClient::packet_entity_move_look [FieldsAdded, FieldsRemoved]
     +move: field() => entityDelta;
@@ -95,11 +104,14 @@
     -onGround: field() => bool;
 ~ play::toClient::packet_explosion [FieldsAdded]
     +playSound: field() => bool;
+= play::toClient::packet_login (references changed)
 ~ play::toClient::packet_map_chunk [FieldsRetypedNested]
     ~skyLightMask: nested change
     ~blockLightMask: nested change
     ~emptySkyLightMask: nested change
     ~emptyBlockLightMask: nested change
+~ play::toClient::packet_player_chat [FieldsRetypedNested]
+    ~filterTypeMask: nested change
 = play::toClient::packet_recipe_book_add (references changed)
 ~ play::toClient::packet_rel_entity_move [FieldsAdded, FieldsRemoved]
     +move: field() => entityDelta;
@@ -107,6 +119,7 @@
     -dY: field() => i16;
     -dZ: field() => i16;
     -onGround: field() => bool;
+= play::toClient::packet_respawn (references changed)
 = play::toClient::packet_set_cursor_item (references changed)
 = play::toClient::packet_set_player_inventory (references changed)
 = play::toClient::packet_set_slot (references changed)
@@ -137,7 +150,6 @@
     -arm_animation
     17 arms renumbered
 = play::toServer::packet_set_creative_slot (references changed)
-~ play::toServer::packet_spectator_action [Other]
 ~ play::toServer::packet_teleport_confirm [ShapeChanged]
 ~ play::toServer::packet_update_sign [FieldsReordered]
     fields reordered

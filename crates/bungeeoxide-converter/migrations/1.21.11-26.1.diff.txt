@@ -10,6 +10,7 @@
 = DataComponentMatchers (references changed)
 = ExactComponentMatcher (references changed)
 = HashedSlot (references changed)
+= ItemBlockPredicate (references changed)
 ~ Particle [Renumbered, ArmsAdded, ArmsChanged]
     ~item
     +pause_mob_growth

@@ -30,6 +30,7 @@
 - vec3i16
 = DataComponentMatchers (references changed)
 = ExactComponentMatcher (references changed)
+= ItemBlockPredicate (references changed)
 ~ Particle [Renumbered, ArmsAdded, ArmsChanged]
     ~effect
     ~flash

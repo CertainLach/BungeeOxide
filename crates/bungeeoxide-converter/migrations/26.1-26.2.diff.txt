@@ -1,7 +1,6 @@
 + play::toServer::packet_spectator_action
 - play::toServer::packet_spectate_entity
-~ DataComponentMatchers [FieldsRetypedNested]
-    ~partialMatchers: nested change
+= DataComponentMatchers (references changed)
 = ExactComponentMatcher (references changed)
 = HashedSlot (references changed)
 = ItemBlockPredicate (references changed)
@@ -17,19 +16,8 @@
     +geyser_poof
     113 arms renumbered
 = Slot (references changed)
-~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
-    ~zombie_nautilus_variant
-    ~damage_resistant
-    ~blocks_attacks
-    ~instrument
-    ~provides_trim_material
-    ~jukebox_playable
-    ~provides_banner_patterns
-    ~bees
+~ SlotComponent [Renumbered, ArmsAdded]
     +sulfur_cube_content
-    ~damage_type
-    ~chicken_variant
-    ~chicken_sound_variant
     32 arms renumbered
 ~ SlotComponentType [Renumbered, ArmsAdded]
     +sulfur_cube_content
@@ -42,11 +30,6 @@
 = login::toClient::packet (references changed)
 ~ login::toClient::packet_success [FieldsAdded]
     +sessionId: field() => UUID;
-= play::toClient::ChatType (references changed)
-~ play::toClient::ChatTypeParameterType [Renumbered]
-    3 arms renumbered
-= play::toClient::ChatTypes (references changed)
-= play::toClient::ChatTypesHolder (references changed)
 = play::toClient::ExplosionParticleEntry (references changed)
 = play::toClient::ExplosionParticleInfo (references changed)
 = play::toClient::RecipeDisplay (references changed)
@@ -60,16 +43,8 @@
 ~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
     ~properties: nested change
 = play::toClient::packet_explosion (references changed)
-~ play::toClient::packet_initialize_world_border [FieldsRetypedScalar]
-    ~speed: field() => varlong; -> field() => varint;
 ~ play::toClient::packet_login [FieldsAdded]
     +onlineMode: field() => bool;
-~ play::toClient::packet_move_minecart [FieldsRetypedNested]
-    ~steps: nested change
-= play::toClient::packet_player_chat (references changed)
-~ play::toClient::packet_player_info [FieldsRetypedNested]
-    ~action: nested change
-= play::toClient::packet_profileless_chat (references changed)
 = play::toClient::packet_recipe_book_add (references changed)
 = play::toClient::packet_set_cursor_item (references changed)
 = play::toClient::packet_set_player_inventory (references changed)
@@ -78,13 +53,9 @@
     ~mode: nested change
 = play::toClient::packet_trade_list (references changed)
 = play::toClient::packet_window_items (references changed)
-~ play::toClient::packet_world_border_lerp_size [FieldsRetypedScalar]
-    ~speed: field() => varlong; -> field() => varint;
 = play::toClient::packet_world_particles (references changed)
 ~ play::toServer::packet [ArmsAdded, ArmsRemoved]
     +spectator_action
     -spectate_entity
 = play::toServer::packet_set_creative_slot (references changed)
-~ play::toServer::packet_update_structure_block [FieldsRetypedNested]
-    ~flags: nested change
 = play::toServer::packet_window_click (references changed)

@@ -1,0 +1,36 @@
+[
+	{
+		"op": "test",
+		"path": "/types/ItemBlockProperty/1/2/type/1/fields/false/1",
+		"value": [
+			{
+				"name": "minValue",
+				"type": "string"
+			},
+			{
+				"name": "maxValue",
+				"type": "string"
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/ItemBlockProperty/1/2/type/1/fields/false/1",
+		"value": [
+			{
+				"name": "minValue",
+				"type": [
+					"option",
+					"string"
+				]
+			},
+			{
+				"name": "maxValue",
+				"type": [
+					"option",
+					"string"
+				]
+			}
+		]
+	}
+]

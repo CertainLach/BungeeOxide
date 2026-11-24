@@ -112,9 +112,9 @@ def(ItemBlockProperty) => container {
 
 	field(value) => union(Tag: bool) {
 		variant(false, match: false) => container {
-			field(minValue) => string;
+			field(minValue) => option => string;
 
-			field(maxValue) => string;
+			field(maxValue) => option => string;
 		};
 
 		variant(true, match: true) => string;

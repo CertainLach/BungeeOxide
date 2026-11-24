@@ -1,0 +1,236 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_entity_look/1",
+		"value": [
+			{
+				"name": "entityId",
+				"type": "varint"
+			},
+			{
+				"name": "yaw",
+				"type": "i8"
+			},
+			{
+				"name": "pitch",
+				"type": "i8"
+			},
+			{
+				"name": "onGround",
+				"type": "bool"
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_entity_look/1",
+		"value": [
+			{
+				"name": "entityId",
+				"type": "varint"
+			},
+			{
+				"name": "onGround",
+				"type": "bool"
+			},
+			{
+				"name": "yaw",
+				"type": "i8"
+			},
+			{
+				"name": "pitch",
+				"type": "i8"
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/SpawnInfo/1/3",
+		"value": {
+			"name": "gamemode",
+			"type": [
+				"mapper",
+				{
+					"type": "i8",
+					"mappings": {
+						"0": "survival",
+						"1": "creative",
+						"2": "adventure",
+						"3": "spectator"
+					}
+				}
+			]
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/SpawnInfo/1/3/type/1/type",
+		"value": "varint"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/SpawnInfo/1/4",
+		"value": {
+			"name": "previousGamemode",
+			"type": "u8"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/SpawnInfo/1/4/type",
+		"value": "optvarint"
+	},
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_player_chat/1/10",
+		"value": {
+			"name": "filterTypeMask",
+			"type": [
+				"switch",
+				{
+					"compareTo": "filterType",
+					"fields": {
+						"2": [
+							"array",
+							{
+								"countType": "varint",
+								"type": "i64"
+							}
+						]
+					},
+					"default": "void"
+				}
+			]
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_player_chat/1/10/type/1/fields/2",
+		"value": "ByteArray"
+	},
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_spectator_action/1/0",
+		"value": {
+			"name": "entityId",
+			"type": [
+				"option",
+				"varint"
+			]
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toServer/types/packet_spectator_action/1/0/type",
+		"value": "optvarint"
+	},
+	{
+		"op": "test",
+		"path": "/types/InstrumentData/1/3",
+		"value": {
+			"name": "description",
+			"type": "anonymousNbt"
+		}
+	},
+	{
+		"op": "add",
+		"path": "/types/InstrumentData/1/3",
+		"value": {
+			"name": "durabilityDamage",
+			"type": "varint"
+		}
+	},
+	{
+		"op": "test",
+		"path": "/types/ArmorTrimMaterial/1",
+		"value": [
+			{
+				"name": "assetBase",
+				"type": "string"
+			},
+			{
+				"name": "overrideArmorAssets",
+				"type": [
+					"array",
+					{
+						"countType": "varint",
+						"type": [
+							"container",
+							[
+								{
+									"name": "key",
+									"type": "string"
+								},
+								{
+									"name": "value",
+									"type": "string"
+								}
+							]
+						]
+					}
+				]
+			},
+			{
+				"name": "description",
+				"type": "anonymousNbt"
+			}
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/ArmorTrimMaterial/1",
+		"value": [
+			{
+				"name": "paletteId",
+				"type": "string"
+			},
+			{
+				"name": "description",
+				"type": "anonymousNbt"
+			}
+		]
+	},
+	{
+		"op": "test",
+		"path": "/types/ItemConsumeEffect/1/1/type/1/fields/teleport_randomly",
+		"value": [
+			"container",
+			[
+				{
+					"name": "diameter",
+					"type": "f32"
+				}
+			]
+		]
+	},
+	{
+		"op": "add",
+		"path": "/types/ItemConsumeEffect/1/1/type/1/fields/teleport_randomly/1/1",
+		"value": {
+			"name": "directionalParticles",
+			"type": "bool"
+		}
+	},
+	{
+		"op": "test",
+		"path": "/types/Particle/1/1/type/1/fields/geyser_plume",
+		"value": [
+			"container",
+			[
+				{
+					"name": "waterBlocks",
+					"type": "i32"
+				},
+				{
+					"name": "burstImpulseBase",
+					"type": "f32"
+				}
+			]
+		]
+	},
+	{
+		"op": "replace",
+		"path": "/types/Particle/1/1/type/1/fields/geyser_plume",
+		"value": "i32"
+	}
+]
