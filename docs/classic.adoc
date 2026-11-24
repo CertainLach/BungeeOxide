@@ -1,0 +1,698 @@
+= Minecraft Classic
+:toc:
+:source-highlighter: rouge
+
+Research notes for adding Minecraft Classic (c0.0.15a to c0.30, plus the
+Classic Protocol Extension) to the pds2 version range. Covers the wire format of
+every Classic protocol, CPE, text, how the schemas in
+`crates/minecraft-versions/pds-classic/` map it to pds, what the language
+can't express yet, how a bridge between Classic and the rest of the chain would
+work, and how all of this was tested against a real server.
+
+NOTE: Only the schemas, the `classicString` native and these notes are kept in
+the repository, as reference. The test crate (`crates/minecraft-classic`), the
+TypeScript codec and client (`ts/minecraft-classic`) and the `classic*` and
+`mcgalaxy` Justfile recipes mentioned below stayed in the research workspace.
+
+== Summary
+
+* Classic has five wire formats: c0.0.15a (no protocol number), protocols 3-5
+  (identical on the wire), 6, 7, and 7 with CPE. Each is a pds schema in
+  `crates/minecraft-versions/pds-classic/`, kept out of `pds/` so that the
+  merged netty/pre-netty chain is untouched. CPE comes in two layout profiles,
+  `c0.30-cpe` and `c0.30-cpe-ext`, because four extensions change packet sizes.
+* All schemas compile with `pds2 compile` to Rust and TypeScript. The
+  generated code parses traffic captured from MCGalaxy 1.9.5.4 for
+  protocols 3, 4, 5, 6, 7, CPE and CPE with the four layout extensions, and
+  re-encodes every packet byte for byte (`crates/minecraft-classic`,
+  `ts/minecraft-classic`). Only c0.0.15a is checked on synthesized bytes alone.
+* One native was needed: `classicString`, 64 bytes of CP437 padded with
+  spaces (`crates/minecraft-natives/src/classic.rs`, `ts/minecraft-classic/pds_native.ts`).
+  Everything else is expressible, with a leaky `padding` field in level
+  chunks. CPE layouts are separate schemas; one schema with a
+  negotiated-extensions argument needed def arguments in nested items, which
+  hit two compiler panics, fixed alongside this research (see <<gaps>>).
+* Mojang does not serve a Classic server: the version manifest lists only the
+  `c0.30_01c` client. MCGalaxy builds and runs from nixpkgs' .NET 8, and
+  ClassiCube 1.3.9 is in nixpkgs for manual tests (`just classic-server`,
+  `nix run nixpkgs#classicube`).
+* Recommended bridge design: a Classic front end in `cmds/bungeeoxide` (like
+  `legacy.rs`, about 300 lines) plus a chain step `c0.30-cpe <-> 1.0.1` whose
+  custom code keeps a window of the world. Classic block ids 0-49 equal the
+  1.0 ids except the 16 cloth colours, and Classic relative moves use the same
+  1/32 block units as 1.0, so most of the work is the world window, entities
+  and inventory. Estimate: 10-12 days for a ClassiCube client on a creative
+  1.0.1+ server, 25-35 days for both directions with CPE niceties (<<effort>>).
+
+== Sources
+
+[cols="1,3"]
+|===
+| Short name | Source
+
+| MW-CP | Classic protocol, merged from wiki.vg: https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Classic_Protocol (wiki.vg original archived at https://web.archive.org/web/20241130182101/https://wiki.vg/Classic_Protocol)
+| MW-old | https://minecraft.wiki/w/Classic_server_protocol
+| MW-PVN | https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Protocol_version_numbers (Classic section)
+| MW-CPE | https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Classic_Protocol_Extension (last revision 11 May 2025; wiki.vg copy https://web.archive.org/web/20241130205857/https://wiki.vg/Classic_Protocol_Extension)
+| ClassiCube | https://github.com/ClassiCube/ClassiCube, `src/Protocol.c`, `src/Protocol.h`, `src/GameVersion.c` (client, BSD-3)
+| MCGalaxy | https://github.com/ClassiCube/MCGalaxy 1.9.5.4, `MCGalaxy/Network/ClassicProtocol.cs`, `Network/Packets/Packet.cs`, `Network/Utils/LevelChunkStream.cs`, `Blocks/Block.Convert.cs`, `Server/Authentication/LoginAuthenticator.cs` (server)
+| ViaLegacy | https://github.com/RaphiMC/ViaLegacy, `protocol/classic/*` (Classic server to newer client translation, the closest prior art)
+| CC-API | https://www.classicube.net/api/docs/server (ClassiCube heartbeat)
+| Wiki pages | `https://minecraft.wiki/w/Java_Edition_Classic_<version>` and `.../Java_Edition_Classic_server_<version>`, https://minecraft.wiki/w/Java_Edition_Classic_data_values, https://minecraft.wiki/w/Server.properties#Java_Edition_Classic
+|===
+
+Where the wiki and the implementations disagree, the implementations win: they
+are what clients and servers speak today. Differences are noted.
+
+== Versions
+
+[cols="1,2,1,3"]
+|===
+| Protocol | Clients | Schema | Change (MW-CP "Version differences", MW-PVN)
+
+| none | c0.0.15a multiplayer test 1-8 (31 May 2009) | `c0.0.15a` | Identification is only the packet id and a name, both ways; the client ignores the server's string. No chat (it arrived in test 5, in an undocumented format), no disconnect, no relative moves; despawn is id 0x09. Default port 5565.
+| unknown | c0.0.15a_01 - c0.0.16a_01 | - | Not documented anywhere.
+| 3 | c0.0.16a_02 (7-8 June 2009, servers 1.0-1.2) | `c0.0.16a` | First minecraft.net heartbeat and server list. Verification key field exists but is not checked. Spawn Player for id 255 swaps yaw and pitch and inverts pitch (MCGalaxy compensates).
+| 4 | c0.0.17a - c0.0.18a_02 (server 1.3-1.4.1) | `c0.0.16a` | Server 1.3 adds `verify-names`. Highest block 18 (leaves). Teleport of id 255 is ignored before 0.0.18a, so servers resend Spawn Player instead.
+| 5 | c0.0.19a - c0.0.19a_06 (servers 1.5-1.7) | `c0.0.16a` | Highest block 20 (glass). Still no user type byte.
+| 6 | c0.0.20a - c0.0.23a_01, c0.24_st - c0.27_st (server 1.8, 20 June 2009) | `c0.0.20a` | User type byte in both identification packets. Highest block 41 (gold block). Multiplayer was disabled during Survival Test, so in practice 0.0.20a-0.0.23a.
+| 7 | c0.28 - c0.30 (server 1.9 - 1.10.1, Oct-Dec 2009) | `c0.30` | Update User Type (0x0f, server 1.9.1). Highest block 49 (obsidian). Server 1.10.1 is the last Classic server.
+| 7 + CPE | ClassiCube, MCGalaxy and other community software | `c0.30-cpe`, `c0.30-cpe-ext` | Client sets the unused identification byte to 0x42 and both sides exchange extension lists, see <<cpe>>.
+|===
+
+The wire formats of protocols 3, 4 and 5 are identical (ViaLegacy's 3-to-4
+and 4-to-5 steps only remap blocks), so one schema lists `@!classic_protocol
+[3, 4, 5]`. MCGalaxy accepts protocols 3 to 7 and converts blocks per version
+(`Block.ConvertClassic`); ClassiCube can pretend to be protocol 4, 5, 6 or 7
+(`GameVersion.c`).
+
+Classic multiplayer ended with c0.30 (servers 1.10/1.10.1, Dec 2009). The
+minecraft.net server list was phased out after Beta 1.8; `heartbeat.jsp` still
+answered in Feb 2014 and was gone by Oct 2015, with the `/classic/play` page
+removed in Sept 2015. The launcher's `c0.30_01c` is a July 2011 re-signed
+creative build.
+
+== Wire format
+
+=== Framing and data types
+
+There is no framing: a packet is a u8 id followed by fixed-size fields, and
+the size of every packet follows from its id (and, with CPE, from the
+negotiated extensions). A reader therefore needs the schema to find packet
+boundaries, exactly like pre-netty versions; the generated `deserialize`
+answers "not enough data" until a packet is complete (`next` in
+`ts/minecraft-classic/codec.ts`, `packet_len` in `cmds/bungeeoxide/src/legacy.rs`).
+
+[cols="1,1,3"]
+|===
+| Type | Size | Meaning
+
+| Byte / SByte | 1 | u8 / i8. Entity ids are bytes, 255 (-1) is the receiving player.
+| FByte | 1 | signed fixed point, 5 fractional bits (relative moves, -4 to 3.97 blocks)
+| Short / FShort | 2 | big-endian i16; FShort is fixed point with 5 fractional bits (-1024 to 1023.97 blocks)
+| String | 64 | US-ASCII (in practice CP437) padded with spaces, see <<text>>
+| Byte array | 1024 | level data, padded with 0x00
+|===
+
+The schemas keep fixed point as raw integers (`position` is three i16 in 1/32
+block), like the pre-netty schemas keep 1.0's i32 entity positions.
+
+=== Login
+
+. Client: Player Identification (0x00): protocol, username, verification key
+  (mppass), and from protocol 6 one more byte: 0 normally, 0x42 for a CPE
+  client. 131 bytes; 130 for protocols 3-5; 65 for c0.0.15a.
+. CPE only: Server answers ExtInfo and ExtEntry packets, the client answers its
+  own; if both list CustomBlocks the server sends CustomBlockSupportLevel and
+  waits for the client's before going on (MW-CPE).
+. Server: Server Identification (0x00): protocol, server name, MOTD, user type
+  (0x64 op, 0x00 normal; op may break bedrock). MCGalaxy also puts a long MOTD
+  into the name field, and resends the packet whenever the MOTD changes.
+. Server: Level Initialize, Level Data Chunks, Level Finalize, then Spawn
+  Player with id 255 for the player itself, then the other players.
+
+ClassiCube sends a Ping (0x01) right after a 130-byte protocol-5 handshake,
+because some protocol-7 servers always read 131 bytes (`Classic_BuildLogin`).
+
+=== Packets
+
+Server to client (sizes include the id byte):
+
+[cols="1,2,1,4"]
+|===
+| Id | Name (schema arm) | Size | Fields
+
+| 0x00 | Server Identification (`identification`) | 131 | protocol u8, serverName, motd, userType u8 (protocols 3-5: 130 without userType; c0.0.15a: 65, a name)
+| 0x01 | Ping (`ping`) | 1 | keep-alive, no answer expected
+| 0x02 | Level Initialize (`level_initialize`) | 1 | FastMap: + volume i32
+| 0x03 | Level Data Chunk (`level_data_chunk`) | 1028 | length i16, data[1024] zero padded, percent u8 (ExtendedBlocks: 0 lower bytes, 1 upper bytes)
+| 0x04 | Level Finalize (`level_finalize`) | 7 | sizeX, sizeY (height), sizeZ u16
+| 0x06 | Set Block (`set_block`) | 8 | x, y, z u16, block u8 (ExtendedBlocks: u16). The server echoes a player's own changes.
+| 0x07 | Spawn Player (`spawn_player`) | 74 | id, name, x, y, z FShort, yaw, pitch. For id 255 it also sets the spawn point.
+| 0x08 | Set Position and Orientation (`teleport`) | 10 | id, x, y, z FShort, yaw, pitch
+| 0x09 | Position and Orientation Update | 7 | id, dx, dy, dz FByte, yaw, pitch
+| 0x0a | Position Update | 5 | id, dx, dy, dz FByte
+| 0x0b | Orientation Update | 4 | id, yaw, pitch
+| 0x0c | Despawn Player (`despawn_player`) | 2 | id (c0.0.15a: id 0x09)
+| 0x0d | Message (`message`) | 66 | playerId (MessageTypes: message type), message
+| 0x0e | Disconnect Player (`disconnect`) | 65 | reason
+| 0x0f | Update User Type (`update_user_type`) | 2 | userType (protocol 7)
+|===
+
+Client to server:
+
+[cols="1,2,1,4"]
+|===
+| Id | Name | Size | Fields
+
+| 0x00 | Player Identification (`identification`) | 131 | protocol, username, verificationKey, unused (0x42 = CPE)
+| 0x05 | Set Block (`set_block`) | 9 | x, y, z u16, mode (1 created, 0 destroyed), block u8: always the held block, even when destroying. The client assumes success; a server refuses by sending the old block back.
+| 0x08 | Position and Orientation (`position_and_orientation`) | 10 | playerId (255; HeldBlock: the held block), x, y, z FShort, yaw, pitch; sent every tick
+| 0x0d | Message (`message`) | 66 | playerId (255; LongerMessages: 1 when the text continues in the next packet), message
+|===
+
+Ping, Update User Type and the three relative moves are marked optional on
+MW-CP; servers may teleport every entity instead.
+
+=== Level transfer
+
+The level is `level` in the schemas: an i32 volume followed by one byte per
+block in XZY order (index `(y * sizeZ + z) * sizeX + x`), gzipped (not zlib,
+not raw deflate) and cut into 1024-byte Level Data Chunks; the last chunk is
+padded with zeros. Percent complete is informational only. Clients take the
+size from Level Finalize, which arrives after the data.
+
+* FastMap: Level Initialize carries the volume, and the data is raw DEFLATE of
+  the blocks without the i32 prefix (MCGalaxy uses `DeflateStream`,
+  ClassiCube skips the gzip header).
+* ExtendedBlocks: blocks above 255 need a second stream of upper bytes,
+  compressed the same way, sent in chunks whose percent byte is 1. MCGalaxy
+  sends it only when the level holds such blocks; ClassiCube allocates it
+  lazily (`map2`).
+* Levels can be re-sent at any time (map switch, MCGalaxy `/reload`):
+  Level Initialize resets the world and the player respawns.
+
+Captured from MCGalaxy: a flat 128x64x128 level (1,048,576 blocks) is 1060
+bytes of gzip in two chunks.
+
+=== Positions and orientation
+
+* Units: 1/32 block, as in 1.0's entity packets. Relative moves (FByte) match
+  1.0's `rel_entity_move` exactly; absolute positions are i16 in Classic and
+  i32 in 1.0, so positions beyond 1023 blocks need ExtEntityPositions or an
+  offset.
+* Height: a player's y is the viewport centre, 51/32 = 1.59375 blocks above the
+  feet, in both directions (`y * 32 + 51` in ClassiCube's `Classic_WritePosition`).
+  1.0 uses feet plus a stance 1.62 above.
+* Teleporting the player itself (id 255) is offset by -22/32: send
+  `feet * 32 + 51 - 22`. ClassiCube adds the 22 back, MCGalaxy subtracts it
+  (`SendTeleport`), ViaLegacy subtracts 29 to get feet. MW-CP documents it;
+  the wiki.vg original did not.
+* Yaw and pitch are bytes, 256 per turn. Yaw 0 faces -Z and grows clockwise
+  (64 east, 128 south); 1.x yaw 0 faces +Z, so entity yaw bytes differ by 128
+  (ViaLegacy adds 128). Pitch 64 looks down, 192 up, the same sense as 1.x.
+* Classic movement is client-authoritative: no server physics, no on-ground
+  flag, positions sent every tick (20 Hz in ClassiCube).
+* Protocol 3 swaps yaw and pitch and inverts pitch in Spawn Player for id 255.
+
+=== Chat, disconnect, user type, ping
+
+* Messages are one 64-character string. Servers wrap longer text into several
+  packets; MCGalaxy continues lines with `> ` and repeats the colour.
+* Server to client, the first byte is the sending player's id; with id >= 127
+  (255 for server messages) the original client prepends `&e`. With
+  MessageTypes it is a message type: 0 chat, 1-3 status lines top right, 11-13
+  bottom right, 100 announcement (centre).
+* Client to server, the first byte is 255; with LongerMessages it is 1 when the
+  message continues. A client that sends 255 there under LongerMessages has
+  its text buffered forever by MCGalaxy (found while testing, see <<tests>>).
+* Disconnect Player carries a 64-character reason and closes the connection.
+* Update User Type (protocol 7) toggles op without relogging.
+* Ping has no payload and no answer; CPE TwoWayPing measures latency.
+
+=== Blocks
+
+[cols="1,3,2"]
+|===
+| Id | Block (Classic name, 1.0 id) | Usable in multiplayer
+
+| 0 | air | -
+| 1-6 | stone, grass, dirt, cobblestone, planks, sapling (ids equal 1.0) | c0.0.15a (grass only via terrain)
+| 7 | bedrock | ops only, from 0.0.20a
+| 8-11 | flowing/still water, flowing/still lava (equal 1.0) | not placeable without op
+| 12-18 | sand, gravel, gold/iron/coal ore, log, leaves (equal 1.0) | protocols 3 and 4 end at 18
+| 19-20 | sponge, glass (equal 1.0) | protocol 5 ends at 20
+| 21-36 | cloth: red, orange, yellow, lime, green, teal, aqua, cyan, blue, indigo, violet, magenta, pink, black, gray, white. 1.0 has one wool block (35) with 16 colours, and its ids 21-34 are other blocks. ViaLegacy maps to wool data 14, 1, 4, 5, 13, 5, 3, 9, 11, 10, 2, 2, 6, 7, 8, 0. | protocol 6
+| 37-41 | dandelion, rose, brown and red mushroom, gold block (equal 1.0) | protocol 6 ends at 41
+| 42-49 | iron block, double slab, slab, bricks, TNT, bookshelf, mossy cobblestone, obsidian (equal 1.0) | protocol 7
+| 50-65 | CPE CustomBlocks: cobblestone slab, rope, sandstone, snow, fire, light pink, forest green, brown, deep blue, turquoise cloth, ice, ceramic tile, magma, pillar, crate, stone brick | CPE
+| 66-255 (767) | CPE BlockDefinitions (ExtendedBlocks) | CPE
+|===
+
+Apart from cloth, the Classic ids are the Alpha/1.0 ids, because Alpha kept
+them. CustomBlocks fallbacks for clients without the extension (MW-CPE): 50
+to 44, 51 to 39, 52 to 12, 53 to 0, 54 to 10, 55 to 33, 56 to 25, 57 to 3, 58
+to 29, 59 to 28, 60 to 20, 61 to 42, 62 to 49, 63 to 36, 64 to 5, 65 to 1.
+MCGalaxy has fallback tables for every protocol (`v4_fallback` ... `v7_fallback`
+in `Block.Convert.cs`), which a bridge can reuse when talking to older
+clients.
+
+=== Name verification
+
+* minecraft.net (dead): servers sent `heartbeat.jsp?port=&max=&name=&public=True|False&version=7&salt=&users=`
+  every 45 seconds and got the play URL back. The salt is 16 random base-62
+  characters; a client from the server list passes `mppass = md5(salt +
+  username)` as the verification key, which the server compares. Introduced
+  with `verify-names` in server 1.3 (protocol 4).
+* ClassiCube (live, CC-API): the same scheme at
+  `https://www.classicube.net/server/heartbeat/` (`/heartbeat.jsp` works too),
+  with optional `software` and `web`; only IPv4 listeners. ClassiCube accounts
+  replace minecraft.net accounts; MCGalaxy checks `md5(salt + name)` per
+  configured auth service.
+* BetaCraft: V1 heartbeat sunset on 1 Oct 2024; V2 needs a private key and runs
+  vanilla servers with a Java agent (https://betacraft.uk/heartbeat-tutorial).
+* Offline today: `verify-names=false` lets anyone in under any name. MCGalaxy
+  skips verification for LAN addresses by default (`verify-lan-ips=false`).
+  ClassiCube's direct connect sends any mppass.
+
+[[cpe]]
+== Classic Protocol Extension
+
+=== Negotiation
+
+. The client sends 0x42 in the unused byte of Player Identification.
+. The server immediately sends ExtInfo (0x10: appName, extensionCount i16) and
+  one ExtEntry (0x11: extName, version i32) per extension.
+. The client answers with its own ExtInfo and ExtEntry list.
+. An extension is in use when both listed the same version. ClassiCube takes
+  `min(client, server)` and replies with the server's version when lower;
+  MCGalaxy lists EnvMapAppearance twice (v1, then v2) for an old Java client,
+  so the last entry wins.
+. CustomBlocks: the server sends CustomBlockSupportLevel 1, the client
+  answers 1.
+. Login continues with Server Identification.
+
+The extension set only grows the packet set of protocol 7: new ids 0x10-0x3b
+next to the base ones. Most extensions change nothing else; seven change the
+meaning of existing bytes, and four change packet sizes:
+
+[cols="1,4"]
+|===
+| Extension | Effect on existing packets
+
+| ExtEntityPositions | positions become i32 in Spawn Player, both Teleports, ExtAddEntity2, SetSpawnpoint, ExtEntityTeleport
+| ExtendedBlocks | block ids become u16 in both Set Blocks, the playerId of position_and_orientation (with HeldBlock), HoldThis, SetBlockPermission, DefineBlock, RemoveBlockDefinition, DefineBlockExt, SetInventoryOrder, SetHotbar; BulkBlockUpdate grows by 64 bytes of upper bits; a second level stream
+| FastMap | Level Initialize carries the volume; the level is raw DEFLATE without the i32 prefix
+| ExtendedTextures | texture ids become u16 in DefineBlock and DefineBlockExt
+| HeldBlock | playerId of position_and_orientation is the held block
+| MessageTypes | playerId of server messages is a message type
+| LongerMessages | playerId of client messages is a continuation flag
+| FullCP437 | bytes 0x80-0xff allowed in strings
+| EmoteFix | control characters 0x01-0x1f render as CP437 glyphs
+| TextColors | servers define extra colour codes
+| BlockPermissions | replaces the op-only bedrock/water/lava rule
+|===
+
+=== Extensions
+
+Versions are those ClassiCube 1.3.9 and MCGalaxy 1.9.5.4 negotiate (MW-CPE
+in brackets where it differs). The last two columns say whether a bridge
+needs the extension when it serves Classic clients (A: ClassiCube player on a
+newer server) or plays on a Classic server for a newer client (B).
+
+[cols="2,1,2,4,1,1"]
+|===
+| Extension | Ver | Packets | Purpose | A | B
+
+| ClickDistance | 1 | 0x12 | reach in 1/32 blocks | yes | maybe
+| CustomBlocks | 1 | 0x13 both | blocks 50-65 | yes | yes
+| HeldBlock | 1 | 0x14 | server sets/locks held block; client reports it | yes | yes
+| EmoteFix | 1 | - | glyphs in chat | yes | -
+| TextHotKey | 1 | 0x15 | server-defined hotkeys | - | -
+| ExtPlayerList | 2 | 0x16, 0x18, 0x21 (v1: 0x17) | tab list apart from entities, entity skins | yes | yes
+| EnvColors | 1 | 0x19 | sky, cloud, fog, light colours | yes | partly
+| SelectionCuboid | 1 | 0x1a, 0x1b | coloured boxes | border | -
+| BlockPermissions | 1 | 0x1c | per-block place/delete rights | yes | yes
+| ChangeModel | 1 | 0x1d | entity model (mob names, block ids) | yes | yes
+| EnvMapAppearance | 2 [deprecated] | 0x1e | texture URL, edge blocks, view distance | - | yes
+| EnvWeatherType | 1 | 0x1f | sun, rain, snow | yes | yes
+| HackControl | 1 | 0x20 | flying, noclip, speed, respawn, third person, jump height | yes | yes
+| MessageTypes | 1 | - | status lines, announcements | yes | yes
+| PlayerClick | 1 | 0x22 (C->S) | mouse clicks with target entity/block | yes (combat) | -
+| LongerMessages | 1 | - | chat over 64 characters | yes | yes
+| FullCP437 | 1 | - | full code page in strings | yes | yes
+| BlockDefinitions | 1 | 0x23, 0x24 | custom blocks 66-255 | yes | yes
+| BlockDefinitionsExt | 2 | 0x25 | custom shapes and per-face textures | yes | yes
+| BulkBlockUpdate | 1 | 0x26 | 256 block changes per packet | yes | yes
+| TextColors | 1 | 0x27 | custom colour codes | - | yes
+| EnvMapAspect | 2 [1] | 0x28, 0x29 | texture URL (v2: 128 characters), environment properties | yes | yes
+| EntityProperty | 2 (MCGalaxy 1) [1] | 0x2a | rotations, model scale | - | -
+| ExtEntityPositions | 1 | - | i32 positions | big windows | yes
+| TwoWayPing | 1 | 0x2b both | latency | yes | yes
+| InventoryOrder | 1 | 0x2c | block menu order | yes | yes
+| InstantMOTD | 1 | - | MOTD without map resend | yes | -
+| FastMap | 1 | - | faster levels | yes | yes
+| ExtendedBlocks | 1 | - | block ids up to 767 | later | yes
+| ExtendedTextures | 1 | - | texture ids over 255 | later | yes
+| SetHotbar | 1 | 0x2d | set hotbar slots | yes | yes
+| SetSpawnpoint | 1 | 0x2e | spawn without teleport | yes | yes
+| VelocityControl | 1 | 0x2f | knockback, launch pads | yes | yes
+| CustomParticles | 1 | 0x30, 0x31 | particles | later | -
+| CustomModels | 2 | 0x32-0x34 | entity models | later | -
+| PluginMessages | 1 | 0x35 both | plugin channel, 64 bytes | - | -
+| ExtEntityTeleport | 1 | 0x36 | teleports with modes and partial updates | yes | yes
+| LightingMode | 1 | 0x37 | fancy (block) lighting | yes | -
+| CinematicGui | 1 | 0x38 | hide GUI | - | -
+| NotifyAction | 1 | 0x39, 0x3a (C->S) | client events | - | -
+| ToggleBlockList | 1 | 0x3b | open/close block menu | - | -
+|===
+
+MCGalaxy also offers AmpersandSupport (literal `&` in chat), which is not in
+the spec. The spec names "PluginMessage", implementations send
+"PluginMessages". The spec misnames BulkBlockUpdate as 0x28 in one table; it
+is 0x26. Deprecated per MW-CPE: ExtPlayerList 1, BlockDefinitionsExt 1,
+EnvMapAppearance 1 and 2 (use EnvMapAspect); ClassiCube and MCGalaxy still
+speak EnvMapAppearance 2.
+
+[[text]]
+== Text
+
+* Strings are exactly 64 bytes, padded with spaces; readers strip trailing
+  spaces (ClassiCube also strips NULs). Trailing spaces in a message are
+  therefore lost. MCGalaxy pads the second half of a short EnvMapAspect v2 URL
+  with NULs instead of spaces (seen in captures), so readers must strip both.
+* The original client draws only printable ASCII; ClassiCube draws the whole
+  of code page 437 (EmoteFix for 0x01-0x1f, FullCP437 for 0x80-0xff). MCGalaxy
+  maps its Unicode strings to CP437 and replaces the rest.
+* Colour codes are `&` plus a hex digit, the same 16 colours as Java's section
+  sign codes. Classic has no formatting codes (`&k`-`&o`, `&r`). A trailing `&`
+  without a digit crashes the original client, so MCGalaxy sends a `&` that
+  starts no colour code as `%` to clients without TextColors or
+  AmpersandSupport, and custom colours as their fallback. ClassiCube turns a
+  typed `&` into `%`, and MCGalaxy accepts `%` as colour prefix in chat.
+* CP437 byte 0x15 is the section sign itself, so converting Java legacy text
+  means replacing the section sign by `&` before encoding, never encoding it
+  as 0x15. The other direction maps `&` + hex digit to the section sign and
+  leaves other `&` alone.
+* The `classicString` native decodes all 256 bytes to their CP437 characters
+  (0x00 stays U+0000, so NUL padding round-trips) and refuses characters
+  outside CP437 or more than 64 of them when encoding.
+
+== Mapping to pds2
+
+=== Schemas
+
+[cols="1,1,3"]
+|===
+| File | Protocol | Notes
+
+| `pds-classic/c0.0.15a.pds` | none (`[0]`) | name-only identification, despawn 0x09
+| `pds-classic/c0.0.16a.pds` | 3, 4, 5 | identification without user type
+| `pds-classic/c0.0.20a.pds` | 6 | no update_user_type
+| `pds-classic/c0.30.pds` | 7 | vanilla
+| `pds-classic/c0.30-cpe.pds` | 7 | CPE base layout: every CPE packet, ExtPlayerList 2, EnvMapAppearance 2, BlockDefinitionsExt 2, EnvMapAspect 2, CustomModels 2
+| `pds-classic/c0.30-cpe-ext.pds` | 7 | `c0.30-cpe` plus ExtEntityPositions, ExtendedBlocks, FastMap, ExtendedTextures (`block` u16, `texture` u16, `position` i32, `level_initialize` with volume, `bulk_block_update` with upper bits)
+|===
+
+They follow the layout of `pds/1.0.1.pds` (natives, `namespace(play)`,
+`packet` unions keyed by a u8 id, `packet_<name>` containers) and are
+`pds2 format` clean. `@!classic_protocol` holds the protocol numbers, because
+Classic's 3-7 collide with netty and pre-netty numbers (Beta 1.0 used 7).
+`just classic` generates Rust into `crates/minecraft-classic/src/gen/<version>`
+and TypeScript into `ts/minecraft-classic/<version>`, then runs both test
+suites.
+
+=== CPE negotiation in pds2
+
+ExtInfo, ExtEntry and every extension packet are ordinary arms of the packet
+unions. What pds can't say is "this arm only exists, or this field is only
+wide, when an extension was agreed". Two mechanisms cover it:
+
+* Unknown or unnegotiated packets are a session concern. The union decodes
+  every CPE id; a peer sending one that was not agreed is a protocol error the
+  session reports, as it would for any unexpected packet.
+* Layout changes become versions. The session picks a profile once the lists
+  are exchanged, the way the bridge picks a version from a handshake. The
+  server sends its list first, so a bridge acting as client controls the
+  result: it lists ExtEntityPositions, ExtendedBlocks, FastMap and
+  ExtendedTextures only if the server lists all four (profile
+  `c0.30-cpe-ext`), otherwise none (`c0.30-cpe`). The test client does exactly
+  this; against the default MCGalaxy build, which lacks ExtendedBlocks, it
+  falls back to `c0.30-cpe`. A bridge acting as server offers only what its
+  profiles cover; a client accepting part of the four is the one case left,
+  for which the bridge either kicks or keeps more profiles.
+
+Between profiles the conversions are what pds2 migrations already do: casts
+(i16 to i32 positions, u8 to u16 blocks), drops (CPE-only packets going to a
+vanilla client), and block fallbacks through the CustomBlocks and MCGalaxy
+tables. The one exception is the level stream, see below.
+
+[[gaps]]
+=== What the language can't express, and proposals
+
+. *Fixed-size padded strings.* Solved with the opaque native `classicString`
+  (Rust in `minecraft-natives`, TypeScript in `ts/minecraft-classic/pds_native.ts`,
+  no specializer, so `serialized(...)` can't encode it). Proposal: a
+  `padded(size: 64, fill: u8(0x20))` specializer that reads exactly `size`
+  bytes, hands the inner type the window, checks the rest is `fill`, and pads
+  on write; `classicString` becomes `padded(size: 64, fill: u8(0x20)) => cp437`
+  with `cp437` a rest-of-window string scalar with `@encoding cp437`.
+. *Zero-padded level chunks and fixed arrays with a used count.*
+  `levelChunk` is expressible today, but its model carries a `padding` field
+  that converters must fill with `1024 - length` zeros; `bulk_block_update`
+  keeps all 256 slots and the count separately. The same `padded` specializer
+  (`field(data) => padded(size: 1024, fill: u8(0)) => buffer(count: ...)`)
+  would hide both.
+. *Def arguments in nested items.* One schema for every CPE layout would give
+  the packet root an argument (`def(packet) { argument(cpe) => cpeLayout; }`)
+  and select field widths with `union(tag: ../$cpe/...)`. When this research
+  started, both steps panicked: `../$arg` below the top of a def in
+  `crates/pds2-core/src/mir/from_hir.rs:141`, and forwarding an argument
+  (`inner(arg: ../$arg)`) in `crates/pds2-core/src/hir/desugar/replace_aliases.rs:35`.
+  Both are fixed now (`$` references climb with `../` like field references,
+  see "References" in `syntax.adoc`), so a single CPE schema with a layout
+  argument is possible; the profiles stay as written. The same helps
+  pre-netty schemas where a field width depends on the protocol.
+. *Streams across packets.* The level is one gzip (or raw DEFLATE) stream
+  split over many packets, plus a second one with ExtendedBlocks. pds models
+  the pieces (`levelChunk`) and the decompressed result (`level`), not the
+  stream. Proposal: a `compressed(format: "gzip" | "zlib" | "deflate") => T`
+  specializer for single buffers (it would also cover 1.0-1.6 `map_chunk`
+  zlib data and `compressedNbt`), and for multi-packet streams the existing
+  `--virtual` mode: `virtual_start` takes Level Initialize, buffers the
+  chunks, and at Level Finalize yields one decoded level model that steps
+  convert (block remapping, window cutting) and `virtual_finish` recompresses
+  for the target profile. Per-packet rules can't remap blocks inside
+  compressed data.
+. *Version order and numbering.* `just gen` orders `pds/` with `sort -V`,
+  which puts `c0.30` after `26.1`; Classic versions need an explicit order
+  (an attribute or an order file) before they can join `pds/`, and
+  `merge.rs` needs a third protocol key (`classic_protocol`) with its own
+  lookup (`classic_version_of`), since Classic numbers collide with both
+  existing tables.
+. *Fixed point.* No scalar for fixed point; positions stay raw integers as in
+  the pre-netty schemas. A `fixed(fraction_bits: 5) => i16` scalar would let
+  rules convert between 1/32-block integers and 1.9+ doubles with casts.
+
+[[bridge]]
+== Bridging
+
+=== Where it attaches
+
+Two designs:
+
+. *A chain step `c0.30-cpe <-> 1.0.1`* (with the older Classic profiles
+  chained below it). Every version reaches Classic through the existing
+  steps, the bridge's 1.8 proxy logic keeps working, and per-packet rules
+  cover chat, entities, block changes and positions. The world conversion is
+  stateful custom code in the step (`src/custom/classic/`), using
+  `cx.state`, `cx.send` and virtual models for the level.
+. *A bridge front end* that translates Classic to the lingua franca (1.8)
+  itself. It would duplicate the step logic outside the converter framework
+  and couple it to one version.
+
+Recommendation: the chain step, plus a thin front end for the connection.
+Going through Alpha or Infdev first does not help: the chain has no versions
+between Classic and 1.0.1, and the hard part (level vs chunks) is the same at
+any step. 1.0.1 is a good partner: same block ids except cloth, same 1/32
+units, 128-block world height, no chunk sections.
+
+The front end, next to `legacy.rs`:
+
+* Detection: a netty handshake starts with a non-zero varint length, a
+  pre-netty one with 0x02 or 0xfe; Classic starts with 0x00 followed by a
+  protocol byte 3-7 (or an ASCII name for c0.0.15a). No ambiguity.
+* Framing: the `legacy` codec mode already finds packet ends by running the
+  generated deserializer; Classic needs the same with the session's profile.
+* CPE negotiation and the profile choice, ping, kicks (Disconnect Player),
+  version range in the MOTD.
+
+=== World model
+
+[cols="1,3"]
+|===
+| Topic | Plan
+
+| Fixed world vs chunks | Keep a window of chunks around the player, e.g. 16x16 chunks (256x128x256 blocks, 8 MB), assembled from `map_chunk` packets. Send it as one level once the chunks around the spawn have arrived (wait with a timeout, fill missing chunks with air). Translate coordinates by the window origin.
+| Moving out of the window | Re-centre when the player comes within ~32 blocks of an edge: send a new level (loading screen, about a second for 256x128x256) and teleport. CPE clients could get a softer version by streaming changed columns with BulkBlockUpdate, but the level size stays fixed.
+| World size limits | Positions are i16 fixed point without ExtEntityPositions, so windows stay below 1024 per axis. ClassiCube allocates one byte (two with ExtendedBlocks) per block and refuses levels over 2 GB; keep windows small for the original client.
+| Height | 1.0.1 worlds are 128 high, a natural sizeY. Newer servers (1.18+: -64..320) need a vertical window too, or a cut at sea level +- 64.
+| Blocks | Ids 0-49 map 1:1 except cloth (wool data to colours above); everything else needs a table to the nearest of 0-49, CPE 50-65 (sandstone, snow, ice, stone brick ...) and, with BlockDefinitions, custom ids 66-255 with textures from the client's terrain atlas or a texture pack served through EnvMapAspect. Block states (stairs, doors, slabs, rails) degrade to full or half blocks. Reuse `registry::legacy_block` for modern ids down to 1.0 first.
+| Lighting | Classic computes its own light from the top down (ViaLegacy does the same in reverse); no lighting data is sent. Torches only glow with LightingMode fancy.
+| Edges | The Classic client draws water at sea level and bedrock around the level; set side/edge blocks and heights with EnvMapAspect to make window edges look like terrain or void.
+| Entities | Vanilla Classic shows players only, ids 0-254. Map server entity ids (i32) to bytes with reuse, prefer players and nearby mobs. CPE ChangeModel shows mobs (`zombie`, `creeper`, `chicken`, ...) and items or falling blocks as block models; ExtPlayerList keeps the tab list separate.
+| Liquids, physics | The client runs no physics; servers send block changes. Falling sand and flowing water arrive as Set Block or BulkBlockUpdate.
+|===
+
+=== Movement, chat, inventory, digging
+
+* Movement: Classic positions to 1.0 `position_look` with `y = (y - 51) / 32`
+  feet and stance `+ 1.62`, yaw `+180` degrees. Server teleports of the
+  player become Teleport 255 with the -22 offset. The client sends 20
+  positions a second, matching 1.0's ticks. HackControl (and `-hax` in the
+  MOTD for vanilla clients) turns off flying and noclip on survival servers;
+  VelocityControl carries knockback.
+* Chat: flatten text to legacy colour codes (the pre-netty flattening and
+  `localize` already exist), replace the section sign with `&`, wrap at 64
+  characters with colour carry, encode CP437 with `?` for the rest. Client
+  chat over 64 characters needs LongerMessages; without it Classic clients
+  are limited to 64. Action bar and titles go to MessageTypes status lines.
+* Inventory: Classic has none. All blocks are infinite and the held block is
+  only known with HeldBlock. That fits creative servers: the bridge puts the
+  held block into the selected hotbar slot (`set_creative_slot`) before a
+  placement. Survival needs SetHotbar/InventoryOrder to show what the player
+  owns and refusals (Set Block back) for what they don't.
+* Digging and placing: Classic Set Block mode 0 is an instant break. 1.0 in
+  creative breaks on dig start; survival needs start, wait, finish, which
+  servers check, so mining feels wrong. Mode 1 becomes `block_place` against
+  the neighbouring face (the client sends the target, not the face: compute
+  the face from the player's look, or use PlayerClick).
+* Combat needs PlayerClick; vanilla Classic clients can't hit entities.
+
+=== The other direction: newer client on a Classic server
+
+ViaLegacy shows it works: decompress the level, cut it into 16x16 chunks
+(columns sent in a spiral around the player, empty chunks around the level
+for clients that need neighbours), map cloth to wool, compute sky light from
+the top, put the client in creative with a fixed time, give it a creative
+inventory of Classic blocks, turn digs into Set Block mode 0 and placements
+into mode 1 with the held block. Pre-1.2 clients see at most 128 blocks of
+height. Additional pieces for pds2: the client-side CPE profile choice,
+mppass (see below), and a world border at the level edge (1.8+).
+
+=== Login and authentication
+
+* Classic clients send a name and an mppass. The bridge runs offline, like for
+  pre-netty clients; `accounts.rs` maps names to Mojang accounts for online
+  backends as before. Optionally the bridge can heartbeat to classicube.net
+  with a salt and check `md5(salt + name)`, which proves ClassiCube account
+  names.
+* Classic servers with `verify-names=true` need a real mppass for that server,
+  which only classicube.net hands out to a logged-in user. Target servers
+  should run with `verify-names=false`, or sit on the LAN (MCGalaxy skips the
+  check for private addresses by default).
+
+[[effort]]
+=== Effort
+
+Days of focused work for someone who knows this codebase.
+
+[cols="3,1"]
+|===
+| Part | Days
+
+| Schemas, natives, tests (done here) | -
+| Merge support: version order, `classic_protocol`, `classic_version_of`, profiles in the chain | 1-2
+| Bridge front end: detection, framing per profile, CPE negotiation, ping, kicks, MOTD | 2-3
+| Classic profile steps (`c0.0.15a` up to `c0.30-cpe-ext`): casts, drops, block fallbacks, virtual level model | 2-3
+| World window: chunks to level, block table, re-centring, block changes, edges | 5-8
+| Entities: id mapping, spawn/move/despawn, models, tab list | 2-3
+| Movement and teleports, hacks, velocity | 1-2
+| Chat and text in both directions | 1
+| Inventory, digging, placing (creative first) | 2-4
+| Reverse direction (newer client on Classic server) | 5-8
+| Test servers and bots in CI (MCGalaxy recipe, deno bots against the bridge) | 1-2
+|===
+
+A ClassiCube player on a creative 1.0.1+ server (front end, profiles, world
+window, entities, movement, chat, creative placement) is about 10-12 days;
+both directions with the CPE niceties about 25-35.
+
+[[tests]]
+== Testing
+
+=== Servers
+
+* Official server: not available. Mojang's version manifest
+  (`piston-meta.mojang.com/mc/game/version_manifest_v2.json`) lists Classic
+  only as client builds (`c0.0.11a`, `c0.0.13a`, `c0.0.13a_03`, `c0.30_01c`,
+  type `old_alpha`, no server download). `minecraft.net/minecraft-server.zip`
+  redirects to `www.minecraft.net`, which resets the connection;
+  `s3.amazonaws.com/MinecraftDownload/minecraft-server.zip` is 404. If the
+  owner has a copy of the 1.10.1 server jar, the test client speaks protocol
+  7 and can run against it unchanged.
+* MCGalaxy: not in nixpkgs, but builds with `nix shell nixpkgs#dotnet-sdk_8`
+  (`CLI/MCGalaxyCLI_dotnet8.csproj`; SourceLink must be off inside a jj
+  workspace, its git reader rejects the `relativeworktrees` extension) and runs
+  on `dotnet-runtime_8` with nixpkgs' sqlite on `LD_LIBRARY_PATH`. The default
+  build lacks ExtendedBlocks; `-p:DefineConstants=TEN_BIT_BLOCKS%3BMCG_DOTNET`
+  adds it. `just classic-server [port] [owner]` clones, builds and runs it
+  with name verification off and the heartbeat pointed at a closed local port.
+* A deno server was not needed.
+
+=== Clients
+
+* `ts/minecraft-classic/client.ts` (`just classic-client --version c0.30-cpe
+  --name Bot --chat hi --record ../target/classic/captures`): logs in with any
+  schema's codec, negotiates CPE and the profile, answers CustomBlocks and
+  TwoWayPing, reassembles and inflates the level (gzip, FastMap, upper
+  stream), optionally walks in a circle and chats, re-encodes every packet
+  in both directions and fails on any difference, and records both streams.
+* ClassiCube for manual tests: `nix run nixpkgs#classicube -- <name> x
+  127.0.0.1 25700` joins directly (1.3.9, Linux; the wrapper keeps its files
+  in `~/.local/share/ClassiCube` and downloads default textures on first
+  start).
+* The original `c0.30_01c` from the launcher can't be pointed at a server:
+  launchwrapper's `AlphaVanillaTweakInjector` only provides the `username`
+  and `sessionid` applet parameters. BetaCraft's LegacyFix agent
+  (`-Dlf.server=`) for Prism is the documented way; not tried.
+
+=== What was verified
+
+Against MCGalaxy 1.9.5.4 on ports 25700 (default build) and 25701 (ten-bit
+build), all on 10 Nov 2026:
+
+[cols="2,3"]
+|===
+| Run | Result
+
+| protocol 7, 6, 5, 4, 3 logins | identification, 128x64x128 level (gzip, volume checked), spawn, chat echo; every packet re-encodes byte for byte
+| three clients at once (7, CPE, 6), two walking | spawn_player, position_and_orientation_update, teleport, despawn_player, ext_add_entity2, ext_add_player_name, ext_remove_player_name, change_model round-trip
+| CPE base profile | 41 ExtEntry packets (40 extensions, EnvMapAppearance twice), 36 agreed; ext_info/entry, custom_block_support_level, hack_control, 256 set_block_permission, 66 set_inventory_order, env colours and properties, lighting_mode, two_way_ping, set_map_env_url with NUL padding
+| CPE ext profile, default build | falls back to `c0.30-cpe` (no ExtendedBlocks)
+| CPE ext profile, ten-bit build | ExtEntityPositions, ExtendedBlocks, FastMap, ExtendedTextures agreed; define_block_ext for block 300 with u16 textures; level with FastMap and an upper-byte stream containing block 300
+| 40x2x40 cuboid seen by three profiles | 3200 set_block for protocol 7 (block 300 arrives as its fallback, stone), 13 bulk_block_update for CPE, 13 with upper bits for CPE ext
+| LongerMessages | chat sent with 255 in the first byte is held back by MCGalaxy as a partial message; 0 works
+|===
+
+Six of these captures are fixtures in `crates/minecraft-classic/tests/data`
+(87 KB). `cargo test -p minecraft-classic` and `deno test
+minecraft-classic` split them with the generated code of their schema, check
+`serialize(deserialize(x)) == x` and `size_of`, inflate the levels, and test
+c0.0.15a and the profile layout differences on synthesized bytes.
+
+== Open questions
+
+* c0.0.15a is only known from ViaLegacy and MW-CP; its later multiplayer tests
+  had chat in an unknown format, and 0.0.15a_01 to 0.0.16a_01 are
+  undocumented. Untested against anything real.
+* Naming: the schemas keep vanilla field names (`playerId`, `unused`) where
+  CPE changes the meaning (held block, message type, continuation, 0x42).
+  Profile-specific names would need `renamed` rules between profiles.
+* CPE profiles: are two enough, or should the bridge keep one profile per
+  combination of the four layout extensions it may meet as a server?
+* Whether the bridge should announce itself to classicube.net (public
+  listing, mppass checks) or stay LAN-only.
+* MW-CPE does not document EnvMapAspect 2 or EntityProperty 2; the schemas
+  follow ClassiCube and MCGalaxy.
+* The original 1.10.1 server and c0.30 client were not tested.
