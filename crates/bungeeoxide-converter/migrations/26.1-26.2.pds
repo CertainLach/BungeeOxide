@@ -39,6 +39,31 @@ updated(Particle) {
 	converted(falling_dust, up: custom(late_particle_dust_up_26_2), down: custom(late_particle_dust_down_26_1));
 	converted(dust_pillar, up: custom(late_particle_pillar_up_26_2), down: custom(late_particle_pillar_down_26_1));
 	converted(block_crumble, up: custom(late_particle_crumble_up_26_2), down: custom(late_particle_crumble_down_26_1));
+	updated(vibration) {
+		updated(position) {
+			updated(entity) {
+				hooked(entityId, up: custom(late_fake_entity_up_26_2));
+			};
+		};
+	};
+};
+
+updated(DebugSubscriptionUpdate) {
+	updated(Breezes) {
+		updated(value) {
+			updated(attackTarget) {
+				hooked(value, up: custom(late_fake_entity_up_26_2));
+			};
+		};
+	};
+};
+
+updated(DebugSubscriptionEvent) {
+	updated(Breezes) {
+		updated(attackTarget) {
+			hooked(value, up: custom(late_fake_entity_up_26_2));
+		};
+	};
 };
 
 updated(SlotComponent) {
@@ -69,6 +94,7 @@ updated(entityMetadataEntry) {
 	updated(value) {
 		converted(block_state, up: custom(late_meta_state_up_26_2), down: custom(late_meta_state_down_26_1));
 		converted(optional_block_state, up: custom(late_meta_optional_state_up_26_2), down: custom(late_meta_optional_state_down_26_1));
+		converted(optional_unsigned_int, up: custom(late_meta_target_up_26_2));
 	};
 };
 
@@ -103,13 +129,129 @@ namespace(play) {
 		updated(packet) {
 			converted(statistics, up: custom(late_statistics_up_26_2), down: custom(late_statistics_down_26_1));
 			converted(tags, up: custom(late_play_tags_up_26_2), down: custom(late_play_tags_down_26_1));
+			hooked(camera, up: custom(late_fake_entity_up_26_2));
+			updated(entity_destroy) {
+				hooked(items, up: custom(late_fake_entity_up_26_2));
+			};
 		};
 
 		updated(packet_login) {
 			added(onlineMode, up: custom(late_online_mode_up_26_2));
+			hooked(entityId, up: custom(late_login_entity_up_26_2));
+		};
+
+		updated(packet_animation) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_attach_entity) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_block_break_animation) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_collect) {
+			hooked(collectedEntityId, up: custom(late_fake_entity_up_26_2));
+			hooked(collectorEntityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_damage_event) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+			hooked(sourceCauseId, up: custom(late_fake_optional_entity_up_26_2));
+			hooked(sourceDirectId, up: custom(late_fake_optional_entity_up_26_2));
+		};
+
+		updated(packet_death_combat_event) {
+			hooked(playerId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_debug_entity_value) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_effect) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_equipment) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_head_rotation) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_look) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_move_look) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_sound_effect) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_status) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_teleport) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_entity_velocity) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_face_player) {
+			updated(isEntity) {
+				updated(true) {
+					hooked(entityId, up: custom(late_fake_entity_up_26_2));
+				};
+			};
+		};
+
+		updated(packet_hurt_animation) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_move_minecart) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_open_horse_window) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_rel_entity_move) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_remove_entity_effect) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_set_passengers) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
+			updated(passengers) {
+				hooked(items, up: custom(late_fake_entity_up_26_2));
+			};
+		};
+
+		updated(packet_set_projectile_power) {
+			hooked(id, up: custom(late_fake_entity_up_26_2));
+		};
+
+		updated(packet_sync_entity_position) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
 		};
 
 		updated(packet_entity_update_attributes) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
 			updated(properties) {
 				updated(items) {
 					updated(key) {
@@ -135,11 +277,13 @@ namespace(play) {
 		};
 
 		updated(packet_spawn_entity) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
 			converted(type, up: custom(late_spawn_type_up_26_2), down: custom(late_spawn_type_down_26_1));
 			converted(objectData, up: custom(late_object_data_up_26_2), down: custom(late_object_data_down_26_1));
 		};
 
 		updated(packet_entity_metadata) {
+			hooked(entityId, up: custom(late_fake_entity_up_26_2));
 			converted(entityId, up: custom(late_meta_entity_up_26_2), down: custom(late_meta_entity_down_26_1));
 		};
 
@@ -208,6 +352,27 @@ namespace(play) {
 		updated(packet) {
 			removed(spectate_entity, up: custom(late_spectate_up_26_2));
 			added(spectator_action, down: custom(late_spectator_action_down_26_1));
+			hooked(attack, down: custom(late_real_entity_down_26_1));
+		};
+
+		updated(packet_use_entity) {
+			hooked(target, down: custom(late_real_entity_down_26_1));
+		};
+
+		updated(packet_pick_item_from_entity) {
+			hooked(entityId, down: custom(late_real_entity_down_26_1));
+		};
+
+		updated(packet_entity_action) {
+			hooked(entityId, down: custom(late_real_entity_down_26_1));
+		};
+
+		updated(packet_query_entity_nbt) {
+			hooked(entityId, down: custom(late_real_entity_down_26_1));
+		};
+
+		updated(packet_update_command_block_minecart) {
+			hooked(entityId, down: custom(late_real_entity_down_26_1));
 		};
 	};
 };

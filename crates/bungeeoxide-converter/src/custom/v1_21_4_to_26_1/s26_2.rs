@@ -39,7 +39,7 @@ blocks!(b => a, Version::V26_2 => Version::V26_1 {
 	meta: [late_meta_state_down_26_1, late_meta_optional_state_down_26_1],
 });
 
-entities!(a => b, Version::V26_1 => Version::V26_2 { spawn: late_spawn_type_up_26_2, object: late_object_data_up_26_2, equippable: late_equip_entities_up_26_2, });
+entities!(a => b, Version::V26_1 => Version::V26_2 { spawn: late_spawn_type_up_26_2, object: object_data_up_26_2, equippable: late_equip_entities_up_26_2, });
 entities!(b => a, Version::V26_2 => Version::V26_1 { spawn: late_spawn_type_down_26_1, object: late_object_data_down_26_1, equippable: late_equip_entities_down_26_1, });
 
 statistics!(a => b, Version::V26_1 => Version::V26_2 { late_statistics_up_26_2 });
@@ -278,6 +278,118 @@ pub fn late_online_mode_up_26_2(
 	Ok(cx.state::<Login>().encrypted)
 }
 
+#[derive(Default)]
+struct FakeEntity {
+	id: Option<i32>,
+}
+
+fn random_fake_id() -> i32 {
+	use std::hash::BuildHasher;
+	let bits = std::collections::hash_map::RandomState::new().hash_one(3u8);
+	(i32::MIN as i64 + (bits % (i32::MAX as u64)) as i64) as i32
+}
+
+fn fake_id(cx: &mut Session) -> i32 {
+	*cx.state::<FakeEntity>().id.get_or_insert_with(random_fake_id)
+}
+
+fn fake(cx: &mut Session, id: i32) -> i32 {
+	if id == 0 {
+		fake_id(cx)
+	} else {
+		id
+	}
+}
+
+fn real(cx: &mut Session, id: i32) -> i32 {
+	match cx.state::<FakeEntity>().id {
+		Some(f) if id < -1 && id == f => 0,
+		_ => id,
+	}
+}
+
+pub fn late_login_entity_up_26_2(
+	id: &mut i32,
+	_from: Version,
+	_to: Version,
+	cx: &mut Session,
+) -> Result<()> {
+	cx.state::<FakeEntity>().id = Some(random_fake_id());
+	*id = fake(cx, *id);
+	Ok(())
+}
+
+pub fn late_fake_entity_up_26_2(
+	id: &mut i32,
+	_from: Version,
+	_to: Version,
+	cx: &mut Session,
+) -> Result<()> {
+	*id = fake(cx, *id);
+	Ok(())
+}
+
+pub fn late_fake_optional_entity_up_26_2(
+	id: &mut i32,
+	_from: Version,
+	_to: Version,
+	cx: &mut Session,
+) -> Result<()> {
+	if *id == 1 {
+		*id = fake_id(cx) + 1;
+	}
+	Ok(())
+}
+
+pub fn late_real_entity_down_26_1(
+	id: &mut i32,
+	_from: Version,
+	_to: Version,
+	cx: &mut Session,
+) -> Result<()> {
+	*id = real(cx, *id);
+	Ok(())
+}
+
+pub fn late_object_data_up_26_2(
+	v: &a::play_to_client_packet_spawn_entity::Ty,
+	cx: &mut Session,
+) -> Result<i32> {
+	let data = object_data_up_26_2(v, cx)?;
+	let projectile = crate::registry::entity_category(Version::V26_1, v.r#type.max(0) as u32)
+		== Some("projectile");
+	Ok(if projectile { fake(cx, data) } else { data })
+}
+
+const ENTITY_TARGETS: &[(&str, &str)] = &[
+	("frog", "tongue_target"),
+	("firework_rocket", "attached_to_target"),
+];
+
+fn targets_entity(cx: &mut Session) -> bool {
+	let Some(entity) = meta(cx).entity.clone() else {
+		return false;
+	};
+	let key = meta(cx).key as usize;
+	let field = crate::registry::names(Version::V26_1, "entities")
+		.and_then(|n| n.id(&entity))
+		.and_then(|id| crate::registry::entity_metadata_keys(Version::V26_1, id))
+		.and_then(|keys| keys.get(key));
+	field.is_some_and(|f| ENTITY_TARGETS.contains(&(entity.as_str(), f.as_str())))
+}
+
+pub fn late_meta_target_up_26_2(
+	v: i32,
+	cx: &mut Session,
+) -> Result<b::entity_metadata_entry_value::Ty> {
+	let v = if v == 1 && targets_entity(cx) {
+		fake_id(cx) + 1
+	} else {
+		v
+	};
+	Ok(b::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v))
+}
+
 pub fn late_spectate_up_26_2(
 	target: i32,
 	_cx: &mut Session,
@@ -289,13 +401,13 @@ pub fn late_spectate_up_26_2(
 
 pub fn late_spectator_action_down_26_1(
 	target: i32,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<Vec<a::play_to_server_packet::Ty>> {
 	Ok(vec![match target {
 		0 => a::play_to_server_packet::Ty::ArmAnimation(
 			a::play_to_server_packet_arm_animation::Ty::MainHand,
 		),
-		t => a::play_to_server_packet::Ty::SpectateEntity(t - 1),
+		t => a::play_to_server_packet::Ty::SpectateEntity(real(cx, t.wrapping_sub(1))),
 	}])
 }
 

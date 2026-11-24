@@ -704,3 +704,412 @@ fn exact_matchers_carry_the_right_component_ids() {
 		)]
 	));
 }
+
+fn login_26_1(entity: i32) -> x::play_to_client_packet::Ty {
+	x::play_to_client_packet::Ty::Login(x::play_to_client_packet_login::Ty {
+		entity_id: entity,
+		is_hardcore: false,
+		world_names: vec!["minecraft:overworld".into()],
+		max_players: 20,
+		view_distance: 8,
+		simulation_distance: 8,
+		reduced_debug_info: false,
+		enable_respawn_screen: true,
+		do_limited_crafting: false,
+		world_state: x::play_to_client_spawn_info::Ty {
+			dimension: 0,
+			name: "minecraft:overworld".into(),
+			hashed_seed: 0,
+			gamemode: x::play_to_client_spawn_info_gamemode::Ty::Survival,
+			previous_gamemode: 255,
+			is_debug: false,
+			is_flat: false,
+			death: None,
+			portal_cooldown: 0,
+			sea_level: 63,
+		},
+		enforces_secure_chat: false,
+	})
+}
+
+fn up_26_2(p: &x::play_to_client_packet::Ty, cx: &mut Session) -> y::play_to_client_packet::Ty {
+	let out = run(
+		Root::PlayToClient,
+		Version::V26_1,
+		Version::V26_2,
+		p,
+		x::play_to_client_packet::serialize,
+		y::play_to_client_packet::deserialize,
+		cx,
+	);
+	let [p] = <[_; 1]>::try_from(out).unwrap_or_else(|out| panic!("{out:?}"));
+	p
+}
+
+fn server_down_26_1(p: &y::play_to_server_packet::Ty, cx: &mut Session) -> x::play_to_server_packet::Ty {
+	let out = run(
+		Root::PlayToServer,
+		Version::V26_2,
+		Version::V26_1,
+		p,
+		y::play_to_server_packet::serialize,
+		x::play_to_server_packet::deserialize,
+		cx,
+	);
+	let [p] = <[_; 1]>::try_from(out).unwrap_or_else(|out| panic!("{out:?}"));
+	p
+}
+
+fn fake_id(cx: &mut Session) -> i32 {
+	let y::play_to_client_packet::Ty::Login(l) = up_26_2(&login_26_1(0), cx) else {
+		panic!("no login")
+	};
+	assert!(l.entity_id < -1, "{}", l.entity_id);
+	l.entity_id
+}
+
+fn spawn_26_1(entity: i32, kind: &str, data: i32) -> x::play_to_client_packet::Ty {
+	x::play_to_client_packet::Ty::SpawnEntity(x::play_to_client_packet_spawn_entity::Ty {
+		entity_id: entity,
+		object_uuid: 0x1234,
+		r#type: id(Version::V26_1, "entities", kind),
+		x: 0.0,
+		y: 64.0,
+		z: 0.0,
+		velocity: vec![0],
+		pitch: 0,
+		yaw: 0,
+		head_pitch: 0,
+		object_data: data,
+	})
+}
+
+fn metadata_26_1(
+	entity: i32,
+	key: u8,
+	value: x::entity_metadata_entry_value::Ty,
+) -> x::play_to_client_packet::Ty {
+	x::play_to_client_packet::Ty::EntityMetadata(x::play_to_client_packet_entity_metadata::Ty {
+		entity_id: entity,
+		metadata: vec![x::entity_metadata_entry::Ty { key, value }],
+	})
+}
+
+#[test]
+fn entity_id_zero_becomes_the_fake_id_for_26_2_clients() {
+	let mut cx = Session::new();
+	let y::play_to_client_packet::Ty::Login(l) = up_26_2(&login_26_1(5), &mut cx) else {
+		panic!()
+	};
+	assert_eq!(l.entity_id, 5);
+	let fake = fake_id(&mut cx);
+
+	let y::play_to_client_packet::Ty::SpawnEntity(s) = up_26_2(&spawn_26_1(0, "arrow", 0), &mut cx)
+	else {
+		panic!()
+	};
+	assert_eq!((s.entity_id, s.object_data), (fake, fake));
+	let y::play_to_client_packet::Ty::SpawnEntity(s) = up_26_2(&spawn_26_1(9, "fireball", 0), &mut cx)
+	else {
+		panic!()
+	};
+	assert_eq!((s.entity_id, s.object_data), (9, fake));
+	let y::play_to_client_packet::Ty::SpawnEntity(s) = up_26_2(&spawn_26_1(10, "item_frame", 0), &mut cx)
+	else {
+		panic!()
+	};
+	assert_eq!((s.entity_id, s.object_data), (10, 0));
+
+	let y::play_to_client_packet::Ty::EntityDestroy(ids) =
+		up_26_2(&x::play_to_client_packet::Ty::EntityDestroy(vec![3, 0]), &mut cx)
+	else {
+		panic!()
+	};
+	assert_eq!(ids, [3, fake]);
+
+	let y::play_to_client_packet::Ty::Camera(c) =
+		up_26_2(&x::play_to_client_packet::Ty::Camera(0), &mut cx)
+	else {
+		panic!()
+	};
+	assert_eq!(c, fake);
+
+	let y::play_to_client_packet::Ty::SetPassengers(p) = up_26_2(
+		&x::play_to_client_packet::Ty::SetPassengers(x::play_to_client_packet_set_passengers::Ty {
+			entity_id: 0,
+			passengers: vec![0, 4],
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!((p.entity_id, p.passengers), (fake, vec![fake, 4]));
+
+	let y::play_to_client_packet::Ty::Collect(c) = up_26_2(
+		&x::play_to_client_packet::Ty::Collect(x::play_to_client_packet_collect::Ty {
+			collected_entity_id: 6,
+			collector_entity_id: 0,
+			pickup_item_count: 1,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!((c.collected_entity_id, c.collector_entity_id), (6, fake));
+
+	let y::play_to_client_packet::Ty::FacePlayer(f) = up_26_2(
+		&x::play_to_client_packet::Ty::FacePlayer(x::play_to_client_packet_face_player::Ty {
+			feet_eyes: 0,
+			x: 0.0,
+			y: 0.0,
+			z: 0.0,
+			is_entity: x::play_to_client_packet_face_player_is_entity::Ty::True(
+				x::play_to_client_packet_face_player_is_entity_true::Ty {
+					entity_id: 0,
+					entity_feet_eyes: 1,
+				},
+			),
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert!(matches!(
+		f.is_entity,
+		y::play_to_client_packet_face_player_is_entity::Ty::True(t) if t.entity_id == fake
+	));
+
+	let y::play_to_client_packet::Ty::WorldParticles(p) = up_26_2(
+		&x::play_to_client_packet::Ty::WorldParticles(x::play_to_client_packet_world_particles::Ty {
+			long_distance: false,
+			always_show: false,
+			x: 0.0,
+			y: 0.0,
+			z: 0.0,
+			offset_x: 0.0,
+			offset_y: 0.0,
+			offset_z: 0.0,
+			velocity_offset: 0.0,
+			amount: 1,
+			particle: x::particle::Ty::Vibration(x::particle_vibration::Ty {
+				position: x::particle_vibration_position::Ty::Entity(
+					x::particle_vibration_position_entity::Ty {
+						entity_id: 0,
+						entity_eye_height: 1.5,
+					},
+				),
+				ticks: 20,
+			}),
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert!(matches!(
+		&p.particle,
+		y::particle::Ty::Vibration(v) if matches!(&v.position, y::particle_vibration_position::Ty::Entity(e) if e.entity_id == fake)
+	));
+}
+
+#[test]
+fn zero_meaning_none_stays_zero() {
+	let mut cx = Session::new();
+	let fake = fake_id(&mut cx);
+
+	let y::play_to_client_packet::Ty::DamageEvent(d) = up_26_2(
+		&x::play_to_client_packet::Ty::DamageEvent(x::play_to_client_packet_damage_event::Ty {
+			entity_id: 0,
+			source_type_id: 2,
+			source_cause_id: 1,
+			source_direct_id: 0,
+			source_position: None,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(
+		(d.entity_id, d.source_cause_id, d.source_direct_id),
+		(fake, fake + 1, 0)
+	);
+
+	let y::play_to_client_packet::Ty::AttachEntity(a) = up_26_2(
+		&x::play_to_client_packet::Ty::AttachEntity(x::play_to_client_packet_attach_entity::Ty {
+			entity_id: 0,
+			vehicle_id: 0,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!((a.entity_id, a.vehicle_id), (fake, 0));
+
+	up_26_2(&spawn_26_1(7, "frog", 0), &mut cx);
+	let unsigned = |v| x::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v);
+	for (value, expected) in [(1, fake + 1), (0, 0), (8, 8)] {
+		let y::play_to_client_packet::Ty::EntityMetadata(m) =
+			up_26_2(&metadata_26_1(7, 19, unsigned(value)), &mut cx)
+		else {
+			panic!()
+		};
+		assert!(matches!(
+			m.metadata.as_slice(),
+			[y::entity_metadata_entry::Ty { key: 19, value: y::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v) }] if *v == expected
+		), "{m:?}");
+	}
+
+	up_26_2(&spawn_26_1(8, "firework_rocket", 0), &mut cx);
+	let y::play_to_client_packet::Ty::EntityMetadata(m) =
+		up_26_2(&metadata_26_1(8, 9, unsigned(1)), &mut cx)
+	else {
+		panic!()
+	};
+	assert!(matches!(
+		m.metadata.as_slice(),
+		[y::entity_metadata_entry::Ty { value: y::entity_metadata_entry_value::Ty::OptionalUnsignedInt(v), .. }] if *v == fake + 1
+	));
+
+	up_26_2(&spawn_26_1(11, "guardian", 0), &mut cx);
+	let y::play_to_client_packet::Ty::EntityMetadata(m) = up_26_2(
+		&metadata_26_1(11, 17, x::entity_metadata_entry_value::Ty::Int(0)),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert!(matches!(
+		m.metadata.as_slice(),
+		[y::entity_metadata_entry::Ty { value: y::entity_metadata_entry_value::Ty::Int(0), .. }]
+	));
+
+	let y::play_to_client_packet::Ty::EntityMetadata(m) = up_26_2(
+		&metadata_26_1(0, 1, x::entity_metadata_entry_value::Ty::Int(300)),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(m.entity_id, fake);
+}
+
+#[test]
+fn fake_id_goes_back_to_zero_for_the_server() {
+	let mut cx = Session::new();
+	let fake = fake_id(&mut cx);
+	use x::play_to_server_packet::Ty as X;
+	use y::play_to_server_packet::Ty as Y;
+
+	assert!(matches!(server_down_26_1(&Y::Attack(fake), &mut cx), X::Attack(0)));
+	assert!(matches!(server_down_26_1(&Y::Attack(5), &mut cx), X::Attack(5)));
+	assert!(matches!(server_down_26_1(&Y::Attack(-1), &mut cx), X::Attack(-1)));
+	assert!(matches!(
+		server_down_26_1(&Y::SpectatorAction(fake + 1), &mut cx),
+		X::SpectateEntity(0)
+	));
+	let X::UseEntity(u) = server_down_26_1(
+		&Y::UseEntity(y::play_to_server_packet_use_entity::Ty {
+			target: fake,
+			hand: y::play_to_server_packet_use_entity_hand::Ty::MainHand,
+			location: vec![0],
+			sneaking: false,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(u.target, 0);
+	let X::PickItemFromEntity(p) = server_down_26_1(
+		&Y::PickItemFromEntity(y::play_to_server_packet_pick_item_from_entity::Ty {
+			entity_id: fake,
+			include_data: true,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(p.entity_id, 0);
+	let X::EntityAction(a) = server_down_26_1(
+		&Y::EntityAction(y::play_to_server_packet_entity_action::Ty {
+			entity_id: fake,
+			action_id: y::play_to_server_packet_entity_action_action_id::Ty::StartSprinting,
+			jump_boost: 0,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(a.entity_id, 0);
+	let X::QueryEntityNbt(q) = server_down_26_1(
+		&Y::QueryEntityNbt(y::play_to_server_packet_query_entity_nbt::Ty {
+			transaction_id: 3,
+			entity_id: fake,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!((q.transaction_id, q.entity_id), (3, 0));
+	let X::UpdateCommandBlockMinecart(m) = server_down_26_1(
+		&Y::UpdateCommandBlockMinecart(y::play_to_server_packet_update_command_block_minecart::Ty {
+			entity_id: fake,
+			command: "say hi".into(),
+			track_output: false,
+		}),
+		&mut cx,
+	) else {
+		panic!()
+	};
+	assert_eq!(m.entity_id, 0);
+}
+
+#[test]
+fn fake_id_survives_the_26_3_step() {
+	let mut cx = Session::new();
+	let to_26_3 = |p: &x::play_to_client_packet::Ty, cx: &mut Session| {
+		run(
+			Root::PlayToClient,
+			Version::V26_1,
+			Version::V26_3,
+			p,
+			x::play_to_client_packet::serialize,
+			z::play_to_client_packet::deserialize,
+			cx,
+		)
+	};
+	let out = to_26_3(&login_26_1(0), &mut cx);
+	let [z::play_to_client_packet::Ty::Login(l)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let fake = l.entity_id;
+	assert!(fake < -1);
+	let out = to_26_3(
+		&metadata_26_1(0, 1, x::entity_metadata_entry_value::Ty::Int(300)),
+		&mut cx,
+	);
+	let [z::play_to_client_packet::Ty::EntityMetadata(m)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	assert_eq!(m.entity_id, fake);
+	let out = to_26_3(
+		&x::play_to_client_packet::Ty::RelEntityMove(x::play_to_client_packet_rel_entity_move::Ty {
+			entity_id: 0,
+			d_x: 1,
+			d_y: 2,
+			d_z: 3,
+			on_ground: true,
+		}),
+		&mut cx,
+	);
+	let [z::play_to_client_packet::Ty::RelEntityMove(r)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	assert_eq!(r.entity_id, fake);
+	let back = run(
+		Root::PlayToServer,
+		Version::V26_3,
+		Version::V26_1,
+		&z::play_to_server_packet::Ty::Attack(fake),
+		z::play_to_server_packet::serialize,
+		x::play_to_server_packet::deserialize,
+		&mut cx,
+	);
+	assert!(matches!(back.as_slice(), [x::play_to_server_packet::Ty::Attack(0)]));
+}

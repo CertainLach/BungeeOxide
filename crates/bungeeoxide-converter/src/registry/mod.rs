@@ -358,6 +358,14 @@ pub fn entity_metadata_keys(version: Version, entity: u32) -> Option<&'static [S
 	Some(&extra[1.min(extra.len())..])
 }
 
+pub fn entity_category(version: Version, entity: u32) -> Option<&'static str> {
+	names(version, "entities")?
+		.extra
+		.get(&entity)?
+		.first()
+		.map(String::as_str)
+}
+
 pub fn login_packet(version: Version) -> Option<&'static str> {
 	data(version, "loginPacket", "json")
 }
