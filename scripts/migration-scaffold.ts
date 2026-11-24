@@ -66,7 +66,7 @@ function remove(step: string, path: string): boolean {
 
 function absorb(line: string): "changed" | "same" | "unknown" {
 	const parts = line.split(": ");
-	if (parts.length < 2 || !/^[\d.]+ -> [\d.]+$/.test(parts[0])) return "same";
+	if (parts.length < 2 || !/^\S+ -> \S+$/.test(parts[0])) return "same";
 	const [step, where, ...rest] = parts;
 	const unused = where.match(/^rule (.*) is not used$/);
 	if (unused) return remove(step, unused[1]) ? "changed" : "unknown";
