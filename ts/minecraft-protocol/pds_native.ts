@@ -164,6 +164,83 @@ export const pds_lpVec3: Native<LpVec3> = {
 	},
 };
 
+export type EntityDeltaStep = { ticks: number; dX: number; dY: number; dZ: number };
+
+export type EntityDelta = {
+	onGround: boolean;
+	delta:
+		| { kind: "linear"; value: { dX: number; dY: number; dZ: number } }
+		| { kind: "stepped"; value: EntityDeltaStep[] };
+};
+
+function entityDelta_properties(v: EntityDelta): number {
+	const count = v.delta.kind === "linear" ? 0 : v.delta.value.length;
+	return (count << 1) | (v.onGround ? 1 : 0);
+}
+
+function entityDelta_write_xyz(dX: number, dY: number, dZ: number, output: Output): void {
+	const bytes = new Uint8Array(6);
+	const view = new DataView(bytes.buffer);
+	view.setInt16(0, dX);
+	view.setInt16(2, dY);
+	view.setInt16(4, dZ);
+	output.write(bytes);
+}
+
+function entityDelta_read_xyz(input: Input): { dX: number; dY: number; dZ: number } {
+	const bytes = input.read_bytes(6);
+	const view = new DataView(bytes.buffer, bytes.byteOffset, 6);
+	return { dX: view.getInt16(0), dY: view.getInt16(2), dZ: view.getInt16(4) };
+}
+
+export const pds_entityDelta: Native<EntityDelta> = {
+	serialize(v: EntityDelta, output: Output): void {
+		if (v.delta.kind === "stepped") {
+			if (v.delta.value.length === 0) {
+				throw new PdsError("InvalidValue");
+			}
+			if (v.delta.value.length > 0x7fffffff) {
+				throw new PdsError("TooLargeInteger");
+			}
+		}
+		pds_varint.serialize(entityDelta_properties(v), output);
+		if (v.delta.kind === "linear") {
+			const { dX, dY, dZ } = v.delta.value;
+			entityDelta_write_xyz(dX, dY, dZ, output);
+			return;
+		}
+		for (const s of v.delta.value) {
+			pds_varint.serialize(s.ticks, output);
+			entityDelta_write_xyz(s.dX, s.dY, s.dZ, output);
+		}
+	},
+	deserialize(input: Input): EntityDelta {
+		const properties = pds_varint.deserialize(input) >>> 0;
+		const onGround = (properties & 1) !== 0;
+		const count = properties >>> 1;
+		if (count === 0) {
+			return { onGround, delta: { kind: "linear", value: entityDelta_read_xyz(input) } };
+		}
+		const steps: EntityDeltaStep[] = [];
+		for (let i = 0; i < count; i++) {
+			const ticks = pds_varint.deserialize(input);
+			steps.push({ ticks, ...entityDelta_read_xyz(input) });
+		}
+		return { onGround, delta: { kind: "stepped", value: steps } };
+	},
+	size_of(v: EntityDelta): number {
+		const head = pds_varint.size_of(entityDelta_properties(v));
+		if (v.delta.kind === "linear") {
+			return head + 6;
+		}
+		let size = head;
+		for (const s of v.delta.value) {
+			size += pds_varint.size_of(s.ticks) + 6;
+		}
+		return size;
+	},
+};
+
 export const pds_restBuffer: Native<Uint8Array> = {
 	serialize(v: Uint8Array, output: Output): void {
 		output.write(v);

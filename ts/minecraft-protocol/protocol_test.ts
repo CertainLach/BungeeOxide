@@ -1,6 +1,13 @@
-import { assertEquals } from "@std/assert";
-import { Input, Output } from "./pds.ts";
-import { lpVec3_to_f64, pds_anonOptionalNbt, pds_anonymousNbt, pds_lpVec3 } from "./pds_native.ts";
+import { assertEquals, assertThrows } from "@std/assert";
+import { Input, Output, PdsError } from "./pds.ts";
+import {
+	type EntityDelta,
+	lpVec3_to_f64,
+	pds_anonOptionalNbt,
+	pds_anonymousNbt,
+	pds_entityDelta,
+	pds_lpVec3,
+} from "./pds_native.ts";
 import * as gen from "./gen/mod.ts";
 
 type Codec<T> = {
@@ -103,6 +110,51 @@ Deno.test("lpVec3 real server payloads", () => {
 	const [x, y, z] = lpVec3_to_f64(roundtrip(pds_lpVec3, hex("f9ff7ffeebed")));
 	assertEquals(Math.abs(y + 0.0784) < 0.001, true);
 	assertEquals(Math.abs(x) < 1 && Math.abs(z) < 1, true);
+});
+
+Deno.test("entityDelta linear", () => {
+	const v: EntityDelta = {
+		onGround: true,
+		delta: { kind: "linear", value: { dX: 769, dY: -145, dZ: 0 } },
+	};
+	assertEquals([...encode(pds_entityDelta, v)], hex("010301ff6f0000"));
+	assertEquals(roundtrip(pds_entityDelta, hex("010301ff6f0000")), v);
+	assertEquals(roundtrip(pds_entityDelta, hex("00fffe00028000")), {
+		onGround: false,
+		delta: { kind: "linear", value: { dX: -2, dY: 2, dZ: -32768 } },
+	});
+});
+
+Deno.test("entityDelta stepped", () => {
+	const v: EntityDelta = {
+		onGround: true,
+		delta: {
+			kind: "stepped",
+			value: [
+				{ ticks: 200, dX: -1, dY: 2, dZ: -32768 },
+				{ ticks: 3, dX: 32767, dY: 0, dZ: -300 },
+			],
+		},
+	};
+	const bytes = hex("05c801ffff00028000037fff0000fed4");
+	assertEquals([...encode(pds_entityDelta, v)], bytes);
+	assertEquals(roundtrip(pds_entityDelta, bytes), v);
+	assertEquals(roundtrip(pds_entityDelta, hex("0201000100020003")), {
+		onGround: false,
+		delta: { kind: "stepped", value: [{ ticks: 1, dX: 1, dY: 2, dZ: 3 }] },
+	});
+});
+
+Deno.test("entityDelta invalid", () => {
+	const kind = (f: () => unknown) => assertThrows(f, PdsError).kind;
+	const decode = (s: number[]) => () => pds_entityDelta.deserialize(new Input(Uint8Array.from(s)));
+	assertEquals(
+		kind(() => encode(pds_entityDelta, { onGround: true, delta: { kind: "stepped", value: [] } })),
+		"InvalidValue",
+	);
+	assertEquals(kind(decode(hex("05c801ffff00028000037fff"))), "NotEnoughData");
+	assertEquals(kind(decode(hex("010301ff6f"))), "NotEnoughData");
+	assertEquals(kind(decode([0xff, 0xff, 0xff, 0xff, 0x0f])), "NotEnoughData");
 });
 
 Deno.test("nbt text component", () => {
