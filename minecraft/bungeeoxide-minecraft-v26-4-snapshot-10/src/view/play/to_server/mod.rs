@@ -32,8 +32,8 @@ pub use ::bungeeoxide_minecraft_v1_12::view::play::to_server::packet_advancement
 pub use ::bungeeoxide_minecraft_v1_13::view::play::to_server::packet_tab_complete;
 pub use ::bungeeoxide_minecraft_v1_13::view::play::to_server::packet_update_command_block_minecart;
 pub use ::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_command_block;
+pub use ::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block;
 pub use ::bungeeoxide_minecraft_v1_17_1::view::play::to_server::packet_edit_book;
-pub use ::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block;
 pub use ::bungeeoxide_minecraft_v1_20_3::view::play::to_server::packet_update_jigsaw_block;
 pub use ::bungeeoxide_minecraft_v1_20_5::view::play::to_server::packet_chat_session_update;
 pub use ::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_chat_command_signed;

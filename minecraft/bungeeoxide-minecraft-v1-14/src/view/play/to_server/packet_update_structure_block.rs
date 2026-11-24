@@ -4,7 +4,7 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct PacketUpdateStructureBlock<'i> {
-	pub location: ::bungeeoxide_minecraft_v1_14::Position,
+	pub location: super::super::super::super::Position,
 	pub action: ::bungeeoxide_minecraft_root::Varint,
 	pub mode: ::bungeeoxide_minecraft_root::Varint,
 	pub name: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
@@ -18,12 +18,12 @@ pub struct PacketUpdateStructureBlock<'i> {
 	pub rotation: ::bungeeoxide_minecraft_root::Varint,
 	pub metadata: ::bungeeoxide_minecraft_root::view::Pstring123<'i>,
 	pub integrity: ::bungeeoxide_minecraft_root::F32,
-	pub seed: ::bungeeoxide_minecraft_root::Varint,
+	pub seed: ::bungeeoxide_minecraft_root::Varlong,
 	pub flags: ::bungeeoxide_minecraft_root::U8,
 }
 
 pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
-	::bungeeoxide_minecraft_v1_14::position::serialize(&_0.location, output)?;
+	super::super::super::super::position::serialize(&_0.location, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.action, output)?;
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.mode, output)?;
 	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.name, output)?;
@@ -37,14 +37,14 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::varint::serialize(&_0.rotation, output)?;
 	::bungeeoxide_minecraft_root::view::pstring_123::serialize(&_0.metadata, output)?;
 	::bungeeoxide_minecraft_root::f32::serialize(&_0.integrity, output)?;
-	::bungeeoxide_minecraft_root::varint::serialize(&_0.seed, output)?;
+	::bungeeoxide_minecraft_root::varlong::serialize(&_0.seed, output)?;
 	::bungeeoxide_minecraft_root::u8::serialize(&_0.flags, output)?;
 	Ok(())
 }
 
 pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	input.expect(26)?;
-	let f_location = ::bungeeoxide_minecraft_v1_14::position::deserialize(input)?;
+	let f_location = super::super::super::super::position::deserialize(input)?;
 	let f_action = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_mode = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_name = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
@@ -58,7 +58,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	let f_rotation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	let f_metadata = ::bungeeoxide_minecraft_root::view::pstring_123::deserialize(input)?;
 	let f_integrity = ::bungeeoxide_minecraft_root::f32::deserialize(input)?;
-	let f_seed = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
+	let f_seed = ::bungeeoxide_minecraft_root::varlong::deserialize(input)?;
 	let f_flags = ::bungeeoxide_minecraft_root::u8::deserialize(input)?;
 	Ok(Ty {
 		location: f_location,
@@ -81,7 +81,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 }
 
 pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
-	::bungeeoxide_minecraft_v1_14::position::size_of(&_0.location)
+	super::super::super::super::position::size_of(&_0.location)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.action)
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.mode)
 		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.name)
@@ -95,7 +95,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.rotation)
 		+ ::bungeeoxide_minecraft_root::view::pstring_123::size_of(&_0.metadata)
 		+ ::bungeeoxide_minecraft_root::f32::size_of(&_0.integrity)
-		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.seed)
+		+ ::bungeeoxide_minecraft_root::varlong::size_of(&_0.seed)
 		+ ::bungeeoxide_minecraft_root::u8::size_of(&_0.flags)
 }
 

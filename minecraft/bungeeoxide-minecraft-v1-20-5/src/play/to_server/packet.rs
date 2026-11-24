@@ -56,7 +56,7 @@ pub enum Packet {
 	UpdateCommandBlockMinecart(::bungeeoxide_minecraft_v1_13::play::to_server::PacketUpdateCommandBlockMinecart),
 	SetCreativeSlot(super::PacketSetCreativeSlot),
 	UpdateJigsawBlock(::bungeeoxide_minecraft_v1_20_3::play::to_server::PacketUpdateJigsawBlock),
-	UpdateStructureBlock(::bungeeoxide_minecraft_v1_19_4::play::to_server::PacketUpdateStructureBlock),
+	UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::play::to_server::PacketUpdateStructureBlock),
 	UpdateSign(::bungeeoxide_minecraft_v1_20::play::to_server::PacketUpdateSign),
 	ArmAnimation(::bungeeoxide_minecraft_root::Varint),
 	Spectate(::bungeeoxide_minecraft_root::Uuid),
@@ -187,7 +187,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_update_jigsaw_block::serialize(__v, output)
 		}
 		Ty::UpdateStructureBlock(__v) => {
-			::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::serialize(__v, output)
 		}
 		Ty::UpdateSign(__v) => {
 			::bungeeoxide_minecraft_v1_20::play::to_server::packet_update_sign::serialize(__v, output)
@@ -438,7 +438,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 52_i32 {
 		return Ok(Ty::UpdateStructureBlock(
-			::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::deserialize(
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::deserialize(
 				input,
 			)?,
 		));
@@ -583,7 +583,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_update_jigsaw_block::size_of(__v)
 			}
 			Ty::UpdateStructureBlock(__v) => {
-				::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::size_of(__v)
+				::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::size_of(__v)
 			}
 			Ty::UpdateSign(__v) => {
 				::bungeeoxide_minecraft_v1_20::play::to_server::packet_update_sign::size_of(__v)

@@ -95,5 +95,3 @@
 = play::toClient::packet_world_particles (references changed)
 ~ play::toServer::packet [Renumbered]
     27 arms renumbered
-~ play::toServer::packet_update_structure_block [FieldsRetypedScalar]
-    ~seed: field() => varlong; -> field() => varint;

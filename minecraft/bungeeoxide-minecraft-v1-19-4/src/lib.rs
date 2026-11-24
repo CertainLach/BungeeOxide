@@ -70,7 +70,6 @@ pub mod status;
 pub mod vec3f;
 pub mod vec3f64;
 pub mod vec4f;
-pub mod view;
 
 pub use self::byte_array::Ty as ByteArray;
 pub use self::chat_session::Ty as ChatSession;

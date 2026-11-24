@@ -1,6 +1,6 @@
 use bungeeoxide_converter::Session;
 use bungeeoxide_converter::Version;
-use bungeeoxide_converter::generated::convert::{Root, convert};
+use bungeeoxide_converter::generated::convert::{Root, convert, packet_name};
 use bungeeoxide_converter::generated::convert::{v1_8, v1_12_2};
 use bungeeoxide_converter::pds::{Input, Output};
 use v1_8::{
@@ -182,4 +182,31 @@ fn keep_alive_round_trips_through_every_step() {
 		oldest_server::deserialize(&mut Input::new(bytes)).unwrap(),
 		oldest_server::Ty::KeepAlive(1234)
 	);
+}
+
+#[test]
+fn structure_block_seeds_are_varlongs_in_every_version() {
+	let mut body = vec![0; 8];
+	body.extend([0, 1, 1, b'a', 1, 2, 3, 4, 5, 6, 0, 0, 0]);
+	body.extend(1.0f32.to_be_bytes());
+	body.extend([0xff; 9]);
+	body.extend([0x01, 0x05]);
+	let first = Version::V1_13.index();
+	for (from, id) in [(Version::V1_13, 37), (Version::LATEST, 60)] {
+		let packet = [&[id][..], &body].concat();
+		for &to in &Version::ALL[first..] {
+			let out = convert(Root::PlayToServer, from, to, &packet, &mut Session::new())
+				.unwrap_or_else(|e| panic!("{} to {}: {e:?}", from.name(), to.name()));
+			let [bytes] = out.as_slice() else {
+				panic!("{} to {}: {out:?}", from.name(), to.name())
+			};
+			assert_eq!(
+				packet_name(Root::PlayToServer, to, bytes),
+				Some("update_structure_block")
+			);
+			let mut at = 0;
+			read_varint(bytes, &mut at);
+			assert_eq!(bytes[at..], body[..], "{} to {}", from.name(), to.name());
+		}
+	}
 }

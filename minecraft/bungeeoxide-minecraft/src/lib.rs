@@ -74,7 +74,6 @@ pub mod view {
 	pub use ::bungeeoxide_minecraft_v1_17_1::view as v1_17_1;
 	pub use ::bungeeoxide_minecraft_v1_19_2::view as v1_19_2;
 	pub use ::bungeeoxide_minecraft_v1_19_3::view as v1_19_3;
-	pub use ::bungeeoxide_minecraft_v1_19_4::view as v1_19_4;
 	pub use ::bungeeoxide_minecraft_v1_20::view as v1_20;
 	pub use ::bungeeoxide_minecraft_v1_20_2::view as v1_20_2;
 	pub use ::bungeeoxide_minecraft_v1_20_3::view as v1_20_3;

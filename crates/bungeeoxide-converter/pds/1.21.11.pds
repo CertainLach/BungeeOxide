@@ -5472,7 +5472,7 @@ namespace(play) {
 
 			field(integrity) => f32;
 
-			field(seed) => varint;
+			field(seed) => varlong;
 
 			field(flags) => u8;
 		};

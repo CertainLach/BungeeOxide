@@ -90,6 +90,7 @@ pub use ::bungeeoxide_minecraft_v1_13_2::play::to_server::packet_set_creative_sl
 pub use ::bungeeoxide_minecraft_v1_14::play::to_server::packet_query_block_nbt;
 pub use ::bungeeoxide_minecraft_v1_14::play::to_server::packet_set_difficulty;
 pub use ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_command_block;
+pub use ::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block;
 pub use ::bungeeoxide_minecraft_v1_16::play::to_server::packet_generate_structure;
 pub use ::bungeeoxide_minecraft_v1_16::play::to_server::packet_update_jigsaw_block;
 pub use ::bungeeoxide_minecraft_v1_16::play::to_server::packet_use_entity;
@@ -104,4 +105,3 @@ pub use ::bungeeoxide_minecraft_v1_19::play::to_server::packet_use_item;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_server::packet_chat_command;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_server::packet_chat_message;
 pub use ::bungeeoxide_minecraft_v1_19_3::play::to_server::packet_chat_session_update;
-pub use ::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block;

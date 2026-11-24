@@ -1,0 +1,15 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toServer/types/packet_update_structure_block/1/14",
+		"value": {
+			"name": "seed",
+			"type": "varint"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toServer/types/packet_update_structure_block/1/14/type",
+		"value": "varlong"
+	}
+]

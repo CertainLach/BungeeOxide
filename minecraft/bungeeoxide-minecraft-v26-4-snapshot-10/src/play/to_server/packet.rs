@@ -64,7 +64,7 @@ pub enum Packet {
 	SetCreativeSlot(super::PacketSetCreativeSlot),
 	SetGameRule(Vec<::bungeeoxide_minecraft_v26_1::GameRule>),
 	UpdateJigsawBlock(::bungeeoxide_minecraft_v1_20_3::play::to_server::PacketUpdateJigsawBlock),
-	UpdateStructureBlock(::bungeeoxide_minecraft_v1_19_4::play::to_server::PacketUpdateStructureBlock),
+	UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::play::to_server::PacketUpdateStructureBlock),
 	SetTestBlock(::bungeeoxide_minecraft_v1_21_5::play::to_server::PacketSetTestBlock),
 	UpdateSign(::bungeeoxide_minecraft_v26_3::play::to_server::PacketUpdateSign),
 	SpectatorAction(::bungeeoxide_minecraft_root::Varint),
@@ -228,7 +228,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_update_jigsaw_block::serialize(__v, output)
 		}
 		Ty::UpdateStructureBlock(__v) => {
-			::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::serialize(__v, output)
 		}
 		Ty::SetTestBlock(__v) => {
 			::bungeeoxide_minecraft_v1_21_5::play::to_server::packet_set_test_block::serialize(__v, output)
@@ -540,7 +540,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 60_i32 {
 		return Ok(Ty::UpdateStructureBlock(
-			::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::deserialize(
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::deserialize(
 				input,
 			)?,
 		));
@@ -734,7 +734,7 @@ pub fn size_of(_0: &Ty) -> usize {
 				::bungeeoxide_minecraft_v1_20_3::play::to_server::packet_update_jigsaw_block::size_of(__v)
 			}
 			Ty::UpdateStructureBlock(__v) => {
-				::bungeeoxide_minecraft_v1_19_4::play::to_server::packet_update_structure_block::size_of(__v)
+				::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::size_of(__v)
 			}
 			Ty::SetTestBlock(__v) => {
 				::bungeeoxide_minecraft_v1_21_5::play::to_server::packet_set_test_block::size_of(__v)

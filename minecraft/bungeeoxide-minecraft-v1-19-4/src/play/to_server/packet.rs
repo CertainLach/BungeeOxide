@@ -49,7 +49,7 @@ pub enum Packet {
 	UpdateCommandBlockMinecart(::bungeeoxide_minecraft_v1_13::play::to_server::PacketUpdateCommandBlockMinecart),
 	SetCreativeSlot(::bungeeoxide_minecraft_v1_13_2::play::to_server::PacketSetCreativeSlot),
 	UpdateJigsawBlock(::bungeeoxide_minecraft_v1_16::play::to_server::PacketUpdateJigsawBlock),
-	UpdateStructureBlock(super::PacketUpdateStructureBlock),
+	UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::play::to_server::PacketUpdateStructureBlock),
 	UpdateSign(::bungeeoxide_minecraft_v1_14::play::to_server::PacketUpdateSign),
 	ArmAnimation(::bungeeoxide_minecraft_root::Varint),
 	Spectate(::bungeeoxide_minecraft_root::Uuid),
@@ -175,7 +175,7 @@ pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_16::play::to_server::packet_update_jigsaw_block::serialize(__v, output)
 		}
 		Ty::UpdateStructureBlock(__v) => {
-			super::packet_update_structure_block::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::serialize(__v, output)
 		}
 		Ty::UpdateSign(__v) => {
 			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_sign::serialize(__v, output)
@@ -403,7 +403,9 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	}
 	if *__tag == 45_i32 {
 		return Ok(Ty::UpdateStructureBlock(
-			super::packet_update_structure_block::deserialize(input)?,
+			::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::deserialize(
+				input,
+			)?,
 		));
 	}
 	if *__tag == 46_i32 {
@@ -540,7 +542,9 @@ pub fn size_of(_0: &Ty) -> usize {
 			Ty::UpdateJigsawBlock(__v) => {
 				::bungeeoxide_minecraft_v1_16::play::to_server::packet_update_jigsaw_block::size_of(__v)
 			}
-			Ty::UpdateStructureBlock(__v) => super::packet_update_structure_block::size_of(__v),
+			Ty::UpdateStructureBlock(__v) => {
+				::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_structure_block::size_of(__v)
+			}
 			Ty::UpdateSign(__v) => {
 				::bungeeoxide_minecraft_v1_14::play::to_server::packet_update_sign::size_of(__v)
 			}

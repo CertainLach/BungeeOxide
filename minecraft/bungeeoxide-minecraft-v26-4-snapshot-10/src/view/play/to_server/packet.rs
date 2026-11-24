@@ -64,7 +64,7 @@ pub enum Packet<'i> {
 	SetCreativeSlot(super::PacketSetCreativeSlot<'i>),
 	SetGameRule(::bungeeoxide_minecraft_v26_1::view::array::Inline101<'i>),
 	UpdateJigsawBlock(::bungeeoxide_minecraft_v1_20_3::view::play::to_server::PacketUpdateJigsawBlock<'i>),
-	UpdateStructureBlock(::bungeeoxide_minecraft_v1_19_4::view::play::to_server::PacketUpdateStructureBlock<'i>),
+	UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::view::play::to_server::PacketUpdateStructureBlock<'i>),
 	SetTestBlock(::bungeeoxide_minecraft_v1_21_5::view::play::to_server::PacketSetTestBlock<'i>),
 	UpdateSign(::bungeeoxide_minecraft_v26_3::view::play::to_server::PacketUpdateSign<'i>),
 	SpectatorAction(::bungeeoxide_minecraft_root::Varint),
@@ -234,7 +234,7 @@ pub fn serialize<'i>(_0: &Ty<'i>, output: &mut Output) -> Result<()> {
 			::bungeeoxide_minecraft_v1_20_3::view::play::to_server::packet_update_jigsaw_block::serialize(__v, output)
 		}
 		Ty::UpdateStructureBlock(__v) => {
-			::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block::serialize(__v, output)
+			::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block::serialize(__v, output)
 		}
 		Ty::SetTestBlock(__v) => {
 			::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_set_test_block::serialize(__v, output)
@@ -560,7 +560,7 @@ pub fn deserialize<'i>(input: &mut Input<'i>) -> Result<Ty<'i>> {
 	}
 	if *__tag == 60_i32 {
 		return Ok(Ty::UpdateStructureBlock(
-			::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block::deserialize(
+			::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block::deserialize(
 				input,
 			)?,
 		));
@@ -760,7 +760,7 @@ pub fn size_of<'i>(_0: &Ty<'i>) -> usize {
 				::bungeeoxide_minecraft_v1_20_3::view::play::to_server::packet_update_jigsaw_block::size_of(__v)
 			}
 			Ty::UpdateStructureBlock(__v) => {
-				::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block::size_of(__v)
+				::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block::size_of(__v)
 			}
 			Ty::SetTestBlock(__v) => {
 				::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_set_test_block::size_of(__v)
@@ -1117,7 +1117,7 @@ pub fn view<'i>(_0: &'i super::super::super::super::play::to_server::Packet) -> 
 			Ty::UpdateJigsawBlock(::bungeeoxide_minecraft_v1_20_3::view::play::to_server::packet_update_jigsaw_block::view(__v))
 		}
 		super::super::super::super::play::to_server::Packet::UpdateStructureBlock(__v) => {
-			Ty::UpdateStructureBlock(::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block::view(__v))
+			Ty::UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block::view(__v))
 		}
 		super::super::super::super::play::to_server::Packet::SetTestBlock(__v) => {
 			Ty::SetTestBlock(::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_set_test_block::view(__v))
@@ -1330,7 +1330,7 @@ pub fn into_view<'i>(_0: &'i mut super::super::super::super::play::to_server::Pa
 			Ty::UpdateJigsawBlock(::bungeeoxide_minecraft_v1_20_3::view::play::to_server::packet_update_jigsaw_block::view(__v))
 		}
 		super::super::super::super::play::to_server::Packet::UpdateStructureBlock(__v) => {
-			Ty::UpdateStructureBlock(::bungeeoxide_minecraft_v1_19_4::view::play::to_server::packet_update_structure_block::view(__v))
+			Ty::UpdateStructureBlock(::bungeeoxide_minecraft_v1_14::view::play::to_server::packet_update_structure_block::view(__v))
 		}
 		super::super::super::super::play::to_server::Packet::SetTestBlock(__v) => {
 			Ty::SetTestBlock(::bungeeoxide_minecraft_v1_21_5::view::play::to_server::packet_set_test_block::view(__v))

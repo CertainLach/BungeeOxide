@@ -100,10 +100,4 @@ namespace(play) {
 			converted(speed);
 		};
 	};
-
-	namespace(toServer) {
-		updated(packet_update_structure_block) {
-			converted(seed);
-		};
-	};
 };
