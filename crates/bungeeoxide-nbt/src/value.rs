@@ -236,16 +236,13 @@ impl Entry {
 
 impl Tag {
 	pub fn new(value: impl Into<Payload>) -> Tag {
-		let value = value.into();
 		Tag {
-			r#type: value.kind(),
-			value,
+			value: value.into(),
 		}
 	}
 
 	pub fn set(&mut self, value: impl Into<Payload>) {
 		self.value = value.into();
-		self.r#type = self.value.kind();
 	}
 
 	pub fn value_mut(&mut self) -> &mut Payload {
@@ -492,6 +489,14 @@ impl CompoundVecExt for Vec<Entry> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::gen::{entry, list, tag};
+	use crate::pds::Output;
+
+	fn type_byte<T>(v: &T, ser: fn(&T, &mut Output) -> crate::pds::Result<()>) -> u8 {
+		let mut out = Output::new();
+		ser(v, &mut out).unwrap();
+		out.into_inner()[0]
+	}
 
 	fn sample() -> Vec<Entry> {
 		vec![
@@ -519,9 +524,12 @@ mod tests {
 			(Payload::LongArray(vec![1]), 12),
 		];
 		for (value, kind) in cases {
-			assert_eq!(Tag::new(value.clone()).r#type, kind);
+			assert_eq!(type_byte(&Tag::new(value.clone()), tag::serialize), kind);
+			assert_eq!(type_byte(&Entry::new("x", value.clone()), entry::serialize), kind);
 			assert_eq!(value.kind(), kind);
 		}
+		assert_eq!(type_byte(&List::new(ListItems::Compound(vec![])), list::serialize), 10);
+		assert_eq!(type_byte(&List::of(vec![]), list::serialize), 0);
 		assert_eq!(
 			List::of(vec![Payload::String("a".into()), 1i32.into(), "b".into()]),
 			List::new(ListItems::String(vec!["a".into(), "b".into()]))
@@ -539,14 +547,20 @@ mod tests {
 			c.field("c").and_then(|p| p.field("d")),
 			Some(&Payload::Short(3))
 		);
+		assert_eq!(type_byte(&c[0], entry::serialize), 8);
 		let mut e = Entry::new("e", 1i32);
 		e.set(Payload::Double(1.5));
+		assert_eq!(type_byte(&e, entry::serialize), 6);
 		*e.value_mut() = Payload::Compound(vec![]);
+		assert_eq!(type_byte(&e, entry::serialize), 10);
 		let mut t = Tag::new(1i32);
 		*t.value_mut() = Payload::End;
-		assert_eq!(t.r#type, 0);
+		assert_eq!(type_byte(&t, tag::serialize), 0);
+		t.set(Payload::Long(5));
+		assert_eq!(type_byte(&t, tag::serialize), 4);
 		let mut l = List::new(ListItems::Int(vec![1]));
 		l.set(ListItems::String(vec![]));
+		assert_eq!(type_byte(&l, list::serialize), 8);
 	}
 
 	#[test]

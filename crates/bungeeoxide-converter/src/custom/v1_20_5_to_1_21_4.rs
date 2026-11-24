@@ -593,7 +593,7 @@ mod tests {
 		assert_eq!(enchantments.entries.len(), 42);
 		assert!(regs.iter().any(|r| strip(&r.id) == "painting_variant"));
 		let (_, tag) = &enchantments.entries[0];
-		assert_eq!(tag.r#type, 10);
+		assert_eq!(tag.value.kind(), 10);
 		let mut cx = Session::new();
 		assert_eq!(
 			registry_index(&mut cx, Version::V1_21_1, "jukebox_song", "minecraft:cat"),

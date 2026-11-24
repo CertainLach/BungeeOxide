@@ -164,7 +164,7 @@ def(Compound) => terminated(end: u8(0)) => Entry;
 def(Tag) {
 	export;
 } => container {
-	field(type) => u8;
+	virtual_field(type, value: ./value/@tag) => u8;
 
 	field(value) => Payload(type: ../type);
 };

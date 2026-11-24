@@ -75,7 +75,7 @@ Deno.test("scalar tag merged into union", () => {
 
 Deno.test("option tag derived from union", () => {
 	const t = gen.play.toClient.packet_scoreboard_score;
-	const end = { type: 0, value: { kind: "end" as const } };
+	const end = { value: { kind: "end" as const } };
 	const v = {
 		itemName: "a",
 		scoreName: "b",

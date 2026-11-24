@@ -3,15 +3,19 @@ use crate::pds::{Input, Output, Result};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Tag {
-	pub r#type: super::U8,
+	//  type - virtual field
 	pub value: super::Payload,
 }
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
-	super::u8::serialize(&_0.r#type, output)?;
-	super::payload::debug_assert_tag(&_0.value, {
-		let _0: &super::U8 = &_0.r#type;
-		_0
-	});
+	super::u8::serialize(
+		&{
+			let _0: &super::Payload = &_0.value;
+			let __v1: super::U8 = super::payload::virtual_tag(_0);
+			let _0 = &__v1;
+			_0.clone()
+		},
+		output,
+	)?;
 	super::payload::serialize(&_0.value, output)?;
 	Ok(())
 }
@@ -27,12 +31,24 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 			},
 		},
 	)?;
-	Ok(Ty {
-		r#type: f_type,
-		value: f_value,
-	})
+	debug_assert!(
+		&f_type
+			== &{
+				let _0: &super::Payload = &f_value;
+				let __v1: super::U8 = super::payload::virtual_tag(_0);
+				let _0 = &__v1;
+				_0.clone()
+			},
+		"virtual field type does not match its value source"
+	);
+	Ok(Ty { value: f_value })
 }
 pub fn size_of(_0: &Ty) -> usize {
-	0 + super::u8::size_of(&_0.r#type) + super::payload::size_of(&_0.value)
+	0 + super::u8::size_of(&{
+		let _0: &super::Payload = &_0.value;
+		let __v1: super::U8 = super::payload::virtual_tag(_0);
+		let _0 = &__v1;
+		_0.clone()
+	}) + super::payload::size_of(&_0.value)
 }
 pub type Ty = Tag;

@@ -83,7 +83,6 @@ fn option_tag_derived_from_union() {
 	use v1_20_3::play::to_client::packet_scoreboard_score_31 as styling;
 	use v1_21_11::play::to_client::packet_scoreboard_score as t;
 	let end = bungeeoxide_nbt::Tag {
-		r#type: 0,
 		value: bungeeoxide_nbt::Payload::End,
 	};
 	let v = t::Ty {
