@@ -185,6 +185,12 @@ pub async fn authenticate(
 	endpoints: &Endpoints,
 	username: &str,
 ) -> Result<GameProfile> {
+	if p.cv >= crate::KEY_EXCHANGE {
+		bail!(
+			"online-mode login of {} clients is not supported: their key exchange is not implemented",
+			p.cv
+		);
+	}
 	let key = tokio::task::spawn_blocking(legacy::rsa_key).await?;
 	let public = key
 		.to_public_key()

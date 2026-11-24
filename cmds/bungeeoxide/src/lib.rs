@@ -42,6 +42,8 @@ pub const PIVOT: Version = Version::V26_3;
 
 pub const TRANSFERS: Version = Version::V1_20_5;
 
+pub const KEY_EXCHANGE: Version = Version::V26_4_snapshot_10;
+
 const MAX_HOPS: usize = 4;
 
 const TRANSFERS_DISABLED: &str = "multiplayer.disconnect.transfers_disabled";
@@ -511,8 +513,17 @@ impl Proxy {
 		self.send(Root::LoginToServer, from, start).await?;
 		loop {
 			let data = self.read_server(Root::LoginToClient).await?;
+			if self.sv >= KEY_EXCHANGE
+				&& packet_name(Root::LoginToClient, self.sv, &data) == Some("key")
+			{
+				bail!(
+					"{target} is an online-mode {} server: its key exchange is not implemented",
+					self.sv
+				);
+			}
 			let packets = self.convert(Root::LoginToClient, self.sv, PIVOT, data);
 			self.drain().await?;
+			let mut joined = false;
 			for p in packets {
 				match decode(&p, login_c::deserialize)? {
 					login_c::Ty::Compress(t) => {
@@ -531,7 +542,7 @@ impl Proxy {
 							)
 							.await?;
 						}
-						return Ok(());
+						joined = true;
 					}
 					login_c::Ty::Disconnect(reason) if reason.contains(TRANSFERS_DISABLED) => {
 						bail!("{target} does not accept transfers (accepts-transfers=false)")
@@ -564,6 +575,9 @@ impl Proxy {
 					}
 					login_c::Ty::Default(id) => bail!("unexpected login packet {id}"),
 				}
+			}
+			if joined {
+				return Ok(());
 			}
 		}
 	}
@@ -1011,11 +1025,13 @@ async fn login(
 		.await?;
 		return Err(e);
 	}
+	let threshold = config.threshold;
 	if cv >= Version::V1_8 {
-		let threshold = config.threshold;
 		let compress = encode(&login_c::Ty::Compress(threshold as i32), login_c::serialize)?;
 		p.send(Root::LoginToClient, PIVOT, compress).await?;
-		p.client.codec_mut().threshold = Some(threshold);
+		if cv < KEY_EXCHANGE {
+			p.client.codec_mut().threshold = Some(threshold);
+		}
 	}
 	let success = p.online.success(&username);
 	p.send(
@@ -1028,6 +1044,9 @@ async fn login(
 	if modern_client {
 		p.expect_client(Root::LoginToServer, "login_acknowledged")
 			.await?;
+	}
+	if cv >= KEY_EXCHANGE {
+		p.client.codec_mut().threshold = Some(threshold);
 	}
 	let (join, early) = join_upstream(&mut p, config, &username, modern_client).await?;
 	p.enter(join, early, false).await?;
