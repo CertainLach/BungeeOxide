@@ -150747,7 +150747,7 @@ pub fn up_v1_20_3_1_20_5_v1_20_5_play_toClient_packet_entity_update_attributes_1
 		::bungeeoxide_minecraft::v1_20_5::play::to_client::PacketEntityUpdateAttributes16 {
 			uuid,
 			amount,
-			operation,
+			operation: operation as ::bungeeoxide_minecraft::Varint,
 		},
 	)
 }
@@ -152950,7 +152950,7 @@ pub fn down_v1_20_3_1_20_5_v1_17_play_toClient_packet_entity_update_attributes_0
 		::bungeeoxide_minecraft::v1_17::play::to_client::PacketEntityUpdateAttributes0 {
 			uuid,
 			amount,
-			operation,
+			operation: operation as ::bungeeoxide_minecraft::I8,
 		},
 	)
 }

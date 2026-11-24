@@ -2662,7 +2662,7 @@ namespace(play) {
 
 					field(amount) => f64;
 
-					field(operation) => i8;
+					field(operation) => varint;
 				};
 			};
 		};

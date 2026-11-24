@@ -1,0 +1,15 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_entity_update_attributes/1/1/type/1/type/1/2/type/1/type/1/2",
+		"value": {
+			"name": "operation",
+			"type": "i8"
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_entity_update_attributes/1/1/type/1/type/1/2/type/1/type/1/2/type",
+		"value": "varint"
+	}
+]

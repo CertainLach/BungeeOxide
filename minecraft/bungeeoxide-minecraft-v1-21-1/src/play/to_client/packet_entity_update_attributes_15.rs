@@ -6,13 +6,13 @@ use crate::pds::{Input, Output, Result};
 pub struct PacketEntityUpdateAttributes15 {
 	pub uuid: String,
 	pub amount: ::bungeeoxide_minecraft_root::F64,
-	pub operation: ::bungeeoxide_minecraft_root::I8,
+	pub operation: ::bungeeoxide_minecraft_root::Varint,
 }
 
 pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
 	::bungeeoxide_minecraft_root::pstring_123::serialize(&_0.uuid, output)?;
 	::bungeeoxide_minecraft_root::f64::serialize(&_0.amount, output)?;
-	::bungeeoxide_minecraft_root::i8::serialize(&_0.operation, output)?;
+	::bungeeoxide_minecraft_root::varint::serialize(&_0.operation, output)?;
 	Ok(())
 }
 
@@ -20,7 +20,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 	input.expect(10)?;
 	let f_uuid = ::bungeeoxide_minecraft_root::pstring_123::deserialize(input)?;
 	let f_amount = ::bungeeoxide_minecraft_root::f64::deserialize(input)?;
-	let f_operation = ::bungeeoxide_minecraft_root::i8::deserialize(input)?;
+	let f_operation = ::bungeeoxide_minecraft_root::varint::deserialize(input)?;
 	Ok(Ty {
 		uuid: f_uuid,
 		amount: f_amount,
@@ -31,7 +31,7 @@ pub fn deserialize(input: &mut Input) -> Result<Ty> {
 pub fn size_of(_0: &Ty) -> usize {
 	::bungeeoxide_minecraft_root::pstring_123::size_of(&_0.uuid)
 		+ ::bungeeoxide_minecraft_root::f64::size_of(&_0.amount)
-		+ ::bungeeoxide_minecraft_root::i8::size_of(&_0.operation)
+		+ ::bungeeoxide_minecraft_root::varint::size_of(&_0.operation)
 }
 
 pub type Ty = PacketEntityUpdateAttributes15;

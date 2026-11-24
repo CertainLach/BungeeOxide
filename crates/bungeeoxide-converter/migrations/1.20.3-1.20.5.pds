@@ -186,6 +186,12 @@ namespace(play) {
 				updated(items) {
 					added(key, up: custom(trails_attribute_key_1_20_3_to_1_20_5));
 					removed(name, down: custom(trails_attribute_name_1_20_5_to_1_20_3));
+
+					updated(modifiers) {
+						updated(items) {
+							converted(operation);
+						};
+					};
 				};
 			};
 		};
