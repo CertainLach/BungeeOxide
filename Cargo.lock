@@ -125,7 +125,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "aes",
  "anyhow",
@@ -152,7 +152,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-authlib"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "base64 0.22.1",
@@ -169,7 +169,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-convert-world"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-converter",
  "clap",
@@ -177,7 +177,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-converter"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "anyhow",
  "bungeeoxide-minecraft",
@@ -190,7 +190,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -257,7 +257,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-root"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-pds-natives",
  "pds-bytes-runtime",
@@ -265,7 +265,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-0-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-pds-natives",
@@ -274,7 +274,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -284,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-10"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -301,7 +301,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-11"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -319,7 +319,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-12"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -338,7 +338,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-12-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -358,7 +358,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-12-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -379,7 +379,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-13"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -399,7 +399,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-13-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -420,7 +420,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-13-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -441,7 +441,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-14"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -461,7 +461,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-14-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -482,7 +482,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-14-3"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -503,7 +503,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-14-4"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -524,7 +524,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-15"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -546,7 +546,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-15-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -569,7 +569,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-15-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -592,7 +592,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-16"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -615,7 +615,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-16-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -639,7 +639,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-16-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -663,7 +663,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-17"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -688,7 +688,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-17-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -714,7 +714,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-18"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -741,7 +741,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-18-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -769,7 +769,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-19"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -796,7 +796,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-19-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -824,7 +824,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-19-3"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -853,7 +853,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-19-4"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -883,7 +883,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-2-3"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -894,7 +894,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-2-5"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -906,7 +906,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-20"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -937,7 +937,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-20-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -967,7 +967,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-20-3"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -998,7 +998,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-20-5"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1029,7 +1029,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1061,7 +1061,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-11"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1098,7 +1098,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-3"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1130,7 +1130,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-4"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1163,7 +1163,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-5"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1197,7 +1197,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-6"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1232,7 +1232,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-8"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1268,7 +1268,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-21-9"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1304,7 +1304,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-3-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1316,7 +1316,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-4-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1329,7 +1329,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-4-5"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1343,7 +1343,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-4-7"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1358,7 +1358,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-5-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1374,7 +1374,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-5-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1391,7 +1391,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-6-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1408,7 +1408,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-6-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1426,7 +1426,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-6-4"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1445,7 +1445,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-7"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1460,7 +1460,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-8"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1473,7 +1473,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-9"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1487,7 +1487,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-9-2"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1502,7 +1502,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v1-9-4"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1518,7 +1518,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-minecraft-v26-1"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-root",
  "bungeeoxide-minecraft-v1-0-1",
@@ -1676,7 +1676,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-nbt"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "flate2",
  "pds-bytes-runtime",
@@ -1685,7 +1685,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-packet-dumper"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-minecraft-v1-21-11",
  "clap",
@@ -1695,7 +1695,7 @@ dependencies = [
 
 [[package]]
 name = "bungeeoxide-pds-natives"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "bungeeoxide-nbt",
  "pds-bytes-runtime",
