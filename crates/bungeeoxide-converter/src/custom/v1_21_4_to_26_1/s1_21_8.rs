@@ -1,6 +1,6 @@
 use super::remap::{self, remaps};
 use super::rules::{items, statistics, tags};
-use super::slots::{self, untrusted_step};
+use super::slots::{self, exact_matchers, untrusted_step};
 use crate::gen::convert::{v1_21_6 as a, v1_21_8 as b, Version};
 use crate::pds::convert::Result;
 use crate::Session;
@@ -25,18 +25,27 @@ statistics!(b => a, Version::V1_21_8 => Version::V1_21_6 { late_statistics_down_
 tags!(a => b, Version::V1_21_6 => Version::V1_21_8, &[], { config: late_config_tags_up_1_21_8, play: late_play_tags_up_1_21_8 });
 tags!(b => a, Version::V1_21_8 => Version::V1_21_6, &[], { config: late_config_tags_down_1_21_6, play: late_play_tags_down_1_21_6 });
 
+exact_matchers!(exact_up: a => b, Version::V1_21_6 => Version::V1_21_8);
+exact_matchers!(exact_down: b => a, Version::V1_21_8 => Version::V1_21_6);
+
 pub fn late_matchers_up_1_21_8(
 	v: &a::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<b::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(b::data_component_matchers::Ty {
+		exact_matchers: exact_up(&v.components.exact_matchers, cx)?,
+		partial_matchers: v.components.partial_matchers.clone(),
+	})
 }
 
 pub fn late_matchers_down_1_21_6(
 	v: &b::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<a::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(a::data_component_matchers::Ty {
+		exact_matchers: exact_down(&v.components.exact_matchers, cx)?,
+		partial_matchers: v.components.partial_matchers.clone(),
+	})
 }
 
 untrusted_step!(late_untrusted_up_1_21_8: a => b, Version::V1_21_6 => Version::V1_21_8, slots::late_to_slot_1_21_6, slots::late_to_untrusted_1_21_8);

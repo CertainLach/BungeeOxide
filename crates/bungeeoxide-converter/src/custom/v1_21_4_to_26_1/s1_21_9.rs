@@ -1,7 +1,7 @@
 use super::remap::{self, remaps};
 use super::rules::{blocks, entities, items, statistics, tags};
 use super::shared::{self, meta, text_down};
-use super::slots::{self, untrusted_step};
+use super::slots::{self, exact_matchers, untrusted_step};
 use super::text;
 use super::util::{lp_vec3, read_lp_vec3};
 use super::world;
@@ -49,18 +49,43 @@ tags!(b => a, Version::V1_21_9 => Version::V1_21_8, &[], { config: late_config_t
 untrusted_step!(late_untrusted_up_1_21_9: a => b, Version::V1_21_8 => Version::V1_21_9, slots::late_to_slot_1_21_8, slots::late_to_untrusted_1_21_9);
 untrusted_step!(late_untrusted_down_1_21_8: b => a, Version::V1_21_9 => Version::V1_21_8, slots::late_to_slot_1_21_9, slots::late_to_untrusted_1_21_8);
 
+exact_matchers!(exact_up: a => b, Version::V1_21_8 => Version::V1_21_9);
+exact_matchers!(exact_down: b => a, Version::V1_21_9 => Version::V1_21_8);
+
 pub fn late_matchers_up_1_21_9(
 	v: &a::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<b::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(b::data_component_matchers::Ty {
+		exact_matchers: exact_up(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| b::data_component_matchers_partial_matchers_items::Ty {
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 pub fn late_matchers_down_1_21_8(
 	v: &b::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<a::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(a::data_component_matchers::Ty {
+		exact_matchers: exact_down(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| a::data_component_matchers_partial_matchers_items::Ty {
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 const BLOCK_ENTITIES: &[&str] = &[

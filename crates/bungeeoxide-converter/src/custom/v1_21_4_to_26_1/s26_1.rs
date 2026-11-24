@@ -3,7 +3,7 @@ use super::registries;
 use super::remap::{self, remaps};
 use super::rules::{blocks, hidden, items, statistics};
 use super::shared::{self, meta};
-use super::slots::{self, untrusted_step};
+use super::slots::{self, exact_matchers, untrusted_step};
 use super::util::{encode, read_lp_vec3, read_varint, recode};
 use crate::gen::convert::{v1_21_11 as a, v26_1 as b, Root, Version};
 use crate::pds::convert::{Error, Result};
@@ -44,11 +44,26 @@ statistics!(b => a, Version::V26_1 => Version::V1_21_11 { late_statistics_down_1
 untrusted_step!(late_untrusted_up_26_1: a => b, Version::V1_21_11 => Version::V26_1, slots::late_to_slot_1_21_11, slots::late_to_untrusted_26_1);
 untrusted_step!(late_untrusted_down_1_21_11: b => a, Version::V26_1 => Version::V1_21_11, slots::late_to_slot_26_1, slots::late_to_untrusted_1_21_11);
 
+exact_matchers!(exact_up: a => b, Version::V1_21_11 => Version::V26_1);
+exact_matchers!(exact_down: b => a, Version::V26_1 => Version::V1_21_11);
+
 pub fn late_matchers_up_26_1(
 	v: &a::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<b::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(b::data_component_matchers::Ty {
+		exact_matchers: exact_up(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| b::data_component_matchers_partial_matchers_items::Ty {
+				is_predicate_type: p.is_predicate_type,
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 hidden!(a, Version::V1_21_11 => Version::V26_1, late_hidden_up_26_1);
@@ -56,9 +71,21 @@ hidden!(b, Version::V26_1 => Version::V1_21_11, late_hidden_down_1_21_11);
 
 pub fn late_matchers_down_1_21_11(
 	v: &b::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<a::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(a::data_component_matchers::Ty {
+		exact_matchers: exact_down(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| a::data_component_matchers_partial_matchers_items::Ty {
+				is_predicate_type: p.is_predicate_type,
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 fn survives_down(c: &b::slot_component::Ty) -> Result<bool> {

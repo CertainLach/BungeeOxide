@@ -97,7 +97,53 @@ macro_rules! untrusted_step {
 
 pub(crate) use untrusted_step;
 
-use crate::gen::convert::{v1_21_11, v1_21_5, v1_21_6, v1_21_8, v1_21_9, v26_1};
+macro_rules! exact_matchers {
+	($name:ident: $a:ident => $b:ident, $from:path => $to:path) => {
+		fn $name(
+			v: &[$a::slot_component::Ty],
+			cx: &mut crate::Session,
+		) -> crate::pds::convert::Result<Vec<$b::slot_component::Ty>> {
+			if v.is_empty() {
+				return Ok(Vec::new());
+			}
+			let item_id = crate::registry::names($from, "items")
+				.and_then(|n| n.id("stone"))
+				.unwrap_or(1) as i32;
+			let slot = $a::slot::Ty::Default(
+				1,
+				$a::slot_default::Ty {
+					item_id,
+					added_component_count: v.len() as i32,
+					removed_component_count: 0,
+					components: v.to_vec(),
+					remove_components: Vec::new(),
+				},
+			);
+			let out = super::shared::via_step(
+				$from,
+				$to,
+				crate::gen::convert::Root::PlayToClient,
+				&$a::play_to_client_packet::Ty::SetCursorItem(slot),
+				$a::play_to_client_packet::serialize,
+				$b::play_to_client_packet::deserialize,
+				cx,
+			)?;
+			match out {
+				$b::play_to_client_packet::Ty::SetCursorItem($b::slot::Ty::Default(_, d)) => {
+					Ok(d.components)
+				}
+				$b::play_to_client_packet::Ty::SetCursorItem($b::slot::Ty::V0) => Ok(Vec::new()),
+				_ => {
+					crate::pds::convert::unconvertible("set_cursor_item turned into another packet")
+				}
+			}
+		}
+	};
+}
+
+pub(crate) use exact_matchers;
+
+use crate::gen::convert::{v1_21_11, v1_21_5, v1_21_6, v1_21_8, v1_21_9, v26_1, v26_2, v26_3};
 
 untrusted!(v1_21_5, late_to_slot_1_21_5, late_to_untrusted_1_21_5);
 untrusted!(v1_21_6, late_to_slot_1_21_6, late_to_untrusted_1_21_6);
@@ -105,3 +151,5 @@ untrusted!(v1_21_8, late_to_slot_1_21_8, late_to_untrusted_1_21_8);
 untrusted!(v1_21_9, late_to_slot_1_21_9, late_to_untrusted_1_21_9);
 untrusted!(v1_21_11, late_to_slot_1_21_11, late_to_untrusted_1_21_11);
 untrusted!(v26_1, late_to_slot_26_1, late_to_untrusted_26_1);
+untrusted!(v26_2, late_to_slot_26_2, late_to_untrusted_26_2);
+untrusted!(v26_3, late_to_slot_26_3, late_to_untrusted_26_3);

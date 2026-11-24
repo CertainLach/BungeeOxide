@@ -1,7 +1,7 @@
 use super::remap::{self, remaps};
 use super::rules::{blocks, entities, items, statistics, tags};
 use super::shared::{self, same_bytes, text_down};
-use super::slots::{self, untrusted_step};
+use super::slots::{self, exact_matchers, untrusted_step};
 use super::text;
 use crate::gen::convert::{v1_21_5 as a, v1_21_6 as b, Version};
 use crate::pds::convert::{Error, Result};
@@ -73,18 +73,43 @@ pub fn late_registry_data_up_1_21_6(
 	Ok(vec![b::configuration_to_client_packet::Ty::RegistryData(p)])
 }
 
+exact_matchers!(exact_up: a => b, Version::V1_21_5 => Version::V1_21_6);
+exact_matchers!(exact_down: b => a, Version::V1_21_6 => Version::V1_21_5);
+
 pub fn late_matchers_up_1_21_6(
 	v: &a::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<b::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(b::data_component_matchers::Ty {
+		exact_matchers: exact_up(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| b::data_component_matchers_partial_matchers_items::Ty {
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 pub fn late_matchers_down_1_21_5(
 	v: &b::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<a::data_component_matchers::Ty> {
-	Ok(v.components.clone())
+	Ok(a::data_component_matchers::Ty {
+		exact_matchers: exact_down(&v.components.exact_matchers, cx)?,
+		partial_matchers: v
+			.components
+			.partial_matchers
+			.iter()
+			.map(|p| a::data_component_matchers_partial_matchers_items::Ty {
+				r#type: p.r#type,
+				predicate: p.predicate.clone(),
+			})
+			.collect(),
+	})
 }
 
 pub fn late_attribute_up_1_21_6(

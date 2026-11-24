@@ -3,7 +3,7 @@ use super::registries;
 use super::remap::{self, remaps};
 use super::rules::{entities, hidden, items, statistics, tags};
 use super::shared::{self, meta};
-use super::slots::{self, untrusted_step};
+use super::slots::{self, exact_matchers, untrusted_step};
 use super::util::{encode, read_varint};
 use crate::gen::convert::{v1_21_11 as b, v1_21_5, v1_21_9 as a, Version};
 use crate::pds::convert::{Error, Result};
@@ -36,20 +36,14 @@ tags!(b => a, Version::V1_21_11 => Version::V1_21_9, &[], { config: late_config_
 untrusted_step!(late_untrusted_up_1_21_11: a => b, Version::V1_21_9 => Version::V1_21_11, slots::late_to_slot_1_21_9, slots::late_to_untrusted_1_21_11);
 untrusted_step!(late_untrusted_down_1_21_9: b => a, Version::V1_21_11 => Version::V1_21_9, slots::late_to_slot_1_21_11, slots::late_to_untrusted_1_21_9);
 
+exact_matchers!(exact_up: a => b, Version::V1_21_9 => Version::V1_21_11);
+exact_matchers!(exact_down: b => a, Version::V1_21_11 => Version::V1_21_9);
+
 pub fn late_matchers_up_1_21_11(
 	v: &a::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<b::data_component_matchers::Ty> {
-	let mut exact_matchers = Vec::new();
-	for c in &v.components.exact_matchers {
-		let map = |t| components::remap(Version::V1_21_9, Version::V1_21_11, t);
-		exact_matchers.extend(components::retag(
-			map,
-			c,
-			v1_21_5::slot_component::serialize,
-			b::slot_component::deserialize,
-		)?);
-	}
+	let exact_matchers = exact_up(&v.components.exact_matchers, cx)?;
 	let partial_matchers = v
 		.components
 		.partial_matchers
@@ -71,18 +65,9 @@ hidden!(b, Version::V1_21_11 => Version::V1_21_9, late_hidden_down_1_21_9);
 
 pub fn late_matchers_down_1_21_9(
 	v: &b::item_block_predicate::Ty,
-	_cx: &mut Session,
+	cx: &mut Session,
 ) -> Result<a::data_component_matchers::Ty> {
-	let mut exact_matchers = Vec::new();
-	for c in &v.components.exact_matchers {
-		let map = |t| components::remap(Version::V1_21_11, Version::V1_21_9, t);
-		exact_matchers.extend(components::retag(
-			map,
-			c,
-			b::slot_component::serialize,
-			v1_21_5::slot_component::deserialize,
-		)?);
-	}
+	let exact_matchers = exact_down(&v.components.exact_matchers, cx)?;
 	let partial_matchers = v
 		.components
 		.partial_matchers
