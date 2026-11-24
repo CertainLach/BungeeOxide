@@ -69,6 +69,7 @@ updated(SlotComponent) {
 	added(villager_food, down: drop);
 	added(waxed, down: drop);
 	converted(pot_decorations, up: custom(late_pots_up_26_3), down: custom(late_pots_down_26_2));
+	hooked(map_decorations, down: custom(late_map_decorations_down_26_2));
 	updated(equippable) {
 		converted(allowedEntities, up: custom(late_equip_entities_up_26_3), down: custom(late_equip_entities_down_26_2));
 	};
@@ -183,6 +184,16 @@ namespace(play) {
 
 		updated(packet_explosion) {
 			added(playSound, up: true);
+		};
+
+		updated(packet_map) {
+			updated(icons) {
+				updated(value) {
+					updated(items) {
+						hooked(type, down: custom(late_map_icon_down_26_2));
+					};
+				};
+			};
 		};
 
 		updated(packet_map_chunk) {

@@ -1152,3 +1152,65 @@ fn brewing_stands_get_their_totals() {
 	down(&z::play_to_client_packet::Ty::OpenWindow(open(6, 14)), &mut cx);
 	assert_eq!(down(&bar(6, 2), &mut cx).len(), 1);
 }
+
+#[test]
+fn new_map_decorations_become_target_x() {
+	let mut cx = Session::new();
+	let icon = |kind| z::play_to_client_packet_map_icons_items_items::Ty {
+		r#type: kind,
+		x: 1,
+		z: 2,
+		direction: 0,
+		display_name: None,
+	};
+	let out = down(
+		&z::play_to_client_packet::Ty::Map(z::play_to_client_packet_map::Ty {
+			item_damage: 0,
+			scale: 0,
+			locked: false,
+			icons: Some(vec![icon(37), icon(26), icon(39)]),
+			columns: z::play_to_client_packet_map_columns::Ty::V0,
+		}),
+		&mut cx,
+	);
+	let [y::play_to_client_packet::Ty::Map(m)] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let kinds: Vec<i32> = m.icons.iter().flatten().map(|i| i.r#type).collect();
+	assert_eq!(kinds, [4, 26, 4]);
+
+	let decoration = |kind: &str| {
+		Payload::Compound(vec![
+			bungeeoxide_nbt::Entry::new("type", Payload::String(kind.into())),
+			bungeeoxide_nbt::Entry::new("x", Payload::Double(1.0)),
+			bungeeoxide_nbt::Entry::new("z", Payload::Double(2.0)),
+			bungeeoxide_nbt::Entry::new("rotation", Payload::Float(0.0)),
+		])
+	};
+	let decorations = Tag::new(Payload::Compound(vec![
+		bungeeoxide_nbt::Entry::new("camp", decoration("minecraft:abandoned_camp")),
+		bungeeoxide_nbt::Entry::new("x", decoration("minecraft:red_x")),
+	]));
+	let out = down(
+		&z::play_to_client_packet::Ty::SetCursorItem(z::slot::Ty::Default(
+			1,
+			z::slot_default::Ty {
+				item_id: id(Version::V26_3, "items", "filled_map"),
+				added_component_count: 1,
+				removed_component_count: 0,
+				components: vec![z::slot_component::Ty::MapDecorations(decorations)],
+				remove_components: vec![],
+			},
+		)),
+		&mut cx,
+	);
+	let [y::play_to_client_packet::Ty::SetCursorItem(y::slot::Ty::Default(_, d))] = out.as_slice() else {
+		panic!("{out:?}")
+	};
+	let [y::slot_component::Ty::MapDecorations(t)] = d.components.as_slice() else {
+		panic!("{d:?}")
+	};
+	let kind = |name: &str| t.value.field(name).and_then(|p| p.field("type")).and_then(Payload::as_str);
+	assert_eq!(kind("camp"), Some("minecraft:target_x"));
+	assert_eq!(kind("x"), Some("minecraft:red_x"));
+}

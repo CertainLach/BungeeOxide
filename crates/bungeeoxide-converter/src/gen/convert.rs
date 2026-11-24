@@ -42674,7 +42674,7 @@ fn step_playtoclient_58_57(
 		)
 		.map_err(|e| crate::pds::convert::Error::Encoding(format!("{e:?}")))?;
 	let out: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::Packet> =
-		match down_v26_2_26_3_v26_2_play_toClient_packet_6829(v, cx) {
+		match down_v26_2_26_3_v26_2_play_toClient_packet_6833(v, cx) {
 			Err(crate::pds::convert::Error::Dropped) => return Ok(vec![]),
 			out => out?,
 		};
@@ -42698,7 +42698,7 @@ fn step_playtoserver_57_58(
 		)
 		.map_err(|e| crate::pds::convert::Error::Encoding(format!("{e:?}")))?;
 	let out: Vec<::bungeeoxide_minecraft::v26_3::play::to_server::Packet> =
-		match up_v26_2_26_3_v26_3_play_toServer_packet_7028(v, cx) {
+		match up_v26_2_26_3_v26_3_play_toServer_packet_7036(v, cx) {
 			Err(crate::pds::convert::Error::Dropped) => return Ok(vec![]),
 			out => out?,
 		};
@@ -42722,7 +42722,7 @@ fn step_playtoserver_58_57(
 		)
 		.map_err(|e| crate::pds::convert::Error::Encoding(format!("{e:?}")))?;
 	let out: Vec<::bungeeoxide_minecraft::v26_2::play::to_server::Packet> =
-		match down_v26_2_26_3_v26_2_play_toServer_packet_7041(v, cx) {
+		match down_v26_2_26_3_v26_2_play_toServer_packet_7049(v, cx) {
 			Err(crate::pds::convert::Error::Dropped) => return Ok(vec![]),
 			out => out?,
 		};
@@ -42753,7 +42753,7 @@ fn step_statustoclient_58_57(
 		)
 		.map_err(|e| crate::pds::convert::Error::Encoding(format!("{e:?}")))?;
 	let out: Vec<::bungeeoxide_minecraft::v1_7::status::to_client::Packet> =
-		match down_v26_2_26_3_v1_7_status_toClient_packet_7054(v, cx) {
+		match down_v26_2_26_3_v1_7_status_toClient_packet_7062(v, cx) {
 			Err(crate::pds::convert::Error::Dropped) => return Ok(vec![]),
 			out => out?,
 		};
@@ -256351,7 +256351,89 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_login_6763(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_123_6770(
+pub fn up_v26_2_26_3_v1_20_3_play_toClient_packet_map_17_6769(
+	v: ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17> {
+	Ok({
+		let _0 = &v;
+		let ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17 {
+			r#type,
+			x,
+			z,
+			direction,
+			display_name,
+			..
+		} = v;
+		::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17 {
+			r#type: r#type,
+			x: x,
+			z: z,
+			direction: direction,
+			display_name: display_name,
+		}
+	})
+}
+
+pub fn up_v26_2_26_3_array_inline_191_6768(
+	v: Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>
+{
+	v.into_iter()
+		.filter_map(
+			|x| match up_v26_2_26_3_v1_20_3_play_toClient_packet_map_17_6769(x, cx) {
+				Err(crate::pds::convert::Error::Dropped) => None,
+				r => Some(r),
+			},
+		)
+		.collect::<crate::pds::convert::Result<Vec<_>>>()
+}
+
+pub fn up_v26_2_26_3_option_104_6767(
+	v: Option<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<
+	Option<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>,
+> {
+	Ok(
+		match v
+			.map(|x| -> crate::pds::convert::Result<_> {
+				Ok(up_v26_2_26_3_array_inline_191_6768(x, cx)?)
+			})
+			.transpose()
+		{
+			Err(crate::pds::convert::Error::Dropped) => None,
+			r => r?,
+		},
+	)
+}
+
+pub fn up_v26_2_26_3_v1_20_3_play_toClient_packet_map_6766(
+	v: ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap> {
+	Ok({
+		let _0 = &v;
+		let ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap {
+			item_damage,
+			scale,
+			locked,
+			icons,
+			columns,
+			..
+		} = v;
+		::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap {
+			item_damage: item_damage,
+			scale: scale,
+			locked: locked,
+			icons: up_v26_2_26_3_option_104_6767(icons, cx)?,
+			columns: columns,
+		}
+	})
+}
+
+pub fn up_v26_2_26_3_array_inline_123_6774(
 	v: Vec<::bungeeoxide_minecraft::v26_2::SlotComponent>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::SlotComponent>> {
@@ -256363,7 +256445,7 @@ pub fn up_v26_2_26_3_array_inline_123_6770(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_21_6769(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_21_6773(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList28,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList21>
@@ -256379,12 +256461,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_21_6769(
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList21 {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: up_v26_2_26_3_array_inline_123_6770(components, cx)?,
+			components: up_v26_2_26_3_array_inline_123_6774(components, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_22_6772(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_22_6776(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList29,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList22>
@@ -256400,12 +256482,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_22_6772(
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList22 {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: up_v26_2_26_3_array_inline_123_6770(components, cx)?,
+			components: up_v26_2_26_3_array_inline_123_6774(components, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_option_101_6771(
+pub fn up_v26_2_26_3_option_101_6775(
 	v: Option<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList29>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -256414,7 +256496,7 @@ pub fn up_v26_2_26_3_option_101_6771(
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_22_6772(
+				Ok(up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_22_6776(
 					x, cx,
 				)?)
 			})
@@ -256426,7 +256508,7 @@ pub fn up_v26_2_26_3_option_101_6771(
 	)
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6768(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6772(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList30,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList23>
@@ -256447,12 +256529,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6768(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList23 {
-			input_item1: up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_21_6769(
+			input_item1: up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_21_6773(
 				input_item1,
 				cx,
 			)?,
 			output_item: up_v26_2_26_3_v26_3_Slot_6664(output_item, cx)?,
-			input_item2: up_v26_2_26_3_option_101_6771(input_item2, cx)?,
+			input_item2: up_v26_2_26_3_option_101_6775(input_item2, cx)?,
 			trade_disabled: trade_disabled,
 			nb_trade_uses: nb_trade_uses,
 			maximum_nb_trade_uses: maximum_nb_trade_uses,
@@ -256464,7 +256546,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6768(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_423_6767(
+pub fn up_v26_2_26_3_array_inline_423_6771(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList30>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -256472,7 +256554,7 @@ pub fn up_v26_2_26_3_array_inline_423_6767(
 > {
 	v.into_iter()
 		.filter_map(
-			|x| match up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6768(x, cx) {
+			|x| match up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_23_6772(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -256480,7 +256562,7 @@ pub fn up_v26_2_26_3_array_inline_423_6767(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6766(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6770(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList> {
@@ -256497,7 +256579,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6766(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList {
 			window_id: window_id,
-			trades: up_v26_2_26_3_array_inline_423_6767(trades, cx)?,
+			trades: up_v26_2_26_3_array_inline_423_6771(trades, cx)?,
 			villager_level: villager_level,
 			experience: experience,
 			is_regular_villager: is_regular_villager,
@@ -256506,7 +256588,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6766(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_look_6773(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_look_6777(
 	v: ::bungeeoxide_minecraft::v1_8::play::to_client::PacketEntityLook,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityLook>
@@ -256529,7 +256611,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_look_6773(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_4_6779(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_4_6783(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay4,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay4> {
@@ -256539,13 +256621,13 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_4_6779(
 			source, component, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay4 {
-			source: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(source, cx)?,
+			source: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(source, cx)?,
 			component: up_v26_2_26_3_v26_3_SlotComponentType_6690(component, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_5_6780(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_5_6784(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay5,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay5> {
@@ -256553,13 +256635,13 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_5_6780(
 		let _0 = &v;
 		let ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay5 { dye, target, .. } = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay5 {
-			dye: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(dye, cx)?,
-			target: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(target, cx)?,
+			dye: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(dye, cx)?,
+			target: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(target, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6_6782(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6_6786(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay6,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay6> {
@@ -256573,7 +256655,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6_6782(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_7_6781(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_7_6785(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay7,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay7> {
@@ -256586,14 +256668,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_7_6781(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay7 {
-			base: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(base, cx)?,
-			material: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(material, cx)?,
-			pattern: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6_6782(pattern, cx)?,
+			base: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(base, cx)?,
+			material: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(material, cx)?,
+			pattern: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6_6786(pattern, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_8_6783(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_8_6787(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay8> {
@@ -256603,13 +256685,13 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_8_6783(
 			input, remainder, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay8 {
-			input: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(input, cx)?,
-			remainder: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(remainder, cx)?,
+			input: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(input, cx)?,
+			remainder: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(remainder, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay> {
@@ -256623,17 +256705,17 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::Composite(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::Composite(
-				up_v26_2_26_3_array_inline_127_6777(p, cx)?,
+				up_v26_2_26_3_array_inline_127_6781(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::WithAnyPotion(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::WithAnyPotion(Box::new(
-				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(*p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::OnlyWithComponent(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::OnlyWithComponent(
-				Box::new(up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_4_6779(
+				Box::new(up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_4_6783(
 					*p, cx,
 				)?),
 			)
@@ -256651,17 +256733,17 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::DyedSlotDemo(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::DyedSlotDemo(Box::new(
-				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_5_6780(*p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_5_6784(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::SmithingTrim(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::SmithingTrim(Box::new(
-				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_7_6781(*p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_7_6785(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::WithRemainder(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::WithRemainder(Box::new(
-				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_8_6783(*p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_8_6787(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::Default(t) => {
@@ -256670,14 +256752,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_127_6777(
+pub fn up_v26_2_26_3_array_inline_127_6781(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay>>
 {
 	v.into_iter()
 		.filter_map(
-			|x| match up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(x, cx) {
+			|x| match up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -256685,7 +256767,7 @@ pub fn up_v26_2_26_3_array_inline_127_6777(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6776(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6780(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay0> {
@@ -256698,9 +256780,9 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6776(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay0 {
-			ingredients: up_v26_2_26_3_array_inline_127_6777(ingredients, cx)?,
-			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(result, cx)?,
-			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+			ingredients: up_v26_2_26_3_array_inline_127_6781(ingredients, cx)?,
+			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(result, cx)?,
+			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 				crafting_station,
 				cx,
 			)?,
@@ -256708,7 +256790,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6776(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6784(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6788(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay1,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay1> {
@@ -256725,9 +256807,9 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6784(
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay1 {
 			width: width,
 			height: height,
-			ingredients: up_v26_2_26_3_array_inline_127_6777(ingredients, cx)?,
-			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(result, cx)?,
-			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+			ingredients: up_v26_2_26_3_array_inline_127_6781(ingredients, cx)?,
+			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(result, cx)?,
+			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 				crafting_station,
 				cx,
 			)?,
@@ -256735,7 +256817,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6784(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6785(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6789(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay2,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay2> {
@@ -256751,10 +256833,10 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6785(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay2 {
-			ingredient: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(ingredient, cx)?,
-			fuel: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(fuel, cx)?,
-			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(result, cx)?,
-			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+			ingredient: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(ingredient, cx)?,
+			fuel: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(fuel, cx)?,
+			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(result, cx)?,
+			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 				crafting_station,
 				cx,
 			)?,
@@ -256764,7 +256846,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6785(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6786(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6790(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay3,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay3> {
@@ -256777,9 +256859,9 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6786(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay3 {
-			ingredient: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(ingredient, cx)?,
-			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(result, cx)?,
-			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+			ingredient: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(ingredient, cx)?,
+			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(result, cx)?,
+			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 				crafting_station,
 				cx,
 			)?,
@@ -256787,7 +256869,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6786(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6787(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6791(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay4,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay4> {
@@ -256802,11 +256884,11 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6787(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay4 {
-			template: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(template, cx)?,
-			base: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(base, cx)?,
-			addition: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(addition, cx)?,
-			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(result, cx)?,
-			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(
+			template: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(template, cx)?,
+			base: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(base, cx)?,
+			addition: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(addition, cx)?,
+			result: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(result, cx)?,
+			crafting_station: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(
 				crafting_station,
 				cx,
 			)?,
@@ -256814,34 +256896,34 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6787(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6775(
+pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6779(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay> {
 	Ok(match v {
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::CraftingShapeless(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::CraftingShapeless(
-				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6776(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_0_6780(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::CraftingShaped(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::CraftingShaped(
-				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6784(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_1_6788(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Furnace(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Furnace(
-				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6785(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_2_6789(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Stonecutter(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Stonecutter(
-				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6786(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_3_6790(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Smithing(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Smithing(
-				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6787(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_4_6791(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Default(t) => {
@@ -256850,7 +256932,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6775(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6774(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6778(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketCraftRecipeResponse,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -256865,7 +256947,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6774(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketCraftRecipeResponse {
 			window_id: window_id,
-			recipe_display: up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6775(
+			recipe_display: up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6779(
 				recipe_display,
 				cx,
 			)?,
@@ -256873,14 +256955,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6774(
 	})
 }
 
-pub fn up_v26_2_26_3_buffer_inline_3_6790(
+pub fn up_v26_2_26_3_buffer_inline_3_6794(
 	v: Vec<::bungeeoxide_minecraft::I64>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<u8>> {
 	crate::custom::late_mask_up_26_3(v, cx)
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6789(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6793(
 	v: ::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat13,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat16>
@@ -256888,7 +256970,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6789(
 	Ok(match v {
 		::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat13::V2(p) => {
 			::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat16::V2(
-				up_v26_2_26_3_buffer_inline_3_6790(p, cx)?,
+				up_v26_2_26_3_buffer_inline_3_6794(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat13::Default(t) => {
@@ -256897,7 +256979,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6789(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6788(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6792(
 	v: ::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat>
@@ -256930,7 +257012,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6788(
 			salt: salt,
 			previous_messages: previous_messages,
 			unsigned_chat_content: unsigned_chat_content,
-			filter_type_mask: up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6789(
+			filter_type_mask: up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_16_6793(
 				filter_type_mask,
 				cx,
 			)?,
@@ -256941,7 +257023,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6788(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_16_6795(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_16_6799(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd17,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -256952,7 +257034,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_16_6795(
     })
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6794(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6798(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd18,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -256970,9 +257052,9 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6794(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd17 {
 			display_id: display_id,
-			display: up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6775(display, cx)?,
+			display: up_v26_2_26_3_v26_3_play_toClient_RecipeDisplay_6779(display, cx)?,
 			group: group,
-			category: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_16_6795(
+			category: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_16_6799(
 				category, cx,
 			)?,
 			crafting_requirements: __f_craftingRequirements,
@@ -256980,7 +257062,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6794(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_18_6796(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_18_6800(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd19,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257000,7 +257082,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_18_6796(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_19_6793(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_19_6797(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd20,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257014,13 +257096,13 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_19_6793(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd19 {
-			recipe: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6794(recipe, cx)?,
-			flags: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_18_6796(flags, cx)?,
+			recipe: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_17_6798(recipe, cx)?,
+			flags: up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_18_6800(flags, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_421_6792(
+pub fn up_v26_2_26_3_array_inline_421_6796(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd20>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257028,7 +257110,7 @@ pub fn up_v26_2_26_3_array_inline_421_6792(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_19_6793(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_19_6797(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257036,7 +257118,7 @@ pub fn up_v26_2_26_3_array_inline_421_6792(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_6791(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_6795(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd>
@@ -257049,13 +257131,13 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_6791(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd {
-			entries: up_v26_2_26_3_array_inline_421_6792(entries, cx)?,
+			entries: up_v26_2_26_3_array_inline_421_6796(entries, cx)?,
 			replace: replace,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_respawn_6797(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_respawn_6801(
 	v: ::bungeeoxide_minecraft::v1_21_9::play::to_client::PacketRespawn,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketRespawn> {
@@ -257073,7 +257155,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_respawn_6797(
 	})
 }
 
-pub fn up_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6798(
+pub fn up_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6802(
 	v: ::bungeeoxide_minecraft::v1_20::play::to_client::PacketMultiBlockChange,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257093,7 +257175,7 @@ pub fn up_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6798(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_121_6803(
+pub fn up_v26_2_26_3_array_inline_121_6807(
 	v: Vec<::bungeeoxide_minecraft::v26_2::Particle>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::Particle>> {
@@ -257105,7 +257187,7 @@ pub fn up_v26_2_26_3_array_inline_121_6803(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_90_6804(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_90_6808(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry57,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry90> {
@@ -257125,7 +257207,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_90_6804(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_91_6805(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_91_6809(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry58,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry91> {
@@ -257139,7 +257221,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_91_6805(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_92_6806(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_92_6810(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry59,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry92> {
@@ -257156,7 +257238,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_92_6806(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_93_6807(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_93_6811(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry60,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry93> {
@@ -257173,7 +257255,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_93_6807(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6806(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94> {
@@ -257209,12 +257291,12 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Particles(p) => {
 			::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Particles(
-				up_v26_2_26_3_array_inline_121_6803(p, cx)?,
+				up_v26_2_26_3_array_inline_121_6807(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::VillagerData(p) => {
 			::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::VillagerData(
-				up_v26_2_26_3_v26_3_entityMetadataEntry_90_6804(p, cx)?,
+				up_v26_2_26_3_v26_3_entityMetadataEntry_90_6808(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::OptionalUnsignedInt(p) => {
@@ -257270,7 +257352,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::PaintingVariant(p) => {
 			::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::PaintingVariant(
-				up_v26_2_26_3_v26_3_entityMetadataEntry_91_6805(p, cx)?,
+				up_v26_2_26_3_v26_3_entityMetadataEntry_91_6809(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::SnifferState(p) => {
@@ -257299,7 +257381,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::HumanoidArm(p) => {
 			::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::HumanoidArm(
-				up_v26_2_26_3_v26_3_entityMetadataEntry_92_6806(p, cx)?,
+				up_v26_2_26_3_v26_3_entityMetadataEntry_92_6810(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Component(p) => {
@@ -257318,7 +257400,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Rotations(p) => {
 			::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Rotations(
-				up_v26_2_26_3_v26_3_entityMetadataEntry_93_6807(p, cx)?,
+				up_v26_2_26_3_v26_3_entityMetadataEntry_93_6811(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Default(t) => {
@@ -257327,7 +257409,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_6801(
+pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_6805(
 	v: ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry> {
@@ -257336,18 +257418,18 @@ pub fn up_v26_2_26_3_v26_3_entityMetadataEntry_6801(
 		let ::bungeeoxide_minecraft::v26_2::EntityMetadataEntry { key, value, .. } = v;
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry {
 			key: key,
-			value: up_v26_2_26_3_v26_3_entityMetadataEntry_94_6802(value, cx)?,
+			value: up_v26_2_26_3_v26_3_entityMetadataEntry_94_6806(value, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_entityMetadata_6800(
+pub fn up_v26_2_26_3_v26_3_entityMetadata_6804(
 	v: Vec<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry>> {
 	v.into_iter()
 		.filter_map(
-			|x| match up_v26_2_26_3_v26_3_entityMetadataEntry_6801(x, cx) {
+			|x| match up_v26_2_26_3_v26_3_entityMetadataEntry_6805(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -257355,7 +257437,7 @@ pub fn up_v26_2_26_3_v26_3_entityMetadata_6800(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_metadata_6799(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_metadata_6803(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityMetadata,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257370,12 +257452,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_metadata_6799(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityMetadata {
 			entity_id: entity_id,
-			metadata: up_v26_2_26_3_v26_3_entityMetadata_6800(metadata, cx)?,
+			metadata: up_v26_2_26_3_v26_3_entityMetadata_6804(metadata, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_15_6810(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_15_6814(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityEquipment15,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257395,7 +257477,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_15_6810(
 	})
 }
 
-pub fn up_v26_2_26_3_topBitSetTerminatedArray_121_6809(
+pub fn up_v26_2_26_3_topBitSetTerminatedArray_121_6813(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityEquipment15>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257403,7 +257485,7 @@ pub fn up_v26_2_26_3_topBitSetTerminatedArray_121_6809(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_15_6810(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_15_6814(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257411,7 +257493,7 @@ pub fn up_v26_2_26_3_topBitSetTerminatedArray_121_6809(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_6808(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_6812(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityEquipment,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257426,12 +257508,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_6808(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityEquipment {
 			entity_id: entity_id,
-			equipments: up_v26_2_26_3_topBitSetTerminatedArray_121_6809(equipments, cx)?,
+			equipments: up_v26_2_26_3_topBitSetTerminatedArray_121_6813(equipments, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_set_player_inventory_6811(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_set_player_inventory_6815(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketSetPlayerInventory,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257451,7 +257533,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_set_player_inventory_6811(
 	})
 }
 
-pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_6812(
+pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_6816(
 	v: ::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketEntitySoundEffect,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257479,7 +257561,7 @@ pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_6812(
 	})
 }
 
-pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_6813(
+pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_6817(
 	v: ::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketSoundEffect,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketSoundEffect>
@@ -257510,7 +257592,7 @@ pub fn up_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_6813(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_8_6820(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_8_6824(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements8>
@@ -257533,7 +257615,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_8_6820(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_9_6821(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_9_6825(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements9,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements9>
@@ -257548,7 +257630,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_9_6821(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6819(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6823(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements10,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257570,8 +257652,8 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6819(
 			description: description,
 			icon: up_v26_2_26_3_v26_3_ItemStackTemplate_6688(icon, cx)?,
 			frame_type: frame_type,
-			flags: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_8_6820(flags, cx)?,
-			background_texture: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_9_6821(
+			flags: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_8_6824(flags, cx)?,
+			background_texture: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_9_6825(
 				background_texture,
 				cx,
 			)?,
@@ -257579,7 +257661,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6819(
 	})
 }
 
-pub fn up_v26_2_26_3_option_100_6818(
+pub fn up_v26_2_26_3_option_100_6822(
 	v: Option<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements10>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257588,7 +257670,7 @@ pub fn up_v26_2_26_3_option_100_6818(
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6819(x, cx)?)
+				Ok(up_v26_2_26_3_v26_3_play_toClient_packet_advancements_10_6823(x, cx)?)
 			})
 			.transpose()
 		{
@@ -257598,7 +257680,7 @@ pub fn up_v26_2_26_3_option_100_6818(
 	)
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_11_6817(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_11_6821(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements11,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257615,14 +257697,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_11_6817(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements11 {
 			parent_id: parent_id,
-			display_data: up_v26_2_26_3_option_100_6818(display_data, cx)?,
+			display_data: up_v26_2_26_3_option_100_6822(display_data, cx)?,
 			requirements: requirements,
 			sends_telemtry_data: sends_telemtry_data,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_12_6816(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_12_6820(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements12,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257639,14 +257721,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_12_6816(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements12 {
 			key: key,
-			value: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_11_6817(value, cx)?,
+			value: up_v26_2_26_3_v26_3_play_toClient_packet_advancements_11_6821(value, cx)?,
 			x: __f_x,
 			y: __f_y,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_415_6815(
+pub fn up_v26_2_26_3_array_inline_415_6819(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements12>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257654,7 +257736,7 @@ pub fn up_v26_2_26_3_array_inline_415_6815(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_12_6816(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_12_6820(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257662,7 +257744,7 @@ pub fn up_v26_2_26_3_array_inline_415_6815(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_13_6825(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_13_6829(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements13,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257682,7 +257764,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_13_6825(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_416_6824(
+pub fn up_v26_2_26_3_array_inline_416_6828(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements13>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257690,7 +257772,7 @@ pub fn up_v26_2_26_3_array_inline_416_6824(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_13_6825(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_13_6829(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257698,7 +257780,7 @@ pub fn up_v26_2_26_3_array_inline_416_6824(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_14_6823(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_14_6827(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements14,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257713,12 +257795,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_14_6823(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements14 {
 			key: key,
-			value: up_v26_2_26_3_array_inline_416_6824(value, cx)?,
+			value: up_v26_2_26_3_array_inline_416_6828(value, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_417_6822(
+pub fn up_v26_2_26_3_array_inline_417_6826(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements14>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257726,7 +257808,7 @@ pub fn up_v26_2_26_3_array_inline_417_6822(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_14_6823(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_advancements_14_6827(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257734,7 +257816,7 @@ pub fn up_v26_2_26_3_array_inline_417_6822(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_6814(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_6818(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements>
@@ -257751,15 +257833,15 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_advancements_6814(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements {
 			reset: reset,
-			advancement_mapping: up_v26_2_26_3_array_inline_415_6815(advancement_mapping, cx)?,
+			advancement_mapping: up_v26_2_26_3_array_inline_415_6819(advancement_mapping, cx)?,
 			identifiers: identifiers,
-			progress_mapping: up_v26_2_26_3_array_inline_417_6822(progress_mapping, cx)?,
+			progress_mapping: up_v26_2_26_3_array_inline_417_6826(progress_mapping, cx)?,
 			show_advancements: show_advancements,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_15_6828(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_15_6832(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketDeclareRecipes15,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257774,12 +257856,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_15_6828(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareRecipes15 {
 			input: __f_input,
-			slot_display: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6778(slot_display, cx)?,
+			slot_display: up_v26_2_26_3_v26_3_play_toClient_SlotDisplay_6782(slot_display, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_419_6827(
+pub fn up_v26_2_26_3_array_inline_419_6831(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_client::PacketDeclareRecipes15>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257787,7 +257869,7 @@ pub fn up_v26_2_26_3_array_inline_419_6827(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_15_6828(x, cx) {
+			match up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_15_6832(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -257795,7 +257877,7 @@ pub fn up_v26_2_26_3_array_inline_419_6827(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_6826(
+pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_6830(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_client::PacketDeclareRecipes,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -257810,7 +257892,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_6826(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareRecipes {
 			recipes: __f_recipes,
-			stone_cutter_recipes: up_v26_2_26_3_array_inline_419_6827(stone_cutter_recipes, cx)?,
+			stone_cutter_recipes: up_v26_2_26_3_array_inline_419_6831(stone_cutter_recipes, cx)?,
 		}
 	})
 }
@@ -257999,12 +258081,14 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::LowDiskSpaceWarning(p) => {
 			vec![::bungeeoxide_minecraft::v26_3::play::to_client::Packet::LowDiskSpaceWarning(p)]
 		}
-		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Map(p) => {
-			vec![::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Map(p)]
-		}
+		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Map(p) => vec![
+			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Map(
+				up_v26_2_26_3_v1_20_3_play_toClient_packet_map_6766(p, cx)?,
+			),
+		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::TradeList(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::TradeList(
-				up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6766(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_trade_list_6770(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::RelEntityMove(p) => {
@@ -258018,7 +258102,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityLook(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityLook(
-				up_v26_2_26_3_v26_3_play_toClient_packet_entity_look_6773(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_entity_look_6777(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::VehicleMove(p) => {
@@ -258041,7 +258125,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::CraftRecipeResponse(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CraftRecipeResponse(
-				up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6774(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_craft_recipe_response_6778(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Abilities(p) => {
@@ -258049,7 +258133,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::PlayerChat(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::PlayerChat(
-				up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6788(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_player_chat_6792(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EndCombatEvent(p) => {
@@ -258078,7 +258162,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::RecipeBookAdd(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::RecipeBookAdd(
-				up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_6791(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_recipe_book_add_6795(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::RecipeBookRemove(p) => {
@@ -258104,7 +258188,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Respawn(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Respawn(
-				up_v26_2_26_3_v26_3_play_toClient_packet_respawn_6797(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_respawn_6801(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityHeadRotation(p) => {
@@ -258112,7 +258196,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::MultiBlockChange(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::MultiBlockChange(
-				up_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6798(p, cx)?,
+				up_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6802(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SelectAdvancementTab(p) => {
@@ -258169,7 +258253,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityMetadata(
-				up_v26_2_26_3_v26_3_play_toClient_packet_entity_metadata_6799(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_entity_metadata_6803(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::AttachEntity(p) => {
@@ -258180,7 +258264,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityEquipment(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityEquipment(
-				up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_6808(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_entity_equipment_6812(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Experience(p) => {
@@ -258200,7 +258284,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SetPlayerInventory(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SetPlayerInventory(
-				up_v26_2_26_3_v26_3_play_toClient_packet_set_player_inventory_6811(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_set_player_inventory_6815(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Teams(p) => {
@@ -258226,12 +258310,12 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntitySoundEffect(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntitySoundEffect(
-				up_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_6812(p, cx)?,
+				up_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_6816(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SoundEffect(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SoundEffect(
-				up_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_6813(p, cx)?,
+				up_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_6817(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::StartConfiguration(p) => {
@@ -258274,7 +258358,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Advancements(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Advancements(
-				up_v26_2_26_3_v26_3_play_toClient_packet_advancements_6814(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_advancements_6818(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityUpdateAttributes(p) => {
@@ -258285,7 +258369,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::DeclareRecipes(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_client::Packet::DeclareRecipes(
-				up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_6826(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toClient_packet_declare_recipes_6830(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Tags(p) => {
@@ -258315,7 +258399,7 @@ pub fn up_v26_2_26_3_v26_3_play_toClient_packet_6630(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_spawn_entity_6830(
+pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_spawn_entity_6834(
 	v: ::bungeeoxide_minecraft::v1_21_9::play::to_client::PacketSpawnEntity,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_9::play::to_client::PacketSpawnEntity>
@@ -258352,7 +258436,7 @@ pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_spawn_entity_6830(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_action_6831(
+pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_action_6835(
 	v: ::bungeeoxide_minecraft::v1_14::play::to_client::PacketBlockAction,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_14::play::to_client::PacketBlockAction>
@@ -258375,7 +258459,7 @@ pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_action_6831(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_change_6832(
+pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_change_6836(
 	v: ::bungeeoxide_minecraft::v1_14::play::to_client::PacketBlockChange,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_14::play::to_client::PacketBlockChange>
@@ -258391,7 +258475,7 @@ pub fn down_v26_2_26_3_v1_14_play_toClient_packet_block_change_6832(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_48_6836(
+pub fn down_v26_2_26_3_v1_21_6_command_node_48_6840(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode66,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode48> {
@@ -258417,7 +258501,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_48_6836(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_49_6837(
+pub fn down_v26_2_26_3_v1_21_6_command_node_49_6841(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode67,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode49> {
@@ -258431,7 +258515,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_49_6837(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_50_6842(
+pub fn down_v26_2_26_3_v1_21_6_command_node_50_6846(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode68,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode50> {
@@ -258451,7 +258535,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_50_6842(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_51_6843(
+pub fn down_v26_2_26_3_v1_21_6_command_node_51_6847(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode69,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode51> {
@@ -258465,7 +258549,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_51_6843(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_52_6844(
+pub fn down_v26_2_26_3_v1_21_6_command_node_52_6848(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode70,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode52> {
@@ -258479,7 +258563,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_52_6844(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_53_6841(
+pub fn down_v26_2_26_3_v1_21_6_command_node_53_6845(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode71,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode53> {
@@ -258489,14 +258573,14 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_53_6841(
 			flags, min, max, ..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode53 {
-			flags: down_v26_2_26_3_v1_21_6_command_node_50_6842(flags, cx)?,
-			min: down_v26_2_26_3_v1_21_6_command_node_51_6843(min, cx)?,
-			max: down_v26_2_26_3_v1_21_6_command_node_52_6844(max, cx)?,
+			flags: down_v26_2_26_3_v1_21_6_command_node_50_6846(flags, cx)?,
+			min: down_v26_2_26_3_v1_21_6_command_node_51_6847(min, cx)?,
+			max: down_v26_2_26_3_v1_21_6_command_node_52_6848(max, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_54_6846(
+pub fn down_v26_2_26_3_v1_21_6_command_node_54_6850(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode72,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode54> {
@@ -258516,7 +258600,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_54_6846(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_55_6847(
+pub fn down_v26_2_26_3_v1_21_6_command_node_55_6851(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode73,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode55> {
@@ -258530,7 +258614,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_55_6847(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_56_6848(
+pub fn down_v26_2_26_3_v1_21_6_command_node_56_6852(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode74,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode56> {
@@ -258544,7 +258628,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_56_6848(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_57_6845(
+pub fn down_v26_2_26_3_v1_21_6_command_node_57_6849(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode75,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode57> {
@@ -258554,14 +258638,14 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_57_6845(
 			flags, min, max, ..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode57 {
-			flags: down_v26_2_26_3_v1_21_6_command_node_54_6846(flags, cx)?,
-			min: down_v26_2_26_3_v1_21_6_command_node_55_6847(min, cx)?,
-			max: down_v26_2_26_3_v1_21_6_command_node_56_6848(max, cx)?,
+			flags: down_v26_2_26_3_v1_21_6_command_node_54_6850(flags, cx)?,
+			min: down_v26_2_26_3_v1_21_6_command_node_55_6851(min, cx)?,
+			max: down_v26_2_26_3_v1_21_6_command_node_56_6852(max, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_58_6850(
+pub fn down_v26_2_26_3_v1_21_6_command_node_58_6854(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode76,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode58> {
@@ -258581,7 +258665,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_58_6850(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_59_6851(
+pub fn down_v26_2_26_3_v1_21_6_command_node_59_6855(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode77,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode59> {
@@ -258595,7 +258679,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_59_6851(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_60_6852(
+pub fn down_v26_2_26_3_v1_21_6_command_node_60_6856(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode78,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode60> {
@@ -258609,7 +258693,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_60_6852(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_61_6849(
+pub fn down_v26_2_26_3_v1_21_6_command_node_61_6853(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode79,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode61> {
@@ -258619,14 +258703,14 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_61_6849(
 			flags, min, max, ..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode61 {
-			flags: down_v26_2_26_3_v1_21_6_command_node_58_6850(flags, cx)?,
-			min: down_v26_2_26_3_v1_21_6_command_node_59_6851(min, cx)?,
-			max: down_v26_2_26_3_v1_21_6_command_node_60_6852(max, cx)?,
+			flags: down_v26_2_26_3_v1_21_6_command_node_58_6854(flags, cx)?,
+			min: down_v26_2_26_3_v1_21_6_command_node_59_6855(min, cx)?,
+			max: down_v26_2_26_3_v1_21_6_command_node_60_6856(max, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_62_6853(
+pub fn down_v26_2_26_3_v1_21_6_command_node_62_6857(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode80,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode62> {
@@ -258644,7 +258728,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_62_6853(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_63_6855(
+pub fn down_v26_2_26_3_v1_21_6_command_node_63_6859(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode81,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode63> {
@@ -258664,7 +258748,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_63_6855(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_64_6856(
+pub fn down_v26_2_26_3_v1_21_6_command_node_64_6860(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode82,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode64> {
@@ -258678,7 +258762,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_64_6856(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_65_6857(
+pub fn down_v26_2_26_3_v1_21_6_command_node_65_6861(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode83,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode65> {
@@ -258692,7 +258776,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_65_6857(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_66_6854(
+pub fn down_v26_2_26_3_v1_21_6_command_node_66_6858(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode84,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode66> {
@@ -258702,14 +258786,14 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_66_6854(
 			flags, min, max, ..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode66 {
-			flags: down_v26_2_26_3_v1_21_6_command_node_63_6855(flags, cx)?,
-			min: down_v26_2_26_3_v1_21_6_command_node_64_6856(min, cx)?,
-			max: down_v26_2_26_3_v1_21_6_command_node_65_6857(max, cx)?,
+			flags: down_v26_2_26_3_v1_21_6_command_node_63_6859(flags, cx)?,
+			min: down_v26_2_26_3_v1_21_6_command_node_64_6860(min, cx)?,
+			max: down_v26_2_26_3_v1_21_6_command_node_65_6861(max, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_67_6858(
+pub fn down_v26_2_26_3_v1_21_6_command_node_67_6862(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode85,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode67> {
@@ -258729,7 +258813,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_67_6858(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_68_6859(
+pub fn down_v26_2_26_3_v1_21_6_command_node_68_6863(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode86,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode68> {
@@ -258749,7 +258833,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_68_6859(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
+pub fn down_v26_2_26_3_v1_21_6_command_node_69_6844(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode87,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode69> {
@@ -258759,7 +258843,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::BrigadierFloat(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::BrigadierFloat(
-				down_v26_2_26_3_v1_21_6_command_node_53_6841(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_53_6845(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftVec3 => {
@@ -258794,7 +258878,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::BrigadierDouble(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::BrigadierDouble(
-				down_v26_2_26_3_v1_21_6_command_node_57_6845(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_57_6849(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftMessage => {
@@ -258829,7 +258913,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::BrigadierInteger(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::BrigadierInteger(
-				down_v26_2_26_3_v1_21_6_command_node_61_6849(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_61_6853(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftScoreboardSlot => {
@@ -258837,7 +258921,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftScoreHolder(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::MinecraftScoreHolder(
-				down_v26_2_26_3_v1_21_6_command_node_62_6853(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_62_6857(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftSwizzle => {
@@ -258866,7 +258950,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::BrigadierLong(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::BrigadierLong(
-				down_v26_2_26_3_v1_21_6_command_node_66_6854(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_66_6858(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftFloatRange => {
@@ -258901,7 +258985,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::BrigadierString(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::BrigadierString(
-				down_v26_2_26_3_v1_21_6_command_node_67_6858(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_67_6862(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftTemplateRotation => {
@@ -258940,7 +259024,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftEntity(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode69::MinecraftEntity(
-				down_v26_2_26_3_v1_21_6_command_node_68_6859(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_68_6863(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode87::MinecraftSwingAnimation => {
@@ -258965,7 +259049,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_69_6840(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_70_6860(
+pub fn down_v26_2_26_3_v1_21_6_command_node_70_6864(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode88,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode70> {
@@ -258979,7 +259063,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_70_6860(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_71_6839(
+pub fn down_v26_2_26_3_v1_21_6_command_node_71_6843(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode89,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode71> {
@@ -258993,13 +259077,13 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_71_6839(
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode71 {
 			name: name,
-			properties: down_v26_2_26_3_v1_21_6_command_node_69_6840(properties, cx)?,
-			suggestion_type: down_v26_2_26_3_v1_21_6_command_node_70_6860(suggestion_type, cx)?,
+			properties: down_v26_2_26_3_v1_21_6_command_node_69_6844(properties, cx)?,
+			suggestion_type: down_v26_2_26_3_v1_21_6_command_node_70_6864(suggestion_type, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_72_6838(
+pub fn down_v26_2_26_3_v1_21_6_command_node_72_6842(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode90,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode72> {
@@ -259012,7 +259096,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_72_6838(
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode90::V2(p) => {
 			::bungeeoxide_minecraft::v1_21_6::CommandNode72::V2(
-				down_v26_2_26_3_v1_21_6_command_node_71_6839(p, cx)?,
+				down_v26_2_26_3_v1_21_6_command_node_71_6843(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::CommandNode90::Default(t) => {
@@ -259021,7 +259105,7 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_72_6838(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_command_node_6835(
+pub fn down_v26_2_26_3_v1_21_6_command_node_6839(
 	v: ::bungeeoxide_minecraft::v26_3::CommandNode,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::CommandNode> {
@@ -259035,27 +259119,27 @@ pub fn down_v26_2_26_3_v1_21_6_command_node_6835(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::CommandNode {
-			flags: down_v26_2_26_3_v1_21_6_command_node_48_6836(flags, cx)?,
+			flags: down_v26_2_26_3_v1_21_6_command_node_48_6840(flags, cx)?,
 			children: children,
-			redirect_node: down_v26_2_26_3_v1_21_6_command_node_49_6837(redirect_node, cx)?,
-			extra_node_data: down_v26_2_26_3_v1_21_6_command_node_72_6838(extra_node_data, cx)?,
+			redirect_node: down_v26_2_26_3_v1_21_6_command_node_49_6841(redirect_node, cx)?,
+			extra_node_data: down_v26_2_26_3_v1_21_6_command_node_72_6842(extra_node_data, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_88_6834(
+pub fn down_v26_2_26_3_array_inline_88_6838(
 	v: Vec<::bungeeoxide_minecraft::v26_3::CommandNode>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v1_21_6::CommandNode>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v1_21_6_command_node_6835(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v1_21_6_command_node_6839(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_declare_commands_6833(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_declare_commands_6837(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareCommands,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -259069,13 +259153,13 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_declare_commands_6833(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketDeclareCommands {
-			nodes: down_v26_2_26_3_array_inline_88_6834(nodes, cx)?,
+			nodes: down_v26_2_26_3_array_inline_88_6838(nodes, cx)?,
 			root_index: root_index,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_12_6867(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_12_6871(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent13,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent12> {
@@ -259089,7 +259173,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_12_6867(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_13_6868(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_13_6872(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent16,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent13> {
@@ -259112,7 +259196,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_13_6868(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_14_6870(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_14_6874(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent17,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent14> {
@@ -259126,13 +259210,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_14_6870(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_386_6869(
+pub fn down_v26_2_26_3_array_inline_386_6873(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent17>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent14>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_14_6870(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_14_6874(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259140,7 +259224,7 @@ pub fn down_v26_2_26_3_array_inline_386_6869(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_ItemBlockPredicate_6872(
+pub fn down_v26_2_26_3_v26_2_ItemBlockPredicate_6876(
 	v: ::bungeeoxide_minecraft::v26_3::ItemBlockPredicate,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::ItemBlockPredicate> {
@@ -259160,13 +259244,13 @@ pub fn down_v26_2_26_3_v26_2_ItemBlockPredicate_6872(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_110_6871(
+pub fn down_v26_2_26_3_array_inline_110_6875(
 	v: Vec<::bungeeoxide_minecraft::v26_3::ItemBlockPredicate>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::ItemBlockPredicate>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_ItemBlockPredicate_6872(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_ItemBlockPredicate_6876(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259174,7 +259258,7 @@ pub fn down_v26_2_26_3_array_inline_110_6871(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_15_6875(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_15_6879(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent18,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent15> {
@@ -259194,7 +259278,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_15_6875(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_16_6876(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_16_6880(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent19,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent16> {
@@ -259238,7 +259322,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_16_6876(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_17_6877(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_17_6881(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent20,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent17> {
@@ -259258,7 +259342,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_17_6877(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_18_6874(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_18_6878(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent21,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent18> {
@@ -259277,20 +259361,20 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_18_6874(
 			type_id: type_id,
 			name: name,
 			value: value,
-			operation: down_v26_2_26_3_v26_2_SlotComponent_15_6875(operation, cx)?,
-			slot: down_v26_2_26_3_v26_2_SlotComponent_16_6876(slot, cx)?,
-			display: down_v26_2_26_3_v26_2_SlotComponent_17_6877(display, cx)?,
+			operation: down_v26_2_26_3_v26_2_SlotComponent_15_6879(operation, cx)?,
+			slot: down_v26_2_26_3_v26_2_SlotComponent_16_6880(slot, cx)?,
+			display: down_v26_2_26_3_v26_2_SlotComponent_17_6881(display, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_387_6873(
+pub fn down_v26_2_26_3_array_inline_387_6877(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent21>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent18>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_18_6874(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_18_6878(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259298,7 +259382,7 @@ pub fn down_v26_2_26_3_array_inline_387_6873(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_19_6878(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_19_6882(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent22,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent19> {
@@ -259320,7 +259404,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_19_6878(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_20_6879(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_20_6883(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent23,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent20> {
@@ -259335,7 +259419,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_20_6879(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_21_6880(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_21_6884(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent24,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent21> {
@@ -259355,7 +259439,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_21_6880(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_22_6882(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_22_6886(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent25,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent22> {
@@ -259399,14 +259483,14 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_22_6882(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(
+pub fn down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(
 	v: ::bungeeoxide_minecraft::v1_19_3::ItemSoundHolder,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_19_3::ItemSoundHolder> {
 	crate::custom::late_sound_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_0_6886(
+pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_0_6890(
 	v: ::bungeeoxide_minecraft::v26_3::ItemConsumeEffect0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_3::ItemConsumeEffect0> {
@@ -259424,14 +259508,14 @@ pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_0_6886(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6885(
+pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6889(
 	v: ::bungeeoxide_minecraft::v26_3::ItemConsumeEffect,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_3::ItemConsumeEffect> {
 	Ok(match v {
 		::bungeeoxide_minecraft::v26_3::ItemConsumeEffect::ApplyEffects(p) => {
 			::bungeeoxide_minecraft::v1_21_3::ItemConsumeEffect::ApplyEffects(
-				down_v26_2_26_3_v1_21_3_ItemConsumeEffect_0_6886(p, cx)?,
+				down_v26_2_26_3_v1_21_3_ItemConsumeEffect_0_6890(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::ItemConsumeEffect::RemoveEffects(p) => {
@@ -259445,7 +259529,7 @@ pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6885(
 		}
 		::bungeeoxide_minecraft::v26_3::ItemConsumeEffect::PlaySound(p) => {
 			::bungeeoxide_minecraft::v1_21_3::ItemConsumeEffect::PlaySound(
-				down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(p, cx)?,
+				down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::ItemConsumeEffect::Default(t) => {
@@ -259454,13 +259538,13 @@ pub fn down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6885(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_70_6884(
+pub fn down_v26_2_26_3_array_inline_70_6888(
 	v: Vec<::bungeeoxide_minecraft::v26_3::ItemConsumeEffect>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v1_21_3::ItemConsumeEffect>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6885(x, cx) {
+			|x| match down_v26_2_26_3_v1_21_3_ItemConsumeEffect_6889(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259468,7 +259552,7 @@ pub fn down_v26_2_26_3_array_inline_70_6884(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_23_6881(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_23_6885(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent26,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent23> {
@@ -259484,15 +259568,15 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_23_6881(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::SlotComponent23 {
 			consume_seconds: consume_seconds,
-			animation: down_v26_2_26_3_v26_2_SlotComponent_22_6882(animation, cx)?,
-			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound, cx)?,
+			animation: down_v26_2_26_3_v26_2_SlotComponent_22_6886(animation, cx)?,
+			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound, cx)?,
 			makes_particles: makes_particles,
-			effects: down_v26_2_26_3_array_inline_70_6884(effects, cx)?,
+			effects: down_v26_2_26_3_array_inline_70_6888(effects, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponentType_6889(
+pub fn down_v26_2_26_3_v26_2_SlotComponentType_6893(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponentType,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponentType> {
@@ -259869,13 +259953,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponentType_6889(
 	})
 }
 
-pub fn down_v26_2_26_3_array_sized_456_6888(
+pub fn down_v26_2_26_3_array_sized_456_6892(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponentType>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponentType>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponentType_6889(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponentType_6893(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259883,7 +259967,7 @@ pub fn down_v26_2_26_3_array_sized_456_6888(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_ItemStackTemplate_6887(
+pub fn down_v26_2_26_3_v26_2_ItemStackTemplate_6891(
 	v: ::bungeeoxide_minecraft::v26_3::ItemStackTemplate,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::ItemStackTemplate> {
@@ -259904,13 +259988,13 @@ pub fn down_v26_2_26_3_v26_2_ItemStackTemplate_6887(
 			item_count: item_count,
 			added_component_count: __f_addedComponentCount,
 			removed_component_count: __f_removedComponentCount,
-			components: down_v26_2_26_3_array_sized_455_6865(components, cx)?,
-			remove_components: down_v26_2_26_3_array_sized_456_6888(remove_components, cx)?,
+			components: down_v26_2_26_3_array_sized_455_6869(components, cx)?,
+			remove_components: down_v26_2_26_3_array_sized_456_6892(remove_components, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_24_6890(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_24_6894(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent27,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent24> {
@@ -259928,7 +260012,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_24_6890(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_25_6893(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_25_6897(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent28,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent25> {
@@ -259948,13 +260032,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_25_6893(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_388_6892(
+pub fn down_v26_2_26_3_array_inline_388_6896(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent28>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent25>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_25_6893(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_25_6897(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -259962,7 +260046,7 @@ pub fn down_v26_2_26_3_array_inline_388_6892(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_26_6891(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_26_6895(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent29,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent26> {
@@ -259976,7 +260060,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_26_6891(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::SlotComponent26 {
-			rules: down_v26_2_26_3_array_inline_388_6892(rules, cx)?,
+			rules: down_v26_2_26_3_array_inline_388_6896(rules, cx)?,
 			default_mining_speed: default_mining_speed,
 			damage_per_block: damage_per_block,
 			can_destroy_blocks_in_creative: can_destroy_blocks_in_creative,
@@ -259984,7 +260068,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_26_6891(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_27_6894(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_27_6898(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent30,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent27> {
@@ -260002,7 +260086,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_27_6894(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_28_6895(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_28_6899(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent31,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent28> {
@@ -260028,7 +260112,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_28_6895(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_29_6897(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_29_6901(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent32,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent29> {
@@ -260063,7 +260147,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_29_6897(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_30_6896(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_30_6900(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent33,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent30> {
@@ -260084,8 +260168,8 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_30_6896(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::SlotComponent30 {
-			slot: down_v26_2_26_3_v26_2_SlotComponent_29_6897(slot, cx)?,
-			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound, cx)?,
+			slot: down_v26_2_26_3_v26_2_SlotComponent_29_6901(slot, cx)?,
+			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound, cx)?,
 			model: model,
 			camera_overlay: camera_overlay,
 			allowed_entities: __f_allowedEntities,
@@ -260094,12 +260178,12 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_30_6896(
 			damageable: damageable,
 			equip_on_interact: equip_on_interact,
 			shearable: shearable,
-			shearing_sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(shearing_sound, cx)?,
+			shearing_sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(shearing_sound, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_31_6900(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_31_6904(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent34,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent31> {
@@ -260121,13 +260205,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_31_6900(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_389_6899(
+pub fn down_v26_2_26_3_array_inline_389_6903(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent34>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent31>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_31_6900(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_31_6904(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260135,7 +260219,7 @@ pub fn down_v26_2_26_3_array_inline_389_6899(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_32_6901(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_32_6905(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent35,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent32> {
@@ -260155,14 +260239,14 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_32_6901(
 	})
 }
 
-pub fn down_v26_2_26_3_option_11_6902(
+pub fn down_v26_2_26_3_option_11_6906(
 	v: Option<::bungeeoxide_minecraft::v1_19_3::ItemSoundHolder>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Option<::bungeeoxide_minecraft::v1_19_3::ItemSoundHolder>> {
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(x, cx)?)
+				Ok(down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(x, cx)?)
 			})
 			.transpose()
 		{
@@ -260172,7 +260256,7 @@ pub fn down_v26_2_26_3_option_11_6902(
 	)
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_33_6898(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_33_6902(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent36,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent33> {
@@ -260191,16 +260275,16 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_33_6898(
 		::bungeeoxide_minecraft::v26_2::SlotComponent33 {
 			block_delay_seconds: block_delay_seconds,
 			disable_cooldown_scale: disable_cooldown_scale,
-			damage_reductions: down_v26_2_26_3_array_inline_389_6899(damage_reductions, cx)?,
-			item_damage: down_v26_2_26_3_v26_2_SlotComponent_32_6901(item_damage, cx)?,
+			damage_reductions: down_v26_2_26_3_array_inline_389_6903(damage_reductions, cx)?,
+			item_damage: down_v26_2_26_3_v26_2_SlotComponent_32_6905(item_damage, cx)?,
 			bypassed_by: bypassed_by,
-			block_sound: down_v26_2_26_3_option_11_6902(block_sound, cx)?,
-			disable_sound: down_v26_2_26_3_option_11_6902(disable_sound, cx)?,
+			block_sound: down_v26_2_26_3_option_11_6906(block_sound, cx)?,
+			disable_sound: down_v26_2_26_3_option_11_6906(disable_sound, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_34_6903(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_34_6907(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent37,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent34> {
@@ -260216,13 +260300,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_34_6903(
 		::bungeeoxide_minecraft::v26_2::SlotComponent34 {
 			deals_knockback: deals_knockback,
 			dismounts: dismounts,
-			sound: down_v26_2_26_3_option_11_6902(sound, cx)?,
-			hit_sound: down_v26_2_26_3_option_11_6902(hit_sound, cx)?,
+			sound: down_v26_2_26_3_option_11_6906(sound, cx)?,
+			hit_sound: down_v26_2_26_3_option_11_6906(hit_sound, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_35_6904(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_35_6908(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent38,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent35> {
@@ -260248,13 +260332,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_35_6904(
 			damage_conditions: damage_conditions,
 			forward_movement: forward_movement,
 			damage_multiplier: damage_multiplier,
-			sound: down_v26_2_26_3_option_11_6902(sound, cx)?,
-			hit_sound: down_v26_2_26_3_option_11_6902(hit_sound, cx)?,
+			sound: down_v26_2_26_3_option_11_6906(sound, cx)?,
+			hit_sound: down_v26_2_26_3_option_11_6906(hit_sound, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_38_6906(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_38_6910(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent43,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent38> {
@@ -260268,13 +260352,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_38_6906(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_390_6905(
+pub fn down_v26_2_26_3_array_inline_390_6909(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent43>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent38>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_38_6906(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_38_6910(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260282,7 +260366,7 @@ pub fn down_v26_2_26_3_array_inline_390_6905(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_39_6907(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_39_6911(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent44,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent39> {
@@ -260302,13 +260386,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_39_6907(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_111_6908(
+pub fn down_v26_2_26_3_array_inline_111_6912(
 	v: Vec<::bungeeoxide_minecraft::v26_3::ItemStackTemplate>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::ItemStackTemplate>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_ItemStackTemplate_6887(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_ItemStackTemplate_6891(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260316,7 +260400,7 @@ pub fn down_v26_2_26_3_array_inline_111_6908(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_40_6909(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_40_6913(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent45,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent40> {
@@ -260338,7 +260422,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_40_6909(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_41_6911(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_41_6915(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent46,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent41> {
@@ -260354,13 +260438,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_41_6911(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_391_6910(
+pub fn down_v26_2_26_3_array_inline_391_6914(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent46>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent41>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_41_6911(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_41_6915(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260368,7 +260452,7 @@ pub fn down_v26_2_26_3_array_inline_391_6910(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_42_6912(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_42_6916(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent47,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent42> {
@@ -260394,7 +260478,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_42_6912(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6915(
+pub fn down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6919(
 	v: ::bungeeoxide_minecraft::v26_3::ArmorTrimMaterial,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_5::ArmorTrimMaterial> {
@@ -260411,7 +260495,7 @@ pub fn down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6915(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_43_6914(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_43_6918(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent48,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent43> {
@@ -260421,13 +260505,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_43_6914(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent48::Inline(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent43::Inline(
-				down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6915(p, cx)?,
+				down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6919(p, cx)?,
 			)
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_44_6916(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_44_6920(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent49,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent44> {
@@ -260441,7 +260525,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_44_6916(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_45_6913(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_45_6917(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent50,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent45> {
@@ -260451,13 +260535,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_45_6913(
 			material, pattern, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::SlotComponent45 {
-			material: down_v26_2_26_3_v26_2_SlotComponent_43_6914(material, cx)?,
-			pattern: down_v26_2_26_3_v26_2_SlotComponent_44_6916(pattern, cx)?,
+			material: down_v26_2_26_3_v26_2_SlotComponent_43_6918(material, cx)?,
+			pattern: down_v26_2_26_3_v26_2_SlotComponent_44_6920(pattern, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_46_6917(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_46_6921(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent51,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent46> {
@@ -260471,7 +260555,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_46_6917(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_47_6918(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_47_6922(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent52,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent47> {
@@ -260485,7 +260569,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_47_6918(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_3_InstrumentData_6920(
+pub fn down_v26_2_26_3_v1_21_3_InstrumentData_6924(
 	v: ::bungeeoxide_minecraft::v26_3::InstrumentData,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_3::InstrumentData> {
@@ -260499,7 +260583,7 @@ pub fn down_v26_2_26_3_v1_21_3_InstrumentData_6920(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_3::InstrumentData {
-			sound_event: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound_event, cx)?,
+			sound_event: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound_event, cx)?,
 			use_duration: use_duration,
 			range: range,
 			description: description,
@@ -260507,7 +260591,7 @@ pub fn down_v26_2_26_3_v1_21_3_InstrumentData_6920(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_48_6919(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_48_6923(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent53,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent48> {
@@ -260517,13 +260601,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_48_6919(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent53::Inline(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent48::Inline(
-				down_v26_2_26_3_v1_21_3_InstrumentData_6920(p, cx)?,
+				down_v26_2_26_3_v1_21_3_InstrumentData_6924(p, cx)?,
 			)
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_49_6921(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_49_6925(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent54,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent49> {
@@ -260533,13 +260617,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_49_6921(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent54::Inline(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent49::Inline(
-				down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6915(p, cx)?,
+				down_v26_2_26_3_v1_21_5_ArmorTrimMaterial_6919(p, cx)?,
 			)
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_1_JukeboxSongData_6923(
+pub fn down_v26_2_26_3_v1_21_1_JukeboxSongData_6927(
 	v: ::bungeeoxide_minecraft::v1_21_1::JukeboxSongData,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_1::JukeboxSongData> {
@@ -260553,7 +260637,7 @@ pub fn down_v26_2_26_3_v1_21_1_JukeboxSongData_6923(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_1::JukeboxSongData {
-			sound_event: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound_event, cx)?,
+			sound_event: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound_event, cx)?,
 			description: description,
 			length_in_seconds: length_in_seconds,
 			comparator_output: comparator_output,
@@ -260561,7 +260645,7 @@ pub fn down_v26_2_26_3_v1_21_1_JukeboxSongData_6923(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_50_6922(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_50_6926(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent55,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent50> {
@@ -260571,13 +260655,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_50_6922(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent55::Inline(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent50::Inline(
-				down_v26_2_26_3_v1_21_1_JukeboxSongData_6923(p, cx)?,
+				down_v26_2_26_3_v1_21_1_JukeboxSongData_6927(p, cx)?,
 			)
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_51_6924(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_51_6928(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent56,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent51> {
@@ -260595,7 +260679,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_51_6924(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_52_6925(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_52_6929(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent57,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent52> {
@@ -260613,14 +260697,14 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_52_6925(
 	})
 }
 
-pub fn down_v26_2_26_3_option_26_6927(
+pub fn down_v26_2_26_3_option_26_6931(
 	v: Option<::bungeeoxide_minecraft::v26_3::ItemStackTemplate>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Option<::bungeeoxide_minecraft::v26_2::ItemStackTemplate>> {
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(down_v26_2_26_3_v26_2_ItemStackTemplate_6887(x, cx)?)
+				Ok(down_v26_2_26_3_v26_2_ItemStackTemplate_6891(x, cx)?)
 			})
 			.transpose()
 		{
@@ -260630,19 +260714,19 @@ pub fn down_v26_2_26_3_option_26_6927(
 	)
 }
 
-pub fn down_v26_2_26_3_array_inline_428_6926(
+pub fn down_v26_2_26_3_array_inline_428_6930(
 	v: Vec<Option<::bungeeoxide_minecraft::v26_3::ItemStackTemplate>>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<Option<::bungeeoxide_minecraft::v26_2::ItemStackTemplate>>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_option_26_6927(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_option_26_6931(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_53_6929(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_53_6933(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent59,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent53> {
@@ -260656,13 +260740,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_53_6929(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_392_6928(
+pub fn down_v26_2_26_3_array_inline_392_6932(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent59>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent53>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_53_6929(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_53_6933(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260670,7 +260754,7 @@ pub fn down_v26_2_26_3_array_inline_392_6928(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_54_6931(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_54_6935(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent60,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent54> {
@@ -260692,13 +260776,13 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_54_6931(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_393_6930(
+pub fn down_v26_2_26_3_array_inline_393_6934(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent60>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent54>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponent_54_6931(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponent_54_6935(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -260706,10 +260790,22 @@ pub fn down_v26_2_26_3_array_inline_393_6930(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
+pub fn down_v26_2_26_3_v26_2_SlotComponent_6870(
 	v: ::bungeeoxide_minecraft::v26_3::SlotComponent,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::SlotComponent> {
+	let mut v = v;
+	match &mut v {
+		::bungeeoxide_minecraft::v26_3::SlotComponent::MapDecorations(__h0) => {
+			crate::custom::late_map_decorations_down_26_2(
+				&mut (*__h0),
+				Version::V26_3,
+				Version::V26_2,
+				cx,
+			)?;
+		}
+		_ => {}
+	}
 	Ok(match v {
 		::bungeeoxide_minecraft::v26_3::SlotComponent::CustomData(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::CustomData(p)
@@ -260749,7 +260845,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::PaintingVariant(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::PaintingVariant(
-				down_v26_2_26_3_v26_2_SlotComponent_12_6867(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_12_6871(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Lore(p) => {
@@ -260787,7 +260883,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Rarity(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Rarity(
-				down_v26_2_26_3_v26_2_SlotComponent_13_6868(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_13_6872(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Waxed => {
@@ -260798,32 +260894,32 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Enchantments(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Enchantments(
-				down_v26_2_26_3_array_inline_386_6869(p, cx)?,
+				down_v26_2_26_3_array_inline_386_6873(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::CanPlaceOn(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::CanPlaceOn(
-				down_v26_2_26_3_array_inline_110_6871(p, cx)?,
+				down_v26_2_26_3_array_inline_110_6875(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::CanBreak(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::CanBreak(
-				down_v26_2_26_3_array_inline_110_6871(p, cx)?,
+				down_v26_2_26_3_array_inline_110_6875(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::AttributeModifiers(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::AttributeModifiers(
-				down_v26_2_26_3_array_inline_387_6873(p, cx)?,
+				down_v26_2_26_3_array_inline_387_6877(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::CustomModelData(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::CustomModelData(
-				down_v26_2_26_3_v26_2_SlotComponent_19_6878(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_19_6882(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::TooltipDisplay(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::TooltipDisplay(
-				down_v26_2_26_3_v26_2_SlotComponent_20_6879(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_20_6883(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::RepairCost(p) => {
@@ -260843,22 +260939,22 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Food(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Food(
-				down_v26_2_26_3_v26_2_SlotComponent_21_6880(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_21_6884(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Consumable(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Consumable(
-				down_v26_2_26_3_v26_2_SlotComponent_23_6881(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_23_6885(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::UseRemainder(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::UseRemainder(
-				down_v26_2_26_3_v26_2_ItemStackTemplate_6887(p, cx)?,
+				down_v26_2_26_3_v26_2_ItemStackTemplate_6891(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::UseCooldown(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::UseCooldown(
-				down_v26_2_26_3_v26_2_SlotComponent_24_6890(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_24_6894(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::DamageResistant(p) => {
@@ -260866,12 +260962,12 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Tool(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Tool(
-				down_v26_2_26_3_v26_2_SlotComponent_26_6891(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_26_6895(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Weapon(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Weapon(
-				down_v26_2_26_3_v26_2_SlotComponent_27_6894(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_27_6898(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Damage(p) => {
@@ -260879,7 +260975,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::AttackRange(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::AttackRange(
-				down_v26_2_26_3_v26_2_SlotComponent_28_6895(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_28_6899(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Enchantable(p) => {
@@ -260887,7 +260983,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Equippable(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Equippable(
-				down_v26_2_26_3_v26_2_SlotComponent_30_6896(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_30_6900(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Repairable(p) => {
@@ -260901,22 +260997,22 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::DeathProtection(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::DeathProtection(
-				down_v26_2_26_3_array_inline_70_6884(p, cx)?,
+				down_v26_2_26_3_array_inline_70_6888(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BlocksAttacks(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::BlocksAttacks(
-				down_v26_2_26_3_v26_2_SlotComponent_33_6898(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_33_6902(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::PiercingWeapon(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::PiercingWeapon(
-				down_v26_2_26_3_v26_2_SlotComponent_34_6903(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_34_6907(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::KineticWeapon(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::KineticWeapon(
-				down_v26_2_26_3_v26_2_SlotComponent_35_6904(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_35_6908(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Unbreakable => {
@@ -260939,7 +261035,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::StoredEnchantments(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::StoredEnchantments(
-				down_v26_2_26_3_array_inline_390_6905(p, cx)?,
+				down_v26_2_26_3_array_inline_390_6909(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Dye(p) => {
@@ -260956,7 +261052,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::UseEffects(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::UseEffects(
-				down_v26_2_26_3_v26_2_SlotComponent_39_6907(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_39_6911(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::MapPostProcessing(p) => {
@@ -260964,17 +261060,17 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::ChargedProjectiles(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::ChargedProjectiles(
-				down_v26_2_26_3_array_inline_111_6908(p, cx)?,
+				down_v26_2_26_3_array_inline_111_6912(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BundleContents(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::BundleContents(
-				down_v26_2_26_3_array_inline_111_6908(p, cx)?,
+				down_v26_2_26_3_array_inline_111_6912(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::PotionContents(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::PotionContents(
-				down_v26_2_26_3_v26_2_SlotComponent_40_6909(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_40_6913(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::PotionDurationScale(p) => {
@@ -260982,7 +261078,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::SuspiciousStewEffects(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::SuspiciousStewEffects(
-				down_v26_2_26_3_array_inline_391_6910(p, cx)?,
+				down_v26_2_26_3_array_inline_391_6914(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::WritableBookContent(p) => {
@@ -260990,12 +261086,12 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::WrittenBookContent(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::WrittenBookContent(
-				down_v26_2_26_3_v26_2_SlotComponent_42_6912(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_42_6916(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Trim(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Trim(
-				down_v26_2_26_3_v26_2_SlotComponent_45_6913(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_45_6917(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::DebugStickState(p) => {
@@ -261006,7 +261102,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::EntityData(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::EntityData(
-				down_v26_2_26_3_v26_2_SlotComponent_46_6917(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_46_6921(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BucketEntityData(p) => {
@@ -261014,17 +261110,17 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BlockEntityData(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::BlockEntityData(
-				down_v26_2_26_3_v26_2_SlotComponent_47_6918(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_47_6922(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Instrument(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Instrument(
-				down_v26_2_26_3_v26_2_SlotComponent_48_6919(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_48_6923(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::ProvidesTrimMaterial(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::ProvidesTrimMaterial(
-				down_v26_2_26_3_v26_2_SlotComponent_49_6921(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_49_6925(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::OminousBottleAmplifier(p) => {
@@ -261032,7 +261128,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::JukeboxPlayable(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::JukeboxPlayable(
-				down_v26_2_26_3_v26_2_SlotComponent_50_6922(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_50_6926(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::ProvidesBannerPatterns(p) => {
@@ -261043,7 +261139,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::LodestoneTracker(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::LodestoneTracker(
-				down_v26_2_26_3_v26_2_SlotComponent_51_6924(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_51_6928(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::MinimumAttackCharge(p) => {
@@ -261054,7 +261150,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Fireworks(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Fireworks(
-				down_v26_2_26_3_v26_2_SlotComponent_52_6925(p, cx)?,
+				down_v26_2_26_3_v26_2_SlotComponent_52_6929(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Profile(p) => {
@@ -261074,17 +261170,17 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Container(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Container(
-				down_v26_2_26_3_array_inline_428_6926(p, cx)?,
+				down_v26_2_26_3_array_inline_428_6930(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BlockState(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::BlockState(
-				down_v26_2_26_3_array_inline_392_6928(p, cx)?,
+				down_v26_2_26_3_array_inline_392_6932(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Bees(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::Bees(
-				down_v26_2_26_3_array_inline_393_6930(p, cx)?,
+				down_v26_2_26_3_array_inline_393_6934(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::DamageType(p) => {
@@ -261092,7 +261188,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::SulfurCubeContent(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::SulfurCubeContent(
-				down_v26_2_26_3_v26_2_ItemStackTemplate_6887(p, cx)?,
+				down_v26_2_26_3_v26_2_ItemStackTemplate_6891(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Lock(p) => {
@@ -261103,7 +261199,7 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::BreakSound(p) => {
 			::bungeeoxide_minecraft::v26_2::SlotComponent::BreakSound(
-				down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(p, cx)?,
+				down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::SlotComponent::Compostable(p) => {
@@ -261163,19 +261259,19 @@ pub fn down_v26_2_26_3_v26_2_SlotComponent_6866(
 	})
 }
 
-pub fn down_v26_2_26_3_array_sized_455_6865(
+pub fn down_v26_2_26_3_array_sized_455_6869(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v26_2_SlotComponent_6866(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v26_2_SlotComponent_6870(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_Slot_12_6864(
+pub fn down_v26_2_26_3_v26_2_Slot_12_6868(
 	v: ::bungeeoxide_minecraft::v26_3::Slot13,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Slot12> {
@@ -261193,13 +261289,13 @@ pub fn down_v26_2_26_3_v26_2_Slot_12_6864(
 			item_id: __f_itemId,
 			added_component_count: __f_addedComponentCount,
 			removed_component_count: __f_removedComponentCount,
-			components: down_v26_2_26_3_array_sized_455_6865(components, cx)?,
-			remove_components: down_v26_2_26_3_array_sized_456_6888(remove_components, cx)?,
+			components: down_v26_2_26_3_array_sized_455_6869(components, cx)?,
+			remove_components: down_v26_2_26_3_array_sized_456_6892(remove_components, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Slot_6863(
+pub fn down_v26_2_26_3_v26_2_Slot_6867(
 	v: ::bungeeoxide_minecraft::v26_3::Slot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Slot> {
@@ -261228,25 +261324,25 @@ pub fn down_v26_2_26_3_v26_2_Slot_6863(
 		::bungeeoxide_minecraft::v26_3::Slot::Default(t, p) => {
 			::bungeeoxide_minecraft::v26_2::Slot::Default(
 				t,
-				down_v26_2_26_3_v26_2_Slot_12_6864(p, cx)?,
+				down_v26_2_26_3_v26_2_Slot_12_6868(p, cx)?,
 			)
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_113_6862(
+pub fn down_v26_2_26_3_array_inline_113_6866(
 	v: Vec<::bungeeoxide_minecraft::v26_3::Slot>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::Slot>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v26_2_Slot_6863(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v26_2_Slot_6867(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_window_items_6861(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_window_items_6865(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketWindowItems,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketWindowItems>
@@ -261263,13 +261359,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_window_items_6861(
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketWindowItems {
 			window_id: window_id,
 			state_id: state_id,
-			items: down_v26_2_26_3_array_inline_113_6862(items, cx)?,
-			carried_item: down_v26_2_26_3_v26_2_Slot_6863(carried_item, cx)?,
+			items: down_v26_2_26_3_array_inline_113_6866(items, cx)?,
+			carried_item: down_v26_2_26_3_v26_2_Slot_6867(carried_item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_slot_6932(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_slot_6936(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketSetSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketSetSlot> {
@@ -261286,12 +261382,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_slot_6932(
 			window_id: window_id,
 			state_id: state_id,
 			slot: slot,
-			item: down_v26_2_26_3_v26_2_Slot_6863(item, cx)?,
+			item: down_v26_2_26_3_v26_2_Slot_6867(item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_1_6935(
+pub fn down_v26_2_26_3_v26_2_Particle_1_6939(
 	v: ::bungeeoxide_minecraft::v26_3::Particle2,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle1> {
@@ -261305,7 +261401,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_1_6935(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_2_6936(
+pub fn down_v26_2_26_3_v26_2_Particle_2_6940(
 	v: ::bungeeoxide_minecraft::v26_3::Particle3,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle2> {
@@ -261325,7 +261421,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_2_6936(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_3_6937(
+pub fn down_v26_2_26_3_v26_2_Particle_3_6941(
 	v: ::bungeeoxide_minecraft::v26_3::Particle4,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle3> {
@@ -261339,7 +261435,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_3_6937(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_4_6938(
+pub fn down_v26_2_26_3_v26_2_Particle_4_6942(
 	v: ::bungeeoxide_minecraft::v26_3::Particle5,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle4> {
@@ -261353,7 +261449,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_4_6938(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_5_6941(
+pub fn down_v26_2_26_3_v26_2_Particle_5_6945(
 	v: ::bungeeoxide_minecraft::v26_3::Particle6,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle5> {
@@ -261371,7 +261467,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_5_6941(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_6_6940(
+pub fn down_v26_2_26_3_v26_2_Particle_6_6944(
 	v: ::bungeeoxide_minecraft::v26_3::Particle7,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle6> {
@@ -261381,7 +261477,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_6_6940(
 		}
 		::bungeeoxide_minecraft::v26_3::Particle7::Entity(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle6::Entity(
-				down_v26_2_26_3_v26_2_Particle_5_6941(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_5_6945(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle7::Default(t) => {
@@ -261390,7 +261486,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_6_6940(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_7_6939(
+pub fn down_v26_2_26_3_v26_2_Particle_7_6943(
 	v: ::bungeeoxide_minecraft::v26_3::Particle8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle7> {
@@ -261400,13 +261496,13 @@ pub fn down_v26_2_26_3_v26_2_Particle_7_6939(
 			position, ticks, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::Particle7 {
-			position: down_v26_2_26_3_v26_2_Particle_6_6940(position, cx)?,
+			position: down_v26_2_26_3_v26_2_Particle_6_6944(position, cx)?,
 			ticks: ticks,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_8_6942(
+pub fn down_v26_2_26_3_v26_2_Particle_8_6946(
 	v: ::bungeeoxide_minecraft::v26_3::Particle9,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle8> {
@@ -261426,7 +261522,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_8_6942(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_9_6943(
+pub fn down_v26_2_26_3_v26_2_Particle_9_6947(
 	v: ::bungeeoxide_minecraft::v26_3::Particle10,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle9> {
@@ -261444,7 +261540,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_9_6943(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_10_6944(
+pub fn down_v26_2_26_3_v26_2_Particle_10_6948(
 	v: ::bungeeoxide_minecraft::v26_3::Particle11,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle10> {
@@ -261462,7 +261558,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_10_6944(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_Particle_6934(
+pub fn down_v26_2_26_3_v26_2_Particle_6938(
 	v: ::bungeeoxide_minecraft::v26_3::Particle,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::Particle> {
@@ -261594,17 +261690,17 @@ pub fn down_v26_2_26_3_v26_2_Particle_6934(
 			::bungeeoxide_minecraft::v26_2::Particle::FallingWater
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Dust(p) => {
-			::bungeeoxide_minecraft::v26_2::Particle::Dust(down_v26_2_26_3_v26_2_Particle_1_6935(
+			::bungeeoxide_minecraft::v26_2::Particle::Dust(down_v26_2_26_3_v26_2_Particle_1_6939(
 				p, cx,
 			)?)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::DustColorTransition(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::DustColorTransition(
-				down_v26_2_26_3_v26_2_Particle_2_6936(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_2_6940(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Effect(p) => {
-			::bungeeoxide_minecraft::v26_2::Particle::Effect(down_v26_2_26_3_v26_2_Particle_3_6937(
+			::bungeeoxide_minecraft::v26_2::Particle::Effect(down_v26_2_26_3_v26_2_Particle_3_6941(
 				p, cx,
 			)?)
 		}
@@ -261715,21 +261811,21 @@ pub fn down_v26_2_26_3_v26_2_Particle_6934(
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::InstantEffect(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::InstantEffect(
-				down_v26_2_26_3_v26_2_Particle_4_6938(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_4_6942(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Item(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::Item(
-				down_v26_2_26_3_v26_2_ItemStackTemplate_6887(p, cx)?,
+				down_v26_2_26_3_v26_2_ItemStackTemplate_6891(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Vibration(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::Vibration(
-				down_v26_2_26_3_v26_2_Particle_7_6939(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_7_6943(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Trail(p) => {
-			::bungeeoxide_minecraft::v26_2::Particle::Trail(down_v26_2_26_3_v26_2_Particle_8_6942(
+			::bungeeoxide_minecraft::v26_2::Particle::Trail(down_v26_2_26_3_v26_2_Particle_8_6946(
 				p, cx,
 			)?)
 		}
@@ -261801,7 +261897,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_6934(
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::GeyserBase(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::GeyserBase(
-				down_v26_2_26_3_v26_2_Particle_9_6943(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_9_6947(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::Splash => {
@@ -261836,7 +261932,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_6934(
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::GeyserPoof(p) => {
 			::bungeeoxide_minecraft::v26_2::Particle::GeyserPoof(
-				down_v26_2_26_3_v26_2_Particle_10_6944(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_10_6948(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::Particle::FallingHoney => {
@@ -261875,7 +261971,7 @@ pub fn down_v26_2_26_3_v26_2_Particle_6934(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleInfo_6947(
+pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleInfo_6951(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::ExplosionParticleInfo,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -261890,14 +261986,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleInfo_6947(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::ExplosionParticleInfo {
-			particle: down_v26_2_26_3_v26_2_Particle_6934(particle, cx)?,
+			particle: down_v26_2_26_3_v26_2_Particle_6938(particle, cx)?,
 			scaling: scaling,
 			speed: speed,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleEntry_6946(
+pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleEntry_6950(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::ExplosionParticleEntry,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -261911,13 +262007,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleEntry_6946(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::ExplosionParticleEntry {
-			data: down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleInfo_6947(data, cx)?,
+			data: down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleInfo_6951(data, cx)?,
 			weight: weight,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_116_6945(
+pub fn down_v26_2_26_3_array_inline_116_6949(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::ExplosionParticleEntry>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -261925,7 +262021,7 @@ pub fn down_v26_2_26_3_array_inline_116_6945(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleEntry_6946(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_ExplosionParticleEntry_6950(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -261933,7 +262029,7 @@ pub fn down_v26_2_26_3_array_inline_116_6945(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_explosion_6933(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_explosion_6937(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketExplosion,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketExplosion> {
@@ -261954,14 +262050,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_explosion_6933(
 			radius: radius,
 			block_count: block_count,
 			player_knockback: player_knockback,
-			explosion_particle: down_v26_2_26_3_v26_2_Particle_6934(explosion_particle, cx)?,
-			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound, cx)?,
-			block_particles: down_v26_2_26_3_array_inline_116_6945(block_particles, cx)?,
+			explosion_particle: down_v26_2_26_3_v26_2_Particle_6938(explosion_particle, cx)?,
+			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound, cx)?,
+			block_particles: down_v26_2_26_3_array_inline_116_6949(block_particles, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_15_6951(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_15_6955(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketMapChunk15,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketMapChunk15>
@@ -261971,7 +262067,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_15_6951(
     })
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_16_6950(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_16_6954(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketMapChunk16,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketMapChunk16>
@@ -261982,13 +262078,13 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_16_6950(
 			r#type, data, ..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketMapChunk16 {
-			r#type: down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_15_6951(r#type, cx)?,
+			r#type: down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_15_6955(r#type, cx)?,
 			data: data,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_332_6949(
+pub fn down_v26_2_26_3_array_inline_332_6953(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketMapChunk16>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -261996,7 +262092,7 @@ pub fn down_v26_2_26_3_array_inline_332_6949(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_16_6950(x, cx) {
+			match down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_16_6954(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -262004,35 +262100,35 @@ pub fn down_v26_2_26_3_array_inline_332_6949(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6952(
+pub fn down_v26_2_26_3_array_inline_30_6956(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6953(
+pub fn down_v26_2_26_3_array_inline_30_6957(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6954(
+pub fn down_v26_2_26_3_array_inline_30_6958(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6955(
+pub fn down_v26_2_26_3_array_inline_30_6959(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6948(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6952(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketMapChunk,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketMapChunk>
@@ -262056,13 +262152,13 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6948(
 		::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketMapChunk {
 			x: x,
 			z: z,
-			heightmaps: down_v26_2_26_3_array_inline_332_6949(heightmaps, cx)?,
+			heightmaps: down_v26_2_26_3_array_inline_332_6953(heightmaps, cx)?,
 			chunk_data: __f_chunkData,
 			block_entities: block_entities,
-			sky_light_mask: down_v26_2_26_3_array_inline_30_6952(sky_light_mask, cx)?,
-			block_light_mask: down_v26_2_26_3_array_inline_30_6953(block_light_mask, cx)?,
-			empty_sky_light_mask: down_v26_2_26_3_array_inline_30_6954(empty_sky_light_mask, cx)?,
-			empty_block_light_mask: down_v26_2_26_3_array_inline_30_6955(
+			sky_light_mask: down_v26_2_26_3_array_inline_30_6956(sky_light_mask, cx)?,
+			block_light_mask: down_v26_2_26_3_array_inline_30_6957(block_light_mask, cx)?,
+			empty_sky_light_mask: down_v26_2_26_3_array_inline_30_6958(empty_sky_light_mask, cx)?,
+			empty_block_light_mask: down_v26_2_26_3_array_inline_30_6959(
 				empty_block_light_mask,
 				cx,
 			)?,
@@ -262072,7 +262168,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6948(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_world_particles_6956(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_world_particles_6960(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketWorldParticles,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262109,40 +262205,40 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_world_particles_6956(
 			offset_z: offset_z,
 			velocity_offset: __f_velocityOffset,
 			amount: (amount as ::bungeeoxide_minecraft::I32),
-			particle: down_v26_2_26_3_v26_2_Particle_6934(particle, cx)?,
+			particle: down_v26_2_26_3_v26_2_Particle_6938(particle, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6958(
+pub fn down_v26_2_26_3_array_inline_30_6962(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6959(
+pub fn down_v26_2_26_3_array_inline_30_6963(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6960(
+pub fn down_v26_2_26_3_array_inline_30_6964(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6961(
+pub fn down_v26_2_26_3_array_inline_30_6965(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6957(
+pub fn down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6961(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketUpdateLight,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20::play::to_client::PacketUpdateLight>
@@ -262163,10 +262259,10 @@ pub fn down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6957(
 		::bungeeoxide_minecraft::v1_20::play::to_client::PacketUpdateLight {
 			chunk_x: chunk_x,
 			chunk_z: chunk_z,
-			sky_light_mask: down_v26_2_26_3_array_inline_30_6958(sky_light_mask, cx)?,
-			block_light_mask: down_v26_2_26_3_array_inline_30_6959(block_light_mask, cx)?,
-			empty_sky_light_mask: down_v26_2_26_3_array_inline_30_6960(empty_sky_light_mask, cx)?,
-			empty_block_light_mask: down_v26_2_26_3_array_inline_30_6961(
+			sky_light_mask: down_v26_2_26_3_array_inline_30_6962(sky_light_mask, cx)?,
+			block_light_mask: down_v26_2_26_3_array_inline_30_6963(block_light_mask, cx)?,
+			empty_sky_light_mask: down_v26_2_26_3_array_inline_30_6964(empty_sky_light_mask, cx)?,
+			empty_block_light_mask: down_v26_2_26_3_array_inline_30_6965(
 				empty_block_light_mask,
 				cx,
 			)?,
@@ -262176,7 +262272,7 @@ pub fn down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6957(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6_6964(
+pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6_6968(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SpawnInfo8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_9::play::to_client::SpawnInfo6> {
@@ -262201,7 +262297,7 @@ pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6_6964(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6963(
+pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6967(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SpawnInfo,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_9::play::to_client::SpawnInfo> {
@@ -262224,7 +262320,7 @@ pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6963(
 			dimension: dimension,
 			name: name,
 			hashed_seed: hashed_seed,
-			gamemode: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6_6964(gamemode, cx)?,
+			gamemode: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6_6968(gamemode, cx)?,
 			previous_gamemode: __f_previousGamemode,
 			is_debug: is_debug,
 			is_flat: is_flat,
@@ -262235,7 +262331,7 @@ pub fn down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6963(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_login_6962(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_login_6966(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketLogin,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketLogin> {
@@ -262266,26 +262362,119 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_login_6962(
 			reduced_debug_info: reduced_debug_info,
 			enable_respawn_screen: enable_respawn_screen,
 			do_limited_crafting: do_limited_crafting,
-			world_state: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6963(world_state, cx)?,
+			world_state: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6967(world_state, cx)?,
 			online_mode: online_mode,
 			enforces_secure_chat: enforces_secure_chat,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_114_6969(
+pub fn down_v26_2_26_3_v1_20_3_play_toClient_packet_map_17_6972(
+	v: ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17> {
+	Ok({
+		let _0 = &v;
+		let ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17 {
+			r#type,
+			x,
+			z,
+			direction,
+			display_name,
+			..
+		} = v;
+		::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17 {
+			r#type: r#type,
+			x: x,
+			z: z,
+			direction: direction,
+			display_name: display_name,
+		}
+	})
+}
+
+pub fn down_v26_2_26_3_array_inline_191_6971(
+	v: Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>
+{
+	v.into_iter()
+		.filter_map(
+			|x| match down_v26_2_26_3_v1_20_3_play_toClient_packet_map_17_6972(x, cx) {
+				Err(crate::pds::convert::Error::Dropped) => None,
+				r => Some(r),
+			},
+		)
+		.collect::<crate::pds::convert::Result<Vec<_>>>()
+}
+
+pub fn down_v26_2_26_3_option_104_6970(
+	v: Option<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<
+	Option<Vec<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap17>>,
+> {
+	Ok(
+		match v
+			.map(|x| -> crate::pds::convert::Result<_> {
+				Ok(down_v26_2_26_3_array_inline_191_6971(x, cx)?)
+			})
+			.transpose()
+		{
+			Err(crate::pds::convert::Error::Dropped) => None,
+			r => r?,
+		},
+	)
+}
+
+pub fn down_v26_2_26_3_v1_20_3_play_toClient_packet_map_6969(
+	v: ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap,
+	cx: &mut crate::Session,
+) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap> {
+	let mut v = v;
+	if let Some(__h1) = &mut v.icons {
+		for __h2 in (*__h1).iter_mut() {
+			crate::custom::late_map_icon_down_26_2(
+				&mut (*__h2).r#type,
+				Version::V26_3,
+				Version::V26_2,
+				cx,
+			)?;
+		}
+	}
+	Ok({
+		let _0 = &v;
+		let ::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap {
+			item_damage,
+			scale,
+			locked,
+			icons,
+			columns,
+			..
+		} = v;
+		::bungeeoxide_minecraft::v1_20_3::play::to_client::PacketMap {
+			item_damage: item_damage,
+			scale: scale,
+			locked: locked,
+			icons: down_v26_2_26_3_option_104_6970(icons, cx)?,
+			columns: columns,
+		}
+	})
+}
+
+pub fn down_v26_2_26_3_array_inline_114_6977(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponent>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponent>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v26_2_SlotComponent_6866(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v26_2_SlotComponent_6870(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_28_6968(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_28_6976(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList21,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList28>
@@ -262301,12 +262490,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_28_6968(
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList28 {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: down_v26_2_26_3_array_inline_114_6969(components, cx)?,
+			components: down_v26_2_26_3_array_inline_114_6977(components, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_29_6971(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_29_6979(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList22,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList29>
@@ -262322,12 +262511,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_29_6971(
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList29 {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: down_v26_2_26_3_array_inline_114_6969(components, cx)?,
+			components: down_v26_2_26_3_array_inline_114_6977(components, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_option_98_6970(
+pub fn down_v26_2_26_3_option_98_6978(
 	v: Option<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList22>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262336,7 +262525,7 @@ pub fn down_v26_2_26_3_option_98_6970(
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_29_6971(x, cx)?)
+				Ok(down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_29_6979(x, cx)?)
 			})
 			.transpose()
 		{
@@ -262346,7 +262535,7 @@ pub fn down_v26_2_26_3_option_98_6970(
 	)
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6967(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6975(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList23,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList30>
@@ -262367,12 +262556,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6967(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList30 {
-			input_item1: down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_28_6968(
+			input_item1: down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_28_6976(
 				input_item1,
 				cx,
 			)?,
-			output_item: down_v26_2_26_3_v26_2_Slot_6863(output_item, cx)?,
-			input_item2: down_v26_2_26_3_option_98_6970(input_item2, cx)?,
+			output_item: down_v26_2_26_3_v26_2_Slot_6867(output_item, cx)?,
+			input_item2: down_v26_2_26_3_option_98_6978(input_item2, cx)?,
 			trade_disabled: trade_disabled,
 			nb_trade_uses: nb_trade_uses,
 			maximum_nb_trade_uses: maximum_nb_trade_uses,
@@ -262384,7 +262573,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6967(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_403_6966(
+pub fn down_v26_2_26_3_array_inline_403_6974(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList23>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262392,7 +262581,7 @@ pub fn down_v26_2_26_3_array_inline_403_6966(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6967(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_30_6975(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -262400,7 +262589,7 @@ pub fn down_v26_2_26_3_array_inline_403_6966(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6965(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6973(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketTradeList,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList> {
@@ -262417,7 +262606,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6965(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketTradeList {
 			window_id: window_id,
-			trades: down_v26_2_26_3_array_inline_403_6966(trades, cx)?,
+			trades: down_v26_2_26_3_array_inline_403_6974(trades, cx)?,
 			villager_level: villager_level,
 			experience: experience,
 			is_regular_villager: is_regular_villager,
@@ -262426,7 +262615,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6965(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_8_play_toClient_packet_entity_look_6972(
+pub fn down_v26_2_26_3_v1_8_play_toClient_packet_entity_look_6980(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityLook,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_8::play::to_client::PacketEntityLook> {
@@ -262448,7 +262637,7 @@ pub fn down_v26_2_26_3_v1_8_play_toClient_packet_entity_look_6972(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_4_6978(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_4_6986(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay4,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay4> {
@@ -262458,13 +262647,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_4_6978(
 			source, component, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay4 {
-			source: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(source, cx)?,
-			component: down_v26_2_26_3_v26_2_SlotComponentType_6889(component, cx)?,
+			source: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(source, cx)?,
+			component: down_v26_2_26_3_v26_2_SlotComponentType_6893(component, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_5_6979(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_5_6987(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay5,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay5> {
@@ -262472,13 +262661,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_5_6979(
 		let _0 = &v;
 		let ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay5 { dye, target, .. } = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay5 {
-			dye: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(dye, cx)?,
-			target: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(target, cx)?,
+			dye: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(dye, cx)?,
+			target: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(target, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6_6981(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6_6989(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay6,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay6> {
@@ -262492,7 +262681,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6_6981(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_7_6980(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_7_6988(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay7,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay7> {
@@ -262505,14 +262694,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_7_6980(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay7 {
-			base: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(base, cx)?,
-			material: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(material, cx)?,
-			pattern: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6_6981(pattern, cx)?,
+			base: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(base, cx)?,
+			material: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(material, cx)?,
+			pattern: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6_6989(pattern, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_8_6982(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_8_6990(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay8> {
@@ -262522,13 +262711,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_8_6982(
 			input, remainder, ..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay8 {
-			input: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(input, cx)?,
-			remainder: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(remainder, cx)?,
+			input: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(input, cx)?,
+			remainder: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(remainder, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay> {
@@ -262542,17 +262731,17 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::Composite(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::Composite(
-				down_v26_2_26_3_array_inline_117_6976(p, cx)?,
+				down_v26_2_26_3_array_inline_117_6984(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::WithAnyPotion(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::WithAnyPotion(Box::new(
-				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(*p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::OnlyWithComponent(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::OnlyWithComponent(
-				Box::new(down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_4_6978(
+				Box::new(down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_4_6986(
 					*p, cx,
 				)?),
 			)
@@ -262562,7 +262751,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::ItemStack(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::ItemStack(
-				down_v26_2_26_3_v26_2_ItemStackTemplate_6887(p, cx)?,
+				down_v26_2_26_3_v26_2_ItemStackTemplate_6891(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::Tag(p) => {
@@ -262570,17 +262759,17 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::DyedSlotDemo(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::DyedSlotDemo(Box::new(
-				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_5_6979(*p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_5_6987(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::SmithingTrim(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::SmithingTrim(Box::new(
-				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_7_6980(*p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_7_6988(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::WithRemainder(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay::WithRemainder(Box::new(
-				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_8_6982(*p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_8_6990(*p, cx)?,
 			))
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay::Default(t) => {
@@ -262589,14 +262778,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_117_6976(
+pub fn down_v26_2_26_3_array_inline_117_6984(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::SlotDisplay>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::play::to_client::SlotDisplay>>
 {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -262604,7 +262793,7 @@ pub fn down_v26_2_26_3_array_inline_117_6976(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6975(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6983(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay0> {
@@ -262617,9 +262806,9 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6975(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay0 {
-			ingredients: down_v26_2_26_3_array_inline_117_6976(ingredients, cx)?,
-			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(result, cx)?,
-			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+			ingredients: down_v26_2_26_3_array_inline_117_6984(ingredients, cx)?,
+			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(result, cx)?,
+			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 				crafting_station,
 				cx,
 			)?,
@@ -262627,7 +262816,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6975(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6983(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6991(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay1,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay1> {
@@ -262644,9 +262833,9 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6983(
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay1 {
 			width: width,
 			height: height,
-			ingredients: down_v26_2_26_3_array_inline_117_6976(ingredients, cx)?,
-			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(result, cx)?,
-			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+			ingredients: down_v26_2_26_3_array_inline_117_6984(ingredients, cx)?,
+			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(result, cx)?,
+			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 				crafting_station,
 				cx,
 			)?,
@@ -262654,7 +262843,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6983(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6984(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6992(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay2,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay2> {
@@ -262670,10 +262859,10 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6984(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay2 {
-			ingredient: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(ingredient, cx)?,
-			fuel: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(fuel, cx)?,
-			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(result, cx)?,
-			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+			ingredient: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(ingredient, cx)?,
+			fuel: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(fuel, cx)?,
+			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(result, cx)?,
+			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 				crafting_station,
 				cx,
 			)?,
@@ -262683,7 +262872,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6984(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6985(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6993(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay3,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay3> {
@@ -262696,9 +262885,9 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6985(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay3 {
-			ingredient: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(ingredient, cx)?,
-			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(result, cx)?,
-			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+			ingredient: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(ingredient, cx)?,
+			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(result, cx)?,
+			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 				crafting_station,
 				cx,
 			)?,
@@ -262706,7 +262895,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6985(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6986(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6994(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay4,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay4> {
@@ -262721,11 +262910,11 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6986(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay4 {
-			template: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(template, cx)?,
-			base: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(base, cx)?,
-			addition: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(addition, cx)?,
-			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(result, cx)?,
-			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(
+			template: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(template, cx)?,
+			base: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(base, cx)?,
+			addition: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(addition, cx)?,
+			result: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(result, cx)?,
+			crafting_station: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(
 				crafting_station,
 				cx,
 			)?,
@@ -262733,34 +262922,34 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6986(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6974(
+pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6982(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay> {
 	Ok(match v {
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::CraftingShapeless(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::CraftingShapeless(
-				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6975(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_0_6983(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::CraftingShaped(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::CraftingShaped(
-				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6983(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_1_6991(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Furnace(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Furnace(
-				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6984(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_2_6992(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Stonecutter(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Stonecutter(
-				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6985(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_3_6993(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Smithing(p) => {
 			::bungeeoxide_minecraft::v26_2::play::to_client::RecipeDisplay::Smithing(
-				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6986(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_4_6994(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::RecipeDisplay::Default(t) => {
@@ -262769,7 +262958,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6974(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6973(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6981(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketCraftRecipeResponse,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262784,7 +262973,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6973(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketCraftRecipeResponse {
 			window_id: window_id,
-			recipe_display: down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6974(
+			recipe_display: down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6982(
 				recipe_display,
 				cx,
 			)?,
@@ -262792,14 +262981,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6973(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_30_6989(
+pub fn down_v26_2_26_3_array_inline_30_6997(
 	v: Vec<u8>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::I64>> {
 	crate::custom::late_mask_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6988(
+pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6996(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat16,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262808,7 +262997,7 @@ pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6988(
 	Ok(match v {
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat16::V2(p) => {
 			::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat13::V2(
-				down_v26_2_26_3_array_inline_30_6989(p, cx)?,
+				down_v26_2_26_3_array_inline_30_6997(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat16::Default(t) => {
@@ -262817,7 +263006,7 @@ pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6988(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6987(
+pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6995(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketPlayerChat,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_5::play::to_client::PacketPlayerChat>
@@ -262850,7 +263039,7 @@ pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6987(
 			salt: salt,
 			previous_messages: previous_messages,
 			unsigned_chat_content: unsigned_chat_content,
-			filter_type_mask: down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6988(
+			filter_type_mask: down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_13_6996(
 				filter_type_mask,
 				cx,
 			)?,
@@ -262861,7 +263050,7 @@ pub fn down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6987(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_17_6994(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_17_7002(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd16,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262872,7 +263061,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_17_6994(
     })
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_6993(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_7001(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd17,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262890,9 +263079,9 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_6993(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd18 {
 			display_id: display_id,
-			display: down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6974(display, cx)?,
+			display: down_v26_2_26_3_v26_2_play_toClient_RecipeDisplay_6982(display, cx)?,
 			group: group,
-			category: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_17_6994(
+			category: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_17_7002(
 				category, cx,
 			)?,
 			crafting_requirements: __f_craftingRequirements,
@@ -262900,7 +263089,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_6993(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_19_6995(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_19_7003(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd18,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262920,7 +263109,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_19_6995(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_20_6992(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_20_7000(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd19,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262934,13 +263123,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_20_6992(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd20 {
-			recipe: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_6993(recipe, cx)?,
-			flags: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_19_6995(flags, cx)?,
+			recipe: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_18_7001(recipe, cx)?,
+			flags: down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_19_7003(flags, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_402_6991(
+pub fn down_v26_2_26_3_array_inline_402_6999(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd19>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -262948,7 +263137,7 @@ pub fn down_v26_2_26_3_array_inline_402_6991(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_20_6992(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_20_7000(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -262956,7 +263145,7 @@ pub fn down_v26_2_26_3_array_inline_402_6991(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_6990(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_6998(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRecipeBookAdd,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd>
@@ -262969,13 +263158,13 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_6990(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketRecipeBookAdd {
-			entries: down_v26_2_26_3_array_inline_402_6991(entries, cx)?,
+			entries: down_v26_2_26_3_array_inline_402_6999(entries, cx)?,
 			replace: replace,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_respawn_6996(
+pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_respawn_7004(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketRespawn,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_9::play::to_client::PacketRespawn> {
@@ -262987,13 +263176,13 @@ pub fn down_v26_2_26_3_v1_21_9_play_toClient_packet_respawn_6996(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_9::play::to_client::PacketRespawn {
-			world_state: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6963(world_state, cx)?,
+			world_state: down_v26_2_26_3_v1_21_9_play_toClient_SpawnInfo_6967(world_state, cx)?,
 			copy_metadata: copy_metadata,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6997(
+pub fn down_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_7005(
 	v: ::bungeeoxide_minecraft::v1_20::play::to_client::PacketMultiBlockChange,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263013,19 +263202,19 @@ pub fn down_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6997(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_112_7002(
+pub fn down_v26_2_26_3_array_inline_112_7010(
 	v: Vec<::bungeeoxide_minecraft::v26_3::Particle>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::Particle>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v26_2_Particle_6934(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v26_2_Particle_6938(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_57_7003(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_57_7011(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry90,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry57> {
@@ -263045,7 +263234,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_57_7003(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_58_7004(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_58_7012(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry91,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry58> {
@@ -263059,7 +263248,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_58_7004(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_59_7005(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_59_7013(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry92,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry59> {
@@ -263076,7 +263265,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_59_7005(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_60_7006(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_60_7014(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry93,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry60> {
@@ -263093,7 +263282,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_60_7006(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7009(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61> {
@@ -263124,17 +263313,17 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Particle(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Particle(
-				down_v26_2_26_3_v26_2_Particle_6934(p, cx)?,
+				down_v26_2_26_3_v26_2_Particle_6938(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Particles(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Particles(
-				down_v26_2_26_3_array_inline_112_7002(p, cx)?,
+				down_v26_2_26_3_array_inline_112_7010(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::VillagerData(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::VillagerData(
-				down_v26_2_26_3_v26_2_entityMetadataEntry_57_7003(p, cx)?,
+				down_v26_2_26_3_v26_2_entityMetadataEntry_57_7011(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::OptionalUnsignedInt(p) => {
@@ -263190,7 +263379,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::PaintingVariant(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::PaintingVariant(
-				down_v26_2_26_3_v26_2_entityMetadataEntry_58_7004(p, cx)?,
+				down_v26_2_26_3_v26_2_entityMetadataEntry_58_7012(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::SnifferState(p) => {
@@ -263219,7 +263408,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::HumanoidArm(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::HumanoidArm(
-				down_v26_2_26_3_v26_2_entityMetadataEntry_59_7005(p, cx)?,
+				down_v26_2_26_3_v26_2_entityMetadataEntry_59_7013(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::DyeColor(p) => {
@@ -263233,7 +263422,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::ItemStack(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::ItemStack(
-				down_v26_2_26_3_v26_2_Slot_6863(p, cx)?,
+				down_v26_2_26_3_v26_2_Slot_6867(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Boolean(p) => {
@@ -263241,7 +263430,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Rotations(p) => {
 			::bungeeoxide_minecraft::v26_2::EntityMetadataEntry61::Rotations(
-				down_v26_2_26_3_v26_2_entityMetadataEntry_60_7006(p, cx)?,
+				down_v26_2_26_3_v26_2_entityMetadataEntry_60_7014(p, cx)?,
 			)
 		}
 		::bungeeoxide_minecraft::v26_3::EntityMetadataEntry94::Default(t) => {
@@ -263250,7 +263439,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_7000(
+pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_7008(
 	v: ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry> {
@@ -263259,12 +263448,12 @@ pub fn down_v26_2_26_3_v26_2_entityMetadataEntry_7000(
 		let ::bungeeoxide_minecraft::v26_3::EntityMetadataEntry { key, value, .. } = v;
 		::bungeeoxide_minecraft::v26_2::EntityMetadataEntry {
 			key: key,
-			value: down_v26_2_26_3_v26_2_entityMetadataEntry_61_7001(value, cx)?,
+			value: down_v26_2_26_3_v26_2_entityMetadataEntry_61_7009(value, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_entityMetadata_6999(
+pub fn down_v26_2_26_3_v26_2_entityMetadata_7007(
 	v: Vec<::bungeeoxide_minecraft::v26_3::EntityMetadataEntry>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::EntityMetadataEntry>> {
@@ -263282,7 +263471,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadata_6999(
 	}
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_entityMetadataEntry_7000(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_entityMetadataEntry_7008(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -263290,7 +263479,7 @@ pub fn down_v26_2_26_3_v26_2_entityMetadata_6999(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_metadata_6998(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_metadata_7006(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityMetadata,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263305,12 +263494,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_metadata_6998(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityMetadata {
 			entity_id: entity_id,
-			metadata: down_v26_2_26_3_v26_2_entityMetadata_6999(metadata, cx)?,
+			metadata: down_v26_2_26_3_v26_2_entityMetadata_7007(metadata, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_15_7009(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_15_7017(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityEquipment15,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263325,12 +263514,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_15_7009(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityEquipment15 {
 			slot: slot,
-			item: down_v26_2_26_3_v26_2_Slot_6863(item, cx)?,
+			item: down_v26_2_26_3_v26_2_Slot_6867(item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_topBitSetTerminatedArray_120_7008(
+pub fn down_v26_2_26_3_topBitSetTerminatedArray_120_7016(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityEquipment15>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263338,7 +263527,7 @@ pub fn down_v26_2_26_3_topBitSetTerminatedArray_120_7008(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_15_7009(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_15_7017(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -263346,7 +263535,7 @@ pub fn down_v26_2_26_3_topBitSetTerminatedArray_120_7008(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_7007(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_7015(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketEntityEquipment,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263361,12 +263550,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_7007(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketEntityEquipment {
 			entity_id: entity_id,
-			equipments: down_v26_2_26_3_topBitSetTerminatedArray_120_7008(equipments, cx)?,
+			equipments: down_v26_2_26_3_topBitSetTerminatedArray_120_7016(equipments, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_player_inventory_7010(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_player_inventory_7018(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketSetPlayerInventory,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263381,12 +263570,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_set_player_inventory_7010(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketSetPlayerInventory {
 			slot_id: slot_id,
-			contents: down_v26_2_26_3_v26_2_Slot_6863(contents, cx)?,
+			contents: down_v26_2_26_3_v26_2_Slot_6867(contents, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7011(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7019(
 	v: ::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketEntitySoundEffect,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263404,7 +263593,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7011(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketEntitySoundEffect {
-			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound, cx)?,
+			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound, cx)?,
 			sound_category: sound_category,
 			entity_id: entity_id,
 			volume: volume,
@@ -263414,7 +263603,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7011(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7012(
+pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7020(
 	v: ::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketSoundEffect,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketSoundEffect>
@@ -263433,7 +263622,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7012(
 			..
 		} = v;
 		::bungeeoxide_minecraft::v1_21_6::play::to_client::PacketSoundEffect {
-			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6883(sound, cx)?,
+			sound: down_v26_2_26_3_v1_19_3_ItemSoundHolder_6887(sound, cx)?,
 			sound_category: sound_category,
 			x: x,
 			y: y,
@@ -263445,7 +263634,7 @@ pub fn down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7012(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_8_7019(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_8_7027(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements8,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements8>
@@ -263468,7 +263657,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_8_7019(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_9_7020(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_9_7028(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements9,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements9>
@@ -263483,7 +263672,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_9_7020(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7018(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7026(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements10,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263505,10 +263694,10 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7018(
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements10 {
 			title: title,
 			description: description,
-			icon: down_v26_2_26_3_v26_2_ItemStackTemplate_6887(icon, cx)?,
+			icon: down_v26_2_26_3_v26_2_ItemStackTemplate_6891(icon, cx)?,
 			frame_type: frame_type,
-			flags: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_8_7019(flags, cx)?,
-			background_texture: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_9_7020(
+			flags: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_8_7027(flags, cx)?,
+			background_texture: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_9_7028(
 				background_texture,
 				cx,
 			)?,
@@ -263518,7 +263707,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7018(
 	})
 }
 
-pub fn down_v26_2_26_3_option_97_7017(
+pub fn down_v26_2_26_3_option_97_7025(
 	v: Option<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements10>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263527,7 +263716,7 @@ pub fn down_v26_2_26_3_option_97_7017(
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7018(x, cx)?)
+				Ok(down_v26_2_26_3_v26_2_play_toClient_packet_advancements_10_7026(x, cx)?)
 			})
 			.transpose()
 		{
@@ -263537,7 +263726,7 @@ pub fn down_v26_2_26_3_option_97_7017(
 	)
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_11_7016(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_11_7024(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements11,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263554,14 +263743,14 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_11_7016(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements11 {
 			parent_id: parent_id,
-			display_data: down_v26_2_26_3_option_97_7017(display_data, cx)?,
+			display_data: down_v26_2_26_3_option_97_7025(display_data, cx)?,
 			requirements: requirements,
 			sends_telemtry_data: sends_telemtry_data,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_12_7015(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_12_7023(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements12,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263573,12 +263762,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_12_7015(
 		let ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements12 { value, .. } = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements12 {
 			key: __f_key,
-			value: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_11_7016(value, cx)?,
+			value: down_v26_2_26_3_v26_2_play_toClient_packet_advancements_11_7024(value, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_395_7014(
+pub fn down_v26_2_26_3_array_inline_395_7022(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements12>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263586,7 +263775,7 @@ pub fn down_v26_2_26_3_array_inline_395_7014(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_12_7015(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_12_7023(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -263594,7 +263783,7 @@ pub fn down_v26_2_26_3_array_inline_395_7014(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_13_7024(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_13_7032(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements13,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263614,7 +263803,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_13_7024(
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_396_7023(
+pub fn down_v26_2_26_3_array_inline_396_7031(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements13>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263622,7 +263811,7 @@ pub fn down_v26_2_26_3_array_inline_396_7023(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_13_7024(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_13_7032(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -263630,7 +263819,7 @@ pub fn down_v26_2_26_3_array_inline_396_7023(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_14_7022(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_14_7030(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements14,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263645,12 +263834,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_14_7022(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements14 {
 			key: key,
-			value: down_v26_2_26_3_array_inline_396_7023(value, cx)?,
+			value: down_v26_2_26_3_array_inline_396_7031(value, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_397_7021(
+pub fn down_v26_2_26_3_array_inline_397_7029(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements14>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263658,7 +263847,7 @@ pub fn down_v26_2_26_3_array_inline_397_7021(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_14_7022(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_advancements_14_7030(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -263666,7 +263855,7 @@ pub fn down_v26_2_26_3_array_inline_397_7021(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_7013(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_7021(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketAdvancements,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements>
@@ -263683,15 +263872,15 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_advancements_7013(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketAdvancements {
 			reset: reset,
-			advancement_mapping: down_v26_2_26_3_array_inline_395_7014(advancement_mapping, cx)?,
+			advancement_mapping: down_v26_2_26_3_array_inline_395_7022(advancement_mapping, cx)?,
 			identifiers: identifiers,
-			progress_mapping: down_v26_2_26_3_array_inline_397_7021(progress_mapping, cx)?,
+			progress_mapping: down_v26_2_26_3_array_inline_397_7029(progress_mapping, cx)?,
 			show_advancements: show_advancements,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_15_7027(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_15_7035(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareRecipes15,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263706,12 +263895,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_15_7027(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketDeclareRecipes15 {
 			input: __f_input,
-			slot_display: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6977(slot_display, cx)?,
+			slot_display: down_v26_2_26_3_v26_2_play_toClient_SlotDisplay_6985(slot_display, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_399_7026(
+pub fn down_v26_2_26_3_array_inline_399_7034(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareRecipes15>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263719,7 +263908,7 @@ pub fn down_v26_2_26_3_array_inline_399_7026(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_15_7027(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_15_7035(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -263727,7 +263916,7 @@ pub fn down_v26_2_26_3_array_inline_399_7026(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_7025(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_7033(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::PacketDeclareRecipes,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -263742,12 +263931,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_7025(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_client::PacketDeclareRecipes {
 			recipes: __f_recipes,
-			stone_cutter_recipes: down_v26_2_26_3_array_inline_399_7026(stone_cutter_recipes, cx)?,
+			stone_cutter_recipes: down_v26_2_26_3_array_inline_399_7034(stone_cutter_recipes, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
+pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6833(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_client::Packet,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::play::to_client::Packet>> {
@@ -263759,7 +263948,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SpawnEntity(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SpawnEntity(
-				down_v26_2_26_3_v1_21_9_play_toClient_packet_spawn_entity_6830(p, cx)?,
+				down_v26_2_26_3_v1_21_9_play_toClient_packet_spawn_entity_6834(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Animation(p) => {
@@ -263783,12 +263972,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::BlockAction(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::BlockAction(
-				down_v26_2_26_3_v1_14_play_toClient_packet_block_action_6831(p, cx)?,
+				down_v26_2_26_3_v1_14_play_toClient_packet_block_action_6835(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::BlockChange(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::BlockChange(
-				down_v26_2_26_3_v1_14_play_toClient_packet_block_change_6832(p, cx)?,
+				down_v26_2_26_3_v1_14_play_toClient_packet_block_change_6836(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::BossBar(p) => {
@@ -263814,7 +264003,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::DeclareCommands(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::DeclareCommands(
-				down_v26_2_26_3_v1_21_6_play_toClient_packet_declare_commands_6833(p, cx)?,
+				down_v26_2_26_3_v1_21_6_play_toClient_packet_declare_commands_6837(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CloseWindow(p) => {
@@ -263822,7 +264011,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::WindowItems(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::WindowItems(
-				down_v26_2_26_3_v26_2_play_toClient_packet_window_items_6861(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_window_items_6865(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CraftProgressBar(p) => {
@@ -263830,7 +264019,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SetSlot(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SetSlot(
-				down_v26_2_26_3_v26_2_play_toClient_packet_set_slot_6932(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_set_slot_6936(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CookieRequest(p) => {
@@ -263880,7 +264069,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Explosion(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Explosion(
-				down_v26_2_26_3_v26_2_play_toClient_packet_explosion_6933(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_explosion_6937(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::AddTransientBlock(p) => {
@@ -263912,7 +264101,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::MapChunk(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::MapChunk(
-				down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6948(p, cx)?,
+				down_v26_2_26_3_v1_21_6_play_toClient_packet_map_chunk_6952(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::WorldEvent(p) => {
@@ -263920,28 +264109,30 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::WorldParticles(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::WorldParticles(
-				down_v26_2_26_3_v26_2_play_toClient_packet_world_particles_6956(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_world_particles_6960(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::UpdateLight(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::UpdateLight(
-				down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6957(p, cx)?,
+				down_v26_2_26_3_v1_20_play_toClient_packet_update_light_6961(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Login(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Login(
-				down_v26_2_26_3_v26_2_play_toClient_packet_login_6962(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_login_6966(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::LowDiskSpaceWarning(p) => {
 			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::LowDiskSpaceWarning(p)]
 		}
-		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Map(p) => {
-			vec![::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Map(p)]
-		}
+		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Map(p) => vec![
+			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Map(
+				down_v26_2_26_3_v1_20_3_play_toClient_packet_map_6969(p, cx)?,
+			),
+		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::TradeList(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::TradeList(
-				down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6965(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_trade_list_6973(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::RelEntityMove(p) => {
@@ -263955,7 +264146,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityLook(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityLook(
-				down_v26_2_26_3_v1_8_play_toClient_packet_entity_look_6972(p, cx)?,
+				down_v26_2_26_3_v1_8_play_toClient_packet_entity_look_6980(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::VehicleMove(p) => {
@@ -263978,7 +264169,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::CraftRecipeResponse(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::CraftRecipeResponse(
-				down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6973(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_craft_recipe_response_6981(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Abilities(p) => {
@@ -263986,7 +264177,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::PlayerChat(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::PlayerChat(
-				down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6987(p, cx)?,
+				down_v26_2_26_3_v1_21_5_play_toClient_packet_player_chat_6995(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EndCombatEvent(p) => {
@@ -264015,7 +264206,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::RecipeBookAdd(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::RecipeBookAdd(
-				down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_6990(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_recipe_book_add_6998(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::RecipeBookRemove(p) => {
@@ -264044,7 +264235,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Respawn(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Respawn(
-				down_v26_2_26_3_v1_21_9_play_toClient_packet_respawn_6996(p, cx)?,
+				down_v26_2_26_3_v1_21_9_play_toClient_packet_respawn_7004(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityHeadRotation(p) => {
@@ -264052,7 +264243,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::MultiBlockChange(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::MultiBlockChange(
-				down_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_6997(p, cx)?,
+				down_v26_2_26_3_v1_20_play_toClient_packet_multi_block_change_7005(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SelectAdvancementTab(p) => {
@@ -264094,7 +264285,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SetCursorItem(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SetCursorItem(
-				down_v26_2_26_3_v26_2_Slot_6863(p, cx)?,
+				down_v26_2_26_3_v26_2_Slot_6867(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SpawnPosition(p) => {
@@ -264109,7 +264300,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityMetadata(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityMetadata(
-				down_v26_2_26_3_v26_2_play_toClient_packet_entity_metadata_6998(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_entity_metadata_7006(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::AttachEntity(p) => {
@@ -264120,7 +264311,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityEquipment(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntityEquipment(
-				down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_7007(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_entity_equipment_7015(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Experience(p) => {
@@ -264140,7 +264331,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SetPlayerInventory(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SetPlayerInventory(
-				down_v26_2_26_3_v26_2_play_toClient_packet_set_player_inventory_7010(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_set_player_inventory_7018(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Teams(p) => {
@@ -264166,12 +264357,12 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntitySoundEffect(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::EntitySoundEffect(
-				down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7011(p, cx)?,
+				down_v26_2_26_3_v1_21_6_play_toClient_packet_entity_sound_effect_7019(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::SoundEffect(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::SoundEffect(
-				down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7012(p, cx)?,
+				down_v26_2_26_3_v1_21_6_play_toClient_packet_sound_effect_7020(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::StartConfiguration(p) => {
@@ -264217,7 +264408,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Advancements(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::Advancements(
-				down_v26_2_26_3_v26_2_play_toClient_packet_advancements_7013(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_advancements_7021(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::EntityUpdateAttributes(p) => {
@@ -264228,7 +264419,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::DeclareRecipes(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_client::Packet::DeclareRecipes(
-				down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_7025(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toClient_packet_declare_recipes_7033(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_client::Packet::Tags(p) => {
@@ -264258,7 +264449,7 @@ pub fn down_v26_2_26_3_v26_2_play_toClient_packet_6829(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_HashedSlot_0_7035(
+pub fn up_v26_2_26_3_v26_3_HashedSlot_0_7043(
 	v: ::bungeeoxide_minecraft::v26_2::HashedSlot0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::HashedSlot0> {
@@ -264272,19 +264463,19 @@ pub fn up_v26_2_26_3_v26_3_HashedSlot_0_7035(
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_406_7034(
+pub fn up_v26_2_26_3_array_inline_406_7042(
 	v: Vec<::bungeeoxide_minecraft::v26_2::HashedSlot0>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::HashedSlot0>> {
 	v.into_iter()
-		.filter_map(|x| match up_v26_2_26_3_v26_3_HashedSlot_0_7035(x, cx) {
+		.filter_map(|x| match up_v26_2_26_3_v26_3_HashedSlot_0_7043(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_array_inline_124_7036(
+pub fn up_v26_2_26_3_array_inline_124_7044(
 	v: Vec<::bungeeoxide_minecraft::v26_2::SlotComponentType>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::SlotComponentType>> {
@@ -264298,7 +264489,7 @@ pub fn up_v26_2_26_3_array_inline_124_7036(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_HashedSlot_7033(
+pub fn up_v26_2_26_3_v26_3_HashedSlot_7041(
 	v: ::bungeeoxide_minecraft::v26_2::HashedSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::HashedSlot> {
@@ -264314,20 +264505,20 @@ pub fn up_v26_2_26_3_v26_3_HashedSlot_7033(
 		::bungeeoxide_minecraft::v26_3::HashedSlot {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: up_v26_2_26_3_array_inline_406_7034(components, cx)?,
-			remove_components: up_v26_2_26_3_array_inline_124_7036(remove_components, cx)?,
+			components: up_v26_2_26_3_array_inline_406_7042(components, cx)?,
+			remove_components: up_v26_2_26_3_array_inline_124_7044(remove_components, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_option_27_7032(
+pub fn up_v26_2_26_3_option_27_7040(
 	v: Option<::bungeeoxide_minecraft::v26_2::HashedSlot>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Option<::bungeeoxide_minecraft::v26_3::HashedSlot>> {
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(up_v26_2_26_3_v26_3_HashedSlot_7033(x, cx)?)
+				Ok(up_v26_2_26_3_v26_3_HashedSlot_7041(x, cx)?)
 			})
 			.transpose()
 		{
@@ -264337,7 +264528,7 @@ pub fn up_v26_2_26_3_option_27_7032(
 	)
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_0_7031(
+pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_0_7039(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick0>
@@ -264351,12 +264542,12 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_0_7031(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick0 {
 			location: location,
-			item: up_v26_2_26_3_option_27_7032(item, cx)?,
+			item: up_v26_2_26_3_option_27_7040(item, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_array_inline_424_7030(
+pub fn up_v26_2_26_3_array_inline_424_7038(
 	v: Vec<::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick0>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -264364,7 +264555,7 @@ pub fn up_v26_2_26_3_array_inline_424_7030(
 > {
 	v.into_iter()
 		.filter_map(
-			|x| match up_v26_2_26_3_v26_3_play_toServer_packet_window_click_0_7031(x, cx) {
+			|x| match up_v26_2_26_3_v26_3_play_toServer_packet_window_click_0_7039(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -264372,7 +264563,7 @@ pub fn up_v26_2_26_3_array_inline_424_7030(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_7029(
+pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_7037(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick>
@@ -264395,13 +264586,13 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_window_click_7029(
 			slot: slot,
 			mouse_button: mouse_button,
 			mode: mode,
-			changed_slots: up_v26_2_26_3_array_inline_424_7030(changed_slots, cx)?,
-			cursor_item: up_v26_2_26_3_option_27_7032(cursor_item, cx)?,
+			changed_slots: up_v26_2_26_3_array_inline_424_7038(changed_slots, cx)?,
+			cursor_item: up_v26_2_26_3_option_27_7040(cursor_item, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7037(
+pub fn up_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7045(
 	v: ::bungeeoxide_minecraft::v1_19::play::to_server::PacketBlockDig,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_19::play::to_server::PacketBlockDig> {
@@ -264423,14 +264614,14 @@ pub fn up_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7037(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_UntrustedSlot_7039(
+pub fn up_v26_2_26_3_v26_3_UntrustedSlot_7047(
 	v: ::bungeeoxide_minecraft::v26_2::UntrustedSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::UntrustedSlot> {
 	crate::custom::late_untrusted_up_26_3(v, cx)
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toServer_packet_set_creative_slot_7038(
+pub fn up_v26_2_26_3_v26_3_play_toServer_packet_set_creative_slot_7046(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_server::PacketSetCreativeSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -264445,12 +264636,12 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_set_creative_slot_7038(
 		} = v;
 		::bungeeoxide_minecraft::v26_3::play::to_server::PacketSetCreativeSlot {
 			slot: slot,
-			item: up_v26_2_26_3_v26_3_UntrustedSlot_7039(item, cx)?,
+			item: up_v26_2_26_3_v26_3_UntrustedSlot_7047(item, cx)?,
 		}
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toServer_packet_update_sign_7040(
+pub fn up_v26_2_26_3_v26_3_play_toServer_packet_update_sign_7048(
 	v: ::bungeeoxide_minecraft::v1_20::play::to_server::PacketUpdateSign,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_3::play::to_server::PacketUpdateSign>
@@ -264477,7 +264668,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_update_sign_7040(
 	})
 }
 
-pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
+pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7036(
 	v: ::bungeeoxide_minecraft::v26_2::play::to_server::Packet,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_3::play::to_server::Packet>> {
@@ -264542,7 +264733,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::WindowClick(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_server::Packet::WindowClick(
-				up_v26_2_26_3_v26_3_play_toServer_packet_window_click_7029(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toServer_packet_window_click_7037(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::CloseWindow(p) => {
@@ -264617,7 +264808,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::BlockDig(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_server::Packet::BlockDig(
-				up_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7037(p, cx)?,
+				up_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7045(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::EntityAction(p) => {
@@ -264668,7 +264859,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_server::Packet::SetCreativeSlot(
-				up_v26_2_26_3_v26_3_play_toServer_packet_set_creative_slot_7038(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toServer_packet_set_creative_slot_7046(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::SetGameRule(p) => {
@@ -264685,7 +264876,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
 		}
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::UpdateSign(p) => vec![
 			::bungeeoxide_minecraft::v26_3::play::to_server::Packet::UpdateSign(
-				up_v26_2_26_3_v26_3_play_toServer_packet_update_sign_7040(p, cx)?,
+				up_v26_2_26_3_v26_3_play_toServer_packet_update_sign_7048(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_2::play::to_server::Packet::SpectatorAction(p) => {
@@ -264717,7 +264908,7 @@ pub fn up_v26_2_26_3_v26_3_play_toServer_packet_7028(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_HashedSlot_0_7048(
+pub fn down_v26_2_26_3_v26_2_HashedSlot_0_7056(
 	v: ::bungeeoxide_minecraft::v26_3::HashedSlot0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::HashedSlot0> {
@@ -264725,31 +264916,31 @@ pub fn down_v26_2_26_3_v26_2_HashedSlot_0_7048(
 		let _0 = &v;
 		let ::bungeeoxide_minecraft::v26_3::HashedSlot0 { r#type, hash, .. } = v;
 		::bungeeoxide_minecraft::v26_2::HashedSlot0 {
-			r#type: down_v26_2_26_3_v26_2_SlotComponentType_6889(r#type, cx)?,
+			r#type: down_v26_2_26_3_v26_2_SlotComponentType_6893(r#type, cx)?,
 			hash: hash,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_385_7047(
+pub fn down_v26_2_26_3_array_inline_385_7055(
 	v: Vec<::bungeeoxide_minecraft::v26_3::HashedSlot0>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::HashedSlot0>> {
 	v.into_iter()
-		.filter_map(|x| match down_v26_2_26_3_v26_2_HashedSlot_0_7048(x, cx) {
+		.filter_map(|x| match down_v26_2_26_3_v26_2_HashedSlot_0_7056(x, cx) {
 			Err(crate::pds::convert::Error::Dropped) => None,
 			r => Some(r),
 		})
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_array_inline_115_7049(
+pub fn down_v26_2_26_3_array_inline_115_7057(
 	v: Vec<::bungeeoxide_minecraft::v26_3::SlotComponentType>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::SlotComponentType>> {
 	v.into_iter()
 		.filter_map(
-			|x| match down_v26_2_26_3_v26_2_SlotComponentType_6889(x, cx) {
+			|x| match down_v26_2_26_3_v26_2_SlotComponentType_6893(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			},
@@ -264757,7 +264948,7 @@ pub fn down_v26_2_26_3_array_inline_115_7049(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_HashedSlot_7046(
+pub fn down_v26_2_26_3_v26_2_HashedSlot_7054(
 	v: ::bungeeoxide_minecraft::v26_3::HashedSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::HashedSlot> {
@@ -264773,20 +264964,20 @@ pub fn down_v26_2_26_3_v26_2_HashedSlot_7046(
 		::bungeeoxide_minecraft::v26_2::HashedSlot {
 			item_id: __f_itemId,
 			item_count: item_count,
-			components: down_v26_2_26_3_array_inline_385_7047(components, cx)?,
-			remove_components: down_v26_2_26_3_array_inline_115_7049(remove_components, cx)?,
+			components: down_v26_2_26_3_array_inline_385_7055(components, cx)?,
+			remove_components: down_v26_2_26_3_array_inline_115_7057(remove_components, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_option_25_7045(
+pub fn down_v26_2_26_3_option_25_7053(
 	v: Option<::bungeeoxide_minecraft::v26_3::HashedSlot>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Option<::bungeeoxide_minecraft::v26_2::HashedSlot>> {
 	Ok(
 		match v
 			.map(|x| -> crate::pds::convert::Result<_> {
-				Ok(down_v26_2_26_3_v26_2_HashedSlot_7046(x, cx)?)
+				Ok(down_v26_2_26_3_v26_2_HashedSlot_7054(x, cx)?)
 			})
 			.transpose()
 		{
@@ -264796,7 +264987,7 @@ pub fn down_v26_2_26_3_option_25_7045(
 	)
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_0_7044(
+pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_0_7052(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick0,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick0>
@@ -264810,12 +265001,12 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_0_7044(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick0 {
 			location: location,
-			item: down_v26_2_26_3_option_25_7045(item, cx)?,
+			item: down_v26_2_26_3_option_25_7053(item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_array_inline_404_7043(
+pub fn down_v26_2_26_3_array_inline_404_7051(
 	v: Vec<::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick0>,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -264823,7 +265014,7 @@ pub fn down_v26_2_26_3_array_inline_404_7043(
 > {
 	v.into_iter()
 		.filter_map(|x| {
-			match down_v26_2_26_3_v26_2_play_toServer_packet_window_click_0_7044(x, cx) {
+			match down_v26_2_26_3_v26_2_play_toServer_packet_window_click_0_7052(x, cx) {
 				Err(crate::pds::convert::Error::Dropped) => None,
 				r => Some(r),
 			}
@@ -264831,7 +265022,7 @@ pub fn down_v26_2_26_3_array_inline_404_7043(
 		.collect::<crate::pds::convert::Result<Vec<_>>>()
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_7042(
+pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_7050(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_server::PacketWindowClick,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::play::to_server::PacketWindowClick>
@@ -264854,13 +265045,13 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_window_click_7042(
 			slot: slot,
 			mouse_button: mouse_button,
 			mode: mode,
-			changed_slots: down_v26_2_26_3_array_inline_404_7043(changed_slots, cx)?,
-			cursor_item: down_v26_2_26_3_option_25_7045(cursor_item, cx)?,
+			changed_slots: down_v26_2_26_3_array_inline_404_7051(changed_slots, cx)?,
+			cursor_item: down_v26_2_26_3_option_25_7053(cursor_item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7050(
+pub fn down_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7058(
 	v: ::bungeeoxide_minecraft::v1_19::play::to_server::PacketBlockDig,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_19::play::to_server::PacketBlockDig> {
@@ -264882,14 +265073,14 @@ pub fn down_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7050(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_UntrustedSlot_7052(
+pub fn down_v26_2_26_3_v26_2_UntrustedSlot_7060(
 	v: ::bungeeoxide_minecraft::v26_3::UntrustedSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v26_2::UntrustedSlot> {
 	crate::custom::late_untrusted_down_26_2(v, cx)
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toServer_packet_set_creative_slot_7051(
+pub fn down_v26_2_26_3_v26_2_play_toServer_packet_set_creative_slot_7059(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_server::PacketSetCreativeSlot,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<
@@ -264904,12 +265095,12 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_set_creative_slot_7051(
 		} = v;
 		::bungeeoxide_minecraft::v26_2::play::to_server::PacketSetCreativeSlot {
 			slot: slot,
-			item: down_v26_2_26_3_v26_2_UntrustedSlot_7052(item, cx)?,
+			item: down_v26_2_26_3_v26_2_UntrustedSlot_7060(item, cx)?,
 		}
 	})
 }
 
-pub fn down_v26_2_26_3_v1_20_play_toServer_packet_update_sign_7053(
+pub fn down_v26_2_26_3_v1_20_play_toServer_packet_update_sign_7061(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_server::PacketUpdateSign,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<::bungeeoxide_minecraft::v1_20::play::to_server::PacketUpdateSign>
@@ -264936,7 +265127,7 @@ pub fn down_v26_2_26_3_v1_20_play_toServer_packet_update_sign_7053(
 	})
 }
 
-pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
+pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7049(
 	v: ::bungeeoxide_minecraft::v26_3::play::to_server::Packet,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v26_2::play::to_server::Packet>> {
@@ -265001,7 +265192,7 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::WindowClick(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_server::Packet::WindowClick(
-				down_v26_2_26_3_v26_2_play_toServer_packet_window_click_7042(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toServer_packet_window_click_7050(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::CloseWindow(p) => {
@@ -265076,7 +265267,7 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::BlockDig(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_server::Packet::BlockDig(
-				down_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7050(p, cx)?,
+				down_v26_2_26_3_v1_19_play_toServer_packet_block_dig_7058(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::EntityAction(p) => {
@@ -265130,7 +265321,7 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::SetCreativeSlot(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_server::Packet::SetCreativeSlot(
-				down_v26_2_26_3_v26_2_play_toServer_packet_set_creative_slot_7051(p, cx)?,
+				down_v26_2_26_3_v26_2_play_toServer_packet_set_creative_slot_7059(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::SetGameRule(p) => {
@@ -265147,7 +265338,7 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
 		}
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::UpdateSign(p) => vec![
 			::bungeeoxide_minecraft::v26_2::play::to_server::Packet::UpdateSign(
-				down_v26_2_26_3_v1_20_play_toServer_packet_update_sign_7053(p, cx)?,
+				down_v26_2_26_3_v1_20_play_toServer_packet_update_sign_7061(p, cx)?,
 			),
 		],
 		::bungeeoxide_minecraft::v26_3::play::to_server::Packet::SpectatorAction(p) => {
@@ -265176,7 +265367,7 @@ pub fn down_v26_2_26_3_v26_2_play_toServer_packet_7041(
 	})
 }
 
-pub fn down_v26_2_26_3_v1_7_status_toClient_packet_7054(
+pub fn down_v26_2_26_3_v1_7_status_toClient_packet_7062(
 	v: ::bungeeoxide_minecraft::v1_7::status::to_client::Packet,
 	cx: &mut crate::Session,
 ) -> crate::pds::convert::Result<Vec<::bungeeoxide_minecraft::v1_7::status::to_client::Packet>> {

@@ -508,6 +508,47 @@ pub fn late_recipe_sets_down_26_2(
 		.collect()
 }
 
+const MAP_DECORATION_TYPES_26_2: i32 = 35;
+const TARGET_X: i32 = 4;
+const NEW_MAP_DECORATIONS: &[&str] = &[
+	"abandoned_camp",
+	"ancient_city",
+	"desert_pyramid",
+	"mineshaft",
+	"ocean_ruin_warm",
+];
+
+pub fn late_map_icon_down_26_2(
+	kind: &mut i32,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	if *kind >= MAP_DECORATION_TYPES_26_2 {
+		*kind = TARGET_X;
+	}
+	Ok(())
+}
+
+pub fn late_map_decorations_down_26_2(
+	tag: &mut Tag,
+	_from: Version,
+	_to: Version,
+	_cx: &mut Session,
+) -> Result<()> {
+	let Payload::Compound(decorations) = &mut tag.value else {
+		return Ok(());
+	};
+	for d in decorations {
+		if let Some(Payload::String(kind)) = d.value.field_mut("type") {
+			if NEW_MAP_DECORATIONS.contains(&short(kind)) {
+				*kind = "minecraft:target_x".to_owned();
+			}
+		}
+	}
+	Ok(())
+}
+
 const BREWING_STAND_MENU: i32 = 11;
 const TOTAL_BREW_TIME: i16 = 2;
 const TOTAL_FUEL: i16 = 3;
