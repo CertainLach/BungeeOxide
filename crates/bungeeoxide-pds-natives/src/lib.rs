@@ -323,6 +323,107 @@ pub mod pds_entityDelta {
 	}
 }
 
+pub mod pds_vecDelta {
+	use super::*;
+	pub use super::pds_entityDelta::Step;
+	#[derive(Debug, Clone, PartialEq, Eq)]
+	pub enum Delta {
+		Linear { dX: i16, dY: i16, dZ: i16 },
+		Stepped {
+			startImmediately: bool,
+			steps: Vec<Step>,
+		},
+	}
+	#[derive(Debug, Clone, PartialEq, Eq)]
+	pub struct Ty {
+		pub onGround: bool,
+		pub delta: Delta,
+	}
+	fn properties(_0: &Ty) -> Result<i32> {
+		let steps = match &_0.delta {
+			Delta::Linear { .. } => 0,
+			Delta::Stepped { steps, .. } if steps.is_empty() => return Err(Error::InvalidValue),
+			Delta::Stepped { steps, .. } => u32::try_from(steps.len())
+				.ok()
+				.filter(|n| *n <= u32::MAX >> 1)
+				.ok_or(Error::TooLargeInteger)?,
+		};
+		Ok((steps << 1 | _0.onGround as u32) as i32)
+	}
+	fn write_xyz(dX: i16, dY: i16, dZ: i16, output: &mut Output) {
+		output.write(&dX.to_be_bytes());
+		output.write(&dY.to_be_bytes());
+		output.write(&dZ.to_be_bytes());
+	}
+	fn read_xyz(input: &mut Input) -> Result<(i16, i16, i16)> {
+		Ok((
+			i16::from_be_bytes(input.exact()?),
+			i16::from_be_bytes(input.exact()?),
+			i16::from_be_bytes(input.exact()?),
+		))
+	}
+	pub fn serialize(_0: &Ty, output: &mut Output) -> Result<()> {
+		pds_varint::serialize(&properties(_0)?, output)?;
+		match &_0.delta {
+			Delta::Linear { dX, dY, dZ } => write_xyz(*dX, *dY, *dZ, output),
+			Delta::Stepped {
+				startImmediately,
+				steps,
+			} => {
+				output.write(&[*startImmediately as u8]);
+				for s in steps {
+					pds_varint::serialize(&s.ticks, output)?;
+					write_xyz(s.dX, s.dY, s.dZ, output);
+				}
+			}
+		}
+		Ok(())
+	}
+	pub fn deserialize(input: &mut Input) -> Result<Ty> {
+		let properties = pds_varint::deserialize(input)? as u32;
+		let onGround = properties & 1 != 0;
+		let count = properties >> 1;
+		if count == 0 {
+			let (dX, dY, dZ) = read_xyz(input)?;
+			return Ok(Ty {
+				onGround,
+				delta: Delta::Linear { dX, dY, dZ },
+			});
+		}
+		let startImmediately = match input.read()? {
+			0 => false,
+			1 => true,
+			_ => return Err(Error::InvalidValue),
+		};
+		let mut steps = Vec::new();
+		for _ in 0..count {
+			let ticks = pds_varint::deserialize(input)?;
+			let (dX, dY, dZ) = read_xyz(input)?;
+			steps.push(Step { ticks, dX, dY, dZ });
+		}
+		Ok(Ty {
+			onGround,
+			delta: Delta::Stepped {
+				startImmediately,
+				steps,
+			},
+		})
+	}
+	pub fn size_of(_0: &Ty) -> usize {
+		let head = pds_varint::size_of(&properties(_0).unwrap_or(0));
+		match &_0.delta {
+			Delta::Linear { .. } => head + 6,
+			Delta::Stepped { steps, .. } => {
+				head + 1
+					+ steps
+						.iter()
+						.map(|s| pds_varint::size_of(&s.ticks) + 6)
+						.sum::<usize>()
+			}
+		}
+	}
+}
+
 pub mod view {
 	use pds_bytes_runtime::{Input, Output, Result};
 
@@ -552,6 +653,98 @@ mod tests {
 		));
 		assert!(matches!(
 			decode(&[0x01, 0x00, 0x01], deserialize),
+			Err(Error::NotEnoughData)
+		));
+	}
+
+	#[test]
+	fn vec_delta_writes_start_immediately_before_steps() {
+		use pds_vecDelta::*;
+		let cases = [
+			(
+				Ty {
+					onGround: true,
+					delta: Delta::Linear {
+						dX: 769,
+						dY: -145,
+						dZ: 0,
+					},
+				},
+				vec![0x01, 0x03, 0x01, 0xff, 0x6f, 0x00, 0x00],
+			),
+			(
+				Ty {
+					onGround: true,
+					delta: Delta::Stepped {
+						startImmediately: true,
+						steps: vec![
+							Step {
+								ticks: 200,
+								dX: -1,
+								dY: 2,
+								dZ: -32768,
+							},
+							Step {
+								ticks: 3,
+								dX: 32767,
+								dY: 0,
+								dZ: -300,
+							},
+						],
+					},
+				},
+				vec![
+					0x05, 0x01, 0xc8, 0x01, 0xff, 0xff, 0x00, 0x02, 0x80, 0x00, 0x03, 0x7f, 0xff,
+					0x00, 0x00, 0xfe, 0xd4,
+				],
+			),
+			(
+				Ty {
+					onGround: false,
+					delta: Delta::Stepped {
+						startImmediately: false,
+						steps: vec![Step {
+							ticks: 0,
+							dX: 0,
+							dY: 0,
+							dZ: 0,
+						}],
+					},
+				},
+				vec![0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+			),
+		];
+		for (delta, bytes) in cases {
+			assert_eq!(encode(&delta, serialize), bytes);
+			assert_eq!(size_of(&delta), bytes.len());
+			assert_eq!(decode(&bytes, deserialize).unwrap(), delta);
+		}
+	}
+
+	#[test]
+	fn vec_delta_rejects_bad_input() {
+		use pds_vecDelta::*;
+		let empty = Ty {
+			onGround: false,
+			delta: Delta::Stepped {
+				startImmediately: true,
+				steps: Vec::new(),
+			},
+		};
+		assert!(matches!(
+			serialize(&empty, &mut Output::new()),
+			Err(Error::InvalidValue)
+		));
+		assert!(matches!(
+			decode(&[0x02, 0x02, 0x00, 0, 0, 0, 0, 0, 0], deserialize),
+			Err(Error::InvalidValue)
+		));
+		assert!(matches!(
+			decode(&[0x04, 0x00, 0x00, 0, 1, 0, 2, 0, 3], deserialize),
+			Err(Error::NotEnoughData)
+		));
+		assert!(matches!(
+			decode(&[0xff, 0xff, 0xff, 0xff, 0x0f, 0x00], deserialize),
 			Err(Error::NotEnoughData)
 		));
 	}

@@ -241,6 +241,71 @@ export const pds_entityDelta: Native<EntityDelta> = {
 	},
 };
 
+export type VecDelta = {
+	onGround: boolean;
+	delta:
+		| { kind: "linear"; value: { dX: number; dY: number; dZ: number } }
+		| { kind: "stepped"; value: { startImmediately: boolean; steps: EntityDeltaStep[] } };
+};
+
+function vecDelta_properties(v: VecDelta): number {
+	const count = v.delta.kind === "linear" ? 0 : v.delta.value.steps.length;
+	return (count << 1) | (v.onGround ? 1 : 0);
+}
+
+export const pds_vecDelta: Native<VecDelta> = {
+	serialize(v: VecDelta, output: Output): void {
+		if (v.delta.kind === "stepped") {
+			if (v.delta.value.steps.length === 0) {
+				throw new PdsError("InvalidValue");
+			}
+			if (v.delta.value.steps.length > 0x7fffffff) {
+				throw new PdsError("TooLargeInteger");
+			}
+		}
+		pds_varint.serialize(vecDelta_properties(v), output);
+		if (v.delta.kind === "linear") {
+			const { dX, dY, dZ } = v.delta.value;
+			entityDelta_write_xyz(dX, dY, dZ, output);
+			return;
+		}
+		output.write(Uint8Array.of(v.delta.value.startImmediately ? 1 : 0));
+		for (const s of v.delta.value.steps) {
+			pds_varint.serialize(s.ticks, output);
+			entityDelta_write_xyz(s.dX, s.dY, s.dZ, output);
+		}
+	},
+	deserialize(input: Input): VecDelta {
+		const properties = pds_varint.deserialize(input) >>> 0;
+		const onGround = (properties & 1) !== 0;
+		const count = properties >>> 1;
+		if (count === 0) {
+			return { onGround, delta: { kind: "linear", value: entityDelta_read_xyz(input) } };
+		}
+		const flag = input.read_bytes(1)[0];
+		if (flag > 1) {
+			throw new PdsError("InvalidValue");
+		}
+		const steps: EntityDeltaStep[] = [];
+		for (let i = 0; i < count; i++) {
+			const ticks = pds_varint.deserialize(input);
+			steps.push({ ticks, ...entityDelta_read_xyz(input) });
+		}
+		return { onGround, delta: { kind: "stepped", value: { startImmediately: flag === 1, steps } } };
+	},
+	size_of(v: VecDelta): number {
+		const head = pds_varint.size_of(vecDelta_properties(v));
+		if (v.delta.kind === "linear") {
+			return head + 6;
+		}
+		let size = head + 1;
+		for (const s of v.delta.value.steps) {
+			size += pds_varint.size_of(s.ticks) + 6;
+		}
+		return size;
+	},
+};
+
 export const pds_restBuffer: Native<Uint8Array> = {
 	serialize(v: Uint8Array, output: Output): void {
 		output.write(v);
