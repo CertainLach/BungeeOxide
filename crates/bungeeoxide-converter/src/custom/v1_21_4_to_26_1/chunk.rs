@@ -1,4 +1,5 @@
 use super::util::{bits_for, read_varint, write_varint};
+use crate::custom::chunks::{expand_cells, sample_cells};
 use crate::gen::convert::Version;
 use crate::pds::convert::{Error, Result};
 
@@ -6,6 +7,7 @@ use crate::pds::convert::{Error, Result};
 pub struct Format {
 	pub lengths: bool,
 	pub fluids: bool,
+	pub block_biomes: bool,
 	pub block_states: u32,
 	pub biomes: u32,
 }
@@ -13,14 +15,22 @@ pub struct Format {
 #[derive(Clone, Copy, PartialEq)]
 enum Kind {
 	Blocks,
+	Cells,
 	Biomes,
 }
 
 impl Kind {
+	fn biomes(f: Format) -> Kind {
+		match f.block_biomes {
+			true => Kind::Biomes,
+			false => Kind::Cells,
+		}
+	}
+
 	fn entries(self) -> usize {
 		match self {
-			Kind::Blocks => 4096,
-			Kind::Biomes => 64,
+			Kind::Cells => 64,
+			Kind::Blocks | Kind::Biomes => 4096,
 		}
 	}
 
@@ -28,16 +38,23 @@ impl Kind {
 		match (self, bits) {
 			(_, 0) => 0,
 			(Kind::Blocks, 1..=4) => 4,
-			(Kind::Blocks, 5..=8) | (Kind::Biomes, 1..=3) => bits,
+			(Kind::Blocks | Kind::Biomes, 1..=8) | (Kind::Cells, 1..=3) => bits,
 			_ => global,
 		}
 	}
 
 	fn indirect_limit(self) -> u8 {
 		match self {
-			Kind::Blocks => 8,
-			Kind::Biomes => 3,
+			Kind::Cells => 3,
+			Kind::Blocks | Kind::Biomes => 8,
 		}
+	}
+
+	fn global(self, f: Format) -> u8 {
+		bits_for(match self {
+			Kind::Blocks => f.block_states,
+			Kind::Cells | Kind::Biomes => f.biomes,
+		})
 	}
 }
 
@@ -62,10 +79,7 @@ fn bad(what: &str) -> Error {
 fn read_container(data: &[u8], at: &mut usize, kind: Kind, f: Format) -> Result<Vec<u32>> {
 	let bits = *data.get(*at).ok_or_else(|| bad("truncated"))?;
 	*at += 1;
-	let global = bits_for(match kind {
-		Kind::Blocks => f.block_states,
-		Kind::Biomes => f.biomes,
-	});
+	let global = kind.global(f);
 	let palette: Option<Vec<u32>> = if bits == 0 {
 		Some(vec![read_varint(data, at)? as u32])
 	} else if bits <= kind.indirect_limit() {
@@ -130,11 +144,7 @@ fn write_container(out: &mut Vec<u8>, values: &[u32], kind: Kind, f: Format) {
 			}
 		}
 	}
-	let global = bits_for(match kind {
-		Kind::Blocks => f.block_states,
-		Kind::Biomes => f.biomes,
-	})
-	.max(kind.indirect_limit() + 1);
+	let global = kind.global(f).max(kind.indirect_limit() + 1);
 	if palette.len() == 1 {
 		out.push(0);
 		write_varint(out, palette[0] as i32);
@@ -200,7 +210,7 @@ pub fn read_sections(data: &[u8], f: Format) -> Result<Vec<Section>> {
 			0
 		};
 		let blocks = read_container(data, &mut at, Kind::Blocks, f)?;
-		let biomes = read_container(data, &mut at, Kind::Biomes, f)?;
+		let biomes = read_container(data, &mut at, Kind::biomes(f), f)?;
 		out.push(Section {
 			count,
 			fluids,
@@ -219,7 +229,7 @@ pub fn write_sections(sections: &[Section], f: Format) -> Vec<u8> {
 			out.extend_from_slice(&s.fluids.to_be_bytes());
 		}
 		write_container(&mut out, &s.blocks, Kind::Blocks, f);
-		write_container(&mut out, &s.biomes, Kind::Biomes, f);
+		write_container(&mut out, &s.biomes, Kind::biomes(f), f);
 	}
 	out
 }
@@ -228,7 +238,7 @@ pub fn read_biomes(data: &[u8], f: Format) -> Result<Vec<Vec<u32>>> {
 	let mut at = 0;
 	let mut out = Vec::new();
 	while at < data.len() {
-		out.push(read_container(data, &mut at, Kind::Biomes, f)?);
+		out.push(read_container(data, &mut at, Kind::biomes(f), f)?);
 	}
 	Ok(out)
 }
@@ -236,7 +246,7 @@ pub fn read_biomes(data: &[u8], f: Format) -> Result<Vec<Vec<u32>>> {
 pub fn write_biomes(sections: &[Vec<u32>], f: Format) -> Vec<u8> {
 	let mut out = Vec::new();
 	for s in sections {
-		write_container(&mut out, s, Kind::Biomes, f);
+		write_container(&mut out, s, Kind::biomes(f), f);
 	}
 	out
 }
@@ -245,6 +255,7 @@ pub fn format(version: Version, biomes: u32) -> Format {
 	Format {
 		lengths: version == Version::V1_21_4,
 		fluids: version >= Version::V26_1,
+		block_biomes: version >= Version::V26_4_snapshot_10,
 		block_states: crate::registry::blocks(version).map_or(1, |b| b.states()),
 		biomes,
 	}
@@ -293,13 +304,17 @@ fn fluid_count(count: i16, blocks: &[u32], fluid: &dyn Fn(u32) -> bool) -> i16 {
 	}
 }
 
-pub fn fluid_count_26_1(count: i16, blocks: &[u32]) -> i16 {
+pub fn fluid_count_in(version: Version, count: i16, blocks: &[u32]) -> i16 {
 	fluid_count(count, blocks, &|s| {
-		fluid_states(Version::V26_1)
+		fluid_states(version)
 			.get(s as usize)
 			.copied()
 			.unwrap_or(false)
 	})
+}
+
+pub fn fluid_count_26_1(count: i16, blocks: &[u32]) -> i16 {
+	fluid_count_in(Version::V26_1, count, blocks)
 }
 
 pub fn step(from: Version, to: Version, data: &[u8], biomes: u32) -> Result<Vec<u8>> {
@@ -315,10 +330,20 @@ pub fn step(from: Version, to: Version, data: &[u8], biomes: u32) -> Result<Vec<
 }
 
 pub fn biomes_step(from: Version, to: Version, data: &[u8], biomes: u32) -> Result<Vec<u8>> {
-	Ok(write_biomes(
-		&read_biomes(data, format(from, biomes))?,
-		format(to, biomes),
-	))
+	let (from, to) = (format(from, biomes), format(to, biomes));
+	let sections: Vec<Vec<u32>> = read_biomes(data, from)?
+		.into_iter()
+		.map(|b| rescale(b, from, to))
+		.collect();
+	Ok(write_biomes(&sections, to))
+}
+
+fn rescale(biomes: Vec<u32>, from: Format, to: Format) -> Vec<u32> {
+	match (from.block_biomes, to.block_biomes) {
+		(false, true) => expand_cells(&biomes),
+		(true, false) => sample_cells(&biomes),
+		_ => biomes,
+	}
 }
 
 pub fn convert(
@@ -336,6 +361,7 @@ pub fn convert(
 		if let Some(fluid) = fluid {
 			s.fluids = fluid_count(s.count, &s.blocks, fluid);
 		}
+		s.biomes = rescale(std::mem::take(&mut s.biomes), from, to);
 	}
 	Ok(write_sections(&sections, to))
 }

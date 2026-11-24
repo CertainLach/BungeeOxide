@@ -115,4 +115,46 @@ impl Column {
 		}
 	}
 }
+
+fn cell_block(cell: usize, offset: usize) -> usize {
+	(cell >> 4 << 2 | offset >> 4) << 8
+		| (cell >> 2 & 3) << 6
+		| (offset >> 2 & 3) << 4
+		| (cell & 3) << 2
+		| (offset & 3)
+}
+
+pub fn expand_cells<T: Copy>(cells: &[T]) -> Vec<T> {
+	(0..BLOCKS)
+		.map(|i| cells[(i >> 10) << 4 | (i >> 6 & 3) << 2 | (i >> 2 & 3)])
+		.collect()
+}
+
+pub fn sample_cells<T: Copy + PartialEq>(blocks: &[T]) -> Vec<T> {
+	(0..CELLS)
+		.map(|c| {
+			let center = blocks[cell_block(c, 0b10_10_10)];
+			let mut counts: Vec<(T, usize)> = Vec::with_capacity(4);
+			for k in 0..CELLS {
+				let v = blocks[cell_block(c, k)];
+				match counts.iter_mut().find(|(x, _)| *x == v) {
+					Some((_, n)) => *n += 1,
+					None => counts.push((v, 1)),
+				}
+			}
+			let start = counts.iter().copied().find(|(x, _)| *x == center);
+			counts
+				.iter()
+				.copied()
+				.fold(start.unwrap_or((center, 0)), |best, c| {
+					if c.1 > best.1 {
+						c
+					} else {
+						best
+					}
+				})
+				.0
+		})
+		.collect()
+}
 use crate::gen::convert::Version;

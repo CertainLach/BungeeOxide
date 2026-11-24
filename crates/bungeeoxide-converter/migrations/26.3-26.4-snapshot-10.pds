@@ -1,0 +1,300 @@
+updated(Slot) {
+	updated(default) {
+		converted(itemId, up: custom(late_slot_item_up_26_4), down: custom(late_slot_item_down_26_3));
+		converted(addedComponentCount, down: custom(late_added_count_down_26_3));
+		converted(removedComponentCount, down: custom(late_removed_count_down_26_3));
+	};
+};
+
+updated(ItemStackTemplate) {
+	converted(itemId, up: custom(late_template_item_up_26_4), down: custom(late_template_item_down_26_3));
+	converted(addedComponentCount, down: custom(late_template_added_down_26_3));
+	converted(removedComponentCount, down: custom(late_template_removed_down_26_3));
+};
+
+updated(HashedSlot) {
+	converted(itemId, up: custom(late_hashed_item_up_26_4), down: custom(late_hashed_item_down_26_3));
+};
+
+updated(UntrustedSlot, up: custom(late_untrusted_up_26_4), down: custom(late_untrusted_down_26_3));
+
+updated(ItemSoundHolder, up: custom(late_sound_up_26_4), down: custom(late_sound_down_26_3));
+
+updated(ItemBlockPredicate) {
+	converted(blockSet, up: custom(late_predicate_up_26_4), down: custom(late_predicate_down_26_3));
+	converted(components, up: custom(late_matchers_up_26_4), down: custom(late_matchers_down_26_3));
+};
+
+updated(Particle) {
+	added(freezing, down: custom(late_particle_freezing_down_26_3));
+	removed(item_snowball, up: custom(late_particle_snowball_up_26_4));
+	converted(bubble_column_up, up: custom(late_particle_bubble_column_up_26_4), down: custom(late_particle_bubble_column_down_26_3));
+	converted(current_down, up: custom(late_particle_current_down_up_26_4), down: custom(late_particle_current_down_down_26_3));
+	converted(block, up: custom(late_particle_block_up_26_4), down: custom(late_particle_block_down_26_3));
+	converted(block_marker, up: custom(late_particle_marker_up_26_4), down: custom(late_particle_marker_down_26_3));
+	converted(falling_dust, up: custom(late_particle_dust_up_26_4), down: custom(late_particle_dust_down_26_3));
+	converted(dust_pillar, up: custom(late_particle_pillar_up_26_4), down: custom(late_particle_pillar_down_26_3));
+	converted(block_crumble, up: custom(late_particle_crumble_up_26_4), down: custom(late_particle_crumble_down_26_3));
+};
+
+updated(SlotComponent) {
+	added(dispense_behavior, down: drop);
+	updated(consumable) {
+		converted(sound, up: custom(late_consume_sound_up_26_4), down: custom(late_consume_sound_down_26_3));
+	};
+	updated(equippable) {
+		converted(allowedEntities, up: custom(late_equip_entities_up_26_4), down: custom(late_equip_entities_down_26_3));
+		converted(sound, up: custom(late_equip_sound_up_26_4), down: custom(late_equip_sound_down_26_3));
+		converted(shearingSound, up: custom(late_shearing_sound_up_26_4), down: custom(late_shearing_sound_down_26_3));
+	};
+	updated(tool) {
+		updated(rules) {
+			updated(items) {
+				converted(blocks, up: custom(late_tool_up_26_4), down: custom(late_tool_down_26_3));
+			};
+		};
+	};
+	converted(repairable, up: custom(late_repairable_up_26_4), down: custom(late_repairable_down_26_3));
+	updated(tooltip_display) {
+		converted(hiddenComponents, up: custom(late_hidden_up_26_4), down: custom(late_hidden_down_26_3));
+	};
+	updated(potion_contents) {
+		converted(potionId, down: custom(late_potion_down_26_3));
+	};
+	updated(suspicious_stew_effects) {
+		updated(items) {
+			converted(effect, down: custom(late_stew_effect_down_26_3));
+		};
+	};
+};
+
+updated(ItemPotionEffect) {
+	converted(id, down: custom(late_effect_down_26_3));
+};
+
+updated(ItemConsumeEffect) {
+	converted(remove_effects, down: custom(late_remove_effects_down_26_3));
+};
+
+updated(SlotComponentType) {
+	added(dispense_behavior, down: drop);
+};
+
+updated(DebugSubscriptionEvent) {
+	updated(EntityPaths) {
+		added(stuckCountdown, up: 0);
+	};
+};
+
+updated(DebugSubscriptionUpdate) {
+	updated(EntityPaths) {
+		updated(value) {
+			added(stuckCountdown, up: 0);
+		};
+	};
+};
+
+updated(command_node) {
+	updated(extraNodeData) {
+		updated(v2) {
+			updated(properties) {
+				removed(brigadier_string, up: custom(late_parser_string_up_26_4));
+				removed(minecraft_resource_key, up: custom(late_parser_resource_key_up_26_4));
+				removed(minecraft_resource_or_tag_key, up: custom(late_parser_resource_or_tag_key_up_26_4));
+				added(minecraft_word, down: custom(late_parser_word_down_26_3));
+				added(minecraft_quoted_string, down: custom(late_parser_quoted_down_26_3));
+				added(minecraft_greedy_string, down: custom(late_parser_greedy_down_26_3));
+				added(minecraft_pattern, down: custom(late_parser_pattern_down_26_3));
+				converted(minecraft_context_float_provider, up: custom(late_parser_float_provider_up_26_4), down: custom(late_parser_float_provider_down_26_3));
+				converted(minecraft_context_int_provider, up: custom(late_parser_int_provider_up_26_4), down: custom(late_parser_int_provider_down_26_3));
+				converted(minecraft_loot_modifier, up: custom(late_parser_loot_modifier_up_26_4), down: custom(late_parser_loot_modifier_down_26_3));
+				converted(minecraft_loot_predicate, up: custom(late_parser_loot_predicate_up_26_4), down: custom(late_parser_loot_predicate_down_26_3));
+				converted(minecraft_loot_table, up: custom(late_parser_loot_table_up_26_4), down: custom(late_parser_loot_table_down_26_3));
+				converted(minecraft_slot_source, up: custom(late_parser_slot_source_up_26_4), down: custom(late_parser_slot_source_down_26_3));
+				converted(minecraft_score_holder, up: custom(late_parser_score_holder_up_26_4), down: custom(late_parser_score_holder_down_26_3));
+				converted(minecraft_time, up: custom(late_parser_time_up_26_4), down: custom(late_parser_time_down_26_3));
+				converted(minecraft_vec2, up: custom(late_parser_vec2_up_26_4), down: custom(late_parser_vec2_down_26_3));
+				converted(minecraft_vec3, up: custom(late_parser_vec3_up_26_4), down: custom(late_parser_vec3_down_26_3));
+			};
+			updated(suggestionType) {
+				updated(v1, up: custom(late_suggestion_up_26_4), down: custom(late_suggestion_down_26_3));
+			};
+		};
+	};
+};
+
+updated(entityMetadataEntry) {
+	converted(key, up: custom(late_meta_key_up_26_4), down: custom(late_meta_key_down_26_3));
+	updated(value) {
+		converted(block_state, up: custom(late_meta_state_up_26_4), down: custom(late_meta_state_down_26_3));
+		converted(optional_block_state, up: custom(late_meta_optional_state_up_26_4), down: custom(late_meta_optional_state_down_26_3));
+	};
+};
+
+updated(packet_common_transfer) {
+	added(properties, up: custom(late_transfer_properties_up_26_4));
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet) {
+			removed(compress, up: custom(late_compress_up_26_4));
+			added(setup_compression, down: custom(late_setup_compression_down_26_3));
+			converted(success, down: custom(late_success_down_26_3));
+			removed(encryption_begin, up: unsupported);
+			added(key, down: unsupported);
+			added(apply_options, down: drop);
+		};
+
+		updated(packet_success) {
+			added(options, up: custom(late_success_options_up_26_4));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			added(options_applied, down: drop);
+		};
+
+		updated(packet_encryption_begin, up: unsupported, down: unsupported);
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			added(declare_commands, down: drop);
+			converted(registry_data, up: custom(late_registry_data_up_26_4), down: custom(late_registry_data_down_26_3));
+			converted(finish_configuration, up: custom(late_finish_configuration_up_26_4));
+			converted(tags, up: custom(late_config_tags_up_26_4), down: custom(late_config_tags_down_26_3));
+		};
+	};
+
+	namespace(toServer) {
+		updated(packet) {
+			converted(custom_payload, up: custom(late_config_payload_up_26_4));
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			converted(custom_payload, up: custom(late_play_payload_up_26_4));
+		};
+	};
+
+	namespace(toClient) {
+		updated(SlotDisplay) {
+			converted(item, up: custom(late_display_item_up_26_4), down: custom(late_display_item_down_26_3));
+		};
+
+		updated(SpawnInfo) {
+			removed(hashedSeed, down: 0);
+			removed(isDebug, down: false);
+		};
+
+		updated(packet) {
+			added(add_entity_motion, down: custom(late_entity_motion_down_26_3));
+			converted(explosion, up: custom(late_explosion_up_26_4), down: custom(late_explosion_down_26_3));
+			converted(rel_entity_move, up: custom(late_rel_move_up_26_4), down: custom(late_rel_move_down_26_3));
+			converted(entity_move_look, up: custom(late_move_look_up_26_4), down: custom(late_move_look_down_26_3));
+			converted(sync_entity_position, up: custom(late_sync_position_up_26_4), down: custom(late_sync_position_down_26_3));
+			converted(statistics, up: custom(late_statistics_up_26_4), down: custom(late_statistics_down_26_3));
+			converted(tags, up: custom(late_play_tags_up_26_4), down: custom(late_play_tags_down_26_3));
+			updated(chunk_biomes) {
+				updated(items) {
+					converted(data, up: custom(late_chunk_biomes_up_26_4), down: custom(late_chunk_biomes_down_26_3));
+				};
+			};
+		};
+
+		updated(packet_login) {
+			converted(entityId, up: custom(late_login_entity_up_26_4), down: custom(late_login_entity_down_26_3));
+		};
+
+		updated(packet_spawn_entity) {
+			converted(type, up: custom(late_spawn_type_up_26_4), down: custom(late_spawn_type_down_26_3));
+			converted(objectData, up: custom(late_object_data_up_26_4), down: custom(late_object_data_down_26_3));
+			converted(headPitch, up: custom(late_spawn_head_up_26_4));
+		};
+
+		updated(packet_entity_effect) {
+			converted(effectId, down: custom(late_entity_effect_down_26_3));
+		};
+
+		updated(packet_remove_entity_effect) {
+			converted(effectId, down: custom(late_remove_effect_down_26_3));
+		};
+
+		updated(packet_entity_head_rotation) {
+			converted(headYaw, up: custom(late_head_yaw_up_26_4));
+		};
+
+		updated(packet_entity_metadata) {
+			converted(entityId, up: custom(late_meta_entity_up_26_4), down: custom(late_meta_entity_down_26_3));
+		};
+
+		updated(packet_open_window) {
+			converted(inventoryType, up: custom(late_menu_up_26_4), down: custom(late_menu_down_26_3));
+		};
+
+		updated(packet_map_chunk) {
+			converted(chunkData, up: custom(late_chunk_up_26_4), down: custom(late_chunk_down_26_3));
+		};
+
+		updated(packet_block_change) {
+			converted(type, up: custom(late_block_change_up_26_4), down: custom(late_block_change_down_26_3));
+		};
+
+		updated(packet_multi_block_change) {
+			converted(records, up: custom(late_multi_block_up_26_4), down: custom(late_multi_block_down_26_3));
+		};
+
+		updated(packet_block_action) {
+			converted(blockId, up: custom(late_block_action_up_26_4), down: custom(late_block_action_down_26_3));
+		};
+
+		updated(packet_world_event) {
+			converted(data, up: custom(late_world_event_up_26_4), down: custom(late_world_event_down_26_3));
+		};
+
+		updated(packet_declare_recipes) {
+			updated(recipes) {
+				updated(items) {
+					converted(items, up: custom(late_recipe_items_up_26_4), down: custom(late_recipe_items_down_26_3));
+				};
+			};
+			updated(stoneCutterRecipes) {
+				updated(items) {
+					converted(input, up: custom(late_stonecutter_up_26_4), down: custom(late_stonecutter_down_26_3));
+				};
+			};
+		};
+
+		updated(packet_recipe_book_add) {
+			updated(entries) {
+				updated(items) {
+					updated(recipe) {
+						converted(craftingRequirements, up: custom(late_requirements_up_26_4), down: custom(late_requirements_down_26_3));
+					};
+				};
+			};
+		};
+
+		updated(packet_trade_list) {
+			updated(trades) {
+				updated(items) {
+					updated(inputItem1) {
+						converted(itemId, up: custom(late_trade1_up_26_4), down: custom(late_trade1_down_26_3));
+					};
+					updated(inputItem2) {
+						updated(value) {
+							converted(itemId, up: custom(late_trade2_up_26_4), down: custom(late_trade2_down_26_3));
+						};
+					};
+				};
+			};
+		};
+	};
+};

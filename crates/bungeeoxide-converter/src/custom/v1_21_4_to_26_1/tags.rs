@@ -30,6 +30,7 @@ fn known(to: Version, registry: &str) -> bool {
 		"decorated_pot_pattern" | "block_transformer" | "worldgen/block_state_provider" => {
 			Version::V26_3
 		}
+		"block_sound_set" | "dispense_behavior" => Version::V26_4_snapshot_10,
 		_ => return true,
 	};
 	to >= since

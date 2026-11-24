@@ -369,6 +369,9 @@ fn envelope(a: Version, b: Version, col: &mut Column, cx: &mut Session) {
 				l.trust = true;
 			}
 		}
+		(Version::V26_4_snapshot_10, Version::V26_3) => {
+			col.biome_bits = col.biome_bits.or_else(|| m::session_biome_bits(cx));
+		}
 		(Version::V1_21_4, Version::V1_21_5) => rename_heightmaps(col, true),
 		(Version::V1_21_5, Version::V1_21_4) => rename_heightmaps(col, false),
 		(Version::V1_9, Version::V1_8) => {

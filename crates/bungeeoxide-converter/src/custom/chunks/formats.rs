@@ -8,7 +8,9 @@ use flate2::write::ZlibEncoder;
 use flate2::Compression;
 
 use super::bits::{bits_for, long_count, pack, palette, put_longs, put_varint, unpack, Reader};
-use super::model::{Biomes, Column, Light, Nibbles, Section, BLOCKS, CELLS, NIBBLES};
+use super::model::{
+	expand_cells, sample_cells, Biomes, Column, Light, Nibbles, Section, BLOCKS, CELLS, NIBBLES,
+};
 use crate::pds::convert::{unconvertible, Error, Result};
 use crate::registry;
 
@@ -568,22 +570,54 @@ pub(super) fn encode_16(col: &Column, version: Version) -> (Vec<usize>, Vec<u8>)
 pub(super) struct Layout {
 	pub(super) lengths: bool,
 	pub(super) fluids: bool,
+	pub(super) block_biomes: bool,
 }
 
 pub(super) fn layout(version: Version) -> Layout {
 	Layout {
 		lengths: version <= Version::V1_21_4,
 		fluids: version >= Version::V26_1,
+		block_biomes: version >= Version::V26_4_snapshot_10,
+	}
+}
+
+#[derive(Clone, Copy)]
+enum Container {
+	Blocks,
+	Cells,
+	Biomes,
+}
+
+impl Container {
+	fn entries(self) -> usize {
+		match self {
+			Container::Cells => CELLS,
+			Container::Blocks | Container::Biomes => BLOCKS,
+		}
+	}
+
+	fn indirect(self) -> u32 {
+		match self {
+			Container::Cells => 3,
+			Container::Blocks | Container::Biomes => 8,
+		}
+	}
+
+	fn min_bits(self) -> u32 {
+		match self {
+			Container::Blocks => 4,
+			Container::Cells | Container::Biomes => 0,
+		}
 	}
 }
 
 fn read_container(
 	r: &mut Reader,
-	entries: usize,
-	blocks: bool,
+	kind: Container,
 	lengths: bool,
 	seen: &mut Option<u32>,
 ) -> Result<Vec<u32>> {
+	let entries = kind.entries();
 	let bits = r.u8()? as u32;
 	if bits == 0 {
 		let v = check(r.varint()? as u32)?;
@@ -593,8 +627,7 @@ fn read_container(
 		}
 		return Ok(vec![v; entries]);
 	}
-	let indirect = if blocks { 8 } else { 3 };
-	let palette = match bits <= indirect {
+	let palette = match bits <= kind.indirect() {
 		true => Some(
 			(0..r.varint()?.max(0))
 				.map(|_| r.varint().map(|v| v as u32))
@@ -608,10 +641,9 @@ fn read_container(
 	if bits > 32 {
 		return unconvertible(format!("paletted container with {bits} bits"));
 	}
-	let mut storage = if blocks && palette.is_some() {
-		bits.max(4)
-	} else {
-		bits
+	let mut storage = match palette {
+		Some(_) => bits.max(kind.min_bits()),
+		None => bits,
 	};
 	let n = if lengths {
 		let n = r.varint()?.max(0) as usize;
@@ -637,8 +669,8 @@ fn read_container(
 	}
 }
 
-fn write_container(out: &mut Vec<u8>, values: &[u32], blocks: bool, global: u32, lengths: bool) {
-	let indirect = if blocks { 8 } else { 3 };
+fn write_container(out: &mut Vec<u8>, values: &[u32], kind: Container, global: u32, lengths: bool) {
+	let indirect = kind.indirect();
 	match palette(values, 1 << indirect) {
 		Some(p) if p.values.len() == 1 => {
 			out.push(0);
@@ -648,11 +680,7 @@ fn write_container(out: &mut Vec<u8>, values: &[u32], blocks: bool, global: u32,
 			}
 		}
 		Some(p) => {
-			let bits = if blocks {
-				bits_for(p.values.len()).max(4)
-			} else {
-				bits_for(p.values.len())
-			};
+			let bits = bits_for(p.values.len()).max(kind.min_bits());
 			out.push(bits as u8);
 			put_varint(out, p.values.len() as i32);
 			for v in &p.values {
@@ -702,13 +730,18 @@ pub(super) fn decode_18(
 			r.i16()?;
 		}
 		single += usize::from(r.rest().first() == Some(&0));
-		let states = read_container(&mut r, BLOCKS, true, l.lengths, &mut None)?;
+		let states = read_container(&mut r, Container::Blocks, l.lengths, &mut None)?;
 		sections.push(Some(Section::new(states, Some(count))));
-		biomes.extend(
-			read_container(&mut r, CELLS, false, l.lengths, &mut seen)?
-				.into_iter()
-				.map(|b| b as i32),
-		);
+		let cells = match l.block_biomes {
+			true => sample_cells(&read_container(
+				&mut r,
+				Container::Biomes,
+				l.lengths,
+				&mut seen,
+			)?),
+			false => read_container(&mut r, Container::Cells, l.lengths, &mut seen)?,
+		};
+		biomes.extend(cells.into_iter().map(|b| b as i32));
 	}
 	col.sections = sections;
 	col.biomes = Biomes::Cells(biomes);
@@ -734,10 +767,16 @@ pub(super) fn encode_18(col: &Column, version: Version) -> Vec<u8> {
 		out.extend_from_slice(&count.to_be_bytes());
 		if l.fluids {
 			out.extend_from_slice(
-				&crate::custom::fluid_count_26_1(count, &section.states).to_be_bytes(),
+				&crate::custom::fluid_count_in(version, count, &section.states).to_be_bytes(),
 			);
 		}
-		write_container(&mut out, &section.states, true, global, l.lengths);
+		write_container(
+			&mut out,
+			&section.states,
+			Container::Blocks,
+			global,
+			l.lengths,
+		);
 		let biomes: Vec<u32> = (0..CELLS)
 			.map(|c| {
 				cells
@@ -748,7 +787,16 @@ pub(super) fn encode_18(col: &Column, version: Version) -> Vec<u8> {
 					.max(0) as u32
 			})
 			.collect();
-		write_container(&mut out, &biomes, false, biome_global, l.lengths);
+		match l.block_biomes {
+			true => write_container(
+				&mut out,
+				&expand_cells(&biomes),
+				Container::Biomes,
+				biome_global,
+				l.lengths,
+			),
+			false => write_container(&mut out, &biomes, Container::Cells, biome_global, l.lengths),
+		}
 	}
 	out
 }

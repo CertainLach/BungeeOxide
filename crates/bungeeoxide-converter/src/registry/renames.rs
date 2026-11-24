@@ -742,6 +742,59 @@ pub const BLOCKS: &[(Version, &str, &str)] = &[
 	),
 	(Version::V26_2, "red_concrete_slab", "cinnabar_brick_slab"),
 	(Version::V26_2, "black_concrete_slab", "blackstone_slab"),
+	(Version::V26_3, "brittle_ice", "ice"),
+	(Version::V26_3, "calcite_pillar", "calcite"),
+	(Version::V26_3, "calcite_slab", "diorite_slab"),
+	(Version::V26_3, "calcite_stairs", "diorite_stairs"),
+	(Version::V26_3, "calcite_wall", "diorite_wall"),
+	(Version::V26_3, "chiseled_packed_ice", "packed_ice"),
+	(Version::V26_3, "chiseled_soulshale", "chiseled_deepslate"),
+	(Version::V26_3, "ice_crystal", "amethyst_cluster"),
+	(Version::V26_3, "icicle", "pointed_dripstone"),
+	(Version::V26_3, "packed_ice_bricks", "packed_ice"),
+	(
+		Version::V26_3,
+		"packed_ice_brick_slab",
+		"prismarine_brick_slab",
+	),
+	(
+		Version::V26_3,
+		"packed_ice_brick_stairs",
+		"prismarine_brick_stairs",
+	),
+	(Version::V26_3, "packed_ice_brick_wall", "prismarine_wall"),
+	(Version::V26_3, "polished_calcite", "calcite"),
+	(Version::V26_3, "polished_calcite_bricks", "calcite"),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_slab",
+		"polished_diorite_slab",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_stairs",
+		"polished_diorite_stairs",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_wall",
+		"diorite_wall",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_slab",
+		"polished_diorite_slab",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_stairs",
+		"polished_diorite_stairs",
+	),
+	(Version::V26_3, "polished_calcite_wall", "diorite_wall"),
+	(Version::V26_3, "snow_bricks", "snow_block"),
+	(Version::V26_3, "snow_brick_slab", "smooth_quartz_slab"),
+	(Version::V26_3, "snow_brick_stairs", "smooth_quartz_stairs"),
+	(Version::V26_3, "snow_brick_wall", "diorite_wall"),
 ];
 
 pub const ITEMS: &[(Version, &str, &str)] = &[
@@ -1716,6 +1769,62 @@ pub const ITEMS: &[(Version, &str, &str)] = &[
 	(Version::V26_2, "desert_pyramid_map", "filled_map"),
 	(Version::V26_2, "abandoned_camp_map", "filled_map"),
 	(Version::V26_2, "warm_ocean_ruins_map", "filled_map"),
+	(Version::V26_3, "brittle_ice", "ice"),
+	(Version::V26_3, "calcite_pillar", "calcite"),
+	(Version::V26_3, "calcite_slab", "diorite_slab"),
+	(Version::V26_3, "calcite_stairs", "diorite_stairs"),
+	(Version::V26_3, "calcite_wall", "diorite_wall"),
+	(Version::V26_3, "chiseled_packed_ice", "packed_ice"),
+	(Version::V26_3, "chiseled_soulshale", "chiseled_deepslate"),
+	(Version::V26_3, "ice_crystal", "amethyst_cluster"),
+	(Version::V26_3, "icicle", "pointed_dripstone"),
+	(Version::V26_3, "packed_ice_bricks", "packed_ice"),
+	(
+		Version::V26_3,
+		"packed_ice_brick_slab",
+		"prismarine_brick_slab",
+	),
+	(
+		Version::V26_3,
+		"packed_ice_brick_stairs",
+		"prismarine_brick_stairs",
+	),
+	(Version::V26_3, "packed_ice_brick_wall", "prismarine_wall"),
+	(Version::V26_3, "polished_calcite", "calcite"),
+	(Version::V26_3, "polished_calcite_bricks", "calcite"),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_slab",
+		"polished_diorite_slab",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_stairs",
+		"polished_diorite_stairs",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_brick_wall",
+		"diorite_wall",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_slab",
+		"polished_diorite_slab",
+	),
+	(
+		Version::V26_3,
+		"polished_calcite_stairs",
+		"polished_diorite_stairs",
+	),
+	(Version::V26_3, "polished_calcite_wall", "diorite_wall"),
+	(Version::V26_3, "snow_bricks", "snow_block"),
+	(Version::V26_3, "snow_brick_slab", "smooth_quartz_slab"),
+	(Version::V26_3, "snow_brick_stairs", "smooth_quartz_stairs"),
+	(Version::V26_3, "snow_brick_wall", "diorite_wall"),
+	(Version::V26_3, "frostbite_spawn_egg", "stray_spawn_egg"),
+	(Version::V26_3, "ice_ball", "snowball"),
+	(Version::V26_3, "music_disc_flurry", "music_disc_13"),
 ];
 
 pub const ENTITIES: &[(Version, &str, &str)] = &[
@@ -1774,6 +1883,8 @@ pub const ENTITIES: &[(Version, &str, &str)] = &[
 	(Version::V26_1, "sulfur_cube", "slime"),
 	(Version::V26_2, "poplar_boat", "birch_boat"),
 	(Version::V26_2, "poplar_chest_boat", "birch_chest_boat"),
+	(Version::V26_3, "frostbite", "zombie"),
+	(Version::V26_3, "ice_ball", "snowball"),
 ];
 
 pub const OTHER: &[(Version, &str, &str)] = &[

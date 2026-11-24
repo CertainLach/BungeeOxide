@@ -143,7 +143,9 @@ macro_rules! exact_matchers {
 
 pub(crate) use exact_matchers;
 
-use crate::gen::convert::{v1_21_11, v1_21_5, v1_21_6, v1_21_8, v1_21_9, v26_1, v26_2, v26_3};
+use crate::gen::convert::{
+	v1_21_11, v1_21_5, v1_21_6, v1_21_8, v1_21_9, v26_1, v26_2, v26_3, v26_4_snapshot_10,
+};
 
 untrusted!(v1_21_5, late_to_slot_1_21_5, late_to_untrusted_1_21_5);
 untrusted!(v1_21_6, late_to_slot_1_21_6, late_to_untrusted_1_21_6);
@@ -153,3 +155,4 @@ untrusted!(v1_21_11, late_to_slot_1_21_11, late_to_untrusted_1_21_11);
 untrusted!(v26_1, late_to_slot_26_1, late_to_untrusted_26_1);
 untrusted!(v26_2, late_to_slot_26_2, late_to_untrusted_26_2);
 untrusted!(v26_3, late_to_slot_26_3, late_to_untrusted_26_3);
+untrusted!(v26_4_snapshot_10, late_to_slot_26_4, late_to_untrusted_26_4);

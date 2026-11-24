@@ -21,6 +21,9 @@ mod s1_21_9;
 mod s26_1;
 mod s26_2;
 mod s26_3;
+mod s26_4;
+mod s26_4_chunks;
+mod s26_4_commands;
 
 pub use chunk::fluid_count_26_1;
 pub use s1_21_11::*;
@@ -31,3 +34,6 @@ pub use s1_21_9::*;
 pub use s26_1::*;
 pub use s26_2::*;
 pub use s26_3::*;
+pub use s26_4::*;
+pub use s26_4_chunks::*;
+pub use s26_4_commands::*;
