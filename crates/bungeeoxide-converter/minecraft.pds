@@ -1,4 +1,4 @@
-@!doc "Minecraft protocol types of versions 1.0.1 to 26.3"
+@!doc "Minecraft protocol types of versions 1.0.1 to 26.4-snapshot-10"
 @!deduplicate true
 
 package(v1_0_1) {
@@ -355,6 +355,12 @@ package(v26_3) {
 	include("pds/26.3.pds");
 };
 
+package(v26_4_snapshot_10) {
+	@!doc "Minecraft 26.4-snapshot-10 protocol types"
+
+	include("pds/26.4-snapshot-10.pds");
+};
+
 package(convert) {
 	migrations(virtual: true) {
 		version(v1_0_1, name: "1.0.1");
@@ -589,6 +595,10 @@ package(convert) {
 
 		version(v26_3, name: "26.3") {
 			include("migrations/26.2-26.3.pds");
+		};
+
+		version(v26_4_snapshot_10, name: "26.4-snapshot-10") {
+			include("migrations/26.3-26.4-snapshot-10.pds");
 		};
 
 		every {
