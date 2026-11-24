@@ -178,7 +178,10 @@ fn configuration_adds_required_registries() {
 		panic!()
 	};
 	let music = effects.iter().find(|e| e.name == "music").unwrap();
-	assert_eq!(music.r#type, 9, "1.21.4 music is a weighted list");
+	assert!(
+		matches!(music.value, bungeeoxide_nbt::gen::payload::Ty::List(_)),
+		"1.21.4 music is a weighted list"
+	);
 	let again = config(
 		&P::FinishConfiguration(a::configuration_to_client_packet_finish_configuration::Ty {}),
 		&mut cx,
