@@ -57,9 +57,9 @@ def_native(buffer) {
 
 def(chunkBlockEntity) => container {
 	field(ANON) => bitfield {
-		field(x, signed: false, size: 4);
+		field(x, size: 4, signed: false);
 
-		field(z, signed: false, size: 4);
+		field(z, size: 4, signed: false);
 	};
 
 	field(y) => i16;
@@ -71,15 +71,15 @@ def(chunkBlockEntity) => container {
 
 def(command_node) => container {
 	field(flags) => bitfield {
-		field(unused, signed: false, size: 3);
+		field(unused, size: 3, signed: false);
 
-		field(has_custom_suggestions, signed: false, size: 1);
+		field(has_custom_suggestions, size: 1, signed: false);
 
-		field(has_redirect_node, signed: false, size: 1);
+		field(has_redirect_node, size: 1, signed: false);
 
-		field(has_command, signed: false, size: 1);
+		field(has_command, size: 1, signed: false);
 
-		field(command_node_type, signed: false, size: 2);
+		field(command_node_type, size: 2, signed: false);
 	};
 
 	field(children) => array(Count: varint) => varint;
@@ -103,11 +103,11 @@ def(command_node) => container {
 
 				variant(brigadier_float, match: 1) => container {
 					field(flags) => bitfield {
-						field(unused, signed: false, size: 6);
+						field(unused, size: 6, signed: false);
 
-						field(max_present, signed: false, size: 1);
+						field(max_present, size: 1, signed: false);
 
-						field(min_present, signed: false, size: 1);
+						field(min_present, size: 1, signed: false);
 					};
 
 					field(min) => union(tag: ../flags/min_present) {
@@ -145,11 +145,11 @@ def(command_node) => container {
 
 				variant(brigadier_double, match: 2) => container {
 					field(flags) => bitfield {
-						field(unused, signed: false, size: 6);
+						field(unused, size: 6, signed: false);
 
-						field(max_present, signed: false, size: 1);
+						field(max_present, size: 1, signed: false);
 
-						field(min_present, signed: false, size: 1);
+						field(min_present, size: 1, signed: false);
 					};
 
 					field(min) => union(tag: ../flags/min_present) {
@@ -184,18 +184,18 @@ def(command_node) => container {
 				variant(minecraft_scoreboard_slot, match: 28) => void;
 
 				variant(minecraft_score_holder, match: 29) => bitfield {
-					field(unused, signed: false, size: 7);
+					field(unused, size: 7, signed: false);
 
-					field(allowMultiple, signed: false, size: 1);
+					field(allowMultiple, size: 1, signed: false);
 				};
 
 				variant(brigadier_integer, match: 3) => container {
 					field(flags) => bitfield {
-						field(unused, signed: false, size: 6);
+						field(unused, size: 6, signed: false);
 
-						field(max_present, signed: false, size: 1);
+						field(max_present, size: 1, signed: false);
 
-						field(min_present, signed: false, size: 1);
+						field(min_present, size: 1, signed: false);
 					};
 
 					field(min) => union(tag: ../flags/min_present) {
@@ -233,11 +233,11 @@ def(command_node) => container {
 
 				variant(brigadier_long, match: 4) => container {
 					field(flags) => bitfield {
-						field(unused, signed: false, size: 6);
+						field(unused, size: 6, signed: false);
 
-						field(max_present, signed: false, size: 1);
+						field(max_present, size: 1, signed: false);
 
-						field(min_present, signed: false, size: 1);
+						field(min_present, size: 1, signed: false);
 					};
 
 					field(min) => union(tag: ../flags/min_present) {
@@ -280,11 +280,11 @@ def(command_node) => container {
 				};
 
 				variant(minecraft_entity, match: 6) => bitfield {
-					field(unused, signed: false, size: 6);
+					field(unused, size: 6, signed: false);
 
-					field(onlyAllowPlayers, signed: false, size: 1);
+					field(onlyAllowPlayers, size: 1, signed: false);
 
-					field(onlyAllowEntities, signed: false, size: 1);
+					field(onlyAllowEntities, size: 1, signed: false);
 				};
 
 				variant(minecraft_game_profile, match: 7) => void;
@@ -517,11 +517,11 @@ def(particleData) {
 };
 
 def(position) => bitfield {
-	field(x, signed: true, size: 26);
+	field(x, size: 26, signed: true);
 
-	field(z, signed: true, size: 26);
+	field(z, size: 26, signed: true);
 
-	field(y, signed: true, size: 12);
+	field(y, size: 12, signed: true);
 };
 
 @specializer pstring
@@ -978,13 +978,13 @@ namespace(play) {
 						field(frameType) => varint;
 
 						field(flags) => bitfield {
-							field(_unused, signed: false, size: 29);
+							field(_unused, size: 29, signed: false);
 
-							field(hidden, signed: false, size: 1);
+							field(hidden, size: 1, signed: false);
 
-							field(show_toast, signed: false, size: 1);
+							field(show_toast, size: 1, signed: false);
 
-							field(has_background_texture, signed: false, size: 1);
+							field(has_background_texture, size: 1, signed: false);
 						};
 
 						field(backgroundTexture) => union(tag: ../flags/has_background_texture) {
@@ -1180,85 +1180,85 @@ namespace(play) {
 
 				variant(
 					minecraft_crafting_special_armordye,
-					match: "minecraft:crafting_special_armordye"
+					match: "minecraft:crafting_special_armordye",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_banneraddpattern,
-					match: "minecraft:crafting_special_banneraddpattern"
+					match: "minecraft:crafting_special_banneraddpattern",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_bannerduplicate,
-					match: "minecraft:crafting_special_bannerduplicate"
+					match: "minecraft:crafting_special_bannerduplicate",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_bookcloning,
-					match: "minecraft:crafting_special_bookcloning"
+					match: "minecraft:crafting_special_bookcloning",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_firework_rocket,
-					match: "minecraft:crafting_special_firework_rocket"
+					match: "minecraft:crafting_special_firework_rocket",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_firework_star,
-					match: "minecraft:crafting_special_firework_star"
+					match: "minecraft:crafting_special_firework_star",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_firework_star_fade,
-					match: "minecraft:crafting_special_firework_star_fade"
+					match: "minecraft:crafting_special_firework_star_fade",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_mapcloning,
-					match: "minecraft:crafting_special_mapcloning"
+					match: "minecraft:crafting_special_mapcloning",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_mapextending,
-					match: "minecraft:crafting_special_mapextending"
+					match: "minecraft:crafting_special_mapextending",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_repairitem,
-					match: "minecraft:crafting_special_repairitem"
+					match: "minecraft:crafting_special_repairitem",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_shielddecoration,
-					match: "minecraft:crafting_special_shielddecoration"
+					match: "minecraft:crafting_special_shielddecoration",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_shulkerboxcoloring,
-					match: "minecraft:crafting_special_shulkerboxcoloring"
+					match: "minecraft:crafting_special_shulkerboxcoloring",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_suspiciousstew,
-					match: "minecraft:crafting_special_suspiciousstew"
+					match: "minecraft:crafting_special_suspiciousstew",
 				)
 				=> void;
 
 				variant(
 					minecraft_crafting_special_tippedarrow,
-					match: "minecraft:crafting_special_tippedarrow"
+					match: "minecraft:crafting_special_tippedarrow",
 				)
 				=> void;
 
@@ -1644,11 +1644,11 @@ namespace(play) {
 
 		def(packet_multi_block_change) => container {
 			field(chunkCoordinates) => bitfield {
-				field(x, signed: true, size: 22);
+				field(x, size: 22, signed: true);
 
-				field(z, signed: true, size: 22);
+				field(z, size: 22, signed: true);
 
-				field(y, signed: true, size: 20);
+				field(y, size: 20, signed: true);
 			};
 
 			field(notTrustEdges) => bool;

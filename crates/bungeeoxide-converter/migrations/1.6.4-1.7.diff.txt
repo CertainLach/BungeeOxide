@@ -76,8 +76,6 @@
 ~ play::toClient::packet_map [FieldsRemoved, FieldsRetypedScalar]
     -itemType: field() => i16;
     ~itemDamage: field() => i16; -> field() => varint;
-~ play::toClient::packet_multi_block_change [FieldsRetypedNested]
-    ~records: nested change
 ~ play::toClient::packet_named_entity_spawn [FieldsAdded, FieldsRetypedScalar]
     +playerUUID: field() => string;
     +data: field() => array(Count: varint) => container { field(name) => string; field(value) => string; field(signature) => string; };
@@ -127,10 +125,6 @@
 = play::toServer::packet_custom_payload (references changed)
 ~ play::toServer::packet_entity_action [FieldsRetypedNested]
     ~actionId: nested change
-~ play::toServer::packet_position [FieldsReordered]
-    fields reordered
-~ play::toServer::packet_position_look [FieldsReordered]
-    fields reordered
 ~ play::toServer::packet_settings [FieldsAdded]
     +chatColors: field() => bool;
 = play::toServer::packet_tab_complete (references changed)

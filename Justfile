@@ -11,7 +11,7 @@ nbt:
 mcdata := "target/minecraft-data"
 
 minecraft-data-fetch *protocols:
-	deno run --allow-net=raw.githubusercontent.com --allow-read={{mcdata}},crates/bungeeoxide-converter/patches,scripts --allow-write={{mcdata}} scripts/minecraft-data.ts {{mcdata}} --commit "$(< crates/bungeeoxide-converter/minecraft-data.commit)" --patches crates/bungeeoxide-converter/patches {{protocols}}
+	deno run --allow-net=raw.githubusercontent.com --allow-read={{mcdata}},crates/bungeeoxide-converter/patches,crates/bungeeoxide-converter/minecraft-data.pins,scripts --allow-write={{mcdata}} scripts/minecraft-data.ts {{mcdata}} --commit "$(< crates/bungeeoxide-converter/minecraft-data.commit)" --patches crates/bungeeoxide-converter/patches --pins crates/bungeeoxide-converter/minecraft-data.pins {{protocols}}
 
 converter: nbt
 	just -f crates/bungeeoxide-converter/Justfile gen

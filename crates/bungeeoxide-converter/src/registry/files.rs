@@ -941,6 +941,64 @@ pub const FILES: &[(&str, &str)] = &[
 		include_str!("../../data/26.1/sounds.txt"),
 	),
 	(
+		"26.2/biomes.txt",
+		include_str!("../../data/26.2/biomes.txt"),
+	),
+	(
+		"26.2/blocks.txt",
+		include_str!("../../data/26.2/blocks.txt"),
+	),
+	(
+		"26.2/entities.txt",
+		include_str!("../../data/26.2/entities.txt"),
+	),
+	("26.2/items.txt", include_str!("../../data/26.2/items.txt")),
+	(
+		"26.2/loginPacket.json",
+		include_str!("../../data/26.2/loginPacket.json"),
+	),
+	(
+		"26.2/particles.txt",
+		include_str!("../../data/26.2/particles.txt"),
+	),
+	(
+		"26.2/sounds.txt",
+		include_str!("../../data/26.2/sounds.txt"),
+	),
+	(
+		"26.3/biomes.txt",
+		include_str!("../../data/26.3/biomes.txt"),
+	),
+	(
+		"26.3/blocks.txt",
+		include_str!("../../data/26.3/blocks.txt"),
+	),
+	(
+		"26.3/effects.txt",
+		include_str!("../../data/26.3/effects.txt"),
+	),
+	(
+		"26.3/enchantments.txt",
+		include_str!("../../data/26.3/enchantments.txt"),
+	),
+	(
+		"26.3/entities.txt",
+		include_str!("../../data/26.3/entities.txt"),
+	),
+	("26.3/items.txt", include_str!("../../data/26.3/items.txt")),
+	(
+		"26.3/loginPacket.json",
+		include_str!("../../data/26.3/loginPacket.json"),
+	),
+	(
+		"26.3/particles.txt",
+		include_str!("../../data/26.3/particles.txt"),
+	),
+	(
+		"26.3/sounds.txt",
+		include_str!("../../data/26.3/sounds.txt"),
+	),
+	(
 		"data-versions.tsv",
 		include_str!("../../data/data-versions.tsv"),
 	),

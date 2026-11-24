@@ -1,4 +1,4 @@
-import { Source } from "./mcdata.ts";
+import { readPins, Source } from "./mcdata.ts";
 
 const args = [...Deno.args];
 const option = (name: string) => {
@@ -7,12 +7,15 @@ const option = (name: string) => {
 };
 const commit = option("--commit");
 const patches = option("--patches");
+const pins = await readPins(option("--pins"));
 const [mcdata, out, ...versions] = args;
 if (!mcdata || !out || !commit) {
-	throw new Error("usage: minecraft-languages.ts <minecraft-data cache> <out dir> --commit <sha> [--patches <dir>] <version>...");
+	throw new Error(
+		"usage: minecraft-languages.ts <minecraft-data cache> <out dir> --commit <sha> [--patches <dir>] [--pins <file>] <version>...",
+	);
 }
 
-const source = await Source.open(mcdata, commit, patches);
+const source = await Source.open(mcdata, commit, patches, pins);
 const dataPaths = ((await source.json("dataPaths.json")) as { pc: Record<string, Record<string, string>> }).pc;
 
 await Deno.mkdir(out, { recursive: true });

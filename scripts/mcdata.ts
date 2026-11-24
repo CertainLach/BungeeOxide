@@ -19,10 +19,24 @@ export async function latestCommit(): Promise<string> {
 	return (await res.text()).trim();
 }
 
-export class Source {
-	constructor(readonly cache: string, readonly commit: string, readonly patches?: string) {}
+export type Pin = { prefix: string; commit: string };
 
-	static async open(cache: string, commit: string, patches?: string): Promise<Source> {
+export async function readPins(file: string | undefined): Promise<Pin[]> {
+	if (!file) return [];
+	return (await Deno.readTextFile(file))
+		.split("\n")
+		.filter((l) => l.trim())
+		.map((l) => {
+			const [prefix, commit] = l.split("\t");
+			if (!prefix || !/^[0-9a-f]{40}$/.test(commit ?? "")) throw new Error(`${file}: bad pin ${JSON.stringify(l)}`);
+			return { prefix, commit };
+		});
+}
+
+export class Source {
+	constructor(readonly cache: string, readonly commit: string, readonly patches?: string, readonly pins: Pin[] = []) {}
+
+	static async open(cache: string, commit: string, patches?: string, pins: Pin[] = []): Promise<Source> {
 		await Deno.mkdir(cache, { recursive: true });
 		const previous = (await exists(`${cache}/commit`)) ? (await Deno.readTextFile(`${cache}/commit`)).trim() : undefined;
 		if (previous !== commit) {
@@ -32,13 +46,15 @@ export class Source {
 			await Deno.writeTextFile(`${cache}/commit`, `${commit}\n`);
 			if (previous) console.error(`minecraft-data moved ${previous} -> ${commit}`);
 		}
-		return new Source(cache, commit, patches);
+		return new Source(cache, commit, patches, pins);
 	}
 
 	async rawText(path: string): Promise<string | undefined> {
-		const file = `${this.cache}/${path}`;
+		const pin = this.pins.find((p) => path.startsWith(`${p.prefix}/`));
+		const commit = pin?.commit ?? this.commit;
+		const file = pin ? `${this.cache}/pinned/${commit}/${path}` : `${this.cache}/${path}`;
 		if (!(await exists(file))) {
-			const res = await fetch(`https://raw.githubusercontent.com/${repo}/${this.commit}/data/${path}`);
+			const res = await fetch(`https://raw.githubusercontent.com/${repo}/${commit}/data/${path}`);
 			if (res.status === 404) {
 				await res.body?.cancel();
 				return undefined;
@@ -46,7 +62,7 @@ export class Source {
 			if (!res.ok) throw new Error(`${path}: ${res.status}`);
 			await Deno.mkdir(file.slice(0, file.lastIndexOf("/")), { recursive: true });
 			await Deno.writeTextFile(file, await res.text());
-			console.error(`fetched ${path}`);
+			console.error(pin ? `fetched ${path} at ${commit}` : `fetched ${path}`);
 		}
 		return await Deno.readTextFile(file);
 	}

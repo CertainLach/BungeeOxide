@@ -1,4 +1,4 @@
-import { latestCommit, Source } from "./mcdata.ts";
+import { latestCommit, readPins, Source } from "./mcdata.ts";
 
 const args = [...Deno.args];
 const out = args.shift();
@@ -10,14 +10,19 @@ const flag = (name: string) => {
 	const i = args.indexOf(name);
 	return i >= 0 && args.splice(i, 1).length > 0;
 };
-if (!out) throw new Error("usage: minecraft-data.ts <out> [--commit <sha> | --latest] [--patches <dir>] [--releases] [pc/<version>...]");
+if (!out) {
+	throw new Error(
+		"usage: minecraft-data.ts <out> [--commit <sha> | --latest] [--patches <dir>] [--pins <file>] [--releases] [pc/<version>...]",
+	);
+}
 const commit = option("--commit") ?? (flag("--latest") ? await latestCommit() : undefined);
 if (!commit) throw new Error("pass --commit <sha> or --latest");
 const patches = option("--patches");
+const pins = await readPins(option("--pins"));
 const releases = flag("--releases");
 const only = args;
 
-const source = await Source.open(out, commit, patches);
+const source = await Source.open(out, commit, patches, pins);
 
 type Paths = Record<string, Record<string, string>>;
 type Protocol = { minecraftVersion: string; version: number; usesNetty: boolean; majorVersion: string };

@@ -74,9 +74,9 @@ def_native(container) {
 
 def(entityMetadata) => entityMetadataLoop(end: u8(127)) => container {
 	field(ANON) => bitfield {
-		field(type, signed: false, size: 3);
+		field(type, size: 3, signed: false);
 
-		field(key, signed: false, size: 5);
+		field(key, size: 5, signed: false);
 	};
 
 	field(value) => entityMetadataItem(compareTo: ../ANON/type);

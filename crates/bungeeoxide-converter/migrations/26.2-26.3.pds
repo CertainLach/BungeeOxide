@@ -1,0 +1,217 @@
+updated(ItemBlockProperty) {
+	updated(value) {
+		updated(false) {
+			updated(minValue, up: unsupported, down: unsupported);
+			updated(maxValue, up: unsupported, down: unsupported);
+		};
+	};
+};
+
+updated(Particle) {
+	added(orange_poplar_leaves, down: unsupported);
+	added(red_poplar_leaves, down: unsupported);
+	removed(trial_spawner_detected_player, up: unsupported);
+	removed(trial_spawner_detected_player_ominous, up: unsupported);
+	added(trial_spawner_detection, down: unsupported);
+	added(trial_spawner_detection_ominous, down: unsupported);
+	added(yellow_poplar_leaves, down: unsupported);
+	updated(geyser_plume, up: unsupported, down: unsupported);
+};
+
+updated(SlotComponent) {
+	added(attack_animation, down: unsupported);
+	added(block_transformer, down: unsupported);
+	added(brewing_fuel, down: unsupported);
+	added(compostable, down: unsupported);
+	added(cooking_fuel, down: unsupported);
+	added(cushion_color, down: unsupported);
+	added(interact_animation, down: unsupported);
+	removed(map_color, up: unsupported);
+	added(mob_visibility, down: unsupported);
+	added(provides_pottery_pattern, down: unsupported);
+	added(sign_text_back, down: unsupported);
+	added(sign_text_front, down: unsupported);
+	removed(swing_animation, up: unsupported);
+	added(villager_food, down: unsupported);
+	added(waxed, down: unsupported);
+	updated(pot_decorations, up: unsupported, down: unsupported);
+};
+
+updated(SlotComponentType) {
+	added(attack_animation, down: unsupported);
+	added(block_transformer, down: unsupported);
+	added(brewing_fuel, down: unsupported);
+	added(compostable, down: unsupported);
+	added(cooking_fuel, down: unsupported);
+	added(cushion_color, down: unsupported);
+	added(interact_animation, down: unsupported);
+	removed(map_color, up: unsupported);
+	added(mob_visibility, down: unsupported);
+	added(provides_pottery_pattern, down: unsupported);
+	added(sign_text_back, down: unsupported);
+	added(sign_text_front, down: unsupported);
+	removed(swing_animation, up: unsupported);
+	added(villager_food, down: unsupported);
+	added(waxed, down: unsupported);
+};
+
+updated(command_node) {
+	updated(extraNodeData) {
+		updated(v2) {
+			updated(properties) {
+				added(minecraft_context_float_provider, down: unsupported);
+				added(minecraft_context_int_provider, down: unsupported);
+				added(minecraft_feature, down: unsupported);
+				added(minecraft_slot_source, down: unsupported);
+				added(minecraft_swing_animation, down: unsupported);
+			};
+		};
+	};
+};
+
+namespace(configuration) {
+	namespace(toClient) {
+		updated(packet) {
+			added(post_effects, down: drop);
+		};
+	};
+};
+
+updated(entityMetadataEntry) {
+	updated(value) {
+		added(dye_color, down: unsupported);
+		added(optional_living_entity_reference, down: unsupported);
+		removed(optional_uuid, up: unsupported);
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(SlotDisplay) {
+			updated(tag, up: unsupported, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet) {
+			added(add_transient_block, down: drop);
+			added(post_effects, down: drop);
+			added(swing_animation, down: drop);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_advancements) {
+			updated(advancementMapping) {
+				updated(items) {
+					added(x, up: unsupported);
+					added(y, up: unsupported);
+					updated(value) {
+						updated(displayData) {
+							updated(value) {
+								removed(xCord, down: unsupported);
+								removed(yCord, down: unsupported);
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_entity_move_look) {
+			removed(dX, down: unsupported);
+			removed(dY, down: unsupported);
+			removed(dZ, down: unsupported);
+			added(move, up: unsupported);
+			removed(onGround, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_explosion) {
+			added(playSound, up: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_map_chunk) {
+			updated(skyLightMask, up: unsupported, down: unsupported);
+			updated(blockLightMask, up: unsupported, down: unsupported);
+			updated(emptySkyLightMask, up: unsupported, down: unsupported);
+			updated(emptyBlockLightMask, up: unsupported, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_rel_entity_move) {
+			removed(dX, down: unsupported);
+			removed(dY, down: unsupported);
+			removed(dZ, down: unsupported);
+			added(move, up: unsupported);
+			removed(onGround, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_sync_entity_position) {
+			added(ANON, up: unsupported);
+			removed(dx, down: unsupported);
+			removed(dy, down: unsupported);
+			removed(dz, down: unsupported);
+			removed(x, down: unsupported);
+			removed(y, down: unsupported);
+			removed(z, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_world_particles) {
+			converted(amount);
+			added(randomizationType, up: unsupported);
+			removed(velocityOffset, down: unsupported);
+			added(xMaxSpeed, up: unsupported);
+			added(yMaxSpeed, up: unsupported);
+			added(zMaxSpeed, up: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			removed(arm_animation, up: drop);
+			added(punch, down: drop);
+			updated(spectator_action, up: unsupported, down: unsupported);
+			updated(teleport_confirm, up: unsupported, down: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_update_light) {
+			updated(skyLightMask, up: unsupported, down: unsupported);
+			updated(blockLightMask, up: unsupported, down: unsupported);
+			updated(emptySkyLightMask, up: unsupported, down: unsupported);
+			updated(emptyBlockLightMask, up: unsupported, down: unsupported);
+		};
+	};
+};

@@ -19,7 +19,7 @@
     ~compressedChunkData: nested change
 ~ play::toClient::packet_multi_block_change [FieldsAdded, FieldsRemoved, FieldsRetypedScalar]
     +dataLength: field() => i32;
-    +records: field() => array(count: ../recordCount) => container { field(ANON_1) => bitfield { field(x, signed: false, size: 4); field(z, signed: false, size: 4); }; field(y) => u8; field(ANON) => bitfield { field(blockId, signed: false, size: 12); field(metadata, signed: false, size: 4); }; };
+    +records: field() => array(count: ../recordCount) => container { field(horizontalPos) => u8; field(y) => u8; field(blockId) => u16; };
     -coordinates: field() => array(count: ../recordCount) => bitfield { field(x, signed: false, size: 4); field(z, signed: false, size: 4); field(y, signed: false, size: 8); };
     -blockIds: field() => array(count: ../recordCount) => u8;
     -metadata: field() => array(count: ../recordCount) => u8;

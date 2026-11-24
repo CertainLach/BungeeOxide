@@ -1,0 +1,144 @@
++ ContextProviderHolder
++ configuration::toClient::packet_post_effects
++ entityDelta
++ play::toClient::packet_add_transient_block
++ play::toClient::packet_post_effects
++ play::toClient::packet_swing_animation
++ play::toServer::packet_punch
+- play::toServer::packet_arm_animation
+= DataComponentMatchers (references changed)
+= ExactComponentMatcher (references changed)
+= HashedSlot (references changed)
+= ItemBlockPredicate (references changed)
+~ ItemBlockProperty [FieldsRetypedNested]
+    ~value: nested change
+= ItemStackTemplate (references changed)
+~ Particle [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    ~geyser_plume
+    +trial_spawner_detection
+    +trial_spawner_detection_ominous
+    +red_poplar_leaves
+    +orange_poplar_leaves
+    +yellow_poplar_leaves
+    -trial_spawner_detected_player
+    -trial_spawner_detected_player_ominous
+    80 arms renumbered
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    +provides_pottery_pattern
+    +sign_text_front
+    +sign_text_back
+    +waxed
+    +cushion_color
+    +attack_animation
+    +interact_animation
+    +block_transformer
+    +villager_food
+    ~pot_decorations
+    +compostable
+    +cooking_fuel
+    +brewing_fuel
+    +mob_visibility
+    -swing_animation
+    -map_color
+    69 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded, ArmsRemoved]
+    +provides_pottery_pattern
+    +sign_text_front
+    +sign_text_back
+    +waxed
+    +cushion_color
+    +attack_animation
+    +interact_animation
+    +block_transformer
+    +villager_food
+    +compostable
+    +cooking_fuel
+    +brewing_fuel
+    +mob_visibility
+    -swing_animation
+    -map_color
+    69 arms renumbered
+= UntrustedSlot (references changed)
+= UntrustedSlotComponent (references changed)
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+~ configuration::toClient::packet [Renumbered, ArmsAdded]
+    +post_effects
+    10 arms renumbered
+= entityMetadata (references changed)
+~ entityMetadataEntry [FieldsRetypedNested]
+    ~value: nested change
+= ingredient (references changed)
+= play::toClient::ExplosionParticleEntry (references changed)
+= play::toClient::ExplosionParticleInfo (references changed)
+= play::toClient::RecipeDisplay (references changed)
+~ play::toClient::SlotDisplay [ArmsChanged]
+    ~tag
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +add_transient_block
+    +post_effects
+    +swing_animation
+    104 arms renumbered
+~ play::toClient::packet_advancements [FieldsRetypedNested]
+    ~advancementMapping: nested change
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_declare_commands (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_move_look [FieldsAdded, FieldsRemoved]
+    +move: field() => entityDelta;
+    -dX: field() => i16;
+    -dY: field() => i16;
+    -dZ: field() => i16;
+    -onGround: field() => bool;
+~ play::toClient::packet_explosion [FieldsAdded]
+    +playSound: field() => bool;
+~ play::toClient::packet_map_chunk [FieldsRetypedNested]
+    ~skyLightMask: nested change
+    ~blockLightMask: nested change
+    ~emptySkyLightMask: nested change
+    ~emptyBlockLightMask: nested change
+= play::toClient::packet_recipe_book_add (references changed)
+~ play::toClient::packet_rel_entity_move [FieldsAdded, FieldsRemoved]
+    +move: field() => entityDelta;
+    -dX: field() => i16;
+    -dY: field() => i16;
+    -dZ: field() => i16;
+    -onGround: field() => bool;
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_sync_entity_position [FieldsAdded, FieldsRemoved]
+    +ANON: field() => union(Tag: varint) { variant(linear, match: 0) => container { field(x) => f64; field(y) => f64; field(z) => f64; }; variant(stepped, match: 1) => array(Count: varint) => container { field(x) => f64; field(y) => f64; field(z) => f64; field(tickOffset) => varint; }; default; };
+    -x: field() => f64;
+    -y: field() => f64;
+    -z: field() => f64;
+    -dx: field() => f64;
+    -dy: field() => f64;
+    -dz: field() => f64;
+= play::toClient::packet_trade_list (references changed)
+~ play::toClient::packet_update_light [FieldsRetypedNested]
+    ~skyLightMask: nested change
+    ~blockLightMask: nested change
+    ~emptySkyLightMask: nested change
+    ~emptyBlockLightMask: nested change
+= play::toClient::packet_window_items (references changed)
+~ play::toClient::packet_world_particles [FieldsAdded, FieldsRenamed, FieldsRetypedScalar, FieldsReordered]
+    velocityOffset renamed to xMaxSpeed
+    +yMaxSpeed: field() => f32;
+    +zMaxSpeed: field() => f32;
+    +randomizationType: field() => union(Tag: varint) { variant(default, match: 0); variant(alternative, match: 1); variant(alternative_with_speed, match: 2); default; };
+    fields reordered
+    ~amount: field() => i32; -> field() => varint;
+~ play::toServer::packet [Renumbered, ArmsAdded, ArmsRemoved]
+    +punch
+    -arm_animation
+    17 arms renumbered
+= play::toServer::packet_set_creative_slot (references changed)
+~ play::toServer::packet_spectator_action [Other]
+~ play::toServer::packet_teleport_confirm [ShapeChanged]
+~ play::toServer::packet_update_sign [FieldsReordered]
+    fields reordered
+= play::toServer::packet_window_click (references changed)

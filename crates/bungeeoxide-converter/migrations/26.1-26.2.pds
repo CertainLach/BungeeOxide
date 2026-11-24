@@ -1,0 +1,173 @@
+updated(DataComponentMatchers) {
+	updated(partialMatchers) {
+		updated(items, up: unsupported, down: unsupported);
+	};
+};
+
+updated(Particle) {
+	added(geyser, down: unsupported);
+	added(geyser_base, down: unsupported);
+	added(geyser_plume, down: unsupported);
+	added(geyser_poof, down: unsupported);
+	added(noxious_gas, down: unsupported);
+	added(noxious_gas_cloud, down: unsupported);
+	added(sulfur_bubbles, down: unsupported);
+	added(sulfur_cube_goo, down: unsupported);
+};
+
+updated(SlotComponent) {
+	added(additional_trade_cost, down: unsupported);
+	added(cat_sound_variant, down: unsupported);
+	added(chicken_sound_variant, down: unsupported);
+	added(cow_sound_variant, down: unsupported);
+	added(dye, down: unsupported);
+	added(pig_sound_variant, down: unsupported);
+	added(sulfur_cube_content, down: unsupported);
+	updated(bees) {
+		updated(items) {
+			removed(type, down: unsupported);
+		};
+	};
+	updated(cat_collar, up: unsupported, down: unsupported);
+	updated(chicken_sound_variant, up: unsupported, down: unsupported);
+	updated(chicken_variant, up: unsupported, down: unsupported);
+	updated(container) {
+		updated(items, up: unsupported, down: unsupported);
+	};
+	updated(damage_resistant, up: unsupported, down: unsupported);
+	updated(damage_type, up: unsupported, down: unsupported) {
+		updated(true, up: unsupported, down: unsupported);
+	};
+	updated(instrument, up: unsupported, down: unsupported);
+	updated(jukebox_playable, up: unsupported, down: unsupported);
+	updated(provides_trim_material, up: unsupported, down: unsupported);
+	updated(use_remainder, up: unsupported, down: unsupported);
+	updated(zombie_nautilus_variant, up: unsupported, down: unsupported);
+	updated(blocks_attacks) {
+		updated(bypassedBy) {
+			updated(value, up: unsupported, down: unsupported);
+		};
+	};
+	updated(charged_projectiles) {
+		updated(items, up: unsupported, down: unsupported);
+	};
+	updated(sheep_color, up: unsupported, down: unsupported);
+	updated(bundle_contents) {
+		updated(items, up: unsupported, down: unsupported);
+	};
+	updated(provides_banner_patterns, up: unsupported, down: unsupported);
+	updated(shulker_color, up: unsupported, down: unsupported);
+	updated(base_color, up: unsupported, down: unsupported);
+	updated(wolf_collar, up: unsupported, down: unsupported);
+	updated(tropical_fish_base_color, up: unsupported, down: unsupported);
+	updated(tropical_fish_pattern_color, up: unsupported, down: unsupported);
+};
+
+updated(SlotComponentType) {
+	added(sulfur_cube_content, down: unsupported);
+};
+
+namespace(login) {
+	namespace(toClient) {
+		updated(packet_success) {
+			added(sessionId, up: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_entity_update_attributes) {
+			updated(properties) {
+				updated(items) {
+					updated(key) {
+						added(air_drag_modifier, down: unsupported);
+						added(below_name_distance, down: unsupported);
+						added(bounciness, down: unsupported);
+						added(friction_modifier, down: unsupported);
+						added(name_tag_distance, down: unsupported);
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_initialize_world_border) {
+			converted(speed);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_login) {
+			added(onlineMode, up: unsupported);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_move_minecart) {
+			updated(steps) {
+				updated(items) {
+					converted(pitch);
+					converted(yaw);
+					updated(position) {
+						converted(x);
+						converted(y);
+						converted(z);
+					};
+					updated(velocity) {
+						converted(x);
+						converted(y);
+						converted(z);
+					};
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_teams) {
+			updated(mode) {
+				updated(add) {
+					updated(formatting, up: unsupported, down: unsupported);
+				};
+				updated(change) {
+					updated(formatting, up: unsupported, down: unsupported);
+				};
+			};
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toClient) {
+		updated(packet_world_border_lerp_size) {
+			converted(speed);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet) {
+			removed(spectate_entity, up: drop);
+			added(spectator_action, down: drop);
+		};
+	};
+};
+
+namespace(play) {
+	namespace(toServer) {
+		updated(packet_update_structure_block) {
+			updated(flags, up: unsupported, down: unsupported);
+		};
+	};
+};

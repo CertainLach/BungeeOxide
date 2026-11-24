@@ -1,12 +1,12 @@
-import { Source } from "./mcdata.ts";
+import { readPins, Source } from "./mcdata.ts";
 
-const [mcdata, out, patches] = Deno.args;
-if (!mcdata || !out) throw new Error("usage: minecraft-registries.ts <minecraft-data cache> <out dir> [patches dir]");
+const [mcdata, out, patches, pinFile] = Deno.args;
+if (!mcdata || !out) throw new Error("usage: minecraft-registries.ts <minecraft-data cache> <out dir> [patches dir] [pins file]");
 
 const kinds = ["blocks", "items", "entities", "particles", "biomes", "effects", "enchantments", "sounds", "loginPacket", "tags"];
 const json = new Set(["loginPacket", "tags"]);
 const commit = (await Deno.readTextFile(`${mcdata}/commit`)).trim();
-const source = await Source.open(mcdata, commit, patches);
+const source = await Source.open(mcdata, commit, patches, await readPins(pinFile));
 const dataPaths = ((await source.json("dataPaths.json")) as { pc: Record<string, Record<string, string>> }).pc;
 const releases = (await Deno.readTextFile(`${mcdata}/releases.tsv`)).trim().split("\n").map((l) => l.split("\t")[0]);
 

@@ -152,11 +152,11 @@ def_native(option) {
 @view take def_native(optionalNbt);
 
 def(position) => bitfield {
-	field(x, signed: true, size: 26);
+	field(x, size: 26, signed: true);
 
-	field(y, signed: true, size: 12);
+	field(y, size: 12, signed: true);
 
-	field(z, signed: true, size: 26);
+	field(z, size: 26, signed: true);
 };
 
 @specializer pstring
@@ -502,13 +502,13 @@ namespace(play) {
 						field(frameType) => varint;
 
 						field(flags) => bitfield {
-							field(_unused, signed: false, size: 29);
+							field(_unused, size: 29, signed: false);
 
-							field(hidden, signed: false, size: 1);
+							field(hidden, size: 1, signed: false);
 
-							field(show_toast, signed: false, size: 1);
+							field(show_toast, size: 1, signed: false);
 
-							field(has_background_texture, signed: false, size: 1);
+							field(has_background_texture, size: 1, signed: false);
 						};
 
 						field(backgroundTexture) => union(tag: ../flags/has_background_texture) {
