@@ -1,0 +1,42 @@
+[
+	{
+		"op": "test",
+		"path": "/play/toClient/types/packet_declare_recipes/1/0/type/1/type/1/2/type/1/fields/minecraft:crafting_shaped/1/3",
+		"value": {
+			"name": "ingredients",
+			"type": [
+				"array",
+				{
+					"count": "height",
+					"type": [
+						"array",
+						{
+							"count": "width",
+							"type": "ingredient"
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"op": "replace",
+		"path": "/play/toClient/types/packet_declare_recipes/1/0/type/1/type/1/2/type/1/fields/minecraft:crafting_shaped/1/3",
+		"value": {
+			"name": "ingredients",
+			"type": [
+				"array",
+				{
+					"count": "width",
+					"type": [
+						"array",
+						{
+							"count": "height",
+							"type": "ingredient"
+						}
+					]
+				}
+			]
+		}
+	}
+]

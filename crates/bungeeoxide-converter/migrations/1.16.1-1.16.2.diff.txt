@@ -3,7 +3,6 @@
 - play::toServer::packet_crafting_book_data
 ~ play::toClient::packet [Renumbered]
     45 arms renumbered
-~ play::toClient::packet_declare_recipes [Other]
 ~ play::toClient::packet_login [FieldsAdded, FieldsRetypedScalar]
     +isHardcore: field() => bool;
     ~dimension: field() => string; -> field() => nbt;

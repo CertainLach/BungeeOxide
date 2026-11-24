@@ -62,7 +62,6 @@
     -world_border
     -title
     81 arms renumbered
-~ play::toClient::packet_declare_recipes [Other]
 = play::toClient::packet_entity_metadata (references changed)
 ~ play::toClient::packet_entity_update_attributes [FieldsRetypedNested]
     ~properties: nested change
