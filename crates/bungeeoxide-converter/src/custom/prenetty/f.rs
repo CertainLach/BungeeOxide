@@ -224,26 +224,24 @@ macro_rules! attributes {
 			p: $from::play_to_client_packet_update_attributes::Ty,
 			_cx: &mut Session,
 		) -> Result<Vec<$to::play_to_client_packet::Ty>> {
+			use $to::play_to_client_packet_update_attributes_properties_items::Ty as Property;
+			use $to::play_to_client_packet_update_attributes_properties_items_modifiers_items::Ty as Modifier;
 			let properties = p
 				.properties
 				.into_iter()
-				.map(
-					|a| $to::play_to_client_packet_update_attributes_properties_items::Ty {
-						key: a.key,
-						value: a.value,
-						modifiers: a
-							.modifiers
-							.into_iter()
-							.map(|m| {
-								$to::play_to_client_packet_update_attributes_properties_items_modifiers_items::Ty {
-																					uuid: m.uuid,
-																					amount: m.amount,
-																					operation: m.operation,
-																				}
-							})
-							.collect(),
-					},
-				)
+				.map(|a| Property {
+					key: a.key,
+					value: a.value,
+					modifiers: a
+						.modifiers
+						.into_iter()
+						.map(|m| Modifier {
+							uuid: m.uuid,
+							amount: m.amount,
+							operation: m.operation,
+						})
+						.collect(),
+				})
 				.collect();
 			Ok(vec![$to::play_to_client_packet::Ty::UpdateAttributes(
 				$to::play_to_client_packet_update_attributes::Ty {
