@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$UUID from "../../UUID.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	uuid: pds$UUID.Ty;

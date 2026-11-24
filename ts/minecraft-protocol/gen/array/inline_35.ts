@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$HashedSlot_16 from "../HashedSlot_16.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<pds$HashedSlot_16.Ty>;
 

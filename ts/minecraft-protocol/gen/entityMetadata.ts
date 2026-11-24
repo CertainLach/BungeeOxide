@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$entityMetadataEntry from "./entityMetadataEntry.ts";
 import * as pds$u8 from "./u8.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = Array<pds$entityMetadataEntry.Ty>;
 

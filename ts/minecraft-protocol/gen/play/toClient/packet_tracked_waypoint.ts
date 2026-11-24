@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$play$toClient$packet_tracked_waypoint_46 from "./packet_tracked_waypoint_46.ts";
 import * as pds$play$toClient$packet_tracked_waypoint_52 from "./packet_tracked_waypoint_52.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	operation: pds$play$toClient$packet_tracked_waypoint_46.Ty;

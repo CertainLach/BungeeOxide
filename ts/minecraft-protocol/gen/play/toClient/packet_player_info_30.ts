@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$UUID from "../../UUID.ts";
-import * as pds$bool from "../../bool.ts";
+import type * as pds$bool from "../../bool.ts";
 import * as pds$play$toClient$packet_player_info_22 from "./packet_player_info_22.ts";
 import * as pds$play$toClient$packet_player_info_23 from "./packet_player_info_23.ts";
 import * as pds$play$toClient$packet_player_info_24 from "./packet_player_info_24.ts";
@@ -11,7 +11,7 @@ import * as pds$play$toClient$packet_player_info_26 from "./packet_player_info_2
 import * as pds$play$toClient$packet_player_info_27 from "./packet_player_info_27.ts";
 import * as pds$play$toClient$packet_player_info_28 from "./packet_player_info_28.ts";
 import * as pds$play$toClient$packet_player_info_29 from "./packet_player_info_29.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Args = {
 	action_add_player: pds$bool.Ty;

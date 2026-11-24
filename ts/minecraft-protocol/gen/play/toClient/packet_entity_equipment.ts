@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$topBitSetTerminatedArray_39 from "../../topBitSetTerminatedArray_39.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toClient$packet_entity_equipment_15 from "./packet_entity_equipment_15.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_entity_equipment_15 from "./packet_entity_equipment_15.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	entityId: pds$varint.Ty;

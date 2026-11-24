@@ -5,7 +5,7 @@ import * as pds$anonymousNbt from "../../anonymousNbt.ts";
 import * as pds$option_17 from "../../option_17.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$packet_scoreboard_objective_34 from "./packet_scoreboard_objective_34.ts";
-import { equal, Input, Output, PdsError } from "../../../pds.ts";
+import { equal, type Input, type Output, PdsError } from "../../../pds.ts";
 
 export type Ty = {
 	displayText: pds$anonymousNbt.Ty;

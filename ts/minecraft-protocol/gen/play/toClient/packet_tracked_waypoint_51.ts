@@ -5,7 +5,7 @@ import * as pds$f32 from "../../f32.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$vec3i from "../../vec3i.ts";
 import * as pds$play$toClient$packet_tracked_waypoint_50 from "./packet_tracked_waypoint_50.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "empty" }

@@ -6,7 +6,7 @@ import * as pds$DamageTypeData_1 from "./DamageTypeData_1.ts";
 import * as pds$DamageTypeData_2 from "./DamageTypeData_2.ts";
 import * as pds$f32 from "./f32.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	msgId: string;

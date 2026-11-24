@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$UUID from "../../UUID.ts";
 import * as pds$play$toClient$packet_boss_bar_14 from "./packet_boss_bar_14.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	entityUUID: pds$UUID.Ty;

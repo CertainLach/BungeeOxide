@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$i8 from "../../i8.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "survival" }

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$anonOptionalNbt from "./anonOptionalNbt.ts";
 import * as pds$anonymousNbt from "./anonymousNbt.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	content: pds$anonymousNbt.Ty;

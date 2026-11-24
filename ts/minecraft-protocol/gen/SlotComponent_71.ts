@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$DamageTypeData from "./DamageTypeData.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty =
 	| { kind: "id"; value: pds$varint.Ty }

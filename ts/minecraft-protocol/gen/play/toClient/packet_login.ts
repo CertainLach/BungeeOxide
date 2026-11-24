@@ -6,7 +6,7 @@ import * as pds$bool from "../../bool.ts";
 import * as pds$i32 from "../../i32.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$SpawnInfo from "./SpawnInfo.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	entityId: pds$i32.Ty;

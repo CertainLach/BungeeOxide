@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	sharedSecret: Uint8Array;

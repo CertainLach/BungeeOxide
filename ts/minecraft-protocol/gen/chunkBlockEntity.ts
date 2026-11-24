@@ -5,7 +5,7 @@ import * as pds$anonOptionalNbt from "./anonOptionalNbt.ts";
 import * as pds$chunkBlockEntity_78 from "./chunkBlockEntity_78.ts";
 import * as pds$i16 from "./i16.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	ANON: pds$chunkBlockEntity_78.Ty;

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$f32 from "../../f32.ts";
 import * as pds$i8 from "../../i8.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	flags: pds$i8.Ty;

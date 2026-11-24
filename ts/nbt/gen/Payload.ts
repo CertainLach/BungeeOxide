@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$Compound from "./Compound.ts";
-import * as pds$Entry from "./Entry.ts";
+import type * as pds$Entry from "./Entry.ts";
 import * as pds$List from "./List.ts";
 import * as pds$array$inline_5 from "./array/inline_5.ts";
 import * as pds$array$inline_6 from "./array/inline_6.ts";
@@ -14,8 +14,8 @@ import * as pds$i32 from "./i32.ts";
 import * as pds$i64 from "./i64.ts";
 import * as pds$i8 from "./i8.ts";
 import * as pds$string from "./string.ts";
-import * as pds$u8 from "./u8.ts";
-import { Input, Output, PdsError } from "../pds.ts";
+import type * as pds$u8 from "./u8.ts";
+import { type Input, type Output, PdsError } from "../pds.ts";
 
 export type Args = {
 	type: pds$u8.Ty;

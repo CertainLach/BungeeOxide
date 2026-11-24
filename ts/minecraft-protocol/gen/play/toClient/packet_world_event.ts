@@ -4,7 +4,7 @@
 import * as pds$bool from "../../bool.ts";
 import * as pds$i32 from "../../i32.ts";
 import * as pds$position from "../../position.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	effectId: pds$i32.Ty;

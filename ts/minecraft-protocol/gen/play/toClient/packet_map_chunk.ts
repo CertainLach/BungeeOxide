@@ -6,10 +6,10 @@ import * as pds$array$inline_24 from "../../array/inline_24.ts";
 import * as pds$array$inline_59 from "../../array/inline_59.ts";
 import * as pds$array$inline_72 from "../../array/inline_72.ts";
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
-import * as pds$chunkBlockEntity from "../../chunkBlockEntity.ts";
+import type * as pds$chunkBlockEntity from "../../chunkBlockEntity.ts";
 import * as pds$i32 from "../../i32.ts";
-import * as pds$play$toClient$packet_map_chunk_21 from "./packet_map_chunk_21.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_map_chunk_21 from "./packet_map_chunk_21.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	x: pds$i32.Ty;

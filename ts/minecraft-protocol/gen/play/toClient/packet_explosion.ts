@@ -8,8 +8,8 @@ import * as pds$f32 from "../../f32.ts";
 import * as pds$i32 from "../../i32.ts";
 import * as pds$option_18 from "../../option_18.ts";
 import * as pds$vec3f64 from "../../vec3f64.ts";
-import * as pds$play$toClient$ExplosionParticleEntry from "./ExplosionParticleEntry.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$ExplosionParticleEntry from "./ExplosionParticleEntry.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	center: pds$vec3f64.Ty;

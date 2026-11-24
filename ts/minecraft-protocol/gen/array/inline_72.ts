@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$varint from "../varint.ts";
 import * as pds$array$inline_30 from "./inline_30.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<Uint8Array>;
 

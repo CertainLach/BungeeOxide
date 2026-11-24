@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$play$toClient$ChatTypeParameterType from "../play/toClient/ChatTypeParameterType.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<pds$play$toClient$ChatTypeParameterType.Ty>;
 

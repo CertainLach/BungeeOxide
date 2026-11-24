@@ -3,9 +3,9 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_54 from "../../array/inline_54.ts";
 import * as pds$array$inline_55 from "../../array/inline_55.ts";
-import * as pds$play$toClient$packet_declare_recipes_14 from "./packet_declare_recipes_14.ts";
-import * as pds$play$toClient$packet_declare_recipes_15 from "./packet_declare_recipes_15.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_declare_recipes_14 from "./packet_declare_recipes_14.ts";
+import type * as pds$play$toClient$packet_declare_recipes_15 from "./packet_declare_recipes_15.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	recipes: Array<pds$play$toClient$packet_declare_recipes_14.Ty>;

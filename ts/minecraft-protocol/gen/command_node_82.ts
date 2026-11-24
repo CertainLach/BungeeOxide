@@ -2,8 +2,8 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$f32 from "./f32.ts";
-import * as pds$u8 from "./u8.ts";
-import { Input, Output, PdsError } from "../pds.ts";
+import type * as pds$u8 from "./u8.ts";
+import { type Input, type Output, PdsError } from "../pds.ts";
 
 export type Args = {
 	flags_max_present: pds$u8.Ty;

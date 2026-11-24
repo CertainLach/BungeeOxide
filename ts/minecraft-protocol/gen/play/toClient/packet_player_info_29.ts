@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$bool from "../../bool.ts";
-import { Input, Output, PdsError } from "../../../pds.ts";
+import { type Input, type Output, PdsError } from "../../../pds.ts";
 
 export type Args = {
 	action_update_hat: pds$bool.Ty;

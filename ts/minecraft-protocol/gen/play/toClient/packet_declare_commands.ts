@@ -2,9 +2,9 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$array$inline_21 from "../../array/inline_21.ts";
-import * as pds$command_node from "../../command_node.ts";
+import type * as pds$command_node from "../../command_node.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	nodes: Array<pds$command_node.Ty>;

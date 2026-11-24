@@ -5,8 +5,8 @@ import * as pds$array$inline_71 from "../../array/inline_71.ts";
 import * as pds$bool from "../../bool.ts";
 import * as pds$option_16 from "../../option_16.ts";
 import * as pds$option_31 from "../../option_31.ts";
-import * as pds$play$toClient$packet_advancements_8 from "./packet_advancements_8.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_advancements_8 from "./packet_advancements_8.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	parentId: string | null;

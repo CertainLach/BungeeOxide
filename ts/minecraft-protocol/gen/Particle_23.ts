@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$Particle_22 from "./Particle_22.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	position: pds$Particle_22.Ty;

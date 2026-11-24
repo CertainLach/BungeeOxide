@@ -2,12 +2,12 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$DataComponentMatchers from "./DataComponentMatchers.ts";
-import * as pds$ItemBlockPredicate_16 from "./ItemBlockPredicate_16.ts";
-import * as pds$ItemBlockProperty from "./ItemBlockProperty.ts";
+import type * as pds$ItemBlockPredicate_16 from "./ItemBlockPredicate_16.ts";
+import type * as pds$ItemBlockProperty from "./ItemBlockProperty.ts";
 import * as pds$anonOptionalNbt from "./anonOptionalNbt.ts";
 import * as pds$option_28 from "./option_28.ts";
 import * as pds$option_37 from "./option_37.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	blockSet: pds$ItemBlockPredicate_16.Ty | null;

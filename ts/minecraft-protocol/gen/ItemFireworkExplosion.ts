@@ -4,7 +4,7 @@
 import * as pds$ItemFireworkExplosion_17 from "./ItemFireworkExplosion_17.ts";
 import * as pds$array$inline_23 from "./array/inline_23.ts";
 import * as pds$bool from "./bool.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	shape: pds$ItemFireworkExplosion_17.Ty;

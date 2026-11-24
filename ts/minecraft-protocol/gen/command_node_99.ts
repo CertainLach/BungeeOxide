@@ -11,7 +11,7 @@ import * as pds$command_node_98 from "./command_node_98.ts";
 import * as pds$i32 from "./i32.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty =
 	| { kind: "brigadier_bool" }

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "../../bool.ts";
 import * as pds$f32 from "../../f32.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	yaw: pds$f32.Ty;

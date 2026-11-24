@@ -7,7 +7,7 @@ import * as pds$f32 from "../../f32.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$packet_advancements_6 from "./packet_advancements_6.ts";
 import * as pds$play$toClient$packet_advancements_7 from "./packet_advancements_7.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	title: pds$anonymousNbt.Ty;

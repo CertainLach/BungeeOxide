@@ -4,8 +4,8 @@
 import * as pds$UUID from "../../UUID.ts";
 import * as pds$array$inline_46 from "../../array/inline_46.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import * as pds$login$toClient$packet_success_0 from "./packet_success_0.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$login$toClient$packet_success_0 from "./packet_success_0.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	uuid: pds$UUID.Ty;

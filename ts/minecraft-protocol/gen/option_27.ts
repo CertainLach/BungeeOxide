@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$DebugSubscriptionUpdate_16 from "./DebugSubscriptionUpdate_16.ts";
 import * as pds$bool from "./bool.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = pds$DebugSubscriptionUpdate_16.Ty | null;
 

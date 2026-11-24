@@ -4,7 +4,7 @@
 import * as pds$GameProfile from "./GameProfile.ts";
 import * as pds$PartialResolvableProfile from "./PartialResolvableProfile.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty =
 	| { kind: "partial"; value: pds$PartialResolvableProfile.Ty }

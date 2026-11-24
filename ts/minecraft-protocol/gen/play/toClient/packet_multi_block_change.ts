@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_31 from "../../array/inline_31.ts";
 import * as pds$play$toClient$packet_multi_block_change_21 from "./packet_multi_block_change_21.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	chunkCoordinates: pds$play$toClient$packet_multi_block_change_21.Ty;

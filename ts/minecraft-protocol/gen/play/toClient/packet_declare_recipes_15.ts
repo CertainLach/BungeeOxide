@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$IDSet from "../../IDSet.ts";
 import * as pds$play$toClient$SlotDisplay from "./SlotDisplay.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	input: pds$IDSet.Ty;

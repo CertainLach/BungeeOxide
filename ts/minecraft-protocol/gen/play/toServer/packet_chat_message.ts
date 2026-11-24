@@ -7,7 +7,7 @@ import * as pds$option_10 from "../../option_10.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	message: string;

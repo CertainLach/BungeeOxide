@@ -4,7 +4,7 @@
 import * as pds$ItemSoundHolder from "./ItemSoundHolder.ts";
 import * as pds$anonymousNbt from "./anonymousNbt.ts";
 import * as pds$f32 from "./f32.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	soundEvent: pds$ItemSoundHolder.Ty;

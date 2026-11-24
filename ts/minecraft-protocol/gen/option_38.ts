@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_58 from "./array/inline_58.ts";
 import * as pds$bool from "./bool.ts";
-import * as pds$play$toClient$packet_map_18 from "./play/toClient/packet_map_18.ts";
-import { Input, Output } from "../pds.ts";
+import type * as pds$play$toClient$packet_map_18 from "./play/toClient/packet_map_18.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = Array<pds$play$toClient$packet_map_18.Ty> | null;
 

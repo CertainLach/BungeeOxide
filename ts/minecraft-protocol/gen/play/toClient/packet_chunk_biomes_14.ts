@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
 import * as pds$packedChunkPos from "../../packedChunkPos.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	position: pds$packedChunkPos.Ty;

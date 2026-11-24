@@ -6,7 +6,7 @@ import * as pds$f32 from "../../f32.ts";
 import * as pds$i32 from "../../i32.ts";
 import * as pds$i64 from "../../i64.ts";
 import * as pds$soundSource from "../../soundSource.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	sound: pds$ItemSoundHolder.Ty;

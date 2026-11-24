@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$packet_common_custom_report_details_106 from "../packet_common_custom_report_details_106.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<pds$packet_common_custom_report_details_106.Ty>;
 

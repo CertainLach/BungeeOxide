@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "../../bool.ts";
 import * as pds$i64 from "../../i64.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	age: pds$i64.Ty;

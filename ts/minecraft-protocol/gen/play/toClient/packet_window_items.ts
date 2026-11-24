@@ -4,7 +4,7 @@
 import * as pds$Slot from "../../Slot.ts";
 import * as pds$array$inline_14 from "../../array/inline_14.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	windowId: pds$varint.Ty;

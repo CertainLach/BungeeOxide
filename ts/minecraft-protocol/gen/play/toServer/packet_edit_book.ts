@@ -4,7 +4,7 @@
 import * as pds$array$inline_29 from "../../array/inline_29.ts";
 import * as pds$option_16 from "../../option_16.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	hand: pds$varint.Ty;

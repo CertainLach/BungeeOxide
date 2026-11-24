@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$varint from "../../varint.ts";
 import * as pds$vec2f from "../../vec2f.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	hand: pds$varint.Ty;

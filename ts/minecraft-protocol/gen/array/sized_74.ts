@@ -2,8 +2,8 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$UntrustedSlotComponent from "../UntrustedSlotComponent.ts";
-import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import type * as pds$varint from "../varint.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Args = {
 	count: pds$varint.Ty;

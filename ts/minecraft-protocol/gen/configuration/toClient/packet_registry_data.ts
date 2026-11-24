@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_44 from "../../array/inline_44.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import * as pds$configuration$toClient$packet_registry_data_0 from "./packet_registry_data_0.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$configuration$toClient$packet_registry_data_0 from "./packet_registry_data_0.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	id: string;

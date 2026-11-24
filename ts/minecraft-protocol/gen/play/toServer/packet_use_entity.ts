@@ -4,7 +4,7 @@
 import * as pds$bool from "../../bool.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toServer$packet_use_entity_1 from "./packet_use_entity_1.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	target: pds$varint.Ty;

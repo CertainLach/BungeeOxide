@@ -2,9 +2,9 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$Compound from "../Compound.ts";
-import * as pds$Entry from "../Entry.ts";
+import type * as pds$Entry from "../Entry.ts";
 import * as pds$i32 from "../i32.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<Array<pds$Entry.Ty>>;
 

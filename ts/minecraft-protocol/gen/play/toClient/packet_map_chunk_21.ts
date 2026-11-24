@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_24 from "../../array/inline_24.ts";
 import * as pds$play$toClient$packet_map_chunk_20 from "./packet_map_chunk_20.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	type: pds$play$toClient$packet_map_chunk_20.Ty;

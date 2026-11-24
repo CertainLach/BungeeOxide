@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$f32 from "../../f32.ts";
 import * as pds$vec3f from "../../vec3f.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	position: pds$vec3f.Ty;

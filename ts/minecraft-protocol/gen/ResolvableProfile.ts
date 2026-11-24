@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$PlayerSkinPatch from "./PlayerSkinPatch.ts";
 import * as pds$ResolvableProfile_24 from "./ResolvableProfile_24.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	ANON: pds$ResolvableProfile_24.Ty;

@@ -4,7 +4,7 @@
 import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$handshaking$toServer$packet_set_protocol from "./packet_set_protocol.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| {

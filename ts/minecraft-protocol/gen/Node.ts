@@ -5,7 +5,7 @@ import * as pds$Node_17 from "./Node_17.ts";
 import * as pds$bool from "./bool.ts";
 import * as pds$f32 from "./f32.ts";
 import * as pds$vec3i32 from "./vec3i32.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	position: pds$vec3i32.Ty;

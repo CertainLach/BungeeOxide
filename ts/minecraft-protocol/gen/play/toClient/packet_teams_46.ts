@@ -5,7 +5,7 @@ import * as pds$array$inline_29 from "../../array/inline_29.ts";
 import * as pds$i8 from "../../i8.ts";
 import * as pds$play$toClient$packet_teams_41 from "./packet_teams_41.ts";
 import * as pds$play$toClient$packet_teams_45 from "./packet_teams_45.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "add"; value: pds$play$toClient$packet_teams_41.Ty }

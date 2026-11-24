@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_64 from "../../array/inline_64.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toClient$packet_tab_complete_38 from "./packet_tab_complete_38.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_tab_complete_38 from "./packet_tab_complete_38.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	transactionId: pds$varint.Ty;

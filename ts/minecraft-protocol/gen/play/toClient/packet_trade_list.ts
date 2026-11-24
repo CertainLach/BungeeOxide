@@ -4,8 +4,8 @@
 import * as pds$array$inline_66 from "../../array/inline_66.ts";
 import * as pds$bool from "../../bool.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toClient$packet_trade_list_54 from "./packet_trade_list_54.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_trade_list_54 from "./packet_trade_list_54.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	windowId: pds$varint.Ty;

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$List_0 from "./List_0.ts";
 import * as pds$u8 from "./u8.ts";
-import { equal, Input, Output, PdsError } from "../pds.ts";
+import { equal, type Input, type Output, PdsError } from "../pds.ts";
 
 export type Ty = {
 	items: pds$List_0.Ty;

@@ -4,7 +4,7 @@
 import * as pds$i8 from "../../i8.ts";
 import * as pds$play$toClient$packet_scoreboard_objective_35 from "./packet_scoreboard_objective_35.ts";
 import * as pds$play$toClient$packet_scoreboard_objective_37 from "./packet_scoreboard_objective_37.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "v0"; value: pds$play$toClient$packet_scoreboard_objective_35.Ty }

@@ -4,7 +4,7 @@
 import * as pds$bool from "../../bool.ts";
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	serverId: string;

@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$play$toClient$RecipeBookSetting from "./RecipeBookSetting.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	crafting: pds$play$toClient$RecipeBookSetting.Ty;

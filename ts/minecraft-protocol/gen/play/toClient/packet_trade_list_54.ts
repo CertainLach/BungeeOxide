@@ -7,8 +7,8 @@ import * as pds$f32 from "../../f32.ts";
 import * as pds$i32 from "../../i32.ts";
 import * as pds$option_33 from "../../option_33.ts";
 import * as pds$play$toClient$packet_trade_list_52 from "./packet_trade_list_52.ts";
-import * as pds$play$toClient$packet_trade_list_53 from "./packet_trade_list_53.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_trade_list_53 from "./packet_trade_list_53.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	inputItem1: pds$play$toClient$packet_trade_list_52.Ty;

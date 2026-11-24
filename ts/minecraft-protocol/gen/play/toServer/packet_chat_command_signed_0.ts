@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$buffer$sized from "../../buffer/sized.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	argumentName: string;

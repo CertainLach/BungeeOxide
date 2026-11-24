@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_27 from "../../array/inline_27.ts";
 import * as pds$play$toClient$SlotDisplay from "./SlotDisplay.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	ingredients: Array<pds$play$toClient$SlotDisplay.Ty>;

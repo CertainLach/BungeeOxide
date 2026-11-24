@@ -3,9 +3,9 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_28 from "./array/inline_28.ts";
 import * as pds$option_14 from "./option_14.ts";
-import * as pds$position from "./position.ts";
+import type * as pds$position from "./position.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	hivePos: pds$position.Ty | null;

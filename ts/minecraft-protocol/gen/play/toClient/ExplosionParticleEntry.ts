@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$ExplosionParticleInfo from "./ExplosionParticleInfo.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	data: pds$play$toClient$ExplosionParticleInfo.Ty;

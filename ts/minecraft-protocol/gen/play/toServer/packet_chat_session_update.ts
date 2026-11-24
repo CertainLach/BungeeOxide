@@ -4,7 +4,7 @@
 import * as pds$UUID from "../../UUID.ts";
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
 import * as pds$i64 from "../../i64.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	sessionUUID: pds$UUID.Ty;

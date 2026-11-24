@@ -5,8 +5,8 @@ import * as pds$array$inline_19 from "./array/inline_19.ts";
 import * as pds$array$inline_22 from "./array/inline_22.ts";
 import * as pds$array$inline_23 from "./array/inline_23.ts";
 import * as pds$array$inline_29 from "./array/inline_29.ts";
-import * as pds$bool from "./bool.ts";
-import { Input, Output } from "../pds.ts";
+import type * as pds$bool from "./bool.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	floats: Float32Array;

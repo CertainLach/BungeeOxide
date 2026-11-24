@@ -4,7 +4,7 @@
 import * as pds$f64 from "../../f64.ts";
 import * as pds$i8 from "../../i8.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	uuid: string;

@@ -6,9 +6,9 @@ import * as pds$array$inline_29 from "./array/inline_29.ts";
 import * as pds$bool from "./bool.ts";
 import * as pds$f32 from "./f32.ts";
 import * as pds$i32 from "./i32.ts";
-import * as pds$position from "./position.ts";
+import type * as pds$position from "./position.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	name: string;

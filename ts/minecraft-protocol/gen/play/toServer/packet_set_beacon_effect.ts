@@ -2,8 +2,8 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$option_17 from "../../option_17.ts";
-import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$varint from "../../varint.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	primary_effect: pds$varint.Ty | null;

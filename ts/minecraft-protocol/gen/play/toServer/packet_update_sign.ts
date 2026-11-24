@@ -4,7 +4,7 @@
 import * as pds$bool from "../../bool.ts";
 import * as pds$position from "../../position.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	location: pds$position.Ty;

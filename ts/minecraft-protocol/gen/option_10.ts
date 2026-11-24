@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "./bool.ts";
 import * as pds$buffer$sized from "./buffer/sized.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = Uint8Array | null;
 

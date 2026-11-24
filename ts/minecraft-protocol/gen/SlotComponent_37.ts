@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$f32 from "./f32.ts";
 import * as pds$option_16 from "./option_16.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	seconds: pds$f32.Ty;

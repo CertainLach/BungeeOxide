@@ -5,9 +5,9 @@ import * as pds$array$inline_29 from "../../array/inline_29.ts";
 import * as pds$array$inline_50 from "../../array/inline_50.ts";
 import * as pds$array$inline_52 from "../../array/inline_52.ts";
 import * as pds$bool from "../../bool.ts";
-import * as pds$play$toClient$packet_advancements_10 from "./packet_advancements_10.ts";
-import * as pds$play$toClient$packet_advancements_12 from "./packet_advancements_12.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_advancements_10 from "./packet_advancements_10.ts";
+import type * as pds$play$toClient$packet_advancements_12 from "./packet_advancements_12.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	reset: pds$bool.Ty;

@@ -4,8 +4,8 @@
 import * as pds$array$inline_56 from "../../array/inline_56.ts";
 import * as pds$f64 from "../../f64.ts";
 import * as pds$play$toClient$packet_entity_update_attributes_15 from "./packet_entity_update_attributes_15.ts";
-import * as pds$play$toClient$packet_entity_update_attributes_16 from "./packet_entity_update_attributes_16.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_entity_update_attributes_16 from "./packet_entity_update_attributes_16.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	key: pds$play$toClient$packet_entity_update_attributes_15.Ty;

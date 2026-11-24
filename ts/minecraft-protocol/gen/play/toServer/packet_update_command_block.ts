@@ -5,7 +5,7 @@ import * as pds$position from "../../position.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	location: pds$position.Ty;

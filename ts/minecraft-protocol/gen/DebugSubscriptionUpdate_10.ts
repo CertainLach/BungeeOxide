@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$varint from "./varint.ts";
 import * as pds$vec3f64 from "./vec3f64.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	event: pds$varint.Ty;

@@ -2,7 +2,7 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$varint from "./varint.ts";
-import { Input, Output, PdsError, utf8_decode, utf8_encode } from "../pds.ts";
+import { type Input, type Output, PdsError, utf8_decode, utf8_encode } from "../pds.ts";
 
 export type Ty = string;
 

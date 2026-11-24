@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$i32 from "../i32.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Int32Array;
 

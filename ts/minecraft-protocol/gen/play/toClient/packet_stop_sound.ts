@@ -5,7 +5,7 @@ import * as pds$i8 from "../../i8.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$packet_stop_sound_38 from "./packet_stop_sound_38.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "v1"; value: pds$varint.Ty }

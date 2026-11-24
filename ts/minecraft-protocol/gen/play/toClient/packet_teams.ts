@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$play$toClient$packet_teams_46 from "./packet_teams_46.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	team: string;

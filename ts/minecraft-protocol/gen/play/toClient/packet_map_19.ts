@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$buffer$inline_0 from "../../buffer/inline_0.ts";
 import * as pds$u8 from "../../u8.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	rows: pds$u8.Ty;

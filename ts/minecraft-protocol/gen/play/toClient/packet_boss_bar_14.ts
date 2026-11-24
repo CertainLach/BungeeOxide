@@ -7,7 +7,7 @@ import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$packet_boss_bar_12 from "./packet_boss_bar_12.ts";
 import * as pds$play$toClient$packet_boss_bar_13 from "./packet_boss_bar_13.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "v0"; value: pds$play$toClient$packet_boss_bar_12.Ty }

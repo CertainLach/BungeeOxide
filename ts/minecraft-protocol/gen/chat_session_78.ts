@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$UUID from "./UUID.ts";
 import * as pds$chat_session_77 from "./chat_session_77.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	uuid: pds$UUID.Ty;

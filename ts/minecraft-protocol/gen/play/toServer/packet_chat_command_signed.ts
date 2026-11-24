@@ -7,8 +7,8 @@ import * as pds$i64 from "../../i64.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toServer$packet_chat_command_signed_0 from "./packet_chat_command_signed_0.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toServer$packet_chat_command_signed_0 from "./packet_chat_command_signed_0.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	command: string;

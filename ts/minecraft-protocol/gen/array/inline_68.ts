@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$play$toServer$packet_window_click_1 from "../play/toServer/packet_window_click_1.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Array<pds$play$toServer$packet_window_click_1.Ty>;
 

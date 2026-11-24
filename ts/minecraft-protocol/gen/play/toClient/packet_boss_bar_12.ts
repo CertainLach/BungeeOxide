@@ -5,7 +5,7 @@ import * as pds$anonymousNbt from "../../anonymousNbt.ts";
 import * as pds$f32 from "../../f32.ts";
 import * as pds$u8 from "../../u8.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	title: pds$anonymousNbt.Ty;

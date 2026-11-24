@@ -4,7 +4,7 @@
 import * as pds$DebugSubscriptionEvent from "../../DebugSubscriptionEvent.ts";
 import * as pds$RespawnData from "../../RespawnData.ts";
 import * as pds$Slot from "../../Slot.ts";
-import * as pds$UUID from "../../UUID.ts";
+import type * as pds$UUID from "../../UUID.ts";
 import * as pds$anonymousNbt from "../../anonymousNbt.ts";
 import * as pds$array$inline_17 from "../../array/inline_17.ts";
 import * as pds$array$inline_31 from "../../array/inline_31.ts";
@@ -21,8 +21,8 @@ import * as pds$option_16 from "../../option_16.ts";
 import * as pds$option_7 from "../../option_7.ts";
 import * as pds$packet_common_add_resource_pack from "../../packet_common_add_resource_pack.ts";
 import * as pds$packet_common_clear_dialog from "../../packet_common_clear_dialog.ts";
-import * as pds$packet_common_custom_report_details_106 from "../../packet_common_custom_report_details_106.ts";
-import * as pds$packet_common_server_links_107 from "../../packet_common_server_links_107.ts";
+import type * as pds$packet_common_custom_report_details_106 from "../../packet_common_custom_report_details_106.ts";
+import type * as pds$packet_common_server_links_107 from "../../packet_common_server_links_107.ts";
 import * as pds$packet_common_store_cookie from "../../packet_common_store_cookie.ts";
 import * as pds$packet_common_transfer from "../../packet_common_transfer.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
@@ -37,7 +37,7 @@ import * as pds$play$toClient$packet_block_change from "./packet_block_change.ts
 import * as pds$play$toClient$packet_boss_bar from "./packet_boss_bar.ts";
 import * as pds$play$toClient$packet_chat_suggestions from "./packet_chat_suggestions.ts";
 import * as pds$play$toClient$packet_chunk_batch_start from "./packet_chunk_batch_start.ts";
-import * as pds$play$toClient$packet_chunk_biomes_14 from "./packet_chunk_biomes_14.ts";
+import type * as pds$play$toClient$packet_chunk_biomes_14 from "./packet_chunk_biomes_14.ts";
 import * as pds$play$toClient$packet_collect from "./packet_collect.ts";
 import * as pds$play$toClient$packet_craft_progress_bar from "./packet_craft_progress_bar.ts";
 import * as pds$play$toClient$packet_craft_recipe_response from "./packet_craft_recipe_response.ts";
@@ -107,12 +107,12 @@ import * as pds$play$toClient$packet_show_dialog from "./packet_show_dialog.ts";
 import * as pds$play$toClient$packet_sound_effect from "./packet_sound_effect.ts";
 import * as pds$play$toClient$packet_spawn_entity from "./packet_spawn_entity.ts";
 import * as pds$play$toClient$packet_start_configuration from "./packet_start_configuration.ts";
-import * as pds$play$toClient$packet_statistics_38 from "./packet_statistics_38.ts";
+import type * as pds$play$toClient$packet_statistics_38 from "./packet_statistics_38.ts";
 import * as pds$play$toClient$packet_stop_sound from "./packet_stop_sound.ts";
 import * as pds$play$toClient$packet_sync_entity_position from "./packet_sync_entity_position.ts";
 import * as pds$play$toClient$packet_system_chat from "./packet_system_chat.ts";
 import * as pds$play$toClient$packet_tab_complete from "./packet_tab_complete.ts";
-import * as pds$play$toClient$packet_tags_38 from "./packet_tags_38.ts";
+import type * as pds$play$toClient$packet_tags_38 from "./packet_tags_38.ts";
 import * as pds$play$toClient$packet_teams from "./packet_teams.ts";
 import * as pds$play$toClient$packet_test_instance_block_status from "./packet_test_instance_block_status.ts";
 import * as pds$play$toClient$packet_tile_entity_data from "./packet_tile_entity_data.ts";
@@ -129,7 +129,7 @@ import * as pds$play$toClient$packet_world_border_center from "./packet_world_bo
 import * as pds$play$toClient$packet_world_border_lerp_size from "./packet_world_border_lerp_size.ts";
 import * as pds$play$toClient$packet_world_event from "./packet_world_event.ts";
 import * as pds$play$toClient$packet_world_particles from "./packet_world_particles.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "bundle_delimiter" }

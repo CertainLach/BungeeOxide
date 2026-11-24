@@ -4,7 +4,7 @@
 import * as pds$ServerLinkType from "./ServerLinkType.ts";
 import * as pds$anonymousNbt from "./anonymousNbt.ts";
 import * as pds$bool from "./bool.ts";
-import { Input, Output, PdsError } from "../pds.ts";
+import { type Input, type Output, PdsError } from "../pds.ts";
 
 export type Ty =
 	| { kind: "false"; value: pds$anonymousNbt.Ty }

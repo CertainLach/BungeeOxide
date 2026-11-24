@@ -7,7 +7,7 @@ import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$packet_teams_38 from "./packet_teams_38.ts";
 import * as pds$play$toClient$packet_teams_39 from "./packet_teams_39.ts";
 import * as pds$play$toClient$packet_teams_40 from "./packet_teams_40.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	name: pds$anonymousNbt.Ty;

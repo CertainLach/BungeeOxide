@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$u8 from "../u8.ts";
 import * as pds$varint from "../varint.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Uint8Array;
 

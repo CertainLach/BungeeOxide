@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$BannerPatternLayer_0 from "./BannerPatternLayer_0.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	pattern: pds$BannerPatternLayer_0.Ty;

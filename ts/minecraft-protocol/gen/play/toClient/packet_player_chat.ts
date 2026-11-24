@@ -7,12 +7,12 @@ import * as pds$array$inline_69 from "../../array/inline_69.ts";
 import * as pds$i64 from "../../i64.ts";
 import * as pds$option_10 from "../../option_10.ts";
 import * as pds$option_8 from "../../option_8.ts";
-import * as pds$previousMessages_107 from "../../previousMessages_107.ts";
+import type * as pds$previousMessages_107 from "../../previousMessages_107.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toClient$ChatTypesHolder from "./ChatTypesHolder.ts";
 import * as pds$play$toClient$packet_player_chat_21 from "./packet_player_chat_21.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	globalIndex: pds$varint.Ty;

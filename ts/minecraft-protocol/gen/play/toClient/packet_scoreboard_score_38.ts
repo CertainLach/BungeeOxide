@@ -2,8 +2,8 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$anonymousNbt from "../../anonymousNbt.ts";
-import * as pds$varint from "../../varint.ts";
-import { equal, Input, Output, PdsError } from "../../../pds.ts";
+import type * as pds$varint from "../../varint.ts";
+import { equal, type Input, type Output, PdsError } from "../../../pds.ts";
 
 export type Args = {
 	number_format: pds$varint.Ty | null;

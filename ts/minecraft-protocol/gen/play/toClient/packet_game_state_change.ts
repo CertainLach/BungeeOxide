@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$f32 from "../../f32.ts";
 import * as pds$play$toClient$packet_game_state_change_18 from "./packet_game_state_change_18.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	reason: pds$play$toClient$packet_game_state_change_18.Ty;

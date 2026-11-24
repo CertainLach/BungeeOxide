@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$f64 from "../f64.ts";
 import * as pds$i32 from "../i32.ts";
-import { Input, Output, PdsError } from "../../pds.ts";
+import { type Input, type Output, PdsError } from "../../pds.ts";
 
 export type Ty = Float64Array;
 

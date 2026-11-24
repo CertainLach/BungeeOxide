@@ -7,7 +7,7 @@ import * as pds$login$toServer$packet_encryption_begin from "./packet_encryption
 import * as pds$login$toServer$packet_login_acknowledged from "./packet_login_acknowledged.ts";
 import * as pds$login$toServer$packet_login_plugin_response from "./packet_login_plugin_response.ts";
 import * as pds$login$toServer$packet_login_start from "./packet_login_start.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "login_start"; value: pds$login$toServer$packet_login_start.Ty }

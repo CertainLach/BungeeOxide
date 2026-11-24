@@ -2,11 +2,11 @@
 // deno-fmt-ignore-file
 // deno-lint-ignore-file
 import * as pds$UUID from "./UUID.ts";
-import * as pds$anonymousNbt from "./anonymousNbt.ts";
+import type * as pds$anonymousNbt from "./anonymousNbt.ts";
 import * as pds$bool from "./bool.ts";
 import * as pds$option_8 from "./option_8.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	uuid: pds$UUID.Ty;

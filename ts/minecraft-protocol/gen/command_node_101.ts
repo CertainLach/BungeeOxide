@@ -4,8 +4,8 @@
 import * as pds$command_node_100 from "./command_node_100.ts";
 import * as pds$command_node_99 from "./command_node_99.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import * as pds$u8 from "./u8.ts";
-import { Input, Output } from "../pds.ts";
+import type * as pds$u8 from "./u8.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Args = {
 	flags_has_custom_suggestions: pds$u8.Ty;

@@ -4,8 +4,8 @@
 import * as pds$anonymousNbt from "../../anonymousNbt.ts";
 import * as pds$array$inline_25 from "../../array/inline_25.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import * as pds$play$toClient$ChatTypeParameterType from "./ChatTypeParameterType.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$ChatTypeParameterType from "./ChatTypeParameterType.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	translationKey: string;

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_31 from "./array/inline_31.ts";
 import * as pds$bool from "./bool.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	hideTooltip: pds$bool.Ty;

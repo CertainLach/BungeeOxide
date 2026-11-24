@@ -6,7 +6,7 @@ import * as pds$ItemConsumeEffect_17 from "./ItemConsumeEffect_17.ts";
 import * as pds$ItemSoundHolder from "./ItemSoundHolder.ts";
 import * as pds$f32 from "./f32.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty =
 	| { kind: "apply_effects"; value: pds$ItemConsumeEffect_17.Ty }

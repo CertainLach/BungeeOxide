@@ -4,7 +4,7 @@
 import * as pds$Particle_21 from "./Particle_21.ts";
 import * as pds$position from "./position.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty =
 	| { kind: "block"; value: pds$position.Ty }

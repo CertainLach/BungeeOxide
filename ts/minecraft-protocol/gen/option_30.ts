@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "./bool.ts";
 import * as pds$chat_session_78 from "./chat_session_78.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = pds$chat_session_78.Ty | null;
 

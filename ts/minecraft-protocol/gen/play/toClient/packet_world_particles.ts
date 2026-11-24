@@ -6,7 +6,7 @@ import * as pds$bool from "../../bool.ts";
 import * as pds$f32 from "../../f32.ts";
 import * as pds$f64 from "../../f64.ts";
 import * as pds$i32 from "../../i32.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	longDistance: pds$bool.Ty;

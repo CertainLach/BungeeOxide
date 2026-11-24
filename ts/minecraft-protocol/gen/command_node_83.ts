@@ -4,7 +4,7 @@
 import * as pds$command_node_80 from "./command_node_80.ts";
 import * as pds$command_node_81 from "./command_node_81.ts";
 import * as pds$command_node_82 from "./command_node_82.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	flags: pds$command_node_80.Ty;

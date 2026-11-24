@@ -6,14 +6,14 @@ import * as pds$i32 from "../../i32.ts";
 import * as pds$i64 from "../../i64.ts";
 import * as pds$packet_common_cookie_response from "../../packet_common_cookie_response.ts";
 import * as pds$packet_common_custom_click_action from "../../packet_common_custom_click_action.ts";
-import * as pds$packet_common_select_known_packs_106 from "../../packet_common_select_known_packs_106.ts";
+import type * as pds$packet_common_select_known_packs_106 from "../../packet_common_select_known_packs_106.ts";
 import * as pds$packet_common_settings from "../../packet_common_settings.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$configuration$toServer$packet_accept_code_of_conduct from "./packet_accept_code_of_conduct.ts";
 import * as pds$configuration$toServer$packet_custom_payload from "./packet_custom_payload.ts";
 import * as pds$configuration$toServer$packet_finish_configuration from "./packet_finish_configuration.ts";
 import * as pds$configuration$toServer$packet_resource_pack_receive from "./packet_resource_pack_receive.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "settings"; value: pds$packet_common_settings.Ty }

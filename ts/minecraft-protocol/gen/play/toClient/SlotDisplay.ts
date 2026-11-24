@@ -5,10 +5,10 @@ import * as pds$Slot from "../../Slot.ts";
 import * as pds$array$inline_27 from "../../array/inline_27.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toClient$SlotDisplay from "./SlotDisplay.ts";
+import type * as pds$play$toClient$SlotDisplay from "./SlotDisplay.ts";
 import * as pds$play$toClient$SlotDisplay_5 from "./SlotDisplay_5.ts";
 import * as pds$play$toClient$SlotDisplay_6 from "./SlotDisplay_6.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "empty" }

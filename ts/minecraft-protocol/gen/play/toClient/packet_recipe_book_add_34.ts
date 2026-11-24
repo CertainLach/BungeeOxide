@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$play$toClient$packet_recipe_book_add_32 from "./packet_recipe_book_add_32.ts";
 import * as pds$play$toClient$packet_recipe_book_add_33 from "./packet_recipe_book_add_33.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	recipe: pds$play$toClient$packet_recipe_book_add_32.Ty;

@@ -4,7 +4,7 @@
 import * as pds$f32 from "../../f32.ts";
 import * as pds$f64 from "../../f64.ts";
 import * as pds$play$toServer$MovementFlags from "./MovementFlags.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	x: pds$f64.Ty;

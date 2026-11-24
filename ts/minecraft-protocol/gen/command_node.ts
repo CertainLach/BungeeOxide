@@ -5,7 +5,7 @@ import * as pds$array$inline_31 from "./array/inline_31.ts";
 import * as pds$command_node_102 from "./command_node_102.ts";
 import * as pds$command_node_78 from "./command_node_78.ts";
 import * as pds$command_node_79 from "./command_node_79.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	flags: pds$command_node_78.Ty;

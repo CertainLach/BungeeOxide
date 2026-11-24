@@ -7,7 +7,7 @@ import * as pds$play$toClient$RecipeDisplay_1 from "./RecipeDisplay_1.ts";
 import * as pds$play$toClient$RecipeDisplay_2 from "./RecipeDisplay_2.ts";
 import * as pds$play$toClient$RecipeDisplay_3 from "./RecipeDisplay_3.ts";
 import * as pds$play$toClient$RecipeDisplay_4 from "./RecipeDisplay_4.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "crafting_shapeless"; value: pds$play$toClient$RecipeDisplay_0.Ty }

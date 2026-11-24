@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$ItemSoundHolder from "./ItemSoundHolder.ts";
 import * as pds$bool from "./bool.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = pds$ItemSoundHolder.Ty | null;
 

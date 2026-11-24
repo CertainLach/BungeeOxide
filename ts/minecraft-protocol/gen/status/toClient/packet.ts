@@ -4,7 +4,7 @@
 import * as pds$i64 from "../../i64.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "server_info"; value: string }

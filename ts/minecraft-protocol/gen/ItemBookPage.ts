@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$option_16 from "./option_16.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	content: string;

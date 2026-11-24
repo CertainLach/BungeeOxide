@@ -4,7 +4,7 @@
 import * as pds$position from "../../position.ts";
 import * as pds$varint from "../../varint.ts";
 import * as pds$play$toServer$packet_test_instance_block_action_0 from "./packet_test_instance_block_action_0.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	pos: pds$position.Ty;

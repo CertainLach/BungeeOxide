@@ -4,7 +4,7 @@
 import * as pds$play$toClient$packet_tracked_waypoint_47 from "./packet_tracked_waypoint_47.ts";
 import * as pds$play$toClient$packet_tracked_waypoint_49 from "./packet_tracked_waypoint_49.ts";
 import * as pds$play$toClient$packet_tracked_waypoint_51 from "./packet_tracked_waypoint_51.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	ANON: pds$play$toClient$packet_tracked_waypoint_47.Ty;

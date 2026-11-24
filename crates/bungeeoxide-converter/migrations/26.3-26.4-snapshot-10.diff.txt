@@ -1,0 +1,104 @@
++ configuration::toClient::packet_declare_commands
++ login::toClient::ConnectionOptions
++ login::toClient::packet_apply_options
++ login::toClient::packet_key
++ login::toClient::packet_setup_compression
++ login::toServer::packet_options_applied
++ play::toClient::packet_add_entity_motion
++ vecDelta
+- entityDelta
+- login::toClient::packet_compress
+- login::toClient::packet_encryption_begin
+= DataComponentMatchers (references changed)
+~ DebugSubscriptionEvent [ArmsChanged]
+    ~EntityPaths
+~ DebugSubscriptionUpdate [ArmsChanged]
+    ~EntityPaths
+= ExactComponentMatcher (references changed)
+= HashedSlot (references changed)
+= ItemBlockPredicate (references changed)
+= ItemStackTemplate (references changed)
+~ Particle [Renumbered, ArmsAdded, ArmsRemoved, ArmsChanged]
+    +freezing
+    ~current_down
+    ~bubble_column_up
+    -item_snowball
+    33 arms renumbered
+= Slot (references changed)
+~ SlotComponent [Renumbered, ArmsAdded, ArmsChanged]
+    ~consumable
+    ~equippable
+    +dispense_behavior
+    77 arms renumbered
+~ SlotComponentType [Renumbered, ArmsAdded]
+    +dispense_behavior
+    77 arms renumbered
+= UntrustedSlot (references changed)
+= UntrustedSlotComponent (references changed)
+~ command_node [FieldsRetypedNested]
+    ~extraNodeData: nested change
+~ configuration::toClient::packet [ArmsAdded]
+    +declare_commands
+= entityMetadata (references changed)
+= entityMetadataEntry (references changed)
+= ingredient (references changed)
+~ login::toClient::packet [ArmsAdded, ArmsRemoved]
+    +key
+    +setup_compression
+    +apply_options
+    -encryption_begin
+    -compress
+~ login::toClient::packet_success [FieldsAdded]
+    +options: field() => ConnectionOptions;
+~ login::toServer::packet [ArmsAdded]
+    +options_applied
+~ login::toServer::packet_encryption_begin [FieldsAdded, FieldsRemoved, FieldsRenamed]
+    sharedSecret renamed to publicKey
+    +signature: field() => buffer(count: 32);
+    -verifyToken: field() => buffer(Count: varint);
+~ packet_common_transfer [FieldsAdded]
+    +properties: field() => array(Count: varint) => container { field(key) => string; field(value) => string; };
+= play::toClient::ExplosionParticleEntry (references changed)
+= play::toClient::ExplosionParticleInfo (references changed)
+= play::toClient::RecipeDisplay (references changed)
+= play::toClient::SlotDisplay (references changed)
+~ play::toClient::SpawnInfo [FieldsRemoved]
+    -hashedSeed: field() => i64;
+    -isDebug: field() => bool;
+~ play::toClient::packet [Renumbered, ArmsAdded]
+    +add_entity_motion
+    142 arms renumbered
+= play::toClient::packet_advancements (references changed)
+= play::toClient::packet_craft_recipe_response (references changed)
+= play::toClient::packet_debug_block_value (references changed)
+= play::toClient::packet_debug_chunk_value (references changed)
+= play::toClient::packet_debug_entity_value (references changed)
+= play::toClient::packet_debug_event (references changed)
+= play::toClient::packet_declare_commands (references changed)
+= play::toClient::packet_declare_recipes (references changed)
+= play::toClient::packet_entity_equipment (references changed)
+= play::toClient::packet_entity_metadata (references changed)
+~ play::toClient::packet_entity_move_look [FieldsRetypedScalar]
+    ~move: field() => entityDelta; -> field() => vecDelta;
+~ play::toClient::packet_explosion [FieldsRemoved, FieldsRetypedNested]
+    -playerKnockback: field() => option => vec3f64;
+    -playSound: field() => bool;
+    ~explosionParticle: nested change
+    ~sound: nested change
+= play::toClient::packet_login (references changed)
+= play::toClient::packet_recipe_book_add (references changed)
+~ play::toClient::packet_rel_entity_move [FieldsRetypedScalar]
+    ~move: field() => entityDelta; -> field() => vecDelta;
+= play::toClient::packet_respawn (references changed)
+= play::toClient::packet_set_cursor_item (references changed)
+= play::toClient::packet_set_player_inventory (references changed)
+= play::toClient::packet_set_slot (references changed)
+~ play::toClient::packet_sync_entity_position [FieldsAdded, FieldsRetypedNested]
+    +headYaw: field() => f32;
+    ~ANON: nested change
+= play::toClient::packet_trade_list (references changed)
+= play::toClient::packet_window_items (references changed)
+= play::toClient::packet_world_particles (references changed)
+= play::toServer::packet (references changed)
+= play::toServer::packet_set_creative_slot (references changed)
+= play::toServer::packet_window_click (references changed)

@@ -4,7 +4,7 @@
 import * as pds$anonymousNbt from "../../anonymousNbt.ts";
 import * as pds$option_8 from "../../option_8.ts";
 import * as pds$play$toClient$ChatTypesHolder from "./ChatTypesHolder.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	message: pds$anonymousNbt.Ty;

@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_24 from "../../array/inline_24.ts";
 import * as pds$varint from "../../varint.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "v2"; value: BigInt64Array }

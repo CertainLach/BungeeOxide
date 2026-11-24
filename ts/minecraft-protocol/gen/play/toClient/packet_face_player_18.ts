@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "../../bool.ts";
 import * as pds$play$toClient$packet_face_player_17 from "./packet_face_player_17.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "true"; value: pds$play$toClient$packet_face_player_17.Ty }

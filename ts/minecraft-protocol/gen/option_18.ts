@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$bool from "./bool.ts";
 import * as pds$vec3f64 from "./vec3f64.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = pds$vec3f64.Ty | null;
 

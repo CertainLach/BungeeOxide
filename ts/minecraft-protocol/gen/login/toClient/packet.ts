@@ -6,7 +6,7 @@ import * as pds$varint from "../../varint.ts";
 import * as pds$login$toClient$packet_encryption_begin from "./packet_encryption_begin.ts";
 import * as pds$login$toClient$packet_login_plugin_request from "./packet_login_plugin_request.ts";
 import * as pds$login$toClient$packet_success from "./packet_success.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty =
 	| { kind: "disconnect"; value: string }

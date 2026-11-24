@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$Slot from "../../Slot.ts";
 import * as pds$i8 from "../../i8.ts";
-import { Input, Output } from "../../../pds.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	slot: pds$i8.Ty;

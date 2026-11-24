@@ -3,7 +3,7 @@
 // deno-lint-ignore-file
 import * as pds$SlotComponent_49 from "./SlotComponent_49.ts";
 import * as pds$varint from "./varint.ts";
-import { Input, Output } from "../pds.ts";
+import type { Input, Output } from "../pds.ts";
 
 export type Ty = {
 	type: pds$SlotComponent_49.Ty;

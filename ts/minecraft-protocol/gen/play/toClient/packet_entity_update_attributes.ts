@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_57 from "../../array/inline_57.ts";
 import * as pds$varint from "../../varint.ts";
-import * as pds$play$toClient$packet_entity_update_attributes_17 from "./packet_entity_update_attributes_17.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$play$toClient$packet_entity_update_attributes_17 from "./packet_entity_update_attributes_17.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	entityId: pds$varint.Ty;

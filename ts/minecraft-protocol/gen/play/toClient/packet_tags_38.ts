@@ -3,8 +3,8 @@
 // deno-lint-ignore-file
 import * as pds$array$inline_70 from "../../array/inline_70.ts";
 import * as pds$pstring_39 from "../../pstring_39.ts";
-import * as pds$tags_107 from "../../tags_107.ts";
-import { Input, Output } from "../../../pds.ts";
+import type * as pds$tags_107 from "../../tags_107.ts";
+import type { Input, Output } from "../../../pds.ts";
 
 export type Ty = {
 	tagType: string;

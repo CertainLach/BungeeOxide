@@ -4,7 +4,7 @@
 import * as pds$SlotComponent_65 from "./SlotComponent_65.ts";
 import * as pds$bool from "./bool.ts";
 import * as pds$pstring_39 from "./pstring_39.ts";
-import { Input, Output, PdsError } from "../pds.ts";
+import { type Input, type Output, PdsError } from "../pds.ts";
 
 export type Ty =
 	| { kind: "false"; value: string }
