@@ -3,7 +3,7 @@ const split = args.indexOf("--");
 const [dir] = args.slice(0, split);
 const cmd = args.slice(split + 1);
 if (!dir || split < 0 || !cmd.length) {
-	throw new Error("usage: migration-scaffold.ts <migrations dir> -- <converters --check command...>");
+	throw new Error("usage: migration-scaffold.ts <migrations dir> -- <pds2 compile --check command...>");
 }
 
 type Change = { up?: string; down?: string };

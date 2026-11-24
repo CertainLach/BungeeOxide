@@ -1,22 +1,16 @@
 mcdata := "../../target/minecraft-data"
 languages := "../../target/minecraft-languages"
-work := "../../target/bungeeoxide-converter"
 pds2 := "pds2"
 crates := "../../minecraft"
+split := "--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs --crate-dependency bungeeoxide-pds-natives --crate-dependency pds-bytes-runtime --module convert=src/gen/convert.rs"
 
 gen:
 	#!/usr/bin/env bash
 	set -euo pipefail
-	mkdir -p {{work}}
-	mapfile -t files < <(printf '%s\n' pds/*.pds | sort -V)
-	{{pds2}} minecraft-data merge "${files[@]}" --to {{work}}/merged.pds
-	rm -rf src/gen {{crates}}/*/src
-	latest=$(basename "${files[-1]}" .pds)
-	{{pds2}} compile {{work}}/merged.pds rust --to {{crates}} --view "v${latest//./_}" \
-		--crates bungeeoxide-minecraft --crate-prelude crate-prelude.rs \
-		--crate-dependency bungeeoxide-pds-natives --crate-dependency pds-bytes-runtime
+	latest=$(grep -oE 'version\(v[0-9a-z_]+' minecraft.pds | tail -n1 | cut -c9-)
+	rm -rf {{crates}}/*/src
+	{{pds2}} compile minecraft.pds rust --to {{crates}} --view "$latest" {{split}}
 	deno run --allow-read=../.. --allow-write=../../Cargo.toml ../../scripts/workspace-crates.ts ../../Cargo.toml {{crates}}
-	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --generated src/gen --virtual --crates bungeeoxide-minecraft
 	cargo test -q -p bungeeoxide-converter
 
 update:
@@ -49,25 +43,19 @@ bump:
 	deno eval --ext=ts 'import { latestCommit } from "../../scripts/mcdata.ts"; console.log(await latestCommit())' > minecraft-data.commit
 	just pds2={{pds2}} update
 
-converters:
-	{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --generated src/gen --virtual --crates bungeeoxide-minecraft
-	cargo test -q -p bungeeoxide-converter
-
 report *versions:
 	cargo run -q --release -p bungeeoxide-converter --example report -- tests/data/1.8-toClient.bin {{versions}}
 
 scaffold:
 	#!/usr/bin/env bash
 	set -euo pipefail
-	mkdir -p {{work}}
-	mapfile -t files < <(printf '%s\n' pds/*.pds | sort -V)
-	{{pds2}} minecraft-data merge "${files[@]}" --to {{work}}/merged.pds
-	for ((i = 1; i < ${#files[@]}; i++)); do
-		touch "migrations/$(basename "${files[i-1]}" .pds)-$(basename "${files[i]}" .pds).pds"
+	mapfile -t versions < <(grep -oE 'version\(v[0-9a-z_]+, name: "[^"]+"' minecraft.pds | cut -d'"' -f2)
+	for ((i = 1; i < ${#versions[@]}; i++)); do
+		touch "migrations/${versions[i-1]}-${versions[i]}.pds"
 	done
-	deno run --allow-read=. --allow-read={{work}} --allow-write=migrations --allow-run={{pds2}} \
+	deno run --allow-read=. --allow-write=migrations --allow-run={{pds2}} \
 		../../scripts/migration-scaffold.ts migrations -- \
-		{{pds2}} minecraft-data converters {{work}}/merged.pds --migrations migrations --generated src/gen --check --crates bungeeoxide-minecraft
+		{{pds2}} compile minecraft.pds rust --check --to {{crates}} {{split}}
 
 diff:
 	#!/usr/bin/env bash

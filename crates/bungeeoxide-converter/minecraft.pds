@@ -1,0 +1,598 @@
+@!doc "Minecraft protocol types of versions 1.0.1 to 26.3"
+@!deduplicate true
+
+package(v1_0_1) {
+	@!doc "Minecraft 1.0.1 protocol types"
+
+	include("pds/1.0.1.pds");
+};
+
+package(v1_1) {
+	@!doc "Minecraft 1.1 protocol types"
+
+	include("pds/1.1.pds");
+};
+
+package(v1_2_3) {
+	@!doc "Minecraft 1.2.3 protocol types"
+
+	include("pds/1.2.3.pds");
+};
+
+package(v1_2_5) {
+	@!doc "Minecraft 1.2.5 protocol types"
+
+	include("pds/1.2.5.pds");
+};
+
+package(v1_3_2) {
+	@!doc "Minecraft 1.3.2 protocol types"
+
+	include("pds/1.3.2.pds");
+};
+
+package(v1_4_2) {
+	@!doc "Minecraft 1.4.2 protocol types"
+
+	include("pds/1.4.2.pds");
+};
+
+package(v1_4_5) {
+	@!doc "Minecraft 1.4.5 protocol types"
+
+	include("pds/1.4.5.pds");
+};
+
+package(v1_4_7) {
+	@!doc "Minecraft 1.4.7 protocol types"
+
+	include("pds/1.4.7.pds");
+};
+
+package(v1_5_1) {
+	@!doc "Minecraft 1.5.1 protocol types"
+
+	include("pds/1.5.1.pds");
+};
+
+package(v1_5_2) {
+	@!doc "Minecraft 1.5.2 protocol types"
+
+	include("pds/1.5.2.pds");
+};
+
+package(v1_6_1) {
+	@!doc "Minecraft 1.6.1 protocol types"
+
+	include("pds/1.6.1.pds");
+};
+
+package(v1_6_2) {
+	@!doc "Minecraft 1.6.2 protocol types"
+
+	include("pds/1.6.2.pds");
+};
+
+package(v1_6_4) {
+	@!doc "Minecraft 1.6.4 protocol types"
+
+	include("pds/1.6.4.pds");
+};
+
+package(v1_7) {
+	@!doc "Minecraft 1.7 protocol types"
+
+	include("pds/1.7.pds");
+};
+
+package(v1_8) {
+	@!doc "Minecraft 1.8 protocol types"
+
+	include("pds/1.8.pds");
+};
+
+package(v1_9) {
+	@!doc "Minecraft 1.9 protocol types"
+
+	include("pds/1.9.pds");
+};
+
+package(v1_9_2) {
+	@!doc "Minecraft 1.9.2 protocol types"
+
+	include("pds/1.9.2.pds");
+};
+
+package(v1_9_4) {
+	@!doc "Minecraft 1.9.4 protocol types"
+
+	include("pds/1.9.4.pds");
+};
+
+package(v1_10) {
+	@!doc "Minecraft 1.10 protocol types"
+
+	include("pds/1.10.pds");
+};
+
+package(v1_11) {
+	@!doc "Minecraft 1.11 protocol types"
+
+	include("pds/1.11.pds");
+};
+
+package(v1_12) {
+	@!doc "Minecraft 1.12 protocol types"
+
+	include("pds/1.12.pds");
+};
+
+package(v1_12_1) {
+	@!doc "Minecraft 1.12.1 protocol types"
+
+	include("pds/1.12.1.pds");
+};
+
+package(v1_12_2) {
+	@!doc "Minecraft 1.12.2 protocol types"
+
+	include("pds/1.12.2.pds");
+};
+
+package(v1_13) {
+	@!doc "Minecraft 1.13 protocol types"
+
+	include("pds/1.13.pds");
+};
+
+package(v1_13_1) {
+	@!doc "Minecraft 1.13.1 protocol types"
+
+	include("pds/1.13.1.pds");
+};
+
+package(v1_13_2) {
+	@!doc "Minecraft 1.13.2 protocol types"
+
+	include("pds/1.13.2.pds");
+};
+
+package(v1_14) {
+	@!doc "Minecraft 1.14 protocol types"
+
+	include("pds/1.14.pds");
+};
+
+package(v1_14_1) {
+	@!doc "Minecraft 1.14.1 protocol types"
+
+	include("pds/1.14.1.pds");
+};
+
+package(v1_14_3) {
+	@!doc "Minecraft 1.14.3 protocol types"
+
+	include("pds/1.14.3.pds");
+};
+
+package(v1_14_4) {
+	@!doc "Minecraft 1.14.4 protocol types"
+
+	include("pds/1.14.4.pds");
+};
+
+package(v1_15) {
+	@!doc "Minecraft 1.15 protocol types"
+
+	include("pds/1.15.pds");
+};
+
+package(v1_15_1) {
+	@!doc "Minecraft 1.15.1 protocol types"
+
+	include("pds/1.15.1.pds");
+};
+
+package(v1_15_2) {
+	@!doc "Minecraft 1.15.2 protocol types"
+
+	include("pds/1.15.2.pds");
+};
+
+package(v1_16) {
+	@!doc "Minecraft 1.16 protocol types"
+
+	include("pds/1.16.pds");
+};
+
+package(v1_16_1) {
+	@!doc "Minecraft 1.16.1 protocol types"
+
+	include("pds/1.16.1.pds");
+};
+
+package(v1_16_2) {
+	@!doc "Minecraft 1.16.2 protocol types"
+
+	include("pds/1.16.2.pds");
+};
+
+package(v1_17) {
+	@!doc "Minecraft 1.17 protocol types"
+
+	include("pds/1.17.pds");
+};
+
+package(v1_17_1) {
+	@!doc "Minecraft 1.17.1 protocol types"
+
+	include("pds/1.17.1.pds");
+};
+
+package(v1_18) {
+	@!doc "Minecraft 1.18 protocol types"
+
+	include("pds/1.18.pds");
+};
+
+package(v1_18_2) {
+	@!doc "Minecraft 1.18.2 protocol types"
+
+	include("pds/1.18.2.pds");
+};
+
+package(v1_19) {
+	@!doc "Minecraft 1.19 protocol types"
+
+	include("pds/1.19.pds");
+};
+
+package(v1_19_2) {
+	@!doc "Minecraft 1.19.2 protocol types"
+
+	include("pds/1.19.2.pds");
+};
+
+package(v1_19_3) {
+	@!doc "Minecraft 1.19.3 protocol types"
+
+	include("pds/1.19.3.pds");
+};
+
+package(v1_19_4) {
+	@!doc "Minecraft 1.19.4 protocol types"
+
+	include("pds/1.19.4.pds");
+};
+
+package(v1_20) {
+	@!doc "Minecraft 1.20 protocol types"
+
+	include("pds/1.20.pds");
+};
+
+package(v1_20_2) {
+	@!doc "Minecraft 1.20.2 protocol types"
+
+	include("pds/1.20.2.pds");
+};
+
+package(v1_20_3) {
+	@!doc "Minecraft 1.20.3 protocol types"
+
+	include("pds/1.20.3.pds");
+};
+
+package(v1_20_5) {
+	@!doc "Minecraft 1.20.5 protocol types"
+
+	include("pds/1.20.5.pds");
+};
+
+package(v1_21_1) {
+	@!doc "Minecraft 1.21.1 protocol types"
+
+	include("pds/1.21.1.pds");
+};
+
+package(v1_21_3) {
+	@!doc "Minecraft 1.21.3 protocol types"
+
+	include("pds/1.21.3.pds");
+};
+
+package(v1_21_4) {
+	@!doc "Minecraft 1.21.4 protocol types"
+
+	include("pds/1.21.4.pds");
+};
+
+package(v1_21_5) {
+	@!doc "Minecraft 1.21.5 protocol types"
+
+	include("pds/1.21.5.pds");
+};
+
+package(v1_21_6) {
+	@!doc "Minecraft 1.21.6 protocol types"
+
+	include("pds/1.21.6.pds");
+};
+
+package(v1_21_8) {
+	@!doc "Minecraft 1.21.8 protocol types"
+
+	include("pds/1.21.8.pds");
+};
+
+package(v1_21_9) {
+	@!doc "Minecraft 1.21.9 protocol types"
+
+	include("pds/1.21.9.pds");
+};
+
+package(v1_21_11) {
+	@!doc "Minecraft 1.21.11 protocol types"
+
+	include("pds/1.21.11.pds");
+};
+
+package(v26_1) {
+	@!doc "Minecraft 26.1 protocol types"
+
+	include("pds/26.1.pds");
+};
+
+package(v26_2) {
+	@!doc "Minecraft 26.2 protocol types"
+
+	include("pds/26.2.pds");
+};
+
+package(v26_3) {
+	@!doc "Minecraft 26.3 protocol types"
+
+	include("pds/26.3.pds");
+};
+
+package(convert) {
+	migrations(virtual: true) {
+		version(v1_0_1, name: "1.0.1");
+
+		version(v1_1, name: "1.1") {
+			include("migrations/1.0.1-1.1.pds");
+		};
+
+		version(v1_2_3, name: "1.2.3") {
+			include("migrations/1.1-1.2.3.pds");
+		};
+
+		version(v1_2_5, name: "1.2.5") {
+			include("migrations/1.2.3-1.2.5.pds");
+		};
+
+		version(v1_3_2, name: "1.3.2") {
+			include("migrations/1.2.5-1.3.2.pds");
+		};
+
+		version(v1_4_2, name: "1.4.2") {
+			include("migrations/1.3.2-1.4.2.pds");
+		};
+
+		version(v1_4_5, name: "1.4.5") {
+			include("migrations/1.4.2-1.4.5.pds");
+		};
+
+		version(v1_4_7, name: "1.4.7") {
+			include("migrations/1.4.5-1.4.7.pds");
+		};
+
+		version(v1_5_1, name: "1.5.1") {
+			include("migrations/1.4.7-1.5.1.pds");
+		};
+
+		version(v1_5_2, name: "1.5.2") {
+			include("migrations/1.5.1-1.5.2.pds");
+		};
+
+		version(v1_6_1, name: "1.6.1") {
+			include("migrations/1.5.2-1.6.1.pds");
+		};
+
+		version(v1_6_2, name: "1.6.2") {
+			include("migrations/1.6.1-1.6.2.pds");
+		};
+
+		version(v1_6_4, name: "1.6.4") {
+			include("migrations/1.6.2-1.6.4.pds");
+		};
+
+		version(v1_7, name: "1.7") {
+			include("migrations/1.6.4-1.7.pds");
+		};
+
+		version(v1_8, name: "1.8") {
+			include("migrations/1.7-1.8.pds");
+		};
+
+		version(v1_9, name: "1.9") {
+			include("migrations/1.8-1.9.pds");
+		};
+
+		version(v1_9_2, name: "1.9.2") {
+			include("migrations/1.9-1.9.2.pds");
+		};
+
+		version(v1_9_4, name: "1.9.4") {
+			include("migrations/1.9.2-1.9.4.pds");
+		};
+
+		version(v1_10, name: "1.10") {
+			include("migrations/1.9.4-1.10.pds");
+		};
+
+		version(v1_11, name: "1.11") {
+			include("migrations/1.10-1.11.pds");
+		};
+
+		version(v1_12, name: "1.12") {
+			include("migrations/1.11-1.12.pds");
+		};
+
+		version(v1_12_1, name: "1.12.1") {
+			include("migrations/1.12-1.12.1.pds");
+		};
+
+		version(v1_12_2, name: "1.12.2") {
+			include("migrations/1.12.1-1.12.2.pds");
+		};
+
+		version(v1_13, name: "1.13") {
+			include("migrations/1.12.2-1.13.pds");
+		};
+
+		version(v1_13_1, name: "1.13.1") {
+			include("migrations/1.13-1.13.1.pds");
+		};
+
+		version(v1_13_2, name: "1.13.2") {
+			include("migrations/1.13.1-1.13.2.pds");
+		};
+
+		version(v1_14, name: "1.14") {
+			include("migrations/1.13.2-1.14.pds");
+		};
+
+		version(v1_14_1, name: "1.14.1") {
+			include("migrations/1.14-1.14.1.pds");
+		};
+
+		version(v1_14_3, name: "1.14.3") {
+			include("migrations/1.14.1-1.14.3.pds");
+		};
+
+		version(v1_14_4, name: "1.14.4") {
+			include("migrations/1.14.3-1.14.4.pds");
+		};
+
+		version(v1_15, name: "1.15") {
+			include("migrations/1.14.4-1.15.pds");
+		};
+
+		version(v1_15_1, name: "1.15.1") {
+			include("migrations/1.15-1.15.1.pds");
+		};
+
+		version(v1_15_2, name: "1.15.2") {
+			include("migrations/1.15.1-1.15.2.pds");
+		};
+
+		version(v1_16, name: "1.16") {
+			include("migrations/1.15.2-1.16.pds");
+		};
+
+		version(v1_16_1, name: "1.16.1") {
+			include("migrations/1.16-1.16.1.pds");
+		};
+
+		version(v1_16_2, name: "1.16.2") {
+			include("migrations/1.16.1-1.16.2.pds");
+		};
+
+		version(v1_17, name: "1.17") {
+			include("migrations/1.16.2-1.17.pds");
+		};
+
+		version(v1_17_1, name: "1.17.1") {
+			include("migrations/1.17-1.17.1.pds");
+		};
+
+		version(v1_18, name: "1.18") {
+			include("migrations/1.17.1-1.18.pds");
+		};
+
+		version(v1_18_2, name: "1.18.2") {
+			include("migrations/1.18-1.18.2.pds");
+		};
+
+		version(v1_19, name: "1.19") {
+			include("migrations/1.18.2-1.19.pds");
+		};
+
+		version(v1_19_2, name: "1.19.2") {
+			include("migrations/1.19-1.19.2.pds");
+		};
+
+		version(v1_19_3, name: "1.19.3") {
+			include("migrations/1.19.2-1.19.3.pds");
+		};
+
+		version(v1_19_4, name: "1.19.4") {
+			include("migrations/1.19.3-1.19.4.pds");
+		};
+
+		version(v1_20, name: "1.20") {
+			include("migrations/1.19.4-1.20.pds");
+		};
+
+		version(v1_20_2, name: "1.20.2") {
+			include("migrations/1.20-1.20.2.pds");
+		};
+
+		version(v1_20_3, name: "1.20.3") {
+			include("migrations/1.20.2-1.20.3.pds");
+		};
+
+		version(v1_20_5, name: "1.20.5") {
+			include("migrations/1.20.3-1.20.5.pds");
+		};
+
+		version(v1_21_1, name: "1.21.1") {
+			include("migrations/1.20.5-1.21.1.pds");
+		};
+
+		version(v1_21_3, name: "1.21.3") {
+			include("migrations/1.21.1-1.21.3.pds");
+		};
+
+		version(v1_21_4, name: "1.21.4") {
+			include("migrations/1.21.3-1.21.4.pds");
+		};
+
+		version(v1_21_5, name: "1.21.5") {
+			include("migrations/1.21.4-1.21.5.pds");
+		};
+
+		version(v1_21_6, name: "1.21.6") {
+			include("migrations/1.21.5-1.21.6.pds");
+		};
+
+		version(v1_21_8, name: "1.21.8") {
+			include("migrations/1.21.6-1.21.8.pds");
+		};
+
+		version(v1_21_9, name: "1.21.9") {
+			include("migrations/1.21.8-1.21.9.pds");
+		};
+
+		version(v1_21_11, name: "1.21.11") {
+			include("migrations/1.21.9-1.21.11.pds");
+		};
+
+		version(v26_1, name: "26.1") {
+			include("migrations/1.21.11-26.1.pds");
+		};
+
+		version(v26_2, name: "26.2") {
+			include("migrations/26.1-26.2.pds");
+		};
+
+		version(v26_3, name: "26.3") {
+			include("migrations/26.2-26.3.pds");
+		};
+
+		every {
+			include("migrations/every.pds");
+		};
+	};
+};
